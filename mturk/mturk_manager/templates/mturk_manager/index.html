@@ -1,0 +1,40 @@
+{% extends "mturk_manager/base.html" %}
+
+{% block body %}
+<div class="container-fluid" id="page_index">
+	<div class="row">
+		<div class="col d-flex justify-content-center align-items-center">
+			<div class="d-inline-block">
+				<div class="row">
+					<div class="col">
+						<form method="post">
+						{% csrf_token %}
+							<div class="input-group">
+								<select class="custom-select" name="name_project">
+								    <option selected value="">Select a project</option>
+							    {% for project in queryset_projects %}
+								    <option value="{{ project.name }}">{{ project.name }}</option>
+							    {% endfor %}
+								</select>
+								<span class="input-group-btn">
+									<button class="btn btn-secondary" type="submit">Open</button>
+								</span>
+							</div>
+						</form>
+					</div>
+				</div>
+				<div class="row my-3">
+					<div class="col text-center">
+						or
+					</div>
+				</div>
+				<div class="row">
+					<div class="col text-center">
+						<a href="{% url 'mturk_manager:create' %}" class="btn btn-primary">Create a project</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

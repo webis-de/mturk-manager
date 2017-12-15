@@ -1,0 +1,66 @@
+{% extends "mturk_manager/base.html" %}
+
+{% block body %}
+<div class="container-fluid" id="page_settings">
+	<div class="row">
+		<div class="col">
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<td>Name</td>
+						<td>Access key</td>
+						<td>Secret key</td>
+					</tr>
+				</thead>
+				<tbody>
+					{% for mturk in queryset_mturk %}
+					<tr>
+						<td>{{ mturk.name }}</td>
+						<td>{{ mturk.key_access }}</td>
+						<td>{{ mturk.key_secret }}</td>
+					</tr>
+				{% endfor %}
+				</tbody>
+			</table>
+			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_add_account">
+				Add
+			</button>
+		</div>
+	</div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modal_add_account" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<form method="post">
+				{% csrf_token %}
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Add account</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="form-group">
+						<label class="col-form-label" for="input_name_account">Name</label>
+						<input type="text" name="name" class="form-control" id="input_name_account" placeholder="Name">
+					</div>
+					<div class="form-group">
+						<label class="col-form-label" for="input_key_access">Access key</label>
+						<input type="text" name="key_access" class="form-control" id="input_key_access" placeholder="Access key">
+					</div>
+					<div class="form-group">
+						<label class="col-form-label" for="input_key_secret">Secret key</label>
+						<input type="text" name="key_secret" class="form-control" id="input_key_secret" placeholder="Secret key">
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button type="submit" class="btn btn-primary">Add</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+{% endblock %}

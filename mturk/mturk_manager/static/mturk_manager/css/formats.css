@@ -1,0 +1,7 @@
+html {
+	/*overflow-y: scroll*/
+}
+
+#page_index .col.d-flex {
+	height: 100vh;
+}
