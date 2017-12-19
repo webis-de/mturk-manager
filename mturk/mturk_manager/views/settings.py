@@ -10,7 +10,7 @@ def settings(request):
         verified_input = verify_input(request)
         if not verified_input == True:
             context['success'] = False
-            context['queryset_mturk'] = m_MTurk.objects.all()
+            context['queryset_mturk'] = m_Account_Mturk.objects.all()
             return render(request, 'mturk_manager/settings.html', context)
 
         create_account(request)
@@ -18,12 +18,12 @@ def settings(request):
         context['success'] = True
         return redirect('mturk_manager:settings', permanent=True)
 
-    context['queryset_mturk'] = m_MTurk.objects.all()
+    context['queryset_mturk'] = m_Account_Mturk.objects.all()
 
     return render(request, 'mturk_manager/settings.html', context)
 
 def create_account(request):
-    m_MTurk.objects.get_or_create(
+    m_Account_Mturk.objects.get_or_create(
         name = request.POST['name'],
         key_access = request.POST['key_access'],
         key_secret = request.POST['key_secret'],

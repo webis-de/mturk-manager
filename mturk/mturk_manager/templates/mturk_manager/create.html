@@ -18,9 +18,9 @@
 					<label class="col-form-label" for="input_name_project">Name</label>
 					<input type="text" class="form-control" name="name" maxlength="200" id="input_name_project" placeholder="Name of the project">
 					<label class="col-form-label" for="input_name_account">Account</label><br>
-					<select class="custom-select" id="input_name_account" name="name_acount">
-				    {% for mturk in queryset_mturk %}
-					    <option value="{{ mturk.name }}">{{ mturk.name }}</option>
+					<select class="custom-select" id="input_name_account" name="name_account_mturk">
+				    {% for account_mturk in queryset_account_mturk %}
+					    <option value="{{ account_mturk.name }}">{{ account_mturk.name }}</option>
 				    {% endfor %}
 					</select>
 				</fieldset>

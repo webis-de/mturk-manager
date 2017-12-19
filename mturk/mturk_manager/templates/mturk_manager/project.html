@@ -1,12 +1,35 @@
 {% extends "mturk_manager/base.html" %}
 
+{% block name_project %}
+{{ db_obj_project.name }}
+{% endblock %}
+
 {% block body %}
 <div class="container-fluid" id="page_project">
 	<div class="row">
 		<div class="col">
-			<h1>{{ db_obj_project.name }}</h1>
+			Account: {{ db_obj_project.fk_account_mturk.name }}
+		</div>
+	</div>
+	<div class="row">
+		<div class="col">
 			<form method="post">
+				{% csrf_token %}
+
+				<div class="form-group">
+					<label class="col-form-label" for="input_name_project">Name
+						<input type="text" class="form-control" name="name" maxlength="200" placeholder="Name of the batch">
+					</label>
+				</div>
 				
+				<div class="form-group">
+					<label class="custom-file">
+						<input type="file" name="file_csv" class="custom-file-input">
+						<span class="custom-file-control">.csv-file</span>
+					</label>
+				</div>	
+					
+				<button type="submit" name="task" value="create_batch" class="btn btn-primary">Create batch</button>
 			</form>
 			<!-- <p>{{ db_obj_project.template }} -->
 			</p>

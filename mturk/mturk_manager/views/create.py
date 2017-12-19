@@ -4,7 +4,7 @@ import urllib.parse
 
 def create(request):
     context = {}
-    context['queryset_mturk'] = m_MTurk.objects.all()
+    context['queryset_account_mturk'] = m_Account_Mturk.objects.all()
 
     if request.method == 'POST':
         print(request.POST)
@@ -33,9 +33,12 @@ def create_project(request):
     else:
         template = request.POST['html_template']
 
+    db_obj_account_mturk = m_Account_Mturk.objects.get(name=request.POST['name_account_mturk'])
+
     m_Project.objects.get_or_create(
         name=request.POST['name'],
         template = template,
+        fk_account_mturk = db_obj_account_mturk,
     )
 
 def verify_input(request):

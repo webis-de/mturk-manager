@@ -31,7 +31,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-    'thesis.apps.ThesisConfig',
+    # 'thesis.apps.ThesisConfig',
     'mturk_manager.apps.MturkManagerConfig',
     'django.contrib.admin',
     'django.contrib.auth',
