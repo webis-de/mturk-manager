@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     # 'thesis.apps.ThesisConfig',
+    'viewer.apps.ViewerConfig',
     'mturk_manager.apps.MturkManagerConfig',
     'django.contrib.admin',
     'django.contrib.auth',
