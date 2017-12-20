@@ -8,7 +8,8 @@
 <div class="container-fluid" id="page_project">
 	<div class="row">
 		<div class="col">
-			Account: {{ db_obj_project.fk_account_mturk.name }}
+			Account: {{ db_obj_project.fk_account_mturk.name }}<br>
+			<a href="{% url 'viewer:index' db_obj_project.name %}">View Assignments</a>
 		</div>
 	</div>
 	<div class="row">

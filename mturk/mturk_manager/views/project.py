@@ -4,10 +4,10 @@ from mturk_manager.models import *
 import urllib.parse
 
 def project(request, name):
-    # create_data_dummy(db_obj_project)
     context = {}
     name = urllib.parse.unquote(name)
     db_obj_project = m_Project.objects.select_related('fk_account_mturk').get(name=name)
+    # create_data_dummy(db_obj_project)
 
     if request.method == 'POST':
         if request.POST['task'] == 'create_batch':
@@ -27,7 +27,19 @@ def create_data_dummy(db_obj_project):
         name='batch_test',
         fk_project=db_obj_project
     )[0]
-    m_Hit.objects.get_or_create(
+    db_obj_hit = m_Hit.objects.get_or_create(
         fk_batch=db_obj_batch
     )[0]
+    db_obj_worker = m_Worker.objects.get_or_create(
+        name='Kristof'
+    )[0]
+
+    m_Assignment.objects.bulk_create([
+        m_Assignment(id_assignment='id_assignment_1', fk_worker=db_obj_worker, fk_hit=db_obj_hit),
+        m_Assignment(id_assignment='id_assignment_2', fk_worker=db_obj_worker, fk_hit=db_obj_hit),
+        m_Assignment(id_assignment='id_assignment_3', fk_worker=db_obj_worker, fk_hit=db_obj_hit),
+        m_Assignment(id_assignment='id_assignment_4', fk_worker=db_obj_worker, fk_hit=db_obj_hit),
+        m_Assignment(id_assignment='id_assignment_5', fk_worker=db_obj_worker, fk_hit=db_obj_hit),
+        m_Assignment(id_assignment='id_assignment_6', fk_worker=db_obj_worker, fk_hit=db_obj_hit),
+    ])
 

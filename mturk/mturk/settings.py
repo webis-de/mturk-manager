@@ -1,3 +1,7 @@
+# CUSTOM SETTINGS
+
+DASHBOARD_AVAILABLE = False
+
 """
 Django settings for mturk project.
 
@@ -80,6 +84,14 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': '../cache',
+        'TIMEOUT': None,
     }
 }
 

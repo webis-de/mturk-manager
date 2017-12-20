@@ -18,10 +18,11 @@ class m_Hit(models.Model):
     fk_batch = models.ForeignKey('m_Batch', on_delete=models.CASCADE, related_name='hits')
 
 class m_Assignment(models.Model):
+    id_assignment = models.CharField(max_length=200, unique=True, null=False)
     fk_hit = models.ForeignKey('m_Hit', on_delete=models.CASCADE, related_name='assignments')
-    was_approved = models.BooleanField()
-    is_approved = models.BooleanField()
+    fk_worker = models.ForeignKey('m_Worker', on_delete=models.CASCADE, related_name='assignments')
+    was_approved = models.NullBooleanField()
+    is_approved = models.NullBooleanField()
 
 class m_Worker(models.Model):
     name = models.CharField(max_length=200, unique=True)
-    fk_assignment = models.ForeignKey('m_Assignment', on_delete=models.CASCADE, related_name='workers')

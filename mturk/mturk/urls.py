@@ -18,6 +18,7 @@ from django.urls import path, include
 
 urlpatterns = [
     # path('thesis/', include('thesis.urls')),
+    path('viewer/', include('viewer.urls')),
     path('', include('mturk_manager.urls')),
     path('admin/', admin.site.urls),
 ]
