@@ -7,7 +7,7 @@ import json
 
 glob_dict_settings = {
     # possible values: 'csv-file', 'ldjson-file', 'custom', 'database'
-    'name': 'kritten',
+    'name': '',
     'description': '',
     'data_type': 'database',
     # name of the app where the model is located
@@ -38,6 +38,7 @@ glob_dict_settings = {
     ],
     'page_size': 10,
     'filters': [],
+    'urls_header': []
 }
 
 def create(request):
@@ -82,6 +83,15 @@ def create_project(request):
 
     dict_settings = glob_dict_settings.copy()
     dict_settings['name'] = request.POST['name']
+
+    dict_settings['urls_header'] = [
+        {
+            'link': reverse('mturk_manager:project', args=[request.POST['name']]),
+            'name': 'Project'
+        }
+    ]
+
+    print(dict_settings)
 
     dict_payload = {}
     dict_payload['settings'] = json.dumps(dict_settings)
