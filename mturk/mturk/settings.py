@@ -1,7 +1,3 @@
-# CUSTOM SETTINGS
-
-DASHBOARD_AVAILABLE = False
-
 """
 Django settings for mturk project.
 
