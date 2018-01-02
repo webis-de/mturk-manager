@@ -15,28 +15,139 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="col">
+		<div class="col-6">
 			<form method="post">
 				{% csrf_token %}
-
-				<div class="form-group">
-					<label class="col-form-label" for="input_name_project">Name
-						<input type="text" class="form-control" name="name" maxlength="200" placeholder="Name of the batch">
-					</label>
-				</div>
-				
-				<div class="form-group">
-					<label class="custom-file">
-						<input type="file" name="file_csv" class="custom-file-input">
-						<span class="custom-file-control">.csv-file</span>
-					</label>
-				</div>	
-					
+				<fieldset>
+					<legend>Create new batch</legend>
+					<div class="form-group">
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<span class="input-group-text">Name</span>
+							</div>
+							<input type="text" class="form-control" name="name" maxlength="200" placeholder="Name of the batch">
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="input-group">
+						  	<div class="input-group-prepend">
+					    		<span class="input-group-text">CSV file</span>
+						  	</div>
+							<label class="custom-file">
+								<input type="file" name="file_csv" class="custom-file-input">
+								<span class="custom-file-label"></span>
+							</label>
+						</div>
+					</div>
+				</fieldset>
 				<button type="submit" name="task" value="create_batch" class="btn btn-primary">Create batch</button>
 			</form>
-			<!-- <p>{{ db_obj_project.template }} -->
-			</p>
 		</div>
+	</div>
+	<hr>
+	<div class="row">
+		<div class="col-6">
+			<form method="post" enctype="multipart/form-data">
+				{% csrf_token %}
+				<fieldset class="form-group">
+					<legend>Update settings</legend>
+					<div class="form-row form-group">
+						<div class="col">
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text">Title</span>
+								</div>
+								<input type="text" class="form-control" name="title" value="{{ db_obj_project.title }}">
+							</div>
+						</div>
+					</div>
+					<div class="form-row form-group">
+						<div class="col">
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text">Description</span>
+								</div>
+								<input type="text" class="form-control" name="description" value="{{ db_obj_project.description }}">
+							</div>
+						</div>
+					</div>
+					<div class="form-row form-group">
+						<div class="col">
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text">Reward</span>
+								</div>
+								<input type="number" class="form-control" name="reward" step="0.01" value="{{ db_obj_project.reward }}">
+								<div class="input-group-append">
+									<span class="input-group-text">$</span>
+								</div>
+							</div>
+						</div>
+						<div class="col">
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text">Lifetime</span>
+								</div>
+								<input type="number" class="form-control" name="lifetime" value="{{ db_obj_project.lifetime }}">
+								<div class="input-group-append">
+									<span class="input-group-text">s</span>
+								</div>
+							</div>
+						</div>
+						<div class="col">
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text">Duration</span>
+								</div>
+								<input type="number" class="form-control" name="duration" value="{{ db_obj_project.duration }}">
+								<div class="input-group-append">
+									<span class="input-group-text">s</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="form-row form-group">
+						<div class="col">
+							<div class="input-group">
+							  	<div class="input-group-prepend">
+						    		<span class="input-group-text">HTML template</span>
+							  	</div>
+								<input type="text" class="form-control" name="html_template" placeholder="paste the HTML code here">
+							</div>
+						</div>
+						<div class="col-auto d-flex align-items-center">
+							<div class="">or</div>
+						</div>
+						<div class="col">
+							<div class="input-group">
+							  	<div class="input-group-prepend">
+						    		<span class="input-group-text">HTML file</span>
+							  	</div>
+								<label class="custom-file">
+									<input type="file" id="file2" name="file_template" class="custom-file-input">
+									<span class="custom-file-label"></span>
+								</label>
+							</div>
+						</div>
+					</div>
+					<div class="form-row form-group">
+						<div class="col-auto">
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text">Frame height</span>
+								</div>
+								<input type="number" class="form-control" name="height_frame" value="{{ db_obj_project.height_frame }}">
+								<div class="input-group-append">
+									<span class="input-group-text">px</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				<button type="submit" name="task" value="update_settings" class="btn btn-primary">Update</button>
+				</fieldset>
+			</form>
+		</div>
+		{{ db_obj_project.template }}
 	</div>
 </div>
 {% endblock %}

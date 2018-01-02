@@ -7,8 +7,14 @@ class m_Account_Mturk(models.Model):
 
 class m_Project(models.Model):
     name = models.CharField(max_length=200, unique=True)
-    template = models.TextField()
     fk_account_mturk = models.ForeignKey('m_Account_Mturk', on_delete=models.SET_NULL, null=True, related_name='projects')
+    template = models.TextField()
+    title = models.TextField()
+    description = models.TextField()
+    reward = models.CharField(max_length=10)
+    lifetime = models.IntegerField()
+    duration = models.IntegerField()
+    height_frame = models.IntegerField()
 
 class m_Batch(models.Model):
     name = models.CharField(max_length=200, unique=True)
