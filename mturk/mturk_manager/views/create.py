@@ -63,21 +63,10 @@ def create(request):
     return render(request, 'mturk_manager/create.html', context)
 
 def create_project(request):
-    template = None
-    if request.POST['html_template'].strip() == '':
-        if request.FILES['file_template'].charset == None:
-            template = request.FILES['file_template'].read().decode('utf-8')
-        else:
-            template = request.FILES['file_template'].read().decode(request.FILES['file_template'].charset)
-
-    else:
-        template = request.POST['html_template']
-
     db_obj_account_mturk = m_Account_Mturk.objects.get(name=request.POST['name_account_mturk'])
 
     m_Project.objects.get_or_create(
         name=request.POST['name'],
-        template = template,
         fk_account_mturk = db_obj_account_mturk,
     )
 
@@ -110,11 +99,6 @@ def verify_input(request):
     try:
         if request.POST['name'].strip() == '':
             return False
-
-        if request.POST['html_template'].strip() == '':
-            if 'file_template' not in request.FILES:
-                return False
-
     except KeyError:
         return False
 

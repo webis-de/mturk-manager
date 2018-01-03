@@ -3,11 +3,17 @@ from mturk_manager.models import *
 
 glob_url_sandbox = 'https://mturk-requester-sandbox.us-east-1.amazonaws.com'
 
-def glob_create_batch(db_obj_project, name):
-    # m_Batch.objects.get_or_create(name=name, defaults={
-    #     'fk_project': db_obj_project
-    # })
-    pass
+def glob_create_batch(db_obj_project, request):
+    m_Batch.objects.create(
+        name=request.POST['name'],
+        fk_project=db_obj_project,
+        title=request.POST['title'],
+        description=request.POST['description'],
+        reward=request.POST['reward'],
+        lifetime=request.POST['lifetime'],
+        duration=request.POST['duration'],
+        fk_template=m_Template.objects.get(name=request.POST['template']),
+    )
 
 def create_question(template, height_frame):
     return '''

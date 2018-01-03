@@ -4,7 +4,7 @@
 <div class="container-fluid" id="page_create">
 	<div class="row">
 		<div class="col d-flex justify-content-center">
-			<form method="post" enctype="multipart/form-data">
+			<form method="post">
 				{% csrf_token %}
 				<h1>New project</h1>
 				{% if success == False %}
@@ -13,25 +13,29 @@
 					</div>
 				{% endif %}
 
-				<fieldset class="form-group">
-					<legend>General</legend>
-					<label class="col-form-label" for="input_name_project">Name</label>
-					<input type="text" class="form-control" name="name" maxlength="200" id="input_name_project" placeholder="Name of the project">
-					<label class="col-form-label" for="input_name_account">Account</label><br>
-					<select class="custom-select" id="input_name_account" name="name_account_mturk">
-				    {% for account_mturk in queryset_account_mturk %}
-					    <option value="{{ account_mturk.name }}">{{ account_mturk.name }}</option>
-				    {% endfor %}
-					</select>
-				</fieldset>
+				<fieldset>
+					<!-- <legend>General</legend> -->
+					<div class="form-group">
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<span class="input-group-text">Name</span>
+							</div>
+							<input type="text" class="form-control" name="name" maxlength="200" placeholder="Name of the project">
+						</div>
+					</div>
 
-				<fieldset class="form-group">
-					<legend>Template</legend>
-					<input type="text" class="form-control mb-1" name="html_template" placeholder="paste the HTML template here">
-					<label class="custom-file">
-						<input type="file" id="file2" name="file_template" class="custom-file-input">
-						<span class="custom-file-control">or choose a file</span>
-					</label>
+					<div class="form-row form-group">
+						<div class="col input-group">
+							<div class="input-group-prepend">
+								<label class="input-group-text">Account</label>
+							</div>
+							<select class="custom-select" name="name_account_mturk">
+							{% for account_mturk in queryset_account_mturk %}
+					    		<option value="{{ account_mturk.name }}">{{ account_mturk.name }}</option>
+							{% endfor %}
+							</select>
+						</div>
+					</div>
 				</fieldset>
 				
 				<button type="submit" class="btn btn-primary">Create</button>
