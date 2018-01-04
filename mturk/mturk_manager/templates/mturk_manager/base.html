@@ -28,6 +28,18 @@
         </nav>
         {% endblock %}
 
+        <div class="container-fluid">
+        	<div class="row">
+        		<div class="col">
+		        {% if messages %}
+				    {% for message in messages %}
+				    <div class="my-1 alert {{ message.tags }}">{{ message }}</div>
+				    {% endfor %}
+				{% endif %}
+				</div>
+			</div>
+		</div>
+
         {% block body %}
         {% endblock %}
 

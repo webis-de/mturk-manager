@@ -39,6 +39,7 @@ class m_Template(models.Model):
     fk_project = models.ForeignKey('m_Project', on_delete=models.CASCADE, related_name='templates')
     template = models.TextField()
     height_frame = models.IntegerField()
+    is_active = models.BooleanField(default=True)
 
 class m_Assignment(models.Model):
     id_assignment = models.CharField(max_length=200, unique=True, null=False)

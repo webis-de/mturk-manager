@@ -3,3 +3,4 @@ __pycache__
 mturk/thesis
 *.csv
 db.sqlite3
+migrations

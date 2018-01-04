@@ -4,6 +4,7 @@ from mturk_manager.models import *
 import urllib.parse
 import csv
 import io
+from django.contrib import messages
 
 def project(request, name):
     context = {}
@@ -39,6 +40,9 @@ def delete_templates(db_obj_project, request):
         m_Template.objects.get(name=name).delete()
 
 def add_template(db_obj_project, request):
+    if not verify_input_add_template(request):
+        return 
+
     template = None
     if request.POST['html_template'].strip() == '':
         if 'file_template' in request.FILES:
@@ -57,6 +61,8 @@ def add_template(db_obj_project, request):
     )
 
 def update_settings(db_obj_project, request):
+    verify_input_update_settings(request)
+
     db_obj_project.title = request.POST['title']
     db_obj_project.description = request.POST['description']
     db_obj_project.reward = request.POST['reward']
@@ -69,11 +75,15 @@ def update_settings(db_obj_project, request):
     db_obj_project.save()
 
 def create_batch(db_obj_project, request):
+    if not verify_input_create_batch(request):
+        return 
+
     lifetime = int(request.POST['lifetime'])
     duration = int(request.POST['duration'])
     reward = request.POST['reward']
     title = request.POST['title']
     description = request.POST['description']
+
 
     db_obj_batch = code_shared.glob_create_batch(db_obj_project, request)
     client = code_shared.get_client(db_obj_project)
@@ -93,6 +103,99 @@ def create_batch(db_obj_project, request):
         print(mturk_obj_hit)
         db_obj_hit = m_Hit.objects.create(fk_batch=db_obj_batch, )
 
+
+def verify_input_add_template(request):
+    valid = True
+    list_messages = []
+
+    try:
+        if int(request.POST['height_frame']) == 0:
+            valid = False
+            list_messages.append('Invalid frame height')
+        if request.POST['name'].strip() == '':
+            valid = False
+            list_messages.append('Invalid name')
+        if request.POST['html_template'].strip() == '' and not 'file_template' in request.FILES:
+            valid = False
+            list_messages.append('Invalid template')
+    except KeyError:
+        list_messages.append('Unexpected error, please cry')
+        valid = False
+
+    for message in list_messages:
+        messages.error(request, message)
+
+    return valid
+
+def verify_input_update_settings(request):
+    valid = True
+    list_messages = []
+
+    try:
+        if int(request.POST['lifetime']) == 0:
+            valid = False
+            list_messages.append('Invalid lifetime')
+        if int(request.POST['duration']) == 0:
+            valid = False
+            list_messages.append('Invalid duration')
+        if request.POST['reward'].strip() == '':
+            valid = False
+            list_messages.append('Invalid reward')
+        if request.POST['title'].strip() == '':
+            valid = False
+            list_messages.append('Invalid title')
+        if request.POST['description'].strip() == '':
+            valid = False
+            list_messages.append('Invalid description')
+        if request.POST['template_main'].strip() == '':
+            valid = False
+            list_messages.append('Invalid template')
+    except KeyError:
+        list_messages.append('Unexpected error, please cry')
+        valid = False
+
+    for message in list_messages:
+        messages.warning(request, message)
+
+    return valid
+
+def verify_input_create_batch(request):
+    valid = True
+    list_messages = []
+
+    try:
+        if int(request.POST['lifetime']) == 0:
+            valid = False
+            list_messages.append('Invalid lifetime')
+        if int(request.POST['duration']) == 0:
+            valid = False
+            list_messages.append('Invalid duration')
+        if request.POST['reward'].strip() == '':
+            valid = False
+            list_messages.append('Invalid reward')
+        if request.POST['title'].strip() == '':
+            valid = False
+            list_messages.append('Invalid title')
+        if request.POST['description'].strip() == '':
+            valid = False
+            list_messages.append('Invalid description')
+        if request.POST['name'].strip() == '':
+            valid = False
+            list_messages.append('Invalid name')
+        if request.POST['template'].strip() == '':
+            valid = False
+            list_messages.append('Invalid template')
+        if not 'file_csv' in request.FILES:
+            valid = False
+            list_messages.append('Invalid csv file')
+    except KeyError:
+        list_messages.append('Unexpected error, please cry')
+        valid = False
+
+    for message in list_messages:
+        messages.error(request, message)
+
+    return valid
 
 def create_data_dummy(db_obj_project):
     db_obj_batch = m_Batch.objects.get_or_create(

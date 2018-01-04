@@ -49,8 +49,7 @@ def create(request):
         print(request.COOKIES)
         print(request.POST)
         print(request.FILES)
-        verified_input = verify_input(request)
-        if not verified_input == True:
+        if not verify_input(request) == True:
             context['success'] = False
             return render(request, 'mturk_manager/create.html', context)
             
