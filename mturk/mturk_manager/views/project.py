@@ -1,16 +1,31 @@
 from mturk_manager.views import code_shared
 from django.shortcuts import render, redirect
 from mturk_manager.models import *
+from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import F, Value, Count
+from django.db.models.functions import Concat
 import urllib.parse
+from django.utils.html import escape
 import csv
 import io
+import json
+import time
 from django.contrib import messages
 
 def project(request, name):
+    queryset = m_Project.objects.select_related(
+        'fk_account_mturk'
+    ).prefetch_related(
+        'templates', 'batches__hits__assignments'
+    )
     context = {}
     name_quoted = name
     name = urllib.parse.unquote(name_quoted)
-    db_obj_project = m_Project.objects.select_related('fk_account_mturk').prefetch_related('templates').get(name=name)
+    try:
+        db_obj_project = queryset.get(name=name)
+    except ObjectDoesNotExist:
+        messages.error(request, 'Project "{}" does not exist'.format(name))
+        return redirect('mturk_manager:index')
     # create_data_dummy(db_obj_project)
     # client = code_shared.get_client(db_obj_project)
     # print(client.get_account_balance())
@@ -19,6 +34,8 @@ def project(request, name):
 
 
     if request.method == 'POST':
+        if request.POST['task'] == 'synchronize_database':
+            synchronize_database(db_obj_project, request)
         if request.POST['task'] == 'create_batch':
             create_batch(db_obj_project, request)
         elif request.POST['task'] == 'add_template':
@@ -28,16 +45,75 @@ def project(request, name):
         elif request.POST['task'] == 'update_settings':
             update_settings(db_obj_project, request)
 
-        db_obj_project = m_Project.objects.select_related('fk_account_mturk').prefetch_related('templates').get(name=name)
+        # db_obj_project = queryset.get(name=name)
 
         return redirect('mturk_manager:project', name=name_quoted, permanent=True)
 
+    stats = queryset.aggregate(
+        count_hits=Count('batches__hits'), 
+        count_assignments=Count('batches__hits__assignments')
+    )
+
+    context['stats'] = stats
     context['db_obj_project'] = db_obj_project
     return render(request, 'mturk_manager/project.html', context)
 
+def synchronize_database(db_obj_project, request):
+    client = code_shared.get_client(db_obj_project)
+    set_id_assignments_available = set([assignment.id_assignment for assignment in m_Assignment.objects.all()])
+    print(set_id_assignments_available)
+
+    dict_workers_available = {worker.name: worker for worker in m_Worker.objects.all()}
+
+    for db_obj_hit in m_Hit.objects.annotate(
+        count_assignments_current=Count('assignments')
+    ).filter(
+        fk_batch__fk_project=db_obj_project,
+        count_assignments_current__lt=F('fk_batch__count_assignments')
+    ):
+        print(db_obj_hit) 
+        response = client.list_assignments_for_hit(
+            HITId=db_obj_hit.id_hit,
+            AssignmentStatuses=['Submitted']
+        )
+        for assignment in response['Assignments']:
+            id_assignment = assignment['AssignmentId']
+            id_worker = assignment['WorkerId']
+            if not id_assignment in set_id_assignments_available:
+                print(assignment)
+                try:
+                    db_obj_worker = dict_workers_available[id_worker]
+                except KeyError:
+                    db_obj_worker = m_Worker.objects.create(name=id_worker)
+
+                m_Assignment.objects.create(
+                    id_assignment=id_assignment,
+                    fk_hit=db_obj_hit,
+                    fk_worker=db_obj_worker
+                )
+
+    # for db_obj_batch in db_obj_project.batches.all():
+    #     pass
+    #     count_assignments = db_obj_batch.count_assignments
+    #     for db_obj_hit in db_obj_batch.hits.annotate(count_assignments_current=Count('assignments')).filter(count_assignments_current__lt=count_assignments):
+    #         pass
+        #     response = client.list_assignments_for_hit(
+        #         HITId=db_obj_hit.id_hit,
+        #         AssignmentStatuses=['Submitted']
+        #     )
+        #     for assignment in response['Assignments']:
+        #         print(assignment)
+
 def delete_templates(db_obj_project, request):
-    for name in request.POST.getlist('templates'):
-        m_Template.objects.get(name=name).delete()
+    m_Template.objects.filter(
+        fk_project=db_obj_project, name__in=request.POST.getlist('templates')
+    ).update(
+        name=Concat(
+            F('name'),
+            Value('_'+str(int(time.time())))
+        ),
+        is_active=False
+    )
 
 def add_template(db_obj_project, request):
     if not verify_input_add_template(request):
@@ -65,12 +141,14 @@ def update_settings(db_obj_project, request):
 
     db_obj_project.title = request.POST['title']
     db_obj_project.description = request.POST['description']
+    db_obj_project.keywords = request.POST['keywords']
     db_obj_project.reward = request.POST['reward']
     db_obj_project.lifetime = request.POST['lifetime']
     db_obj_project.duration = request.POST['duration']
+    db_obj_project.count_assignments = request.POST['count_assignments']
 
     if request.POST['template_main'] != '':
-        db_obj_project.fk_template_main = m_Template.objects.get(name=request.POST['template_main'])
+        db_obj_project.fk_template_main = m_Template.objects.get(fk_project=db_obj_project, name=request.POST['template_main'])
 
     db_obj_project.save()
 
@@ -78,30 +156,37 @@ def create_batch(db_obj_project, request):
     if not verify_input_create_batch(request):
         return 
 
+    count_assignments = int(request.POST['count_assignments'])
     lifetime = int(request.POST['lifetime'])
     duration = int(request.POST['duration'])
     reward = request.POST['reward']
     title = request.POST['title']
     description = request.POST['description']
+    keywords = request.POST['keywords']
 
 
     db_obj_batch = code_shared.glob_create_batch(db_obj_project, request)
     client = code_shared.get_client(db_obj_project)
     reader = csv.DictReader(io.StringIO(request.FILES['file_csv'].read().decode('utf-8')))
-    db_obj_template = m_Template.objects.get(name=request.POST['template'])
-    for line in reader:
-        print(line)
-
+    db_obj_template = m_Template.objects.get(fk_project=db_obj_project, name=request.POST['template'])
+    for dict_parameters in reader:
         mturk_obj_hit = client.create_hit(
+            Keywords=keywords,
+            MaxAssignments=count_assignments,
             LifetimeInSeconds=lifetime,
             AssignmentDurationInSeconds=duration,
             Reward=reward,
             Title=title,
             Description=description,
-            Question=code_shared.create_question(db_obj_template.template, db_obj_template.height_frame)
+            Question=code_shared.create_question(db_obj_template.template, db_obj_template.height_frame, dict_parameters)
         )
+
         print(mturk_obj_hit)
-        db_obj_hit = m_Hit.objects.create(fk_batch=db_obj_batch, )
+        db_obj_hit = m_Hit.objects.create(
+            id_hit=mturk_obj_hit['HIT']['HITId'],
+            fk_batch=db_obj_batch,
+            parameters=json.dumps(dict_parameters)
+        )
 
 
 def verify_input_add_template(request):
@@ -135,6 +220,9 @@ def verify_input_update_settings(request):
         if int(request.POST['lifetime']) == 0:
             valid = False
             list_messages.append('Invalid lifetime')
+        if int(request.POST['count_assignments']) == 0:
+            valid = False
+            list_messages.append('Invalid number of assignments')
         if int(request.POST['duration']) == 0:
             valid = False
             list_messages.append('Invalid duration')
@@ -164,6 +252,9 @@ def verify_input_create_batch(request):
     list_messages = []
 
     try:
+        if int(request.POST['count_assignments']) == 0:
+            valid = False
+            list_messages.append('Invalid number of assignments')
         if int(request.POST['lifetime']) == 0:
             valid = False
             list_messages.append('Invalid lifetime')

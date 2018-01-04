@@ -10,6 +10,14 @@
 		<div class="col pt-3">
 			Account: {{ db_obj_project.fk_account_mturk.name }}
 			<hr>
+			<ul>
+				<li>number of hits: {{ stats.count_hits }}</li>
+				<li>number of assignments: {{ stats.count_assignments }}</li>
+			</ul>
+			<form method="post">
+				{% csrf_token %}
+				<button type="submit" name="task" value="synchronize_database" class="btn btn-primary">Synchronize with MTurk</button>
+			</form>
 			<a href="{% url 'viewer:index' db_obj_project.name %}">View Assignments</a>
 			<hr>
 		</div>
@@ -89,12 +97,32 @@
 							<select class="custom-select" name="template_main">
 								<option value="">please select a template</option>
 							{% for template in db_obj_project.templates.all %}
+							{% if template.is_active %}
 								<option value="{{ template.name }}" {% if template ==  db_obj_project.fk_template_main %}selected{% endif %}>{{ template.name }}</option>
+							{% endif %}
 							{% endfor %}
 							</select>
 						</div>
+						<div class="col">
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text">Number of assignments</span>
+								</div>
+								<input type="number" class="form-control" name="count_assignments" value="{{ db_obj_project.count_assignments }}">
+							</div>
+						</div>
 					</div>
-				<button type="submit" name="task" value="update_settings" class="btn btn-primary">Update</button>
+					<div class="form-row form-group">
+						<div class="col">
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text">Keywords (comma-separated)</span>
+								</div>
+								<input type="text" class="form-control" name="keywords" value="{{ db_obj_project.keywords }}">
+							</div>
+						</div>
+					</div>
+					<button type="submit" name="task" value="update_settings" class="btn btn-primary">Update</button>
 				</fieldset>
 			</form>
 		</div>
@@ -105,6 +133,7 @@
 					<legend>Manage templates</legend>
 						<div class="form-group">
 						{% for template in db_obj_project.templates.all %}
+						{% if template.is_active %}
 							<div class="custom-control custom-checkbox">
 								<input type="checkbox" name="templates" value="{{ template.name }}" class="custom-control-input" id="checkbox_template_{{ template.id }}">
 								<label class="custom-control-label" for="checkbox_template_{{ template.id }}">
@@ -114,6 +143,7 @@
 									({{ template.height_frame }}px)
 								</label>
 							</div>
+						{% endif %}
 						{% endfor %}
 						</div>
 					<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_add_template">Add template</button>
@@ -222,9 +252,29 @@
 							<select class="custom-select" name="template">
 								<option value="">please select a template</option>
 							{% for template in db_obj_project.templates.all %}
+							{% if template.is_active %}
 								<option value="{{ template.name }}" {% if template ==  db_obj_project.fk_template_main %}selected{% endif %}>{{ template.name }}</option>
+							{% endif %}
 							{% endfor %}
 							</select>
+						</div>
+						<div class="col">
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text">Number of assignments</span>
+								</div>
+								<input type="number" class="form-control" name="count_assignments" value="{{ db_obj_project.count_assignments }}">
+							</div>
+						</div>
+					</div>
+					<div class="form-row form-group">
+						<div class="col">
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text">Keywords (comma-separated)</span>
+								</div>
+								<input type="text" class="form-control" name="keywords" value="{{ db_obj_project.keywords }}">
+							</div>
 						</div>
 					</div>
 				</div>
@@ -263,7 +313,7 @@
 							  	<div class="input-group-prepend">
 						    		<span class="input-group-text">HTML template</span>
 							  	</div>
-								<input type="text" class="form-control" name="html_template" placeholder="paste the HTML code here">
+							  	<textarea class="form-control" name="html_template" placeholder="paste the HTML code here" rows="1" style="resize: none;"></textarea>
 							</div>
 						</div>
 						<div class="col-auto d-flex align-items-center">

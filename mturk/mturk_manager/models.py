@@ -10,10 +10,12 @@ class m_Project(models.Model):
     fk_account_mturk = models.ForeignKey('m_Account_Mturk', on_delete=models.SET_NULL, null=True, related_name='projects')
     title = models.TextField(default='')
     description = models.TextField(default='')
+    keywords = models.TextField(default='')
+    count_assignments = models.IntegerField(default=1)
     reward = models.CharField(default='0.0', max_length=10)
     lifetime = models.IntegerField(default=0)
     duration = models.IntegerField(default=0)
-    fk_template_main = models.OneToOneField('m_Template', on_delete=models.SET_NULL, null=True, related_name='project')
+    fk_template_main = models.OneToOneField('m_Template', on_delete=models.CASCADE, null=True, related_name='project')
 
 class m_Batch(models.Model):
     class Meta:
@@ -23,13 +25,17 @@ class m_Batch(models.Model):
     fk_project = models.ForeignKey('m_Project', on_delete=models.CASCADE, related_name='batches')
     title = models.TextField()
     description = models.TextField()
+    keywords = models.TextField()
+    count_assignments = models.IntegerField()
     reward = models.CharField(max_length=10)
     lifetime = models.IntegerField()
     duration = models.IntegerField()
-    fk_template = models.ForeignKey('m_Template', on_delete=models.SET_NULL, null=True, related_name='batches')
+    fk_template = models.ForeignKey('m_Template', on_delete=models.CASCADE, related_name='batches')
 
 class m_Hit(models.Model):
+    id_hit = models.CharField(max_length=200, unique=True)
     fk_batch = models.ForeignKey('m_Batch', on_delete=models.CASCADE, related_name='hits')
+    parameters = models.TextField()
 
 class m_Template(models.Model):
     class Meta:

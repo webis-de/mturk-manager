@@ -4,18 +4,23 @@ from mturk_manager.models import *
 glob_url_sandbox = 'https://mturk-requester-sandbox.us-east-1.amazonaws.com'
 
 def glob_create_batch(db_obj_project, request):
-    m_Batch.objects.create(
+    return m_Batch.objects.create(
         name=request.POST['name'],
         fk_project=db_obj_project,
         title=request.POST['title'],
         description=request.POST['description'],
+        keywords=request.POST['keywords'],
+        count_assignments=request.POST['count_assignments'],
         reward=request.POST['reward'],
         lifetime=request.POST['lifetime'],
         duration=request.POST['duration'],
         fk_template=m_Template.objects.get(name=request.POST['template']),
     )
 
-def create_question(template, height_frame):
+def create_question(template, height_frame, dict_parameters):
+    for key, value in dict_parameters.items():
+        template = template.replace('${'+key+'}', value)
+
     return '''
         <HTMLQuestion xmlns="http://mechanicalturk.amazonaws.com/AWSMechanicalTurkDataSchemas/2011-11-11/HTMLQuestion.xsd">
             <HTMLContent><![CDATA['''+template+''']]></HTMLContent>
