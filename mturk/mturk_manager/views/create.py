@@ -23,7 +23,7 @@ glob_dict_settings = {
             'type': 'string',
             'display_name': 'ID'
         },
-        'fk_hit__id': {
+        'fk_hit__id_hit': {
             'type': 'string',
             'display_name': 'HIT'
         },
@@ -34,7 +34,7 @@ glob_dict_settings = {
     },
     'id': 'id_assignment',
     'displayed_fields': [
-        'id_assignment', 'fk_hit__id', 'fk_worker__name'
+        'id_assignment', 'fk_hit__id_hit', 'fk_worker__name'
     ],
     'page_size': 10,
     'filters': [],
