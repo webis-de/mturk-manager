@@ -1,6 +1,7 @@
 from mturk_manager.views import code_shared
 from django.shortcuts import render, redirect
 from mturk_manager.models import *
+from viewer.models import *
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import F, Value, Count
 from django.db.models.functions import Concat
@@ -8,6 +9,7 @@ import urllib.parse
 from django.utils.html import escape
 import csv
 import io
+import random
 import json
 import time
 from django.contrib import messages
@@ -64,13 +66,14 @@ def synchronize_database(db_obj_project, request):
     print(set_id_assignments_available)
 
     dict_workers_available = {worker.name: worker for worker in m_Worker.objects.all()}
+    dict_tags = {tag.name: tag for tag in m_Tag.objects.filter(key_corpus=db_obj_project.name)}
 
     for db_obj_hit in m_Hit.objects.annotate(
         count_assignments_current=Count('assignments')
     ).filter(
         fk_batch__fk_project=db_obj_project,
         count_assignments_current__lt=F('fk_batch__count_assignments')
-    ):
+    ).select_related('fk_batch'):
         print(db_obj_hit) 
         response = client.list_assignments_for_hit(
             HITId=db_obj_hit.id_hit,
@@ -86,11 +89,18 @@ def synchronize_database(db_obj_project, request):
                 except KeyError:
                     db_obj_worker = m_Worker.objects.create(name=id_worker)
 
-                m_Assignment.objects.create(
+                db_obj_assignment = m_Assignment.objects.create(
                     id_assignment=id_assignment,
                     fk_hit=db_obj_hit,
                     fk_worker=db_obj_worker
                 )
+
+                db_obj_tag = dict_tags[db_obj_hit.fk_batch.name]
+                db_obj_tag.m2m_entity.add(m_Entity.objects.create(
+                    key_corpus=db_obj_project.name,
+                    id_item=db_obj_assignment.id,
+                    id_item_internal=db_obj_assignment.id
+                ))
 
     # for db_obj_batch in db_obj_project.batches.all():
     #     pass
@@ -169,6 +179,7 @@ def create_batch(db_obj_project, request):
     client = code_shared.get_client(db_obj_project)
     reader = csv.DictReader(io.StringIO(request.FILES['file_csv'].read().decode('utf-8')))
     db_obj_template = m_Template.objects.get(fk_project=db_obj_project, name=request.POST['template'])
+    # list_entities = []
     for dict_parameters in reader:
         mturk_obj_hit = client.create_hit(
             Keywords=keywords,
@@ -181,13 +192,26 @@ def create_batch(db_obj_project, request):
             Question=code_shared.create_question(db_obj_template.template, db_obj_template.height_frame, dict_parameters)
         )
 
-        print(mturk_obj_hit)
+        # print(mturk_obj_hit)
         db_obj_hit = m_Hit.objects.create(
+            # id_hit=str(random.randint(0, 9999999)),
             id_hit=mturk_obj_hit['HIT']['HITId'],
             fk_batch=db_obj_batch,
             parameters=json.dumps(dict_parameters)
         )
 
+        # list_assignments
+
+        # list_entities.append(db_obj_hit.id)
+
+    db_obj_tag = m_Tag.objects.get_or_create(
+        name=db_obj_batch.name,
+        key_corpus=db_obj_project.name
+    )[0]
+
+    # m_Entity.objects.bulk_create([m_Entity(id_item=id_hit, id_item_internal=id_hit, key_corpus=db_obj_project.name) for id_hit in list_entities])
+    
+    # db_obj_tag.m2m_entity.add(*m_Entity.objects.filter(key_corpus=db_obj_project.name, id_item_internal__in=list_entities))
 
 def verify_input_add_template(request):
     valid = True
