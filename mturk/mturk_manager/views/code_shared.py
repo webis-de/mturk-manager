@@ -18,8 +18,8 @@ def glob_create_batch(db_obj_project, request):
 def create_question(template, height_frame):
     return '''
         <HTMLQuestion xmlns="http://mechanicalturk.amazonaws.com/AWSMechanicalTurkDataSchemas/2011-11-11/HTMLQuestion.xsd">
-            <HTMLContent><![CDATA[]]></HTMLContent>
-            <FrameHeight>450</FrameHeight>
+            <HTMLContent><![CDATA['''+template+''']]></HTMLContent>
+            <FrameHeight>'''+str(height_frame)+'''</FrameHeight>
         </HTMLQuestion>'''
 
 def get_client(db_obj_project, use_sandbox=True):

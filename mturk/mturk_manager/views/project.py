@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from mturk_manager.models import *
 import urllib.parse
 import csv
+import io
 
 def project(request, name):
     context = {}
@@ -68,22 +69,29 @@ def update_settings(db_obj_project, request):
     db_obj_project.save()
 
 def create_batch(db_obj_project, request):
+    lifetime = int(request.POST['lifetime'])
+    duration = int(request.POST['duration'])
+    reward = request.POST['reward']
+    title = request.POST['title']
+    description = request.POST['description']
+
     db_obj_batch = code_shared.glob_create_batch(db_obj_project, request)
-    return
+    client = code_shared.get_client(db_obj_project)
+    reader = csv.DictReader(io.StringIO(request.FILES['file_csv'].read().decode('utf-8')))
+    db_obj_template = m_Template.objects.get(name=request.POST['template'])
+    for line in reader:
+        print(line)
 
-    # for 
-
-        client = code_shared.get_client(db_obj_project)
         mturk_obj_hit = client.create_hit(
-            LifetimeInSeconds=request.POST['lifetime'],
-            AssignmentDurationInSeconds=request.POST['duration'],
-            Reward=request.POST['reward'],
-            Title=request.POST['title'],
-            Description=request.POST['description'],
-            Question=code_shared.create_question(db_obj_project.template, db_obj_project.height_frame)
+            LifetimeInSeconds=lifetime,
+            AssignmentDurationInSeconds=duration,
+            Reward=reward,
+            Title=title,
+            Description=description,
+            Question=code_shared.create_question(db_obj_template.template, db_obj_template.height_frame)
         )
-    print(mturk_obj_hit)
-    # db_obj_hit = m_Hit.objects.create()
+        print(mturk_obj_hit)
+        db_obj_hit = m_Hit.objects.create(fk_batch=db_obj_batch, )
 
 
 def create_data_dummy(db_obj_project):
