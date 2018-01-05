@@ -17,6 +17,7 @@ from django.contrib import messages, humanize
 # from django.template.defaultfilters import apnumber
 
 glob_prefix_name_tag_batch = 'batch_'
+glob_prefix_name_tag_worker = 'worker_'
 
 def project(request, name):
     queryset = m_Project.objects.select_related(
@@ -71,13 +72,14 @@ def project(request, name):
     )
     count_assignments_new = stats_new['count_assignments']
     if count_assignments_new > 0:
-        if count_assignments_new == 1:
-            messages.warning(request, 'There is one new assignment!'.format(count_assignments_new))
-        else:
-            messages.warning(request, 'There are {} new assignments! <a href="{}?viewer__filter_tags%3D%5B%22submitted%22%5D" class="alert-link">View</a>'.format(
-                humanize.templatetags.humanize.apnumber(count_assignments_new),
-                reverse('viewer:index', kwargs={'id_corpus':db_obj_project.name})
-            ))
+        text = 'There is a new assignment available!' 
+        if count_assignments_new > 1:
+            text = 'There are {} new assignments available!'.format(count_assignments_new)
+        print(reverse('viewer:index', kwargs={'id_corpus':db_obj_project.name}))
+        messages.warning(request, text+' <a href="{}?viewer__filter_tags=%5B%22submitted%22%5D" class="alert-link">View</a>'.format(
+        # messages.warning(request, text+' <a href="{}?viewer__filter_tags[\'submitted\']" class="alert-link">View</a>'.format(
+            reverse('viewer:index', kwargs={'id_corpus':db_obj_project.name})
+        ))
 
     context['stats_total'] = stats_total
     context['stats_new'] = stats_new
@@ -114,6 +116,7 @@ def synchronize_database(db_obj_project, request):
                     db_obj_worker = dict_workers_available[id_worker]
                 except KeyError:
                     db_obj_worker = m_Worker.objects.create(name=id_worker)
+                    dict_workers_available[id_worker] = db_obj_worker
 
                 db_obj_assignment = m_Assignment.objects.create(
                     id_assignment=id_assignment,
@@ -128,6 +131,9 @@ def synchronize_database(db_obj_project, request):
                 )
                 db_obj_tag.m2m_entity.add(db_obj_entity)
                 db_obj_tag_submitted.m2m_entity.add(db_obj_entity)
+
+                db_obj_tag_worker = m_Tag.objects.get_or_create(key_corpus=db_obj_project.name, name=glob_prefix_name_tag_worker+id_worker, defaults={'color': '#0000ff'})[0]
+                db_obj_tag_worker.m2m_entity.add(db_obj_entity)
 
     # for db_obj_batch in db_obj_project.batches.all():
     #     pass

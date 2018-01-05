@@ -39,7 +39,8 @@ glob_dict_settings = {
     ],
     'page_size': 10,
     'filters': [],
-    'urls_header': []
+    'urls_header': [],
+    'secret_token_editing': ''
 }
 
 def create(request):
