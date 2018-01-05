@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from mturk_manager.models import *
+from viewer.models import *
 from django.urls import reverse
 import urllib.parse
 import requests
