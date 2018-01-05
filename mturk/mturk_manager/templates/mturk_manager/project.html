@@ -11,8 +11,9 @@
 			Account: {{ db_obj_project.fk_account_mturk.name }}
 			<hr>
 			<ul>
-				<li>number of hits: {{ stats.count_hits }}</li>
-				<li>number of assignments: {{ stats.count_assignments }}</li>
+				<li>number of batches: {{ stats_total.count_batches }}</li>
+				<li>number of hits: {{ stats_total.count_hits }}</li>
+				<li>number of assignments: {{ stats_total.count_assignments }} (new: {{ stats_new.count_assignments }})</li>
 			</ul>
 			<form method="post">
 				{% csrf_token %}

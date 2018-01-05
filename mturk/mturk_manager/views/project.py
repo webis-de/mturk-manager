@@ -2,6 +2,7 @@ from mturk_manager.views import code_shared
 from django.shortcuts import render, redirect
 from mturk_manager.models import *
 from viewer.models import *
+from django.urls import reverse
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import F, Value, Count
 from django.db.models.functions import Concat
@@ -12,7 +13,8 @@ import io
 import random
 import json
 import time
-from django.contrib import messages
+from django.contrib import messages, humanize
+# from django.template.defaultfilters import apnumber
 
 glob_prefix_name_tag_batch = 'batch_'
 
@@ -26,11 +28,12 @@ def project(request, name):
 
     context = {}
     name_quoted = name
-    name = urllib.parse.unquote(name_quoted)
+    name_project = urllib.parse.unquote(name_quoted)
+
     try:
-        db_obj_project = queryset.get(name=name)
+        db_obj_project = queryset.get(name=name_project)
     except ObjectDoesNotExist:
-        messages.error(request, 'Project "{}" does not exist'.format(name))
+        messages.error(request, 'Project "{}" does not exist'.format(name_project))
         return redirect('mturk_manager:index')
     # create_data_dummy(db_obj_project)
     # client = code_shared.get_client(db_obj_project)
@@ -54,12 +57,30 @@ def project(request, name):
 
         return redirect('mturk_manager:project', name=name_quoted, permanent=True)
 
-    stats = queryset.aggregate(
+    stats_total = queryset.aggregate(
+        count_batches=Count('batches'), 
         count_hits=Count('batches__hits'), 
         count_assignments=Count('batches__hits__assignments')
     )
 
-    context['stats'] = stats
+    stats_new = m_Tag.objects.filter(
+        key_corpus=name_project,
+        name='submitted'
+    ).aggregate(
+        count_assignments=Count('m2m_entity')
+    )
+    count_assignments_new = stats_new['count_assignments']
+    if count_assignments_new > 0:
+        if count_assignments_new == 1:
+            messages.warning(request, 'There is one new assignment!'.format(count_assignments_new))
+        else:
+            messages.warning(request, 'There are {} new assignments! <a href="{}?viewer__filter_tags%3D%5B%22submitted%22%5D" class="alert-link">View</a>'.format(
+                humanize.templatetags.humanize.apnumber(count_assignments_new),
+                reverse('viewer:index', kwargs={'id_corpus':db_obj_project.name})
+            ))
+
+    context['stats_total'] = stats_total
+    context['stats_new'] = stats_new
     context['db_obj_project'] = db_obj_project
     return render(request, 'mturk_manager/project.html', context)
 

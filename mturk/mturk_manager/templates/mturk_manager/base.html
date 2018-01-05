@@ -33,7 +33,7 @@
         		<div class="col">
 		        {% if messages %}
 				    {% for message in messages %}
-				    <div class="my-1 alert {{ message.tags }}">{{ message }}</div>
+				    <div class="my-1 alert {{ message.tags }}">{{ message|safe }}</div>
 				    {% endfor %}
 				{% endif %}
 				</div>
