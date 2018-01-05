@@ -40,7 +40,30 @@ glob_dict_settings = {
     'page_size': 10,
     'filters': [],
     'urls_header': [],
-    'secret_token_editing': ''
+    'secret_token_editing': '',
+    'cards': [
+        {
+            'name': 'MTurk',
+            'content': '''
+                <div>
+                    <span data-inject="count_selected_rows"></span> Item(s) selected
+                </div>
+                <div>
+                    <button type="button" id="button_mturk_approve" class="btn btn-sm btn-success">Approve</button>
+                    <button type="button" id="button_mturk_reject" class="btn btn-sm btn-danger">Reject</button>
+                    <button type="button" id="button_mturk_view" class="btn btn-sm btn-info">View</button>
+                </div>
+                <script>
+                    $(document).ready(function()
+                    {
+                        $(document).on('click', '#button_mturk_view', function(){
+                            console.log(glob_selected_items)
+                        });
+                    });
+                </script>
+            '''
+        }
+    ],
 }
 
 def create(request):
@@ -78,6 +101,10 @@ def create_project(request):
         {
             'link': reverse('mturk_manager:project', args=[request.POST['name']]),
             'name': 'Project'
+        },
+        {
+            'link': reverse('mturk_manager:index'),
+            'name': 'Open/Add Project'
         }
     ]
 
