@@ -94,6 +94,22 @@ def create_project(request):
     response = requests.get(url)
     print(response)
 
+    m_Tag.objects.get_or_create(
+        key_corpus=request.POST['name'],
+        name='submitted',
+        color='#17a2b8'
+    )
+    m_Tag.objects.get_or_create(
+        key_corpus=request.POST['name'],
+        name='rejected',
+        color='#dc3545'
+    )
+    m_Tag.objects.get_or_create(
+        key_corpus=request.POST['name'],
+        name='approved',
+        color='#28a745'
+    )
+
 def verify_input(request):
     try:
         if request.POST['name'].strip() == '':

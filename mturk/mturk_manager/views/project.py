@@ -14,12 +14,16 @@ import json
 import time
 from django.contrib import messages
 
+glob_prefix_name_tag_batch = 'batch_'
+
 def project(request, name):
     queryset = m_Project.objects.select_related(
         'fk_account_mturk'
     ).prefetch_related(
         'templates', 'batches__hits__assignments'
     )
+
+
     context = {}
     name_quoted = name
     name = urllib.parse.unquote(name_quoted)
@@ -33,7 +37,6 @@ def project(request, name):
     # print(client.get_account_balance())
 
     # print(client.get_hit(HITId='3EHIMLB7F7Z7ME11ZQIIHDZXLIA8H2'))
-
 
     if request.method == 'POST':
         if request.POST['task'] == 'synchronize_database':
@@ -67,6 +70,7 @@ def synchronize_database(db_obj_project, request):
 
     dict_workers_available = {worker.name: worker for worker in m_Worker.objects.all()}
     dict_tags = {tag.name: tag for tag in m_Tag.objects.filter(key_corpus=db_obj_project.name)}
+    db_obj_tag_submitted = m_Tag.objects.get(key_corpus=db_obj_project.name, name='submitted')
 
     for db_obj_hit in m_Hit.objects.annotate(
         count_assignments_current=Count('assignments')
@@ -74,7 +78,8 @@ def synchronize_database(db_obj_project, request):
         fk_batch__fk_project=db_obj_project,
         count_assignments_current__lt=F('fk_batch__count_assignments')
     ).select_related('fk_batch'):
-        print(db_obj_hit) 
+        db_obj_tag = dict_tags[glob_prefix_name_tag_batch+db_obj_hit.fk_batch.name]
+
         response = client.list_assignments_for_hit(
             HITId=db_obj_hit.id_hit,
             AssignmentStatuses=['Submitted']
@@ -95,12 +100,13 @@ def synchronize_database(db_obj_project, request):
                     fk_worker=db_obj_worker
                 )
 
-                db_obj_tag = dict_tags[db_obj_hit.fk_batch.name]
-                db_obj_tag.m2m_entity.add(m_Entity.objects.create(
+                db_obj_entity = m_Entity.objects.create(
                     key_corpus=db_obj_project.name,
                     id_item=db_obj_assignment.id,
                     id_item_internal=db_obj_assignment.id
-                ))
+                )
+                db_obj_tag.m2m_entity.add(db_obj_entity)
+                db_obj_tag_submitted.m2m_entity.add(db_obj_entity)
 
     # for db_obj_batch in db_obj_project.batches.all():
     #     pass
@@ -205,7 +211,7 @@ def create_batch(db_obj_project, request):
         # list_entities.append(db_obj_hit.id)
 
     db_obj_tag = m_Tag.objects.get_or_create(
-        name=db_obj_batch.name,
+        name=glob_prefix_name_tag_batch+db_obj_batch.name,
         key_corpus=db_obj_project.name
     )[0]
 
@@ -294,9 +300,9 @@ def verify_input_create_batch(request):
         if request.POST['description'].strip() == '':
             valid = False
             list_messages.append('Invalid description')
-        if request.POST['name'].strip() == '':
-            valid = False
-            list_messages.append('Invalid name')
+        # if request.POST['name'].strip() == '':
+        #     valid = False
+        #     list_messages.append('Invalid name')
         if request.POST['template'].strip() == '':
             valid = False
             list_messages.append('Invalid template')
