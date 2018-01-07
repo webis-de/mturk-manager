@@ -99,7 +99,7 @@
 								<option value="">please select a template</option>
 							{% for template in db_obj_project.templates.all %}
 							{% if template.is_active %}
-								<option value="{{ template.name }}" {% if template ==  db_obj_project.fk_template_main %}selected{% endif %}>{{ template.name }}</option>
+								<option value="{{ template.id }}" {% if template ==  db_obj_project.fk_template_main %}selected{% endif %}>{{ template.name }}</option>
 							{% endif %}
 							{% endfor %}
 							</select>
@@ -123,30 +123,70 @@
 							</div>
 						</div>
 					</div>
+					<div class="form-row form-group">
+						<div class="col input-group">
+							<div class="input-group-prepend">
+								<label class="input-group-text">Default assignment template</label>
+							</div>
+							<select class="custom-select" name="template_assignment_main">
+								<option value="">please select a template</option>
+							{% for template in db_obj_project.templates_assignment.all %}
+							{% if template.is_active %}
+								<option value="{{ template.id }}" {% if template ==  db_obj_project.fk_template_assignment_main %}selected{% endif %}>{{ template.name }}</option>
+							{% endif %}
+							{% endfor %}
+							</select>
+						</div>
+					</div>
 					<button type="submit" name="task" value="update_settings" class="btn btn-primary">Update</button>
 				</fieldset>
 			</form>
 		</div>
+	</div>
+	<hr>
+	<div class="row">
 		<div class="col-6">
 			<form method="post">
 				{% csrf_token %}
 				<fieldset>
 					<legend>Manage templates</legend>
-						<div class="form-group">
+					<table class="table table-sm">
+						<thead>
+							<tr>
+								<th>Selection</th>
+								<th>Name</th>
+								<th>Frame height</th>
+								<th>Assignment template</th>
+								<th>Update</th>
+							</tr>
+						</thead>
+						<tbody>
 						{% for template in db_obj_project.templates.all %}
 						{% if template.is_active %}
-							<div class="custom-control custom-checkbox">
-								<input type="checkbox" name="templates" value="{{ template.name }}" class="custom-control-input" id="checkbox_template_{{ template.id }}">
-								<label class="custom-control-label" for="checkbox_template_{{ template.id }}">
-									{% if template ==  db_obj_project.fk_template_main %}<strong>{% endif %}
+							<tr {% if template ==  db_obj_project.fk_template_main %}class="table-active"{% endif %}>
+								<td>
+									<div class="custom-control custom-checkbox">
+										<input type="checkbox" name="templates" value="{{ template.id }}" id="checkbox_manage_templates_template_{{ template.id }}" class="custom-control-input">
+										<label class="custom-control-label" for="checkbox_manage_templates_template_{{ template.id }}"></label>
+									</div>
+								</td>
+								<td>
 									{{ template.name }}
-									{% if template ==  db_obj_project.fk_template_main %}</strong>{% endif %}
-									({{ template.height_frame }}px)
-								</label>
-							</div>
+								</td>
+								<td>
+									{{ template.height_frame }}
+								</td>
+								<td>
+									{{ template.fk_template_assignment.name }}
+								</td>
+								<td>
+									<button type="button" class="btn btn-primary btn-sm" data-id="{{ template.id }}" data-name="{{ template.name }}" data-height_frame="{{ template.height_frame }}" data-id_template_assignment="{{ template.fk_template_assignment.id }}" data-toggle="modal" data-target="#modal_update_template">Update</button>
+								</td>
+							</tr>
 						{% endif %}
 						{% endfor %}
-						</div>
+						</tbody>
+					</table>
 					<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_add_template">Add template</button>
 					{% if db_obj_project.templates.count > 0 %}
 					<button type="submit" name="task" value="delete_templates" class="btn btn-danger">Delete selected</button>
@@ -154,7 +194,50 @@
 				</fieldset>
 			</form>
 		</div>
-		<!-- {{ db_obj_project.template }} -->
+	</div>
+	<hr>
+	<div class="row">
+		<div class="col-6">
+			<form method="post">
+				{% csrf_token %}
+				<fieldset>
+					<legend>Manage assignment templates</legend>
+					<table class="table table-sm">
+						<thead>
+							<tr>
+								<th>Selection</th>
+								<th>Name</th>
+								<th>Update</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for template in db_obj_project.templates_assignment.all %}
+							{% if template.is_active %}
+							<tr {% if template ==  db_obj_project.fk_template_assignment_main %}class="table-active"{% endif %}>
+								<td>
+									<div class="custom-control custom-checkbox">
+										<input type="checkbox" name="templates" value="{{ template.id }}" id="checkbox_manage_templates_assignment_template_{{ template.id }}" class="custom-control-input">
+										<label class="custom-control-label" for="checkbox_manage_templates_assignment_template_{{ template.id }}"></label>
+									</div>
+								</td>
+								<td>
+									{{ template.name }}
+								</td>
+								<td>
+									<button type="button" class="btn btn-primary btn-sm" data-id="{{ template.id }}" data-name="{{ template.name }}" data-toggle="modal" data-target="#modal_update_template_assignment">Update</button>
+								</td>
+							</tr>
+							{% endif %}
+							{% endfor %}
+						</tbody>
+					</table>
+					<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_add_template_assignment">Add template</button>
+					{% if db_obj_project.templates_assignment.count > 0 %}
+					<button type="submit" name="task" value="delete_templates_assignment" class="btn btn-danger">Delete selected</button>
+					{% endif %}
+				</fieldset>
+			</form>
+		</div>
 	</div>
 </div>
 
@@ -254,7 +337,7 @@
 								<option value="">please select a template</option>
 							{% for template in db_obj_project.templates.all %}
 							{% if template.is_active %}
-								<option value="{{ template.name }}" {% if template ==  db_obj_project.fk_template_main %}selected{% endif %}>{{ template.name }}</option>
+								<option value="{{ template.id }}" {% if template ==  db_obj_project.fk_template_main %}selected{% endif %}>{{ template.name }}</option>
 							{% endif %}
 							{% endfor %}
 							</select>
@@ -281,6 +364,174 @@
 				</div>
 				<div class="modal-footer">
 					<button type="submit" name="task" value="create_batch" class="btn btn-primary">Create</button>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" tabindex="-1" id="modal_add_template_assignment">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Add template</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<form method="post" enctype="multipart/form-data">
+				<div class="modal-body">
+					{% csrf_token %}
+					<div class="form-group">
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<span class="input-group-text">Name</span>
+							</div>
+							<input type="text" class="form-control" name="name" maxlength="200" placeholder="Name of the template">
+						</div>
+					</div>
+					<div class="form-row form-group">
+						<div class="col">
+							<div class="input-group">
+							  	<div class="input-group-prepend">
+						    		<span class="input-group-text">HTML snippet</span>
+							  	</div>
+							  	<textarea class="form-control" name="html_template" placeholder="paste the HTML code here" rows="1" style="resize: none;"></textarea>
+							</div>
+						</div>
+						<div class="col-auto d-flex align-items-center">
+							<div class="">or</div>
+						</div>
+						<div class="col">
+							<div class="input-group">
+							  	<div class="input-group-prepend">
+						    		<span class="input-group-text">HTML file</span>
+							  	</div>
+								<label class="custom-file">
+									<input type="file" name="file_template" class="custom-file-input">
+									<span class="custom-file-label"></span>
+								</label>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" name="task" value="add_template_assignment" class="btn btn-primary">Add</button>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" tabindex="-1" id="modal_update_template_assignment">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Update assignment template</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<form method="post" enctype="multipart/form-data">
+				<div class="modal-body">
+					{% csrf_token %}
+					<input type="hidden" name="id">
+					<div class="form-group">
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<span class="input-group-text">Name</span>
+							</div>
+							<input type="text" class="form-control" name="name" maxlength="200" placeholder="Name of the template">
+						</div>
+					</div>
+					<div class="form-row form-group">
+						<div class="col">
+							<div class="input-group">
+							  	<div class="input-group-prepend">
+						    		<span class="input-group-text">HTML snippet</span>
+							  	</div>
+							  	<textarea class="form-control" name="html_template" placeholder="paste the HTML code here" rows="1" style="resize: none;"></textarea>
+							</div>
+						</div>
+						<div class="col-auto d-flex align-items-center">
+							<div class="">or</div>
+						</div>
+						<div class="col">
+							<div class="input-group">
+							  	<div class="input-group-prepend">
+						    		<span class="input-group-text">HTML file</span>
+							  	</div>
+								<label class="custom-file">
+									<input type="file" name="file_template" class="custom-file-input">
+									<span class="custom-file-label"></span>
+								</label>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" name="task" value="update_template_assignment" class="btn btn-primary">Update</button>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" tabindex="-1" id="modal_update_template">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Update template</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<form method="post" enctype="multipart/form-data">
+				<div class="modal-body">
+					{% csrf_token %}
+					<input type="hidden" name="id">
+					<div class="form-group">
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<span class="input-group-text">Name</span>
+							</div>
+							<input type="text" class="form-control" name="name" maxlength="200" placeholder="Name of the template">
+						</div>
+					</div>
+					<div class="form-row form-group">
+						<div class="col-auto">
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text">Frame height</span>
+								</div>
+								<input type="number" class="form-control" name="height_frame" value="800">
+								<div class="input-group-append">
+									<span class="input-group-text">px</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="form-row form-group">
+						<div class="col input-group">
+							<div class="input-group-prepend">
+								<label class="input-group-text">Assignment template</label>
+							</div>
+							<select class="custom-select" name="template_assignment">
+								<option value="">please select a template</option>
+							{% for template in db_obj_project.templates_assignment.all %}
+							{% if template.is_active %}
+								<option value="{{ template.id }}" {% if template ==  db_obj_project.fk_template_assignment_main %}selected{% endif %}>{{ template.name }}</option>
+							{% endif %}
+							{% endfor %}
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" name="task" value="update_template" class="btn btn-primary">Update</button>
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 				</div>
 			</form>
@@ -326,7 +577,7 @@
 						    		<span class="input-group-text">HTML file</span>
 							  	</div>
 								<label class="custom-file">
-									<input type="file" id="file2" name="file_template" class="custom-file-input">
+									<input type="file" name="file_template" class="custom-file-input">
 									<span class="custom-file-label"></span>
 								</label>
 							</div>
@@ -343,6 +594,21 @@
 									<span class="input-group-text">px</span>
 								</div>
 							</div>
+						</div>
+					</div>
+					<div class="form-row form-group">
+						<div class="col input-group">
+							<div class="input-group-prepend">
+								<label class="input-group-text">Assignment template</label>
+							</div>
+							<select class="custom-select" name="template_assignment">
+								<option value="">please select a template</option>
+							{% for template in db_obj_project.templates_assignment.all %}
+							{% if template.is_active %}
+								<option value="{{ template.id }}" {% if template ==  db_obj_project.fk_template_assignment_main %}selected{% endif %}>{{ template.name }}</option>
+							{% endif %}
+							{% endfor %}
+							</select>
 						</div>
 					</div>
 				</div>
