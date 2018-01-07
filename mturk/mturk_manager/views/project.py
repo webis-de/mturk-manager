@@ -23,7 +23,9 @@ def project(request, name):
     queryset = m_Project.objects.select_related(
         'fk_account_mturk'
     ).prefetch_related(
-        'templates', 'batches__hits__assignments'
+        'batches__hits__assignments',
+        'templates_assignment',
+        'templates__fk_template_assignment'
     )
 
 
@@ -47,15 +49,24 @@ def project(request, name):
             synchronize_database(db_obj_project, request)
         if request.POST['task'] == 'create_batch':
             create_batch(db_obj_project, request)
+        elif request.POST['task'] == 'add_template_assignment':
+            add_template_assignment(db_obj_project, request)
         elif request.POST['task'] == 'add_template':
             add_template(db_obj_project, request)
+        elif request.POST['task'] == 'update_template':
+            update_template(db_obj_project, request)
+        elif request.POST['task'] == 'update_template_assignment':
+            update_template_assignment(db_obj_project, request)
         elif request.POST['task'] == 'delete_templates':
             delete_templates(db_obj_project, request)
+        elif request.POST['task'] == 'delete_templates_assignment':
+            delete_templates_assignment(db_obj_project, request)
         elif request.POST['task'] == 'update_settings':
             update_settings(db_obj_project, request)
 
         # db_obj_project = queryset.get(name=name)
-
+# AKIAJUD2Y77Z7DIHUB5A
+# J1mhsaYxHJRh8+QG6uIfiq9foIgy3MmVFgOGC5nR
         return redirect('mturk_manager:project', name=name_quoted, permanent=True)
 
     stats_total = queryset.aggregate(
@@ -147,15 +158,80 @@ def synchronize_database(db_obj_project, request):
         #     for assignment in response['Assignments']:
         #         print(assignment)
 
-def delete_templates(db_obj_project, request):
-    m_Template.objects.filter(
-        fk_project=db_obj_project, name__in=request.POST.getlist('templates')
+def delete_templates_assignment(db_obj_project, request):
+    m_Template_Assignment.objects.filter(
+        fk_project=db_obj_project, id__in=request.POST.getlist('templates')
     ).update(
         name=Concat(
             F('name'),
             Value('_'+str(int(time.time())))
         ),
         is_active=False
+    )
+
+def delete_templates(db_obj_project, request):
+    m_Template.objects.filter(
+        fk_project=db_obj_project, id__in=request.POST.getlist('templates')
+    ).update(
+        name=Concat(
+            F('name'),
+            Value('_'+str(int(time.time())))
+        ),
+        is_active=False
+    )
+
+def update_template_assignment(db_obj_project, request):
+    if not verify_input_update_template_assignment(request):
+        return 
+
+    template = None
+    if request.POST['html_template'].strip() == '':
+        if 'file_template' in request.FILES:
+            if request.FILES['file_template'].charset == None:
+                template = request.FILES['file_template'].read().decode('utf-8')
+            else:
+                template = request.FILES['file_template'].read().decode(request.FILES['file_template'].charset)
+    else:
+        template = request.POST['html_template']
+
+    if template == None:
+        m_Template_Assignment.objects.filter(id=request.POST['id']).update(
+            name=request.POST['name'],
+        )
+    else:
+        m_Template_Assignment.objects.filter(id=request.POST['id']).update(
+            name=request.POST['name'],
+            template=template
+        )
+
+def add_template_assignment(db_obj_project, request):
+    if not verify_input_add_template_assignment(request):
+        return 
+
+    template = None
+    if request.POST['html_template'].strip() == '':
+        if 'file_template' in request.FILES:
+            if request.FILES['file_template'].charset == None:
+                template = request.FILES['file_template'].read().decode('utf-8')
+            else:
+                template = request.FILES['file_template'].read().decode(request.FILES['file_template'].charset)
+    else:
+        template = request.POST['html_template']
+
+    m_Template_Assignment.objects.create(
+        name=request.POST['name'],
+        template=template,
+        fk_project=db_obj_project
+    )
+
+def update_template(db_obj_project, request):
+    if not verify_input_update_template(request):
+        return 
+
+    m_Template.objects.filter(id=request.POST['id']).update(
+        name=request.POST['name'],
+        height_frame=request.POST['height_frame'],
+        fk_template_assignment=m_Template_Assignment.objects.get(id=request.POST['template_assignment'])
     )
 
 def add_template(db_obj_project, request):
@@ -176,7 +252,8 @@ def add_template(db_obj_project, request):
         name=request.POST['name'],
         template=template,
         height_frame=request.POST['height_frame'],
-        fk_project=db_obj_project
+        fk_project=db_obj_project,
+        fk_template_assignment=m_Template_Assignment.objects.get(fk_project=db_obj_project, id=request.POST['template_assignment'])
     )
 
 def update_settings(db_obj_project, request):
@@ -191,7 +268,10 @@ def update_settings(db_obj_project, request):
     db_obj_project.count_assignments = request.POST['count_assignments']
 
     if request.POST['template_main'] != '':
-        db_obj_project.fk_template_main = m_Template.objects.get(fk_project=db_obj_project, name=request.POST['template_main'])
+        db_obj_project.fk_template_main = m_Template.objects.get(fk_project=db_obj_project, id=request.POST['template_main'])
+
+    if request.POST['template_assignment_main'] != '':
+        db_obj_project.fk_template_assignment_main = m_Template_Assignment.objects.get(fk_project=db_obj_project, id=request.POST['template_assignment_main'])
 
     db_obj_project.save()
 
@@ -211,7 +291,7 @@ def create_batch(db_obj_project, request):
     db_obj_batch = code_shared.glob_create_batch(db_obj_project, request)
     client = code_shared.get_client(db_obj_project)
     reader = csv.DictReader(io.StringIO(request.FILES['file_csv'].read().decode('utf-8')))
-    db_obj_template = m_Template.objects.get(fk_project=db_obj_project, name=request.POST['template'])
+    db_obj_template = m_Template.objects.get(fk_project=db_obj_project, id=request.POST['template'])
     # list_entities = []
     for dict_parameters in reader:
         mturk_obj_hit = client.create_hit(
@@ -246,6 +326,66 @@ def create_batch(db_obj_project, request):
     
     # db_obj_tag.m2m_entity.add(*m_Entity.objects.filter(key_corpus=db_obj_project.name, id_item_internal__in=list_entities))
 
+def verify_input_add_template_assignment(request):
+    valid = True
+    list_messages = []
+
+    try:
+        if request.POST['name'].strip() == '':
+            valid = False
+            list_messages.append('Invalid name')
+        if request.POST['html_template'].strip() == '' and not 'file_template' in request.FILES:
+            valid = False
+            list_messages.append('Invalid template')
+    except KeyError:
+        list_messages.append('Unexpected error, please cry')
+        valid = False
+
+    for message in list_messages:
+        messages.error(request, message)
+
+    return valid
+
+def verify_input_update_template_assignment(request):
+    valid = True
+    list_messages = []
+
+    try:
+        if request.POST['name'].strip() == '':
+            valid = False
+            list_messages.append('Invalid name')
+    except KeyError:
+        list_messages.append('Unexpected error, please cry')
+        valid = False
+
+    for message in list_messages:
+        messages.error(request, message)
+
+    return valid
+
+def verify_input_update_template(request):
+    valid = True
+    list_messages = []
+
+    try:
+        if int(request.POST['height_frame']) == 0:
+            valid = False
+            list_messages.append('Invalid frame height')
+        if request.POST['name'].strip() == '':
+            valid = False
+            list_messages.append('Invalid name')
+        if request.POST['template_assignment'].strip() == '':
+            valid = False
+            list_messages.append('Invalid assignment template')
+    except KeyError:
+        list_messages.append('Unexpected error, please cry')
+        valid = False
+
+    for message in list_messages:
+        messages.error(request, message)
+
+    return valid
+
 def verify_input_add_template(request):
     valid = True
     list_messages = []
@@ -260,6 +400,9 @@ def verify_input_add_template(request):
         if request.POST['html_template'].strip() == '' and not 'file_template' in request.FILES:
             valid = False
             list_messages.append('Invalid template')
+        if request.POST['template_assignment'].strip() == '':
+            valid = False
+            list_messages.append('Invalid assignment template')
     except KeyError:
         list_messages.append('Unexpected error, please cry')
         valid = False

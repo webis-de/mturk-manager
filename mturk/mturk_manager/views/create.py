@@ -46,7 +46,7 @@ glob_dict_settings = {
             'name': 'MTurk',
             'content': '''
                 <div>
-                    <span data-inject="count_selected_rows"></span> Item(s) selected
+                    <span data-inject="count_selected_rows"></span> Assignment(s) selected
                 </div>
                 <div>
                     <button type="button" id="button_mturk_approve" class="btn btn-sm btn-success">Approve</button>
@@ -57,6 +57,13 @@ glob_dict_settings = {
                     $(document).ready(function()
                     {
                         $(document).on('click', '#button_mturk_view', function(){
+                            let url = PLACEHOLDER_URL+'?list_ids=';
+                            const list_ids = [];
+                            $.each(glob_selected_items, function( i, val ) {
+                                list_ids.push(val.viewer__id_item_internal);
+                            });
+                            url += JSON.stringify(list_ids);
+                            window.open('url', '_blank');
                             console.log(glob_selected_items)
                         });
                     });
@@ -107,6 +114,8 @@ def create_project(request):
             'name': 'Open/Add Project'
         }
     ]
+
+    dict_settings['cards'].replace('PLACEHOLDER_URL', reverse('mturk_manager:view', args=[request.POST['name']]))
 
     print(dict_settings)
 

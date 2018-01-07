@@ -15,7 +15,8 @@ class m_Project(models.Model):
     reward = models.CharField(default='0.0', max_length=10)
     lifetime = models.IntegerField(default=0)
     duration = models.IntegerField(default=0)
-    fk_template_main = models.OneToOneField('m_Template', on_delete=models.CASCADE, null=True, related_name='project')
+    fk_template_main = models.OneToOneField('m_Template', on_delete=models.SET_NULL, null=True, related_name='project')
+    fk_template_assignment_main = models.OneToOneField('m_Template_Assignment', on_delete=models.SET_NULL, null=True, related_name='project')
 
 class m_Batch(models.Model):
     class Meta:
@@ -45,6 +46,16 @@ class m_Template(models.Model):
     fk_project = models.ForeignKey('m_Project', on_delete=models.CASCADE, related_name='templates')
     template = models.TextField()
     height_frame = models.IntegerField()
+    is_active = models.BooleanField(default=True)
+    fk_template_assignment = models.ForeignKey('m_Template_Assignment', on_delete=models.CASCADE, related_name='templates_used')
+
+class m_Template_Assignment(models.Model):
+    class Meta:
+        unique_together = ("name", "fk_project")
+
+    name = models.CharField(max_length=200)
+    fk_project = models.ForeignKey('m_Project', on_delete=models.CASCADE, related_name='templates_assignment')
+    template = models.TextField()
     is_active = models.BooleanField(default=True)
 
 class m_Assignment(models.Model):
