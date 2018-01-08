@@ -12,6 +12,7 @@ import csv
 import io
 import random
 import html
+import requests
 import json
 import time
 from django.contrib import messages, humanize
@@ -104,7 +105,16 @@ def project(request, name):
     return render(request, 'mturk_manager/project.html', context)
 
 def delete_project(db_obj_project, request):
+    dict_payload = {}
+    dict_payload['id_corpus'] = db_obj_project.name
+    dict_payload['csrfmiddlewaretoken'] = request.POST['csrfmiddlewaretoken']
+    url = request.META['HTTP_ORIGIN'] + reverse('viewer:api_delete_corpus')
+    response = requests.post(url, data=dict_payload, cookies=request.COOKIES)
+
+    m_Tag.objects.filter(key_corpus=db_obj_project.name).delete()
+
     db_obj_project.delete()
+    
     return redirect('mturk_manager:index', permanent=True)
 
 def synchronize_database(db_obj_project, request):
