@@ -14,6 +14,7 @@ import random
 import json
 import time
 from django.contrib import messages, humanize
+import xmltodict
 # from django.template.defaultfilters import apnumber
 
 glob_prefix_name_tag_batch = 'batch_'
@@ -63,6 +64,8 @@ def project(request, name):
             delete_templates_assignment(db_obj_project, request)
         elif request.POST['task'] == 'update_settings':
             update_settings(db_obj_project, request)
+        elif request.POST['task'] == 'delete_project':
+            return delete_project(db_obj_project, request)
 
         # db_obj_project = queryset.get(name=name)
 # AKIAJUD2Y77Z7DIHUB5A
@@ -87,7 +90,7 @@ def project(request, name):
         if count_assignments_new > 1:
             text = 'There are {} new assignments available!'.format(count_assignments_new)
         print(reverse('viewer:index', kwargs={'id_corpus':db_obj_project.name}))
-        messages.warning(request, text+' <a href="{}?viewer__filter_tags=%5B%22submitted%22%5D" class="alert-link">View</a>'.format(
+        messages.info(request, text+' <a href="{}?viewer__filter_tags=%5B%22submitted%22%5D" class="alert-link">View</a>'.format(
         # messages.warning(request, text+' <a href="{}?viewer__filter_tags[\'submitted\']" class="alert-link">View</a>'.format(
             reverse('viewer:index', kwargs={'id_corpus':db_obj_project.name})
         ))
@@ -97,10 +100,22 @@ def project(request, name):
     context['db_obj_project'] = db_obj_project
     return render(request, 'mturk_manager/project.html', context)
 
+def delete_project(db_obj_project, request):
+    db_obj_project.delete()
+    return redirect('mturk_manager:index', permanent=True)
+
 def synchronize_database(db_obj_project, request):
     client = code_shared.get_client(db_obj_project)
-    set_id_assignments_available = set([assignment.id_assignment for assignment in m_Assignment.objects.all()])
+    set_id_assignments_available = set([assignment.id_assignment for assignment in m_Assignment.objects.filter(fk_hit__fk_batch__fk_project=db_obj_project)])
     print(set_id_assignments_available)
+
+    response = client.list_assignments_for_hit(
+            HITId='3IZPORCT1F9D4JGXYZOI8UU2BC9RHC',
+            AssignmentStatuses=['Submitted']
+        )
+    print(response['Assignments'][0]['Answer'])
+    print(xmltodict.parse(response['Assignments'][0]['Answer']))
+    print(json.dumps(xmltodict.parse(response['Assignments'][0]['Answer']), indent=1))
 
     dict_workers_available = {worker.name: worker for worker in m_Worker.objects.all()}
     dict_tags = {tag.name: tag for tag in m_Tag.objects.filter(key_corpus=db_obj_project.name)}

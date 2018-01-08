@@ -15,6 +15,9 @@ glob_dict_settings = {
     'app_label': 'mturk_manager',
     # name of the model
     'model_name': 'm_Assignment',
+    'database_filters': {
+        'fk_hit__fk_batch__fk_project__name': 'PLACEHOLDER_NAME'
+    },
     'data_fields': {
         # 'id': {
         #     'type': 'number',
@@ -57,13 +60,13 @@ glob_dict_settings = {
                     $(document).ready(function()
                     {
                         $(document).on('click', '#button_mturk_view', function(){
-                            let url = PLACEHOLDER_URL+'?list_ids=';
+                            let url = 'PLACEHOLDER_URL?list_ids=';
                             const list_ids = [];
                             $.each(glob_selected_items, function( i, val ) {
                                 list_ids.push(val.viewer__id_item_internal);
                             });
                             url += JSON.stringify(list_ids);
-                            window.open('url', '_blank');
+                            window.open(url, '_blank');
                             console.log(glob_selected_items)
                         });
                     });
@@ -115,9 +118,11 @@ def create_project(request):
         }
     ]
 
-    dict_settings['cards'].replace('PLACEHOLDER_URL', reverse('mturk_manager:view', args=[request.POST['name']]))
+    for key, value in dict_settings['database_filters'].items():
+        dict_settings['database_filters'][key] = dict_settings['database_filters'][key].replace('PLACEHOLDER_NAME', request.POST['name'])
 
-    print(dict_settings)
+    for card in dict_settings['cards']:
+        card['content'] = card['content'].replace('PLACEHOLDER_URL', reverse('mturk_manager:view', args=[request.POST['name']]))
 
     dict_payload = {}
     dict_payload['settings'] = json.dumps(dict_settings)
