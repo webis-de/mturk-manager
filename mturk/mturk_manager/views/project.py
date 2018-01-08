@@ -11,6 +11,7 @@ from django.utils.html import escape
 import csv
 import io
 import random
+import html
 import json
 import time
 from django.contrib import messages, humanize
@@ -21,7 +22,13 @@ glob_prefix_name_tag_batch = 'batch_'
 glob_prefix_name_tag_worker = 'worker_'
 
 def project(request, name):
-    queryset = m_Project.objects.select_related(
+    context = {}
+    name_quoted = name
+    name_project = urllib.parse.unquote(name_quoted)
+
+    queryset = m_Project.objects.filter(
+        name=name_project
+    ).select_related(
         'fk_account_mturk'
     ).prefetch_related(
         'batches__hits__assignments',
@@ -30,12 +37,8 @@ def project(request, name):
     )
 
 
-    context = {}
-    name_quoted = name
-    name_project = urllib.parse.unquote(name_quoted)
-
     try:
-        db_obj_project = queryset.get(name=name_project)
+        db_obj_project = queryset.get()
     except ObjectDoesNotExist:
         messages.error(request, 'Project "{}" does not exist'.format(name_project))
         return redirect('mturk_manager:index')
@@ -109,13 +112,13 @@ def synchronize_database(db_obj_project, request):
     set_id_assignments_available = set([assignment.id_assignment for assignment in m_Assignment.objects.filter(fk_hit__fk_batch__fk_project=db_obj_project)])
     print(set_id_assignments_available)
 
-    response = client.list_assignments_for_hit(
-            HITId='3IZPORCT1F9D4JGXYZOI8UU2BC9RHC',
-            AssignmentStatuses=['Submitted']
-        )
-    print(response['Assignments'][0]['Answer'])
-    print(xmltodict.parse(response['Assignments'][0]['Answer']))
-    print(json.dumps(xmltodict.parse(response['Assignments'][0]['Answer']), indent=1))
+    # response = client.list_assignments_for_hit(
+    #         HITId='3IZPORCT1F9D4JGXYZOI8UU2BC9RHC',
+    #         AssignmentStatuses=['Submitted']
+    #     )
+    # print(response['Assignments'][0]['Answer'])
+    # print(xmltodict.parse(response['Assignments'][0]['Answer']))
+    # print(json.dumps(xmltodict.parse(response['Assignments'][0]['Answer']), indent=1))
 
     dict_workers_available = {worker.name: worker for worker in m_Worker.objects.all()}
     dict_tags = {tag.name: tag for tag in m_Tag.objects.filter(key_corpus=db_obj_project.name)}
@@ -137,7 +140,6 @@ def synchronize_database(db_obj_project, request):
             id_assignment = assignment['AssignmentId']
             id_worker = assignment['WorkerId']
             if not id_assignment in set_id_assignments_available:
-                print(assignment)
                 try:
                     db_obj_worker = dict_workers_available[id_worker]
                 except KeyError:
@@ -147,7 +149,8 @@ def synchronize_database(db_obj_project, request):
                 db_obj_assignment = m_Assignment.objects.create(
                     id_assignment=id_assignment,
                     fk_hit=db_obj_hit,
-                    fk_worker=db_obj_worker
+                    fk_worker=db_obj_worker,
+                    answer=json.dumps(xmltodict.parse(assignment['Answer']))
                 )
 
                 db_obj_entity = m_Entity.objects.create(
@@ -263,12 +266,19 @@ def add_template(db_obj_project, request):
     else:
         template = request.POST['html_template']
 
+    try:
+        db_obj_template_assignment = m_Template_Assignment.objects.get(fk_project=db_obj_project, id=request.POST['template_assignment'])
+    except ValueError:
+        db_obj_template_assignment = m_Template_Assignment.objects.get_or_create(fk_project=db_obj_project, name="default", defaults={
+            'template': 'Please set a custom assignment template!'
+        })[0]
+
     m_Template.objects.create(
         name=request.POST['name'],
         template=template,
         height_frame=request.POST['height_frame'],
         fk_project=db_obj_project,
-        fk_template_assignment=m_Template_Assignment.objects.get(fk_project=db_obj_project, id=request.POST['template_assignment'])
+        fk_template_assignment=db_obj_template_assignment
     )
 
 def update_settings(db_obj_project, request):
@@ -415,9 +425,6 @@ def verify_input_add_template(request):
         if request.POST['html_template'].strip() == '' and not 'file_template' in request.FILES:
             valid = False
             list_messages.append('Invalid template')
-        if request.POST['template_assignment'].strip() == '':
-            valid = False
-            list_messages.append('Invalid assignment template')
     except KeyError:
         list_messages.append('Unexpected error, please cry')
         valid = False

@@ -1,9 +1,74 @@
 {% extends "mturk_manager/base.html" %}
+{% load static %}
+
+{% block name_project %}{{ name_project }}{% endblock %}
 
 {% block body %}
+<script src="{% static 'mturk_manager/js/jquery-3.1.1.min.js' %}"></script>
+<script src="{% static 'mturk_manager/js/popper.js' %}"></script>
+<script src="{% static 'mturk_manager/js/bootstrap.js' %}"></script>
+<script src="{% static 'mturk_manager/js/main.js' %}"></script>
+
+<script>
+	let glob_id;
+	let dataset;
+	let glob_answer;
+	let glob_answer_raw;
+	let glob_inputs;
+	let glob_wrapper;
+
+	function create_inputs(id)
+	{
+		return `
+			<div class="custom-control custom-checkbox d-inline">
+				<input type="checkbox" class="custom-control-input" id="checkbox_assignment_`+id+`" name="checkbox_assignment" value="`+id+`">
+				<label class="custom-control-label" for="checkbox_assignment_`+id+`"></label>
+			</div>
+			<button type="submit" name="task" value="button_mturk_approve__`+id+`" class="btn btn-sm btn-success">Approve selected</button>
+            <button type="submit" name="task" value="button_mturk_reject__`+id+`" class="btn btn-sm btn-danger">Reject selected</button>
+		`
+	}
+</script>
 <div class="container-fluid" id="page_create">
-	<div class="row">
-		
-	</div>
+	<form method="post">
+		{% csrf_token %}
+		<div class="row mt-2">
+			<div class="col">
+				<button type="submit" name="task" value="button_mturk_approve_selected" class="btn btn-success">Approve selected</button>
+	            <button type="submit" name="task" value="button_mturk_reject_selected" class="btn btn-danger">Reject selected</button>
+			</div>
+		</div>
+		<hr>
+		<div class="row">
+			<div class="col">
+			{% for assignment in list_assignments %}
+				<span data-answer_raw="{{assignment.answer}}" data-id="{{ assignment.id }}"></span>
+				<script>
+					dataset = $('span[data-id="{{ assignment.id }}"]').data()
+					// glob_answer = dataset.answer;
+					glob_id = {{ assignment.id }};
+					glob_answer_raw = dataset.answer_raw;
+					glob_inputs = create_inputs(glob_id)
+				</script>
+				<span id="{{ assignment.id }}">
+					<script>
+						glob_wrapper = $('#'+glob_id);
+					</script>
+					{{ assignment.fk_hit.fk_batch.fk_template.fk_template_assignment.template|safe }}
+				</span>
+			{% endfor %}
+			</div>
+		</div>
+		<hr>
+		<div class="row">
+			<div class="col">
+				<button type="submit" name="task" value="button_mturk_approve_selected" class="btn btn-success">Approve selected</button>
+	            <button type="submit" name="task" value="button_mturk_reject_selected" class="btn btn-danger">Reject selected</button>
+			</div>
+		</div>
+	</form>
 </div>
-{% endblock %}
+{% endblock %}	
+
+{% block javascript %}
+{% endblock %}	
