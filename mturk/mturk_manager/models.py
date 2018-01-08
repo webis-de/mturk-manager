@@ -64,6 +64,7 @@ class m_Assignment(models.Model):
     fk_worker = models.ForeignKey('m_Worker', on_delete=models.CASCADE, related_name='assignments')
     was_approved = models.NullBooleanField()
     is_approved = models.NullBooleanField()
+    answer = models.TextField()
 
 class m_Worker(models.Model):
     name = models.CharField(max_length=200, unique=True)

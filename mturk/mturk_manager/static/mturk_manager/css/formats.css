@@ -5,3 +5,7 @@ html {
 #page_index .col.d-flex {
 	height: 100vh;
 }
+
+.modal-xxl {
+	max-width: 1500px;
+}

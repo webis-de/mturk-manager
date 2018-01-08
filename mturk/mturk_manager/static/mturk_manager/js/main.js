@@ -25,4 +25,16 @@ $(document).ready(function()
 		modal.find('input[name="id"]').val(id);
 		modal.find('input[name="name"]').val(name);
 	})
+
+	$('#modal_show_html').on('show.bs.modal', function (event) 
+	{
+		const button = $(event.relatedTarget) // Button that triggered the modal
+		const template = button.data('template') // Extract info from data-* attributes
+		const modal = $(this)
+
+		modal.find('code').text(template);
+		$('pre code').each(function(i, block) {
+	    	hljs.highlightBlock(block);
+	  	});
+	})
 });

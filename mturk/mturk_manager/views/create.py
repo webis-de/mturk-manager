@@ -99,7 +99,7 @@ def create(request):
 def create_project(request):
     db_obj_account_mturk = m_Account_Mturk.objects.get(name=request.POST['name_account_mturk'])
 
-    m_Project.objects.get_or_create(
+    m_Project.objects.create(
         name=request.POST['name'],
         fk_account_mturk = db_obj_account_mturk,
     )
@@ -128,14 +128,12 @@ def create_project(request):
     dict_payload['settings'] = json.dumps(dict_settings)
     dict_payload['id_corpus'] = request.POST['name']
     dict_payload['csrfmiddlewaretoken'] = request.POST['csrfmiddlewaretoken']
-
+    
     url = request.META['HTTP_ORIGIN'] + reverse('viewer:api_add_corpus')
     response = requests.post(url, data=dict_payload, cookies=request.COOKIES)
-    print(response)
     
     url = request.META['HTTP_ORIGIN'] + reverse('viewer:api_refresh_corpora')
     response = requests.get(url)
-    print(response)
 
     m_Tag.objects.get_or_create(
         key_corpus=request.POST['name'],

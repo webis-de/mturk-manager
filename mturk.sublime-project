@@ -3,6 +3,9 @@
 	[
 		{
 			"path": "."
+		},
+		{
+			"path": "/home/yiro4618/Downloads/highlight"
 		}
 	]
 }
