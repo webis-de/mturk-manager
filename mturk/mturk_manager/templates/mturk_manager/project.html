@@ -10,8 +10,8 @@
       href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
 <div class="container-fluid" id="page_project">
 	<div class="row">
-		<div class="col-6">
-			<table class="table">
+		<div class="col">
+			<table class="table table-responsive">
 				<thead>
 					<tr>
 						<th>Batches</th>
@@ -53,7 +53,7 @@
 	</div>
 	<hr>
 	<div class="row">
-		<div class="col-6">
+		<div class="col-12 col-lg-6">
 			<form method="post" enctype="multipart/form-data">
 				{% csrf_token %}
 				<fieldset class="form-group">
@@ -79,7 +79,7 @@
 						</div>
 					</div>
 					<div class="form-row form-group">
-						<div class="col">
+						<div class="col-12 col-md-6 mb-3 mb-md-0">
 							<div class="input-group">
 								<div class="input-group-prepend">
 									<span class="input-group-text">Reward</span>
@@ -90,7 +90,17 @@
 								</div>
 							</div>
 						</div>
-						<div class="col">
+						<div class="col-12 col-md-6">
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text">Number of assignments</span>
+								</div>
+								<input type="number" class="form-control" name="count_assignments" value="{{ db_obj_project.count_assignments }}">
+							</div>
+						</div>
+					</div>
+					<div class="form-row form-group">
+						<div class="col-12 col-md-6 mb-3 mb-md-0">
 							<div class="input-group">
 								<div class="input-group-prepend">
 									<span class="input-group-text">Lifetime</span>
@@ -101,7 +111,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="col">
+						<div class="col-12 col-md-6">
 							<div class="input-group">
 								<div class="input-group-prepend">
 									<span class="input-group-text">Duration</span>
@@ -110,6 +120,16 @@
 								<div class="input-group-append">
 									<span class="input-group-text">s</span>
 								</div>
+							</div>
+						</div>
+					</div>
+					<div class="form-row form-group">
+						<div class="col">
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text">Keywords (comma-separated)</span>
+								</div>
+								<input type="text" class="form-control" name="keywords" value="{{ db_obj_project.keywords }}">
 							</div>
 						</div>
 					</div>
@@ -126,24 +146,6 @@
 							{% endif %}
 							{% endfor %}
 							</select>
-						</div>
-						<div class="col">
-							<div class="input-group">
-								<div class="input-group-prepend">
-									<span class="input-group-text">Number of assignments</span>
-								</div>
-								<input type="number" class="form-control" name="count_assignments" value="{{ db_obj_project.count_assignments }}">
-							</div>
-						</div>
-					</div>
-					<div class="form-row form-group">
-						<div class="col">
-							<div class="input-group">
-								<div class="input-group-prepend">
-									<span class="input-group-text">Keywords (comma-separated)</span>
-								</div>
-								<input type="text" class="form-control" name="keywords" value="{{ db_obj_project.keywords }}">
-							</div>
 						</div>
 					</div>
 					<div class="form-row form-group">
@@ -168,12 +170,12 @@
 	</div>
 	<hr>
 	<div class="row">
-		<div class="col-6">
+		<div class="col-12 col-lg-6">
 			<form method="post">
 				{% csrf_token %}
 				<fieldset>
 					<legend>Manage templates</legend>
-					<table class="table table-sm">
+					<table class="table table-sm table-responsive-lg">
 						<thead>
 							<tr>
 								<th>Selection</th>
@@ -181,6 +183,7 @@
 								<th>Frame height</th>
 								<th>Assignment template</th>
 								<th>Update</th>
+								<th>HTML</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -209,6 +212,9 @@
 								<td>
 									<button type="button" class="btn btn-primary btn-sm" data-id="{{ template.id }}" data-name="{{ template.name }}" data-height_frame="{{ template.height_frame }}" data-id_template_assignment="{{ template.fk_template_assignment.id }}" data-toggle="modal" data-target="#modal_update_template">Update</button>
 								</td>
+								<td>
+									<button type="button" class="btn btn-primary btn-sm" data-id="{{ template.id }}" data-template="{{ template.template }}" data-toggle="modal" data-target="#modal_show_html">Show</button>
+								</td>
 							</tr>
 						{% endif %}
 						{% endfor %}
@@ -224,12 +230,12 @@
 	</div>
 	<hr>
 	<div class="row">
-		<div class="col-6">
+		<div class="col-12 col-lg-6">
 			<form method="post">
 				{% csrf_token %}
 				<fieldset>
 					<legend>Manage assignment templates</legend>
-					<table class="table table-sm">
+					<table class="table table-sm table-responsive-lg">
 						<thead>
 							<tr>
 								<th>Selection</th>
@@ -324,112 +330,116 @@
 			</div>
 			<form method="post" enctype="multipart/form-data">
 				<div class="modal-body">
-					{% csrf_token %}
-					<div class="form-group">
-						<div class="input-group">
-							<div class="input-group-prepend">
-								<span class="input-group-text">Name</span>
-							</div>
-							<input type="text" class="form-control" name="name" maxlength="200" placeholder="Name of the batch">
-						</div>
-					</div>
-					<div class="form-group">
-						<div class="input-group">
-						  	<div class="input-group-prepend">
-					    		<span class="input-group-text">CSV file</span>
-						  	</div>
-							<label class="custom-file">
-								<input type="file" name="file_csv" class="custom-file-input">
-								<span class="custom-file-label"></span>
-							</label>
-						</div>
-					</div>
-					<hr>
-					<div class="form-row form-group">
-						<div class="col">
-							<div class="input-group">
+					<div class="container-fluid">
+						{% csrf_token %}
+						<div class="form-row form-group">
+							<div class="col input-group">
 								<div class="input-group-prepend">
-									<span class="input-group-text">Title</span>
+									<span class="input-group-text">Name</span>
 								</div>
-								<input type="text" class="form-control" name="title" value="{{ db_obj_project.title }}">
+								<input type="text" class="form-control" name="name" maxlength="200" placeholder="Name of the batch">
 							</div>
 						</div>
-					</div>
-					<div class="form-row form-group">
-						<div class="col">
-							<div class="input-group">
+						<div class="form-row form-group">
+							<div class="col input-group">
+							  	<div class="input-group-prepend">
+						    		<span class="input-group-text">CSV file</span>
+							  	</div>
+								<label class="custom-file">
+									<input type="file" name="file_csv" class="custom-file-input">
+									<span class="custom-file-label"></span>
+								</label>
+							</div>
+						</div>
+						<hr>
+						<div class="form-row form-group">
+							<div class="col">
+								<div class="input-group">
+									<div class="input-group-prepend">
+										<span class="input-group-text">Title</span>
+									</div>
+									<input type="text" class="form-control" name="title" value="{{ db_obj_project.title }}">
+								</div>
+							</div>
+						</div>
+						<div class="form-row form-group">
+							<div class="col">
+								<div class="input-group">
+									<div class="input-group-prepend">
+										<span class="input-group-text">Description</span>
+									</div>
+									<input type="text" class="form-control" name="description" value="{{ db_obj_project.description }}">
+								</div>
+							</div>
+						</div>
+						<div class="form-row form-group">
+							<div class="col-12 col-md-6 mb-3 mb-md-0">
+								<div class="input-group">
+									<div class="input-group-prepend">
+										<span class="input-group-text">Reward</span>
+									</div>
+									<input type="number" class="form-control" name="reward" step="0.01" value="{{ db_obj_project.reward }}">
+									<div class="input-group-append">
+										<span class="input-group-text">$</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-12 col-md-6">
+								<div class="input-group">
+									<div class="input-group-prepend">
+										<span class="input-group-text">Number of assignments</span>
+									</div>
+									<input type="number" class="form-control" name="count_assignments" value="{{ db_obj_project.count_assignments }}">
+								</div>
+							</div>
+						</div>
+						<div class="form-row form-group">
+							<div class="col-12 col-md-6 mb-3 mb-md-0">
+								<div class="input-group">
+									<div class="input-group-prepend">
+										<span class="input-group-text">Lifetime</span>
+									</div>
+									<input type="number" class="form-control" name="lifetime" value="{{ db_obj_project.lifetime }}">
+									<div class="input-group-append">
+										<span class="input-group-text">s</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-12 col-md-6">
+								<div class="input-group">
+									<div class="input-group-prepend">
+										<span class="input-group-text">Duration</span>
+									</div>
+									<input type="number" class="form-control" name="duration" value="{{ db_obj_project.duration }}">
+									<div class="input-group-append">
+										<span class="input-group-text">s</span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="form-row form-group">
+							<div class="col input-group">
 								<div class="input-group-prepend">
-									<span class="input-group-text">Description</span>
+									<label class="input-group-text">Template</label>
 								</div>
-								<input type="text" class="form-control" name="description" value="{{ db_obj_project.description }}">
+								<select class="custom-select" name="template">
+									<option value="">please select a template</option>
+								{% for template in db_obj_project.templates.all %}
+								{% if template.is_active %}
+									<option value="{{ template.id }}" {% if template ==  db_obj_project.fk_template_main %}selected{% endif %}>{{ template.name }}</option>
+								{% endif %}
+								{% endfor %}
+								</select>
 							</div>
 						</div>
-					</div>
-					<div class="form-row form-group">
-						<div class="col">
-							<div class="input-group">
-								<div class="input-group-prepend">
-									<span class="input-group-text">Reward</span>
+						<div class="form-row form-group">
+							<div class="col">
+								<div class="input-group">
+									<div class="input-group-prepend">
+										<span class="input-group-text">Keywords (comma-separated)</span>
+									</div>
+									<input type="text" class="form-control" name="keywords" value="{{ db_obj_project.keywords }}">
 								</div>
-								<input type="number" class="form-control" name="reward" step="0.01" value="{{ db_obj_project.reward }}">
-								<div class="input-group-append">
-									<span class="input-group-text">$</span>
-								</div>
-							</div>
-						</div>
-						<div class="col">
-							<div class="input-group">
-								<div class="input-group-prepend">
-									<span class="input-group-text">Lifetime</span>
-								</div>
-								<input type="number" class="form-control" name="lifetime" value="{{ db_obj_project.lifetime }}">
-								<div class="input-group-append">
-									<span class="input-group-text">s</span>
-								</div>
-							</div>
-						</div>
-						<div class="col">
-							<div class="input-group">
-								<div class="input-group-prepend">
-									<span class="input-group-text">Duration</span>
-								</div>
-								<input type="number" class="form-control" name="duration" value="{{ db_obj_project.duration }}">
-								<div class="input-group-append">
-									<span class="input-group-text">s</span>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="form-row form-group">
-						<div class="col input-group">
-							<div class="input-group-prepend">
-								<label class="input-group-text">Template</label>
-							</div>
-							<select class="custom-select" name="template">
-								<option value="">please select a template</option>
-							{% for template in db_obj_project.templates.all %}
-							{% if template.is_active %}
-								<option value="{{ template.id }}" {% if template ==  db_obj_project.fk_template_main %}selected{% endif %}>{{ template.name }}</option>
-							{% endif %}
-							{% endfor %}
-							</select>
-						</div>
-						<div class="col">
-							<div class="input-group">
-								<div class="input-group-prepend">
-									<span class="input-group-text">Number of assignments</span>
-								</div>
-								<input type="number" class="form-control" name="count_assignments" value="{{ db_obj_project.count_assignments }}">
-							</div>
-						</div>
-					</div>
-					<div class="form-row form-group">
-						<div class="col">
-							<div class="input-group">
-								<div class="input-group-prepend">
-									<span class="input-group-text">Keywords (comma-separated)</span>
-								</div>
-								<input type="text" class="form-control" name="keywords" value="{{ db_obj_project.keywords }}">
 							</div>
 						</div>
 					</div>
@@ -454,36 +464,38 @@
 			</div>
 			<form method="post" enctype="multipart/form-data">
 				<div class="modal-body">
-					{% csrf_token %}
-					<div class="form-group">
-						<div class="input-group">
-							<div class="input-group-prepend">
-								<span class="input-group-text">Name</span>
-							</div>
-							<input type="text" class="form-control" name="name" maxlength="200" placeholder="Name of the template">
-						</div>
-					</div>
-					<div class="form-row form-group">
-						<div class="col">
-							<div class="input-group">
-							  	<div class="input-group-prepend">
-						    		<span class="input-group-text">HTML snippet</span>
-							  	</div>
-							  	<textarea class="form-control" name="html_template" placeholder="paste the HTML code here" rows="1" style="resize: none;"></textarea>
+					<div class="container-fluid">
+						{% csrf_token %}
+						<div class="form-row form-group">
+							<div class="col input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text">Name</span>
+								</div>
+								<input type="text" class="form-control" name="name" maxlength="200" placeholder="Name of the template">
 							</div>
 						</div>
-						<div class="col-auto d-flex align-items-center">
-							<div class="">or</div>
-						</div>
-						<div class="col">
-							<div class="input-group">
-							  	<div class="input-group-prepend">
-						    		<span class="input-group-text">HTML file</span>
-							  	</div>
-								<label class="custom-file">
-									<input type="file" name="file_template" class="custom-file-input">
-									<span class="custom-file-label"></span>
-								</label>
+						<div class="form-row form-group">
+							<div class="col-12 col-lg-auto mb-3 mb-lg-0">
+								<div class="input-group">
+								  	<div class="input-group-prepend">
+							    		<span class="input-group-text">HTML snippet</span>
+								  	</div>
+								  	<textarea class="form-control" name="html_template" placeholder="paste the HTML code here" rows="1" style="resize: none;"></textarea>
+								</div>
+							</div>
+							<div class="col-auto d-flex align-items-center">
+								<div class="">or</div>
+							</div>
+							<div class="col">
+								<div class="input-group">
+								  	<div class="input-group-prepend">
+							    		<span class="input-group-text">HTML file</span>
+								  	</div>
+									<label class="custom-file">
+										<input type="file" name="file_template" class="custom-file-input">
+										<span class="custom-file-label"></span>
+									</label>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -508,37 +520,39 @@
 			</div>
 			<form method="post" enctype="multipart/form-data">
 				<div class="modal-body">
-					{% csrf_token %}
-					<input type="hidden" name="id">
-					<div class="form-group">
-						<div class="input-group">
-							<div class="input-group-prepend">
-								<span class="input-group-text">Name</span>
-							</div>
-							<input type="text" class="form-control" name="name" maxlength="200" placeholder="Name of the template">
-						</div>
-					</div>
-					<div class="form-row form-group">
-						<div class="col">
+					<div class="container-fluid">
+						{% csrf_token %}
+						<input type="hidden" name="id">
+						<div class="form-row form-group">
 							<div class="input-group">
-							  	<div class="input-group-prepend">
-						    		<span class="input-group-text">HTML snippet</span>
-							  	</div>
-							  	<textarea class="form-control" name="html_template" placeholder="paste the HTML code here" rows="1" style="resize: none;"></textarea>
+								<div class="input-group-prepend">
+									<span class="input-group-text">Name</span>
+								</div>
+								<input type="text" class="form-control" name="name" maxlength="200" placeholder="Name of the template">
 							</div>
 						</div>
-						<div class="col-auto d-flex align-items-center">
-							<div class="">or</div>
-						</div>
-						<div class="col">
-							<div class="input-group">
-							  	<div class="input-group-prepend">
-						    		<span class="input-group-text">HTML file</span>
-							  	</div>
-								<label class="custom-file">
-									<input type="file" name="file_template" class="custom-file-input">
-									<span class="custom-file-label"></span>
-								</label>
+						<div class="form-row form-group">
+							<div class="col-12 col-lg-auto mb-3 mb-lg-0">
+								<div class="input-group">
+								  	<div class="input-group-prepend">
+							    		<span class="input-group-text">HTML snippet</span>
+								  	</div>
+								  	<textarea class="form-control" name="html_template" placeholder="paste the HTML code here" rows="1" style="resize: none;"></textarea>
+								</div>
+							</div>
+							<div class="col-auto d-flex align-items-center">
+								<div class="">or</div>
+							</div>
+							<div class="col">
+								<div class="input-group">
+								  	<div class="input-group-prepend">
+							    		<span class="input-group-text">HTML file</span>
+								  	</div>
+									<label class="custom-file">
+										<input type="file" name="file_template" class="custom-file-input">
+										<span class="custom-file-label"></span>
+									</label>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -563,42 +577,44 @@
 			</div>
 			<form method="post" enctype="multipart/form-data">
 				<div class="modal-body">
-					{% csrf_token %}
-					<input type="hidden" name="id">
-					<div class="form-group">
-						<div class="input-group">
-							<div class="input-group-prepend">
-								<span class="input-group-text">Name</span>
-							</div>
-							<input type="text" class="form-control" name="name" maxlength="200" placeholder="Name of the template">
-						</div>
-					</div>
-					<div class="form-row form-group">
-						<div class="col-auto">
-							<div class="input-group">
+					<div class="container-fluid">
+						{% csrf_token %}
+						<input type="hidden" name="id">
+						<div class="form-row form-group">
+							<div class="col input-group">
 								<div class="input-group-prepend">
-									<span class="input-group-text">Frame height</span>
+									<span class="input-group-text">Name</span>
 								</div>
-								<input type="number" class="form-control" name="height_frame" value="800">
-								<div class="input-group-append">
-									<span class="input-group-text">px</span>
+								<input type="text" class="form-control" name="name" maxlength="200" placeholder="Name of the template">
+							</div>
+						</div>
+						<div class="form-row form-group">
+							<div class="col">
+								<div class="input-group">
+									<div class="input-group-prepend">
+										<span class="input-group-text">Frame height</span>
+									</div>
+									<input type="number" class="form-control" name="height_frame" value="800">
+									<div class="input-group-append">
+										<span class="input-group-text">px</span>
+									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-					<div class="form-row form-group">
-						<div class="col input-group">
-							<div class="input-group-prepend">
-								<label class="input-group-text">Assignment template</label>
+						<div class="form-row form-group">
+							<div class="col input-group">
+								<div class="input-group-prepend">
+									<label class="input-group-text">Assignment template</label>
+								</div>
+								<select class="custom-select" name="template_assignment">
+									<option value="">please select a template</option>
+								{% for template in db_obj_project.templates_assignment.all %}
+								{% if template.is_active %}
+									<option value="{{ template.id }}" {% if template ==  db_obj_project.fk_template_assignment_main %}selected{% endif %}>{{ template.name }}</option>
+								{% endif %}
+								{% endfor %}
+								</select>
 							</div>
-							<select class="custom-select" name="template_assignment">
-								<option value="">please select a template</option>
-							{% for template in db_obj_project.templates_assignment.all %}
-							{% if template.is_active %}
-								<option value="{{ template.id }}" {% if template ==  db_obj_project.fk_template_assignment_main %}selected{% endif %}>{{ template.name }}</option>
-							{% endif %}
-							{% endfor %}
-							</select>
 						</div>
 					</div>
 				</div>
@@ -622,65 +638,67 @@
 			</div>
 			<form method="post" enctype="multipart/form-data">
 				<div class="modal-body">
-					{% csrf_token %}
-					<div class="form-group">
-						<div class="input-group">
-							<div class="input-group-prepend">
-								<span class="input-group-text">Name</span>
-							</div>
-							<input type="text" class="form-control" name="name" maxlength="200" placeholder="Name of the template">
-						</div>
-					</div>
-					<div class="form-row form-group">
-						<div class="col">
-							<div class="input-group">
-							  	<div class="input-group-prepend">
-						    		<span class="input-group-text">HTML template</span>
-							  	</div>
-							  	<textarea class="form-control" name="html_template" placeholder="paste the HTML code here" rows="1" style="resize: none;"></textarea>
-							</div>
-						</div>
-						<div class="col-auto d-flex align-items-center">
-							<div class="">or</div>
-						</div>
-						<div class="col">
-							<div class="input-group">
-							  	<div class="input-group-prepend">
-						    		<span class="input-group-text">HTML file</span>
-							  	</div>
-								<label class="custom-file">
-									<input type="file" name="file_template" class="custom-file-input">
-									<span class="custom-file-label"></span>
-								</label>
-							</div>
-						</div>
-					</div>
-					<div class="form-row form-group">
-						<div class="col-auto">
-							<div class="input-group">
+					<div class="container-fluid">
+						{% csrf_token %}
+						<div class="form-row form-group">
+							<div class="col input-group">
 								<div class="input-group-prepend">
-									<span class="input-group-text">Frame height</span>
+									<span class="input-group-text">Name</span>
 								</div>
-								<input type="number" class="form-control" name="height_frame" value="800">
-								<div class="input-group-append">
-									<span class="input-group-text">px</span>
+								<input type="text" class="form-control" name="name" maxlength="200" placeholder="Name of the template">
+							</div>
+						</div>
+						<div class="form-row form-group">
+							<div class="col-12 col-lg-auto mb-3 mb-lg-0">
+								<div class="input-group">
+								  	<div class="input-group-prepend">
+							    		<span class="input-group-text">HTML template</span>
+								  	</div>
+								  	<textarea class="form-control" name="html_template" placeholder="paste the HTML code here" rows="1" style="resize: none;"></textarea>
+								</div>
+							</div>
+							<div class="col-auto d-flex align-items-center">
+								<div class="">or</div>
+							</div>
+							<div class="col">
+								<div class="input-group">
+								  	<div class="input-group-prepend">
+							    		<span class="input-group-text">HTML file</span>
+								  	</div>
+									<label class="custom-file">
+										<input type="file" name="file_template" class="custom-file-input">
+										<span class="custom-file-label"></span>
+									</label>
 								</div>
 							</div>
 						</div>
-					</div>
-					<div class="form-row form-group">
-						<div class="col input-group">
-							<div class="input-group-prepend">
-								<label class="input-group-text">Assignment template</label>
+						<div class="form-row form-group">
+							<div class="col">
+								<div class="input-group">
+									<div class="input-group-prepend">
+										<span class="input-group-text">Frame height</span>
+									</div>
+									<input type="number" class="form-control" name="height_frame" value="800">
+									<div class="input-group-append">
+										<span class="input-group-text">px</span>
+									</div>
+								</div>
 							</div>
-							<select class="custom-select" name="template_assignment">
-								<option value="">please select a template</option>
-							{% for template in db_obj_project.templates_assignment.all %}
-							{% if template.is_active %}
-								<option value="{{ template.id }}" {% if template ==  db_obj_project.fk_template_assignment_main %}selected{% endif %}>{{ template.name }}</option>
-							{% endif %}
-							{% endfor %}
-							</select>
+						</div>
+						<div class="form-row form-group">
+							<div class="col input-group">
+								<div class="input-group-prepend">
+									<label class="input-group-text">Assignment template</label>
+								</div>
+								<select class="custom-select" name="template_assignment">
+									<option value="">please select a template</option>
+								{% for template in db_obj_project.templates_assignment.all %}
+								{% if template.is_active %}
+									<option value="{{ template.id }}" {% if template ==  db_obj_project.fk_template_assignment_main %}selected{% endif %}>{{ template.name }}</option>
+								{% endif %}
+								{% endfor %}
+								</select>
+							</div>
 						</div>
 					</div>
 				</div>

@@ -6,6 +6,8 @@ html {
 	height: 100vh;
 }
 
-.modal-xxl {
-	max-width: 1500px;
+@media (min-width: 1850px) {
+	.modal-xxl {
+		max-width: 1800px;
+	}
 }
