@@ -49,4 +49,9 @@ $(document).ready(function()
 	// 		$(this).remove()
 	// 	})
 	// }, 5000);
+
+	$('.custom-file-input').on('change',function(){
+	    const name_file = $(this)[0].files[0].name;
+	    $(this).parent().find('span').text(name_file);
+	})
 });

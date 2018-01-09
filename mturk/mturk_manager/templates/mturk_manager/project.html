@@ -10,20 +10,42 @@
       href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
 <div class="container-fluid" id="page_project">
 	<div class="row">
-		<div class="col pt-3">
-			<ul>
-				<li>number of batches: {{ stats_total.count_batches }}</li>
-				<li>number of hits: {{ stats_total.count_hits }}</li>
-				<li>number of assignments: {{ stats_total.count_assignments }} (new: {{ stats_new.count_assignments }})</li>
-			</ul>
+		<div class="col-6">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Batches</th>
+						<th>Hits</th>
+						<th>Assignments</th>
+						<th>New assignments</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>{{ stats_total.count_batches }}</td>
+						<td>{{ stats_total.count_hits }}</td>
+						<td>{{ stats_total.count_assignments }}</td>
+						<td>{{ stats_new.count_assignments }}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col">
+			<a href="{% url 'viewer:index' db_obj_project.name %}">View Assignments</a>
+		</div>
+	</div>
+	<hr>
+	<div class="row">
+		<div class="col">
 			<form method="post">
 				{% csrf_token %}
 				<button type="submit" name="task" value="synchronize_database" class="btn btn-primary">Synchronize with MTurk</button>
 			</form>
-			<a href="{% url 'viewer:index' db_obj_project.name %}">View Assignments</a>
-			<hr>
 		</div>
 	</div>
+	<hr>
 	<div class="row">
 		<div class="col">
 			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_create_batch">Create batch</button>
