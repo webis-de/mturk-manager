@@ -99,7 +99,7 @@ def create(request):
 def create_project(request):
     db_obj_account_mturk = m_Account_Mturk.objects.get(name=request.POST['name_account_mturk'])
 
-    m_Project.objects.create(
+    db_obj_project = m_Project.objects.create(
         name=request.POST['name'],
         fk_account_mturk = db_obj_account_mturk,
     )
@@ -127,6 +127,13 @@ def create_project(request):
     glob_manager_data.check_for_new_corpora()
     glob_manager_data.add_settings_corpus(request.POST['name'], dict_settings)
     
+    m_Template_Assignment.objects.get_or_create(
+        name='default_template_assignment__'+db_obj_project.name,
+        fk_project=db_obj_project,
+        template='Please set a custom assignment template!',
+        is_active=False
+    )
+
     m_Tag.objects.get_or_create(
         key_corpus=request.POST['name'],
         name='submitted',

@@ -37,4 +37,16 @@ $(document).ready(function()
 	    	hljs.highlightBlock(block);
 	  	});
 	})
+
+	setTimeout(function() {
+		$('.wrapper_alert.custom-alert-success').animate({height: 0}, 1000, function(){
+			$(this).remove()
+		})
+	}, 1000);
+
+	// setTimeout(function() {
+	// 	$('.wrapper_alert.custom-alert-warning').animate({height: 0}, 1000, function(){
+	// 		$(this).remove()
+	// 	})
+	// }, 5000);
 });
