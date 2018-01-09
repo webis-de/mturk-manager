@@ -33,7 +33,9 @@ def project(request, name):
     queryset = m_Project.objects.filter(
         name=name_project
     ).select_related(
-        'fk_account_mturk'
+        'fk_account_mturk',
+        'fk_template_main',
+        'fk_template_assignment_main'
     ).prefetch_related(
         'batches__hits__assignments',
         'templates_assignment',
@@ -275,8 +277,10 @@ def update_template(db_obj_project, request):
     if not verify_input_update_template(request):
         return 
 
+    print(request.POST)
+
     try:
-        if 'template_assignment' in request.POST:
+        if 'template_assignment' in request.POST and request.POST['template_assignment'].strip() != '':
             m_Template.objects.filter(id=request.POST['id']).update(
                 name=request.POST['name'],
                 height_frame=request.POST['height_frame'],
