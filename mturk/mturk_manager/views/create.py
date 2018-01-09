@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
 from mturk_manager.models import *
 from viewer.models import *
+from viewer.views.shared_code import glob_manager_data
 from django.urls import reverse
 import urllib.parse
-import requests
 import json
 
 glob_dict_settings = {
@@ -124,17 +124,9 @@ def create_project(request):
     for card in dict_settings['cards']:
         card['content'] = card['content'].replace('PLACEHOLDER_URL', reverse('mturk_manager:view', args=[request.POST['name']]))
 
-    dict_payload = {}
-    dict_payload['settings'] = json.dumps(dict_settings)
-    dict_payload['id_corpus'] = request.POST['name']
-    dict_payload['csrfmiddlewaretoken'] = request.POST['csrfmiddlewaretoken']
+    glob_manager_data.check_for_new_corpora()
+    glob_manager_data.add_settings_corpus(request.POST['name'], dict_settings)
     
-    url = request.META['HTTP_ORIGIN'] + reverse('viewer:api_add_corpus')
-    response = requests.post(url, data=dict_payload, cookies=request.COOKIES)
-    
-    url = request.META['HTTP_ORIGIN'] + reverse('viewer:api_refresh_corpora')
-    response = requests.get(url)
-
     m_Tag.objects.get_or_create(
         key_corpus=request.POST['name'],
         name='submitted',

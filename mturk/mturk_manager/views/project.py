@@ -12,11 +12,11 @@ import csv
 import io
 import random
 import html
-import requests
 import json
 import time
 from django.contrib import messages, humanize
 import xmltodict
+from viewer.views.shared_code import glob_manager_data
 # from django.template.defaultfilters import apnumber
 
 glob_prefix_name_tag_batch = 'batch_'
@@ -105,11 +105,7 @@ def project(request, name):
     return render(request, 'mturk_manager/project.html', context)
 
 def delete_project(db_obj_project, request):
-    dict_payload = {}
-    dict_payload['id_corpus'] = db_obj_project.name
-    dict_payload['csrfmiddlewaretoken'] = request.POST['csrfmiddlewaretoken']
-    url = request.META['HTTP_ORIGIN'] + reverse('viewer:api_delete_corpus')
-    response = requests.post(url, data=dict_payload, cookies=request.COOKIES)
+    glob_manager_data.delete_corpus(db_obj_project.name, False)
 
     m_Tag.objects.filter(key_corpus=db_obj_project.name).delete()
 
