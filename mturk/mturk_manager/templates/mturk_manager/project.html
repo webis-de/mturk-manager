@@ -11,8 +11,6 @@
 <div class="container-fluid" id="page_project">
 	<div class="row">
 		<div class="col pt-3">
-			Account: {{ db_obj_project.fk_account_mturk.name }}
-			<hr>
 			<ul>
 				<li>number of batches: {{ stats_total.count_batches }}</li>
 				<li>number of hits: {{ stats_total.count_hits }}</li>
@@ -180,7 +178,11 @@
 									{{ template.height_frame }}
 								</td>
 								<td>
-									{{ template.fk_template_assignment.name }}
+									{% if template.fk_template_assignment.name == 'default_template_assignment__'|add:db_obj_project.name %}
+										<b>missing</b>
+									{% else %}
+										{{ template.fk_template_assignment.name }}
+									{% endif %}
 								</td>
 								<td>
 									<button type="button" class="btn btn-primary btn-sm" data-id="{{ template.id }}" data-name="{{ template.name }}" data-height_frame="{{ template.height_frame }}" data-id_template_assignment="{{ template.fk_template_assignment.id }}" data-toggle="modal" data-target="#modal_update_template">Update</button>

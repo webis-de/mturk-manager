@@ -8,6 +8,8 @@ from django.db.models import F, Value, Count
 from django.db.models.functions import Concat
 import urllib.parse
 from django.utils.html import escape
+from django.db import IntegrityError
+from botocore.exceptions import ClientError
 import csv
 import io
 import random
@@ -21,6 +23,7 @@ from viewer.views.shared_code import glob_manager_data
 
 glob_prefix_name_tag_batch = 'batch_'
 glob_prefix_name_tag_worker = 'worker_'
+glob_prefix_name_tag_hit = 'hit_'
 
 def project(request, name):
     context = {}
@@ -110,7 +113,9 @@ def delete_project(db_obj_project, request):
     m_Tag.objects.filter(key_corpus=db_obj_project.name).delete()
 
     db_obj_project.delete()
-    
+
+    messages.success(request, 'Deleted project successfully')
+
     return redirect('mturk_manager:index', permanent=True)
 
 def synchronize_database(db_obj_project, request):
@@ -136,7 +141,8 @@ def synchronize_database(db_obj_project, request):
         fk_batch__fk_project=db_obj_project,
         count_assignments_current__lt=F('fk_batch__count_assignments')
     ).select_related('fk_batch'):
-        db_obj_tag = dict_tags[glob_prefix_name_tag_batch+db_obj_hit.fk_batch.name]
+        db_obj_tag_batch = dict_tags[glob_prefix_name_tag_batch+db_obj_hit.fk_batch.name]
+        db_obj_tag_hit = dict_tags[glob_prefix_name_tag_hit+db_obj_hit.id_hit]
 
         response = client.list_assignments_for_hit(
             HITId=db_obj_hit.id_hit,
@@ -164,8 +170,9 @@ def synchronize_database(db_obj_project, request):
                     id_item=db_obj_assignment.id,
                     id_item_internal=db_obj_assignment.id
                 )
-                db_obj_tag.m2m_entity.add(db_obj_entity)
+                db_obj_tag_batch.m2m_entity.add(db_obj_entity)
                 db_obj_tag_submitted.m2m_entity.add(db_obj_entity)
+                db_obj_tag_hit.m2m_entity.add(db_obj_entity)
 
                 db_obj_tag_worker = m_Tag.objects.get_or_create(key_corpus=db_obj_project.name, name=glob_prefix_name_tag_worker+id_worker, defaults={'color': '#0000ff'})[0]
                 db_obj_tag_worker.m2m_entity.add(db_obj_entity)
@@ -193,6 +200,8 @@ def delete_templates_assignment(db_obj_project, request):
         is_active=False
     )
 
+    messages.success(request, 'Deleted template(s) successfully')
+
 def delete_templates(db_obj_project, request):
     m_Template.objects.filter(
         fk_project=db_obj_project, id__in=request.POST.getlist('templates')
@@ -203,6 +212,8 @@ def delete_templates(db_obj_project, request):
         ),
         is_active=False
     )
+
+    messages.success(request, 'Deleted template(s) successfully')
 
 def update_template_assignment(db_obj_project, request):
     if not verify_input_update_template_assignment(request):
@@ -218,15 +229,21 @@ def update_template_assignment(db_obj_project, request):
     else:
         template = request.POST['html_template']
 
-    if template == None:
-        m_Template_Assignment.objects.filter(id=request.POST['id']).update(
-            name=request.POST['name'],
-        )
-    else:
-        m_Template_Assignment.objects.filter(id=request.POST['id']).update(
-            name=request.POST['name'],
-            template=template
-        )
+    try:
+        if template == None:
+            m_Template_Assignment.objects.filter(id=request.POST['id']).update(
+                name=request.POST['name'],
+            )
+        else:
+            m_Template_Assignment.objects.filter(id=request.POST['id']).update(
+                name=request.POST['name'],
+                template=template
+            )
+    except IntegrityError:
+        messages.error(request, 'A template with this name already exists')
+        return
+
+    messages.success(request, 'Updated template successfully')
 
 def add_template_assignment(db_obj_project, request):
     if not verify_input_add_template_assignment(request):
@@ -242,21 +259,40 @@ def add_template_assignment(db_obj_project, request):
     else:
         template = request.POST['html_template']
 
-    m_Template_Assignment.objects.create(
-        name=request.POST['name'],
-        template=template,
-        fk_project=db_obj_project
-    )
+    try:
+        m_Template_Assignment.objects.create(
+            name=request.POST['name'],
+            template=template,
+            fk_project=db_obj_project
+        )
+    except IntegrityError:
+        messages.error(request, 'A template with this name already exists')
+        return
+
+    messages.success(request, 'Added template successfully')
 
 def update_template(db_obj_project, request):
     if not verify_input_update_template(request):
         return 
 
-    m_Template.objects.filter(id=request.POST['id']).update(
-        name=request.POST['name'],
-        height_frame=request.POST['height_frame'],
-        fk_template_assignment=m_Template_Assignment.objects.get(id=request.POST['template_assignment'])
-    )
+    try:
+        if 'template_assignment' in request.POST:
+            m_Template.objects.filter(id=request.POST['id']).update(
+                name=request.POST['name'],
+                height_frame=request.POST['height_frame'],
+                fk_template_assignment=m_Template_Assignment.objects.get(id=request.POST['template_assignment'])
+            )
+        else:
+            m_Template.objects.filter(id=request.POST['id']).update(
+                name=request.POST['name'],
+                height_frame=request.POST['height_frame']
+            )
+
+    except IntegrityError:
+        messages.error(request, 'A template with this name already exists')
+        return
+
+    messages.success(request, 'Updated template successfully')
 
 def add_template(db_obj_project, request):
     if not verify_input_add_template(request):
@@ -275,17 +311,21 @@ def add_template(db_obj_project, request):
     try:
         db_obj_template_assignment = m_Template_Assignment.objects.get(fk_project=db_obj_project, id=request.POST['template_assignment'])
     except ValueError:
-        db_obj_template_assignment = m_Template_Assignment.objects.get_or_create(fk_project=db_obj_project, name="default", defaults={
-            'template': 'Please set a custom assignment template!'
-        })[0]
+        db_obj_template_assignment = m_Template_Assignment.objects.get(fk_project=db_obj_project, name="default_template_assignment__"+db_obj_project.name)
 
-    m_Template.objects.create(
-        name=request.POST['name'],
-        template=template,
-        height_frame=request.POST['height_frame'],
-        fk_project=db_obj_project,
-        fk_template_assignment=db_obj_template_assignment
-    )
+    try:
+        m_Template.objects.create(
+            name=request.POST['name'],
+            template=template,
+            height_frame=request.POST['height_frame'],
+            fk_project=db_obj_project,
+            fk_template_assignment=db_obj_template_assignment
+        )
+    except IntegrityError:
+        messages.error(request, 'A template with this name already exists')
+        return
+
+    messages.success(request, 'Added template successfully')
 
 def update_settings(db_obj_project, request):
     verify_input_update_settings(request)
@@ -306,6 +346,8 @@ def update_settings(db_obj_project, request):
 
     db_obj_project.save()
 
+    messages.success(request, 'Updated settings successfully')
+
 def create_batch(db_obj_project, request):
     if not verify_input_create_batch(request):
         return 
@@ -325,15 +367,25 @@ def create_batch(db_obj_project, request):
     db_obj_template = m_Template.objects.get(fk_project=db_obj_project, id=request.POST['template'])
     # list_entities = []
     for dict_parameters in reader:
-        mturk_obj_hit = client.create_hit(
-            Keywords=keywords,
-            MaxAssignments=count_assignments,
-            LifetimeInSeconds=lifetime,
-            AssignmentDurationInSeconds=duration,
-            Reward=reward,
-            Title=title,
-            Description=description,
-            Question=code_shared.create_question(db_obj_template.template, db_obj_template.height_frame, dict_parameters)
+        try:
+            mturk_obj_hit = client.create_hit(
+                Keywords=keywords,
+                MaxAssignments=count_assignments,
+                LifetimeInSeconds=lifetime,
+                AssignmentDurationInSeconds=duration,
+                Reward=reward,
+                Title=title,
+                Description=description,
+                Question=code_shared.create_question(db_obj_template.template, db_obj_template.height_frame, dict_parameters)
+            )
+        except ClientError:
+            messages.error(request, 'The HTML template is invalid')
+            db_obj_batch.delete()
+            return
+
+        db_obj_tag = m_Tag.objects.create(
+            name=glob_prefix_name_tag_hit+mturk_obj_hit['HIT']['HITId'],
+            key_corpus=db_obj_project.name
         )
 
         # print(mturk_obj_hit)
@@ -352,6 +404,8 @@ def create_batch(db_obj_project, request):
         name=glob_prefix_name_tag_batch+db_obj_batch.name,
         key_corpus=db_obj_project.name
     )[0]
+
+    messages.success(request, 'Created batch successfully')
 
     # m_Entity.objects.bulk_create([m_Entity(id_item=id_hit, id_item_internal=id_hit, key_corpus=db_obj_project.name) for id_hit in list_entities])
     
@@ -398,6 +452,7 @@ def verify_input_update_template(request):
     valid = True
     list_messages = []
 
+    print(request.POST)
     try:
         if int(request.POST['height_frame']) == 0:
             valid = False
@@ -405,9 +460,6 @@ def verify_input_update_template(request):
         if request.POST['name'].strip() == '':
             valid = False
             list_messages.append('Invalid name')
-        if request.POST['template_assignment'].strip() == '':
-            valid = False
-            list_messages.append('Invalid assignment template')
     except KeyError:
         list_messages.append('Unexpected error, please cry')
         valid = False
