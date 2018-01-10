@@ -11,7 +11,7 @@
 
 <script>
 	let glob_id;
-	let dataset;
+	// let dataset;
 	let glob_answer;
 	let glob_answer_raw;
 	let glob_inputs;
@@ -28,6 +28,12 @@
             <button type="submit" name="task" value="button_mturk_reject__`+id+`" class="btn btn-sm btn-danger">Reject selected</button>
 		`
 	}
+
+	function decode(input) {
+	    var txt = document.createElement("textarea");
+	    txt.innerHTML = input;
+	    return txt.value;
+	}
 </script>
 <div class="container-fluid" id="page_create">
 	<form method="post">
@@ -41,21 +47,24 @@
 		<hr>
 		<div class="row">
 			<div class="col">
-			{% for assignment in list_assignments %}
-				<span data-answer_raw="{{assignment.answer}}" data-id="{{ assignment.id }}"></span>
-				<script>
-					dataset = $('span[data-id="{{ assignment.id }}"]').data()
-					// glob_answer = dataset.answer;
-					glob_id = {{ assignment.id }};
-					glob_answer_raw = dataset.answer_raw;
-					glob_inputs = create_inputs(glob_id)
-				</script>
-				<span id="{{ assignment.id }}">
+			{% for hit in queryset_hits %}
+					{{ hit.fk_batch.fk_template.fk_template_hit.template|safe }}
 					<script>
-						glob_wrapper = $('#'+glob_id);
+						var wrapper_assignments = $($('[data-inject_assignments]')[$('[data-inject_assignments]').length - 1]);
+
+						{% for assignment in hit.assignments.all %}
+						glob_id = {{ assignment.id }};
+						glob_inputs = create_inputs(glob_id)
+						glob_answer_raw = JSON.parse('{{assignment.answer|safe}}');
+						glob_answer = JSON.parse('{{assignment.answer_normalized|safe}}');
+
+
+						assignment_template = decode(`{{ hit.fk_batch.fk_template.fk_template_assignment.template }}`);
+						glob_wrapper = $('<span data-id="{{ assignment.id }}"></span>')
+						wrapper_assignments.append(glob_wrapper)
+						element = glob_wrapper.append(assignment_template)
+						{% endfor %}
 					</script>
-					{{ assignment.fk_hit.fk_batch.fk_template.fk_template_assignment.template|safe }}
-				</span>
 			{% endfor %}
 			</div>
 		</div>

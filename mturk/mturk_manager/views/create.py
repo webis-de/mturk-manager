@@ -127,24 +127,31 @@ def create_project(request):
     glob_manager_data.check_for_new_corpora()
     glob_manager_data.add_settings_corpus(request.POST['name'], dict_settings)
     
-    m_Template_Assignment.objects.get_or_create(
+    m_Template_Assignment.objects.create(
         name='default_template_assignment__'+db_obj_project.name,
         fk_project=db_obj_project,
         template='Please set a custom assignment template!',
         is_active=False
     )
+    
+    m_Template_Hit.objects.create(
+        name='default_template_hit__'+db_obj_project.name,
+        fk_project=db_obj_project,
+        template='',
+        is_active=False
+    )
 
-    m_Tag.objects.get_or_create(
+    m_Tag.objects.create(
         key_corpus=request.POST['name'],
         name='submitted',
         color='#17a2b8'
     )
-    m_Tag.objects.get_or_create(
+    m_Tag.objects.create(
         key_corpus=request.POST['name'],
         name='rejected',
         color='#dc3545'
     )
-    m_Tag.objects.get_or_create(
+    m_Tag.objects.create(
         key_corpus=request.POST['name'],
         name='approved',
         color='#28a745'

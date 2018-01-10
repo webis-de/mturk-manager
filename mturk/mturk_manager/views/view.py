@@ -17,6 +17,9 @@ def view(request, name):
     except (KeyError, json.JSONDecodeError):
         messages.error(request, 'Please provide valid assignments')
         return redirect('mturk_manager:project', name=name_quoted, permanent=True)
+    if len(list_ids) == 0:
+        messages.error(request, 'Please provide assignments')
+        return redirect('mturk_manager:project', name=name_quoted, permanent=True)
 
 
     if request.method == 'POST':
@@ -38,16 +41,19 @@ def view(request, name):
 
     # print(list_ids)
     # context['queryset_account_mturk'] = m_Account_Mturk.objects.all()
-    queryset_assignments = m_Assignment.objects.filter(
-        fk_hit__fk_batch__fk_project=db_obj_project, 
-        id__in=list_ids
-    ).select_related('fk_hit__fk_batch__fk_template__fk_template_assignment')
+    queryset_hits = m_Hit.objects.filter(
+        assignments__id__in=list_ids
+    ).select_related(
+        'fk_batch__fk_template__fk_template_assignment',
+        'fk_batch__fk_template__fk_template_hit'
+    ).prefetch_related(
+        'assignments'
+    ).distinct()
 
-    # for assignment in queryset_assignments:
-    #     print(assignment.fk_hit.id_hit)
-    #     print(assignment.fk_hit.fk_batch.fk_template.fk_template_assignment.template)
-    #     print(json.loads(assignment.answer))
 
+    for hit in queryset_hits:
+        for assignment in hit.assignments.all():
+            assignment.answer_normalized = normalize_answer(assignment.answer)
 
     # if request.method == 'POST':
     #     print(request.COOKIES)
@@ -62,6 +68,17 @@ def view(request, name):
     #     context['success'] = True
     #     return redirect('mturk_manager:project', name=urllib.parse.quote(request.POST['name'], safe=''), permanent=True)
 
-    context['list_assignments'] = queryset_assignments
+    context['queryset_hits'] = queryset_hits
     context['name_project'] = name_project
     return render(request, 'mturk_manager/view.html', context)
+
+def normalize_answer(answer):
+    dict_answer = json.loads(answer)
+    normalize_answer = {}
+
+    for value in dict_answer['QuestionFormAnswers']['Answer']:
+        normalize_answer[value['QuestionIdentifier']] = value['FreeText']
+        print(value)
+
+    return json.dumps(normalize_answer)
+    print('#########################')

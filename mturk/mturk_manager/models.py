@@ -48,6 +48,7 @@ class m_Template(models.Model):
     height_frame = models.IntegerField()
     is_active = models.BooleanField(default=True)
     fk_template_assignment = models.ForeignKey('m_Template_Assignment', on_delete=models.CASCADE, related_name='templates_used')
+    fk_template_hit = models.ForeignKey('m_Template_Hit', on_delete=models.CASCADE, related_name='templates_used')
 
 class m_Template_Assignment(models.Model):
     class Meta:
@@ -58,7 +59,20 @@ class m_Template_Assignment(models.Model):
     template = models.TextField()
     is_active = models.BooleanField(default=True)
 
+class m_Template_Hit(models.Model):
+    class Meta:
+        unique_together = ("name", "fk_project")
+
+    name = models.CharField(max_length=200)
+    fk_project = models.ForeignKey('m_Project', on_delete=models.CASCADE, related_name='templates_hit')
+    template = models.TextField()
+    is_active = models.BooleanField(default=True)
+
 class m_Assignment(models.Model):
+    class Meta:
+        ordering = ['fk_hit']
+        # order_with_respect_to = 'fk_hit'
+
     id_assignment = models.CharField(max_length=200, unique=True, null=False)
     fk_hit = models.ForeignKey('m_Hit', on_delete=models.CASCADE, related_name='assignments')
     fk_worker = models.ForeignKey('m_Worker', on_delete=models.CASCADE, related_name='assignments')
