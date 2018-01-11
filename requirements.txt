@@ -1,3 +1,4 @@
+django==2.0
 whoosh
-requests
 boto3
+xmltodict
