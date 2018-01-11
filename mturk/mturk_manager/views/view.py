@@ -7,6 +7,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 import urllib.parse
 import time
+from django.db.models import Prefetch, Count, When, BooleanField, Case
 from django.contrib import messages
 
 def view(request, name):
@@ -47,16 +48,51 @@ def view(request, name):
         'fk_batch__fk_template__fk_template_assignment',
         'fk_batch__fk_template__fk_template_hit',
     ).prefetch_related(
-        'assignments__fk_entity'
+        Prefetch('assignments', queryset=m_Assignment.objects.select_related(
+            'fk_entity'
+            ).annotate(
+                is_approved=Case(
+                    When(
+                        fk_entity__viewer_tags__name='approved',
+                        then=1
+                    ),
+                    default=0,
+                    output_field=BooleanField(),
+                ),
+                is_rejected=Case(
+                    When(
+                        fk_entity__viewer_tags__name='rejected',
+                        then=1
+                    ),
+                    default=0,
+                    output_field=BooleanField(),
+                ),
+            ).distinct()
+            # ,to_attr='voted_choices'
+        )
     ).distinct()
 
 
+    print(m_Assignment.objects.annotate(
+                is_approved=Case(
+                    When(
+                        fk_entity__viewer_tags__name='approved',
+                        then=1
+                    ),
+                    default=0,
+                    output_field=BooleanField(),
+                )
+            ).distinct().count())
+
     for hit in queryset_hits:
+        print(hit)
         for assignment in hit.assignments.all():
+            print(assignment.id)
+            print(assignment.is_approved)
             assignment.answer_normalized = normalize_answer(assignment.answer)
-            assignment.is_approved = assignment.fk_entity.viewer_tags.filter(name='approved').exists()
-            assignment.is_rejected = assignment.fk_entity.viewer_tags.filter(name='rejected').exists()
-            
+            # assignment.is_approved = assignment.fk_entity.viewer_tags.filter(name='approved').exists()
+            # assignment.is_rejected = assignment.fk_entity.viewer_tags.filter(name='rejected').exists()
+
     context['queryset_hits'] = queryset_hits
     context['name_project'] = name_project
     return render(request, 'mturk_manager/view.html', context)

@@ -76,8 +76,8 @@ class m_Assignment(models.Model):
     id_assignment = models.CharField(max_length=200, unique=True, null=False)
     fk_hit = models.ForeignKey('m_Hit', on_delete=models.CASCADE, related_name='assignments')
     fk_worker = models.ForeignKey('m_Worker', on_delete=models.CASCADE, related_name='assignments')
-    was_approved = models.NullBooleanField()
-    is_approved = models.NullBooleanField()
+    # was_approved = models.NullBooleanField()
+    # is_approved = models.NullBooleanField()
     answer = models.TextField()
     fk_entity = models.OneToOneField('viewer.m_Entity', on_delete=models.CASCADE, null=True, related_name='fk_item')
 
