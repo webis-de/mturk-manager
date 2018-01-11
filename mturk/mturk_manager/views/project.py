@@ -39,6 +39,7 @@ def project(request, name):
     ).prefetch_related(
         'batches__hits__assignments',
         'templates_assignment',
+        'templates_hit',
         'templates__fk_template_assignment'
     )
 
