@@ -45,16 +45,18 @@ def view(request, name):
         assignments__id__in=list_ids
     ).select_related(
         'fk_batch__fk_template__fk_template_assignment',
-        'fk_batch__fk_template__fk_template_hit'
+        'fk_batch__fk_template__fk_template_hit',
     ).prefetch_related(
-        'assignments'
+        'assignments__fk_entity'
     ).distinct()
 
 
     for hit in queryset_hits:
         for assignment in hit.assignments.all():
             assignment.answer_normalized = normalize_answer(assignment.answer)
-
+            assignment.is_approved = assignment.fk_entity.viewer_tags.filter(name='approved').exists()
+            assignment.is_rejected = assignment.fk_entity.viewer_tags.filter(name='rejected').exists()
+            
     context['queryset_hits'] = queryset_hits
     context['name_project'] = name_project
     return render(request, 'mturk_manager/view.html', context)

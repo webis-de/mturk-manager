@@ -138,7 +138,7 @@ def create_project(request):
     m_Template_Assignment.objects.create(
         name='default_template_assignment__'+db_obj_project.name,
         fk_project=db_obj_project,
-        template='Please set a custom assignment template!',
+        template='<b>Please set a custom assignment template!</b>',
         is_active=False
     )
     
