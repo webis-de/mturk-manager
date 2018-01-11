@@ -13,8 +13,8 @@ class m_Project(models.Model):
     keywords = models.TextField(default='')
     count_assignments = models.IntegerField(default=1)
     reward = models.CharField(default='0.0', max_length=10)
-    lifetime = models.IntegerField(default=0)
-    duration = models.IntegerField(default=0)
+    lifetime = models.IntegerField(default=604800)
+    duration = models.IntegerField(default=3600)
     fk_template_main = models.OneToOneField('m_Template', on_delete=models.SET_NULL, null=True, related_name='project')
     fk_template_assignment_main = models.OneToOneField('m_Template_Assignment', on_delete=models.SET_NULL, null=True, related_name='project')
 
