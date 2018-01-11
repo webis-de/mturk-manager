@@ -50,48 +50,17 @@ def view(request, name):
     ).prefetch_related(
         Prefetch('assignments', queryset=m_Assignment.objects.select_related(
             'fk_entity'
-            ).annotate(
-                is_approved=Case(
-                    When(
-                        fk_entity__viewer_tags__name='approved',
-                        then=1
-                    ),
-                    default=0,
-                    output_field=BooleanField(),
-                ),
-                is_rejected=Case(
-                    When(
-                        fk_entity__viewer_tags__name='rejected',
-                        then=1
-                    ),
-                    default=0,
-                    output_field=BooleanField(),
-                ),
-            ).distinct()
-            # ,to_attr='voted_choices'
+            ).prefetch_related('fk_entity__viewer_tags')
+            ,to_attr='list_assignments'
         )
     ).distinct()
 
-
-    print(m_Assignment.objects.annotate(
-                is_approved=Case(
-                    When(
-                        fk_entity__viewer_tags__name='approved',
-                        then=1
-                    ),
-                    default=0,
-                    output_field=BooleanField(),
-                )
-            ).distinct().count())
-
     for hit in queryset_hits:
-        print(hit)
-        for assignment in hit.assignments.all():
-            print(assignment.id)
-            print(assignment.is_approved)
+        for assignment in hit.list_assignments:
             assignment.answer_normalized = normalize_answer(assignment.answer)
-            # assignment.is_approved = assignment.fk_entity.viewer_tags.filter(name='approved').exists()
-            # assignment.is_rejected = assignment.fk_entity.viewer_tags.filter(name='rejected').exists()
+            set_tags = {tag.name for tag in assignment.fk_entity.viewer_tags.all()}
+            assignment.is_approved = 'approved' in set_tags
+            assignment.is_rejected = 'rejected' in set_tags
 
     context['queryset_hits'] = queryset_hits
     context['name_project'] = name_project
