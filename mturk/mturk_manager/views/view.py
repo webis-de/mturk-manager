@@ -1,9 +1,12 @@
 from django.shortcuts import render, redirect
+from mturk_manager.views import code_shared
 from mturk_manager.models import *
+from viewer.models import *
 import json
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 import urllib.parse
+import time
 from django.contrib import messages
 
 def view(request, name):
@@ -25,22 +28,19 @@ def view(request, name):
     if request.method == 'POST':
         if request.POST['task'] == 'button_mturk_approve_selected':
             list_ids = request.POST.getlist('checkbox_assignment')
-            messages.info(request, 'approved '+', '.join(list_ids))
+            approve_assignments(request, db_obj_project, list_ids)
         if request.POST['task'] == 'button_mturk_reject_selected':
             list_ids = request.POST.getlist('checkbox_assignment')
-            messages.info(request, 'rejected '+', '.join(list_ids))
+            reject_assignments(request, db_obj_project, list_ids)
         if request.POST['task'].startswith('button_mturk_approve__'):
             id_assignment = request.POST['task'].split('__')[1]
-            messages.info(request, 'approved '+id_assignment)
+            approve_assignments(request, db_obj_project, [id_assignment])
         if request.POST['task'].startswith('button_mturk_reject__'):
             id_assignment = request.POST['task'].split('__')[1]
-            messages.info(request, 'rejected '+id_assignment)
-            print(id_assignment)
+            reject_assignments(request, db_obj_project, [id_assignment])
 
         return HttpResponseRedirect(reverse('mturk_manager:view', args=[name_quoted])+ '?list_ids='+request.GET['list_ids'])
 
-    # print(list_ids)
-    # context['queryset_account_mturk'] = m_Account_Mturk.objects.all()
     queryset_hits = m_Hit.objects.filter(
         assignments__id__in=list_ids
     ).select_related(
@@ -55,22 +55,72 @@ def view(request, name):
         for assignment in hit.assignments.all():
             assignment.answer_normalized = normalize_answer(assignment.answer)
 
-    # if request.method == 'POST':
-    #     print(request.COOKIES)
-    #     print(request.POST)
-    #     print(request.FILES)
-    #     if not verify_input(request) == True:
-    #         context['success'] = False
-    #         return render(request, 'mturk_manager/create.html', context)
-            
-    #     create_project(request)
-
-    #     context['success'] = True
-    #     return redirect('mturk_manager:project', name=urllib.parse.quote(request.POST['name'], safe=''), permanent=True)
-
     context['queryset_hits'] = queryset_hits
     context['name_project'] = name_project
     return render(request, 'mturk_manager/view.html', context)
+
+def approve_assignments(request, db_obj_project, list_ids):
+    client = code_shared.get_client(db_obj_project)
+    db_obj_tag_submitted = m_Tag.objects.get(key_corpus=db_obj_project.name, name='submitted')
+    db_obj_tag_approved = m_Tag.objects.get(key_corpus=db_obj_project.name, name='approved')
+
+    dict_entites = {entity.id_item_internal: entity for entity in m_Entity.objects.filter(id_item_internal__in=list_ids)}
+
+    list_success = []
+    list_fail = []
+
+    for assignment in m_Assignment.objects.filter(id__in=list_ids):
+        try:
+            response = client.approve_assignment(
+                AssignmentId=assignment.id_assignment
+            )
+        except Exception as e:
+            list_fail.append(assignment)
+            continue
+
+        db_obj_entity = dict_entites[assignment.id]
+        db_obj_tag_submitted.m2m_entity.remove(db_obj_entity)
+        db_obj_tag_approved.m2m_entity.add(db_obj_entity)
+
+        list_success.append(assignment)
+
+    if len(list_success) != 0:
+        messages.success(request, 'Approved {} assignment(s)'.format(len(list_success)))
+    if len(list_fail) != 0:
+        messages.error(request, 'Failed to approve {} assignment(s)'.format(len(list_fail)))
+
+def reject_assignments(request, db_obj_project, list_ids):
+    client = code_shared.get_client(db_obj_project)
+    db_obj_tag_submitted = m_Tag.objects.get(key_corpus=db_obj_project.name, name='submitted')
+    db_obj_tag_rejected = m_Tag.objects.get(key_corpus=db_obj_project.name, name='rejected')
+
+    dict_entites = {entity.id_item_internal: entity for entity in m_Entity.objects.filter(id_item_internal__in=list_ids)}
+
+    list_success = []
+    list_fail = []
+
+    for assignment in m_Assignment.objects.filter(id__in=list_ids):
+        try:
+            response = client.reject_assignment(
+                AssignmentId=assignment.id_assignment,
+                RequesterFeedback=''
+            )
+        except Exception as e:
+            print(e)
+            list_fail.append(assignment)
+            continue
+
+        db_obj_entity = dict_entites[assignment.id]
+        db_obj_tag_submitted.m2m_entity.remove(db_obj_entity)
+        db_obj_tag_rejected.m2m_entity.add(db_obj_entity)
+
+        list_success.append(assignment)
+
+
+    if len(list_success) != 0:
+        messages.success(request, 'Rejected {} assignment(s)'.format(len(list_success)))
+    if len(list_fail) != 0:
+        messages.error(request, 'Failed to reject {} assignment(s)'.format(len(list_fail)))
 
 def normalize_answer(answer):
     dict_answer = json.loads(answer)
@@ -78,7 +128,5 @@ def normalize_answer(answer):
 
     for value in dict_answer['QuestionFormAnswers']['Answer']:
         normalize_answer[value['QuestionIdentifier']] = value['FreeText']
-        print(value)
 
     return json.dumps(normalize_answer)
-    print('#########################')
