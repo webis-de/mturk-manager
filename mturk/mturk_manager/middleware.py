@@ -11,7 +11,7 @@ class SqlPrintMiddleware:
         for query in connection.queries:
             if query['sql'] != 'BEGIN':
                 counter += 1
-                print(query['sql'])
+                # print(query['sql'])
                 sqltime += float(query["time"])  # Add the time that the query took to the total
                 # print(query['time'])
                 print('-----------------------------------------------------------')
