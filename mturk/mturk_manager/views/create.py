@@ -40,7 +40,7 @@ glob_dict_settings = {
     'displayed_fields': [
         'id_assignment', 'fk_hit__id_hit', 'fk_worker__name'
     ],
-    'page_size': 10,
+    'page_size': 25,
     'filters': [],
     'urls_header': [],
     'secret_token_editing': '',
@@ -124,8 +124,8 @@ def create_project(request):
     for card in dict_settings['cards']:
         card['content'] = card['content'].replace('PLACEHOLDER_URL', reverse('mturk_manager:view', args=[request.POST['name']]))
 
-    glob_manager_data.check_for_new_corpora()
     glob_manager_data.add_settings_corpus(request.POST['name'], dict_settings)
+    glob_manager_data.check_for_new_corpora()
     
     m_Template_Assignment.objects.create(
         name='default_template_assignment__'+db_obj_project.name,
@@ -137,7 +137,7 @@ def create_project(request):
     m_Template_Hit.objects.create(
         name='default_template_hit__'+db_obj_project.name,
         fk_project=db_obj_project,
-        template='',
+        template='<div class="col-12"><div data-inject_assignments></div></div>',
         is_active=False
     )
 

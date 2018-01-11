@@ -46,27 +46,29 @@
 		</div>
 		<hr>
 		<div class="row">
-			<div class="col">
-			{% for hit in queryset_hits %}
-					{{ hit.fk_batch.fk_template.fk_template_hit.template|safe }}
-					<script>
-						var wrapper_assignments = $($('[data-inject_assignments]')[$('[data-inject_assignments]').length - 1]);
+		{% for hit in queryset_hits %}
+			{{ hit.fk_batch.fk_template.fk_template_hit.template|safe }}
+			<script>
+				var wrapper_assignments = $($('[data-inject_assignments]')[$('[data-inject_assignments]').length - 1]);
 
-						{% for assignment in hit.assignments.all %}
-						glob_id = {{ assignment.id }};
-						glob_inputs = create_inputs(glob_id)
-						glob_answer_raw = JSON.parse('{{assignment.answer|safe}}');
-						glob_answer = JSON.parse('{{assignment.answer_normalized|safe}}');
+				{% for assignment in hit.assignments.all %}
+				glob_id = {{ assignment.id }};
+
+				glob_answer_raw = JSON.parse('{{assignment.answer|safe}}');
+				glob_answer = JSON.parse('{{assignment.answer_normalized|safe}}');
 
 
-						assignment_template = decode(`{{ hit.fk_batch.fk_template.fk_template_assignment.template }}`);
-						glob_wrapper = $('<span data-id="{{ assignment.id }}"></span>')
-						wrapper_assignments.append(glob_wrapper)
-						element = glob_wrapper.append(assignment_template)
-						{% endfor %}
-					</script>
-			{% endfor %}
-			</div>
+				assignment_template = $(decode(`{{ hit.fk_batch.fk_template.fk_template_assignment.template }}`));
+				// glob_wrapper = $('<span></span>')
+				glob_wrapper = assignment_template
+				wrapper_assignments.append(glob_wrapper)
+				// glob_wrapper.append(assignment_template)
+				
+				var wrapper_input_forms = $($('[data-inject_input_forms]')[$('[data-inject_input_forms]').length - 1]);
+				wrapper_input_forms.html(create_inputs(glob_id))
+				{% endfor %}
+			</script>
+		{% endfor %}
 		</div>
 		<hr>
 		<div class="row">

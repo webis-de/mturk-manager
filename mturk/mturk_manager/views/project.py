@@ -59,12 +59,12 @@ def project(request, name):
             synchronize_database(db_obj_project, request)
         if request.POST['task'] == 'create_batch':
             create_batch(db_obj_project, request)
+        elif request.POST['task'] == 'add_template':
+            add_template(db_obj_project, request)
         elif request.POST['task'] == 'add_template_assignment':
             add_template_assignment(db_obj_project, request)
         elif request.POST['task'] == 'add_template_hit':
             add_template_hit(db_obj_project, request)
-        elif request.POST['task'] == 'add_template':
-            add_template(db_obj_project, request)
         elif request.POST['task'] == 'update_template':
             update_template(db_obj_project, request)
         elif request.POST['task'] == 'update_template_assignment':
@@ -171,7 +171,7 @@ def synchronize_database(db_obj_project, request):
                     id_assignment=id_assignment,
                     fk_hit=db_obj_hit,
                     fk_worker=db_obj_worker,
-                    answer=json.dumps(xmltodict.parse(assignment['Answer']))
+                    answer=json.dumps(xmltodict.parse(assignment['Answer'])),
                 )
 
                 db_obj_entity = m_Entity.objects.create(
@@ -179,6 +179,10 @@ def synchronize_database(db_obj_project, request):
                     id_item=db_obj_assignment.id,
                     id_item_internal=db_obj_assignment.id
                 )
+
+                db_obj_assignment.fk_entity = db_obj_entity
+                db_obj_assignment.save()
+
                 db_obj_tag_batch.m2m_entity.add(db_obj_entity)
                 db_obj_tag_submitted.m2m_entity.add(db_obj_entity)
                 db_obj_tag_hit.m2m_entity.add(db_obj_entity)
@@ -370,7 +374,7 @@ def update_template(db_obj_project, request):
     db_obj_template.height_frame = request.POST['height_frame']
     db_obj_template.fk_template_assignment = template_assignment
     db_obj_template.fk_template_hit = template_hit
-    
+
     try:
         db_obj_template.save()
     except IntegrityError:
@@ -469,7 +473,8 @@ def create_batch(db_obj_project, request):
                 Description=description,
                 Question=code_shared.create_question(db_obj_template.template, db_obj_template.height_frame, dict_parameters)
             )
-        except ClientError:
+        except ClientError as e:
+            print(e)
             messages.error(request, 'The HTML template is invalid')
             db_obj_batch.delete()
             return
