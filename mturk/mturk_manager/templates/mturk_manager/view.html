@@ -17,16 +17,38 @@
 	let glob_inputs;
 	let glob_wrapper;
 
-	function create_inputs(id)
+	function create_inputs(id, state='submitted')
 	{
-		return `
+		console.log(state)
+		let result = `
 			<div class="custom-control custom-checkbox d-inline">
-				<input type="checkbox" class="custom-control-input" id="checkbox_assignment_`+id+`" name="checkbox_assignment" value="`+id+`">
-				<label class="custom-control-label" for="checkbox_assignment_`+id+`"></label>
+				<input type="checkbox" class="custom-control-input" id="checkbox_assignment_PLACEHOLDER_ID" name="checkbox_assignment" value="PLACEHOLDER_ID" PLACEHOLDER_DISABLED>
+				<label class="custom-control-label" for="checkbox_assignment_PLACEHOLDER_ID"></label>
 			</div>
-			<button type="submit" name="task" value="button_mturk_approve__`+id+`" class="btn btn-sm btn-success">Approve selected</button>
-            <button type="submit" name="task" value="button_mturk_reject__`+id+`" class="btn btn-sm btn-danger">Reject selected</button>
-		`
+			<button type="submit" name="task" value="button_mturk_approve__PLACEHOLDER_ID" class="btn btn-sm PLACEHOLDER_SUCCESS" PLACEHOLDER_DISABLED>Approve</button>
+            <button type="submit" name="task" value="button_mturk_reject__PLACEHOLDER_ID" class="btn btn-sm PLACEHOLDER_DANGER" PLACEHOLDER_DISABLED>Reject</button>
+		`.replace(/PLACEHOLDER_ID/g, id)
+
+		if(state != 'submitted') 
+		{
+			result = result.replace(/PLACEHOLDER_DISABLED/g, 'disabled')
+			if(state == 'approved')
+			{
+				result = result
+				.replace(/PLACEHOLDER_SUCCESS/g, 'btn-success')
+				.replace(/PLACEHOLDER_DANGER/g, 'btn-light')
+			} else {
+				result = result
+				.replace(/PLACEHOLDER_SUCCESS/g, 'btn-light')
+				.replace(/PLACEHOLDER_DANGER/g, 'btn-danger')
+			}
+		} else {
+			result = result
+			.replace(/PLACEHOLDER_SUCCESS/g, 'btn-success')
+			.replace(/PLACEHOLDER_DANGER/g, 'btn-danger')
+		}
+		return result
+
 	}
 
 	function decode(input) {
@@ -57,7 +79,6 @@
 				glob_answer_raw = JSON.parse('{{assignment.answer|safe}}');
 				glob_answer = JSON.parse('{{assignment.answer_normalized|safe}}');
 
-
 				assignment_template = $(decode(`{{ hit.fk_batch.fk_template.fk_template_assignment.template }}`));
 				// glob_wrapper = $('<span></span>')
 				glob_wrapper = assignment_template
@@ -65,7 +86,7 @@
 				// glob_wrapper.append(assignment_template)
 				
 				var wrapper_input_forms = $($('[data-inject_input_forms]')[$('[data-inject_input_forms]').length - 1]);
-				wrapper_input_forms.html(create_inputs(glob_id))
+				wrapper_input_forms.html(create_inputs(glob_id{% if assignment.is_approved %}, 'approved'{% elif assignment.is_rejected %}, 'rejected'{% endif %}))
 				{% endfor %}
 			</script>
 		{% endfor %}
