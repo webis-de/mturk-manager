@@ -18,6 +18,14 @@ glob_dict_settings = {
     'database_filters': {
         'fk_hit__fk_batch__fk_project__name': 'PLACEHOLDER_NAME'
     },
+    'database_select_related': [
+        'fk_entity', 
+        'fk_hit', 
+        'fk_worker'
+    ],
+    'database_prefetch_related': [
+        'fk_entity__viewer_tags'
+    ],
     'data_fields': {
         # 'id': {
         #     'type': 'number',
