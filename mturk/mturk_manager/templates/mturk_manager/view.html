@@ -73,7 +73,7 @@
 			<script>
 				var wrapper_assignments = $($('[data-inject_assignments]')[$('[data-inject_assignments]').length - 1]);
 
-				{% for assignment in hit.assignments.all %}
+				{% for assignment in hit.list_assignments %}
 				glob_id = {{ assignment.id }};
 
 				glob_answer_raw = JSON.parse('{{assignment.answer|safe}}');
