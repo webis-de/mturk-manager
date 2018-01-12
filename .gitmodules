@@ -1,3 +1,4 @@
 [submodule "wstud-viewer-framework-django"]
 	path = wstud-viewer-framework-django
 	url = https://webis16.medien.uni-weimar.de:1337/webisstud/wstud-viewer-framework-django.git
+	master = master

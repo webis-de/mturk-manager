@@ -13,7 +13,6 @@ pip3 install django==2.0
 pip3 install whoosh==2.7.4
 pip3 install xmltodict
 pip3 install boto3
-pip3 install secrets
 
 cd ./mturk
 python3 manage.py createcachetable
