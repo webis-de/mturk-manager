@@ -1,15 +1,19 @@
 {% extends "mturk_manager/base.html" %}
 
+{% block name_project %}Settings{% endblock %}
+
 {% block body %}
 <div class="container-fluid" id="page_settings">
 	<div class="row">
 		<div class="col">
+			<h1>MTurk credentials</h1>
 			<table class="table table-bordered">
 				<thead>
 					<tr>
-						<td>Name</td>
-						<td>Access key</td>
-						<td>Secret key</td>
+						<th>Name</th>
+						<th>Access key</th>
+						<th>Secret key</th>
+						<th>Update</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -18,6 +22,9 @@
 						<td>{{ mturk.name }}</td>
 						<td>{{ mturk.key_access }}</td>
 						<td>{{ mturk.key_secret }}</td>
+						<td>
+							<button type="button" class="btn btn-primary btn-sm" data-id="{{ mturk.id }}" data-name="{{ mturk.name }}" data-key_access="{{ mturk.key_access }}" data-key_secret="{{ mturk.key_secret }}" data-toggle="modal" data-target="#modal_update_account">Update</button>
+						</td>
 					</tr>
 				{% endfor %}
 				</tbody>
@@ -29,14 +36,62 @@
 	</div>
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="modal_add_account" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" tabindex="-1" id="modal_update_account">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Update MTurk account</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<form method="post" enctype="multipart/form-data">
+				<div class="modal-body">
+					<div class="container-fluid">
+						{% csrf_token %}
+						<input type="hidden" name="id">
+						<div class="form-row form-group">
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text">Name</span>
+								</div>
+								<input type="text" class="form-control" name="name" maxlength="200">
+							</div>
+						</div>
+						<div class="form-row form-group">
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text">Access key</span>
+								</div>
+								<input type="text" class="form-control" name="key_access" maxlength="200">
+							</div>
+						</div>
+						<div class="form-row form-group">
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text">Secret key</span>
+								</div>
+								<input type="text" class="form-control" name="key_secret" maxlength="200">
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button type="submit" name="task" value="update_account" class="btn btn-primary">Update</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="modal_add_account" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<form method="post">
 				{% csrf_token %}
 				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">Add account</h5>
+					<h5 class="modal-title">Add account</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
@@ -57,7 +112,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-					<button type="submit" class="btn btn-primary">Add</button>
+					<button type="submit" name="task" value="add_account" class="btn btn-primary">Add</button>
 				</div>
 			</form>
 		</div>
