@@ -161,7 +161,10 @@ def normalize_answer(answer):
     dict_answer = json.loads(answer)
     normalize_answer = {}
 
-    for value in dict_answer['QuestionFormAnswers']['Answer']:
-        normalize_answer[value['QuestionIdentifier']] = value['FreeText']
+    try:
+        for value in dict_answer['QuestionFormAnswers']['Answer']:
+            normalize_answer[value['QuestionIdentifier']] = value['FreeText']
+    except TypeError:
+        normalize_answer[dict_answer['QuestionFormAnswers']['Answer']['QuestionIdentifier']] = dict_answer['QuestionFormAnswers']['Answer']['FreeText']
 
     return json.dumps(normalize_answer)
