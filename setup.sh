@@ -1,6 +1,11 @@
 #!/bin/bash
 # do necessary inital tasks
 
+if ! python3 -c "import venv" &> /dev/null; then
+    echo 'Please install python3-venv'
+    exit
+fi
+
 git submodule init
 git submodule update --remote
 
