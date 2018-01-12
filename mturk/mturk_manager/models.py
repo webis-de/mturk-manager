@@ -81,7 +81,7 @@ class m_Assignment(models.Model):
     # was_approved = models.NullBooleanField()
     # is_approved = models.NullBooleanField()
     answer = models.TextField()
-    fk_entity = models.OneToOneField('viewer.m_Entity', on_delete=models.CASCADE, null=True, related_name='fk_item')
+    tags = models.ManyToManyField('viewer.m_Tag', related_name='items')
 
 class m_Worker(models.Model):
     name = models.CharField(max_length=200, unique=True)
