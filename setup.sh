@@ -12,8 +12,9 @@ source venv/bin/activate
 pip install django==2.0
 pip install whoosh==2.7.4
 pip install xmltodict
+pip install boto3
 
 cd ./mturk
-# python3 manage.py createcachetable
-# python3 manage.py makemigrations viewer mturk_manager
-# python3 manage.py migrate
+python3 manage.py createcachetable
+python3 manage.py makemigrations viewer mturk_manager
+python3 manage.py migrate
