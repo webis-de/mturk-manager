@@ -15,6 +15,7 @@ class m_Project(models.Model):
     reward = models.CharField(default='0.0', max_length=10)
     lifetime = models.IntegerField(default=604800)
     duration = models.IntegerField(default=3600)
+    use_sandbox = models.BooleanField(default=True)
     fk_template_main = models.OneToOneField('m_Template', on_delete=models.SET_NULL, null=True, related_name='project')
     fk_template_assignment_main = models.OneToOneField('m_Template_Assignment', on_delete=models.SET_NULL, null=True, related_name='project')
 
@@ -28,6 +29,7 @@ class m_Batch(models.Model):
     description = models.TextField()
     keywords = models.TextField()
     count_assignments = models.IntegerField()
+    use_sandbox = models.BooleanField(default=True)
     reward = models.CharField(max_length=10)
     lifetime = models.IntegerField()
     duration = models.IntegerField()

@@ -17,6 +17,7 @@ def glob_create_batch(db_obj_project, request):
         description=request.POST['description'],
         keywords=request.POST['keywords'],
         count_assignments=request.POST['count_assignments'],
+        use_sandbox=True if request.POST['use_sandbox'] == '1' else False,
         reward=request.POST['reward'],
         lifetime=request.POST['lifetime'],
         duration=request.POST['duration'],
