@@ -118,6 +118,7 @@ def project(request, name):
             reverse('viewer:index', kwargs={'id_corpus':db_obj_project.name})
         ))
 
+
     context['stats_total'] = stats_total
     context['stats_new'] = stats_new
     context['db_obj_project'] = db_obj_project
@@ -475,8 +476,13 @@ def create_batch(db_obj_project, request):
                 Question=code_shared.create_question(db_obj_template.template, db_obj_template.height_frame, dict_parameters)
             )
         except ClientError as e:
-            print(e)
-            messages.error(request, 'The HTML template is invalid')
+            messages.error(request, '''
+                An error occured
+                <a href="#alert_1" data-toggle="collapse" class="alert-link">details</a>
+                <p class="collapse mb-0" id="alert_1">
+                    {}
+                </p>
+            '''.format(e))
             db_obj_batch.delete()
             return
 
@@ -516,7 +522,7 @@ def verify_input_add_template_assignment(request):
             list_messages.append('Invalid name')
         if request.POST['html_template'].strip() == '' and not 'file_template' in request.FILES:
             valid = False
-            list_messages.append('Invalid template')
+            list_messages.append('Invalid requester assignment template')
     except KeyError:
         list_messages.append('Unexpected error, please cry')
         valid = False
@@ -577,7 +583,7 @@ def verify_input_add_template(request):
             list_messages.append('Invalid name')
         if request.POST['html_template'].strip() == '' and not 'file_template' in request.FILES:
             valid = False
-            list_messages.append('Invalid template')
+            list_messages.append('Invalid worker template')
     except KeyError:
         list_messages.append('Unexpected error, please cry')
         valid = False
@@ -612,7 +618,7 @@ def verify_input_update_settings(request):
             list_messages.append('Invalid description')
         if request.POST['template_main'].strip() == '':
             valid = False
-            list_messages.append('Invalid template')
+            list_messages.append('Invalid worker template')
         if request.POST['use_sandbox'].strip() == '':
             valid = False
             list_messages.append('Invalid sandbox mode')
@@ -653,7 +659,7 @@ def verify_input_create_batch(request):
         #     list_messages.append('Invalid name')
         if request.POST['template'].strip() == '':
             valid = False
-            list_messages.append('Invalid template')
+            list_messages.append('Invalid worker template')
         if not 'file_csv' in request.FILES:
             valid = False
             list_messages.append('Invalid csv file')
@@ -665,34 +671,3 @@ def verify_input_create_batch(request):
         messages.error(request, message)
 
     return valid
-
-def create_data_dummy(db_obj_project):
-    db_obj_batch = m_Batch.objects.get_or_create(
-        name='batch_test',
-        defaults={
-        'fk_project': db_obj_project
-        }
-    )[0]
-    db_obj_hit = m_Hit.objects.get_or_create(
-        fk_batch=db_obj_batch
-    )[0]
-    db_obj_worker = m_Worker.objects.get_or_create(
-        name='Kristof'
-    )[0]
-    db_obj_worker1 = m_Worker.objects.get_or_create(
-        name='Martin'
-    )[0]
-
-    m_Assignment.objects.bulk_create([
-        m_Assignment(id_assignment='id_assignment_1', fk_worker=db_obj_worker, fk_hit=db_obj_hit),
-        m_Assignment(id_assignment='id_assignment_2', fk_worker=db_obj_worker1, fk_hit=db_obj_hit),
-        m_Assignment(id_assignment='id_assignment_3', fk_worker=db_obj_worker, fk_hit=db_obj_hit),
-        m_Assignment(id_assignment='id_assignment_4', fk_worker=db_obj_worker, fk_hit=db_obj_hit),
-        m_Assignment(id_assignment='id_assignment_5', fk_worker=db_obj_worker, fk_hit=db_obj_hit),
-        m_Assignment(id_assignment='id_assignment_6', fk_worker=db_obj_worker, fk_hit=db_obj_hit),
-        m_Assignment(id_assignment='id_assignment_7', fk_worker=db_obj_worker, fk_hit=db_obj_hit),
-        m_Assignment(id_assignment='id_assignment_8', fk_worker=db_obj_worker1, fk_hit=db_obj_hit),
-        m_Assignment(id_assignment='id_assignment_9', fk_worker=db_obj_worker1, fk_hit=db_obj_hit),
-        m_Assignment(id_assignment='id_assignment_0', fk_worker=db_obj_worker, fk_hit=db_obj_hit),
-    ])
-
