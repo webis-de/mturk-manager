@@ -15,6 +15,7 @@
 			<table class="table table-responsive">
 				<thead>
 					<tr>
+						<th></th>
 						<th>Batches</th>
 						<th>Hits</th>
 						<th>Assignments</th>
@@ -23,10 +24,18 @@
 				</thead>
 				<tbody>
 					<tr>
+						<td>Real</td>
 						<td>{{ stats_total.count_batches }}</td>
 						<td>{{ stats_total.count_hits }}</td>
 						<td>{{ stats_total.count_assignments }}</td>
 						<td>{{ stats_new.count_assignments }}</td>
+					</tr>
+					<tr>
+						<td>Sandbox</td>
+						<td>{{ stats_total.count_batches_sandbox }}</td>
+						<td>{{ stats_total.count_hits_sandbox }}</td>
+						<td>{{ stats_total.count_assignments_sandbox }}</td>
+						<td>{{ stats_new.count_assignments_sandbox }}</td>
 					</tr>
 				</tbody>
 			</table>
@@ -137,7 +146,18 @@
 					<div class="form-row form-group">
 						<div class="col input-group">
 							<div class="input-group-prepend">
-								<label class="input-group-text">Default template</label>
+								<label class="input-group-text">Use sandbox</label>
+							</div>
+							<select class="custom-select" name="use_sandbox">
+								<option value="0" {% if False ==  db_obj_project.use_sandbox %}selected{% endif %}>no</option>
+								<option value="1" {% if True ==  db_obj_project.use_sandbox %}selected{% endif %}>yes</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-row form-group">
+						<div class="col input-group">
+							<div class="input-group-prepend">
+								<label class="input-group-text">Default worker template</label>
 							</div>
 							<select class="custom-select" name="template_main">
 								<option value="">please select a template</option>
@@ -152,7 +172,7 @@
 					<div class="form-row form-group">
 						<div class="col input-group">
 							<div class="input-group-prepend">
-								<label class="input-group-text">Default assignment template</label>
+								<label class="input-group-text">Default requester assignment template</label>
 							</div>
 							<select class="custom-select" name="template_assignment_main">
 								<option value="">please select a template</option>
@@ -167,7 +187,7 @@
 					<div class="form-row form-group">
 						<div class="col input-group">
 							<div class="input-group-prepend">
-								<label class="input-group-text">Default hit template</label>
+								<label class="input-group-text">Default requester hit template</label>
 							</div>
 							<select class="custom-select" name="template_hit_main">
 								<option value="">please select a template</option>
@@ -190,7 +210,7 @@
 			<form method="post">
 				{% csrf_token %}
 				<fieldset>
-					<legend>Manage templates</legend>
+					<legend>Manage worker templates</legend>
 					<table class="table table-sm table-responsive-lg">
 						<thead>
 							<tr>
@@ -258,7 +278,7 @@
 			<form method="post">
 				{% csrf_token %}
 				<fieldset>
-					<legend>Manage assignment templates</legend>
+					<legend>Manage requester assignment templates</legend>
 					<table class="table table-sm table-responsive-lg">
 						<thead>
 							<tr>
@@ -306,7 +326,7 @@
 			<form method="post">
 				{% csrf_token %}
 				<fieldset>
-					<legend>Manage hit templates</legend>
+					<legend>Manage requester hit templates</legend>
 					<table class="table table-sm table-responsive-lg">
 						<thead>
 							<tr>
@@ -490,9 +510,30 @@
 							</div>
 						</div>
 						<div class="form-row form-group">
+							<div class="col">
+								<div class="input-group">
+									<div class="input-group-prepend">
+										<span class="input-group-text">Keywords (comma-separated)</span>
+									</div>
+									<input type="text" class="form-control" name="keywords" value="{{ db_obj_project.keywords }}">
+								</div>
+							</div>
+						</div>
+						<div class="form-row form-group">
 							<div class="col input-group">
 								<div class="input-group-prepend">
-									<label class="input-group-text">Template</label>
+									<label class="input-group-text">Use sandbox</label>
+								</div>
+								<select class="custom-select" name="use_sandbox">
+									<option value="0" {% if False ==  db_obj_project.use_sandbox %}selected{% endif %}>no</option>
+									<option value="1" {% if True ==  db_obj_project.use_sandbox %}selected{% endif %}>yes</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-row form-group">
+							<div class="col input-group">
+								<div class="input-group-prepend">
+									<label class="input-group-text">Worker template</label>
 								</div>
 								<select class="custom-select" name="template">
 									<option value="">please select a template</option>
@@ -502,16 +543,6 @@
 								{% endif %}
 								{% endfor %}
 								</select>
-							</div>
-						</div>
-						<div class="form-row form-group">
-							<div class="col">
-								<div class="input-group">
-									<div class="input-group-prepend">
-										<span class="input-group-text">Keywords (comma-separated)</span>
-									</div>
-									<input type="text" class="form-control" name="keywords" value="{{ db_obj_project.keywords }}">
-								</div>
 							</div>
 						</div>
 					</div>
@@ -529,7 +560,7 @@
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title">Add template</h5>
+				<h5 class="modal-title">Add requester hit template</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
@@ -585,7 +616,7 @@
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title">Add template</h5>
+				<h5 class="modal-title">Add requester assignment template</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
@@ -641,7 +672,7 @@
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title">Update hit template</h5>
+				<h5 class="modal-title">Update requester hit template</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
@@ -698,7 +729,7 @@
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title">Update assignment template</h5>
+				<h5 class="modal-title">Update requester assignment template</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
@@ -755,7 +786,7 @@
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title">Update template</h5>
+				<h5 class="modal-title">Update worker template</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
@@ -831,7 +862,7 @@
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title">Add template</h5>
+				<h5 class="modal-title">Add worker template</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>

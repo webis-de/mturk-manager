@@ -4,7 +4,7 @@ from mturk_manager.models import *
 from viewer.models import *
 from django.urls import reverse
 from django.core.exceptions import ObjectDoesNotExist
-from django.db.models import F, Value, Count
+from django.db.models import F, Value, Count, Q
 from django.db.models.functions import Concat
 import urllib.parse
 from django.utils.html import escape
@@ -57,7 +57,8 @@ def project(request, name):
 
     if request.method == 'POST':
         if request.POST['task'] == 'synchronize_database':
-            synchronize_database(db_obj_project, request)
+            synchronize_database(db_obj_project, request, True)
+            synchronize_database(db_obj_project, request, False)
         if request.POST['task'] == 'create_batch':
             create_batch(db_obj_project, request)
         elif request.POST['task'] == 'add_template':
@@ -89,16 +90,21 @@ def project(request, name):
         return redirect('mturk_manager:project', name=name_quoted, permanent=True)
 
     stats_total = queryset.aggregate(
-        count_batches=Count('batches', distinct=True), 
-        count_hits=Count('batches__hits', distinct=True), 
-        count_assignments=Count('batches__hits__assignments', distinct=True)
+        count_batches=Count('batches', filter=Q(batches__use_sandbox=False), distinct=True), 
+        count_hits=Count('batches__hits', filter=Q(batches__use_sandbox=False), distinct=True), 
+        count_assignments=Count('batches__hits__assignments', filter=Q(batches__use_sandbox=False), distinct=True),
+
+        count_batches_sandbox=Count('batches', filter=Q(batches__use_sandbox=True), distinct=True), 
+        count_hits_sandbox=Count('batches__hits', filter=Q(batches__use_sandbox=True), distinct=True), 
+        count_assignments_sandbox=Count('batches__hits__assignments', filter=Q(batches__use_sandbox=True), distinct=True)
     )
 
     stats_new = m_Tag.objects.filter(
         key_corpus=name_project,
         name='submitted'
     ).aggregate(
-        count_assignments=Count('m2m_entity', distinct=True)
+        count_assignments=Count('m2m_entity', filter=Q(m2m_entity__fk_item__fk_hit__fk_batch__use_sandbox=False), distinct=True),
+        count_assignments_sandbox=Count('m2m_entity', filter=Q(m2m_entity__fk_item__fk_hit__fk_batch__use_sandbox=True), distinct=True)
     )
     count_assignments_new = stats_new['count_assignments']
     if count_assignments_new > 0:
@@ -127,8 +133,8 @@ def delete_project(db_obj_project, request):
 
     return redirect('mturk_manager:index', permanent=True)
 
-def synchronize_database(db_obj_project, request):
-    client = code_shared.get_client(db_obj_project)
+def synchronize_database(db_obj_project, request, use_sandbox):
+    client = code_shared.get_client(db_obj_project, use_sandbox)
     set_id_assignments_available = set([assignment.id_assignment for assignment in m_Assignment.objects.filter(fk_hit__fk_batch__fk_project=db_obj_project)])
     print(set_id_assignments_available)
 
@@ -147,12 +153,12 @@ def synchronize_database(db_obj_project, request):
     for db_obj_hit in m_Hit.objects.annotate(
         count_assignments_current=Count('assignments')
     ).filter(
+        fk_batch__use_sandbox=use_sandbox,
         fk_batch__fk_project=db_obj_project,
         count_assignments_current__lt=F('fk_batch__count_assignments')
     ).select_related('fk_batch'):
         db_obj_tag_batch = dict_tags[glob_prefix_name_tag_batch+db_obj_hit.fk_batch.name]
         db_obj_tag_hit = dict_tags[glob_prefix_name_tag_hit+db_obj_hit.id_hit]
-
         response = client.list_assignments_for_hit(
             HITId=db_obj_hit.id_hit,
             AssignmentStatuses=['Submitted']
@@ -433,6 +439,7 @@ def update_settings(db_obj_project, request):
     db_obj_project.lifetime = request.POST['lifetime']
     db_obj_project.duration = request.POST['duration']
     db_obj_project.count_assignments = request.POST['count_assignments']
+    db_obj_project.use_sandbox = True if request.POST['use_sandbox'] == '1' else False
 
     if request.POST['template_main'] != '':
         db_obj_project.fk_template_main = m_Template.objects.get(fk_project=db_obj_project, id=request.POST['template_main'])
@@ -455,10 +462,11 @@ def create_batch(db_obj_project, request):
     title = request.POST['title']
     description = request.POST['description']
     keywords = request.POST['keywords']
+    use_sandbox = True if request.POST['use_sandbox'] == '1' else False
 
 
     db_obj_batch = code_shared.glob_create_batch(db_obj_project, request)
-    client = code_shared.get_client(db_obj_project)
+    client = code_shared.get_client(db_obj_project, use_sandbox)
     reader = csv.DictReader(io.StringIO(request.FILES['file_csv'].read().decode('utf-8')))
     db_obj_template = m_Template.objects.get(fk_project=db_obj_project, id=request.POST['template'])
     # list_entities = []
@@ -615,6 +623,9 @@ def verify_input_update_settings(request):
         if request.POST['template_main'].strip() == '':
             valid = False
             list_messages.append('Invalid template')
+        if request.POST['use_sandbox'].strip() == '':
+            valid = False
+            list_messages.append('Invalid sandbox mode')
     except KeyError:
         list_messages.append('Unexpected error, please cry')
         valid = False
