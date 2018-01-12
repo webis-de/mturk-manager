@@ -4,16 +4,16 @@
 git submodule init
 git submodule update --remote
 
-mkdir venv
-python3 -m venv venv
+# mkdir venv
+# python3 -m venv venv
+# source venv/bin/activate
 
-source venv/bin/activate
 
-pip install django==2.0
-pip install whoosh==2.7.4
-pip install xmltodict
-pip install boto3
-pip install secrets
+pip3 install django==2.0
+pip3 install whoosh==2.7.4
+pip3 install xmltodict
+pip3 install boto3
+pip3 install secrets
 
 cd ./mturk
 python3 manage.py createcachetable
