@@ -103,9 +103,10 @@ def project(request, name):
         key_corpus=name_project,
         name='submitted'
     ).aggregate(
-        count_assignments=Count('m2m_entity', filter=Q(m2m_entity__fk_item__fk_hit__fk_batch__use_sandbox=False), distinct=True),
-        count_assignments_sandbox=Count('m2m_entity', filter=Q(m2m_entity__fk_item__fk_hit__fk_batch__use_sandbox=True), distinct=True)
+        count_assignments=Count('items', filter=Q(items__fk_hit__fk_batch__use_sandbox=False), distinct=True),
+        count_assignments_sandbox=Count('items', filter=Q(items__fk_hit__fk_batch__use_sandbox=True), distinct=True)
     )
+
     count_assignments_new = stats_new['count_assignments']
     if count_assignments_new > 0:
         text = 'There is a new assignment available!' 
@@ -181,21 +182,12 @@ def synchronize_database(db_obj_project, request, use_sandbox):
                     answer=json.dumps(xmltodict.parse(assignment['Answer'])),
                 )
 
-                db_obj_entity = m_Entity.objects.create(
-                    key_corpus=db_obj_project.name,
-                    id_item=db_obj_assignment.id,
-                    id_item_internal=db_obj_assignment.id
-                )
-
-                db_obj_assignment.fk_entity = db_obj_entity
-                db_obj_assignment.save()
-
-                db_obj_tag_batch.m2m_entity.add(db_obj_entity)
-                db_obj_tag_submitted.m2m_entity.add(db_obj_entity)
-                db_obj_tag_hit.m2m_entity.add(db_obj_entity)
+                db_obj_tag_batch.items.add(db_obj_assignment)
+                db_obj_tag_submitted.items.add(db_obj_assignment)
+                db_obj_tag_hit.items.add(db_obj_assignment)
 
                 db_obj_tag_worker = m_Tag.objects.get_or_create(key_corpus=db_obj_project.name, name=glob_prefix_name_tag_worker+id_worker, defaults={'color': '#0000ff'})[0]
-                db_obj_tag_worker.m2m_entity.add(db_obj_entity)
+                db_obj_tag_worker.items.add(db_obj_assignment)
 
     # for db_obj_batch in db_obj_project.batches.all():
     #     pass
@@ -514,8 +506,6 @@ def create_batch(db_obj_project, request):
 
     # m_Entity.objects.bulk_create([m_Entity(id_item=id_hit, id_item_internal=id_hit, key_corpus=db_obj_project.name) for id_hit in list_entities])
     
-    # db_obj_tag.m2m_entity.add(*m_Entity.objects.filter(key_corpus=db_obj_project.name, id_item_internal__in=list_entities))
-
 def verify_input_add_template_assignment(request):
     valid = True
     list_messages = []

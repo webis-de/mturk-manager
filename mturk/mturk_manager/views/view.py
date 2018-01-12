@@ -48,11 +48,9 @@ def view(request, name):
         'fk_batch__fk_template__fk_template_assignment',
         'fk_batch__fk_template__fk_template_hit',
     ).prefetch_related(
-        Prefetch('assignments', queryset=m_Assignment.objects.select_related(
-            'fk_entity'
-            ).prefetch_related('fk_entity__viewer_tags').annotate(
-                count_tags_approved=Count('fk_entity', filter=Q(fk_entity__viewer_tags__name='approved'), distinct=True),
-                count_tags_rejected=Count('fk_entity', filter=Q(fk_entity__viewer_tags__name='rejected'), distinct=True)
+        Prefetch('assignments', queryset=m_Assignment.objects.prefetch_related('tags').annotate(
+                count_tags_approved=Count('tags', filter=Q(tags__name='approved'), distinct=True),
+                count_tags_rejected=Count('tags', filter=Q(tags__name='rejected'), distinct=True)
             ).distinct()
             ,to_attr='list_assignments'
         )
@@ -63,7 +61,6 @@ def view(request, name):
         for assignment in hit.list_assignments:
             # print(assignment.is_approved1)
             assignment.answer_normalized = normalize_answer(assignment.answer)
-            # set_tags = {tag.name for tag in assignment.fk_entity.viewer_tags.all()}
             assignment.is_approved = False if assignment.count_tags_approved == 0 else True
             assignment.is_rejected = False if assignment.count_tags_rejected == 0 else True
 
@@ -77,8 +74,6 @@ def approve_assignments(request, db_obj_project, list_ids):
     db_obj_tag_submitted = m_Tag.objects.get(key_corpus=db_obj_project.name, name='submitted')
     db_obj_tag_approved = m_Tag.objects.get(key_corpus=db_obj_project.name, name='approved')
 
-    dict_entites = {entity.id_item_internal: entity for entity in m_Entity.objects.filter(id_item_internal__in=list_ids)}
-
     list_success = []
     list_fail = []
 
@@ -91,9 +86,8 @@ def approve_assignments(request, db_obj_project, list_ids):
             list_fail.append(assignment)
             continue
 
-        db_obj_entity = dict_entites[assignment.id]
-        db_obj_tag_submitted.m2m_entity.remove(db_obj_entity)
-        db_obj_tag_approved.m2m_entity.add(db_obj_entity)
+        db_obj_tag_submitted.items.remove(assignment)
+        db_obj_tag_approved.items.add(assignment)
 
         list_success.append(assignment)
 
@@ -106,9 +100,8 @@ def approve_assignments(request, db_obj_project, list_ids):
             list_fail.append(assignment)
             continue
 
-        db_obj_entity = dict_entites[assignment.id]
-        db_obj_tag_submitted.m2m_entity.remove(db_obj_entity)
-        db_obj_tag_approved.m2m_entity.add(db_obj_entity)
+        db_obj_tag_submitted.items.remove(assignment)
+        db_obj_tag_approved.items.add(assignment)
 
         list_success.append(assignment)
 
@@ -122,8 +115,6 @@ def reject_assignments(request, db_obj_project, list_ids):
     client = code_shared.get_client(db_obj_project, False)
     db_obj_tag_submitted = m_Tag.objects.get(key_corpus=db_obj_project.name, name='submitted')
     db_obj_tag_rejected = m_Tag.objects.get(key_corpus=db_obj_project.name, name='rejected')
-
-    dict_entites = {entity.id_item_internal: entity for entity in m_Entity.objects.filter(id_item_internal__in=list_ids)}
 
     list_success = []
     list_fail = []
@@ -139,9 +130,8 @@ def reject_assignments(request, db_obj_project, list_ids):
             list_fail.append(assignment)
             continue
 
-        db_obj_entity = dict_entites[assignment.id]
-        db_obj_tag_submitted.m2m_entity.remove(db_obj_entity)
-        db_obj_tag_rejected.m2m_entity.add(db_obj_entity)
+        db_obj_tag_submitted.items.remove(assignment)
+        db_obj_tag_rejected.items.add(assignment)
 
         list_success.append(assignment)
 
@@ -156,9 +146,8 @@ def reject_assignments(request, db_obj_project, list_ids):
             list_fail.append(assignment)
             continue
 
-        db_obj_entity = dict_entites[assignment.id]
-        db_obj_tag_submitted.m2m_entity.remove(db_obj_entity)
-        db_obj_tag_rejected.m2m_entity.add(db_obj_entity)
+        db_obj_tag_submitted.items.remove(assignment)
+        db_obj_tag_rejected.items.add(assignment)
 
         list_success.append(assignment)
 
