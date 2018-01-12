@@ -25,6 +25,21 @@ glob_prefix_name_tag_batch = 'batch_'
 glob_prefix_name_tag_worker = 'worker_'
 glob_prefix_name_tag_hit = 'hit_'
 
+glob_dict_properties_validate = {
+    'string': {
+        'message': 'Invalid name',
+        'function': lambda request, x: request.POST[x].strip() == ''
+    },
+    'template': {
+        'message': 'Invalid template',
+        'function': lambda request, x, y: request.POST[x].strip() == '' and not y in request.FILES
+    },
+    'number': {
+        'message': 'Invalid frame height',
+        'function': lambda request, x: not request.POST[x].isdigit() or int(request.POST[x]) == 0
+    },
+}
+
 def project(request, name):
     context = {}
     name_quoted = name
@@ -85,8 +100,8 @@ def project(request, name):
             return delete_project(db_obj_project, request)
 
         # db_obj_project = queryset.get(name=name)
-# ***REMOVED***
-# ***REMOVED***
+        # ***REMOVED***
+        # ***REMOVED***
         return redirect('mturk_manager:project', name=name_quoted, permanent=True)
 
     stats_total = queryset.aggregate(
@@ -242,7 +257,9 @@ def delete_templates(db_obj_project, request):
     messages.success(request, 'Deleted template(s) successfully')
 
 def update_template_hit(db_obj_project, request):
-    if not verify_input_update_template_assignment(request):
+    if not code_shared.validate_form(request, [
+        {**glob_dict_properties_validate['string'], 'keys':['name']},
+    ]):
         return 
 
     template = None
@@ -272,7 +289,9 @@ def update_template_hit(db_obj_project, request):
     messages.success(request, 'Updated template successfully')
 
 def update_template_assignment(db_obj_project, request):
-    if not verify_input_update_template_assignment(request):
+    if not code_shared.validate_form(request, [
+        {**glob_dict_properties_validate['string'], 'keys':['name']},
+    ]):
         return 
 
     template = None
@@ -302,7 +321,10 @@ def update_template_assignment(db_obj_project, request):
     messages.success(request, 'Updated template successfully')
 
 def add_template_hit(db_obj_project, request):
-    if not verify_input_add_template_assignment(request):
+    if not code_shared.validate_form(request, [
+        {**glob_dict_properties_validate['string'], 'keys':['name']}, 
+        {**glob_dict_properties_validate['template'], 'keys':['html_template', 'file_template']},
+    ]):
         return 
 
     template = None
@@ -328,7 +350,10 @@ def add_template_hit(db_obj_project, request):
     messages.success(request, 'Added template successfully')
 
 def add_template_assignment(db_obj_project, request):
-    if not verify_input_add_template_assignment(request):
+    if not code_shared.validate_form(request, [
+        {**glob_dict_properties_validate['string'], 'keys':['name']}, 
+        {**glob_dict_properties_validate['template'], 'keys':['html_template', 'file_template']},
+    ]):
         return 
 
     template = None
@@ -354,7 +379,10 @@ def add_template_assignment(db_obj_project, request):
     messages.success(request, 'Added template successfully')
 
 def update_template(db_obj_project, request):
-    if not verify_input_update_template(request):
+    if not code_shared.validate_form(request, [
+        {**glob_dict_properties_validate['string'], 'keys':['name']}, 
+        {**glob_dict_properties_validate['number'], 'keys':['height_frame']},
+    ]):
         return 
 
     print(request.POST)
@@ -384,7 +412,11 @@ def update_template(db_obj_project, request):
     messages.success(request, 'Updated template successfully')
 
 def add_template(db_obj_project, request):
-    if not verify_input_add_template(request):
+    if not code_shared.validate_form(request, [
+        {**glob_dict_properties_validate['string'], 'keys':['name']}, 
+        {**glob_dict_properties_validate['number'], 'keys':['height_frame']},
+        {**glob_dict_properties_validate['template'], 'keys':['html_template', 'file_template']},
+    ]):
         return 
 
     template = None
@@ -423,7 +455,20 @@ def add_template(db_obj_project, request):
     messages.success(request, 'Added template successfully')
 
 def update_settings(db_obj_project, request):
-    verify_input_update_settings(request)
+    if not code_shared.validate_form(request, [
+        {**glob_dict_properties_validate['number'], 'keys':['lifetime']},
+        {**glob_dict_properties_validate['number'], 'keys':['count_assignments']},
+        {**glob_dict_properties_validate['number'], 'keys':['duration']},
+        {**glob_dict_properties_validate['string'], 'keys':['reward']}, 
+        {**glob_dict_properties_validate['string'], 'keys':['title']}, 
+        {**glob_dict_properties_validate['string'], 'keys':['description']}, 
+        {**glob_dict_properties_validate['string'], 'keys':['template_main']}, 
+        {**glob_dict_properties_validate['string'], 'keys':['use_sandbox']}, 
+    ]):
+        return 
+    # verify_input_update_settings(request)
+
+
 
     db_obj_project.title = request.POST['title']
     db_obj_project.description = request.POST['description']
@@ -511,87 +556,6 @@ def create_batch(db_obj_project, request):
     messages.success(request, 'Created batch successfully')
 
     # m_Entity.objects.bulk_create([m_Entity(id_item=id_hit, id_item_internal=id_hit, key_corpus=db_obj_project.name) for id_hit in list_entities])
-    
-def verify_input_add_template_assignment(request):
-    valid = True
-    list_messages = []
-
-    try:
-        if request.POST['name'].strip() == '':
-            valid = False
-            list_messages.append('Invalid name')
-        if request.POST['html_template'].strip() == '' and not 'file_template' in request.FILES:
-            valid = False
-            list_messages.append('Invalid requester assignment template')
-    except KeyError:
-        list_messages.append('Unexpected error, please cry')
-        valid = False
-
-    for message in list_messages:
-        messages.error(request, message)
-
-    return valid
-
-def verify_input_update_template_assignment(request):
-    valid = True
-    list_messages = []
-
-    try:
-        if request.POST['name'].strip() == '':
-            valid = False
-            list_messages.append('Invalid name')
-    except KeyError:
-        list_messages.append('Unexpected error, please cry')
-        valid = False
-
-    for message in list_messages:
-        messages.error(request, message)
-
-    return valid
-
-def verify_input_update_template(request):
-    valid = True
-    list_messages = []
-
-    print(request.POST)
-    try:
-        if int(request.POST['height_frame']) == 0:
-            valid = False
-            list_messages.append('Invalid frame height')
-        if request.POST['name'].strip() == '':
-            valid = False
-            list_messages.append('Invalid name')
-    except KeyError:
-        list_messages.append('Unexpected error, please cry')
-        valid = False
-
-    for message in list_messages:
-        messages.error(request, message)
-
-    return valid
-
-def verify_input_add_template(request):
-    valid = True
-    list_messages = []
-
-    try:
-        if int(request.POST['height_frame']) == 0:
-            valid = False
-            list_messages.append('Invalid frame height')
-        if request.POST['name'].strip() == '':
-            valid = False
-            list_messages.append('Invalid name')
-        if request.POST['html_template'].strip() == '' and not 'file_template' in request.FILES:
-            valid = False
-            list_messages.append('Invalid worker template')
-    except KeyError:
-        list_messages.append('Unexpected error, please cry')
-        valid = False
-
-    for message in list_messages:
-        messages.error(request, message)
-
-    return valid
 
 def verify_input_update_settings(request):
     valid = True

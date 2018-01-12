@@ -2,6 +2,7 @@ import boto3
 from mturk_manager.models import *
 from viewer.models import *
 from secrets import token_urlsafe
+from django.contrib import messages
 
 glob_url_sandbox = 'https://mturk-requester-sandbox.us-east-1.amazonaws.com'
 
@@ -48,3 +49,22 @@ def get_client(db_obj_project, use_sandbox=True):
             aws_secret_access_key=db_obj_project.fk_account_mturk.key_secret,
             region_name='us-east-1'
         )
+
+def validate_form(request, list_inputs):
+    is_valid = True
+
+    list_messages = []
+
+    try:
+        for item in list_inputs:
+            if item['function'](request, *item['keys']):
+                is_valid = False
+                list_messages.append(item['message'])
+    except KeyError:
+        list_messages.append('Unexpected error, please cry')
+        valid = False
+
+    for message in list_messages:
+        messages.error(request, message)
+
+    return is_valid
