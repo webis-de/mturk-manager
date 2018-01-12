@@ -10,16 +10,14 @@
 <script src="{% static 'mturk_manager/js/main.js' %}"></script>
 
 <script>
-	let glob_id;
-	// let dataset;
-	let glob_answer;
-	let glob_answer_raw;
-	let glob_inputs;
-	let glob_wrapper;
+	let hit_wrapper;
+	let question;
+	let assignment_wrapper;
+	let answer;
+	let answer_raw;
 
 	function create_inputs(id, state='submitted')
 	{
-		console.log(state)
 		let result = `
 			<div class="custom-control custom-checkbox d-inline">
 				<input type="checkbox" class="custom-control-input" id="checkbox_assignment_PLACEHOLDER_ID" name="checkbox_assignment" value="PLACEHOLDER_ID" PLACEHOLDER_DISABLED>
@@ -67,26 +65,26 @@
 			</div>
 		</div>
 		<hr>
-		<div class="row">
+		<div class="row" id="wrapper_hits">
 		{% for hit in queryset_hits %}
-			{{ hit.fk_batch.fk_template.fk_template_hit.template|safe }}
 			<script>
+				question = JSON.parse('{{hit.parameters|safe}}');
+				
+				hit_wrapper = $(decode(`{{ hit.fk_batch.fk_template.fk_template_hit.template }}`));
+				$('#wrapper_hits').append(hit_wrapper)
+
 				var wrapper_assignments = $($('[data-inject_assignments]')[$('[data-inject_assignments]').length - 1]);
 
 				{% for assignment in hit.list_assignments %}
-				glob_id = {{ assignment.id }};
 
-				glob_answer_raw = JSON.parse('{{assignment.answer|safe}}');
-				glob_answer = JSON.parse('{{assignment.answer_normalized|safe}}');
+				answer_raw = JSON.parse('{{assignment.answer|safe}}');
+				answer = JSON.parse('{{assignment.answer_normalized|safe}}');
 
-				assignment_template = $(decode(`{{ hit.fk_batch.fk_template.fk_template_assignment.template }}`));
-				// glob_wrapper = $('<span></span>')
-				glob_wrapper = assignment_template
-				wrapper_assignments.append(glob_wrapper)
-				// glob_wrapper.append(assignment_template)
+				assignment_wrapper = $(decode(`{{ hit.fk_batch.fk_template.fk_template_assignment.template }}`));
+				wrapper_assignments.append(assignment_wrapper)
 				
 				var wrapper_input_forms = $($('[data-inject_input_forms]')[$('[data-inject_input_forms]').length - 1]);
-				wrapper_input_forms.html(create_inputs(glob_id{% if assignment.is_approved %}, 'approved'{% elif assignment.is_rejected %}, 'rejected'{% endif %}))
+				wrapper_input_forms.html(create_inputs({{ assignment.id }}{% if assignment.is_approved %}, 'approved'{% elif assignment.is_rejected %}, 'rejected'{% endif %}))
 				{% endfor %}
 			</script>
 		{% endfor %}
