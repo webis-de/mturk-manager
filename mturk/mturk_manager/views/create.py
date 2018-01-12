@@ -50,7 +50,7 @@ glob_dict_settings = {
     'page_size': 25,
     'filters': [],
     'urls_header': [],
-    'secret_token_editing': '',
+    # 'secret_token_editing': '',
     'cards': [
         {
             'name': 'MTurk',
