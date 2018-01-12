@@ -9,5 +9,11 @@ python3 -m venv venv
 
 source venv/bin/activate
 
-pip install django==1.10.6
+pip install django==2.0
 pip install whoosh==2.7.4
+pip install xmltodict
+
+cd ./mturk
+# python3 manage.py createcachetable
+# python3 manage.py makemigrations viewer mturk_manager
+# python3 manage.py migrate
