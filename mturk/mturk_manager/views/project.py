@@ -25,21 +25,6 @@ glob_prefix_name_tag_batch = 'batch_'
 glob_prefix_name_tag_worker = 'worker_'
 glob_prefix_name_tag_hit = 'hit_'
 
-glob_dict_properties_validate = {
-    'string': {
-        'message': 'Invalid name',
-        'function': lambda request, x: request.POST[x].strip() == ''
-    },
-    'template': {
-        'message': 'Invalid template',
-        'function': lambda request, x, y: request.POST[x].strip() == '' and not y in request.FILES
-    },
-    'number': {
-        'message': 'Invalid frame height',
-        'function': lambda request, x: not request.POST[x].isdigit() or int(request.POST[x]) == 0
-    },
-}
-
 def project(request, name):
     context = {}
     name_quoted = name
@@ -258,7 +243,7 @@ def delete_templates(db_obj_project, request):
 
 def update_template_hit(db_obj_project, request):
     if not code_shared.validate_form(request, [
-        {**glob_dict_properties_validate['string'], 'keys':['name']},
+        {'type':'string', 'keys':['name'], 'message': 'Invalid name'},
     ]):
         return 
 
@@ -290,7 +275,7 @@ def update_template_hit(db_obj_project, request):
 
 def update_template_assignment(db_obj_project, request):
     if not code_shared.validate_form(request, [
-        {**glob_dict_properties_validate['string'], 'keys':['name']},
+        {'type':'string', 'keys':['name'], 'message': 'Invalid name'},
     ]):
         return 
 
@@ -322,8 +307,8 @@ def update_template_assignment(db_obj_project, request):
 
 def add_template_hit(db_obj_project, request):
     if not code_shared.validate_form(request, [
-        {**glob_dict_properties_validate['string'], 'keys':['name']}, 
-        {**glob_dict_properties_validate['template'], 'keys':['html_template', 'file_template']},
+        {'type':'string', 'keys':['name'], 'message': 'Invalid name'},
+        {'type':'template', 'keys':['html_template', 'file_template'], 'message': 'Invalid template'},
     ]):
         return 
 
@@ -351,8 +336,8 @@ def add_template_hit(db_obj_project, request):
 
 def add_template_assignment(db_obj_project, request):
     if not code_shared.validate_form(request, [
-        {**glob_dict_properties_validate['string'], 'keys':['name']}, 
-        {**glob_dict_properties_validate['template'], 'keys':['html_template', 'file_template']},
+        {'type':'string', 'keys':['name'], 'message': 'Invalid name'},
+        {'type':'template', 'keys':['html_template', 'file_template'], 'message': 'Invalid template'},
     ]):
         return 
 
@@ -380,8 +365,8 @@ def add_template_assignment(db_obj_project, request):
 
 def update_template(db_obj_project, request):
     if not code_shared.validate_form(request, [
-        {**glob_dict_properties_validate['string'], 'keys':['name']}, 
-        {**glob_dict_properties_validate['number'], 'keys':['height_frame']},
+        {'type':'string', 'keys':['name'], 'message': 'Invalid name'},
+        {'type':'number', 'keys':['height_frame'], 'message': 'Invalid frame height'},
     ]):
         return 
 
@@ -413,9 +398,9 @@ def update_template(db_obj_project, request):
 
 def add_template(db_obj_project, request):
     if not code_shared.validate_form(request, [
-        {**glob_dict_properties_validate['string'], 'keys':['name']}, 
-        {**glob_dict_properties_validate['number'], 'keys':['height_frame']},
-        {**glob_dict_properties_validate['template'], 'keys':['html_template', 'file_template']},
+        {'type':'string', 'keys':['name'], 'message': 'Invalid name'},
+        {'type':'number', 'keys':['height_frame'], 'message': 'Invalid frame height'},
+        {'type':'template', 'keys':['html_template', 'file_template'], 'message': 'Invalid template'},
     ]):
         return 
 
@@ -456,14 +441,14 @@ def add_template(db_obj_project, request):
 
 def update_settings(db_obj_project, request):
     if not code_shared.validate_form(request, [
-        {**glob_dict_properties_validate['number'], 'keys':['lifetime']},
-        {**glob_dict_properties_validate['number'], 'keys':['count_assignments']},
-        {**glob_dict_properties_validate['number'], 'keys':['duration']},
-        {**glob_dict_properties_validate['string'], 'keys':['reward']}, 
-        {**glob_dict_properties_validate['string'], 'keys':['title']}, 
-        {**glob_dict_properties_validate['string'], 'keys':['description']}, 
-        {**glob_dict_properties_validate['string'], 'keys':['template_main']}, 
-        {**glob_dict_properties_validate['string'], 'keys':['use_sandbox']}, 
+        {'type':'string', 'keys':['title'], 'message': 'Invalid title'},
+        {'type':'string', 'keys':['description'], 'message': 'Invalid description'},
+        {'type':'string', 'keys':['reward'], 'message': 'Invalid reward'},
+        {'type':'number', 'keys':['count_assignments'], 'message': 'Invalid number of assignments'},
+        {'type':'number', 'keys':['lifetime'], 'message': 'Invalid hit lifetime'},
+        {'type':'number', 'keys':['duration'], 'message': 'Invalid hit duration'},
+        {'type':'string', 'keys':['use_sandbox'], 'message': 'Invalid sandbox mode'},
+        {'type':'string', 'keys':['template_main'], 'message': 'Invalid main template'},
     ]):
         return 
     # verify_input_update_settings(request)

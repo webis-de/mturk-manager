@@ -50,6 +50,12 @@ def get_client(db_obj_project, use_sandbox=True):
             region_name='us-east-1'
         )
 
+
+glob_dict_properties_validate = {
+    'string': lambda request, x: request.POST[x].strip() == '',
+    'template': lambda request, x, y: request.POST[x].strip() == '' and not y in request.FILES,
+    'number': lambda request, x: not request.POST[x].isdigit() or int(request.POST[x]) == 0,
+}
 def validate_form(request, list_inputs):
     is_valid = True
 
@@ -57,7 +63,7 @@ def validate_form(request, list_inputs):
 
     try:
         for item in list_inputs:
-            if item['function'](request, *item['keys']):
+            if glob_dict_properties_validate[item['type']](request, *item['keys']):
                 is_valid = False
                 list_messages.append(item['message'])
     except KeyError:
