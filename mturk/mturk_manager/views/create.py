@@ -120,8 +120,16 @@ def create_project(request):
             'name': 'Project'
         },
         {
+            'link': reverse('mturk_manager:documentation'),
+            'name': 'Documentation'
+        },
+        {
             'link': reverse('mturk_manager:index'),
             'name': 'Open/Add Project'
+        },
+        {
+            'link': reverse('mturk_manager:settings'),
+            'name': 'Settings'
         }
     ]
 

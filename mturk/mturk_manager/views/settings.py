@@ -17,7 +17,6 @@ def settings(request):
 
     return render(request, 'mturk_manager/settings.html', context)
 
-
 def update_account(request):
     if not verify_input_add_account(request):
         return 
