@@ -1,7 +1,8 @@
 import boto3
 from mturk_manager.models import *
 from viewer.models import *
-from secrets import token_urlsafe
+# from secrets import token_urlsafe
+import uuid
 from django.contrib import messages
 
 glob_url_sandbox = 'https://mturk-requester-sandbox.us-east-1.amazonaws.com'
@@ -9,7 +10,8 @@ glob_url_sandbox = 'https://mturk-requester-sandbox.us-east-1.amazonaws.com'
 def glob_create_batch(db_obj_project, request):
     name = request.POST['name']
     if name.strip() == '':
-        name = token_urlsafe()
+        name = uuid.uuid4().hex
+        # name = token_urlsafe()
 
     return m_Batch.objects.create(
         name=name,
