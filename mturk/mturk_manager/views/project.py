@@ -440,18 +440,16 @@ def add_template(db_obj_project, request):
     messages.success(request, 'Added template successfully')
 
 def update_settings(db_obj_project, request):
-    if not code_shared.validate_form(request, [
-        {'type':'string', 'keys':['title'], 'message': 'Invalid title'},
-        {'type':'string', 'keys':['description'], 'message': 'Invalid description'},
-        {'type':'string', 'keys':['reward'], 'message': 'Invalid reward'},
-        {'type':'number', 'keys':['count_assignments'], 'message': 'Invalid number of assignments'},
-        {'type':'number', 'keys':['lifetime'], 'message': 'Invalid hit lifetime'},
-        {'type':'number', 'keys':['duration'], 'message': 'Invalid hit duration'},
-        {'type':'string', 'keys':['use_sandbox'], 'message': 'Invalid sandbox mode'},
-        {'type':'string', 'keys':['template_main'], 'message': 'Invalid main template'},
-    ]):
-        return 
-    # verify_input_update_settings(request)
+    code_shared.validate_form(request, [
+        {'type':'string', 'keys':['title'], 'message': 'Invalid title', 'state': 'warning'},
+        {'type':'string', 'keys':['description'], 'message': 'Invalid description', 'state': 'warning'},
+        {'type':'string', 'keys':['reward'], 'message': 'Invalid reward', 'state': 'warning'},
+        {'type':'number', 'keys':['count_assignments'], 'message': 'Invalid number of assignments', 'state': 'warning'},
+        {'type':'number', 'keys':['lifetime'], 'message': 'Invalid hit lifetime', 'state': 'warning'},
+        {'type':'number', 'keys':['duration'], 'message': 'Invalid hit duration', 'state': 'warning'},
+        {'type':'string', 'keys':['use_sandbox'], 'message': 'Invalid sandbox mode', 'state': 'warning'},
+        {'type':'string', 'keys':['template_main'], 'message': 'Invalid main template', 'state': 'warning'},
+    ])
 
 
 
@@ -541,44 +539,6 @@ def create_batch(db_obj_project, request):
     messages.success(request, 'Created batch successfully')
 
     # m_Entity.objects.bulk_create([m_Entity(id_item=id_hit, id_item_internal=id_hit, key_corpus=db_obj_project.name) for id_hit in list_entities])
-
-def verify_input_update_settings(request):
-    valid = True
-    list_messages = []
-
-    try:
-        if int(request.POST['lifetime']) == 0:
-            valid = False
-            list_messages.append('Invalid lifetime')
-        if int(request.POST['count_assignments']) == 0:
-            valid = False
-            list_messages.append('Invalid number of assignments')
-        if int(request.POST['duration']) == 0:
-            valid = False
-            list_messages.append('Invalid duration')
-        if request.POST['reward'].strip() == '':
-            valid = False
-            list_messages.append('Invalid reward')
-        if request.POST['title'].strip() == '':
-            valid = False
-            list_messages.append('Invalid title')
-        if request.POST['description'].strip() == '':
-            valid = False
-            list_messages.append('Invalid description')
-        if request.POST['template_main'].strip() == '':
-            valid = False
-            list_messages.append('Invalid worker template')
-        if request.POST['use_sandbox'].strip() == '':
-            valid = False
-            list_messages.append('Invalid sandbox mode')
-    except KeyError:
-        list_messages.append('Unexpected error, please cry')
-        valid = False
-
-    for message in list_messages:
-        messages.warning(request, message)
-
-    return valid
 
 def verify_input_create_batch(request):
     valid = True

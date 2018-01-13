@@ -59,18 +59,26 @@ glob_dict_properties_validate = {
 def validate_form(request, list_inputs):
     is_valid = True
 
-    list_messages = []
+    dict_messages = {
+        'error': [],
+        'warning': [],
+    }
 
     try:
         for item in list_inputs:
             if glob_dict_properties_validate[item['type']](request, *item['keys']):
                 is_valid = False
-                list_messages.append(item['message'])
+                if 'state' in item:
+                    dict_messages[item['state']].append(item['message'])
+                else:
+                    dict_messages['error'].append(item['message'])
     except KeyError:
-        list_messages.append('Unexpected error, please cry')
+        dict_messages['error'].append('Unexpected error, please cry')
         valid = False
 
-    for message in list_messages:
+    for message in dict_messages['error']:
         messages.error(request, message)
+    for message in dict_messages['warning']:
+        messages.warning(request, message)
 
     return is_valid
