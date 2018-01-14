@@ -106,15 +106,17 @@ def project(request, name):
         count_assignments=Count('items', filter=Q(items__fk_hit__fk_batch__use_sandbox=False), distinct=True),
         count_assignments_sandbox=Count('items', filter=Q(items__fk_hit__fk_batch__use_sandbox=True), distinct=True)
     )
+    print(stats_new)
 
     count_assignments_new = stats_new['count_assignments']
-    if count_assignments_new > 0:
+    count_assignments_sandbox_new = stats_new['count_assignments_sandbox']
+    count_assignments_new_total = count_assignments_new + count_assignments_sandbox_new
+    if count_assignments_new_total > 0:
         text = 'There is a new assignment available!' 
-        if count_assignments_new > 1:
-            text = 'There are {} new assignments available!'.format(count_assignments_new)
+        if count_assignments_new_total > 1:
+            text = 'There are {} new assignments available!'.format(count_assignments_new_total)
         print(reverse('viewer:index', kwargs={'id_corpus':db_obj_project.name}))
         messages.info(request, text+' <a href="{}?viewer__filter_tags=%5B%22submitted%22%5D" class="alert-link">View</a>'.format(
-        # messages.warning(request, text+' <a href="{}?viewer__filter_tags[\'submitted\']" class="alert-link">View</a>'.format(
             reverse('viewer:index', kwargs={'id_corpus':db_obj_project.name})
         ))
 
