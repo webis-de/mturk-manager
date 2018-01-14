@@ -4,15 +4,7 @@
 git submodule init
 git submodule update --remote
 
-# mkdir venv
-# python3 -m venv venv
-# source venv/bin/activate
-
-
-pip3 install django==2.0
-pip3 install whoosh==2.7.4
-pip3 install xmltodict
-pip3 install boto3
+pip install -r requirements.txt
 
 cd ./mturk
 python3 manage.py createcachetable
