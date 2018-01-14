@@ -55,17 +55,24 @@ glob_dict_settings = {
         {
             'name': 'MTurk',
             'content': '''
-                <div>
+                <div class="mb-2">
                     <span data-inject="count_selected_rows"></span> Assignment(s) selected
                 </div>
-                <div>
+                <div class="mb-2">
                     <button type="button" id="button_mturk_approve" class="btn btn-sm btn-success">Approve</button>
                     <button type="button" id="button_mturk_reject" class="btn btn-sm btn-danger">Reject</button>
-                    <button type="button" id="button_mturk_view" class="btn btn-sm btn-info">View</button>
+                </div>
+                <div class="mb-2">
+                    <a class="btn btn-sm btn-info" id="button_mturk_view" href="#">View assignments</a>
+                </div>
+                <div>
+                    <button type="button" id="button_mturk_download" class="btn btn-sm btn-primary">Download results</button>
                 </div>
                 <script>
                     $(document).ready(function()
                     {
+                        $(document).on('update.cv.selected-items', function(e, list_items) { console.log(e);console.log(list_items) });
+                        
                         $(document).on('click', '#button_mturk_view', function(){
                             let url = 'PLACEHOLDER_URL?list_ids=';
                             const list_ids = [];
