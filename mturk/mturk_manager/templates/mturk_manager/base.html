@@ -12,7 +12,7 @@
         <link rel="stylesheet" href="{% static 'mturk_manager/css/bootstrap.css' %}" type="text/css" media="screen" />
         <link rel="stylesheet" href="{% static 'mturk_manager/css/formats.css' %}" type="text/css" media="screen" />
     </head>
-    <body>
+    {% block tag_body %}<body>{% endblock %}
     	{% block header %}
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container-fluid">
