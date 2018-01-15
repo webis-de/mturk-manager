@@ -1,9 +1,17 @@
 {% extends "mturk_manager/base.html" %}
+{% load static %}
 
 {% block name_project %}Documentation{% endblock %}
 
+{% block tag_body %}
+<body data-spy="scroll" data-target="#navigation_documentation">
+{% endblock %}
+
 {% block body %}
-<div class="container-fluid" id="page_documentation" data-spy="scroll" data-target="#navigation_documentation">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+<link rel="stylesheet" href="{% static 'mturk_manager/css/sublime.css' %}">
+
+<div class="container-fluid" id="page_documentation">
 	<div class="row mt-3">
 		<div class="col-9">
             <div class="alert alert-info" role="alert">
@@ -26,37 +34,76 @@
             <p>
                 To 
             </p>
+
+            <h1 id="link_create_batch">Create batch</h1>
             
             <h1 id="link_templates_worker">Worker templates</h1>
+            <p>
+        		A worker template defines how a hit will look to the workers.
+        		You can get the html template from the <a href="https://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_HTMLQuestionArticle.html#ApiReference_HTMLQuestionArticle-example">MTurk reference</a> or directly by clicking on the button below.
+        	</p>
+        	<p>
+        		<button type="button" class="btn btn-dark btn-sm" data-template="{{ templates.template_html }}" data-toggle="modal" data-target="#modal_show_html">Show template</button>
+            </p>
+            <p>
+            	You must not remove or change the javascript related parts and the <code>form</code> properties. Otherwise you are free to design the hit as you wish; You can import javascript and css scripts, images and other assets from external sources as usual.
+            </p>
 
             <h1 id="link_templates_requester">Requester templates</h1>
             <h2 id="link_templates_requester_assignemnt">Requester assignment templates</h2>
             <h2 id="link_templates_requester_hit">Requester hit templates</h2>
         </div>
-        <div class="col-3">
-            <ul class="nav flex-column" id="navigation_documentation">
+        <div class="col-3" id="navigation_documentation">
+            <ul class="nav flex-column formats_scrollspy">
+                <li class="nav-item">
+                    <a class="nav-link" href="#link_account_mturk">MTurk account</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#link_project">MTurk Manager project</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#link_create_batch">Create batch</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#link_templates_worker">Worker templates</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#link_templates_requester">Requester templates</a>
+                </li>
+                <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link" href="#link_account_mturk">MTurk account</a>
+                        <a class="nav-link" href="#link_templates_requester_assignemnt">Requester assignment templates</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#link_project">MTurk Manager project</a>
-                    </li>
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#link_make_corpus_accessible">Make corpus accessible</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#link_create_settings_file">Create settings file</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#link_add_settings_file">Load settings file</a>
-                        </li>
-                    </ul>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#link_miscellaneous">Miscellaneous</a>
+                        <a class="nav-link" href="#link_templates_requester_hit">Requester hit templates</a>
                     </li>
                 </ul>
+            </ul>
         </div>
     </div>
 </div>
+
+<div class="modal fade" tabindex="-1" id="modal_show_html">
+	<div class="modal-dialog modal-lg modal-xxl">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">HTML</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<pre><code class="html"></code></pre>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+	{{ block.super }}
+	<script src="{% static 'mturk_manager/js/highlight.pack.js' %}"></script>
 {% endblock %}

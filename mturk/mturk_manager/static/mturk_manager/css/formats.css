@@ -11,3 +11,14 @@ html {
 		max-width: 1800px;
 	}
 }
+
+.formats_scrollspy {
+    position: fixed;
+}
+.formats_scrollspy a.active {
+    font-weight: bold;
+}
+.formats_scrollspy ul {
+    margin-left: 1em;
+    font-size: 0.9em;
+}
