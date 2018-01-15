@@ -3,11 +3,60 @@
 {% block name_project %}Documentation{% endblock %}
 
 {% block body %}
-<div class="container-fluid" id="page_settings">
-	<div class="row">
-		<div class="col">
-			hlkhjlökjä
-		</div>
-	</div>
+<div class="container-fluid" id="page_documentation" data-spy="scroll" data-target="#navigation_documentation">
+	<div class="row mt-3">
+		<div class="col-9">
+            <div class="alert alert-info" role="alert">
+                This documentation describes the usage of the MTurk Manager. To get information about the installation please refer to the <a href="https://github.com/webis-de/mturk-manager" class="alert-link">GitHub-page</a>.
+            </div>
+
+            <h1 id="link_account_mturk">MTurk account</h1>
+            <p>
+                Each project has to be associated with one valid MTurk account to be able to use the MTurk API.
+                Every MTurk account consists of a name and the security credentials which can be managed on the <a href="https://console.aws.amazon.com/iam/home?#/security_credential">AWS</a> page.  
+            </p>
+            <p>
+                To add a MTurk account visit the <a href="{% url 'mturk_manager:settings' %}">settings page</a>
+            </p>
+
+            <h1 id="link_project">Mturk Manager project</h1>
+            <p>
+                A Mturk Manager project is conceptually almost the same as a MTurk project. You are able to manage settings like title, description, reward and many more. Additionally each project can hold multiple hit templates (hereafter called "worker templates") and assignment templates (hereafter called "requester templates") to create custom views for the results.
+            </p>
+            <p>
+                To 
+            </p>
+            
+            <h1 id="link_templates_worker">Worker templates</h1>
+
+            <h1 id="link_templates_requester">Requester templates</h1>
+            <h2 id="link_templates_requester_assignemnt">Requester assignment templates</h2>
+            <h2 id="link_templates_requester_hit">Requester hit templates</h2>
+        </div>
+        <div class="col-3">
+            <ul class="nav flex-column" id="navigation_documentation">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#link_account_mturk">MTurk account</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#link_project">MTurk Manager project</a>
+                    </li>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#link_make_corpus_accessible">Make corpus accessible</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#link_create_settings_file">Create settings file</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#link_add_settings_file">Load settings file</a>
+                        </li>
+                    </ul>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#link_miscellaneous">Miscellaneous</a>
+                    </li>
+                </ul>
+        </div>
+    </div>
 </div>
 {% endblock %}
