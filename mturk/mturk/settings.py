@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 import os
 from django.contrib.messages import constants as messages
 
+import configparser
 MESSAGE_TAGS = {
     messages.DEBUG: 'alert-info',
     messages.INFO: 'alert-info',
@@ -86,13 +87,12 @@ WSGI_APPLICATION = 'mturk.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
+config = configparser.ConfigParser()
 path_database = 'db.sqlite3'
 
 try:
-    with open('../../mturk_settings.txt', 'r') as f:
-        path_database_new  = f.read()
-        if path_database_new.strip() != '':
-            path_database = path_database_new
+    config.read('../../mturk_settings.ini')
+    path_database = config['DEFAULT']['database'].strip()
 except Exception as e:
     pass
 
