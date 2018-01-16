@@ -17,7 +17,7 @@ The whole tool is built on top of the [Django-Framework](https://www.djangoproje
 
 ## Quickstart
 1. run `cd mturk`
-2. run `python manage.py runserver` to start the server _([more](https://docs.djangoproject.com/en/1.10/ref/django-admin/#django-admin-runserver) on how to start a django server)_
+2. run `python manage.py runserver` to start the server _([more](https://docs.djangoproject.com/en/2.0/ref/django-admin/#django-admin-runserver) on how to start a django server)_
 
 ## Supported Features
 * create and manage mechanical turk projects
