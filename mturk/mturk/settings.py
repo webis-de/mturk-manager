@@ -92,7 +92,7 @@ path_database = 'db.sqlite3'
 
 try:
     config.read('../../mturk_settings.ini')
-    path_database = config['DEFAULT']['database'].strip()
+    path_database = config['MTurk']['database'].strip()
 except Exception as e:
     pass
 
