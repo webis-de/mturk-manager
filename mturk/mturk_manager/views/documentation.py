@@ -22,5 +22,24 @@ def get_contents_spoiler():
         <p><input type='submit' id='submitButton' value='Submit' /></p></form>
         <script language='Javascript'>turkSetAssignmentID();</script>
     </body>
-</html>'''
+</html>''',
+        'template_html_requester_hit_template_default': '''<div class="col-12">
+    <div data-inject_assignments></div>
+</div>''',
+        'template_html_requester_hit_template_example': '''<div class="col-12">
+    <div class="input_text"></div>
+    <div data-inject_assignments></div>
+</div>
+<script>
+    var input_text = question.column1;
+    hit_wrapper.find('.input_text').text(input_text);
+</script>''',
+        'template_html_requester_assignment_template_example': '''<div class="col-12">
+    <div class="input_text"></div>
+    <div data-inject_input_forms></div>
+</div>
+<script>
+    var input_text = answer.input1;
+    assignment_wrapper.find('.input_text').text(input_text);
+</script>'''
     }
