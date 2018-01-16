@@ -66,6 +66,7 @@ def view(request, name):
 
     context['queryset_hits'] = queryset_hits
     context['name_project'] = name_project
+    context['queryset_messages_reject'] = m_Message_Reject.objects.filter(fk_project=db_obj_project)
     return render(request, 'mturk_manager/view.html', context)
 
 def approve_assignments(request, db_obj_project, list_ids):

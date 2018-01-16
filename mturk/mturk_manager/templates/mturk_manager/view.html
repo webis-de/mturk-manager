@@ -15,6 +15,11 @@
 	let assignment_wrapper;
 	let answer;
 	let answer_raw;
+	const list_messages_reject = [
+	{% for message in queryset_messages_reject.all %}
+		'{{ message.message }}',
+	{% endfor %}
+	]
 
 	function create_inputs(id, state='submitted')
 	{
@@ -23,8 +28,14 @@
 				<input type="checkbox" class="custom-control-input" id="checkbox_assignment_PLACEHOLDER_ID" name="checkbox_assignment" value="PLACEHOLDER_ID" PLACEHOLDER_DISABLED>
 				<label class="custom-control-label" for="checkbox_assignment_PLACEHOLDER_ID"></label>
 			</div>
-			<button type="submit" name="task" value="button_mturk_approve__PLACEHOLDER_ID" class="btn btn-sm PLACEHOLDER_SUCCESS" PLACEHOLDER_DISABLED>Approve</button>
-            <button type="submit" name="task" value="button_mturk_reject__PLACEHOLDER_ID" class="btn btn-sm PLACEHOLDER_DANGER" PLACEHOLDER_DISABLED>Reject</button>
+			<button type="button" name="task" value="button_mturk_approve__PLACEHOLDER_ID" class="btn btn-sm PLACEHOLDER_SUCCESS" PLACEHOLDER_DISABLED>Approve</button>
+			<div class="btn-group btn-group-sm">
+            	<button type="button" name="task" value="button_mturk_reject__PLACEHOLDER_ID" class="btn PLACEHOLDER_DANGER" PLACEHOLDER_DISABLED>Reject</button>
+            	<button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"></button>
+					<div class="dropdown-menu">
+						PLACEHOLDER_MESSAGES_REJECT
+					</div>
+            </div>
 		`.replace(/PLACEHOLDER_ID/g, id)
 
 		if(state != 'submitted') 
@@ -45,8 +56,14 @@
 			.replace(/PLACEHOLDER_SUCCESS/g, 'btn-success')
 			.replace(/PLACEHOLDER_DANGER/g, 'btn-danger')
 		}
-		return result
 
+		messages_reject = '';
+		$.each(list_messages_reject, function(index, message) {
+			messages_reject += '<a class="dropdown-item" href="#">'+message+'</a>'
+		});
+		result = result.replace(/PLACEHOLDER_MESSAGES_REJECT/g, messages_reject);
+
+		return result
 	}
 
 	function decode(input) {
@@ -60,8 +77,30 @@
 		{% csrf_token %}
 		<div class="row mt-2">
 			<div class="col">
-				<button type="submit" name="task" value="button_mturk_approve_selected" class="btn btn-success">Approve selected</button>
-	            <button type="submit" name="task" value="button_mturk_reject_selected" class="btn btn-danger">Reject selected</button>
+				<button type="button" name="task" value="button_mturk_approve_selected" class="btn btn-success">Approve selected</button>
+				<div class="btn-group">
+	            	<button type="button" name="task" value="button_mturk_reject_selected" class="btn btn-danger">Reject selected</button>
+					<button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"></button>
+					<div class="dropdown-menu">
+					{% for message in queryset_messages_reject.all %}
+						<a class="dropdown-item" href="#">{{ message.message }}</a>
+					{% endfor %}
+					</div>
+				</div>
+			</div>
+			<div class="col">
+				<div class="input-group mb-3">
+					<div class="input-group-prepend">
+						<label class="input-group-text" for="input_message_reject_default">Default reject message</label>
+						<button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"></button>
+						<div class="dropdown-menu" id="dropdown_message_reject_default">
+						{% for message in queryset_messages_reject.all %}
+							<a class="dropdown-item" href="#">{{ message.message }}</a>
+						{% endfor %}
+						</div>
+					</div>
+					<input type="text" id="input_message_reject_default" class="form-control">
+				</div>
 			</div>
 		</div>
 		<hr>
@@ -92,8 +131,16 @@
 		<hr>
 		<div class="row">
 			<div class="col">
-				<button type="submit" name="task" value="button_mturk_approve_selected" class="btn btn-success">Approve selected</button>
-	            <button type="submit" name="task" value="button_mturk_reject_selected" class="btn btn-danger">Reject selected</button>
+				<button type="button" name="task" value="button_mturk_approve_selected" class="btn btn-success">Approve selected</button>
+				<div class="btn-group">
+	            	<button type="button" name="task" value="button_mturk_reject_selected" class="btn btn-danger">Reject selected</button>
+					<button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"></button>
+					<div class="dropdown-menu">
+					{% for message in queryset_messages_reject.all %}
+						<a class="dropdown-item" href="#">{{ message.message }}</a>
+					{% endfor %}
+					</div>
+				</div>
 			</div>
 		</div>
 	</form>
@@ -101,4 +148,16 @@
 {% endblock %}	
 
 {% block javascript %}
+	<script>
+	$(document).ready(function()
+	{
+		$(document).on('click', '.dropdown-menu a', function(e) {
+			e.preventDefault();
+		});
+		
+		$(document).on('click', '#dropdown_message_reject_default a', function(e) {
+			$('#input_message_reject_default').val($(this).text());
+		});
+	});
+	</script>
 {% endblock %}	
