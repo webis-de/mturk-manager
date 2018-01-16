@@ -39,6 +39,17 @@ $(document).ready(function()
 		modal.find('input[name="name"]').val(name);
 	})
 
+	$('#modal_update_message_reject').on('show.bs.modal', function (event) 
+	{
+		const button = $(event.relatedTarget) // Button that triggered the modal
+		const id = button.data('id') // Extract info from data-* attributes
+		const message = button.data('message') // Extract info from data-* attributes
+		const modal = $(this)
+
+		modal.find('input[name="id"]').val(id);
+		modal.find('input[name="message"]').val(message);
+	})
+
 	$('#modal_show_html').on('show.bs.modal', function (event) 
 	{
 		const button = $(event.relatedTarget) // Button that triggered the modal

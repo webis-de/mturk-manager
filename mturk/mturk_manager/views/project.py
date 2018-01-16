@@ -40,7 +40,8 @@ def project(request, name):
         'batches__hits__assignments',
         'templates_assignment',
         'templates_hit',
-        'templates__fk_template_assignment'
+        'templates__fk_template_assignment',
+        'messages_reject'
     )
 
     try:
@@ -66,19 +67,25 @@ def project(request, name):
         elif request.POST['task'] == 'add_template_assignment':
             add_template_assignment(db_obj_project, request)
         elif request.POST['task'] == 'add_template_hit':
-            add_template_hit(db_obj_project, request)
+            add_template_assignment(db_obj_project, request)
+        elif request.POST['task'] == 'add_message_reject':
+            add_message_reject(db_obj_project, request)
         elif request.POST['task'] == 'update_template':
             update_template(db_obj_project, request)
         elif request.POST['task'] == 'update_template_assignment':
             update_template_assignment(db_obj_project, request)
         elif request.POST['task'] == 'update_template_hit':
             update_template_hit(db_obj_project, request)
+        elif request.POST['task'] == 'update_message_reject':
+            update_message_reject(db_obj_project, request)
         elif request.POST['task'] == 'delete_templates':
             delete_templates(db_obj_project, request)
         elif request.POST['task'] == 'delete_templates_hit':
             delete_templates_hit(db_obj_project, request)
         elif request.POST['task'] == 'delete_templates_assignment':
             delete_templates_assignment(db_obj_project, request)
+        elif request.POST['task'] == 'delete_messages_reject':
+            delete_messages_reject(db_obj_project, request)
         elif request.POST['task'] == 'update_settings':
             update_settings(db_obj_project, request)
         elif request.POST['task'] == 'delete_project':
@@ -230,6 +237,13 @@ def delete_templates_assignment(db_obj_project, request):
 
     messages.success(request, 'Deleted template(s) successfully')
 
+def delete_messages_reject(db_obj_project, request):
+    m_Message_Reject.objects.filter(
+        fk_project=db_obj_project, id__in=request.POST.getlist('messages')
+    ).delete()
+
+    messages.success(request, 'Deleted reject message(s) successfully')
+
 def delete_templates(db_obj_project, request):
     m_Template.objects.filter(
         fk_project=db_obj_project, id__in=request.POST.getlist('templates')
@@ -242,6 +256,18 @@ def delete_templates(db_obj_project, request):
     )
 
     messages.success(request, 'Deleted template(s) successfully')
+
+def update_message_reject(db_obj_project, request):
+    if not code_shared.validate_form(request, [
+        {'type':'string', 'keys':['message'], 'message': 'Invalid message'},
+    ]):
+        return 
+
+    m_Message_Reject.objects.filter(id=request.POST['id']).update(
+        message=request.POST['message'],
+    )
+
+    messages.success(request, 'Updated reject message successfully')
 
 def update_template_hit(db_obj_project, request):
     if not code_shared.validate_form(request, [
@@ -365,6 +391,16 @@ def add_template_assignment(db_obj_project, request):
 
     messages.success(request, 'Added template successfully')
 
+def add_message_reject(db_obj_project, request):
+    if not code_shared.validate_form(request, [
+        {'type':'string', 'keys':['message'], 'message': 'Invalid message'},
+    ]):
+        return 
+
+    m_Message_Reject.objects.create(fk_project=db_obj_project, message=request.POST['message'])
+
+    messages.success(request, 'Added reject message successfully')
+
 def update_template(db_obj_project, request):
     if not code_shared.validate_form(request, [
         {'type':'string', 'keys':['name'], 'message': 'Invalid name'},
@@ -475,18 +511,21 @@ def update_settings(db_obj_project, request):
     messages.success(request, 'Updated settings successfully')
 
 def create_batch(db_obj_project, request):
-    if not verify_input_create_batch(request):
+    if not code_shared.validate_form(request, [
+        {'type':'number', 'keys':['count_assignments'], 'message': 'Invalid number of assignments'},
+        {'type':'number', 'keys':['lifetime'], 'message': 'Invalid lifetime'},
+        {'type':'number', 'keys':['duration'], 'message': 'Invalid duration'},
+        {'type':'string', 'keys':['reward'], 'message': 'Invalid reward'},
+        {'type':'string', 'keys':['title'], 'message': 'Invalid title'},
+        {'type':'string', 'keys':['description'], 'message': 'Invalid description'},
+        {'type':'string', 'keys':['template'], 'message': 'Invalid worker template'},
+    ]):
         return 
 
-    count_assignments = int(request.POST['count_assignments'])
-    lifetime = int(request.POST['lifetime'])
-    duration = int(request.POST['duration'])
-    reward = request.POST['reward']
-    title = request.POST['title']
-    description = request.POST['description']
-    keywords = request.POST['keywords']
-    use_sandbox = True if request.POST['use_sandbox'] == '1' else False
-
+    if not 'file_csv' in request.FILES:
+        valid = False
+        messages.error(request, 'Invalid csv file')
+        return  
 
     db_obj_batch = code_shared.glob_create_batch(db_obj_project, request)
     client = code_shared.get_client(db_obj_project, use_sandbox)
