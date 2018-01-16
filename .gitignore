@@ -2,5 +2,9 @@ venv
 __pycache__
 mturk/thesis
 *.csv
-db.sqlite3
 migrations
+cache
+
+#comment the following lines out to add the dynamic content to the version control
+db.sqlite3
+settings
