@@ -19,7 +19,7 @@ glob_dict_settings = {
         'fk_hit__fk_batch__fk_project__name': 'PLACEHOLDER_NAME'
     },
     'database_select_related': [
-        'fk_hit', 
+        'fk_hit__fk_batch', 
         'fk_worker'
     ],
     'database_prefetch_related': [
@@ -41,11 +41,15 @@ glob_dict_settings = {
         'fk_worker__name': {
             'type': 'string',
             'display_name': 'Worker'
+        },
+        'fk_hit__fk_batch__use_sandbox': {
+            'type': 'string',
+            'display_name': 'Worker'
         }
     },
     'id': 'id_assignment',
     'displayed_fields': [
-        'id_assignment', 'fk_hit__id_hit', 'fk_worker__name'
+        'id_assignment', 'fk_hit__id_hit', 'fk_worker__name', 'fk_hit__fk_batch__use_sandbox'
     ],
     'page_size': 25,
     'filters': [],
@@ -72,7 +76,7 @@ glob_dict_settings = {
                     $(document).ready(function()
                     {
                         $(document).on('update.cv.selected-items', function(e, list_items) { console.log(e);console.log(list_items) });
-                        
+
                         $(document).on('click', '#button_mturk_view', function(){
                             let url = 'PLACEHOLDER_URL?list_ids=';
                             const list_ids = [];
