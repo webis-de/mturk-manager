@@ -369,7 +369,114 @@
 		</div>
 	</div>
 	<hr>
+	<div class="row">
+		<div class="col-12 col-lg-6">
+			<form method="post">
+				{% csrf_token %}
+				<fieldset>
+					<legend>Manage reject messages</legend>
+					<table class="table table-sm table-responsive-lg">
+						<thead>
+							<tr>
+								<th>Selection</th>
+								<th>Message</th>
+								<th>Update</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for message in db_obj_project.messages_reject.all %}
+							<tr>
+								<td>
+									<div class="custom-control custom-checkbox">
+										<input type="checkbox" name="messages" value="{{ message.id }}" id="checkbox_manage_messages_reject_{{ message.id }}" class="custom-control-input">
+										<label class="custom-control-label" for="checkbox_manage_messages_reject_{{ message.id }}"></label>
+									</div>
+								</td>
+								<td>
+									{{ message.message }}
+								</td>
+								<td>
+									<button type="button" class="btn btn-primary btn-sm" data-id="{{ message.id }}" data-message="{{ message.message }}" data-toggle="modal" data-target="#modal_update_message_reject">Update</button>
+								</td>
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+					<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_add_message_reject">Add message</button>
+					{% if db_obj_project.messages_reject.count > 0 %}
+					<button type="submit" name="task" value="delete_messages_reject" class="btn btn-danger">Delete selected</button>
+					{% endif %}
+				</fieldset>
+			</form>
+		</div>
+	</div>
+	<hr>
 	<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal_delete_project">Delete project</button>
+</div>
+
+<div class="modal fade" tabindex="-1" id="modal_update_message_reject">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Update reject message</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<form method="post" enctype="multipart/form-data">
+				<div class="modal-body">
+					<div class="container-fluid">
+						{% csrf_token %}
+						<input type="hidden" name="id">
+						<div class="form-row form-group">
+							<div class="col input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text">Message</span>
+								</div>
+								<input type="text" class="form-control" name="message" maxlength="1024">
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" name="task" value="update_message_reject" class="btn btn-primary">Add</button>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" tabindex="-1" id="modal_add_message_reject">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Add reject message</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<form method="post" enctype="multipart/form-data">
+				<div class="modal-body">
+					<div class="container-fluid">
+						{% csrf_token %}
+						<div class="form-row form-group">
+							<div class="col input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text">Message</span>
+								</div>
+								<input type="text" class="form-control" name="message" maxlength="1024">
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" name="task" value="add_message_reject" class="btn btn-primary">Add</button>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				</div>
+			</form>
+		</div>
+	</div>
 </div>
 
 <div class="modal fade" tabindex="-1" id="modal_show_html">
@@ -681,7 +788,6 @@
 				<div class="modal-body">
 					<div class="container-fluid">
 						{% csrf_token %}
-						<input type="hidden" name="id">
 						<div class="form-row form-group">
 							<div class="input-group">
 								<div class="input-group-prepend">

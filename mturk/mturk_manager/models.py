@@ -85,3 +85,7 @@ class m_Assignment(models.Model):
 
 class m_Worker(models.Model):
     name = models.CharField(max_length=200, unique=True)
+
+class m_Message_Reject(models.Model):
+    fk_project = models.ForeignKey('m_Project', on_delete=models.CASCADE, related_name='messages_reject')
+    message = models.CharField(max_length=1024)
