@@ -83,14 +83,25 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'mturk.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
+
+path_database = 'db.sqlite3'
+
+try:
+    with open('../../mturk_settings.txt', 'r') as f:
+        path_database_new  = f.read()
+        if path_database_new.strip() != '':
+            path_database = path_database_new
+except Exception as e:
+    pass
+
+print('storing database into {}'.format(path_database))
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': os.path.join(BASE_DIR, path_database),
     }
 }
 
