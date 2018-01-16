@@ -27,31 +27,98 @@
                 To add a MTurk account visit the <a href="{% url 'mturk_manager:settings' %}">settings page</a>
             </p>
 
-            <h1 id="link_project">Mturk Manager project</h1>
+            <h1 id="link_project">MTurk Manager project</h1>
             <p>
-                A Mturk Manager project is conceptually almost the same as a MTurk project. You are able to manage settings like title, description, reward and many more. Additionally each project can hold multiple hit templates (hereafter called "worker templates") and assignment templates (hereafter called "requester templates") to create custom views for the results.
+                A MTurk Manager project is conceptually almost the same as a MTurk project. You are able to manage settings like title, description, reward and many more. Additionally each project can hold multiple hit templates (hereafter called <b>worker templates</b>) and assignment templates (hereafter called <b>requester templates</b>) to create custom views for the results.
             </p>
             <p>
-                To 
+                To create a new project visit <a href="{% url 'mturk_manager:create' %}">this page</a> and fill in an unique project name and select a MTurk account.
+            </p>
+            <p>
+                On the project page you are able to set default settings for convenience reason. These settings will be used in the batch creation form and can be overridden for this specific batch.
             </p>
 
             <h1 id="link_create_batch">Create batch</h1>
+            <p>
+                This <a href="https://blog.mturk.com/using-csv-files-to-create-multiple-hits-in-the-requester-ui-22a25ec563dc">blog entry</a> describes the usage of csv files in the requester user interface of MTurk but it can also be applied to this tool.
+            </p>
             
             <h1 id="link_templates_worker">Worker templates</h1>
             <p>
         		A worker template defines how a hit will look to the workers.
-        		You can get the html template from the <a href="https://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_HTMLQuestionArticle.html#ApiReference_HTMLQuestionArticle-example">MTurk reference</a> or directly by clicking on the button below.
+        		You can get the HTML template from the <a href="https://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_HTMLQuestionArticle.html#ApiReference_HTMLQuestionArticle-example">MTurk reference</a> or directly by clicking on the button below.
         	</p>
         	<p>
-        		<button type="button" class="btn btn-dark btn-sm" data-template="{{ templates.template_html }}" data-toggle="modal" data-target="#modal_show_html">Show template</button>
+        		<button type="button" class="btn btn-dark btn-sm" data-template="{{ templates.template_html }}" data-toggle="modal" data-target="#modal_show_html">Show worker template</button>
             </p>
             <p>
-            	You must not remove or change the javascript related parts and the <code>form</code> properties. Otherwise you are free to design the hit as you wish; You can import javascript and css scripts, images and other assets from external sources as usual.
+            	You must not remove or change the JavaScript related parts and the <code>form</code> properties. Otherwise you are free to design the hit as you wish; You can import JavaScript and CSS scripts, images and other assets from external sources as usual.
+            </p>
+            <p>
+                Values provided in the <a href="#link_create_batch">csv file</a> to create a batch can be used in the templates by including placeholders into the template. The structure of a placeholder looks like the following: <code>${column_name}</code>. In this example the value of the csv column named 'column_name' will be replaced with the placeholder.  
             </p>
 
             <h1 id="link_templates_requester">Requester templates</h1>
+            <p>
+                Requester templates are the real benefit you get using the MTurk Manager.
+                They allow you to design your own view for each assignment in a batch to get a better understanding of the results than looking at a csv file or a table.
+            </p>
+            <p>
+                You <b>have to</b> design a requester assignment template for each worker template. This template is responsible to show the results of the assignment and to provide the approve/reject buttons for the corresponding assignment.
+                You <b>may</b> also design a requester hit layout for each worker template. This hit layout is useful to combine information displayed for each assignment in order that you don't show the same information more than once.
+            </p>
+            <p>
+                To better understand the difference between requester assignment templates and requester hit templates consider the following example. You created a batch of hits where each hit shows an image and the workers have to judge the image by its beauty.
+                If you specify a requester assignment template only the image would be displayed for every assignment in each hit. If you set the number of assignments per hit to a high count you would see the same image many times.
+                Its better to add the image to the requester hit template and design the requester assignment templates to only show the judgment of the workers. In that way you'll see the image only once followed by all the judgment by the workers.  
+            </p>
+
             <h2 id="link_templates_requester_assignemnt">Requester assignment templates</h2>
+            <p>
+                The requester assignment template is used to design the results of the workers.
+            </p>
+            <p>
+                Since a requester assignment template is associated to a worker template it has access not only to the values of the csv values used to create the hit but also to the results of the workers.
+                The values of the corresponding row in the csv file are available in the <code>question</code> JavaScript variable and the results of the worker are stored in the <code>answer</code> JavaScript variable.
+                To inject the values of the <code>question</code> and <code>answer</code> variables into your template you have access to the <code>assignment_wrapper</code> variable which wraps the current assignment. You can use the jQuery <code>find()</code> function to inject the values into any tag inside of the <code>assignment_wrapper</code>.
+            </p>
+            <p>
+                The input elements to approve/reject the assignments are injected into the tag containing the <code>data-inject_input_forms</code>. In that way you are able to determine the location of the input elements. If you forget to set the <code>data-inject_input_forms</code> attribute you can not approve/reject the assignment.
+                Click the following button to see an example assignment requester template.
+            </p>
+            <p>
+                <button type="button" class="btn btn-dark btn-sm" data-template="{{ templates.template_html_requester_assignment_template_example }}" data-toggle="modal" data-target="#modal_show_html">Show example requester assignment template</button>
+            </p>
+            <div class="alert alert-warning" role="alert">
+              You have to use the <code>var</code> keyword to declare custom JavaScript variables!<br>
+              The <code>let</code> and <code>const</code> keywords are <b>not</b> allowed because the templates may be inserted multiple times into the page and therefore the variables would be redeclared which is forbidden using the <code>let</code> and <code>const</code> keywords.
+            </div>
+
             <h2 id="link_templates_requester_hit">Requester hit templates</h2>
+            <p>
+                If you do not specify a requester hit template the following the default template will be used instead.
+            </p>
+            <p>
+                <button type="button" class="btn btn-dark btn-sm" data-template="{{ templates.template_html_requester_hit_template_default }}" data-toggle="modal" data-target="#modal_show_html">Show default requester hit template</button>
+            </p>
+            <p>
+                If you want to create your own requester hit template you'll have to specify with the <code>data-inject_assingments</code> attribute where the assignments should be inserted. 
+            </p>
+            <p>
+                You have access to the JavaScript variable <code>question</code> which is a object containing the csv columns as property keys and values of the corresponding row as property values.  
+            </p>
+            <p>
+                Since multiple requester hit templates may be shown you are not allowed to use <code>id</code> attributes in your templates to prevent multiple HTML tags with the same id on the same page.
+                Instead you have access to the <code>hit_wrapper</code> JavaScript variable which wraps the current hit and can be used together with the <code>find()</code> function from jQuery to find any tag inside of your template.
+                Click the following button to see an example hit requester template.
+            </p>
+            <p>
+                <button type="button" class="btn btn-dark btn-sm" data-template="{{ templates.template_html_requester_hit_template_example }}" data-toggle="modal" data-target="#modal_show_html">Show example requester hit template</button>
+            </p>
+            <div class="alert alert-warning" role="alert">
+              You have to use the <code>var</code> keyword to declare custom JavaScript variables!<br>
+              The <code>let</code> and <code>const</code> keywords are <b>not</b> allowed because the templates may be inserted multiple times into the page and therefore the variables would be redeclared which is forbidden using the <code>let</code> and <code>const</code> keywords.
+            </div>
         </div>
         <div class="col-3" id="navigation_documentation">
             <ul class="nav flex-column formats_scrollspy">
