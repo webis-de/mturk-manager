@@ -173,6 +173,13 @@ $(document).ready(function()
 		$('#input_message_reject_default').val($(this).text());
 	});
 
+	window.onbeforeunload = function() {
+		if(Object.keys(glob_dict_assignemnts).length > 0)
+		{
+	    	return 'You have unsaved changes!';
+		}
+	}
+
 	function print_dict_assignment()
 	{
 		$('pre').text(JSON.stringify(glob_dict_assignemnts, null, 2));
