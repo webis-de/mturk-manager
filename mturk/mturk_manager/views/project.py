@@ -528,20 +528,20 @@ def create_batch(db_obj_project, request):
         return  
 
     db_obj_batch = code_shared.glob_create_batch(db_obj_project, request)
-    client = code_shared.get_client(db_obj_project, use_sandbox)
+    client = code_shared.get_client(db_obj_project, True if request.POST['use_sandbox'] == '1' else False)
     reader = csv.DictReader(io.StringIO(request.FILES['file_csv'].read().decode('utf-8')))
     db_obj_template = m_Template.objects.get(fk_project=db_obj_project, id=request.POST['template'])
     # list_entities = []
     for dict_parameters in reader:
         try:
             mturk_obj_hit = client.create_hit(
-                Keywords=keywords,
-                MaxAssignments=count_assignments,
-                LifetimeInSeconds=lifetime,
-                AssignmentDurationInSeconds=duration,
-                Reward=reward,
-                Title=title,
-                Description=description,
+                Keywords=request.POST['keywords'],
+                MaxAssignments=int(request.POST['count_assignments']),
+                LifetimeInSeconds=int(request.POST['lifetime']),
+                AssignmentDurationInSeconds=int(request.POST['duration']),
+                Reward=request.POST['reward'],
+                Title=request.POST['title'],
+                Description=request.POST['description'],
                 Question=code_shared.create_question(db_obj_template.template, db_obj_template.height_frame, dict_parameters)
             )
         except ClientError as e:
@@ -580,44 +580,3 @@ def create_batch(db_obj_project, request):
     messages.success(request, 'Created batch successfully')
 
     # m_Entity.objects.bulk_create([m_Entity(id_item=id_hit, id_item_internal=id_hit, key_corpus=db_obj_project.name) for id_hit in list_entities])
-
-def verify_input_create_batch(request):
-    valid = True
-    list_messages = []
-
-    try:
-        if int(request.POST['count_assignments']) == 0:
-            valid = False
-            list_messages.append('Invalid number of assignments')
-        if int(request.POST['lifetime']) == 0:
-            valid = False
-            list_messages.append('Invalid lifetime')
-        if int(request.POST['duration']) == 0:
-            valid = False
-            list_messages.append('Invalid duration')
-        if request.POST['reward'].strip() == '':
-            valid = False
-            list_messages.append('Invalid reward')
-        if request.POST['title'].strip() == '':
-            valid = False
-            list_messages.append('Invalid title')
-        if request.POST['description'].strip() == '':
-            valid = False
-            list_messages.append('Invalid description')
-        # if request.POST['name'].strip() == '':
-        #     valid = False
-        #     list_messages.append('Invalid name')
-        if request.POST['template'].strip() == '':
-            valid = False
-            list_messages.append('Invalid worker template')
-        if not 'file_csv' in request.FILES:
-            valid = False
-            list_messages.append('Invalid csv file')
-    except KeyError:
-        list_messages.append('Unexpected error, please cry')
-        valid = False
-
-    for message in list_messages:
-        messages.error(request, message)
-
-    return valid

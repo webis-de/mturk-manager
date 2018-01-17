@@ -25,14 +25,14 @@
 	{
 		let result = `
 			<div class="custom-control custom-checkbox d-inline">
-				<input type="checkbox" class="custom-control-input" id="checkbox_assignment_PLACEHOLDER_ID" name="checkbox_assignment" value="PLACEHOLDER_ID" PLACEHOLDER_DISABLED>
+				<input type="checkbox" class="custom-control-input" id="checkbox_assignment_PLACEHOLDER_ID" data-id_assignment="PLACEHOLDER_ID" name="checkbox_assignment" value="PLACEHOLDER_ID" PLACEHOLDER_DISABLED>
 				<label class="custom-control-label" for="checkbox_assignment_PLACEHOLDER_ID"></label>
 			</div>
-			<button type="button" name="task" value="button_mturk_approve__PLACEHOLDER_ID" class="btn btn-sm PLACEHOLDER_SUCCESS" PLACEHOLDER_DISABLED>Approve</button>
+			<button type="button" name="task" value="button_mturk_approve__PLACEHOLDER_ID" data-id_assignment="PLACEHOLDER_ID" class="btn btn-sm PLACEHOLDER_SUCCESS approve_assignment" PLACEHOLDER_DISABLED>Approve</button>
 			<div class="btn-group btn-group-sm">
-            	<button type="button" name="task" value="button_mturk_reject__PLACEHOLDER_ID" class="btn PLACEHOLDER_DANGER" PLACEHOLDER_DISABLED>Reject</button>
-            	<button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"></button>
-					<div class="dropdown-menu">
+            	<button type="button" name="task" value="button_mturk_reject__PLACEHOLDER_ID" data-id_assignment="PLACEHOLDER_ID" class="btn PLACEHOLDER_DANGER reject_assignment" PLACEHOLDER_DISABLED>Reject</button>
+            	<button type="button" class="btn PLACEHOLDER_DANGER dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" PLACEHOLDER_DISABLED></button>
+					<div class="dropdown-menu dropdown_reject_assignment">
 						PLACEHOLDER_MESSAGES_REJECT
 					</div>
             </div>
@@ -59,7 +59,7 @@
 
 		messages_reject = '';
 		$.each(list_messages_reject, function(index, message) {
-			messages_reject += '<a class="dropdown-item" href="#">'+message+'</a>'
+			messages_reject += '<a class="dropdown-item" data-id_assignment="'+id+'" href="#">'+message+'</a>'
 		});
 		result = result.replace(/PLACEHOLDER_MESSAGES_REJECT/g, messages_reject);
 
@@ -73,15 +73,18 @@
 	}
 </script>
 <div class="container-fluid" id="page_view">
+	<div class="row">
+		<div class="col-7">
 	<form method="post">
 		{% csrf_token %}
 		<div class="row mt-2">
 			<div class="col">
-				<button type="button" name="task" value="button_mturk_approve_selected" class="btn btn-success">Approve selected</button>
+				<button type="button" data-task="submit_annotations" class="btn btn-primary">Submit</button>
+				<button type="button" data-task="button_mturk_approve_selected" class="btn btn-success">Approve selected</button>
 				<div class="btn-group">
-	            	<button type="button" name="task" value="button_mturk_reject_selected" class="btn btn-danger">Reject selected</button>
+	            	<button type="button" name="task" data-task="button_mturk_reject_selected" class="btn btn-danger">Reject selected</button>
 					<button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"></button>
-					<div class="dropdown-menu">
+					<div class="dropdown-menu dropdown_reject_assignment_selected">
 					{% for message in queryset_messages_reject.all %}
 						<a class="dropdown-item" href="#">{{ message.message }}</a>
 					{% endfor %}
@@ -99,7 +102,10 @@
 						{% endfor %}
 						</div>
 					</div>
-					<input type="text" id="input_message_reject_default" class="form-control">
+					<input type="text" id="input_message_reject_default" class="form-control" required>
+					<div class="invalid-feedback">
+				        Please provide a valid default reject message!
+			      </div>
 				</div>
 			</div>
 		</div>
@@ -131,11 +137,12 @@
 		<hr>
 		<div class="row">
 			<div class="col">
-				<button type="button" name="task" value="button_mturk_approve_selected" class="btn btn-success">Approve selected</button>
+				<button type="button" data-task="submit_annotations" class="btn btn-primary">Submit</button>
+				<button type="button" name="task" data-task="button_mturk_approve_selected" class="btn btn-success">Approve selected</button>
 				<div class="btn-group">
-	            	<button type="button" name="task" value="button_mturk_reject_selected" class="btn btn-danger">Reject selected</button>
+	            	<button type="button" name="task" data-task="button_mturk_reject_selected" class="btn btn-danger">Reject selected</button>
 					<button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"></button>
-					<div class="dropdown-menu">
+					<div class="dropdown-menu dropdown_reject_assignment_selected">
 					{% for message in queryset_messages_reject.all %}
 						<a class="dropdown-item" href="#">{{ message.message }}</a>
 					{% endfor %}
@@ -144,20 +151,14 @@
 			</div>
 		</div>
 	</form>
+		</div>
+		<div class="col">
+			<pre></pre>
+		</div>
+	</div>
 </div>
 {% endblock %}	
 
 {% block javascript %}
-	<script>
-	$(document).ready(function()
-	{
-		$(document).on('click', '.dropdown-menu a', function(e) {
-			e.preventDefault();
-		});
-		
-		$(document).on('click', '#dropdown_message_reject_default a', function(e) {
-			$('#input_message_reject_default').val($(this).text());
-		});
-	});
-	</script>
+	<script src="{% static 'mturk_manager/js/view.js' %}"></script>
 {% endblock %}	
