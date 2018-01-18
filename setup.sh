@@ -4,7 +4,7 @@
 git submodule init
 git submodule update --remote
 
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 
 cd ./mturk
 python3 manage.py createcachetable
