@@ -67,7 +67,7 @@ def project(request, name):
         elif request.POST['task'] == 'add_template_assignment':
             add_template_assignment(db_obj_project, request)
         elif request.POST['task'] == 'add_template_hit':
-            add_template_assignment(db_obj_project, request)
+            add_template_hit(db_obj_project, request)
         elif request.POST['task'] == 'add_message_reject':
             add_message_reject(db_obj_project, request)
         elif request.POST['task'] == 'update_template':
