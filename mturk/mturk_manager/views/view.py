@@ -97,16 +97,16 @@ def submit_annotations(request, db_obj_project, obj):
         client = client_sandbox if assignment.fk_hit.fk_batch.use_sandbox else client_real
         try:
             pass
-            # if dict_annotation['state'] == 'approve':
-            #     response = client.approve_assignment(
-            #         AssignmentId=assignment.id_assignment,
-            #         RequesterFeedback=feedback
-            #     )
-            # elif dict_annotation['state'] == 'reject':
-            #     response = client.reject_assignment(
-            #         AssignmentId=assignment.id_assignment,
-            #         RequesterFeedback=feedback
-            #     )
+            if dict_annotation['state'] == 'approve':
+                response = client.approve_assignment(
+                    AssignmentId=assignment.id_assignment,
+                    RequesterFeedback=feedback
+                )
+            elif dict_annotation['state'] == 'reject':
+                response = client.reject_assignment(
+                    AssignmentId=assignment.id_assignment,
+                    RequesterFeedback=feedback
+                )
         except Exception as e:
             continue
 
