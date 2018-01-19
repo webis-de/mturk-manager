@@ -146,7 +146,7 @@ def delete_project(db_obj_project, request):
 
 def synchronize_database(db_obj_project, request, use_sandbox):
     client = code_shared.get_client(db_obj_project, use_sandbox)
-    set_id_assignments_available = set([assignment.id_assignment for assignment in m_Assignment.objects.filter(fk_hit__fk_batch__fk_project=db_obj_project)])
+    set_id_assignments_available = set([assignment.id_assignment for assignment in m_Assignment.objects.filter(fk_hit__fk_batch__fk_project=db_obj_project, fk_hit__fk_batch__use_sandbox=use_sandbox)])
     print(set_id_assignments_available)
 
     # response = client.list_assignments_for_hit(
