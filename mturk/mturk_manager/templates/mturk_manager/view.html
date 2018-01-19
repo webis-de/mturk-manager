@@ -122,8 +122,8 @@
 
 				{% for assignment in hit.list_assignments %}
 
-				answer_raw = JSON.parse('{{assignment.answer|safe}}');
-				answer = JSON.parse('{{assignment.answer_normalized|safe}}');
+				answer_raw = {{ assignment.answer|safe }};
+				answer = {{ assignment.answer_normalized|safe }};
 
 				assignment_wrapper = $(decode(`{{ hit.fk_batch.fk_template.fk_template_assignment.template }}`));
 				wrapper_assignments.append(assignment_wrapper)
