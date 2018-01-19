@@ -108,6 +108,7 @@ def submit_annotations(request, db_obj_project, obj):
                     RequesterFeedback=feedback
                 )
         except Exception as e:
+            print(e)
             continue
 
         if dict_annotation['state'] == 'approve':

@@ -1,6 +1,6 @@
 $(document).ready(function()
 {
-	const glob_dict_assignemnts = {};
+	let glob_dict_assignemnts = {};
 
 	$(document).on('click', '.approve_assignment, .reject_assignment', function(e) {
 		const elem_button = $(this);
