@@ -65,7 +65,7 @@ $(document).ready(function()
 	        headers: {'X-CSRFToken':$('input[name="csrfmiddlewaretoken"]').val()},
 	        data: JSON.stringify(data),
 	        success: function(result) {
-	        	console.log("done")
+			   	glob_dict_assignemnts = {};     	
 	        	location.reload();
 	        }
 	    })
