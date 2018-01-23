@@ -31,18 +31,6 @@ def view(request, name):
 
         if obj['task'] == 'submit_annotations':
             submit_annotations(request, db_obj_project, obj)
-        # if request.POST['task'] == 'button_mturk_approve_selected':
-        #     list_ids = request.POST.getlist('checkbox_assignment')
-        #     approve_assignments(request, db_obj_project, list_ids)
-        # if request.POST['task'] == 'button_mturk_reject_selected':
-        #     list_ids = request.POST.getlist('checkbox_assignment')
-        #     reject_assignments(request, db_obj_project, list_ids)
-        # if request.POST['task'].startswith('button_mturk_approve__'):
-        #     id_assignment = request.POST['task'].split('__')[1]
-        #     approve_assignments(request, db_obj_project, [id_assignment])
-        # if request.POST['task'].startswith('button_mturk_reject__'):
-        #     id_assignment = request.POST['task'].split('__')[1]
-        #     reject_assignments(request, db_obj_project, [id_assignment])
 
         return HttpResponseRedirect(reverse('mturk_manager:view', args=[name_quoted])+ '?list_ids='+request.GET['list_ids'])
 
@@ -52,9 +40,9 @@ def view(request, name):
         'fk_batch__fk_template__fk_template_assignment',
         'fk_batch__fk_template__fk_template_hit',
     ).prefetch_related(
-        Prefetch('assignments', queryset=m_Assignment.objects.prefetch_related('tags').annotate(
-                count_tags_approved=Count('tags', filter=Q(tags__name='approved'), distinct=True),
-                count_tags_rejected=Count('tags', filter=Q(tags__name='rejected'), distinct=True)
+        Prefetch('assignments', queryset=m_Assignment.objects.prefetch_related('corpus_viewer_tags').annotate(
+                count_tags_approved=Count('corpus_viewer_tags', filter=Q(corpus_viewer_tags__name='approved'), distinct=True),
+                count_tags_rejected=Count('corpus_viewer_tags', filter=Q(corpus_viewer_tags__name='rejected'), distinct=True)
             ).distinct()
             ,to_attr='list_assignments'
         )
@@ -112,102 +100,13 @@ def submit_annotations(request, db_obj_project, obj):
             continue
 
         if dict_annotation['state'] == 'approve':
-            db_obj_tag_submitted.items.remove(assignment)
-            db_obj_tag_approved.items.add(assignment)
+            db_obj_tag_submitted.corpus_viewer_items.remove(assignment)
+            db_obj_tag_approved.corpus_viewer_items.add(assignment)
         elif dict_annotation['state'] == 'reject':
-            db_obj_tag_submitted.items.remove(assignment)
-            db_obj_tag_rejected.items.add(assignment)
+            db_obj_tag_submitted.corpus_viewer_items.remove(assignment)
+            db_obj_tag_rejected.corpus_viewer_items.add(assignment)
 
     print(obj)
-
-def approve_assignments(request, db_obj_project, list_ids):
-    client_sandbox = code_shared.get_client(db_obj_project, True)
-    client = code_shared.get_client(db_obj_project, False)
-    db_obj_tag_submitted = m_Tag.objects.get(key_corpus=db_obj_project.name, name='submitted')
-    db_obj_tag_approved = m_Tag.objects.get(key_corpus=db_obj_project.name, name='approved')
-
-    list_success = []
-    list_fail = []
-
-    for assignment in m_Assignment.objects.filter(id__in=list_ids, fk_hit__fk_batch__use_sandbox=True):
-        try:
-            response = client_sandbox.approve_assignment(
-                AssignmentId=assignment.id_assignment
-            )
-        except Exception as e:
-            list_fail.append(assignment)
-            continue
-
-        db_obj_tag_submitted.items.remove(assignment)
-        db_obj_tag_approved.items.add(assignment)
-
-        list_success.append(assignment)
-
-    for assignment in m_Assignment.objects.filter(id__in=list_ids, fk_hit__fk_batch__use_sandbox=False):
-        try:
-            response = client.approve_assignment(
-                AssignmentId=assignment.id_assignment
-            )
-        except Exception as e:
-            list_fail.append(assignment)
-            continue
-
-        db_obj_tag_submitted.items.remove(assignment)
-        db_obj_tag_approved.items.add(assignment)
-
-        list_success.append(assignment)
-
-    if len(list_success) != 0:
-        messages.success(request, 'Approved {} assignment(s)'.format(len(list_success)))
-    if len(list_fail) != 0:
-        messages.error(request, 'Failed to approve {} assignment(s)'.format(len(list_fail)))
-
-def reject_assignments(request, db_obj_project, list_ids):
-    client_sandbox = code_shared.get_client(db_obj_project, True)
-    client = code_shared.get_client(db_obj_project, False)
-    db_obj_tag_submitted = m_Tag.objects.get(key_corpus=db_obj_project.name, name='submitted')
-    db_obj_tag_rejected = m_Tag.objects.get(key_corpus=db_obj_project.name, name='rejected')
-
-    list_success = []
-    list_fail = []
-
-    for assignment in m_Assignment.objects.filter(id__in=list_ids, fk_hit__fk_batch__use_sandbox=True):
-        try:
-            response = client_sandbox.reject_assignment(
-                AssignmentId=assignment.id_assignment,
-                RequesterFeedback=''
-            )
-        except Exception as e:
-            print(e)
-            list_fail.append(assignment)
-            continue
-
-        db_obj_tag_submitted.items.remove(assignment)
-        db_obj_tag_rejected.items.add(assignment)
-
-        list_success.append(assignment)
-
-    for assignment in m_Assignment.objects.filter(id__in=list_ids, fk_hit__fk_batch__use_sandbox=False):
-        try:
-            response = client.reject_assignment(
-                AssignmentId=assignment.id_assignment,
-                RequesterFeedback=''
-            )
-        except Exception as e:
-            print(e)
-            list_fail.append(assignment)
-            continue
-
-        db_obj_tag_submitted.items.remove(assignment)
-        db_obj_tag_rejected.items.add(assignment)
-
-        list_success.append(assignment)
-
-
-    if len(list_success) != 0:
-        messages.success(request, 'Rejected {} assignment(s)'.format(len(list_success)))
-    if len(list_fail) != 0:
-        messages.error(request, 'Failed to reject {} assignment(s)'.format(len(list_fail)))
 
 def normalize_answer(answer):
     dict_answer = json.loads(answer)

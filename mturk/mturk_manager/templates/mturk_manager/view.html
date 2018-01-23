@@ -77,9 +77,14 @@
 		<div class="col-12">
 	<form method="post">
 		{% csrf_token %}
-		<div class="row mt-2">
+		<div class="row my-3">
 			<div class="col">
 				<button type="button" data-task="submit_annotations" class="btn btn-primary">Submit</button>
+				Currently you would approve <span data-inject_count_approved_assignments>0</span> and reject <span data-inject_count_rejected_assignments>0</span> assignments.
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-auto">
 				<button type="button" data-task="button_mturk_approve_selected" class="btn btn-success">Approve selected</button>
 				<div class="btn-group">
 	            	<button type="button" name="task" data-task="button_mturk_reject_selected" class="btn btn-danger">Reject selected</button>
@@ -92,7 +97,7 @@
 				</div>
 			</div>
 			<div class="col">
-				<div class="input-group mb-3">
+				<div class="input-group">
 					<div class="input-group-prepend">
 						<label class="input-group-text" for="input_message_reject_default">Default reject message</label>
 						<button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"></button>
@@ -137,7 +142,6 @@
 		<hr>
 		<div class="row">
 			<div class="col">
-				<button type="button" data-task="submit_annotations" class="btn btn-primary">Submit</button>
 				<button type="button" name="task" data-task="button_mturk_approve_selected" class="btn btn-success">Approve selected</button>
 				<div class="btn-group">
 	            	<button type="button" name="task" data-task="button_mturk_reject_selected" class="btn btn-danger">Reject selected</button>
@@ -148,6 +152,12 @@
 					{% endfor %}
 					</div>
 				</div>
+			</div>
+		</div>
+		<div class="row my-3">
+			<div class="col">
+				<button type="button" data-task="submit_annotations" class="btn btn-primary">Submit</button>
+				Currently you would approve <span data-inject_count_approved_assignments>0</span> and reject <span data-inject_count_rejected_assignments>0</span> assignments.
 			</div>
 		</div>
 	</form>

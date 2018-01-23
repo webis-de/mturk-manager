@@ -23,7 +23,7 @@ glob_dict_settings = {
         'fk_worker'
     ],
     'database_prefetch_related': [
-        'tags'
+        'corpus_viewer_tags'
     ],
     'data_fields': {
         # 'id': {

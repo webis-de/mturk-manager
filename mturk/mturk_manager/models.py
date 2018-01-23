@@ -81,7 +81,8 @@ class m_Assignment(models.Model):
     # was_approved = models.NullBooleanField()
     # is_approved = models.NullBooleanField()
     answer = models.TextField()
-    tags = models.ManyToManyField('viewer.m_Tag', related_name='items')
+    corpus_viewer_tags = models.ManyToManyField('viewer.m_Tag', related_name='corpus_viewer_items')
+    
 
 class m_Worker(models.Model):
     name = models.CharField(max_length=200, unique=True)
