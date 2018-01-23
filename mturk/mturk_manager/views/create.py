@@ -43,8 +43,8 @@ glob_dict_settings = {
             'display_name': 'Worker'
         },
         'fk_hit__fk_batch__use_sandbox': {
-            'type': 'string',
-            'display_name': 'Worker'
+            'type': 'boolean',
+            'display_name': 'Sandbox'
         }
     },
     'id': 'id_assignment',
@@ -52,7 +52,13 @@ glob_dict_settings = {
         'id_assignment', 'fk_hit__id_hit', 'fk_worker__name', 'fk_hit__fk_batch__use_sandbox'
     ],
     'page_size': 25,
-    'filters': [],
+    'filters': [
+        {
+            'data_field': 'fk_hit__fk_batch__use_sandbox',
+            'description': 'Sandbox',
+            'placeholder': '',
+        },
+    ],
     'urls_header': [],
     # 'secret_token_editing': '',
     'cards': [
