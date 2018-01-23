@@ -1,9 +1,9 @@
 #!/bin/bash
 # do necessary inital tasks
 
-git submodule init
-git submodule update --remote
+git submodule update --init
 
+pip3 install -r corpus-viewer/requirements.txt
 pip3 install -r requirements.txt
 
 cd ./mturk
