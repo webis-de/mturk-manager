@@ -31,7 +31,7 @@ $(document).ready(function()
 			elem_button.addClass('active');
 		}
 
-		print_dict_assignment();
+		update_info();
 	});
 
 	$(document).on('click', '[data-task="submit_annotations"]', function(e) {
@@ -92,7 +92,7 @@ $(document).ready(function()
 			elem_checkbox.prop('checked', false);
 		})
 
-		print_dict_assignment();
+		update_info();
 	});
 
 	$(document).on('click', '[data-task="button_mturk_approve_selected"]', function(e) {
@@ -116,7 +116,7 @@ $(document).ready(function()
 			elem_checkbox.prop('checked', false);
 		})
 
-		print_dict_assignment();
+		update_info();
 	});
 
 	$(document).on('click', '.dropdown_reject_assignment_selected a', function(e) {
@@ -140,7 +140,7 @@ $(document).ready(function()
 			elem_checkbox.prop('checked', false);
 		});
 
-		print_dict_assignment();
+		update_info();
 	});
 
 	$(document).on('click', '.dropdown_reject_assignment a', function(e) {
@@ -158,7 +158,7 @@ $(document).ready(function()
 		const elem_button_approve = $('.approve_assignment[data-id_assignment="'+id_assignment+'"]');
 		elem_button_approve.removeClass('active');
 		
-		print_dict_assignment();
+		update_info();
 	});
 
 	$(document).on('click', '.dropdown-menu a', function(e) {
@@ -180,8 +180,21 @@ $(document).ready(function()
 		}
 	}
 
-	function print_dict_assignment()
+	function update_info()
 	{
-		$('pre').text(JSON.stringify(glob_dict_assignemnts, null, 2));
+		let count_approved_assignments = 0;
+		let count_rejected_assignments = 0;
+
+		$.each(glob_dict_assignemnts, function(index, elem) {
+			if(elem.state == 'approve')
+			{
+				count_approved_assignments += 1;
+			} else {
+				count_rejected_assignments += 1;
+			}
+		});
+
+		$('[data-inject_count_approved_assignments]').text(count_approved_assignments)
+		$('[data-inject_count_rejected_assignments]').text(count_rejected_assignments)
 	}
 });
