@@ -110,8 +110,8 @@ def project(request, name):
         key_corpus=name_project,
         name='submitted'
     ).aggregate(
-        count_assignments=Count('items', filter=Q(items__fk_hit__fk_batch__use_sandbox=False), distinct=True),
-        count_assignments_sandbox=Count('items', filter=Q(items__fk_hit__fk_batch__use_sandbox=True), distinct=True)
+        count_assignments=Count('corpus_viewer_items', filter=Q(corpus_viewer_items__fk_hit__fk_batch__use_sandbox=False), distinct=True),
+        count_assignments_sandbox=Count('corpus_viewer_items', filter=Q(corpus_viewer_items__fk_hit__fk_batch__use_sandbox=True), distinct=True)
     )
     print(stats_new)
 
