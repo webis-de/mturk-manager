@@ -489,8 +489,6 @@ def update_settings(db_obj_project, request):
         {'type':'string', 'keys':['template_main'], 'message': 'Invalid main template', 'state': 'warning'},
     ])
 
-
-
     db_obj_project.title = request.POST['title']
     db_obj_project.description = request.POST['description']
     db_obj_project.keywords = request.POST['keywords']
@@ -502,10 +500,19 @@ def update_settings(db_obj_project, request):
 
     if request.POST['template_main'] != '':
         db_obj_project.fk_template_main = m_Template.objects.get(fk_project=db_obj_project, id=request.POST['template_main'])
+    else:
+        db_obj_project.fk_template_main = None
 
     if request.POST['template_assignment_main'] != '':
         db_obj_project.fk_template_assignment_main = m_Template_Assignment.objects.get(fk_project=db_obj_project, id=request.POST['template_assignment_main'])
+    else:
+        db_obj_project.fk_template_assignment_main = None
 
+    if request.POST['template_hit_main'] != '':
+        db_obj_project.fk_template_hit_main = m_Template_Hit.objects.get(fk_project=db_obj_project, id=request.POST['template_hit_main'])
+    else:
+        db_obj_project.fk_template_hit_main = None
+        
     db_obj_project.save()
 
     messages.success(request, 'Updated settings successfully')
