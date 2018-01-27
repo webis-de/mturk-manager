@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
+from django.conf import settings
 from django.contrib.messages import constants as messages
 
 import configparser
@@ -87,21 +88,22 @@ WSGI_APPLICATION = 'mturk.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
-config = configparser.ConfigParser()
-path_database = 'db.sqlite3'
 
+config = configparser.ConfigParser()
+PATH_DATABASE = 'db.sqlite3'
 try:
     config.read('../../mturk_settings.ini')
-    path_database = config['MTurk']['database'].strip()
+    PATH_DATABASE = config['MTurk']['database'].strip()
+    PATH_FILES_SETTINGS = config['MTurk']['settings-path'].strip()
 except Exception as e:
     pass
 
-print('storing database into {}'.format(path_database))
+print('storing database into {}'.format(PATH_DATABASE))
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, path_database),
+        'NAME': os.path.join(BASE_DIR, PATH_DATABASE),
     }
 }
 
@@ -112,7 +114,6 @@ CACHES = {
         'TIMEOUT': None,
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
