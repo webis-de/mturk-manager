@@ -6,6 +6,7 @@ class m_Account_Mturk(models.Model):
     key_secret = models.CharField(max_length=200)
 
 class m_Project(models.Model):
+    version = models.IntegerField()
     name = models.CharField(max_length=200, unique=True)
     fk_account_mturk = models.ForeignKey('m_Account_Mturk', on_delete=models.SET_NULL, null=True, related_name='projects')
     title = models.TextField(default='')
