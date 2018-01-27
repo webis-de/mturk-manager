@@ -124,6 +124,7 @@ def create_project(request):
     db_obj_account_mturk = m_Account_Mturk.objects.get(name=request.POST['name_account_mturk'])
 
     db_obj_project = m_Project.objects.create(
+        version=0,
         name=request.POST['name'],
         fk_account_mturk = db_obj_account_mturk,
     )
