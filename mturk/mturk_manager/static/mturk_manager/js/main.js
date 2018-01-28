@@ -15,7 +15,16 @@ $(document).ready(function()
 	{
 		const button = $(event.relatedTarget) // Button that triggered the modal
 		const template = button.data('template') // Extract info from data-* attributes
+		const type = button.data('type') // Extract info from data-* attributes
 		const modal = $(this)
+
+		modal.find('code').removeClass()
+		if(type != undefined)
+		{
+			modal.find('code').addClass(type)
+		} else {
+			modal.find('code').addClass('html')
+		}
 
 		modal.find('code').text(template);
 		$('pre code').each(function(i, block) {

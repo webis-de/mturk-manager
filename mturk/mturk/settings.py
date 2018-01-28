@@ -90,12 +90,15 @@ WSGI_APPLICATION = 'mturk.wsgi.application'
 
 
 config = configparser.ConfigParser()
-PATH_DATABASE = 'db.sqlite3'
+config.read('../../mturk_settings.ini')
 try:
-    config.read('../../mturk_settings.ini')
     PATH_DATABASE = config['MTurk']['database'].strip()
+except KeyError:
+    PATH_DATABASE = 'db.sqlite3'
+    pass
+try:
     PATH_FILES_SETTINGS = config['MTurk']['settings-path'].strip()
-except Exception as e:
+except KeyError:
     pass
 
 print('storing database into {}'.format(PATH_DATABASE))
