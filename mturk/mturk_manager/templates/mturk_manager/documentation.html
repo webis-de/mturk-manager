@@ -119,6 +119,23 @@
               You have to use the <code>var</code> keyword to declare custom JavaScript variables!<br>
               The <code>let</code> and <code>const</code> keywords are <b>not</b> allowed because the templates may be inserted multiple times into the page and therefore the variables would be redeclared which is forbidden using the <code>let</code> and <code>const</code> keywords.
             </div>
+
+            <h1 id="link_location_savefiles">Save file location</h1>
+            <p>
+                There are two different types of saved files for your MTurk Manager server.
+                The database named <code>db.sqlite3</code> and stored in <code>&#x3C;mturk_manager&#x3E;/mturk/</code> holds all the necessary information and settings about your projects. The directory <code>&#x3C;mturk_manager&#x3E;/settings/</code> contains one config file for each project holding informations used by the integrated <a href="https://github.com/webis-de/corpus-viewer">Corpus-Viewer</a>.
+            </p>
+            <p>
+                If you want to change these locations put a file named <code>mturk_settings.ini</code> one directory <b>above</b> your <code>&#x3C;mturk_manager&#x3E;</code> directory.
+                The file defines new paths for the database and the config files. An example for putting the save files on the same level as your <code>&#x3C;mturk_manager&#x3E;</code> directory can be found by pressing the button below.
+            </p>
+            <p>
+                <button type="button" class="btn btn-dark btn-sm" data-template="{{ templates.mturk_settings }}" data-type="ini" data-toggle="modal" data-target="#modal_show_html">Show example mturk_settings.ini</button>
+            </p>
+            <p>
+                If you already created some projects just copy the (potentially renamed) database and the config files into the specified locations. 
+                <b>Instead</b>, if you have not created any projects yet simply run the <code>setup.sh</code> again.
+            </p>
         </div>
         <div class="col-3" id="navigation_documentation">
             <ul class="nav flex-column formats_scrollspy">
@@ -145,6 +162,9 @@
                         <a class="nav-link" href="#link_templates_requester_hit">Requester hit templates</a>
                     </li>
                 </ul>
+                <li class="nav-item">
+                    <a class="nav-link" href="#link_location_savefiles">Save file location</a>
+                </li>
             </ul>
         </div>
     </div>

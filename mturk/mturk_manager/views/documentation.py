@@ -8,6 +8,9 @@ def documentation(request):
 
 def get_contents_spoiler():
     return {
+        'mturk_settings': '''[MTurk]
+database = ../../database
+settings-path = ../../new_settings''',
         'template_html': '''<!DOCTYPE html>
 <html>
     <head>
