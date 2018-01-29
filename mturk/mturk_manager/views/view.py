@@ -14,7 +14,9 @@ def view(request, name):
     context = {}
     name_quoted = name
     name_project = urllib.parse.unquote(name_quoted)
-    db_obj_project = m_Project.objects.get(name=name_project)
+    db_obj_project = m_Project.objects.prefetch_related(
+        'messages_reject'
+    ).get(name=name_project)
 
     try:
         list_ids = json.loads(request.GET['list_ids'])
@@ -58,7 +60,8 @@ def view(request, name):
 
     context['queryset_hits'] = queryset_hits
     context['name_project'] = name_project
-    context['queryset_messages_reject'] = m_Message_Reject.objects.filter(fk_project=db_obj_project)
+    context['db_obj_project'] = db_obj_project
+    # context['queryset_messages_reject'] = m_Message_Reject.objects.filter(fk_project=db_obj_project)
     return render(request, 'mturk_manager/view.html', context)
 
 def submit_annotations(request, db_obj_project, obj):

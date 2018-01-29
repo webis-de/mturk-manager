@@ -498,6 +498,11 @@ def update_settings(db_obj_project, request):
     db_obj_project.count_assignments = request.POST['count_assignments']
     db_obj_project.use_sandbox = True if request.POST['use_sandbox'] == '1' else False
 
+    if request.POST['message_reject_default'] != '':
+        db_obj_project.fk_message_reject_default = m_Message_Reject.objects.get(fk_project=db_obj_project, id=request.POST['message_reject_default'])
+    else:
+        db_obj_project.fk_message_reject_default = None
+
     if request.POST['template_main'] != '':
         db_obj_project.fk_template_main = m_Template.objects.get(fk_project=db_obj_project, id=request.POST['template_main'])
     else:

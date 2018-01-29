@@ -16,7 +16,7 @@
 	let answer;
 	let answer_raw;
 	const list_messages_reject = [
-	{% for message in queryset_messages_reject.all %}
+	{% for message in db_obj_project.messages_reject.all %}
 		'{{ message.message }}',
 	{% endfor %}
 	]
@@ -90,7 +90,7 @@
 	            	<button type="button" name="task" data-task="button_mturk_reject_selected" class="btn btn-danger">Reject selected</button>
 					<button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"></button>
 					<div class="dropdown-menu dropdown_reject_assignment_selected">
-					{% for message in queryset_messages_reject.all %}
+					{% for message in db_obj_project.messages_reject.all %}
 						<a class="dropdown-item" href="#">{{ message.message }}</a>
 					{% endfor %}
 					</div>
@@ -102,12 +102,12 @@
 						<label class="input-group-text" for="input_message_reject_default">Default reject message</label>
 						<button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"></button>
 						<div class="dropdown-menu" id="dropdown_message_reject_default">
-						{% for message in queryset_messages_reject.all %}
+						{% for message in db_obj_project.messages_reject.all %}
 							<a class="dropdown-item" href="#">{{ message.message }}</a>
 						{% endfor %}
 						</div>
 					</div>
-					<input type="text" id="input_message_reject_default" class="form-control" required>
+					<input type="text" id="input_message_reject_default" value="{{ db_obj_project.fk_message_reject_default.message }}" class="form-control" required>
 					<div class="invalid-feedback">
 				        Please provide a valid default reject message!
 			      </div>
@@ -147,7 +147,7 @@
 	            	<button type="button" name="task" data-task="button_mturk_reject_selected" class="btn btn-danger">Reject selected</button>
 					<button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"></button>
 					<div class="dropdown-menu dropdown_reject_assignment_selected">
-					{% for message in queryset_messages_reject.all %}
+					{% for message in db_obj_project.messages_reject.all %}
 						<a class="dropdown-item" href="#">{{ message.message }}</a>
 					{% endfor %}
 					</div>
