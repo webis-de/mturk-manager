@@ -199,6 +199,19 @@
 							</select>
 						</div>
 					</div>
+					<div class="form-row form-group">
+						<div class="col input-group">
+							<div class="input-group-prepend">
+								<label class="input-group-text">Default reject message</label>
+							</div>
+							<select class="custom-select" name="message_reject_default">
+								<option value="">please select a reject message</option>
+							{% for message in db_obj_project.messages_reject.all %}
+								<option value="{{ message.id }}" {% if message ==  db_obj_project.fk_message_reject_default %}selected{% endif %}>{{ message.message }}</option>
+							{% endfor %}
+							</select>
+						</div>
+					</div>
 					<button type="submit" name="task" value="update_settings" class="btn btn-primary">Update</button>
 				</fieldset>
 			</form>
