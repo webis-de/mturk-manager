@@ -23,9 +23,9 @@ The whole tool is built on top of the [Django-Framework](https://www.djangoproje
 * create and manage mechanical turk projects
 * define **multiple** worker templates per project
 * customize the layout of the worker results
+* extensive approve/reject facility
 
 ## Upcoming Features
-* extensive approve/reject facility
 * filter and download the hit results as json or csv
 
 ## Contributors
