@@ -22,10 +22,10 @@ def view(request, name):
         list_ids = json.loads(request.GET['list_ids'])
     except (KeyError, json.JSONDecodeError):
         messages.error(request, 'Please provide valid assignments')
-        return redirect('mturk_manager:project', name=name_quoted, permanent=True)
+        return redirect('mturk_manager:project', name=name_quoted)
     if len(list_ids) == 0:
         messages.error(request, 'Please provide assignments')
-        return redirect('mturk_manager:project', name=name_quoted, permanent=True)
+        return redirect('mturk_manager:project', name=name_quoted)
 
 
     if request.method == 'POST':

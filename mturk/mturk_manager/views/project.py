@@ -15,6 +15,7 @@ import io
 import random
 import html
 import json
+from django.conf import settings as settings_django
 import time
 from django.contrib import messages, humanize
 import xmltodict
@@ -48,6 +49,9 @@ def project(request, name):
         db_obj_project = queryset.get()
     except ObjectDoesNotExist:
         messages.error(request, 'Project "{}" does not exist'.format(name_project))
+        return redirect('mturk_manager:index')
+    if db_obj_project.version < settings_django.VERSION_PROJECT:
+        messages.error(request, 'Project "{}" is not up to date. Go to "settings" to update all projects to the current version'.format(name_project))
         return redirect('mturk_manager:index')
 
     # create_data_dummy(db_obj_project)
@@ -94,7 +98,7 @@ def project(request, name):
         # db_obj_project = queryset.get(name=name)
         # AKIAJUD2Y77Z7DIHUB5A
         # J1mhsaYxHJRh8+QG6uIfiq9foIgy3MmVFgOGC5nR
-        return redirect('mturk_manager:project', name=name_quoted, permanent=True)
+        return redirect('mturk_manager:project', name=name_quoted)
 
     stats_total = queryset.aggregate(
         count_batches=Count('batches', filter=Q(batches__use_sandbox=False), distinct=True), 
@@ -142,7 +146,7 @@ def delete_project(db_obj_project, request):
 
     messages.success(request, 'Deleted project successfully')
 
-    return redirect('mturk_manager:index', permanent=True)
+    return redirect('mturk_manager:index')
 
 def synchronize_database(db_obj_project, request, use_sandbox):
     client = code_shared.get_client(db_obj_project, use_sandbox)
