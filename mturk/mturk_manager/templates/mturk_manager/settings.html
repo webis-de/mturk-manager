@@ -8,7 +8,7 @@
 	<div class="row">
 		<div class="col">
 			<h1>MTurk credentials</h1>
-			<table class="table table-bordered">
+			<table class="table table-bordered table-sm">
 				<thead>
 					<tr>
 						<th>Name</th>
@@ -33,6 +33,56 @@
 			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_add_account">
 				Add
 			</button>
+		</div>
+	</div>
+	<hr>
+	<div class="row">
+		<div class="col">
+			<h1>Projects</h1>
+			<table class="table table-bordered table-sm">
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>MTurk Account</th>
+						<th>Version (latest: {{ version }})</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for project in queryset_projects %}
+					<tr>
+						<td>{{ project.name }}</td>
+						<td>{{ project.fk_account_mturk.name }}</td>
+						<td {% if version > project.version %}class="text-danger"{% else %}{% endif %}>{{ project.version }}</td>
+					</tr>
+				{% endfor %}
+				</tbody>
+			</table>
+			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_update_projects">
+				Update all projects
+			</button>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" tabindex="-1" id="modal_update_projects">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Update projects</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<form method="post">
+				<div class="modal-body">
+					{% csrf_token %}
+					This action will migrate all projects to the current version.
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button type="submit" name="task" value="update_projects" class="btn btn-primary">Update</button>
+				</div>
+			</form>
 		</div>
 	</div>
 </div>

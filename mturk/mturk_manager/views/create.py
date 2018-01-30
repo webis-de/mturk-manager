@@ -3,6 +3,7 @@ from mturk_manager.models import *
 from viewer.models import *
 from viewer.views.shared_code import glob_manager_data
 from django.urls import reverse
+from django.conf import settings
 import urllib.parse
 import json
 
@@ -115,7 +116,7 @@ def create(request):
         create_project(request)
 
         context['success'] = True
-        return redirect('mturk_manager:project', name=urllib.parse.quote(request.POST['name'], safe=''), permanent=True)
+        return redirect('mturk_manager:project', name=urllib.parse.quote(request.POST['name'], safe=''))
     
 
     return render(request, 'mturk_manager/create.html', context)
@@ -124,7 +125,7 @@ def create_project(request):
     db_obj_account_mturk = m_Account_Mturk.objects.get(name=request.POST['name_account_mturk'])
 
     db_obj_project = m_Project.objects.create(
-        version=0,
+        version=settings.VERSION_PROJECT,
         name=request.POST['name'],
         fk_account_mturk = db_obj_account_mturk,
     )
