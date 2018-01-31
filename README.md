@@ -11,7 +11,7 @@ The whole tool is built on top of the [Django-Framework](https://www.djangoproje
 * Python 3.5+
 
 ## Installation
-**Note:** If you want to use a virtual environment like `virtualenv` switch to the virtual environmant before executing the following step(s)!
+**Note:** If you want to use a virtual environment like `virtualenv` switch to the virtual environment before executing the following step(s)!
 
 1. run `setup.sh`
 
