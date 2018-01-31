@@ -65,7 +65,7 @@ glob_dict_settings = {
     'cards': [
         {
             'name': 'MTurk',
-            'content': '''
+            'content': ''' 
                 <div class="mb-2">
                     <span data-inject="count_selected_rows"></span> Assignment(s) selected
                 </div>
@@ -85,7 +85,7 @@ glob_dict_settings = {
                         $(document).on('update.cv.selected-items', function(e, list_items) { console.log(e);console.log(list_items) });
 
                         $(document).on('click', '#button_mturk_view', function(){
-                            let url = 'PLACEHOLDER_URL?list_ids=';
+                            let url = 'PLACEHOLDER_URL_VIEW?list_ids=';
                             const list_ids = [];
                             $.each(glob_selected_items, function( i, val ) {
                                 list_ids.push(val.viewer__id_item_internal);
@@ -94,9 +94,19 @@ glob_dict_settings = {
                             window.open(url, '_blank');
                             console.log(glob_selected_items)
                         });
+
+                        $(document).on('click', '#button_mturk_download', function(){
+                            let url = 'PLACEHOLDER_URL_DOWNLOAD?list_ids=';
+
+                            const list_ids = [];
+                            $.each(glob_selected_items, function( i, val ) {
+                                list_ids.push(val.viewer__id_item_internal);
+                            });
+                            url += JSON.stringify(list_ids);
+                            window.open(url, '_blank');
+                        });
                     });
-                </script>
-            '''
+                </script>'''
         }
     ],
 }
@@ -156,7 +166,11 @@ def create_project(request):
         dict_settings['database_filters'][key] = dict_settings['database_filters'][key].replace('PLACEHOLDER_NAME', request.POST['name'])
 
     for card in dict_settings['cards']:
-        card['content'] = card['content'].replace('PLACEHOLDER_URL', reverse('mturk_manager:view', args=[request.POST['name']]))
+        card['content'] = card['content'].replace(
+            'PLACEHOLDER_URL_VIEW', reverse('mturk_manager:view', args=[request.POST['name']])
+        ).replace(
+            'PLACEHOLDER_URL_DOWNLOAD', reverse('mturk_manager:download', args=[request.POST['name']])
+        )
 
     glob_manager_data.add_settings_corpus(request.POST['name'], dict_settings)
     glob_manager_data.check_for_new_corpora()
