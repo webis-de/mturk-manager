@@ -34,7 +34,7 @@ def download(request, name):
 
 
         if index == 0:
-            writer = csv.DictWriter(response, fieldnames=dict_result.keys())
+            writer = csv.DictWriter(response, fieldnames=sorted(dict_result.keys()))
             writer.writeheader()
 
         writer.writerow(dict_result)
