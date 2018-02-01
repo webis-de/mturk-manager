@@ -196,12 +196,12 @@ def synchronize_database(db_obj_project, request, use_sandbox):
                     answer=json.dumps(xmltodict.parse(assignment['Answer'])),
                 )
 
-                db_obj_tag_batch.items.add(db_obj_assignment)
-                db_obj_tag_submitted.items.add(db_obj_assignment)
-                db_obj_tag_hit.items.add(db_obj_assignment)
+                db_obj_tag_batch.corpus_viewer_items.add(db_obj_assignment)
+                db_obj_tag_submitted.corpus_viewer_items.add(db_obj_assignment)
+                db_obj_tag_hit.corpus_viewer_items.add(db_obj_assignment)
 
                 db_obj_tag_worker = m_Tag.objects.get_or_create(key_corpus=db_obj_project.name, name=glob_prefix_name_tag_worker+id_worker, defaults={'color': '#0000ff'})[0]
-                db_obj_tag_worker.items.add(db_obj_assignment)
+                db_obj_tag_worker.corpus_viewer_items.add(db_obj_assignment)
 
     # for db_obj_batch in db_obj_project.batches.all():
     #     pass
