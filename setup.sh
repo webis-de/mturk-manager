@@ -1,7 +1,7 @@
 #!/bin/bash
 # do necessary inital tasks
 
-git submodule update --init
+git submodule update --recursive --remote --init
 
 pip3 install -r corpus-viewer/requirements.txt
 pip3 install -r requirements.txt
