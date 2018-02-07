@@ -2,7 +2,11 @@ $(document).ready(function()
 {
 	let glob_dict_assignemnts = {};
 
-	$(document).on('click', '.approve_assignment, .reject_assignment', function(e) {
+	$(document).on('click', '.reject_internally_assignment', function() {
+		// console.log(('sa'))
+	});
+
+	$(document).on('click', '.approve_assignment, .reject_assignment, .reject_internally_assignment, .approve_internally_assignment', function(e) {
 		const elem_button = $(this);
 		const id_assignment = elem_button.data('id_assignment');
 
@@ -17,21 +21,34 @@ $(document).ready(function()
 					state: 'approve',
 					message: undefined
 				};
-				const elem_button_reject = $('.reject_assignment[data-id_assignment="'+id_assignment+'"]');
-				elem_button_reject.removeClass('active');
-			} else {
+				$('button[data-id_assignment="'+id_assignment+'"]').removeClass('active');
+			} else if(elem_button.hasClass('reject_assignment')) {
 				glob_dict_assignemnts[id_assignment] = {
 					state: 'reject',
 					message: undefined
 				};
-				const elem_button_approve = $('.approve_assignment[data-id_assignment="'+id_assignment+'"]');
-				elem_button_approve.removeClass('active');
+				$('button[data-id_assignment="'+id_assignment+'"]').removeClass('active');
+			} else if(elem_button.hasClass('reject_internally_assignment')) {
+				glob_dict_assignemnts[id_assignment] = {
+					state: 'reject_internally',
+					message: undefined
+				};
+				$('button[data-id_assignment="'+id_assignment+'"]').removeClass('active');
+			} else if(elem_button.hasClass('approve_internally_assignment')) {
+				glob_dict_assignemnts[id_assignment] = {
+					state: 'approve_internally',
+					message: undefined
+				};
+				$('button[data-id_assignment="'+id_assignment+'"]').removeClass('active');
 			}
-
 			elem_button.addClass('active');
 		}
 
 		update_info();
+	});
+
+	$(document).on('click', '[name="checkbox_assignment"]', function() {
+		$('[data-inject_count_assignments_selected]').text($('[name="checkbox_assignment"]:checked').length);
 	});
 
 	$(document).on('click', '[data-task="submit_annotations"]', function(e) {
@@ -71,93 +88,71 @@ $(document).ready(function()
 	    })
 	});
 
-	$(document).on('click', '[data-task="button_mturk_reject_selected"]', function(e) {
-		const elem_button = $(this);
-
-		$('input[name="checkbox_assignment"]:checked').each(function(index) {
-			const elem_checkbox = $(this);
-			const id_assignment = elem_checkbox.data('id_assignment');
-
-			const elem_button_approve = $('.approve_assignment[data-id_assignment="'+id_assignment+'"]');
-			elem_button_approve.removeClass('active');
-			
-			const elem_button_reject = $('.reject_assignment[data-id_assignment="'+id_assignment+'"]');
-			elem_button_reject.addClass('active');
-
-			glob_dict_assignemnts[id_assignment] = {
-				state: 'reject',
-				message: undefined
-			};
-
-			elem_checkbox.prop('checked', false);
-		})
-
+	$(document).on('click', '[data-task="button_mturk_approve_selected"], [data-task="button_mturk_reject_selected"]', function(e) {
+		if($(this).data('task') == 'button_mturk_approve_selected')
+		{
+			handle_selected('approve');
+		} else {
+			handle_selected('reject');
+		}
 		update_info();
 	});
 
-	$(document).on('click', '[data-task="button_mturk_approve_selected"]', function(e) {
-		const elem_button = $(this);
+	$(document).on('click', '[data-task="button_mturk_approve_internally_selected"], [data-task="button_mturk_reject_internally_selected"]', function(e) {
+		if($(this).data('task') == 'button_mturk_approve_internally_selected')
+		{
+			handle_selected('approve_internally');
+		} else {
+			handle_selected('reject_internally');
+		}
+		update_info();
+	});
 
-		$('input[name="checkbox_assignment"]:checked').each(function(index) {
-			const elem_checkbox = $(this);
-			const id_assignment = elem_checkbox.data('id_assignment');
-
-			const elem_button_approve = $('.approve_assignment[data-id_assignment="'+id_assignment+'"]');
-			elem_button_approve.addClass('active');
-			
-			const elem_button_reject = $('.reject_assignment[data-id_assignment="'+id_assignment+'"]');
-			elem_button_reject.removeClass('active');
-
-			glob_dict_assignemnts[id_assignment] = {
-				state: 'approve',
-				message: undefined
-			};
-
-			elem_checkbox.prop('checked', false);
-		})
+	$(document).on('click', '.dropdown_approve_internally_selected a', function(e) {
+		const elem_link = $(this);
+		const message = elem_link.text();
+		handle_selected('approve_internally', message);
 
 		update_info();
 	});
 
 	$(document).on('click', '.dropdown_reject_assignment_selected a', function(e) {
 		const elem_link = $(this);
-
-		$('input[name="checkbox_assignment"]:checked').each(function(index) {
-			const elem_checkbox = $(this);
-			const id_assignment = elem_checkbox.data('id_assignment');
-
-			const elem_button_approve = $('.approve_assignment[data-id_assignment="'+id_assignment+'"]');
-			elem_button_approve.removeClass('active');
-			
-			const elem_button_reject = $('.reject_assignment[data-id_assignment="'+id_assignment+'"]');
-			elem_button_reject.addClass('active');
-
-			glob_dict_assignemnts[id_assignment] = {
-				state: 'reject',
-				message: elem_link.text()
-			};
-
-			elem_checkbox.prop('checked', false);
-		});
+		const message = elem_link.text();
+		handle_selected('reject', message);
 
 		update_info();
+	});
+
+	$(document).on('click', '.dropdown_approve_internally_assignment a', function(e) {
+		const elem_link = $(this);
+		const id_assignment = elem_link.data('id_assignment');
+		const message = elem_link.text();
+
+		glob_dict_assignemnts[id_assignment] = {
+			state: 'approve_internally',
+			message: message
+		};
+		
+		$('button[data-id_assignment="'+id_assignment+'"]').removeClass('active');
+		$('.approve_internally_assignment[data-id_assignment="'+id_assignment+'"]').addClass('active');
+
+		update_info();			
 	});
 
 	$(document).on('click', '.dropdown_reject_assignment a', function(e) {
 		const elem_link = $(this);
 		const id_assignment = elem_link.data('id_assignment');
+		const message = elem_link.text();
 
 		glob_dict_assignemnts[id_assignment] = {
 			state: 'reject',
-			message: elem_link.text()
+			message: message
 		};
 		
-		const elem_button = $('.reject_assignment[data-id_assignment="'+id_assignment+'"]');
-		elem_button.addClass('active');
+		$('button[data-id_assignment="'+id_assignment+'"]').removeClass('active');
+		$('.reject_assignment[data-id_assignment="'+id_assignment+'"]').addClass('active');
 
-		const elem_button_approve = $('.approve_assignment[data-id_assignment="'+id_assignment+'"]');
-		elem_button_approve.removeClass('active');
-		
 		update_info();
 	});
 
@@ -180,21 +175,67 @@ $(document).ready(function()
 		}
 	}
 
+	function handle_selected(state, message=undefined)
+	{
+		$('input[name="checkbox_assignment"]:checked').each(function(index) {
+			const elem_checkbox = $(this);
+			const id_assignment = elem_checkbox.data('id_assignment');
+
+			$('button[data-id_assignment="'+id_assignment+'"]').removeClass('active');
+
+			switch(state) {
+				case 'approve':
+				 	$('.approve_assignment[data-id_assignment="'+id_assignment+'"]').addClass('active');
+				 	break;
+				case 'reject':
+				 	$('.reject_assignment[data-id_assignment="'+id_assignment+'"]').addClass('active');
+				 	break;
+				case 'approve_internally':
+				 	$('.approve_internally_assignment[data-id_assignment="'+id_assignment+'"]').addClass('active');
+				 	break;
+				case 'reject_internally':
+				 	$('.reject_internally_assignment[data-id_assignment="'+id_assignment+'"]').addClass('active');
+				 	break;
+			}
+			
+			glob_dict_assignemnts[id_assignment] = {
+				state: state,
+				message: message
+			};
+
+			elem_checkbox.prop('checked', false);
+		})
+	}
+
 	function update_info()
 	{
 		let count_approved_assignments = 0;
 		let count_rejected_assignments = 0;
+		let count_rejected_internally_assignments = 0;
+		let count_approved_internally_assignments = 0;
 
 		$.each(glob_dict_assignemnts, function(index, elem) {
-			if(elem.state == 'approve')
-			{
-				count_approved_assignments += 1;
-			} else {
-				count_rejected_assignments += 1;
+			switch(elem.state) {
+				case 'approve':
+					count_approved_assignments += 1;
+				 	break;
+				case 'reject':
+					count_rejected_assignments += 1;
+				 	break;
+				case 'approve_internally':
+					count_approved_internally_assignments += 1;
+				 	break;
+				case 'reject_internally':
+					count_rejected_internally_assignments += 1;
+				 	break;
 			}
 		});
 
+		$('pre').text(JSON.stringify(glob_dict_assignemnts))
+
 		$('[data-inject_count_approved_assignments]').text(count_approved_assignments)
 		$('[data-inject_count_rejected_assignments]').text(count_rejected_assignments)
+		$('[data-inject_count_rejected_internally_assignments]').text(count_rejected_internally_assignments)
+		$('[data-inject_count_approved_internally_assignments]').text(count_approved_internally_assignments)
 	}
 });
