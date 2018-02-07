@@ -204,6 +204,16 @@ def create_project(request):
         name='approved',
         color='#28a745'
     )
+    m_Tag.objects.create(
+        key_corpus=request.POST['name'],
+        name='rejected externally',
+        color='#dc3545'
+    )
+    m_Tag.objects.create(
+        key_corpus=request.POST['name'],
+        name='approved externally',
+        color='#28a745'
+    )
 
 def verify_input(request):
     try:
