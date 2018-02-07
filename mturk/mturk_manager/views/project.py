@@ -4,7 +4,7 @@ from mturk_manager.models import *
 from viewer.models import *
 from django.urls import reverse
 from django.core.exceptions import ObjectDoesNotExist
-from django.db.models import F, Value, Count, Q
+from django.db.models import F, Value, Count, Q, Sum
 from django.db.models.functions import Concat
 import urllib.parse
 from django.utils.html import escape
@@ -50,15 +50,15 @@ def project(request, name):
     except ObjectDoesNotExist:
         messages.error(request, 'Project "{}" does not exist'.format(name_project))
         return redirect('mturk_manager:index')
-    if db_obj_project.version < settings_django.VERSION_PROJECT:
-        messages.error(request, 'Project "{}" is not up to date. Go to "settings" to update all projects to the current version'.format(name_project))
+
+    if not code_shared.is_project_up_to_date(request, db_obj_project, name_project):    
         return redirect('mturk_manager:index')
 
     # create_data_dummy(db_obj_project)
-    # client = code_shared.get_client(db_obj_project)
+    # client = code_shared.get_client(db_obj_project, use_sandbox=False)
     # print(client.get_account_balance())
 
-    # print(client.get_hit(HITId='3EHIMLB7F7Z7ME11ZQIIHDZXLIA8H2'))
+    # print(client.get_hit(HITId='3T2HW4QDUV7GJB9VIQCOB76KV3Y9CB'))
 
     if request.method == 'POST':
         if request.POST['task'] == 'synchronize_database':
@@ -104,10 +104,12 @@ def project(request, name):
         count_batches=Count('batches', filter=Q(batches__use_sandbox=False), distinct=True), 
         count_hits=Count('batches__hits', filter=Q(batches__use_sandbox=False), distinct=True), 
         count_assignments=Count('batches__hits__assignments', filter=Q(batches__use_sandbox=False), distinct=True),
+        count_assignments_total=Sum('batches__count_assignments', filter=Q(use_sandbox=False), distinct=True),
 
         count_batches_sandbox=Count('batches', filter=Q(batches__use_sandbox=True), distinct=True), 
         count_hits_sandbox=Count('batches__hits', filter=Q(batches__use_sandbox=True), distinct=True), 
-        count_assignments_sandbox=Count('batches__hits__assignments', filter=Q(batches__use_sandbox=True), distinct=True)
+        count_assignments_sandbox=Count('batches__hits__assignments', filter=Q(batches__use_sandbox=True), distinct=True),
+        count_assignments_sandbox_total=Sum('batches__count_assignments', filter=Q(use_sandbox=True), distinct=True),
     )
 
     stats_new = m_Tag.objects.filter(
@@ -148,7 +150,63 @@ def delete_project(db_obj_project, request):
 
     return redirect('mturk_manager:index')
 
+def create_dummy_assignments(db_obj_project):
+    m_Assignment.objects.all().delete()
+    m_Hit.objects.all().delete()
+    m_Worker.objects.all().delete()
+
+    use_sandbox = True
+    dict_workers_available = {worker.name: worker for worker in m_Worker.objects.all()}
+    dict_tags = {tag.name: tag for tag in m_Tag.objects.filter(key_corpus=db_obj_project.name)}
+    db_obj_tag_submitted = m_Tag.objects.get(key_corpus=db_obj_project.name, name='submitted')
+
+    m_Hit.objects.all().delete()
+    db_obj_batch = m_Batch.objects.all().first()
+    db_obj_hit = m_Hit.objects.create(
+        id_hit='esfesfe',
+        fk_batch=db_obj_batch,
+        parameters='{}',
+    )
+
+    db_obj_tag_batch = m_Tag.objects.get_or_create(key_corpus=db_obj_project.name, name='tag_batch')[0]
+    db_obj_tag_hit = m_Tag.objects.get_or_create(key_corpus=db_obj_project.name, name='tag_hit')[0]
+
+    if use_sandbox:
+        for x in range(5):
+            id_assignment = random.randint(0, 99999)
+            id_worker = 'test worker'
+
+            try:
+                db_obj_worker = dict_workers_available[id_worker]
+            except KeyError:
+                db_obj_worker = m_Worker.objects.create(name=id_worker)
+                dict_workers_available[id_worker] = db_obj_worker
+
+            db_obj_assignment = m_Assignment.objects.create(
+                id_assignment=id_assignment,
+                fk_hit=db_obj_hit,
+                fk_worker=db_obj_worker,
+                answer=json.dumps({
+                    'QuestionFormAnswers' : {
+                        'Answer': {
+                            'QuestionIdentifier': 'answer',
+                            'FreeText': id_assignment,
+                        }
+                    }
+                })
+            )
+
+            db_obj_tag_batch.corpus_viewer_items.add(db_obj_assignment)
+            db_obj_tag_submitted.corpus_viewer_items.add(db_obj_assignment)
+            db_obj_tag_hit.corpus_viewer_items.add(db_obj_assignment)
+
+            db_obj_tag_worker = m_Tag.objects.get_or_create(key_corpus=db_obj_project.name, name=glob_prefix_name_tag_worker+id_worker, defaults={'color': '#0000ff'})[0]
+            db_obj_tag_worker.corpus_viewer_items.add(db_obj_assignment)
+
+
 def synchronize_database(db_obj_project, request, use_sandbox):
+    # create_dummy_assignments(db_obj_project)
+    return
     client = code_shared.get_client(db_obj_project, use_sandbox)
     set_id_assignments_available = set([assignment.id_assignment for assignment in m_Assignment.objects.filter(fk_hit__fk_batch__fk_project=db_obj_project, fk_hit__fk_batch__use_sandbox=use_sandbox)])
     print(set_id_assignments_available)
@@ -164,6 +222,8 @@ def synchronize_database(db_obj_project, request, use_sandbox):
     dict_workers_available = {worker.name: worker for worker in m_Worker.objects.all()}
     dict_tags = {tag.name: tag for tag in m_Tag.objects.filter(key_corpus=db_obj_project.name)}
     db_obj_tag_submitted = m_Tag.objects.get(key_corpus=db_obj_project.name, name='submitted')
+
+
 
     for db_obj_hit in m_Hit.objects.annotate(
         count_assignments_current=Count('assignments')
