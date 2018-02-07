@@ -65,6 +65,9 @@ def view(request, name):
     return render(request, 'mturk_manager/view.html', context)
 
 def submit_annotations(request, db_obj_project, obj):
+    print(obj)
+
+    return
     client_sandbox = code_shared.get_client(db_obj_project, True)
     client_real = code_shared.get_client(db_obj_project, False)
     db_obj_tag_submitted = m_Tag.objects.get(key_corpus=db_obj_project.name, name='submitted')

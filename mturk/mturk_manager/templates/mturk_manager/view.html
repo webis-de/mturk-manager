@@ -28,13 +28,28 @@
 				<input type="checkbox" class="custom-control-input" id="checkbox_assignment_PLACEHOLDER_ID" data-id_assignment="PLACEHOLDER_ID" name="checkbox_assignment" value="PLACEHOLDER_ID" PLACEHOLDER_DISABLED>
 				<label class="custom-control-label" for="checkbox_assignment_PLACEHOLDER_ID"></label>
 			</div>
-			<button type="button" name="task" value="button_mturk_approve__PLACEHOLDER_ID" data-id_assignment="PLACEHOLDER_ID" class="btn btn-sm PLACEHOLDER_SUCCESS approve_assignment" PLACEHOLDER_DISABLED>Approve</button>
+
 			<div class="btn-group btn-group-sm">
-            	<button type="button" name="task" value="button_mturk_reject__PLACEHOLDER_ID" data-id_assignment="PLACEHOLDER_ID" class="btn PLACEHOLDER_DANGER reject_assignment" PLACEHOLDER_DISABLED>Reject</button>
-            	<button type="button" class="btn PLACEHOLDER_DANGER dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" PLACEHOLDER_DISABLED></button>
+				<button type="button" data-id_assignment="PLACEHOLDER_ID" class="btn btn-sm PLACEHOLDER_SUCCESS approve_assignment" PLACEHOLDER_DISABLED>Approve</button>
+				<button type="button" data-id_assignment="PLACEHOLDER_ID" class="btn btn-sm PLACEHOLDER_REJECT_INTERNALLY reject_internally_assignment" PLACEHOLDER_DISABLED>Reject internally</button>
+			</div>
+			
+			<div class="btn-group btn-group-sm">
+				<div class="btn-group btn-group-sm">
+	            	<button type="button" name="task" value="button_mturk_reject__PLACEHOLDER_ID" data-id_assignment="PLACEHOLDER_ID" class="btn PLACEHOLDER_DANGER reject_assignment" PLACEHOLDER_DISABLED>Reject</button>
+	            	<button type="button" class="btn PLACEHOLDER_DANGER dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" PLACEHOLDER_DISABLED></button>
 					<div class="dropdown-menu dropdown_reject_assignment">
 						PLACEHOLDER_MESSAGES_REJECT
 					</div>
+	            </div>
+			
+				<div class="btn-group btn-group-sm">
+	            	<button type="button" name="task" value="button_mturk_reject__PLACEHOLDER_ID" data-id_assignment="PLACEHOLDER_ID" class="btn PLACEHOLDER_APPROVE_INTERNALLY approve_internally_assignment" PLACEHOLDER_DISABLED>Approve internally</button>
+	            	<button type="button" class="btn PLACEHOLDER_APPROVE_INTERNALLY dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" PLACEHOLDER_DISABLED></button>
+					<div class="dropdown-menu dropdown_approve_internally_assignment">
+						PLACEHOLDER_MESSAGES_REJECT
+					</div>
+            	</div>
             </div>
 		`.replace(/PLACEHOLDER_ID/g, id)
 
@@ -54,6 +69,8 @@
 		} else {
 			result = result
 			.replace(/PLACEHOLDER_SUCCESS/g, 'btn-success')
+			.replace(/PLACEHOLDER_REJECT_INTERNALLY/g, 'btn-warning')
+			.replace(/PLACEHOLDER_APPROVE_INTERNALLY/g, 'btn-warning')
 			.replace(/PLACEHOLDER_DANGER/g, 'btn-danger')
 		}
 
@@ -85,19 +102,34 @@
 		</div>
 		<div class="row">
 			<div class="col-auto">
-				<button type="button" data-task="button_mturk_approve_selected" class="btn btn-success">Approve selected</button>
-				<div class="btn-group">
-	            	<button type="button" name="task" data-task="button_mturk_reject_selected" class="btn btn-danger">Reject selected</button>
-					<button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"></button>
-					<div class="dropdown-menu dropdown_reject_assignment_selected">
-					{% for message in db_obj_project.messages_reject.all %}
-						<a class="dropdown-item" href="#">{{ message.message }}</a>
-					{% endfor %}
+				<span data-inject_count_assignments_selected>0</span> Assignments selected
+				<div class="btn-group btn-group-sm">
+					<button type="button" name="task" data-task="button_mturk_approve_selected" class="btn btn-success">Approve</button>
+	            	<button type="button" name="task" data-task="button_mturk_reject_internally_selected" class="btn btn-warning">Reject internally</button>
+	            </div>
+				<div class="btn-group btn-group-sm">
+					<div class="btn-group btn-group-sm">
+		            	<button type="button" name="task" data-task="button_mturk_reject_selected" class="btn btn-danger">Reject</button>
+						<button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"></button>
+						<div class="dropdown-menu dropdown_reject_assignment_selected">
+						{% for message in db_obj_project.messages_reject.all %}
+							<a class="dropdown-item" href="#">{{ message.message }}</a>
+						{% endfor %}
+						</div>
+					</div>
+					<div class="btn-group btn-group-sm">
+		            	<button type="button" name="task" data-task="button_mturk_approve_internally_selected" class="btn btn-warning">Approve internally</button>
+						<button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"></button>
+						<div class="dropdown-menu dropdown_approve_internally_selected">
+						{% for message in db_obj_project.messages_reject.all %}
+							<a class="dropdown-item" href="#">{{ message.message }}</a>
+						{% endfor %}
+						</div>
 					</div>
 				</div>
 			</div>
 			<div class="col">
-				<div class="input-group">
+				<div class="input-group input-group-sm">
 					<div class="input-group-prepend">
 						<label class="input-group-text" for="input_message_reject_default">Default reject message</label>
 						<button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"></button>
@@ -142,7 +174,7 @@
 		<hr>
 		<div class="row">
 			<div class="col">
-				<button type="button" name="task" data-task="button_mturk_approve_selected" class="btn btn-success">Approve selected</button>
+				<!-- <button type="button" name="task" data-task="button_mturk_approve_selected" class="btn btn-success">Approve selected</button>
 				<div class="btn-group">
 	            	<button type="button" name="task" data-task="button_mturk_reject_selected" class="btn btn-danger">Reject selected</button>
 					<button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"></button>
@@ -150,6 +182,31 @@
 					{% for message in db_obj_project.messages_reject.all %}
 						<a class="dropdown-item" href="#">{{ message.message }}</a>
 					{% endfor %}
+					</div>
+				</div> -->
+				<span data-inject_count_assignments_selected>0</span> Assignments selected
+				<div class="btn-group btn-group-sm">
+					<button type="button" name="task" data-task="button_mturk_approve_selected" class="btn btn-success">Approve</button>
+	            	<button type="button" name="task" data-task="button_mturk_reject_internally_selected" class="btn btn-warning">Reject internally</button>
+	            </div>
+				<div class="btn-group btn-group-sm">
+					<div class="btn-group btn-group-sm">
+		            	<button type="button" name="task" data-task="button_mturk_reject_selected" class="btn btn-danger">Reject</button>
+						<button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"></button>
+						<div class="dropdown-menu dropdown_reject_assignment_selected">
+						{% for message in db_obj_project.messages_reject.all %}
+							<a class="dropdown-item" href="#">{{ message.message }}</a>
+						{% endfor %}
+						</div>
+					</div>
+					<div class="btn-group btn-group-sm">
+		            	<button type="button" name="task" data-task="button_mturk_approve_internally_selected" class="btn btn-warning">Approve internally</button>
+						<button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"></button>
+						<div class="dropdown-menu dropdown_approve_internally_selected">
+						{% for message in db_obj_project.messages_reject.all %}
+							<a class="dropdown-item" href="#">{{ message.message }}</a>
+						{% endfor %}
+						</div>
 					</div>
 				</div>
 			</div>
@@ -162,9 +219,9 @@
 		</div>
 	</form>
 		</div>
-		<!-- <div class="col">
+		<div class="col">
 			<pre></pre>
-		</div> -->
+		</div>
 	</div>
 </div>
 {% endblock %}	
