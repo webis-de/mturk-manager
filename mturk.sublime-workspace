@@ -520,198 +520,10 @@
 	"buffers":
 	[
 		{
-			"contents": "from django.db import models\n\nclass m_Account_Mturk(models.Model):\n    name = models.CharField(max_length=200, unique=True)\n    key_access = models.CharField(max_length=200)\n    key_secret = models.CharField(max_length=200)\n\nclass m_Project(models.Model):\n    name = models.CharField(max_length=200, unique=True)\n    fk_account_mturk = models.ForeignKey('m_Account_Mturk', on_delete=models.SET_NULL, null=True, related_name='projects')\n    title = models.TextField(default='')\n    description = models.TextField(default='')\n    keywords = models.TextField(default='')\n    count_assignments = models.IntegerField(default=1)\n    reward = models.CharField(default='0.0', max_length=10)\n    lifetime = models.IntegerField(default=604800)\n    duration = models.IntegerField(default=3600)\n    use_sandbox = models.BooleanField(default=True)\n    fk_template_main = models.OneToOneField('m_Template', on_delete=models.SET_NULL, null=True, related_name='project')\n    fk_template_assignment_main = models.OneToOneField('m_Template_Assignment', on_delete=models.SET_NULL, null=True, related_name='project')\n\nclass m_Batch(models.Model):\n    class Meta:\n        unique_together = (\"name\", \"fk_project\")\n        \n    name = models.CharField(max_length=200)\n    fk_project = models.ForeignKey('m_Project', on_delete=models.CASCADE, related_name='batches')\n    title = models.TextField()\n    description = models.TextField()\n    keywords = models.TextField()\n    count_assignments = models.IntegerField()\n    use_sandbox = models.BooleanField(default=True)\n    reward = models.CharField(max_length=10)\n    lifetime = models.IntegerField()\n    duration = models.IntegerField()\n    fk_template = models.ForeignKey('m_Template', on_delete=models.CASCADE, related_name='batches')\n\nclass m_Hit(models.Model):\n    id_hit = models.CharField(max_length=200, unique=True)\n    fk_batch = models.ForeignKey('m_Batch', on_delete=models.CASCADE, related_name='hits')\n    parameters = models.TextField()\n\nclass m_Template(models.Model):\n    class Meta:\n        unique_together = (\"name\", \"fk_project\")\n\n    name = models.CharField(max_length=200)\n    fk_project = models.ForeignKey('m_Project', on_delete=models.CASCADE, related_name='templates')\n    template = models.TextField()\n    height_frame = models.IntegerField()\n    is_active = models.BooleanField(default=True)\n    fk_template_assignment = models.ForeignKey('m_Template_Assignment', on_delete=models.CASCADE, related_name='templates_used')\n    fk_template_hit = models.ForeignKey('m_Template_Hit', on_delete=models.CASCADE, related_name='templates_used')\n\nclass m_Template_Assignment(models.Model):\n    class Meta:\n        unique_together = (\"name\", \"fk_project\")\n\n    name = models.CharField(max_length=200)\n    fk_project = models.ForeignKey('m_Project', on_delete=models.CASCADE, related_name='templates_assignment')\n    template = models.TextField()\n    is_active = models.BooleanField(default=True)\n\nclass m_Template_Hit(models.Model):\n    class Meta:\n        unique_together = (\"name\", \"fk_project\")\n\n    name = models.CharField(max_length=200)\n    fk_project = models.ForeignKey('m_Project', on_delete=models.CASCADE, related_name='templates_hit')\n    template = models.TextField()\n    is_active = models.BooleanField(default=True)\n\nclass m_Assignment(models.Model):\n    class Meta:\n        ordering = ['fk_hit']\n        # order_with_respect_to = 'fk_hit'\n\n    id_assignment = models.CharField(max_length=200, unique=True, null=False)\n    fk_hit = models.ForeignKey('m_Hit', on_delete=models.CASCADE, related_name='assignments')\n    fk_worker = models.ForeignKey('m_Worker', on_delete=models.CASCADE, related_name='assignments')\n    # was_approved = models.NullBooleanField()\n    # is_approved = models.NullBooleanField()\n    answer = models.TextField()\n    tags = models.ManyToManyField('viewer.m_Tag', related_name='items')\n\nclass m_Worker(models.Model):\n    name = models.CharField(max_length=200, unique=True)\n\nclass m_Message_Reject(models.Model):\n    fk_project = models.ForeignKey('m_Project', on_delete=models.CASCADE, related_name='messages_reject')\n    message = models.CharField(max_length=1024)",
-			"file": "mturk/mturk_manager/models.py",
-			"file_size": 4146,
-			"file_write_time": 131605924829561268,
-			"settings":
-			{
-				"buffer_size": 4146,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"contents": "from mturk_manager.views import code_shared\nfrom django.shortcuts import render, redirect\nfrom mturk_manager.models import *\nfrom viewer.models import *\nfrom django.urls import reverse\nfrom django.core.exceptions import ObjectDoesNotExist\nfrom django.db.models import F, Value, Count, Q\nfrom django.db.models.functions import Concat\nimport urllib.parse\nfrom django.utils.html import escape\nfrom django.db import IntegrityError\nfrom botocore.exceptions import ClientError\nimport csv\nimport io\nimport random\nimport html\nimport json\nimport time\nfrom django.contrib import messages, humanize\nimport xmltodict\nfrom viewer.views.shared_code import glob_manager_data\n# from django.template.defaultfilters import apnumber\n\nglob_prefix_name_tag_batch = 'batch_'\nglob_prefix_name_tag_worker = 'worker_'\nglob_prefix_name_tag_hit = 'hit_'\n\ndef project(request, name):\n    context = {}\n    name_quoted = name\n    name_project = urllib.parse.unquote(name_quoted)\n\n    queryset = m_Project.objects.filter(\n        name=name_project\n    ).select_related(\n        'fk_account_mturk',\n        'fk_template_main',\n        'fk_template_assignment_main'\n    ).prefetch_related(\n        'batches__hits__assignments',\n        'templates_assignment',\n        'templates_hit',\n        'templates__fk_template_assignment',\n        'messages_reject'\n    )\n\n    try:\n        db_obj_project = queryset.get()\n    except ObjectDoesNotExist:\n        messages.error(request, 'Project \"{}\" does not exist'.format(name_project))\n        return redirect('mturk_manager:index')\n\n    # create_data_dummy(db_obj_project)\n    # client = code_shared.get_client(db_obj_project)\n    # print(client.get_account_balance())\n\n    # print(client.get_hit(HITId='3EHIMLB7F7Z7ME11ZQIIHDZXLIA8H2'))\n\n    if request.method == 'POST':\n        if request.POST['task'] == 'synchronize_database':\n            synchronize_database(db_obj_project, request, True)\n            synchronize_database(db_obj_project, request, False)\n        if request.POST['task'] == 'create_batch':\n            create_batch(db_obj_project, request)\n        elif request.POST['task'] == 'add_template':\n            add_template(db_obj_project, request)\n        elif request.POST['task'] == 'add_template_assignment':\n            add_template_assignment(db_obj_project, request)\n        elif request.POST['task'] == 'add_template_hit':\n            add_template_hit(db_obj_project, request)\n        elif request.POST['task'] == 'add_message_reject':\n            add_message_reject(db_obj_project, request)\n        elif request.POST['task'] == 'update_template':\n            update_template(db_obj_project, request)\n        elif request.POST['task'] == 'update_template_assignment':\n            update_template_assignment(db_obj_project, request)\n        elif request.POST['task'] == 'update_template_hit':\n            update_template_hit(db_obj_project, request)\n        elif request.POST['task'] == 'update_message_reject':\n            update_message_reject(db_obj_project, request)\n        elif request.POST['task'] == 'delete_templates':\n            delete_templates(db_obj_project, request)\n        elif request.POST['task'] == 'delete_templates_hit':\n            delete_templates_hit(db_obj_project, request)\n        elif request.POST['task'] == 'delete_templates_assignment':\n            delete_templates_assignment(db_obj_project, request)\n        elif request.POST['task'] == 'delete_messages_reject':\n            delete_messages_reject(db_obj_project, request)\n        elif request.POST['task'] == 'update_settings':\n            update_settings(db_obj_project, request)\n        elif request.POST['task'] == 'delete_project':\n            return delete_project(db_obj_project, request)\n\n        # db_obj_project = queryset.get(name=name)\n        # AKIAJUD2Y77Z7DIHUB5A\n        # J1mhsaYxHJRh8+QG6uIfiq9foIgy3MmVFgOGC5nR\n        return redirect('mturk_manager:project', name=name_quoted, permanent=True)\n\n    stats_total = queryset.aggregate(\n        count_batches=Count('batches', filter=Q(batches__use_sandbox=False), distinct=True), \n        count_hits=Count('batches__hits', filter=Q(batches__use_sandbox=False), distinct=True), \n        count_assignments=Count('batches__hits__assignments', filter=Q(batches__use_sandbox=False), distinct=True),\n\n        count_batches_sandbox=Count('batches', filter=Q(batches__use_sandbox=True), distinct=True), \n        count_hits_sandbox=Count('batches__hits', filter=Q(batches__use_sandbox=True), distinct=True), \n        count_assignments_sandbox=Count('batches__hits__assignments', filter=Q(batches__use_sandbox=True), distinct=True)\n    )\n\n    stats_new = m_Tag.objects.filter(\n        key_corpus=name_project,\n        name='submitted'\n    ).aggregate(\n        count_assignments=Count('items', filter=Q(items__fk_hit__fk_batch__use_sandbox=False), distinct=True),\n        count_assignments_sandbox=Count('items', filter=Q(items__fk_hit__fk_batch__use_sandbox=True), distinct=True)\n    )\n    print(stats_new)\n\n    count_assignments_new = stats_new['count_assignments']\n    count_assignments_sandbox_new = stats_new['count_assignments_sandbox']\n    count_assignments_new_total = count_assignments_new + count_assignments_sandbox_new\n    if count_assignments_new_total > 0:\n        text = 'There is a new assignment available!' \n        if count_assignments_new_total > 1:\n            text = 'There are {} new assignments available!'.format(count_assignments_new_total)\n        print(reverse('viewer:index', kwargs={'id_corpus':db_obj_project.name}))\n        messages.info(request, text+' <a href=\"{}?viewer__filter_tags=%5B%22submitted%22%5D\" class=\"alert-link\">View</a>'.format(\n            reverse('viewer:index', kwargs={'id_corpus':db_obj_project.name})\n        ))\n\n\n    context['stats_total'] = stats_total\n    context['stats_new'] = stats_new\n    context['db_obj_project'] = db_obj_project\n    return render(request, 'mturk_manager/project.html', context)\n\ndef delete_project(db_obj_project, request):\n    glob_manager_data.delete_corpus(db_obj_project.name, False)\n\n    m_Tag.objects.filter(key_corpus=db_obj_project.name).delete()\n\n    db_obj_project.delete()\n\n    messages.success(request, 'Deleted project successfully')\n\n    return redirect('mturk_manager:index', permanent=True)\n\ndef synchronize_database(db_obj_project, request, use_sandbox):\n    client = code_shared.get_client(db_obj_project, use_sandbox)\n    set_id_assignments_available = set([assignment.id_assignment for assignment in m_Assignment.objects.filter(fk_hit__fk_batch__fk_project=db_obj_project, fk_hit__fk_batch__use_sandbox=use_sandbox)])\n    print(set_id_assignments_available)\n\n    # response = client.list_assignments_for_hit(\n    #         HITId='3IZPORCT1F9D4JGXYZOI8UU2BC9RHC',\n    #         AssignmentStatuses=['Submitted']\n    #     )\n    # print(response['Assignments'][0]['Answer'])\n    # print(xmltodict.parse(response['Assignments'][0]['Answer']))\n    # print(json.dumps(xmltodict.parse(response['Assignments'][0]['Answer']), indent=1))\n\n    dict_workers_available = {worker.name: worker for worker in m_Worker.objects.all()}\n    dict_tags = {tag.name: tag for tag in m_Tag.objects.filter(key_corpus=db_obj_project.name)}\n    db_obj_tag_submitted = m_Tag.objects.get(key_corpus=db_obj_project.name, name='submitted')\n\n    for db_obj_hit in m_Hit.objects.annotate(\n        count_assignments_current=Count('assignments')\n    ).filter(\n        fk_batch__use_sandbox=use_sandbox,\n        fk_batch__fk_project=db_obj_project,\n        count_assignments_current__lt=F('fk_batch__count_assignments')\n    ).select_related('fk_batch'):\n        db_obj_tag_batch = dict_tags[glob_prefix_name_tag_batch+db_obj_hit.fk_batch.name]\n        db_obj_tag_hit = dict_tags[glob_prefix_name_tag_hit+db_obj_hit.id_hit]\n        response = client.list_assignments_for_hit(\n            HITId=db_obj_hit.id_hit,\n            AssignmentStatuses=['Submitted']\n        )\n        for assignment in response['Assignments']:\n            id_assignment = assignment['AssignmentId']\n            id_worker = assignment['WorkerId']\n            if not id_assignment in set_id_assignments_available:\n                print(id_assignment)\n                try:\n                    db_obj_worker = dict_workers_available[id_worker]\n                except KeyError:\n                    db_obj_worker = m_Worker.objects.create(name=id_worker)\n                    dict_workers_available[id_worker] = db_obj_worker\n\n                db_obj_assignment = m_Assignment.objects.create(\n                    id_assignment=id_assignment,\n                    fk_hit=db_obj_hit,\n                    fk_worker=db_obj_worker,\n                    answer=json.dumps(xmltodict.parse(assignment['Answer'])),\n                )\n\n                db_obj_tag_batch.items.add(db_obj_assignment)\n                db_obj_tag_submitted.items.add(db_obj_assignment)\n                db_obj_tag_hit.items.add(db_obj_assignment)\n\n                db_obj_tag_worker = m_Tag.objects.get_or_create(key_corpus=db_obj_project.name, name=glob_prefix_name_tag_worker+id_worker, defaults={'color': '#0000ff'})[0]\n                db_obj_tag_worker.items.add(db_obj_assignment)\n\n    # for db_obj_batch in db_obj_project.batches.all():\n    #     pass\n    #     count_assignments = db_obj_batch.count_assignments\n    #     for db_obj_hit in db_obj_batch.hits.annotate(count_assignments_current=Count('assignments')).filter(count_assignments_current__lt=count_assignments):\n    #         pass\n        #     response = client.list_assignments_for_hit(\n        #         HITId=db_obj_hit.id_hit,\n        #         AssignmentStatuses=['Submitted']\n        #     )\n        #     for assignment in response['Assignments']:\n        #         print(assignment)\n\ndef delete_templates_hit(db_obj_project, request):\n    m_Template_Hit.objects.filter(\n        fk_project=db_obj_project, id__in=request.POST.getlist('templates')\n    ).update(\n        name=Concat(\n            F('name'),\n            Value('_'+str(int(time.time())))\n        ),\n        is_active=False\n    )\n\n    messages.success(request, 'Deleted template(s) successfully')\n\ndef delete_templates_assignment(db_obj_project, request):\n    m_Template_Assignment.objects.filter(\n        fk_project=db_obj_project, id__in=request.POST.getlist('templates')\n    ).update(\n        name=Concat(\n            F('name'),\n            Value('_'+str(int(time.time())))\n        ),\n        is_active=False\n    )\n\n    messages.success(request, 'Deleted template(s) successfully')\n\ndef delete_messages_reject(db_obj_project, request):\n    m_Message_Reject.objects.filter(\n        fk_project=db_obj_project, id__in=request.POST.getlist('messages')\n    ).delete()\n\n    messages.success(request, 'Deleted reject message(s) successfully')\n\ndef delete_templates(db_obj_project, request):\n    m_Template.objects.filter(\n        fk_project=db_obj_project, id__in=request.POST.getlist('templates')\n    ).update(\n        name=Concat(\n            F('name'),\n            Value('_'+str(int(time.time())))\n        ),\n        is_active=False\n    )\n\n    messages.success(request, 'Deleted template(s) successfully')\n\ndef update_message_reject(db_obj_project, request):\n    if not code_shared.validate_form(request, [\n        {'type':'string', 'keys':['message'], 'message': 'Invalid message'},\n    ]):\n        return \n\n    m_Message_Reject.objects.filter(id=request.POST['id']).update(\n        message=request.POST['message'],\n    )\n\n    messages.success(request, 'Updated reject message successfully')\n\ndef update_template_hit(db_obj_project, request):\n    if not code_shared.validate_form(request, [\n        {'type':'string', 'keys':['name'], 'message': 'Invalid name'},\n    ]):\n        return \n\n    template = None\n    if request.POST['html_template'].strip() == '':\n        if 'file_template' in request.FILES:\n            if request.FILES['file_template'].charset == None:\n                template = request.FILES['file_template'].read().decode('utf-8')\n            else:\n                template = request.FILES['file_template'].read().decode(request.FILES['file_template'].charset)\n    else:\n        template = request.POST['html_template']\n\n    try:\n        if template == None:\n            m_Template_Hit.objects.filter(id=request.POST['id']).update(\n                name=request.POST['name'],\n            )\n        else:\n            m_Template_Hit.objects.filter(id=request.POST['id']).update(\n                name=request.POST['name'],\n                template=template\n            )\n    except IntegrityError:\n        messages.error(request, 'A template with this name already exists')\n        return\n\n    messages.success(request, 'Updated template successfully')\n\ndef update_template_assignment(db_obj_project, request):\n    if not code_shared.validate_form(request, [\n        {'type':'string', 'keys':['name'], 'message': 'Invalid name'},\n    ]):\n        return \n\n    template = None\n    if request.POST['html_template'].strip() == '':\n        if 'file_template' in request.FILES:\n            if request.FILES['file_template'].charset == None:\n                template = request.FILES['file_template'].read().decode('utf-8')\n            else:\n                template = request.FILES['file_template'].read().decode(request.FILES['file_template'].charset)\n    else:\n        template = request.POST['html_template']\n\n    try:\n        if template == None:\n            m_Template_Assignment.objects.filter(id=request.POST['id']).update(\n                name=request.POST['name'],\n            )\n        else:\n            m_Template_Assignment.objects.filter(id=request.POST['id']).update(\n                name=request.POST['name'],\n                template=template\n            )\n    except IntegrityError:\n        messages.error(request, 'A template with this name already exists')\n        return\n\n    messages.success(request, 'Updated template successfully')\n\ndef add_template_hit(db_obj_project, request):\n    if not code_shared.validate_form(request, [\n        {'type':'string', 'keys':['name'], 'message': 'Invalid name'},\n        {'type':'template', 'keys':['html_template', 'file_template'], 'message': 'Invalid template'},\n    ]):\n        return \n\n    template = None\n    if request.POST['html_template'].strip() == '':\n        if 'file_template' in request.FILES:\n            if request.FILES['file_template'].charset == None:\n                template = request.FILES['file_template'].read().decode('utf-8')\n            else:\n                template = request.FILES['file_template'].read().decode(request.FILES['file_template'].charset)\n    else:\n        template = request.POST['html_template']\n\n    try:\n        m_Template_Hit.objects.create(\n            name=request.POST['name'],\n            template=template,\n            fk_project=db_obj_project\n        )\n    except IntegrityError:\n        messages.error(request, 'A template with this name already exists')\n        return\n\n    messages.success(request, 'Added template successfully')\n\ndef add_template_assignment(db_obj_project, request):\n    if not code_shared.validate_form(request, [\n        {'type':'string', 'keys':['name'], 'message': 'Invalid name'},\n        {'type':'template', 'keys':['html_template', 'file_template'], 'message': 'Invalid template'},\n    ]):\n        return \n\n    template = None\n    if request.POST['html_template'].strip() == '':\n        if 'file_template' in request.FILES:\n            if request.FILES['file_template'].charset == None:\n                template = request.FILES['file_template'].read().decode('utf-8')\n            else:\n                template = request.FILES['file_template'].read().decode(request.FILES['file_template'].charset)\n    else:\n        template = request.POST['html_template']\n\n    try:\n        m_Template_Assignment.objects.create(\n            name=request.POST['name'],\n            template=template,\n            fk_project=db_obj_project\n        )\n    except IntegrityError:\n        messages.error(request, 'A template with this name already exists')\n        return\n\n    messages.success(request, 'Added template successfully')\n\ndef add_message_reject(db_obj_project, request):\n    if not code_shared.validate_form(request, [\n        {'type':'string', 'keys':['message'], 'message': 'Invalid message'},\n    ]):\n        return \n\n    m_Message_Reject.objects.create(fk_project=db_obj_project, message=request.POST['message'])\n\n    messages.success(request, 'Added reject message successfully')\n\ndef update_template(db_obj_project, request):\n    if not code_shared.validate_form(request, [\n        {'type':'string', 'keys':['name'], 'message': 'Invalid name'},\n        {'type':'number', 'keys':['height_frame'], 'message': 'Invalid frame height'},\n    ]):\n        return \n\n    print(request.POST)\n    db_obj_template = m_Template.objects.get(id=request.POST['id'])\n\n    if 'template_assignment' in request.POST and request.POST['template_assignment'].strip() != '':\n        template_assignment = m_Template_Assignment.objects.get(id=request.POST['template_assignment'])\n    else:\n        template_assignment = db_obj_template.fk_template_assignment\n\n    if 'template_hit' in request.POST and request.POST['template_hit'].strip() != '':\n        template_hit = m_Template_Hit.objects.get(id=request.POST['template_hit'])\n    else:\n        template_hit = db_obj_template.fk_template_hit\n\n    db_obj_template.name = request.POST['name']\n    db_obj_template.height_frame = request.POST['height_frame']\n    db_obj_template.fk_template_assignment = template_assignment\n    db_obj_template.fk_template_hit = template_hit\n\n    try:\n        db_obj_template.save()\n    except IntegrityError:\n        messages.error(request, 'A template with this name already exists')\n        return\n\n    messages.success(request, 'Updated template successfully')\n\ndef add_template(db_obj_project, request):\n    if not code_shared.validate_form(request, [\n        {'type':'string', 'keys':['name'], 'message': 'Invalid name'},\n        {'type':'number', 'keys':['height_frame'], 'message': 'Invalid frame height'},\n        {'type':'template', 'keys':['html_template', 'file_template'], 'message': 'Invalid template'},\n    ]):\n        return \n\n    template = None\n    if request.POST['html_template'].strip() == '':\n        if 'file_template' in request.FILES:\n            if request.FILES['file_template'].charset == None:\n                template = request.FILES['file_template'].read().decode('utf-8')\n            else:\n                template = request.FILES['file_template'].read().decode(request.FILES['file_template'].charset)\n    else:\n        template = request.POST['html_template']\n\n    try:\n        db_obj_template_assignment = m_Template_Assignment.objects.get(fk_project=db_obj_project, id=request.POST['template_assignment'])\n    except ValueError:\n        db_obj_template_assignment = m_Template_Assignment.objects.get(fk_project=db_obj_project, name=\"default_template_assignment__\"+db_obj_project.name)\n\n    try:\n        db_obj_template_hit = m_Template_Hit.objects.get(fk_project=db_obj_project, id=request.POST['template_hit'])\n    except ValueError:\n        db_obj_template_hit = m_Template_Hit.objects.get(fk_project=db_obj_project, name=\"default_template_hit__\"+db_obj_project.name)\n\n    try:\n        m_Template.objects.create(\n            name=request.POST['name'],\n            template=template,\n            height_frame=request.POST['height_frame'],\n            fk_project=db_obj_project,\n            fk_template_assignment=db_obj_template_assignment,\n            fk_template_hit=db_obj_template_hit\n        )\n    except IntegrityError:\n        messages.error(request, 'A template with this name already exists')\n        return\n\n    messages.success(request, 'Added template successfully')\n\ndef update_settings(db_obj_project, request):\n    code_shared.validate_form(request, [\n        {'type':'string', 'keys':['title'], 'message': 'Invalid title', 'state': 'warning'},\n        {'type':'string', 'keys':['description'], 'message': 'Invalid description', 'state': 'warning'},\n        {'type':'string', 'keys':['reward'], 'message': 'Invalid reward', 'state': 'warning'},\n        {'type':'number', 'keys':['count_assignments'], 'message': 'Invalid number of assignments', 'state': 'warning'},\n        {'type':'number', 'keys':['lifetime'], 'message': 'Invalid hit lifetime', 'state': 'warning'},\n        {'type':'number', 'keys':['duration'], 'message': 'Invalid hit duration', 'state': 'warning'},\n        {'type':'string', 'keys':['use_sandbox'], 'message': 'Invalid sandbox mode', 'state': 'warning'},\n        {'type':'string', 'keys':['template_main'], 'message': 'Invalid main template', 'state': 'warning'},\n    ])\n\n\n\n    db_obj_project.title = request.POST['title']\n    db_obj_project.description = request.POST['description']\n    db_obj_project.keywords = request.POST['keywords']\n    db_obj_project.reward = request.POST['reward']\n    db_obj_project.lifetime = request.POST['lifetime']\n    db_obj_project.duration = request.POST['duration']\n    db_obj_project.count_assignments = request.POST['count_assignments']\n    db_obj_project.use_sandbox = True if request.POST['use_sandbox'] == '1' else False\n\n    if request.POST['template_main'] != '':\n        db_obj_project.fk_template_main = m_Template.objects.get(fk_project=db_obj_project, id=request.POST['template_main'])\n\n    if request.POST['template_assignment_main'] != '':\n        db_obj_project.fk_template_assignment_main = m_Template_Assignment.objects.get(fk_project=db_obj_project, id=request.POST['template_assignment_main'])\n\n    db_obj_project.save()\n\n    messages.success(request, 'Updated settings successfully')\n\ndef create_batch(db_obj_project, request):\n    if not code_shared.validate_form(request, [\n        {'type':'number', 'keys':['count_assignments'], 'message': 'Invalid number of assignments'},\n        {'type':'number', 'keys':['lifetime'], 'message': 'Invalid lifetime'},\n        {'type':'number', 'keys':['duration'], 'message': 'Invalid duration'},\n        {'type':'string', 'keys':['reward'], 'message': 'Invalid reward'},\n        {'type':'string', 'keys':['title'], 'message': 'Invalid title'},\n        {'type':'string', 'keys':['description'], 'message': 'Invalid description'},\n        {'type':'string', 'keys':['template'], 'message': 'Invalid worker template'},\n    ]):\n        return \n\n    if not 'file_csv' in request.FILES:\n        valid = False\n        messages.error(request, 'Invalid csv file')\n        return  \n\n    db_obj_batch = code_shared.glob_create_batch(db_obj_project, request)\n    client = code_shared.get_client(db_obj_project, True if request.POST['use_sandbox'] == '1' else False)\n    reader = csv.DictReader(io.StringIO(request.FILES['file_csv'].read().decode('utf-8')))\n    db_obj_template = m_Template.objects.get(fk_project=db_obj_project, id=request.POST['template'])\n    # list_entities = []\n    for dict_parameters in reader:\n        try:\n            mturk_obj_hit = client.create_hit(\n                Keywords=request.POST['keywords'],\n                MaxAssignments=int(request.POST['count_assignments']),\n                LifetimeInSeconds=int(request.POST['lifetime']),\n                AssignmentDurationInSeconds=int(request.POST['duration']),\n                Reward=request.POST['reward'],\n                Title=request.POST['title'],\n                Description=request.POST['description'],\n                Question=code_shared.create_question(db_obj_template.template, db_obj_template.height_frame, dict_parameters)\n            )\n        except ClientError as e:\n            messages.error(request, '''\n                An error occured\n                <a href=\"#alert_1\" data-toggle=\"collapse\" class=\"alert-link\">details</a>\n                <p class=\"collapse mb-0\" id=\"alert_1\">\n                    {}\n                </p>\n            '''.format(e))\n            db_obj_batch.delete()\n            return\n\n        db_obj_tag = m_Tag.objects.create(\n            name=glob_prefix_name_tag_hit+mturk_obj_hit['HIT']['HITId'],\n            key_corpus=db_obj_project.name\n        )\n\n        # print(mturk_obj_hit)\n        db_obj_hit = m_Hit.objects.create(\n            # id_hit=str(random.randint(0, 9999999)),\n            id_hit=mturk_obj_hit['HIT']['HITId'],\n            fk_batch=db_obj_batch,\n            parameters=json.dumps(dict_parameters)\n        )\n\n        # list_assignments\n\n        # list_entities.append(db_obj_hit.id)\n\n    db_obj_tag = m_Tag.objects.get_or_create(\n        name=glob_prefix_name_tag_batch+db_obj_batch.name,\n        key_corpus=db_obj_project.name\n    )[0]\n\n    messages.success(request, 'Created batch successfully')\n\n    # m_Entity.objects.bulk_create([m_Entity(id_item=id_hit, id_item_internal=id_hit, key_corpus=db_obj_project.name) for id_hit in list_entities])",
-			"file": "mturk/mturk_manager/views/project.py",
-			"file_size": 24737,
-			"file_write_time": 131608251173728744,
-			"settings":
-			{
-				"buffer_size": 24737,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"contents": "from django.shortcuts import render\n\ndef documentation(request):\n    context = {}\n\n    context['templates'] = get_contents_spoiler()\n    return render(request, 'mturk_manager/documentation.html', context)\n\ndef get_contents_spoiler():\n    return {\n        'template_html': '''<!DOCTYPE html>\n<html>\n    <head>\n        <meta http-equiv='Content-Type' content='text/html; charset=UTF-8'/>\n        <script type='text/javascript' src='https://s3.amazonaws.com/mturk-public/externalHIT_v1.js'></script>\n    </head>\n    <body>\n        <form name='mturk_form' method='post' id='mturk_form' action='https://www.mturk.com/mturk/externalSubmit'>\n        <input type='hidden' value='' name='assignmentId' id='assignmentId'/>\n        <h1>What's up?</h1>\n        <p><textarea name='comment' cols='80' rows='3'></textarea></p>\n        <p><input type='submit' id='submitButton' value='Submit' /></p></form>\n        <script language='Javascript'>turkSetAssignmentID();</script>\n    </body>\n</html>''',\n        'template_html_requester_hit_template_default': '''<div class=\"col-12\">\n    <div data-inject_assignments></div>\n</div>''',\n        'template_html_requester_hit_template_example': '''<div class=\"col-12\">\n    <div class=\"input_text\"></div>\n    <div data-inject_assignments></div>\n</div>\n<script>\n    var input_text = question.column1;\n    hit_wrapper.find('.input_text').text(input_text);\n</script>''',\n        'template_html_requester_assignment_template_example': '''<div class=\"col-12\">\n    <div class=\"input_text\"></div>\n    <div data-inject_input_forms></div>\n</div>\n<script>\n    var input_text = answer.input1;\n    assignment_wrapper.find('.input_text').text(input_text);\n</script>'''\n    }",
-			"file": "mturk/mturk_manager/views/documentation.py",
-			"file_size": 1687,
-			"file_write_time": 131605758191413235,
-			"settings":
-			{
-				"buffer_size": 1687,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"contents": "{% extends \"mturk_manager/base.html\" %}\n{% load static %}\n\n{% block name_project %}Documentation{% endblock %}\n\n{% block tag_body %}\n<body data-spy=\"scroll\" data-target=\"#navigation_documentation\">\n{% endblock %}\n\n{% block body %}\n<link rel=\"stylesheet\" href=\"//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css\">\n<link rel=\"stylesheet\" href=\"{% static 'mturk_manager/css/sublime.css' %}\">\n\n<div class=\"container-fluid\" id=\"page_documentation\">\n\t<div class=\"row mt-3\">\n\t\t<div class=\"col-9\">\n            <div class=\"alert alert-info\" role=\"alert\">\n                This documentation describes the usage of the MTurk Manager. To get information about the installation please refer to the <a href=\"https://github.com/webis-de/mturk-manager\" class=\"alert-link\">GitHub-page</a>.\n            </div>\n\n            <h1 id=\"link_account_mturk\">MTurk account</h1>\n            <p>\n                Each project has to be associated with one valid MTurk account to be able to use the MTurk API.\n                Every MTurk account consists of a name and the security credentials which can be managed on the <a href=\"https://console.aws.amazon.com/iam/home?#/security_credential\">AWS</a> page.  \n            </p>\n            <p>\n                To add a MTurk account visit the <a href=\"{% url 'mturk_manager:settings' %}\">settings page</a>\n            </p>\n\n            <h1 id=\"link_project\">MTurk Manager project</h1>\n            <p>\n                A MTurk Manager project is conceptually almost the same as a MTurk project. You are able to manage settings like title, description, reward and many more. Additionally each project can hold multiple hit templates (hereafter called <b>worker templates</b>) and assignment templates (hereafter called <b>requester templates</b>) to create custom views for the results.\n            </p>\n            <p>\n                To create a new project visit <a href=\"{% url 'mturk_manager:create' %}\">this page</a> and fill in an unique project name and select a MTurk account.\n            </p>\n            <p>\n                On the project page you are able to set default settings for convenience reason. These settings will be used in the batch creation form and can be overridden for this specific batch.\n            </p>\n\n            <h1 id=\"link_create_batch\">Create batch</h1>\n            <p>\n                This <a href=\"https://blog.mturk.com/using-csv-files-to-create-multiple-hits-in-the-requester-ui-22a25ec563dc\">blog entry</a> describes the usage of csv files in the requester user interface of MTurk but it can also be applied to this tool.\n            </p>\n            \n            <h1 id=\"link_templates_worker\">Worker templates</h1>\n            <p>\n        \t\tA worker template defines how a hit will look to the workers.\n        \t\tYou can get the HTML template from the <a href=\"https://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_HTMLQuestionArticle.html#ApiReference_HTMLQuestionArticle-example\">MTurk reference</a> or directly by clicking on the button below.\n        \t</p>\n        \t<p>\n        \t\t<button type=\"button\" class=\"btn btn-dark btn-sm\" data-template=\"{{ templates.template_html }}\" data-toggle=\"modal\" data-target=\"#modal_show_html\">Show worker template</button>\n            </p>\n            <p>\n            \tYou must not remove or change the JavaScript related parts and the <code>form</code> properties. Otherwise you are free to design the hit as you wish; You can import JavaScript and CSS scripts, images and other assets from external sources as usual.\n            </p>\n            <p>\n                Values provided in the <a href=\"#link_create_batch\">csv file</a> to create a batch can be used in the templates by including placeholders into the template. The structure of a placeholder looks like the following: <code>${column_name}</code>. In this example the value of the csv column named 'column_name' will be replaced with the placeholder.  \n            </p>\n\n            <h1 id=\"link_templates_requester\">Requester templates</h1>\n            <p>\n                Requester templates are the real benefit you get using the MTurk Manager.\n                They allow you to design your own view for each assignment in a batch to get a better understanding of the results than looking at a csv file or a table.\n            </p>\n            <p>\n                You <b>have to</b> design a requester assignment template for each worker template. This template is responsible to show the results of the assignment and to provide the approve/reject buttons for the corresponding assignment.\n                You <b>may</b> also design a requester hit layout for each worker template. This hit layout is useful to combine information displayed for each assignment in order that you don't show the same information more than once.\n            </p>\n            <p>\n                To better understand the difference between requester assignment templates and requester hit templates consider the following example. You created a batch of hits where each hit shows an image and the workers have to judge the image by its beauty.\n                If you specify a requester assignment template only the image would be displayed for every assignment in each hit. If you set the number of assignments per hit to a high count you would see the same image many times.\n                Its better to add the image to the requester hit template and design the requester assignment templates to only show the judgment of the workers. In that way you'll see the image only once followed by all the judgment by the workers.  \n            </p>\n\n            <h2 id=\"link_templates_requester_assignemnt\">Requester assignment templates</h2>\n            <p>\n                The requester assignment template is used to design the results of the workers.\n            </p>\n            <p>\n                Since a requester assignment template is associated to a worker template it has access not only to the values of the csv values used to create the hit but also to the results of the workers.\n                The values of the corresponding row in the csv file are available in the <code>question</code> JavaScript variable and the results of the worker are stored in the <code>answer</code> JavaScript variable.\n                To inject the values of the <code>question</code> and <code>answer</code> variables into your template you have access to the <code>assignment_wrapper</code> variable which wraps the current assignment. You can use the jQuery <code>find()</code> function to inject the values into any tag inside of the <code>assignment_wrapper</code>.\n            </p>\n            <p>\n                The input elements to approve/reject the assignments are injected into the tag containing the <code>data-inject_input_forms</code>. In that way you are able to determine the location of the input elements. If you forget to set the <code>data-inject_input_forms</code> attribute you can not approve/reject the assignment.\n                Click the following button to see an example assignment requester template.\n            </p>\n            <p>\n                <button type=\"button\" class=\"btn btn-dark btn-sm\" data-template=\"{{ templates.template_html_requester_assignment_template_example }}\" data-toggle=\"modal\" data-target=\"#modal_show_html\">Show example requester assignment template</button>\n            </p>\n            <div class=\"alert alert-warning\" role=\"alert\">\n              You have to use the <code>var</code> keyword to declare custom JavaScript variables!<br>\n              The <code>let</code> and <code>const</code> keywords are <b>not</b> allowed because the templates may be inserted multiple times into the page and therefore the variables would be redeclared which is forbidden using the <code>let</code> and <code>const</code> keywords.\n            </div>\n\n            <h2 id=\"link_templates_requester_hit\">Requester hit templates</h2>\n            <p>\n                If you do not specify a requester hit template the following the default template will be used instead.\n            </p>\n            <p>\n                <button type=\"button\" class=\"btn btn-dark btn-sm\" data-template=\"{{ templates.template_html_requester_hit_template_default }}\" data-toggle=\"modal\" data-target=\"#modal_show_html\">Show default requester hit template</button>\n            </p>\n            <p>\n                If you want to create your own requester hit template you'll have to specify with the <code>data-inject_assingments</code> attribute where the assignments should be inserted. \n            </p>\n            <p>\n                You have access to the JavaScript variable <code>question</code> which is a object containing the csv columns as property keys and values of the corresponding row as property values.  \n            </p>\n            <p>\n                Since multiple requester hit templates may be shown you are not allowed to use <code>id</code> attributes in your templates to prevent multiple HTML tags with the same id on the same page.\n                Instead you have access to the <code>hit_wrapper</code> JavaScript variable which wraps the current hit and can be used together with the <code>find()</code> function from jQuery to find any tag inside of your template.\n                Click the following button to see an example hit requester template.\n            </p>\n            <p>\n                <button type=\"button\" class=\"btn btn-dark btn-sm\" data-template=\"{{ templates.template_html_requester_hit_template_example }}\" data-toggle=\"modal\" data-target=\"#modal_show_html\">Show example requester hit template</button>\n            </p>\n            <div class=\"alert alert-warning\" role=\"alert\">\n              You have to use the <code>var</code> keyword to declare custom JavaScript variables!<br>\n              The <code>let</code> and <code>const</code> keywords are <b>not</b> allowed because the templates may be inserted multiple times into the page and therefore the variables would be redeclared which is forbidden using the <code>let</code> and <code>const</code> keywords.\n            </div>\n        </div>\n        <div class=\"col-3\" id=\"navigation_documentation\">\n            <ul class=\"nav flex-column formats_scrollspy\">\n                <li class=\"nav-item\">\n                    <a class=\"nav-link\" href=\"#link_account_mturk\">MTurk account</a>\n                </li>\n                <li class=\"nav-item\">\n                    <a class=\"nav-link\" href=\"#link_project\">MTurk Manager project</a>\n                </li>\n                <li class=\"nav-item\">\n                    <a class=\"nav-link\" href=\"#link_create_batch\">Create batch</a>\n                </li>\n                <li class=\"nav-item\">\n                    <a class=\"nav-link\" href=\"#link_templates_worker\">Worker templates</a>\n                </li>\n                <li class=\"nav-item\">\n                    <a class=\"nav-link\" href=\"#link_templates_requester\">Requester templates</a>\n                </li>\n                <ul class=\"nav flex-column\">\n                    <li class=\"nav-item\">\n                        <a class=\"nav-link\" href=\"#link_templates_requester_assignemnt\">Requester assignment templates</a>\n                    </li>\n                    <li class=\"nav-item\">\n                        <a class=\"nav-link\" href=\"#link_templates_requester_hit\">Requester hit templates</a>\n                    </li>\n                </ul>\n            </ul>\n        </div>\n    </div>\n</div>\n\n<div class=\"modal fade\" tabindex=\"-1\" id=\"modal_show_html\">\n\t<div class=\"modal-dialog modal-lg modal-xxl\">\n\t\t<div class=\"modal-content\">\n\t\t\t<div class=\"modal-header\">\n\t\t\t\t<h5 class=\"modal-title\">HTML</h5>\n\t\t\t\t<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n\t\t\t\t\t<span aria-hidden=\"true\">&times;</span>\n\t\t\t\t</button>\n\t\t\t</div>\n\t\t\t<div class=\"modal-body\">\n\t\t\t\t<pre><code class=\"html\"></code></pre>\n\t\t\t</div>\n\t\t\t<div class=\"modal-footer\">\n\t\t\t\t<button type=\"button\" class=\"btn btn-secondary\" data-dismiss=\"modal\">Close</button>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n</div>\n{% endblock %}\n\n{% block javascript %}\n\t{{ block.super }}\n\t<script src=\"{% static 'mturk_manager/js/highlight.pack.js' %}\"></script>\n{% endblock %}",
-			"file": "mturk/mturk_manager/templates/mturk_manager/documentation.html",
-			"file_size": 12240,
-			"file_write_time": 131605729262280028,
-			"settings":
-			{
-				"buffer_size": 12240,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"contents": "venv\n__pycache__\nmturk/thesis\n*.csv\nmigrations\ncache\n\n#comment the following lines out to add the dynamic content to the version control\ndb.sqlite3\nsettings",
-			"file": ".gitignore",
-			"file_size": 156,
-			"file_write_time": 131605755734962692,
-			"settings":
-			{
-				"buffer_size": 156,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"contents": "{% extends \"mturk_manager/base.html\" %}\n{% load static %}\n\n{% block name_project %}{{ name_project }}{% endblock %}\n\n{% block body %}\n<script src=\"{% static 'mturk_manager/js/jquery-3.1.1.min.js' %}\"></script>\n<script src=\"{% static 'mturk_manager/js/popper.js' %}\"></script>\n<script src=\"{% static 'mturk_manager/js/bootstrap.js' %}\"></script>\n<script src=\"{% static 'mturk_manager/js/main.js' %}\"></script>\n\n<script>\n\tlet hit_wrapper;\n\tlet question;\n\tlet assignment_wrapper;\n\tlet answer;\n\tlet answer_raw;\n\tconst list_messages_reject = [\n\t{% for message in queryset_messages_reject.all %}\n\t\t'{{ message.message }}',\n\t{% endfor %}\n\t]\n\n\tfunction create_inputs(id, state='submitted')\n\t{\n\t\tlet result = `\n\t\t\t<div class=\"custom-control custom-checkbox d-inline\">\n\t\t\t\t<input type=\"checkbox\" class=\"custom-control-input\" id=\"checkbox_assignment_PLACEHOLDER_ID\" data-id_assignment=\"PLACEHOLDER_ID\" name=\"checkbox_assignment\" value=\"PLACEHOLDER_ID\" PLACEHOLDER_DISABLED>\n\t\t\t\t<label class=\"custom-control-label\" for=\"checkbox_assignment_PLACEHOLDER_ID\"></label>\n\t\t\t</div>\n\t\t\t<button type=\"button\" name=\"task\" value=\"button_mturk_approve__PLACEHOLDER_ID\" data-id_assignment=\"PLACEHOLDER_ID\" class=\"btn btn-sm PLACEHOLDER_SUCCESS approve_assignment\" PLACEHOLDER_DISABLED>Approve</button>\n\t\t\t<div class=\"btn-group btn-group-sm\">\n            \t<button type=\"button\" name=\"task\" value=\"button_mturk_reject__PLACEHOLDER_ID\" data-id_assignment=\"PLACEHOLDER_ID\" class=\"btn PLACEHOLDER_DANGER reject_assignment\" PLACEHOLDER_DISABLED>Reject</button>\n            \t<button type=\"button\" class=\"btn PLACEHOLDER_DANGER dropdown-toggle dropdown-toggle-split\" data-toggle=\"dropdown\" PLACEHOLDER_DISABLED></button>\n\t\t\t\t\t<div class=\"dropdown-menu dropdown_reject_assignment\">\n\t\t\t\t\t\tPLACEHOLDER_MESSAGES_REJECT\n\t\t\t\t\t</div>\n            </div>\n\t\t`.replace(/PLACEHOLDER_ID/g, id)\n\n\t\tif(state != 'submitted') \n\t\t{\n\t\t\tresult = result.replace(/PLACEHOLDER_DISABLED/g, 'disabled')\n\t\t\tif(state == 'approved')\n\t\t\t{\n\t\t\t\tresult = result\n\t\t\t\t.replace(/PLACEHOLDER_SUCCESS/g, 'btn-success')\n\t\t\t\t.replace(/PLACEHOLDER_DANGER/g, 'btn-light')\n\t\t\t} else {\n\t\t\t\tresult = result\n\t\t\t\t.replace(/PLACEHOLDER_SUCCESS/g, 'btn-light')\n\t\t\t\t.replace(/PLACEHOLDER_DANGER/g, 'btn-danger')\n\t\t\t}\n\t\t} else {\n\t\t\tresult = result\n\t\t\t.replace(/PLACEHOLDER_SUCCESS/g, 'btn-success')\n\t\t\t.replace(/PLACEHOLDER_DANGER/g, 'btn-danger')\n\t\t}\n\n\t\tmessages_reject = '';\n\t\t$.each(list_messages_reject, function(index, message) {\n\t\t\tmessages_reject += '<a class=\"dropdown-item\" data-id_assignment=\"'+id+'\" href=\"#\">'+message+'</a>'\n\t\t});\n\t\tresult = result.replace(/PLACEHOLDER_MESSAGES_REJECT/g, messages_reject);\n\n\t\treturn result\n\t}\n\n\tfunction decode(input) {\n\t    const txt = document.createElement(\"textarea\");\n\t    txt.innerHTML = input;\n\t    return txt.value;\n\t}\n</script>\n<div class=\"container-fluid\" id=\"page_view\">\n\t<div class=\"row\">\n\t\t<div class=\"col-12\">\n\t<form method=\"post\">\n\t\t{% csrf_token %}\n\t\t<div class=\"row mt-2\">\n\t\t\t<div class=\"col\">\n\t\t\t\t<button type=\"button\" data-task=\"submit_annotations\" class=\"btn btn-primary\">Submit</button>\n\t\t\t\t<button type=\"button\" data-task=\"button_mturk_approve_selected\" class=\"btn btn-success\">Approve selected</button>\n\t\t\t\t<div class=\"btn-group\">\n\t            \t<button type=\"button\" name=\"task\" data-task=\"button_mturk_reject_selected\" class=\"btn btn-danger\">Reject selected</button>\n\t\t\t\t\t<button type=\"button\" class=\"btn btn-danger dropdown-toggle dropdown-toggle-split\" data-toggle=\"dropdown\"></button>\n\t\t\t\t\t<div class=\"dropdown-menu dropdown_reject_assignment_selected\">\n\t\t\t\t\t{% for message in queryset_messages_reject.all %}\n\t\t\t\t\t\t<a class=\"dropdown-item\" href=\"#\">{{ message.message }}</a>\n\t\t\t\t\t{% endfor %}\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t\t<div class=\"col\">\n\t\t\t\t<div class=\"input-group mb-3\">\n\t\t\t\t\t<div class=\"input-group-prepend\">\n\t\t\t\t\t\t<label class=\"input-group-text\" for=\"input_message_reject_default\">Default reject message</label>\n\t\t\t\t\t\t<button type=\"button\" class=\"btn btn-outline-secondary dropdown-toggle dropdown-toggle-split\" data-toggle=\"dropdown\"></button>\n\t\t\t\t\t\t<div class=\"dropdown-menu\" id=\"dropdown_message_reject_default\">\n\t\t\t\t\t\t{% for message in queryset_messages_reject.all %}\n\t\t\t\t\t\t\t<a class=\"dropdown-item\" href=\"#\">{{ message.message }}</a>\n\t\t\t\t\t\t{% endfor %}\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<input type=\"text\" id=\"input_message_reject_default\" class=\"form-control\" required>\n\t\t\t\t\t<div class=\"invalid-feedback\">\n\t\t\t\t        Please provide a valid default reject message!\n\t\t\t      </div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t\t<hr>\n\t\t<div class=\"row\" id=\"wrapper_hits\">\n\t\t{% for hit in queryset_hits %}\n\t\t\t<script>\n\t\t\t\tquestion = JSON.parse('{{hit.parameters|safe}}');\n\t\t\t\t\n\t\t\t\thit_wrapper = $(decode(`{{ hit.fk_batch.fk_template.fk_template_hit.template }}`));\n\t\t\t\t$('#wrapper_hits').append(hit_wrapper)\n\n\t\t\t\tvar wrapper_assignments = $($('[data-inject_assignments]')[$('[data-inject_assignments]').length - 1]);\n\n\t\t\t\t{% for assignment in hit.list_assignments %}\n\n\t\t\t\tanswer_raw = {{ assignment.answer|safe }};\n\t\t\t\tanswer = {{ assignment.answer_normalized|safe }};\n\n\t\t\t\tassignment_wrapper = $(decode(`{{ hit.fk_batch.fk_template.fk_template_assignment.template }}`));\n\t\t\t\twrapper_assignments.append(assignment_wrapper)\n\t\t\t\t\n\t\t\t\tvar wrapper_input_forms = $($('[data-inject_input_forms]')[$('[data-inject_input_forms]').length - 1]);\n\t\t\t\twrapper_input_forms.html(create_inputs({{ assignment.id }}{% if assignment.is_approved %}, 'approved'{% elif assignment.is_rejected %}, 'rejected'{% endif %}))\n\t\t\t\t{% endfor %}\n\t\t\t</script>\n\t\t{% endfor %}\n\t\t</div>\n\t\t<hr>\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col\">\n\t\t\t\t<button type=\"button\" data-task=\"submit_annotations\" class=\"btn btn-primary\">Submit</button>\n\t\t\t\t<button type=\"button\" name=\"task\" data-task=\"button_mturk_approve_selected\" class=\"btn btn-success\">Approve selected</button>\n\t\t\t\t<div class=\"btn-group\">\n\t            \t<button type=\"button\" name=\"task\" data-task=\"button_mturk_reject_selected\" class=\"btn btn-danger\">Reject selected</button>\n\t\t\t\t\t<button type=\"button\" class=\"btn btn-danger dropdown-toggle dropdown-toggle-split\" data-toggle=\"dropdown\"></button>\n\t\t\t\t\t<div class=\"dropdown-menu dropdown_reject_assignment_selected\">\n\t\t\t\t\t{% for message in queryset_messages_reject.all %}\n\t\t\t\t\t\t<a class=\"dropdown-item\" href=\"#\">{{ message.message }}</a>\n\t\t\t\t\t{% endfor %}\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t</form>\n\t\t</div>\n\t\t<!-- <div class=\"col\">\n\t\t\t<pre></pre>\n\t\t</div> -->\n\t</div>\n</div>\n{% endblock %}\t\n\n{% block javascript %}\n\t<script src=\"{% static 'mturk_manager/js/view.js' %}\"></script>\n{% endblock %}\t",
-			"file": "mturk/mturk_manager/templates/mturk_manager/view.html",
-			"file_size": 6559,
-			"file_write_time": 131608254953843077,
-			"settings":
-			{
-				"buffer_size": 6559,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"contents": "<div class=\"col-12\">\n\t<div class=\"row\">\n\t\t<div class=\"col\">\n\t\t\t<b>This is how a HIT could look like</b>\n\t\t\t<ul>\n\t\t\t</ul>\n\t\t</div>\n\t</div>\n\t<div class=\"row\">\n\t\t<div class=\"col\">\n    \t\t<div data-inject_assignments></div>\n\t\t</div>\n\t</div>\n\t<hr>\n</div>\n<script>\n    hit_wrapper.find('ul').append('<li>'+question.link_1+'</li>');\n    hit_wrapper.find('ul').append('<li>'+question.link_2+'</li>');\n</script>\n\n<span>\n<div>\t\n\tResult of the worker: \n\t<span class=\"input_text\"></span>\n</div>\n<div data-inject_input_forms></div>\n</span>\n<script>\n    assignment_wrapper.find('.input_text').text(answer.test1 +' '+answer.test2);\n</script>",
-			"settings":
-			{
-				"buffer_size": 625,
-				"line_ending": "Unix"
-			}
-		},
-		{
 			"file": "setup.sh",
 			"settings":
 			{
-				"buffer_size": 276,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"contents": "from django.shortcuts import render, redirect\nfrom mturk_manager.views import code_shared\nfrom mturk_manager.models import *\nfrom viewer.models import *\nimport json\nfrom django.http import HttpResponseRedirect\nfrom django.urls import reverse\nimport urllib.parse\nimport time\nfrom django.db.models import Prefetch, Count, When, BooleanField, Case, Q\nfrom django.contrib import messages\n\ndef view(request, name):\n    context = {}\n    name_quoted = name\n    name_project = urllib.parse.unquote(name_quoted)\n    db_obj_project = m_Project.objects.get(name=name_project)\n\n    try:\n        list_ids = json.loads(request.GET['list_ids'])\n    except (KeyError, json.JSONDecodeError):\n        messages.error(request, 'Please provide valid assignments')\n        return redirect('mturk_manager:project', name=name_quoted, permanent=True)\n    if len(list_ids) == 0:\n        messages.error(request, 'Please provide assignments')\n        return redirect('mturk_manager:project', name=name_quoted, permanent=True)\n\n\n    if request.method == 'POST':\n        obj = json.loads(request.body.decode(\"utf-8\"))\n\n        if obj['task'] == 'submit_annotations':\n            submit_annotations(request, db_obj_project, obj)\n        # if request.POST['task'] == 'button_mturk_approve_selected':\n        #     list_ids = request.POST.getlist('checkbox_assignment')\n        #     approve_assignments(request, db_obj_project, list_ids)\n        # if request.POST['task'] == 'button_mturk_reject_selected':\n        #     list_ids = request.POST.getlist('checkbox_assignment')\n        #     reject_assignments(request, db_obj_project, list_ids)\n        # if request.POST['task'].startswith('button_mturk_approve__'):\n        #     id_assignment = request.POST['task'].split('__')[1]\n        #     approve_assignments(request, db_obj_project, [id_assignment])\n        # if request.POST['task'].startswith('button_mturk_reject__'):\n        #     id_assignment = request.POST['task'].split('__')[1]\n        #     reject_assignments(request, db_obj_project, [id_assignment])\n\n        return HttpResponseRedirect(reverse('mturk_manager:view', args=[name_quoted])+ '?list_ids='+request.GET['list_ids'])\n\n    queryset_hits = m_Hit.objects.filter(\n        assignments__id__in=list_ids\n    ).select_related(\n        'fk_batch__fk_template__fk_template_assignment',\n        'fk_batch__fk_template__fk_template_hit',\n    ).prefetch_related(\n        Prefetch('assignments', queryset=m_Assignment.objects.prefetch_related('tags').annotate(\n                count_tags_approved=Count('tags', filter=Q(tags__name='approved'), distinct=True),\n                count_tags_rejected=Count('tags', filter=Q(tags__name='rejected'), distinct=True)\n            ).distinct()\n            ,to_attr='list_assignments'\n        )\n    ).distinct()\n\n    for hit in queryset_hits:\n        # for assignment in hit.assignments.all():\n        for assignment in hit.list_assignments:\n            # print(assignment.is_approved1)\n            assignment.answer_normalized = normalize_answer(assignment.answer)\n            assignment.is_approved = False if assignment.count_tags_approved == 0 else True\n            assignment.is_rejected = False if assignment.count_tags_rejected == 0 else True\n\n    context['queryset_hits'] = queryset_hits\n    context['name_project'] = name_project\n    context['queryset_messages_reject'] = m_Message_Reject.objects.filter(fk_project=db_obj_project)\n    return render(request, 'mturk_manager/view.html', context)\n\ndef submit_annotations(request, db_obj_project, obj):\n    client_sandbox = code_shared.get_client(db_obj_project, True)\n    client_real = code_shared.get_client(db_obj_project, False)\n    db_obj_tag_submitted = m_Tag.objects.get(key_corpus=db_obj_project.name, name='submitted')\n    db_obj_tag_approved = m_Tag.objects.get(key_corpus=db_obj_project.name, name='approved')\n    db_obj_tag_rejected = m_Tag.objects.get(key_corpus=db_obj_project.name, name='rejected')\n\n    dict_annotations = obj['dict_assignments']\n    message_reject_default = obj['message_reject_default']\n    list_ids = [id_assignment for id_assignment in dict_annotations.keys()]\n    for assignment in m_Assignment.objects.filter(id__in=list_ids):\n        dict_annotation = dict_annotations[str(assignment.id)]\n\n        feedback = ''\n        try:\n            feedback = dict_annotation['message']\n        except KeyError:\n            feedback = message_reject_default\n\n        print(feedback)\n        print(assignment.fk_hit.fk_batch.use_sandbox)\n        client = client_sandbox if assignment.fk_hit.fk_batch.use_sandbox else client_real\n        try:\n            pass\n            if dict_annotation['state'] == 'approve':\n                response = client.approve_assignment(\n                    AssignmentId=assignment.id_assignment,\n                    RequesterFeedback=feedback\n                )\n            elif dict_annotation['state'] == 'reject':\n                response = client.reject_assignment(\n                    AssignmentId=assignment.id_assignment,\n                    RequesterFeedback=feedback\n                )\n        except Exception as e:\n            print(e)\n            continue\n\n        if dict_annotation['state'] == 'approve':\n            db_obj_tag_submitted.items.remove(assignment)\n            db_obj_tag_approved.items.add(assignment)\n        elif dict_annotation['state'] == 'reject':\n            db_obj_tag_submitted.items.remove(assignment)\n            db_obj_tag_rejected.items.add(assignment)\n\n    print(obj)\n\ndef approve_assignments(request, db_obj_project, list_ids):\n    client_sandbox = code_shared.get_client(db_obj_project, True)\n    client = code_shared.get_client(db_obj_project, False)\n    db_obj_tag_submitted = m_Tag.objects.get(key_corpus=db_obj_project.name, name='submitted')\n    db_obj_tag_approved = m_Tag.objects.get(key_corpus=db_obj_project.name, name='approved')\n\n    list_success = []\n    list_fail = []\n\n    for assignment in m_Assignment.objects.filter(id__in=list_ids, fk_hit__fk_batch__use_sandbox=True):\n        try:\n            response = client_sandbox.approve_assignment(\n                AssignmentId=assignment.id_assignment\n            )\n        except Exception as e:\n            list_fail.append(assignment)\n            continue\n\n        db_obj_tag_submitted.items.remove(assignment)\n        db_obj_tag_approved.items.add(assignment)\n\n        list_success.append(assignment)\n\n    for assignment in m_Assignment.objects.filter(id__in=list_ids, fk_hit__fk_batch__use_sandbox=False):\n        try:\n            response = client.approve_assignment(\n                AssignmentId=assignment.id_assignment\n            )\n        except Exception as e:\n            list_fail.append(assignment)\n            continue\n\n        db_obj_tag_submitted.items.remove(assignment)\n        db_obj_tag_approved.items.add(assignment)\n\n        list_success.append(assignment)\n\n    if len(list_success) != 0:\n        messages.success(request, 'Approved {} assignment(s)'.format(len(list_success)))\n    if len(list_fail) != 0:\n        messages.error(request, 'Failed to approve {} assignment(s)'.format(len(list_fail)))\n\ndef reject_assignments(request, db_obj_project, list_ids):\n    client_sandbox = code_shared.get_client(db_obj_project, True)\n    client = code_shared.get_client(db_obj_project, False)\n    db_obj_tag_submitted = m_Tag.objects.get(key_corpus=db_obj_project.name, name='submitted')\n    db_obj_tag_rejected = m_Tag.objects.get(key_corpus=db_obj_project.name, name='rejected')\n\n    list_success = []\n    list_fail = []\n\n    for assignment in m_Assignment.objects.filter(id__in=list_ids, fk_hit__fk_batch__use_sandbox=True):\n        try:\n            response = client_sandbox.reject_assignment(\n                AssignmentId=assignment.id_assignment,\n                RequesterFeedback=''\n            )\n        except Exception as e:\n            print(e)\n            list_fail.append(assignment)\n            continue\n\n        db_obj_tag_submitted.items.remove(assignment)\n        db_obj_tag_rejected.items.add(assignment)\n\n        list_success.append(assignment)\n\n    for assignment in m_Assignment.objects.filter(id__in=list_ids, fk_hit__fk_batch__use_sandbox=False):\n        try:\n            response = client.reject_assignment(\n                AssignmentId=assignment.id_assignment,\n                RequesterFeedback=''\n            )\n        except Exception as e:\n            print(e)\n            list_fail.append(assignment)\n            continue\n\n        db_obj_tag_submitted.items.remove(assignment)\n        db_obj_tag_rejected.items.add(assignment)\n\n        list_success.append(assignment)\n\n\n    if len(list_success) != 0:\n        messages.success(request, 'Rejected {} assignment(s)'.format(len(list_success)))\n    if len(list_fail) != 0:\n        messages.error(request, 'Failed to reject {} assignment(s)'.format(len(list_fail)))\n\ndef normalize_answer(answer):\n    dict_answer = json.loads(answer)\n    normalize_answer = {}\n\n    try:\n        for value in dict_answer['QuestionFormAnswers']['Answer']:\n            normalize_answer[value['QuestionIdentifier']] = value['FreeText']\n    except TypeError:\n        normalize_answer[dict_answer['QuestionFormAnswers']['Answer']['QuestionIdentifier']] = dict_answer['QuestionFormAnswers']['Answer']['FreeText']\n\n    return json.dumps(normalize_answer)\n",
-			"file": "mturk/mturk_manager/views/view.py",
-			"file_size": 9303,
-			"file_write_time": 131608536785841178,
-			"settings":
-			{
-				"buffer_size": 9303,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"contents": "$(document).ready(function()\n{\n\tsetTimeout(function() {\n\t\t$('.wrapper_alert.custom-alert-success').animate({height: 0}, 1000, function(){\n\t\t\t$(this).remove()\n\t\t})\n\t}, 1000);\n\n\t$('.custom-file-input').on('change',function(){\n\t    const name_file = $(this)[0].files[0].name;\n\t    $(this).parent().find('span').text(name_file);\n\t})\n});",
-			"file": "mturk/mturk_manager/static/mturk_manager/js/main.js",
-			"file_size": 332,
-			"file_write_time": 131606528574189714,
-			"settings":
-			{
-				"buffer_size": 332,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"contents": "$(document).ready(function()\n{\n\tlet glob_dict_assignemnts = {};\n\n\t$(document).on('click', '.approve_assignment, .reject_assignment', function(e) {\n\t\tconst elem_button = $(this);\n\t\tconst id_assignment = elem_button.data('id_assignment');\n\n\t\tif(elem_button.hasClass('active'))\n\t\t{\n\t\t\tdelete glob_dict_assignemnts[id_assignment];\n\t\t\telem_button.removeClass('active');\n\t\t} else {\n\t\t\tif(elem_button.hasClass('approve_assignment'))\n\t\t\t{\n\t\t\t\tglob_dict_assignemnts[id_assignment] = {\n\t\t\t\t\tstate: 'approve',\n\t\t\t\t\tmessage: undefined\n\t\t\t\t};\n\t\t\t\tconst elem_button_reject = $('.reject_assignment[data-id_assignment=\"'+id_assignment+'\"]');\n\t\t\t\telem_button_reject.removeClass('active');\n\t\t\t} else {\n\t\t\t\tglob_dict_assignemnts[id_assignment] = {\n\t\t\t\t\tstate: 'reject',\n\t\t\t\t\tmessage: undefined\n\t\t\t\t};\n\t\t\t\tconst elem_button_approve = $('.approve_assignment[data-id_assignment=\"'+id_assignment+'\"]');\n\t\t\t\telem_button_approve.removeClass('active');\n\t\t\t}\n\n\t\t\telem_button.addClass('active');\n\t\t}\n\n\t\tprint_dict_assignment();\n\t});\n\n\t$(document).on('click', '[data-task=\"submit_annotations\"]', function(e) {\n\t\tconst data = {};\n\t\tdata.task = 'submit_annotations';\n\t\tdata.dict_assignments = glob_dict_assignemnts;\n\t\tdata.message_reject_default = $('#input_message_reject_default').val();\n\n\t\tif(data.message_reject_default.trim() == '')\n\t\t{\n\t\t\tlet need_message_reject_default = false;\n\t\t\t$.each(data.dict_assignments, function(i, e) {\n\t\t\t\tif(e.message == undefined && e.state == 'reject')\n\t\t\t\t{\n\t\t\t\t\tneed_message_reject_default = true;\n\t\t\t\t\treturn false;\n\t\t\t\t}\n\t\t\t});\n\n\t\t\tif(need_message_reject_default)\n\t\t\t{\n\t\t\t\t$('#input_message_reject_default').parent().addClass('was-validated');\n\t\t\t\treturn\n\t\t\t}\n\t\t}\n\n\t\t$.ajax({\n\t        url: '',\n\t        method: 'POST',\n\t        contentType: 'application/json',\n\t        headers: {'X-CSRFToken':$('input[name=\"csrfmiddlewaretoken\"]').val()},\n\t        data: JSON.stringify(data),\n\t        success: function(result) {\n\t\t\t   \tglob_dict_assignemnts = {};     \t\n\t        \tlocation.reload();\n\t        }\n\t    })\n\t});\n\n\t$(document).on('click', '[data-task=\"button_mturk_reject_selected\"]', function(e) {\n\t\tconst elem_button = $(this);\n\n\t\t$('input[name=\"checkbox_assignment\"]:checked').each(function(index) {\n\t\t\tconst elem_checkbox = $(this);\n\t\t\tconst id_assignment = elem_checkbox.data('id_assignment');\n\n\t\t\tconst elem_button_approve = $('.approve_assignment[data-id_assignment=\"'+id_assignment+'\"]');\n\t\t\telem_button_approve.removeClass('active');\n\t\t\t\n\t\t\tconst elem_button_reject = $('.reject_assignment[data-id_assignment=\"'+id_assignment+'\"]');\n\t\t\telem_button_reject.addClass('active');\n\n\t\t\tglob_dict_assignemnts[id_assignment] = {\n\t\t\t\tstate: 'reject',\n\t\t\t\tmessage: undefined\n\t\t\t};\n\n\t\t\telem_checkbox.prop('checked', false);\n\t\t})\n\n\t\tprint_dict_assignment();\n\t});\n\n\t$(document).on('click', '[data-task=\"button_mturk_approve_selected\"]', function(e) {\n\t\tconst elem_button = $(this);\n\n\t\t$('input[name=\"checkbox_assignment\"]:checked').each(function(index) {\n\t\t\tconst elem_checkbox = $(this);\n\t\t\tconst id_assignment = elem_checkbox.data('id_assignment');\n\n\t\t\tconst elem_button_approve = $('.approve_assignment[data-id_assignment=\"'+id_assignment+'\"]');\n\t\t\telem_button_approve.addClass('active');\n\t\t\t\n\t\t\tconst elem_button_reject = $('.reject_assignment[data-id_assignment=\"'+id_assignment+'\"]');\n\t\t\telem_button_reject.removeClass('active');\n\n\t\t\tglob_dict_assignemnts[id_assignment] = {\n\t\t\t\tstate: 'approve',\n\t\t\t\tmessage: undefined\n\t\t\t};\n\n\t\t\telem_checkbox.prop('checked', false);\n\t\t})\n\n\t\tprint_dict_assignment();\n\t});\n\n\t$(document).on('click', '.dropdown_reject_assignment_selected a', function(e) {\n\t\tconst elem_link = $(this);\n\n\t\t$('input[name=\"checkbox_assignment\"]:checked').each(function(index) {\n\t\t\tconst elem_checkbox = $(this);\n\t\t\tconst id_assignment = elem_checkbox.data('id_assignment');\n\n\t\t\tconst elem_button_approve = $('.approve_assignment[data-id_assignment=\"'+id_assignment+'\"]');\n\t\t\telem_button_approve.removeClass('active');\n\t\t\t\n\t\t\tconst elem_button_reject = $('.reject_assignment[data-id_assignment=\"'+id_assignment+'\"]');\n\t\t\telem_button_reject.addClass('active');\n\n\t\t\tglob_dict_assignemnts[id_assignment] = {\n\t\t\t\tstate: 'reject',\n\t\t\t\tmessage: elem_link.text()\n\t\t\t};\n\n\t\t\telem_checkbox.prop('checked', false);\n\t\t});\n\n\t\tprint_dict_assignment();\n\t});\n\n\t$(document).on('click', '.dropdown_reject_assignment a', function(e) {\n\t\tconst elem_link = $(this);\n\t\tconst id_assignment = elem_link.data('id_assignment');\n\n\t\tglob_dict_assignemnts[id_assignment] = {\n\t\t\tstate: 'reject',\n\t\t\tmessage: elem_link.text()\n\t\t};\n\t\t\n\t\tconst elem_button = $('.reject_assignment[data-id_assignment=\"'+id_assignment+'\"]');\n\t\telem_button.addClass('active');\n\n\t\tconst elem_button_approve = $('.approve_assignment[data-id_assignment=\"'+id_assignment+'\"]');\n\t\telem_button_approve.removeClass('active');\n\t\t\n\t\tprint_dict_assignment();\n\t});\n\n\t$(document).on('click', '.dropdown-menu a', function(e) {\n\t\te.preventDefault();\n\t});\n\n\t$(document).on('click', 'button', function(e) {\n\t\t$(this).blur();\n\t});\n\t\n\t$(document).on('click', '#dropdown_message_reject_default a', function(e) {\n\t\t$('#input_message_reject_default').val($(this).text());\n\t});\n\n\twindow.onbeforeunload = function() {\n\t\tif(Object.keys(glob_dict_assignemnts).length > 0)\n\t\t{\n\t    \treturn 'You have unsaved changes!';\n\t\t}\n\t}\n\n\tfunction print_dict_assignment()\n\t{\n\t\t$('pre').text(JSON.stringify(glob_dict_assignemnts, null, 2));\n\t}\n});",
-			"file": "mturk/mturk_manager/static/mturk_manager/js/view.js",
-			"file_size": 5374,
-			"file_write_time": 131608261909878969,
-			"settings":
-			{
-				"buffer_size": 5374,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"contents": "boto3\nxmltodict",
-			"file": "requirements.txt",
-			"file_size": 15,
-			"file_write_time": 131611710262297106,
-			"settings":
-			{
-				"buffer_size": 15,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"contents": "$(document).ready(function()\n{\n\t$('#modal_update_template').on('show.bs.modal', function (event) \n\t{\n\t\tconst button = $(event.relatedTarget) // Button that triggered the modal\n\t\tconst id = button.data('id') // Extract info from data-* attributes\n\t\tconst name = button.data('name') // Extract info from data-* attributes\n\t\tconst height_frame = button.data('height_frame') // Extract info from data-* attributes\n\t\tconst id_template_assignment = button.data('id_template_assignment') // Extract info from data-* attributes\n\t\tconst id_template_hit = button.data('id_template_hit') // Extract info from data-* attributes\n\t\tconst modal = $(this)\n\n\t\tmodal.find('input[name=\"id\"]').val(id);\n\t\tmodal.find('input[name=\"name\"]').val(name);\n\t\tmodal.find('input[name=\"height_frame\"]').val(height_frame);\n\t\tmodal.find('select[name=\"template_assignment\"]').val(id_template_assignment);\n\t\tmodal.find('select[name=\"template_hit\"]').val(id_template_hit);\n\t})\n\n\t$('#modal_update_template_assignment').on('show.bs.modal', function (event) \n\t{\n\t\tconst button = $(event.relatedTarget) // Button that triggered the modal\n\t\tconst id = button.data('id') // Extract info from data-* attributes\n\t\tconst name = button.data('name') // Extract info from data-* attributes\n\t\tconst modal = $(this)\n\n\t\tmodal.find('input[name=\"id\"]').val(id);\n\t\tmodal.find('input[name=\"name\"]').val(name);\n\t})\n\n\t$('#modal_update_template_hit').on('show.bs.modal', function (event) \n\t{\n\t\tconst button = $(event.relatedTarget) // Button that triggered the modal\n\t\tconst id = button.data('id') // Extract info from data-* attributes\n\t\tconst name = button.data('name') // Extract info from data-* attributes\n\t\tconst modal = $(this)\n\n\t\tmodal.find('input[name=\"id\"]').val(id);\n\t\tmodal.find('input[name=\"name\"]').val(name);\n\t})\n\n\t$('#modal_update_message_reject').on('show.bs.modal', function (event) \n\t{\n\t\tconst button = $(event.relatedTarget) // Button that triggered the modal\n\t\tconst id = button.data('id') // Extract info from data-* attributes\n\t\tconst message = button.data('message') // Extract info from data-* attributes\n\t\tconst modal = $(this)\n\n\t\tmodal.find('input[name=\"id\"]').val(id);\n\t\tmodal.find('input[name=\"message\"]').val(message);\n\t})\n\n\t$('#modal_show_html').on('show.bs.modal', function (event) \n\t{\n\t\tconst button = $(event.relatedTarget) // Button that triggered the modal\n\t\tconst template = button.data('template') // Extract info from data-* attributes\n\t\tconst modal = $(this)\n\n\t\tmodal.find('code').text(template);\n\t\t$('pre code').each(function(i, block) {\n\t    \thljs.highlightBlock(block);\n\t  \t});\n\t})\n});",
-			"file": "mturk/mturk_manager/static/mturk_manager/js/project.js",
-			"file_size": 2570,
-			"file_write_time": 131607645411247714,
-			"settings":
-			{
-				"buffer_size": 2570,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"contents": "$(document).ready(function()\n{\n\t$('#modal_update_account').on('show.bs.modal', function (event) \n\t{\n\t\tconst button = $(event.relatedTarget) // Button that triggered the modal\n\t\tconst id = button.data('id') // Extract info from data-* attributes\n\t\tconst name = button.data('name') // Extract info from data-* attributes\n\t\tconst key_secret = button.data('key_secret') // Extract info from data-* attributes\n\t\tconst key_access = button.data('key_access') // Extract info from data-* attributes\n\t\tconst modal = $(this)\n\n\t\tmodal.find('input[name=\"id\"]').val(id);\n\t\tmodal.find('input[name=\"name\"]').val(name);\n\t\tmodal.find('input[name=\"key_secret\"]').val(key_secret);\n\t\tmodal.find('input[name=\"key_access\"]').val(key_access);\n\t})\n});",
-			"file": "mturk/mturk_manager/static/mturk_manager/js/settings.js",
-			"file_size": 727,
-			"file_write_time": 131607645568365882,
-			"settings":
-			{
-				"buffer_size": 727,
-				"encoding": "UTF-8",
-				"line_ending": "Unix",
-				"name": "settings.js"
-			}
-		},
-		{
-			"contents": "{% extends \"mturk_manager/base.html\" %}\n{% load static %}\n\n{% block name_project %}Settings{% endblock %}\n\n{% block body %}\n<div class=\"container-fluid\" id=\"page_settings\">\n\t<div class=\"row\">\n\t\t<div class=\"col\">\n\t\t\t<h1>MTurk credentials</h1>\n\t\t\t<table class=\"table table-bordered\">\n\t\t\t\t<thead>\n\t\t\t\t\t<tr>\n\t\t\t\t\t\t<th>Name</th>\n\t\t\t\t\t\t<th>Access key</th>\n\t\t\t\t\t\t<th>Secret key</th>\n\t\t\t\t\t\t<th>Update</th>\n\t\t\t\t\t</tr>\n\t\t\t\t</thead>\n\t\t\t\t<tbody>\n\t\t\t\t\t{% for mturk in queryset_mturk %}\n\t\t\t\t\t<tr>\n\t\t\t\t\t\t<td>{{ mturk.name }}</td>\n\t\t\t\t\t\t<td>{{ mturk.key_access }}</td>\n\t\t\t\t\t\t<td>{{ mturk.key_secret }}</td>\n\t\t\t\t\t\t<td>\n\t\t\t\t\t\t\t<button type=\"button\" class=\"btn btn-primary btn-sm\" data-id=\"{{ mturk.id }}\" data-name=\"{{ mturk.name }}\" data-key_access=\"{{ mturk.key_access }}\" data-key_secret=\"{{ mturk.key_secret }}\" data-toggle=\"modal\" data-target=\"#modal_update_account\">Update</button>\n\t\t\t\t\t\t</td>\n\t\t\t\t\t</tr>\n\t\t\t\t{% endfor %}\n\t\t\t\t</tbody>\n\t\t\t</table>\n\t\t\t<button type=\"button\" class=\"btn btn-primary\" data-toggle=\"modal\" data-target=\"#modal_add_account\">\n\t\t\t\tAdd\n\t\t\t</button>\n\t\t</div>\n\t</div>\n</div>\n\n<div class=\"modal fade\" tabindex=\"-1\" id=\"modal_update_account\">\n\t<div class=\"modal-dialog modal-lg\">\n\t\t<div class=\"modal-content\">\n\t\t\t<div class=\"modal-header\">\n\t\t\t\t<h5 class=\"modal-title\">Update MTurk account</h5>\n\t\t\t\t<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n\t\t\t\t\t<span aria-hidden=\"true\">&times;</span>\n\t\t\t\t</button>\n\t\t\t</div>\n\t\t\t<form method=\"post\" enctype=\"multipart/form-data\">\n\t\t\t\t<div class=\"modal-body\">\n\t\t\t\t\t<div class=\"container-fluid\">\n\t\t\t\t\t\t{% csrf_token %}\n\t\t\t\t\t\t<input type=\"hidden\" name=\"id\">\n\t\t\t\t\t\t<div class=\"form-row form-group\">\n\t\t\t\t\t\t\t<div class=\"input-group\">\n\t\t\t\t\t\t\t\t<div class=\"input-group-prepend\">\n\t\t\t\t\t\t\t\t\t<span class=\"input-group-text\">Name</span>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<input type=\"text\" class=\"form-control\" name=\"name\" maxlength=\"200\">\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"form-row form-group\">\n\t\t\t\t\t\t\t<div class=\"input-group\">\n\t\t\t\t\t\t\t\t<div class=\"input-group-prepend\">\n\t\t\t\t\t\t\t\t\t<span class=\"input-group-text\">Access key</span>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<input type=\"text\" class=\"form-control\" name=\"key_access\" maxlength=\"200\">\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"form-row form-group\">\n\t\t\t\t\t\t\t<div class=\"input-group\">\n\t\t\t\t\t\t\t\t<div class=\"input-group-prepend\">\n\t\t\t\t\t\t\t\t\t<span class=\"input-group-text\">Secret key</span>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<input type=\"text\" class=\"form-control\" name=\"key_secret\" maxlength=\"200\">\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"modal-footer\">\n\t\t\t\t\t<button type=\"button\" class=\"btn btn-secondary\" data-dismiss=\"modal\">Close</button>\n\t\t\t\t\t<button type=\"submit\" name=\"task\" value=\"update_account\" class=\"btn btn-primary\">Update</button>\n\t\t\t\t</div>\n\t\t\t</form>\n\t\t</div>\n\t</div>\n</div>\n\n<div class=\"modal fade\" id=\"modal_add_account\" tabindex=\"-1\" role=\"dialog\" aria-hidden=\"true\">\n\t<div class=\"modal-dialog\" role=\"document\">\n\t\t<div class=\"modal-content\">\n\t\t\t<form method=\"post\">\n\t\t\t\t{% csrf_token %}\n\t\t\t\t<div class=\"modal-header\">\n\t\t\t\t\t<h5 class=\"modal-title\">Add account</h5>\n\t\t\t\t\t<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n\t\t\t\t\t\t<span aria-hidden=\"true\">&times;</span>\n\t\t\t\t\t</button>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"modal-body\">\n\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t<label class=\"col-form-label\" for=\"input_name_account\">Name</label>\n\t\t\t\t\t\t<input type=\"text\" name=\"name\" class=\"form-control\" id=\"input_name_account\" placeholder=\"Name\">\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t<label class=\"col-form-label\" for=\"input_key_access\">Access key</label>\n\t\t\t\t\t\t<input type=\"text\" name=\"key_access\" class=\"form-control\" id=\"input_key_access\" placeholder=\"Access key\">\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t<label class=\"col-form-label\" for=\"input_key_secret\">Secret key</label>\n\t\t\t\t\t\t<input type=\"text\" name=\"key_secret\" class=\"form-control\" id=\"input_key_secret\" placeholder=\"Secret key\">\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"modal-footer\">\n\t\t\t\t\t<button type=\"button\" class=\"btn btn-secondary\" data-dismiss=\"modal\">Close</button>\n\t\t\t\t\t<button type=\"submit\" name=\"task\" value=\"add_account\" class=\"btn btn-primary\">Add</button>\n\t\t\t\t</div>\n\t\t\t</form>\n\t\t</div>\n\t</div>\n</div>\n{% endblock %}\n\n{% block javascript %}\n\t{{ block.super }}\n\t<script src=\"{% static 'mturk_manager/js/settings.js' %}\"></script>\n{% endblock %}\n",
-			"file": "mturk/mturk_manager/templates/mturk_manager/settings.html",
-			"file_size": 4374,
-			"file_write_time": 131607645909481903,
-			"settings":
-			{
-				"buffer_size": 4374,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"contents": "{% extends \"mturk_manager/base.html\" %}\n\n{% block name_project %}\nMTurk-Viewer\n{% endblock %}\n\n{% block body %}\n<div class=\"container-fluid\" id=\"page_index\">\n\t<div class=\"row\">\n\t\t<div class=\"col d-flex justify-content-center align-items-center\">\n\t\t\t<div class=\"d-inline-block\">\n\t\t\t\t<div class=\"row\">\n\t\t\t\t\t<div class=\"col\">\n\t\t\t\t\t\t<form method=\"post\">\n\t\t\t\t\t\t{% csrf_token %}\n\t\t\t\t\t\t\t<div class=\"input-group\">\n\t\t\t\t\t\t\t\t<select class=\"custom-select\" name=\"name_project\">\n\t\t\t\t\t\t\t\t    <option selected value=\"\">Select a project</option>\n\t\t\t\t\t\t\t    {% for project in queryset_projects %}\n\t\t\t\t\t\t\t\t    <option value=\"{{ project.name }}\">{{ project.name }}</option>\n\t\t\t\t\t\t\t    {% endfor %}\n\t\t\t\t\t\t\t\t</select>\n\t\t\t\t\t\t\t\t<span class=\"input-group-append\">\n\t\t\t\t\t\t\t\t\t<button class=\"btn btn-secondary\" type=\"submit\">Open</button>\n\t\t\t\t\t\t\t\t</span>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</form>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"row my-3\">\n\t\t\t\t\t<div class=\"col text-center\">\n\t\t\t\t\t\tor\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"row\">\n\t\t\t\t\t<div class=\"col text-center\">\n\t\t\t\t\t\t<a href=\"{% url 'mturk_manager:create' %}\" class=\"btn btn-primary\">Create a project</a>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n</div>\n{% endblock %}",
-			"file": "mturk/mturk_manager/templates/mturk_manager/index.html",
-			"file_size": 1192,
-			"file_write_time": 131608417254138053,
-			"settings":
-			{
-				"buffer_size": 1192,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"contents": "DICT_SETTINGS_VIEWER = {'app_label': 'mturk_manager',\n 'cards': [{'content': ''' \n                <div class=\"mb-2\">\n                    <span data-inject=\"count_selected_rows\"></span> Assignment(s) selected\n                </div>\n                <div class=\"mb-2\">\n                    <button type=\"button\" id=\"button_mturk_approve\" class=\"btn btn-sm btn-success\">Approve</button>\n                    <button type=\"button\" id=\"button_mturk_reject\" class=\"btn btn-sm btn-danger\">Reject</button>\n                </div>\n                <div class=\"mb-2\">\n                    <a class=\"btn btn-sm btn-info\" id=\"button_mturk_view\" href=\"#\">View assignments</a>\n                </div>\n                <div>\n                    <button type=\"button\" id=\"button_mturk_download\" class=\"btn btn-sm btn-primary\">Download results</button>\n                </div>\n                <script>\n                    $(document).ready(function()\n                    {\n                        $(document).on('update.cv.selected-items', function(e, list_items) { console.log(e);console.log(list_items) });\n\n                        $(document).on('click', '#button_mturk_view', function(){\n                            let url = '/view/test?list_ids=';\n                            const list_ids = [];\n                            $.each(glob_selected_items, function( i, val ) {\n                                list_ids.push(val.viewer__id_item_internal);\n                            });\n                            url += JSON.stringify(list_ids);\n                            window.open(url, '_blank');\n                            console.log(glob_selected_items)\n                        });\n                    });\n                </script>''',\n            'name': 'MTurk'}],\n 'data_fields': {'fk_hit__id_hit': {'display_name': 'HIT', 'type': 'string'},\n                 'fk_worker__name': {'display_name': 'Worker',\n                                     'type': 'string'},\n                 'id_assignment': {'display_name': 'ID', 'type': 'string'},\n                 'fk_hit__fk_batch__use_sandbox': {'display_name': 'Sandbox', 'type': 'string'}},\n 'data_type': 'database',\n 'database_filters': {'fk_hit__fk_batch__fk_project__name': 'test'},\n 'database_prefetch_related': ['tags'],\n 'database_select_related': ['fk_hit__fk_batch', 'fk_worker'],\n 'description': '',\n 'filters': [],\n 'displayed_fields': ['id_assignment', 'fk_hit__id_hit', 'fk_worker__name', 'fk_hit__fk_batch__use_sandbox'],\n 'id': 'id_assignment',\n 'model_name': 'm_Assignment',\n 'name': 'test',\n 'page_size': 25,\n 'urls_header': [{'link': '/project/test', 'name': 'Project'},\n                 {'link': '/documentation', 'name': 'Documentation'},\n                 {'link': '/', 'name': 'Open/Add Project'},\n                 {'link': '/settings', 'name': 'Settings'}]}",
-			"file": "settings/test.py",
-			"file_size": 2812,
-			"file_write_time": 131605820145233531,
-			"settings":
-			{
-				"buffer_size": 2812,
+				"buffer_size": 306,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -769,8 +581,34 @@
 		"side_bar_visible": false,
 		"status_bar_visible": false
 	},
+	"expanded_folders":
+	[
+		"/home/kritten/Documents/mturk-manager",
+		"/home/kritten/Documents/mturk-manager/mturk",
+		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager",
+		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/views"
+	],
 	"file_history":
 	[
+		"/opt/cisco/anyconnect/.anyconnect_global",
+		"/opt/cisco/anyconnect/profile/AnyConnectProfile.xsd",
+		"/opt/cisco/anyconnect/profile/AnyConnectTunnelAll.xml",
+		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/views/project.py",
+		"/home/kritten/Documents/mturk-manager/settings/test.py",
+		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/templates/mturk_manager/index.html",
+		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/templates/mturk_manager/settings.html",
+		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/static/mturk_manager/js/settings.js",
+		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/static/mturk_manager/js/project.js",
+		"/home/kritten/Documents/mturk-manager/requirements.txt",
+		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/static/mturk_manager/js/view.js",
+		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/static/mturk_manager/js/main.js",
+		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/views/view.py",
+		"/home/kritten/Documents/mturk-manager/setup.sh",
+		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/templates/mturk_manager/view.html",
+		"/home/kritten/Documents/mturk-manager/.gitignore",
+		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/templates/mturk_manager/documentation.html",
+		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/views/documentation.py",
+		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/models.py",
 		"/home/yiro4618/Documents/hiwi/mturk-manager/mturk/mturk_manager/templates/mturk_manager/project.html",
 		"/home/yiro4618/Documents/hiwi/mturk-manager/mturk/mturk_manager/views/create.py",
 		"/home/yiro4618/Documents/hiwi/mturk-manager/mturk/mturk_manager/static/mturk_manager/js/project.js",
@@ -879,36 +717,18 @@
 		"/home/yiro4618/Documents/hiwi/wstud-viewer-framework-django/viewer-framework/performance_whoosh.txt",
 		"/home/yiro4618/Documents/hiwi/wstud-viewer-framework-django/viewer-framework/exported_data.ldjson",
 		"/home/yiro4618/Documents/hiwi/wstud-viewer-framework-django/viewer-framework/viewer/classes/data/Manager_Corpora.py",
-		"/home/yiro4618/Documents/hiwi/wstud-viewer-framework-django/viewer-framework/settings_viewer/settings_viewer_large_corpus.py",
-		"/home/yiro4618/Documents/hiwi/wstud-viewer-framework-django/viewer-framework/viewer/classes/data/__init__.py",
-		"/home/yiro4618/Documents/hiwi/wstud-viewer-framework-django/viewer-framework/viewer/classes/__init__.py",
-		"/home/yiro4618/Documents/hiwi/wstud-viewer-framework-django/viewer-framework/settings_viewer/__init__.py",
-		"/home/yiro4618/Documents/hiwi/wstud-viewer-framework-django/viewer-framework/dashboard/templatetags/tags_custom_dashboard.py",
-		"/home/yiro4618/Documents/hiwi/wstud-viewer-framework-django/viewer-framework/dashboard/templatetags/__init__,py",
-		"/home/yiro4618/Documents/hiwi/wstud-viewer-framework-django/viewer-framework/viewer/Handle_Index.py",
-		"/home/yiro4618/Documents/hiwi/wstud-viewer-framework-django/viewer-framework/viewer/Data_Manager.py",
-		"/home/yiro4618/Documents/hiwi/wstud-viewer-framework-django/viewer-framework/viewer/Item_Handle.py",
-		"/home/yiro4618/Documents/hiwi/wstud-viewer-framework-django/viewer-framework/viewer/models.py",
-		"/home/yiro4618/Documents/hiwi/wstud-viewer-framework-django/viewer-framework/viewer/static/viewer/css/formats_documentation.css",
-		"/home/yiro4618/Documents/hiwi/wstud-viewer-framework-django/corpora/wikipedia_talk_labels/attack_annotations.tsv",
-		"/home/yiro4618/Documents/hiwi/wstud-viewer-framework-django/corpora/wikipedia_talk_labels/attack_worker_demographics.tsv",
-		"/home/yiro4618/Documents/hiwi/wstud-viewer-framework-django_live_system/viewer-framework/viewer/views/shared_code.py",
-		"/home/yiro4618/Downloads/test.html",
-		"/home/yiro4618/Documents/hiwi/wstud-viewer-framework-django/cache/settings_viewer_large_corpus.bin",
-		"/home/yiro4618/Documents/hiwi/wstud-viewer-framework-django/cache/settings_viewer_test.ldjson",
-		"/home/yiro4618/Documents/hiwi/wstud-viewer-framework-django/viewer-framework/settings_viewer_test.bin",
-		"/home/yiro4618/Documents/hiwi/wstud-viewer-framework-django/corpora/wikipedia_talk_labels/attack_annotated_comments.tsv",
-		"/home/yiro4618/Documents/hiwi/yamen/solr-6.6.0/bin/post"
+		"/home/yiro4618/Documents/hiwi/wstud-viewer-framework-django/viewer-framework/settings_viewer/settings_viewer_large_corpus.py"
 	],
 	"find":
 	{
-		"height": 40.0
+		"height": 39.0
 	},
 	"find_in_files":
 	{
 		"height": 149.0,
 		"where_history":
 		[
+			"/opt/cisco"
 		]
 	},
 	"find_state":
@@ -916,6 +736,9 @@
 		"case_sensitive": true,
 		"find_history":
 		[
+			"weimar",
+			"gate",
+			"script",
 			"update_template_hit",
 			"h1",
 			"glob_dict_assignemnts",
@@ -979,229 +802,24 @@
 	"groups":
 	[
 		{
-			"selected": 7,
+			"selected": 0,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "mturk/mturk_manager/models.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 4146,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2343,
-								2343
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Python/Python.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 8,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "mturk/mturk_manager/views/project.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 24737,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								11492,
-								11541
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Python/Python.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 4332.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 5,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "mturk/mturk_manager/views/documentation.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1687,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1687,
-								1687
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Python/Python.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 11,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "mturk/mturk_manager/templates/mturk_manager/documentation.html",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 12240,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								12150,
-								12150
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/HTML/HTML.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 3002.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 15,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": ".gitignore",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 156,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								156,
-								156
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 14,
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"file": "mturk/mturk_manager/templates/mturk_manager/view.html",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 6559,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2789,
-								2789
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/HTML/HTML.sublime-syntax",
-							"translate_tabs_to_spaces": false,
-							"word_wrap": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 57.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 10,
-					"type": "text"
-				},
-				{
-					"buffer": 6,
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 625,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								610,
-								610
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/HTML/HTML.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 9,
-					"type": "text"
-				},
-				{
-					"buffer": 7,
 					"file": "setup.sh",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 276,
+						"buffer_size": 306,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								276,
-								276
+								306,
+								306
 							]
 						],
 						"settings":
@@ -1214,275 +832,13 @@
 					},
 					"stack_index": 0,
 					"type": "text"
-				},
-				{
-					"buffer": 8,
-					"file": "mturk/mturk_manager/views/view.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 9303,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								4489,
-								4489
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Python/Python.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 798.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 4,
-					"type": "text"
-				},
-				{
-					"buffer": 9,
-					"file": "mturk/mturk_manager/static/mturk_manager/js/main.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 332,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								332,
-								332
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 13,
-					"type": "text"
-				},
-				{
-					"buffer": 10,
-					"file": "mturk/mturk_manager/static/mturk_manager/js/view.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 5374,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								926,
-								926
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 11,
-					"file": "requirements.txt",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 15,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								15,
-								15
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 12,
-					"file": "mturk/mturk_manager/static/mturk_manager/js/project.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2570,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1765,
-								1765
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 13,
-					"file": "mturk/mturk_manager/static/mturk_manager/js/settings.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 727,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								727,
-								727
-							]
-						],
-						"settings":
-						{
-							"auto_name": "settings.js",
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 12,
-					"type": "text"
-				},
-				{
-					"buffer": 14,
-					"file": "mturk/mturk_manager/templates/mturk_manager/settings.html",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 4374,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1701,
-								1701
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/HTML/HTML.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 7,
-					"type": "text"
-				},
-				{
-					"buffer": 15,
-					"file": "mturk/mturk_manager/templates/mturk_manager/index.html",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1192,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								78,
-								78
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/HTML/HTML.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 6,
-					"type": "text"
-				},
-				{
-					"buffer": 16,
-					"file": "settings/test.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2812,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2812,
-								2812
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Python/Python.sublime-syntax",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 16,
-					"type": "text"
 				}
 			]
 		}
 	],
 	"incremental_find":
 	{
-		"height": 27.0
+		"height": 25.0
 	},
 	"input":
 	{
@@ -1519,7 +875,7 @@
 	"project": "mturk.sublime-project",
 	"replace":
 	{
-		"height": 50.0
+		"height": 46.0
 	},
 	"save_all_on_build": true,
 	"select_file":

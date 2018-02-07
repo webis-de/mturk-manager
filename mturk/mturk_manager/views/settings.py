@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from mturk_manager.models import *
+from viewer.models import *
 import urllib.parse
 import os
 from viewer.views.shared_code import glob_manager_data
@@ -30,7 +31,8 @@ def update_projects(request):
     try:
         for project in m_Project.objects.filter(version__lt=settings_django.VERSION_PROJECT):
             update_project(project)
-    except Exception:
+    except Exception as e:
+        print(e)
         messages.error(request, 'The upgrade process failed!')
     else:
         messages.success(request, 'All projects were updated to the most recent version.')
@@ -42,7 +44,6 @@ def update_project(db_obj_project):
     for version in range(db_obj_project.version + 1, settings_django.VERSION_PROJECT + 1):
         apply_migration(db_obj_project, dict_migrations[version])
 
-
     db_obj_project.version = settings_django.VERSION_PROJECT
     db_obj_project.save()
 
@@ -52,7 +53,6 @@ def apply_migration(db_obj_project, migration):
     except:
         path_settings_files = os.path.join('..', 'settings')
 
-    db_obj_project
     for step in migration:
         if step['type'] == 'update_config_file':
             key = step['key']
@@ -71,6 +71,8 @@ def apply_migration(db_obj_project, migration):
                 content = 'DICT_SETTINGS_VIEWER = '+pprint.pformat(settings_corpus_new)
                 content = content.replace('${name_project}', db_obj_project.name)
                 f.write(content)
+        elif step['type'] == 'execute_function':
+            step['function'](db_obj_project)
 
 def update_account(request):
     if not verify_input_add_account(request):
@@ -121,6 +123,18 @@ def verify_input_add_account(request):
 
     return valid
 
+def migration_2(db_obj_project):
+    m_Tag.objects.create(
+        key_corpus=db_obj_project.name,
+        name='rejected externally',
+        color='#dc3545'
+    )
+    m_Tag.objects.create(
+        key_corpus=db_obj_project.name,
+        name='approved externally',
+        color='#28a745'
+    )
+
 dict_migrations = {
     1: [
         {
@@ -169,6 +183,12 @@ dict_migrations = {
                     });
                 </script>''',
             'name': 'MTurk'}]
+        }
+    ], 
+    2: [
+        {
+            'type': 'execute_function',
+            'function': migration_2,
         }
     ]
 }
