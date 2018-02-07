@@ -2,10 +2,6 @@ $(document).ready(function()
 {
 	let glob_dict_assignemnts = {};
 
-	$(document).on('click', '.reject_internally_assignment', function() {
-		// console.log(('sa'))
-	});
-
 	$(document).on('click', '.approve_assignment, .reject_assignment, .reject_internally_assignment, .approve_internally_assignment', function(e) {
 		const elem_button = $(this);
 		const id_assignment = elem_button.data('id_assignment');
@@ -48,7 +44,17 @@ $(document).ready(function()
 	});
 
 	$(document).on('click', '[name="checkbox_assignment"]', function() {
-		$('[data-inject_count_assignments_selected]').text($('[name="checkbox_assignment"]:checked').length);
+		const count_assignments_selected = $('[name="checkbox_assignment"]:checked').length;
+		$('[data-inject_count_assignments_selected]').text(count_assignments_selected);
+		
+		if(count_assignments_selected == 0)
+		{
+			$('.wrapper_buttons_selected button').prop('disabled', 'disabled');
+			$('.wrapper_buttons_selected .dropdown-toggle.dropdown-toggle-split').prop('disabled', 'disabled');
+		} else {
+			$('.wrapper_buttons_selected button').prop('disabled', '');
+			$('.wrapper_buttons_selected .dropdown-toggle.dropdown-toggle-split').prop('disabled', '');
+		}
 	});
 
 	$(document).on('click', '[data-task="submit_annotations"]', function(e) {

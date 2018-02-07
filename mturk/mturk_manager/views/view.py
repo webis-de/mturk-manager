@@ -18,6 +18,9 @@ def view(request, name):
         'messages_reject'
     ).get(name=name_project)
 
+    if not code_shared.is_project_up_to_date(request, db_obj_project, name_project):    
+        return redirect('mturk_manager:index')
+
     try:
         list_ids = json.loads(request.GET['list_ids'])
     except (KeyError, json.JSONDecodeError):
@@ -26,6 +29,7 @@ def view(request, name):
     if len(list_ids) == 0:
         messages.error(request, 'Please provide assignments')
         return redirect('mturk_manager:project', name=name_quoted)
+
 
 
     if request.method == 'POST':
@@ -44,7 +48,9 @@ def view(request, name):
     ).prefetch_related(
         Prefetch('assignments', queryset=m_Assignment.objects.prefetch_related('corpus_viewer_tags').annotate(
                 count_tags_approved=Count('corpus_viewer_tags', filter=Q(corpus_viewer_tags__name='approved'), distinct=True),
-                count_tags_rejected=Count('corpus_viewer_tags', filter=Q(corpus_viewer_tags__name='rejected'), distinct=True)
+                count_tags_rejected=Count('corpus_viewer_tags', filter=Q(corpus_viewer_tags__name='rejected'), distinct=True),
+                count_tags_rejected_externally=Count('corpus_viewer_tags', filter=Q(corpus_viewer_tags__name='rejected externally'), distinct=True),
+                count_tags_approved_externally=Count('corpus_viewer_tags', filter=Q(corpus_viewer_tags__name='approved externally'), distinct=True),
             ).distinct()
             ,to_attr='list_assignments'
         )
@@ -55,8 +61,16 @@ def view(request, name):
         for assignment in hit.list_assignments:
             # print(assignment.is_approved1)
             assignment.answer_normalized = normalize_answer(assignment.answer)
-            assignment.is_approved = False if assignment.count_tags_approved == 0 else True
-            assignment.is_rejected = False if assignment.count_tags_rejected == 0 else True
+            if assignment.count_tags_approved_externally == 1:
+                assignment.state = 'approved_externally'
+            elif assignment.count_tags_rejected_externally == 1:
+                assignment.state = 'rejected_externally'
+            elif assignment.count_tags_approved == 1:
+                assignment.state = 'approved'
+            elif assignment.count_tags_rejected == 1:
+                assignment.state = 'rejected'
+            else:
+                assignment.state = 'submitted'
 
     context['queryset_hits'] = queryset_hits
     context['name_project'] = name_project
@@ -65,14 +79,13 @@ def view(request, name):
     return render(request, 'mturk_manager/view.html', context)
 
 def submit_annotations(request, db_obj_project, obj):
-    print(obj)
-
-    return
     client_sandbox = code_shared.get_client(db_obj_project, True)
     client_real = code_shared.get_client(db_obj_project, False)
     db_obj_tag_submitted = m_Tag.objects.get(key_corpus=db_obj_project.name, name='submitted')
     db_obj_tag_approved = m_Tag.objects.get(key_corpus=db_obj_project.name, name='approved')
     db_obj_tag_rejected = m_Tag.objects.get(key_corpus=db_obj_project.name, name='rejected')
+    db_obj_tag_rejected_externally = m_Tag.objects.get(key_corpus=db_obj_project.name, name='rejected externally')
+    db_obj_tag_approved_externally = m_Tag.objects.get(key_corpus=db_obj_project.name, name='approved externally')
 
     dict_annotations = obj['dict_assignments']
     message_reject_default = obj['message_reject_default']
@@ -86,31 +99,34 @@ def submit_annotations(request, db_obj_project, obj):
         except KeyError:
             feedback = message_reject_default
 
-        print(feedback)
-        print(assignment.fk_hit.fk_batch.use_sandbox)
         client = client_sandbox if assignment.fk_hit.fk_batch.use_sandbox else client_real
-        try:
-            pass
-            if dict_annotation['state'] == 'approve':
-                response = client.approve_assignment(
-                    AssignmentId=assignment.id_assignment,
-                    RequesterFeedback=feedback
-                )
-            elif dict_annotation['state'] == 'reject':
-                response = client.reject_assignment(
-                    AssignmentId=assignment.id_assignment,
-                    RequesterFeedback=feedback
-                )
-        except Exception as e:
-            print(e)
-            continue
+        # try:
+        #     pass
+        #     if dict_annotation['state'] == 'approve' or dict_annotation['state'] == 'reject_internally':
+        #         response = client.approve_assignment(
+        #             AssignmentId=assignment.id_assignment,
+        #             # RequesterFeedback=feedback
+        #         )
+        #     elif dict_annotation['state'] == 'reject' or dict_annotation['state'] == 'approve_internally':
+        #         response = client.reject_assignment(
+        #             AssignmentId=assignment.id_assignment,
+        #             RequesterFeedback=feedback
+        #         )
+        # except Exception as e:
+        #     print(e)
+        #     continue
 
+        db_obj_tag_submitted.corpus_viewer_items.remove(assignment)
         if dict_annotation['state'] == 'approve':
-            db_obj_tag_submitted.corpus_viewer_items.remove(assignment)
             db_obj_tag_approved.corpus_viewer_items.add(assignment)
         elif dict_annotation['state'] == 'reject':
-            db_obj_tag_submitted.corpus_viewer_items.remove(assignment)
             db_obj_tag_rejected.corpus_viewer_items.add(assignment)
+        elif dict_annotation['state'] == 'reject_internally':
+            db_obj_tag_rejected.corpus_viewer_items.add(assignment)
+            db_obj_tag_approved_externally.corpus_viewer_items.add(assignment)
+        elif dict_annotation['state'] == 'approve_internally':
+            db_obj_tag_approved.corpus_viewer_items.add(assignment)
+            db_obj_tag_rejected_externally.corpus_viewer_items.add(assignment)
 
     print(obj)
 
