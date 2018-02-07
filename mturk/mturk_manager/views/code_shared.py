@@ -2,10 +2,18 @@ import boto3
 from mturk_manager.models import *
 from viewer.models import *
 # from secrets import token_urlsafe
+from django.conf import settings as settings_django
 import uuid
 from django.contrib import messages
 
 glob_url_sandbox = 'https://mturk-requester-sandbox.us-east-1.amazonaws.com'
+
+def is_project_up_to_date(request, db_obj_project, name_project):
+    if db_obj_project.version < settings_django.VERSION_PROJECT:
+        messages.error(request, 'Project "{}" is not up to date. Go to "settings" to update all projects to the current version'.format(name_project))
+        return False
+
+    return True
 
 def glob_create_batch(db_obj_project, request):
     name = request.POST['name']
