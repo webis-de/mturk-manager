@@ -9,5 +9,5 @@ pip3 install -r requirements.txt
 
 cd ./mturk
 python3 manage.py createcachetable
-python3 manage.py makemigrations viewer mturk_manager
+# python3 manage.py makemigrations viewer mturk_manager
 python3 manage.py migrate
