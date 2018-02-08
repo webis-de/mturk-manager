@@ -46,11 +46,24 @@ glob_dict_settings = {
         'fk_hit__fk_batch__use_sandbox': {
             'type': 'boolean',
             'display_name': 'Sandbox'
+        },
+        'fk_hit__datetime_creation': {
+            'display_name': 'Creation', 
+            'type': 'string'
+        },
+        'fk_hit__datetime_expiration': {
+            'display_name': 'Expiration', 
+            'type': 'string'
         }
     },
     'id': 'id_assignment',
     'displayed_fields': [
-        'id_assignment', 'fk_hit__id_hit', 'fk_worker__name', 'fk_hit__fk_batch__use_sandbox'
+        'id_assignment', 
+        'fk_hit__id_hit', 
+        'fk_worker__name', 
+        'fk_hit__fk_batch__use_sandbox',
+        'fk_hit__datetime_creation',
+        'fk_hit__datetime_expiration',
     ],
     'page_size': 25,
     'filters': [
