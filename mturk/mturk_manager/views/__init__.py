@@ -6,3 +6,4 @@ from .project import *
 from .settings import *
 from .view import *
 from .download import *
+from .migrations import *
