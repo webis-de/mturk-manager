@@ -41,6 +41,8 @@ class m_Batch(models.Model):
 class m_Hit(models.Model):
     id_hit = models.CharField(max_length=200, unique=True)
     fk_batch = models.ForeignKey('m_Batch', on_delete=models.CASCADE, related_name='hits')
+    datetime_creation = models.DateTimeField()
+    datetime_expiration = models.DateTimeField()
     parameters = models.TextField()
 
 class m_Template(models.Model):
