@@ -2,7 +2,7 @@ venv
 __pycache__
 mturk/thesis
 *.csv
-migrations
+#migrations
 cache
 
 #comment the following lines out to add the dynamic content to the version control
