@@ -7,12 +7,12 @@ def migration_2(db_obj_project):
     m_Tag.objects.create(
         key_corpus=db_obj_project.name,
         name='rejected externally',
-        color='#dc3545'
+        color='#ffff00'
     )
     m_Tag.objects.create(
         key_corpus=db_obj_project.name,
         name='approved externally',
-        color='#28a745'
+        color='#ffbf00'
     )
 
 def migration_3(db_obj_project):
