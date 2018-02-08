@@ -19,26 +19,29 @@
 						<th>Batches</th>
 						<th>Hits</th>
 						<th>Total assignments</th>
-						<th>Assignments</th>
+						<th>Processed assignments</th>
+						<th>Pending assignments</th>
 						<th>New assignments</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr>
 						<td>Real</td>
-						<td>{{ stats_total.count_batches }}</td>
-						<td>{{ stats_total.count_hits }}</td>
-						<td>{% if stats_total.count_assignments_total == None %}0{% else %}{{ stats_total.count_assignments_total }}{% endif %}</td>
-						<td>{{ stats_total.count_assignments }}</td>
-						<td>{{ stats_new.count_assignments }}</td>
+						<td>{{ dict_stats.count_batches }}</td>
+						<td>{{ dict_stats.count_hits }}</td>
+						<td>{{ dict_stats.count_assignments_total }}</td>
+						<td>{{ dict_stats.count_assignments }}</td>
+						<td>{{ dict_stats.count_assignments_pending }}</td>
+						<td>{{ dict_stats.count_assignments_new }}</td>
 					</tr>
 					<tr>
 						<td>Sandbox</td>
-						<td>{{ stats_total.count_batches_sandbox }}</td>
-						<td>{{ stats_total.count_hits_sandbox }}</td>
-						<td>{% if stats_total.count_assignments_sandbox_total == None %}0{% else %}{{ stats_total.count_assignments_sandbox_total }}{% endif %}</td>
-						<td>{{ stats_total.count_assignments_sandbox }}</td>
-						<td>{{ stats_new.count_assignments_sandbox }}</td>
+						<td>{{ dict_stats.count_batches_sandbox }}</td>
+						<td>{{ dict_stats.count_hits_sandbox }}</td>
+						<td>{{ dict_stats.count_assignments_sandbox_total }}</td>
+						<td>{{ dict_stats.count_assignments_sandbox }}</td>
+						<td>{{ dict_stats.count_assignments_sandbox_pending }}</td>
+						<td>{{ dict_stats.count_assignments_sandbox_new }}</td>
 					</tr>
 				</tbody>
 			</table>

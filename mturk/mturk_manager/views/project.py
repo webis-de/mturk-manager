@@ -4,7 +4,7 @@ from mturk_manager.models import *
 from viewer.models import *
 from django.urls import reverse
 from django.core.exceptions import ObjectDoesNotExist
-from django.db.models import F, Value, Count, Q, Sum
+from django.db.models import F, Value, Count, Q, Sum, IntegerField, ExpressionWrapper
 from django.db.models.functions import Concat
 import urllib.parse
 from django.utils.html import escape
@@ -100,29 +100,10 @@ def project(request, name):
         # J1mhsaYxHJRh8+QG6uIfiq9foIgy3MmVFgOGC5nR
         return redirect('mturk_manager:project', name=name_quoted)
 
-    stats_total = queryset.aggregate(
-        count_batches=Count('batches', filter=Q(batches__use_sandbox=False), distinct=True), 
-        count_hits=Count('batches__hits', filter=Q(batches__use_sandbox=False), distinct=True), 
-        count_assignments=Count('batches__hits__assignments', filter=Q(batches__use_sandbox=False), distinct=True),
-        count_assignments_total=Sum('batches__count_assignments', filter=Q(use_sandbox=False), distinct=True),
+    dict_stats = get_stats(db_obj_project, queryset)
 
-        count_batches_sandbox=Count('batches', filter=Q(batches__use_sandbox=True), distinct=True), 
-        count_hits_sandbox=Count('batches__hits', filter=Q(batches__use_sandbox=True), distinct=True), 
-        count_assignments_sandbox=Count('batches__hits__assignments', filter=Q(batches__use_sandbox=True), distinct=True),
-        count_assignments_sandbox_total=Sum('batches__count_assignments', filter=Q(use_sandbox=True), distinct=True),
-    )
-
-    stats_new = m_Tag.objects.filter(
-        key_corpus=name_project,
-        name='submitted'
-    ).aggregate(
-        count_assignments=Count('corpus_viewer_items', filter=Q(corpus_viewer_items__fk_hit__fk_batch__use_sandbox=False), distinct=True),
-        count_assignments_sandbox=Count('corpus_viewer_items', filter=Q(corpus_viewer_items__fk_hit__fk_batch__use_sandbox=True), distinct=True)
-    )
-    print(stats_new)
-
-    count_assignments_new = stats_new['count_assignments']
-    count_assignments_sandbox_new = stats_new['count_assignments_sandbox']
+    count_assignments_new = dict_stats['count_assignments']
+    count_assignments_sandbox_new = dict_stats['count_assignments_sandbox']
     count_assignments_new_total = count_assignments_new + count_assignments_sandbox_new
     if count_assignments_new_total > 0:
         text = 'There is a new assignment available!' 
@@ -134,10 +115,69 @@ def project(request, name):
         ))
 
 
-    context['stats_total'] = stats_total
-    context['stats_new'] = stats_new
+    context['dict_stats'] = dict_stats
     context['db_obj_project'] = db_obj_project
     return render(request, 'mturk_manager/project.html', context)
+
+def get_stats(db_obj_project, queryset):
+    dict_stats = {}
+    dict_stats = queryset.aggregate(
+        count_batches=Count('batches', filter=Q(batches__use_sandbox=False), distinct=True), 
+        count_hits=Count('batches__hits', filter=Q(batches__use_sandbox=False), distinct=True), 
+        count_assignments=Count('batches__hits__assignments', filter=Q(batches__use_sandbox=False), distinct=True),
+        # count_assignments_total=Sum(
+        #     F('batches__count_assignments'), 
+        #     output_field=IntegerField(),
+        #     filter=Q(batches__use_sandbox=False)
+        # ),
+
+        count_batches_sandbox=Count('batches', filter=Q(batches__use_sandbox=True), distinct=True), 
+        count_hits_sandbox=Count('batches__hits', filter=Q(batches__use_sandbox=True), distinct=True), 
+        count_assignments_sandbox=Count('batches__hits__assignments', filter=Q(batches__use_sandbox=True), distinct=True),
+        # count_assignments_sandbox_total=Sum(
+        #     F('batches__count_assignments'), 
+        #     output_field=IntegerField(),
+        #     filter=Q(batches__use_sandbox=True)
+        # )
+    )
+
+    dict_stats.update(
+        m_Batch.objects.filter(
+                fk_project=db_obj_project
+            ).annotate(count_hits=Count('hits')
+            ).aggregate(
+                count_assignments_total=Sum(
+                    F('count_assignments') * F('count_hits'), 
+                    output_field=IntegerField(),
+                    filter=Q(use_sandbox=False)
+                ),
+                count_assignments_sandbox_total=Sum(
+                    F('count_assignments') * F('count_hits'), 
+                    output_field=IntegerField(),
+                    filter=Q(use_sandbox=True)
+                )
+            )
+    )
+
+    if dict_stats['count_assignments_total'] == None:
+        dict_stats['count_assignments_total'] = 0
+    if dict_stats['count_assignments_sandbox_total'] == None:
+        dict_stats['count_assignments_sandbox_total'] = 0
+
+    dict_stats['count_assignments_pending'] = dict_stats['count_assignments_total'] - dict_stats['count_assignments']
+    dict_stats['count_assignments_sandbox_pending'] = dict_stats['count_assignments_sandbox_total'] - dict_stats['count_assignments_sandbox']
+
+    dict_stats.update(
+        m_Tag.objects.filter(
+            key_corpus=db_obj_project.name,
+            name='submitted'
+        ).aggregate(
+            count_assignments_new=Count('corpus_viewer_items', filter=Q(corpus_viewer_items__fk_hit__fk_batch__use_sandbox=False), distinct=True),
+            count_assignments_sandbox_new=Count('corpus_viewer_items', filter=Q(corpus_viewer_items__fk_hit__fk_batch__use_sandbox=True), distinct=True)
+        )
+    )
+
+    return dict_stats
 
 def delete_project(db_obj_project, request):
     glob_manager_data.delete_corpus(db_obj_project.name, False)
@@ -206,7 +246,7 @@ def create_dummy_assignments(db_obj_project):
 
 def synchronize_database(db_obj_project, request, use_sandbox):
     # create_dummy_assignments(db_obj_project)
-    return
+    # return
     client = code_shared.get_client(db_obj_project, use_sandbox)
     set_id_assignments_available = set([assignment.id_assignment for assignment in m_Assignment.objects.filter(fk_hit__fk_batch__fk_project=db_obj_project, fk_hit__fk_batch__use_sandbox=use_sandbox)])
     print(set_id_assignments_available)
