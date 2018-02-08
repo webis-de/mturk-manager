@@ -100,21 +100,21 @@ def submit_annotations(request, db_obj_project, obj):
             feedback = message_reject_default
 
         client = client_sandbox if assignment.fk_hit.fk_batch.use_sandbox else client_real
-        # try:
-        #     pass
-        #     if dict_annotation['state'] == 'approve' or dict_annotation['state'] == 'reject_internally':
-        #         response = client.approve_assignment(
-        #             AssignmentId=assignment.id_assignment,
-        #             # RequesterFeedback=feedback
-        #         )
-        #     elif dict_annotation['state'] == 'reject' or dict_annotation['state'] == 'approve_internally':
-        #         response = client.reject_assignment(
-        #             AssignmentId=assignment.id_assignment,
-        #             RequesterFeedback=feedback
-        #         )
-        # except Exception as e:
-        #     print(e)
-        #     continue
+        try:
+            pass
+            if dict_annotation['state'] == 'approve' or dict_annotation['state'] == 'reject_internally':
+                response = client.approve_assignment(
+                    AssignmentId=assignment.id_assignment,
+                    # RequesterFeedback=feedback
+                )
+            elif dict_annotation['state'] == 'reject' or dict_annotation['state'] == 'approve_internally':
+                response = client.reject_assignment(
+                    AssignmentId=assignment.id_assignment,
+                    RequesterFeedback=feedback
+                )
+        except Exception as e:
+            print(e)
+            continue
 
         db_obj_tag_submitted.corpus_viewer_items.remove(assignment)
         if dict_annotation['state'] == 'approve':
