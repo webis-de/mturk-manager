@@ -67,7 +67,7 @@ $(document).ready(function()
 		{
 			let need_message_reject_default = false;
 			$.each(data.dict_assignments, function(i, e) {
-				if(e.message == undefined && e.state == 'reject')
+				if(e.message == undefined && e.state == 'reject' || e.message == undefined && e.state == 'approve_internally')
 				{
 					need_message_reject_default = true;
 					return false;
