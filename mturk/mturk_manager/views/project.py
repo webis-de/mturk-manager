@@ -660,7 +660,7 @@ def create_batch(db_obj_project, request):
                 Description=request.POST['description'],
                 Question=code_shared.create_question(db_obj_template.template, db_obj_template.height_frame, dict_parameters)
             )
-            print(mturk_obj_hit)
+            # print(mturk_obj_hit)
         except ClientError as e:
             messages.error(request, '''
                 An error occured
@@ -682,7 +682,9 @@ def create_batch(db_obj_project, request):
             # id_hit=str(random.randint(0, 9999999)),
             id_hit=mturk_obj_hit['HIT']['HITId'],
             fk_batch=db_obj_batch,
-            parameters=json.dumps(dict_parameters)
+            parameters=json.dumps(dict_parameters),
+            datetime_expiration=mturk_obj_hit['HIT']['Expiration'],
+            datetime_creation=mturk_obj_hit['HIT']['CreationTime'],
         )
 
         # list_assignments
