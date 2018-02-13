@@ -1,19 +1,65 @@
 from mturk_manager.models import *
 from viewer.models import *
 from mturk_manager.views import code_shared
+from mturk_manager.views import create
+from django.conf import settings as settings_django
+import os
+import pprint
 
+def migration_5(db_obj_project):
+    try:
+        path_settings_files = settings_django.PATH_FILES_SETTINGS
+    except:
+        path_settings_files = os.path.join('..', 'settings')
 
-def migration_2(db_obj_project):
-    m_Tag.objects.create(
-        key_corpus=db_obj_project.name,
-        name='rejected externally',
-        color='#ffff00'
-    )
-    m_Tag.objects.create(
-        key_corpus=db_obj_project.name,
-        name='approved externally',
-        color='#ffbf00'
-    )
+    with open(os.path.join(path_settings_files, '{}_workers.py'.format(db_obj_project.name)), 'w') as f:
+        settings_corpus_workers = {
+            'name': '',
+            'description': '',
+            'data_type': 'database',
+            'app_label': 'mturk_manager',
+            'model_name': 'm_Worker',
+            'database_filters': {
+                'fk_project__name': db_obj_project.name
+            },
+            'database_select_related': [
+            ],
+            'database_prefetch_related': [
+                'assignments'
+            ],
+            'data_fields': {
+                'id': {
+                    'type': 'number',
+                    'display_name': 'ID'
+                },
+                'name': {
+                    'type': 'string',
+                    'display_name': 'Name'
+                },
+                'is_blocked': {
+                    'type': 'boolean',
+                    'display_name': 'Blocked'
+                },
+            },
+            'id': 'id',
+            'displayed_fields': [
+                'name', 
+                'is_blocked', 
+            ],
+            'page_size': 25,
+            'filters': [
+                {
+                    'data_field': 'is_blocked',
+                    'description': 'Blocked',
+                    'placeholder': '',
+                },
+            ],
+            'urls_header': [],
+            'cards': [
+            ],
+        }
+        content = 'DICT_SETTINGS_VIEWER = '+pprint.pformat(settings_corpus_workers)
+        f.write(content)
 
 def migration_3(db_obj_project):
     client_sandbox = code_shared.get_client(db_obj_project, True)
@@ -28,6 +74,18 @@ def migration_3(db_obj_project):
         hit.datetime_expiration = mturk_obj_hit['Expiration']
         hit.datetime_creation = mturk_obj_hit['CreationTime']
         hit.save()
+
+def migration_2(db_obj_project):
+    m_Tag.objects.create(
+        key_corpus=db_obj_project.name,
+        name='rejected externally',
+        color='#ffff00'
+    )
+    m_Tag.objects.create(
+        key_corpus=db_obj_project.name,
+        name='approved externally',
+        color='#ffbf00'
+    )
 
 dict_migrations = {
     1: [
@@ -133,6 +191,12 @@ dict_migrations = {
                 'fk_hit__datetime_creation',
                 'fk_hit__datetime_expiration',
             ]
+        }
+    ],
+    5: [
+        {
+            'type': 'execute_function',
+            'function':  migration_5
         }
     ]
 }

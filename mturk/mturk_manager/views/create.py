@@ -124,6 +124,52 @@ glob_dict_settings = {
     ],
 }
 
+glob_dict_settings_workers = {
+    'name': '',
+    'description': '',
+    'data_type': 'database',
+    'app_label': 'mturk_manager',
+    'model_name': 'm_Worker',
+    'database_filters': {
+        'fk_project__name': 'PLACEHOLDER_NAME'
+    },
+    'database_select_related': [
+    ],
+    'database_prefetch_related': [
+        'assignments'
+    ],
+    'data_fields': {
+        'id': {
+            'type': 'number',
+            'display_name': 'ID'
+        },
+        'name': {
+            'type': 'string',
+            'display_name': 'Name'
+        },
+        'is_blocked': {
+            'type': 'boolean',
+            'display_name': 'Blocked'
+        },
+    },
+    'id': 'id',
+    'displayed_fields': [
+        'name', 
+        'is_blocked', 
+    ],
+    'page_size': 25,
+    'filters': [
+        {
+            'data_field': 'is_blocked',
+            'description': 'Blocked',
+            'placeholder': '',
+        },
+    ],
+    'urls_header': [],
+    'cards': [
+    ],
+}
+
 def create(request):
     context = {}
     context['queryset_account_mturk'] = m_Account_Mturk.objects.all()
@@ -153,39 +199,8 @@ def create_project(request):
         fk_account_mturk = db_obj_account_mturk,
     )
 
-    dict_settings = glob_dict_settings.copy()
-    dict_settings['name'] = request.POST['name']
-
-    dict_settings['urls_header'] = [
-        {
-            'link': reverse('mturk_manager:project', args=[request.POST['name']]),
-            'name': 'Project'
-        },
-        {
-            'link': reverse('mturk_manager:documentation'),
-            'name': 'Documentation'
-        },
-        {
-            'link': reverse('mturk_manager:index'),
-            'name': 'Open/Add Project'
-        },
-        {
-            'link': reverse('mturk_manager:settings'),
-            'name': 'Settings'
-        }
-    ]
-
-    for key, value in dict_settings['database_filters'].items():
-        dict_settings['database_filters'][key] = dict_settings['database_filters'][key].replace('PLACEHOLDER_NAME', request.POST['name'])
-
-    for card in dict_settings['cards']:
-        card['content'] = card['content'].replace(
-            'PLACEHOLDER_URL_VIEW', reverse('mturk_manager:view', args=[request.POST['name']])
-        ).replace(
-            'PLACEHOLDER_URL_DOWNLOAD', reverse('mturk_manager:download', args=[request.POST['name']])
-        )
-
-    glob_manager_data.add_settings_corpus(request.POST['name'], dict_settings)
+    add_corpus_assignments(request)
+    add_corpus_workers(request)
     glob_manager_data.check_for_new_corpora()
     
     m_Template_Assignment.objects.create(
@@ -227,6 +242,69 @@ def create_project(request):
         name='approved externally',
         color='#28a745'
     )
+
+def add_corpus_workers(request):
+    dict_settings = glob_dict_settings_workers.copy()
+    dict_settings['name'] = 'Workers'
+
+    dict_settings['urls_header'] = [
+        {
+            'link': reverse('mturk_manager:project', args=[request.POST['name']]),
+            'name': 'Project'
+        },
+        {
+            'link': reverse('mturk_manager:documentation'),
+            'name': 'Documentation'
+        },
+        {
+            'link': reverse('mturk_manager:index'),
+            'name': 'Open/Add Project'
+        },
+        {
+            'link': reverse('mturk_manager:settings'),
+            'name': 'Settings'
+        }
+    ]
+    
+    for key, value in dict_settings['database_filters'].items():
+        dict_settings['database_filters'][key] = dict_settings['database_filters'][key].replace('PLACEHOLDER_NAME', request.POST['name'])
+    
+    glob_manager_data.add_settings_corpus(request.POST['name'] + '_workers', dict_settings)
+    
+def add_corpus_assignments(request):
+    dict_settings = glob_dict_settings.copy()
+    dict_settings['name'] = request.POST['name']
+
+    dict_settings['urls_header'] = [
+        {
+            'link': reverse('mturk_manager:project', args=[request.POST['name']]),
+            'name': 'Project'
+        },
+        {
+            'link': reverse('mturk_manager:documentation'),
+            'name': 'Documentation'
+        },
+        {
+            'link': reverse('mturk_manager:index'),
+            'name': 'Open/Add Project'
+        },
+        {
+            'link': reverse('mturk_manager:settings'),
+            'name': 'Settings'
+        }
+    ]
+
+    for key, value in dict_settings['database_filters'].items():
+        dict_settings['database_filters'][key] = dict_settings['database_filters'][key].replace('PLACEHOLDER_NAME', request.POST['name'])
+
+    for card in dict_settings['cards']:
+        card['content'] = card['content'].replace(
+            'PLACEHOLDER_URL_VIEW', reverse('mturk_manager:view', args=[request.POST['name']])
+        ).replace(
+            'PLACEHOLDER_URL_DOWNLOAD', reverse('mturk_manager:download', args=[request.POST['name']])
+        )
+
+    glob_manager_data.add_settings_corpus(request.POST['name'], dict_settings)
 
 def verify_input(request):
     try:
