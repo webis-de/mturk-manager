@@ -102,14 +102,14 @@ def project(request, name):
 
     dict_stats = get_stats(db_obj_project, queryset)
 
-    count_assignments_new = dict_stats['count_assignments']
-    count_assignments_sandbox_new = dict_stats['count_assignments_sandbox']
+    count_assignments_new = dict_stats['count_assignments_new']
+    count_assignments_sandbox_new = dict_stats['count_assignments_sandbox_new']
     count_assignments_new_total = count_assignments_new + count_assignments_sandbox_new
     if count_assignments_new_total > 0:
         text = 'There is a new assignment available!' 
         if count_assignments_new_total > 1:
             text = 'There are {} new assignments available!'.format(count_assignments_new_total)
-        print(reverse('viewer:index', kwargs={'id_corpus':db_obj_project.name}))
+        # print(reverse('viewer:index', kwargs={'id_corpus':db_obj_project.name}))
         messages.info(request, text+' <a href="{}?viewer__filter_tags=%5B%22submitted%22%5D" class="alert-link">View</a>'.format(
             reverse('viewer:index', kwargs={'id_corpus':db_obj_project.name})
         ))
