@@ -90,7 +90,13 @@ class m_Assignment(models.Model):
 
 
 class m_Worker(models.Model):
+    class Meta:
+        ordering = ['name']
+        unique_together = ("name", "fk_project")
+
     name = models.CharField(max_length=200, unique=True)
+    fk_project = models.ForeignKey('m_Project', on_delete=models.CASCADE, null=True, related_name='workers')
+    is_blocked = models.BooleanField(default=False)
 
 class m_Message_Reject(models.Model):
     fk_project = models.ForeignKey('m_Project', on_delete=models.CASCADE, related_name='messages_reject')
