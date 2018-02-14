@@ -80,7 +80,7 @@ glob_dict_settings = {
             'name': 'MTurk',
             'content': ''' 
                 <div class="mb-2">
-                    <span data-inject="count_selected_rows"></span> Assignment(s) selected
+                    <span data-inject="count_selected_rows">0</span> Assignment(s) selected
                 </div>
                 <div class="mb-2">
                     <button type="button" id="button_mturk_approve" class="btn btn-sm btn-success">Approve</button>
@@ -168,6 +168,22 @@ glob_dict_settings_workers = {
     ],
     'urls_header': [],
     'cards': [
+        {'content': ''' 
+            <div class="mb-2">
+                <span data-inject="count_selected_rows">0</span> Worker(s) selected
+            </div>
+            <div class="mb-2">
+                <button type="button" id="button_mturk_unblock" class="btn btn-sm btn-success">Unblock</button>
+                <button type="button" id="button_mturk_block" class="btn btn-sm btn-danger">Block</button>
+            </div>
+            <script>
+                $(document).ready(function()
+                {
+                    $(document).on('click', '#button_mturk_unblock', function(){
+                    });
+                });
+            </script>''',
+        'name': 'MTurk'}
     ],
 }
 
