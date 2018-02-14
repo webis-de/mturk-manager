@@ -125,7 +125,7 @@ glob_dict_settings = {
 }
 
 glob_dict_settings_workers = {
-    'name': '',
+    'name': 'Workers',
     'description': '',
     'data_type': 'database',
     'app_label': 'mturk_manager',
@@ -138,6 +138,7 @@ glob_dict_settings_workers = {
     'database_prefetch_related': [
         'assignments'
     ],
+    'database_related_name': 'corpus_viewer_workers',
     'data_fields': {
         'id': {
             'type': 'number',
