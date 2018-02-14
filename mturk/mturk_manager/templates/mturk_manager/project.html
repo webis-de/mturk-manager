@@ -432,6 +432,7 @@
 	</div>
 	<hr>
 	<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal_delete_project">Delete project</button>
+	<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modal_clear_sandbox">Clear sandbox</button>
 </div>
 
 <div class="modal fade" tabindex="-1" id="modal_update_message_reject">
@@ -531,6 +532,26 @@
 				{% csrf_token %}
 				<div class="modal-footer">
 					<button type="submit" name="task" value="delete_project" class="btn btn-danger">Delete</button>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" tabindex="-1" id="modal_clear_sandbox">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Do you really want to clear the sandbox?</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<form method="post" enctype="multipart/form-data">
+				{% csrf_token %}
+				<div class="modal-footer">
+					<button type="submit" name="task" value="clear_sandbox" class="btn btn-warning">Clear</button>
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 				</div>
 			</form>

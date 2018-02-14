@@ -94,6 +94,8 @@ def project(request, name):
             update_settings(db_obj_project, request)
         elif request.POST['task'] == 'delete_project':
             return delete_project(db_obj_project, request)
+        elif request.POST['task'] == 'clear_sandbox':
+            clear_sandbox(db_obj_project, request)
 
         # db_obj_project = queryset.get(name=name)
         # ***REMOVED***
@@ -178,6 +180,28 @@ def get_stats(db_obj_project, queryset):
     )
 
     return dict_stats
+
+def clear_sandbox(db_obj_project, request):
+    queryset_batches = m_Batch.objects.filter(
+        use_sandbox=True,
+        fk_project=db_obj_project,
+    )
+
+    queryset_batches.delete()
+
+    queryset_workers = m_Worker.objects.filter(
+        fk_project=db_obj_project,
+    ).annotate(
+        count_assignments=Count('assignments')
+    # ).filter(
+    #     count_assignments=0
+    )
+
+    for worker in queryset_workers:
+        print(worker.count_assignments)
+    print(queryset_workers)
+    # queryset_workers.delete()
+    # db_obj_project.objects.filter()
 
 def delete_project(db_obj_project, request):
     glob_manager_data.delete_corpus(db_obj_project.name, False)
