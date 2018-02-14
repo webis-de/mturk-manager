@@ -180,7 +180,50 @@ glob_dict_settings_workers = {
                 $(document).ready(function()
                 {
                     $(document).on('click', '#button_mturk_unblock', function(){
-                    });
+                            let data = {};
+                            data.task = 'unblock_workers';
+
+                            const list_ids = [];
+                            $.each(glob_selected_items, function( i, val ) {
+                                list_ids.push(val.viewer__id_item_internal);
+                            });
+
+                            data.list_ids = list_ids
+                            console.log(data)
+                            $.ajax({
+                                url: '/project/PLACEHOLDER_NAME/api',
+                                method: 'POST',
+                                dataType: 'json',
+                                headers: {'X-CSRFToken':$('input[name="csrfmiddlewaretoken"]').val()},
+                                data: data,
+                                success: function(result) {
+                                    load_current_page();
+                                }
+                            });
+                        });
+
+                        $(document).on('click', '#button_mturk_block', function(){
+                            let data = {};
+                            data.task = 'block_workers';
+
+                            const list_ids = [];
+                            $.each(glob_selected_items, function( i, val ) {
+                                list_ids.push(val.viewer__id_item_internal);
+                            });
+
+                            data.list_ids = list_ids
+                            console.log(data)
+                            $.ajax({
+                                url: '/project/PLACEHOLDER_NAME/api',
+                                method: 'POST',
+                                dataType: 'json',
+                                headers: {'X-CSRFToken':$('input[name="csrfmiddlewaretoken"]').val()},
+                                data: data,
+                                success: function(result) {
+                                    load_current_page();
+                                }
+                            });
+                        });
                 });
             </script>''',
         'name': 'MTurk'}
@@ -285,6 +328,9 @@ def add_corpus_workers(request):
     
     for key, value in dict_settings['database_filters'].items():
         dict_settings['database_filters'][key] = dict_settings['database_filters'][key].replace('PLACEHOLDER_NAME', request.POST['name'])
+    for card in dict_settings['cards']:
+        for key, value in card.items():
+            card[key] = card[key].replace('PLACEHOLDER_NAME', request.POST['name'])
     
     glob_manager_data.add_settings_corpus(request.POST['name'] + '_workers', dict_settings)
     
