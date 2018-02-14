@@ -94,9 +94,10 @@ class m_Worker(models.Model):
         ordering = ['name']
         unique_together = ("name", "fk_project")
 
-    name = models.CharField(max_length=200, unique=True)
+    name = models.CharField(max_length=200)
     fk_project = models.ForeignKey('m_Project', on_delete=models.CASCADE, null=True, related_name='workers')
     is_blocked = models.BooleanField(default=False)
+    corpus_viewer_tags = models.ManyToManyField('viewer.m_Tag', related_name='corpus_viewer_workers')
 
 class m_Message_Reject(models.Model):
     fk_project = models.ForeignKey('m_Project', on_delete=models.CASCADE, related_name='messages_reject')

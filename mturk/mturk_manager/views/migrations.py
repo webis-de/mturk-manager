@@ -6,6 +6,26 @@ from django.conf import settings as settings_django
 import os
 import pprint
 
+def migration_6(db_obj_project):
+    set_workers_handled = set()
+
+    for db_obj_batch in db_obj_project.batches.all():
+        for db_obj_hit in db_obj_batch.hits.all():
+            for db_obj_assignment in db_obj_hit.assignments.select_related('fk_worker__fk_project').all():
+                if db_obj_assignment.fk_worker_id in set_workers_handled:
+                    continue
+
+                if db_obj_assignment.fk_worker.fk_project == None:
+                    db_obj_assignment.fk_worker.fk_project = db_obj_project
+                    db_obj_assignment.fk_worker.save()
+                else:
+                    db_obj_worker = m_Worker.objects.create(
+                        name=db_obj_assignment.fk_worker.name,
+                        fk_project=db_obj_project,
+                    )
+                    
+                set_workers_handled.add(db_obj_assignment.fk_worker_id)
+
 def migration_5(db_obj_project):
     try:
         path_settings_files = settings_django.PATH_FILES_SETTINGS
@@ -14,7 +34,7 @@ def migration_5(db_obj_project):
 
     with open(os.path.join(path_settings_files, '{}_workers.py'.format(db_obj_project.name)), 'w') as f:
         settings_corpus_workers = {
-            'name': '',
+            'name': 'Workers',
             'description': '',
             'data_type': 'database',
             'app_label': 'mturk_manager',
@@ -88,6 +108,17 @@ def migration_2(db_obj_project):
     )
 
 dict_migrations = {
+    6: [
+        {
+            'type': 'update_config_file_workers',
+            'key': 'database_related_name',
+            'content': 'corpus_viewer_workers'
+        },
+        {
+            'type': 'execute_function',
+            'function': migration_6
+        }
+    ],
     1: [
         {
             'type': 'update_config_file',

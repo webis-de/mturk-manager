@@ -72,6 +72,23 @@ def apply_migration(db_obj_project, migration):
                 content = 'DICT_SETTINGS_VIEWER = '+pprint.pformat(settings_corpus_new)
                 content = content.replace('${name_project}', db_obj_project.name)
                 f.write(content)
+        elif step['type'] == 'update_config_file_workers':
+            key = step['key']
+            content = step['content']
+            settings_corpus_new = None
+            with open(os.path.join(path_settings_files, '{}_workers.py'.format(db_obj_project.name)), 'r') as f:
+                global_env = {}
+                local_env = {}
+                compiled = compile(f.read(), '<string>', 'exec')
+                exec(compiled, global_env, local_env)
+                settings_corpus = local_env['DICT_SETTINGS_VIEWER']
+                settings_corpus[key] = content
+                settings_corpus_new = settings_corpus
+
+            with open(os.path.join(path_settings_files, '{}_workers.py'.format(db_obj_project.name)), 'w') as f:
+                content = 'DICT_SETTINGS_VIEWER = '+pprint.pformat(settings_corpus_new)
+                content = content.replace('${name_project}', db_obj_project.name)
+                f.write(content)
         elif step['type'] == 'execute_function':
             step['function'](db_obj_project)
 
