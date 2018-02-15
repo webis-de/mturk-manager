@@ -55,8 +55,8 @@ def project(request, name):
         return redirect('mturk_manager:index')
 
     # create_data_dummy(db_obj_project)
-    # client = code_shared.get_client(db_obj_project, use_sandbox=False)
-    # print(client.get_account_balance())
+    client = code_shared.get_client(db_obj_project, use_sandbox=False)
+    print(client.get_account_balance())
 
     # print(client.get_hit(HITId='3T2HW4QDUV7GJB9VIQCOB76KV3Y9CB'))
 
@@ -283,7 +283,7 @@ def synchronize_database(db_obj_project, request, use_sandbox):
     # print(xmltodict.parse(response['Assignments'][0]['Answer']))
     # print(json.dumps(xmltodict.parse(response['Assignments'][0]['Answer']), indent=1))
 
-    dict_workers_available = {worker.name: worker for worker in m_Worker.objects.all()}
+    dict_workers_available = {worker.name: worker for worker in m_Worker.objects.filter(fk_project=db_obj_project)}
     dict_tags = {tag.name: tag for tag in m_Tag.objects.filter(key_corpus=db_obj_project.name)}
     db_obj_tag_submitted = m_Tag.objects.get(key_corpus=db_obj_project.name, name='submitted')
 
@@ -310,7 +310,10 @@ def synchronize_database(db_obj_project, request, use_sandbox):
                 try:
                     db_obj_worker = dict_workers_available[id_worker]
                 except KeyError:
-                    db_obj_worker = m_Worker.objects.create(name=id_worker)
+                    db_obj_worker = m_Worker.objects.create(
+                        name=id_worker,
+                        fk_project=db_obj_project,
+                    )
                     dict_workers_available[id_worker] = db_obj_worker
 
                 db_obj_assignment = m_Assignment.objects.create(
