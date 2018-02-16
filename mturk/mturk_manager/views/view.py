@@ -46,7 +46,9 @@ def view(request, name):
         'fk_batch__fk_template__fk_template_assignment',
         'fk_batch__fk_template__fk_template_hit',
     ).prefetch_related(
-        Prefetch('assignments', queryset=m_Assignment.objects.prefetch_related('corpus_viewer_tags').annotate(
+        Prefetch('assignments', queryset=m_Assignment.objects.prefetch_related('corpus_viewer_tags').filter(
+                id__in=list_ids
+            ).annotate(
                 count_tags_approved=Count('corpus_viewer_tags', filter=Q(corpus_viewer_tags__name='approved'), distinct=True),
                 count_tags_rejected=Count('corpus_viewer_tags', filter=Q(corpus_viewer_tags__name='rejected'), distinct=True),
                 count_tags_rejected_externally=Count('corpus_viewer_tags', filter=Q(corpus_viewer_tags__name='rejected externally'), distinct=True),
