@@ -3,6 +3,12 @@
 
 {% block name_project %}{{ name_project }}{% endblock %}
 
+{% block links_project %}
+	<a class="nav-item nav-link" href="{% url 'mturk_manager:project' db_obj_project.name %}">Project</a>
+	<a class="nav-item nav-link" href="{% url 'viewer:index' db_obj_project.name %}">View Assignments</a>
+	<a class="nav-item nav-link" href="{% url 'viewer:index' db_obj_project.name|add:'_workers' %}">View Workers</a>
+{% endblock %}
+
 {% block body %}
 <script src="{% static 'mturk_manager/js/jquery-3.1.1.min.js' %}"></script>
 <script src="{% static 'mturk_manager/js/popper.js' %}"></script>
