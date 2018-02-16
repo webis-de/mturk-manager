@@ -108,6 +108,9 @@ def migration_2(db_obj_project):
     )
 
 dict_migrations = {
+    8: [
+        
+    ] 
     7: [
         {
             'type': 'update_config_file_workers',

@@ -6,6 +6,7 @@
 {% endblock %}
 
 {% block links_project %}
+	<a class="nav-item nav-link" href="{% url 'mturk_manager:project' db_obj_project.name %}">Project</a>
 	<a class="nav-item nav-link" href="{% url 'viewer:index' db_obj_project.name %}">View Assignments</a>
 	<a class="nav-item nav-link" href="{% url 'viewer:index' db_obj_project.name|add:'_workers' %}">View Workers</a>
 {% endblock %}
