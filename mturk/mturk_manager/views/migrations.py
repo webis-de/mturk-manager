@@ -109,8 +109,72 @@ def migration_2(db_obj_project):
 
 dict_migrations = {
     8: [
-        
-    ] 
+        {
+            'type': 'update_config_file',
+            'key': 'urls_header',
+            'content': [
+                {
+                    'link': '/project/${name_project}',
+                    'name': 'Project'
+                },
+                {
+                    'link': '/viewer/${name_project}',
+                    'name': 'View Assignments'
+                },
+                {
+                    'link': '/viewer/${name_project}_workers',
+                    'name': 'View Workers'
+                },
+                {
+                    'link': '/documentation',
+                    'name': 'Documentation'
+                },
+                {
+                    'link': '/',
+                    'name': 'Open/Add Project'
+                },
+                {
+                    'link': '/settings',
+                    'name': 'Settings'
+                }
+            ]
+        },
+        {
+            'type': 'update_config_file_workers',
+            'key': 'urls_header',
+            'content': [
+                {
+                    'link': '/project/${name_project}',
+                    'name': 'Project'
+                },
+                {
+                    'link': '/viewer/${name_project}',
+                    'name': 'View Assignments'
+                },
+                {
+                    'link': '/viewer/${name_project}_workers',
+                    'name': 'View Workers'
+                },
+                {
+                    'link': '/documentation',
+                    'name': 'Documentation'
+                },
+                {
+                    'link': '/',
+                    'name': 'Open/Add Project'
+                },
+                {
+                    'link': '/settings',
+                    'name': 'Settings'
+                }
+            ]
+        },
+        {
+            'type': 'update_config_file_workers',
+            'key': 'name',
+            'content': 'Workers'
+        },
+    ] ,
     7: [
         {
             'type': 'update_config_file_workers',
