@@ -55,8 +55,8 @@ def project(request, name):
         return redirect('mturk_manager:index')
 
     # create_data_dummy(db_obj_project)
-    client = code_shared.get_client(db_obj_project, use_sandbox=False)
-    print(client.get_account_balance())
+    # client = code_shared.get_client(db_obj_project, use_sandbox=False)
+    # print(client.get_account_balance())
 
     # print(client.get_hit(HITId='3T2HW4QDUV7GJB9VIQCOB76KV3Y9CB'))
 

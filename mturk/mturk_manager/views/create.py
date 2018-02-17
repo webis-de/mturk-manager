@@ -313,6 +313,14 @@ def add_corpus_workers(request):
             'name': 'Project'
         },
         {
+            'link': reverse('viewer:index', args=[request.POST['name']]),
+            'name': 'View Assignments'
+        },
+        {
+            'link': reverse('viewer:index', args=[request.POST['name'] + '_workers']),
+            'name': 'View Workers'
+        },
+        {
             'link': reverse('mturk_manager:documentation'),
             'name': 'Documentation'
         },
