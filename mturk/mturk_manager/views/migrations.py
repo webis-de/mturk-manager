@@ -4,7 +4,14 @@ from mturk_manager.views import code_shared
 from mturk_manager.views import create
 from django.conf import settings as settings_django
 import os
+import json
 import pprint
+
+def migration_9(db_obj_project):
+    for db_obj_template in db_obj_project.templates.all():
+        dict_parameters = code_shared.count_parameters_in_template(db_obj_template.template)
+        db_obj_template.json_dict_parameters = json.dumps(dict_parameters)
+        db_obj_template.save()
 
 def migration_6(db_obj_project):
     set_workers_handled = set()
@@ -108,6 +115,12 @@ def migration_2(db_obj_project):
     )
 
 dict_migrations = {
+    9: [
+        {
+            'type': 'execute_function',
+            'function': migration_9
+        }
+    ],
     8: [
         {
             'type': 'update_config_file',

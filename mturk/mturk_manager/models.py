@@ -56,6 +56,7 @@ class m_Template(models.Model):
     is_active = models.BooleanField(default=True)
     fk_template_assignment = models.ForeignKey('m_Template_Assignment', on_delete=models.CASCADE, related_name='templates_used')
     fk_template_hit = models.ForeignKey('m_Template_Hit', on_delete=models.CASCADE, related_name='templates_used')
+    json_dict_parameters = models.TextField()
 
 class m_Template_Assignment(models.Model):
     class Meta:

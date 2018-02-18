@@ -1,5 +1,6 @@
 {% extends "mturk_manager/base.html" %}
 {% load static %}
+{% load mturk_manager_templatetags %}
 
 {% block name_project %}
 {{ db_obj_project.name }}
@@ -225,7 +226,7 @@
 	</div>
 	<hr>
 	<div class="row">
-		<div class="col-12 col-lg-6">
+		<div class="col">
 			<form method="post">
 				{% csrf_token %}
 				<fieldset>
@@ -236,6 +237,7 @@
 								<th>Selection</th>
 								<th>Name</th>
 								<th>Frame height</th>
+								<th>Parameters</th>
 								<th>Assignment template</th>
 								<th>Hit template</th>
 								<th>Update</th>
@@ -257,6 +259,9 @@
 								</td>
 								<td>
 									{{ template.height_frame }}
+								</td>
+								<td>
+									{% get_count_distinct_parameters template.json_dict_parameters %}
 								</td>
 								<td>
 									{% if template.fk_template_assignment.name == 'default_template_assignment__'|add:db_obj_project.name %}

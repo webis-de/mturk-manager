@@ -593,11 +593,14 @@ def add_template(db_obj_project, request):
     except ValueError:
         db_obj_template_hit = m_Template_Hit.objects.get(fk_project=db_obj_project, name="default_template_hit__"+db_obj_project.name)
 
+    dict_parameters = code_shared.count_parameters_in_template(template)
+
     try:
         m_Template.objects.create(
             name=request.POST['name'],
             template=template,
             height_frame=request.POST['height_frame'],
+            json_dict_parameters=json.dumps(dict_parameters),
             fk_project=db_obj_project,
             fk_template_assignment=db_obj_template_assignment,
             fk_template_hit=db_obj_template_hit
