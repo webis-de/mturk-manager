@@ -725,6 +725,7 @@ def create_batch(db_obj_project, request):
     reader = csv.DictReader(io.StringIO(request.FILES['file_csv'].read().decode('utf-8')))
     db_obj_template = m_Template.objects.get(fk_project=db_obj_project, id=request.POST['template'])
     # list_entities = []
+    index = 0
     for dict_parameters in reader:
         try:
             mturk_obj_hit = client.create_hit(
@@ -746,8 +747,13 @@ def create_batch(db_obj_project, request):
                     {}
                 </p>
             '''.format(e))
-            db_obj_batch.delete()
+
+            if index == 0:
+                db_obj_batch.delete()
+                
             return
+
+        index += 1
 
         db_obj_tag = m_Tag.objects.create(
             name=glob_prefix_name_tag_hit+mturk_obj_hit['HIT']['HITId'],
