@@ -76,6 +76,8 @@ def project(request, name):
             add_message_reject(db_obj_project, request)
         elif request.POST['task'] == 'update_template':
             update_template(db_obj_project, request)
+        elif request.POST['task'] == 'reactivate_templates':
+            reactivate_templates(db_obj_project, request)
         elif request.POST['task'] == 'update_template_assignment':
             update_template_assignment(db_obj_project, request)
         elif request.POST['task'] == 'update_template_hit':
@@ -116,6 +118,16 @@ def project(request, name):
             reverse('viewer:index', kwargs={'id_corpus':db_obj_project.name})
         ))
 
+    list_templates_active = []
+    list_templates_inactive = []
+    for template in db_obj_project.templates.all():
+        if template.is_active:
+            list_templates_active.append(template)
+        else:
+            list_templates_inactive.append(template)
+
+    context['list_templates_active'] = list_templates_active
+    context['list_templates_inactive'] = list_templates_inactive
 
     context['dict_stats'] = dict_stats
     context['db_obj_project'] = db_obj_project
@@ -377,28 +389,25 @@ def delete_messages_reject(db_obj_project, request):
     
 def delete_templates(db_obj_project, request):
     list_templates = request.POST.getlist('templates')
-
-    count_updated_rows = m_Template.objects.filter(
+    
+    queryset = m_Template.objects.filter(
         fk_project=db_obj_project, id__in=list_templates
     ).annotate(
         count_batches=Count('batches')
-    ).filter(
+    )
+
+    count_updated_rows = queryset.filter(
         count_batches=0
     ).delete()[0]
 
-    # .update(
-    #     name=Concat(
-    #         F('name'),
-    #         Value('_'+str(int(time.time())))
-    #     ),
-    #     is_active=False
-    # )
-
-
     if not count_updated_rows == len(list_templates):
-        messages.error(request, 'At least one template was already used')
-    else:
-        messages.success(request, 'Deleted template(s) successfully')
+        queryset.filter(
+            count_batches__gt=0
+        ).update(
+            is_active=False
+        )
+
+    messages.success(request, 'Deleted template(s) successfully')
 
 
 def update_message_reject(db_obj_project, request):
@@ -544,6 +553,17 @@ def add_message_reject(db_obj_project, request):
     m_Message_Reject.objects.create(fk_project=db_obj_project, message=request.POST['message'])
 
     messages.success(request, 'Added reject message successfully')
+
+def reactivate_templates(db_obj_project, request):
+    list_templates = request.POST.getlist('templates')
+
+    count_updated_rows = m_Template.objects.filter(
+        fk_project=db_obj_project, id__in=list_templates
+    ).update(
+        is_active=True
+    )
+
+    messages.success(request, 'Activated template(s) successfully')
 
 def update_template(db_obj_project, request):
     if not code_shared.validate_form(request, [

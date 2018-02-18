@@ -228,71 +228,144 @@
 	<div class="row">
 		<div class="col">
 			<form method="post">
-				{% csrf_token %}
-				<fieldset>
-					<legend>Manage worker templates</legend>
-					<table class="table table-sm table-responsive-lg">
-						<thead>
-							<tr>
-								<th>Selection</th>
-								<th>Name</th>
-								<th>Frame height</th>
-								<th>Parameters</th>
-								<th>Assignment template</th>
-								<th>Hit template</th>
-								<th>Update</th>
-								<th>HTML</th>
-							</tr>
-						</thead>
-						<tbody>
-						{% for template in db_obj_project.templates.all %}
-						{% if template.is_active %}
-							<tr {% if template ==  db_obj_project.fk_template_main %}class="table-active"{% endif %}>
-								<td>
-									<div class="custom-control custom-checkbox">
-										<input type="checkbox" name="templates" value="{{ template.id }}" id="checkbox_manage_templates_template_{{ template.id }}" class="custom-control-input">
-										<label class="custom-control-label" for="checkbox_manage_templates_template_{{ template.id }}"></label>
-									</div>
-								</td>
-								<td>
-									{{ template.name }}
-								</td>
-								<td>
-									{{ template.height_frame }}
-								</td>
-								<td>
-									{% get_count_distinct_parameters template.json_dict_parameters %}
-								</td>
-								<td>
-									{% if template.fk_template_assignment.name == 'default_template_assignment__'|add:db_obj_project.name %}
-										-
-									{% else %}
-										{{ template.fk_template_assignment.name }}
-									{% endif %}
-								</td>
-								<td>
-									{% if template.fk_template_hit.name == 'default_template_hit__'|add:db_obj_project.name %}
-										-
-									{% else %}
-										{{ template.fk_template_hit.name }}
-									{% endif %}
-								</td>
-								<td>
-									<button type="button" class="btn btn-primary btn-sm" data-id="{{ template.id }}" data-name="{{ template.name }}" data-height_frame="{{ template.height_frame }}" data-id_template_assignment="{{ template.fk_template_assignment.id }}" data-id_template_hit="{{ template.fk_template_hit.id }}" data-toggle="modal" data-target="#modal_update_template">Update</button>
-								</td>
-								<td>
-									<button type="button" class="btn btn-primary btn-sm" data-id="{{ template.id }}" data-template="{{ template.template }}" data-toggle="modal" data-target="#modal_show_html">Show</button>
-								</td>
-							</tr>
+				<div class="row">
+					<div class="col">
+						{% csrf_token %}
+						<fieldset>
+							<legend>Manage worker templates</legend>
+							<table class="table table-sm">
+								<thead>
+									<tr>
+										<th>Selection</th>
+										<th>Name</th>
+										<th>Frame height</th>
+										<th>Parameters</th>
+										<th>Assignment template</th>
+										<th>Hit template</th>
+										<th>Update</th>
+										<th>HTML</th>
+									</tr>
+								</thead>
+								<tbody>
+								{% for template in list_templates_active %}
+									<tr {% if template ==  db_obj_project.fk_template_main %}class="table-active"{% endif %}>
+										<td>
+											<div class="custom-control custom-checkbox">
+												<input type="checkbox" name="templates" value="{{ template.id }}" id="checkbox_manage_templates_template_{{ template.id }}" class="custom-control-input">
+												<label class="custom-control-label" for="checkbox_manage_templates_template_{{ template.id }}"></label>
+											</div>
+										</td>
+										<td>
+											{{ template.name }}
+										</td>
+										<td>
+											{{ template.height_frame }}
+										</td>
+										<td>
+											{% get_count_distinct_parameters template.json_dict_parameters %}
+										</td>
+										<td>
+											{% if template.fk_template_assignment.name == 'default_template_assignment__'|add:db_obj_project.name %}
+												-
+											{% else %}
+												{{ template.fk_template_assignment.name }}
+											{% endif %}
+										</td>
+										<td>
+											{% if template.fk_template_hit.name == 'default_template_hit__'|add:db_obj_project.name %}
+												-
+											{% else %}
+												{{ template.fk_template_hit.name }}
+											{% endif %}
+										</td>
+										<td>
+											<button type="button" class="btn btn-primary btn-sm" data-id="{{ template.id }}" data-name="{{ template.name }}" data-height_frame="{{ template.height_frame }}" data-id_template_assignment="{{ template.fk_template_assignment.id }}" data-id_template_hit="{{ template.fk_template_hit.id }}" data-toggle="modal" data-target="#modal_update_template">Update</button>
+										</td>
+										<td>
+											<button type="button" class="btn btn-primary btn-sm" data-id="{{ template.id }}" data-template="{{ template.template }}" data-toggle="modal" data-target="#modal_show_html">Show</button>
+										</td>
+									</tr>
+								{% endfor %}
+								</tbody>
+							</table>
+						</fieldset>
+					</div>
+				</div>
+				<div class="row mb-2">
+					<div class="col">
+						<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_add_template">Add template</button>
+						{% if db_obj_project.templates.count > 0 %}
+						<button type="submit" name="task" value="delete_templates" class="btn btn-danger">Delete selected</button>
 						{% endif %}
-						{% endfor %}
-						</tbody>
-					</table>
-					<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_add_template">Add template</button>
-					{% if db_obj_project.templates.count > 0 %}
-					<button type="submit" name="task" value="delete_templates" class="btn btn-danger">Delete selected</button>
-					{% endif %}
-				</fieldset>
+					</div>
+				</div>
+				{% if list_templates_inactive|length > 0 %}
+				<div class="row">
+					<div class="col">
+						<button type="button" class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#collapse_templates_inactive">Toggle inactive templates</button>
+					</div>
+				</div>
+				<div class="row mt-2 collapse" id="collapse_templates_inactive">
+					<div class="col">
+						<table class="table table-sm">
+							<thead>
+								<tr>
+									<th>Selection</th>
+									<th>Name</th>
+									<th>Frame height</th>
+									<th>Parameters</th>
+									<th>Assignment template</th>
+									<th>Hit template</th>
+									<th>Update</th>
+									<th>HTML</th>
+								</tr>
+							</thead>
+							<tbody>
+							{% for template in list_templates_inactive %}
+								<tr {% if template ==  db_obj_project.fk_template_main %}class="table-active"{% endif %}>
+									<td>
+										<div class="custom-control custom-checkbox">
+											<input type="checkbox" name="templates" value="{{ template.id }}" id="checkbox_manage_templates_template_{{ template.id }}" class="custom-control-input">
+											<label class="custom-control-label" for="checkbox_manage_templates_template_{{ template.id }}"></label>
+										</div>
+									</td>
+									<td>
+										{{ template.name }}
+									</td>
+									<td>
+										{{ template.height_frame }}
+									</td>
+									<td>
+										{% get_count_distinct_parameters template.json_dict_parameters %}
+									</td>
+									<td>
+										{% if template.fk_template_assignment.name == 'default_template_assignment__'|add:db_obj_project.name %}
+											-
+										{% else %}
+											{{ template.fk_template_assignment.name }}
+										{% endif %}
+									</td>
+									<td>
+										{% if template.fk_template_hit.name == 'default_template_hit__'|add:db_obj_project.name %}
+											-
+										{% else %}
+											{{ template.fk_template_hit.name }}
+										{% endif %}
+									</td>
+									<td>
+										<button type="button" class="btn btn-primary btn-sm" data-id="{{ template.id }}" data-name="{{ template.name }}" data-height_frame="{{ template.height_frame }}" data-id_template_assignment="{{ template.fk_template_assignment.id }}" data-id_template_hit="{{ template.fk_template_hit.id }}" data-toggle="modal" data-target="#modal_update_template">Update</button>
+									</td>
+									<td>
+										<button type="button" class="btn btn-primary btn-sm" data-id="{{ template.id }}" data-template="{{ template.template }}" data-toggle="modal" data-target="#modal_show_html">Show</button>
+									</td>
+								</tr>
+							{% endfor %}
+							</tbody>
+						</table>
+						<button type="submit" name="task" value="reactivate_templates" class="btn btn-info btn-sm">Reactivate selected</button>
+					</div>
+				</div>
+				{% endif %}
 			</form>
 		</div>
 	</div>
