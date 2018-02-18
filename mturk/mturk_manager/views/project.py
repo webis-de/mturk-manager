@@ -110,13 +110,26 @@ def project(request, name):
     count_assignments_sandbox_new = dict_stats['count_assignments_sandbox_new']
     count_assignments_new_total = count_assignments_new + count_assignments_sandbox_new
     if count_assignments_new_total > 0:
+        queryset = m_Assignment.objects.filter(
+            fk_hit__fk_batch__fk_project=db_obj_project,
+            corpus_viewer_tags__name='submitted'
+        )
+
         text = 'There is a new assignment available!' 
         if count_assignments_new_total > 1:
             text = 'There are {} new assignments available!'.format(count_assignments_new_total)
         # print(reverse('viewer:index', kwargs={'id_corpus':db_obj_project.name}))
-        messages.info(request, text+' <a href="{}?viewer__filter_tags=%5B%22submitted%22%5D" class="alert-link">View</a>'.format(
-            reverse('viewer:index', kwargs={'id_corpus':db_obj_project.name})
-        ))
+        messages.info(request, '''
+            {} 
+            <a href="{}?viewer__filter_tags=%5B%22submitted%22%5D" class="alert-link">View</a> 
+            or 
+            <a href="{}?list_ids=[{}]" class="alert-link">Annotate</a>'''.format(
+                text,
+                reverse('viewer:index', kwargs={'id_corpus':db_obj_project.name}),
+                reverse('mturk_manager:view', kwargs={'name':db_obj_project.name}),
+                ','.join([str(assignment.id) for assignment in queryset])
+            )
+        )
 
     list_templates_active = []
     list_templates_inactive = []
@@ -750,7 +763,7 @@ def create_batch(db_obj_project, request):
 
             if index == 0:
                 db_obj_batch.delete()
-                
+
             return
 
         index += 1
