@@ -18,6 +18,19 @@ def api(request, name):
 
     return JsonResponse({})
 
+def api_status_worker(request, name, id_worker):
+    dict_result = {} 
+
+    try:
+        db_obj_worker = m_Worker.objects.get(name=id_worker)
+    except m_Worker.DoesNotExist:
+        dict_result['success'] = False
+    else:
+        dict_result['success'] = True
+        dict_result['blocked'] = db_obj_worker.is_blocked
+    finally:
+        return JsonResponse(dict_result)
+
 def unblock_workers(request, db_obj_project):
     list_ids = request.POST.getlist('list_ids[]')
 
