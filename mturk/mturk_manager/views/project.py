@@ -374,19 +374,32 @@ def delete_messages_reject(db_obj_project, request):
     ).delete()
 
     messages.success(request, 'Deleted reject message(s) successfully')
-
+    
 def delete_templates(db_obj_project, request):
-    m_Template.objects.filter(
-        fk_project=db_obj_project, id__in=request.POST.getlist('templates')
-    ).update(
-        name=Concat(
-            F('name'),
-            Value('_'+str(int(time.time())))
-        ),
-        is_active=False
-    )
+    list_templates = request.POST.getlist('templates')
 
-    messages.success(request, 'Deleted template(s) successfully')
+    count_updated_rows = m_Template.objects.filter(
+        fk_project=db_obj_project, id__in=list_templates
+    ).annotate(
+        count_batches=Count('batches')
+    ).filter(
+        count_batches=0
+    ).delete()[0]
+
+    # .update(
+    #     name=Concat(
+    #         F('name'),
+    #         Value('_'+str(int(time.time())))
+    #     ),
+    #     is_active=False
+    # )
+
+
+    if not count_updated_rows == len(list_templates):
+        messages.error(request, 'At least one template was already used')
+    else:
+        messages.success(request, 'Deleted template(s) successfully')
+
 
 def update_message_reject(db_obj_project, request):
     if not code_shared.validate_form(request, [
@@ -539,8 +552,22 @@ def update_template(db_obj_project, request):
     ]):
         return 
 
-    print(request.POST)
     db_obj_template = m_Template.objects.get(id=request.POST['id'])
+
+    template = None
+    if request.POST['html_template'].strip() == '':
+        if 'file_template' in request.FILES:
+            if request.FILES['file_template'].charset == None:
+                template = request.FILES['file_template'].read().decode('utf-8')
+            else:
+                template = request.FILES['file_template'].read().decode(request.FILES['file_template'].charset)
+    else:
+        template = request.POST['html_template']
+
+    if not template == None:
+        dict_parameters =code_shared.count_parameters_in_template(template)
+        db_obj_template.json_dict_parameters = json.dumps(dict_parameters)
+        db_obj_template.template = template
 
     if 'template_assignment' in request.POST and request.POST['template_assignment'].strip() != '':
         template_assignment = m_Template_Assignment.objects.get(id=request.POST['template_assignment'])
