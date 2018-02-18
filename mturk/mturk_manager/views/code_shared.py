@@ -5,8 +5,15 @@ from viewer.models import *
 from django.conf import settings as settings_django
 import uuid
 from django.contrib import messages
+import re
+from collections import Counter
 
 glob_url_sandbox = 'https://mturk-requester-sandbox.us-east-1.amazonaws.com'
+
+def count_parameters_in_template(string_template):
+    list_matches = re.findall('\$\{([a-zA-Z0-9_-]+)\}', string_template)
+    counter = Counter(list_matches)
+    return counter
 
 def is_project_up_to_date(request, db_obj_project, name_project):
     if db_obj_project.version < settings_django.VERSION_PROJECT:
