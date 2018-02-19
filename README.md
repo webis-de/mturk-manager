@@ -13,21 +13,28 @@ The whole tool is built on top of the [Django-Framework](https://www.djangoproje
 ## Installation
 **Note:** If you want to use a virtual environment like `virtualenv` switch to the virtual environment before executing the following step(s)!
 
-1. run `setup.sh`
+1. Run `./setup.sh`
 
 ## Quickstart
-1. run `cd mturk`
-2. run `python manage.py runserver` to start the server _([more](https://docs.djangoproject.com/en/2.0/ref/django-admin/#django-admin-runserver) on how to start a django server)_
-3. visit [localhost:8000](http://localhost:8000)
+1. Run `cd mturk`
+2. Run `python3 manage.py runserver` to start the server _([more](https://docs.djangoproject.com/en/2.0/ref/django-admin/#django-admin-runserver) on how to start a django server)_
+3. Visit [localhost:8000](http://localhost:8000)
+
+## Update
+1. Stop the server
+2. Run `cd ../`
+3. Run `./setup.sh` _(this will also pull the most recent changes)_
+4. Run `cd mturk` 
+5. Run `python3 manage.py runserver` to start the server _([more](https://docs.djangoproject.com/en/2.0/ref/django-admin/#django-admin-runserver) on how to start a django server)_
 
 ## Supported Features
-* create and manage mechanical turk projects
-* define **multiple** worker templates per project
-* customize the layout of the worker results
-* extensive approve/reject facility
+* Create and manage mechanical turk projects
+* Define **multiple** worker templates per project
+* Customize the layout of the worker results
+* Extensive approve/reject facility
 
 ## Upcoming Features
-* filter and download the hit results as json or csv
+* Filter and download the hit results as json or csv
 
 ## Contributors
 * Kristof Komlossy
