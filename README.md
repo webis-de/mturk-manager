@@ -21,6 +21,8 @@ The whole tool is built on top of the [Django-Framework](https://www.djangoproje
 3. Visit [localhost:8000](http://localhost:8000)
 
 ## Update
+**Note:** It's a good idea to backup your database _(`mturk/db.sqlite3`)_ before executing the following steps!
+
 1. Stop the server
 2. Run `cd ../`
 3. Run `./setup.sh` _(this will also pull the most recent changes)_
