@@ -67,7 +67,7 @@
 	<hr>
 	<div class="row">
 		<div class="col">
-			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_create_batch">Create batch</button>
+			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_create_batch"><i class="fas fa-plus"></i> Create batch</button>
 		</div>
 	</div>
 	<hr>
@@ -221,7 +221,7 @@
 							</select>
 						</div>
 					</div>
-					<button type="submit" name="task" value="update_settings" class="btn btn-primary">Update</button>
+					<button type="submit" name="task" value="update_settings" class="btn btn-primary btn-sm"><i class="fas fa-sync-alt"></i> Save changes</button>
 				</fieldset>
 			</form>
 		</div>
@@ -282,10 +282,10 @@
 												{% endif %}
 											</td>
 											<td>
-												<button type="button" class="btn btn-primary btn-sm" data-id="{{ template.id }}" data-name="{{ template.name }}" data-height_frame="{{ template.height_frame }}" data-id_template_assignment="{{ template.fk_template_assignment.id }}" data-id_template_hit="{{ template.fk_template_hit.id }}" data-toggle="modal" data-target="#modal_update_template">Update</button>
+												<button type="button" class="btn btn-primary btn-sm" data-id="{{ template.id }}" data-name="{{ template.name }}" data-height_frame="{{ template.height_frame }}" data-id_template_assignment="{{ template.fk_template_assignment.id }}" data-id_template_hit="{{ template.fk_template_hit.id }}" data-toggle="modal" data-target="#modal_update_template"><i class="fas fa-edit"></i></button>
 											</td>
 											<td>
-												<button type="button" class="btn btn-primary btn-sm" data-id="{{ template.id }}" data-template="{{ template.template }}" data-toggle="modal" data-target="#modal_show_html">Show</button>
+												<button type="button" class="btn btn-primary btn-sm" data-id="{{ template.id }}" data-template="{{ template.template }}" data-toggle="modal" data-target="#modal_show_html"><i class="fas fa-code"></i></button>
 											</td>
 										</tr>
 									{% endfor %}
@@ -297,9 +297,9 @@
 				</div>
 				<div class="row mb-2">
 					<div class="col">
-						<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_add_template">Add template</button>
+						<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal_add_template"><i class="fas fa-plus"></i> Add template</button>
 						{% if db_obj_project.templates.count > 0 %}
-						<button type="submit" name="task" value="delete_templates" class="btn btn-danger">Delete selected</button>
+						<button type="submit" name="task" value="delete_templates" class="btn btn-danger btn-sm"><i class="fas fa-minus"></i> Delete selected</button>
 						{% endif %}
 					</div>
 				</div>
@@ -358,10 +358,10 @@
 											{% endif %}
 										</td>
 										<td>
-											<button type="button" class="btn btn-primary btn-sm" data-id="{{ template.id }}" data-name="{{ template.name }}" data-height_frame="{{ template.height_frame }}" data-id_template_assignment="{{ template.fk_template_assignment.id }}" data-id_template_hit="{{ template.fk_template_hit.id }}" data-toggle="modal" data-target="#modal_update_template">Update</button>
+											<button type="button" class="btn btn-primary btn-sm" data-id="{{ template.id }}" data-name="{{ template.name }}" data-height_frame="{{ template.height_frame }}" data-id_template_assignment="{{ template.fk_template_assignment.id }}" data-id_template_hit="{{ template.fk_template_hit.id }}" data-toggle="modal" data-target="#modal_update_template"><i class="fas fa-edit"></i></button>
 										</td>
 										<td>
-											<button type="button" class="btn btn-primary btn-sm" data-id="{{ template.id }}" data-template="{{ template.template }}" data-toggle="modal" data-target="#modal_show_html">Show</button>
+											<button type="button" class="btn btn-primary btn-sm" data-id="{{ template.id }}" data-template="{{ template.template }}" data-toggle="modal" data-target="#modal_show_html"><i class="fas fa-code"></i></button>
 										</td>
 									</tr>
 								{% endfor %}
@@ -407,10 +407,10 @@
 												{{ template.name }}
 											</td>
 											<td>
-												<button type="button" class="btn btn-primary btn-sm" data-id="{{ template.id }}" data-name="{{ template.name }}" data-toggle="modal" data-target="#modal_update_template_assignment">Update</button>
+												<button type="button" class="btn btn-primary btn-sm" data-id="{{ template.id }}" data-name="{{ template.name }}" data-toggle="modal" data-target="#modal_update_template_assignment"><i class="fas fa-edit"></i></button>
 											</td>
 											<td>
-												<button type="button" class="btn btn-primary btn-sm" data-id="{{ template.id }}" data-template="{{ template.template }}" data-toggle="modal" data-target="#modal_show_html">Show</button>
+												<button type="button" class="btn btn-primary btn-sm" data-id="{{ template.id }}" data-template="{{ template.template }}" data-toggle="modal" data-target="#modal_show_html"><i class="fas fa-code"></i></button>
 											</td>
 										</tr>
 										{% endfor %}
@@ -422,9 +422,9 @@
 				</div>
 				<div class="row mb-2">
 					<div class="col">
-						<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_add_template_assignment">Add template</button>
+						<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal_add_template_assignment"><i class="fas fa-plus"></i> Add template</button>
 						{% if db_obj_project.templates_assignment.count > 0 %}
-						<button type="submit" name="task" value="delete_templates_assignment" class="btn btn-danger">Delete selected</button>
+						<button type="submit" name="task" value="delete_templates_assignment" class="btn btn-danger btn-sm"><i class="fas fa-minus"></i> Delete selected</button>
 						{% endif %}
 					</div>
 				</div>
@@ -459,10 +459,10 @@
 											{{ template.name }}
 										</td>
 										<td>
-											<button type="button" class="btn btn-primary btn-sm" data-id="{{ template.id }}" data-name="{{ template.name }}" data-toggle="modal" data-target="#modal_update_template_assignment">Update</button>
+											<button type="button" class="btn btn-primary btn-sm" data-id="{{ template.id }}" data-name="{{ template.name }}" data-toggle="modal" data-target="#modal_update_template_assignment"><i class="fas fa-edit"></i></button>
 										</td>
 										<td>
-											<button type="button" class="btn btn-primary btn-sm" data-id="{{ template.id }}" data-template="{{ template.template }}" data-toggle="modal" data-target="#modal_show_html">Show</button>
+											<button type="button" class="btn btn-primary btn-sm" data-id="{{ template.id }}" data-template="{{ template.template }}" data-toggle="modal" data-target="#modal_show_html"><i class="fas fa-code"></i></button>
 										</td>
 									</tr>
 									{% endfor %}
@@ -486,7 +486,7 @@
 						<fieldset>
 							<legend>Manage requester hit templates</legend>
 							<div class="table-responsive">
-								<table class="table table-sm table-responsive-lg">
+								<table class="table table-sm">
 									<thead>
 										<tr>
 											<th>Selection</th>
@@ -508,10 +508,10 @@
 												{{ template.name }}
 											</td>
 											<td>
-												<button type="button" class="btn btn-primary btn-sm" data-id="{{ template.id }}" data-name="{{ template.name }}" data-toggle="modal" data-target="#modal_update_template_hit">Update</button>
+												<button type="button" class="btn btn-primary btn-sm" data-id="{{ template.id }}" data-name="{{ template.name }}" data-toggle="modal" data-target="#modal_update_template_hit"><i class="fas fa-edit"></i></button>
 											</td>
 											<td>
-												<button type="button" class="btn btn-primary btn-sm" data-id="{{ template.id }}" data-template="{{ template.template }}" data-toggle="modal" data-target="#modal_show_html">Show</button>
+												<button type="button" class="btn btn-primary btn-sm" data-id="{{ template.id }}" data-template="{{ template.template }}" data-toggle="modal" data-target="#modal_show_html"><i class="fas fa-code"></i></button>
 											</td>
 										</tr>
 										{% endfor %}
@@ -523,9 +523,9 @@
 				</div>
 				<div class="row mb-2">
 					<div class="col">
-						<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_add_template_hit">Add template</button>
+						<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal_add_template_hit"><i class="fas fa-plus"></i> Add template</button>
 						{% if db_obj_project.templates_hit.count > 0 %}
-						<button type="submit" name="task" value="delete_templates_hit" class="btn btn-danger">Delete selected</button>
+						<button type="submit" name="task" value="delete_templates_hit" class="btn btn-danger btn-sm"><i class="fas fa-minus"></i> Delete selected</button>
 						{% endif %}
 					</div>
 				</div>
@@ -561,10 +561,10 @@
 												{{ template.name }}
 											</td>
 											<td>
-												<button type="button" class="btn btn-primary btn-sm" data-id="{{ template.id }}" data-name="{{ template.name }}" data-toggle="modal" data-target="#modal_update_template_hit">Update</button>
+												<button type="button" class="btn btn-primary btn-sm" data-id="{{ template.id }}" data-name="{{ template.name }}" data-toggle="modal" data-target="#modal_update_template_hit"><i class="fas fa-edit"></i></button>
 											</td>
 											<td>
-												<button type="button" class="btn btn-primary btn-sm" data-id="{{ template.id }}" data-template="{{ template.template }}" data-toggle="modal" data-target="#modal_show_html">Show</button>
+												<button type="button" class="btn btn-primary btn-sm" data-id="{{ template.id }}" data-template="{{ template.template }}" data-toggle="modal" data-target="#modal_show_html"><i class="fas fa-code"></i></button>
 											</td>
 										</tr>
 										{% endfor %}
@@ -586,7 +586,7 @@
 				<fieldset>
 					<legend>Manage reject messages</legend>
 					<div class="table-responsive">
-						<table class="table table-sm table-responsive-lg">
+						<table class="table table-sm">
 							<thead>
 								<tr>
 									<th>Selection</th>
@@ -607,24 +607,24 @@
 										{{ message.message }}
 									</td>
 									<td>
-										<button type="button" class="btn btn-primary btn-sm" data-id="{{ message.id }}" data-message="{{ message.message }}" data-toggle="modal" data-target="#modal_update_message_reject">Update</button>
+										<button type="button" class="btn btn-primary btn-sm" data-id="{{ message.id }}" data-message="{{ message.message }}" data-toggle="modal" data-target="#modal_update_message_reject"><i class="fas fa-edit"></i></button>
 									</td>
 								</tr>
 								{% endfor %}
 							</tbody>
 						</table>
 					</div>
-					<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_add_message_reject">Add message</button>
+					<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal_add_message_reject"><i class="fas fa-plus"></i> Add message</button>
 					{% if db_obj_project.messages_reject.count > 0 %}
-					<button type="submit" name="task" value="delete_messages_reject" class="btn btn-danger">Delete selected</button>
+					<button type="submit" name="task" value="delete_messages_reject" class="btn btn-danger btn-sm"><i class="fas fa-minus"></i> Delete selected</button>
 					{% endif %}
 				</fieldset>
 			</form>
 		</div>
 	</div>
 	<hr>
-	<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal_delete_project">Delete project</button>
-	<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modal_clear_sandbox">Clear sandbox</button>
+	<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal_delete_project"><i class="fas fa-minus"></i> Delete project</button>
+	<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modal_clear_sandbox"><i class="fas fa-eraser"></i> Clear sandbox</button>
 </div>
 
 <div class="modal fade" tabindex="-1" id="modal_update_message_reject">
