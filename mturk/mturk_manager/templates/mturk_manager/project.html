@@ -371,97 +371,196 @@
 	</div>
 	<hr>
 	<div class="row">
-		<div class="col-12 col-lg-6">
+		<div class="col">
 			<form method="post">
-				{% csrf_token %}
-				<fieldset>
-					<legend>Manage requester assignment templates</legend>
-					<table class="table table-sm table-responsive-lg">
-						<thead>
-							<tr>
-								<th>Selection</th>
-								<th>Name</th>
-								<th>Update</th>
-								<th>HTML</th>
-							</tr>
-						</thead>
-						<tbody>
-							{% for template in db_obj_project.templates_assignment.all %}
-							{% if template.is_active %}
-							<tr {% if template ==  db_obj_project.fk_template_assignment_main %}class="table-active"{% endif %}>
-								<td>
-									<div class="custom-control custom-checkbox">
-										<input type="checkbox" name="templates" value="{{ template.id }}" id="checkbox_manage_templates_assignment_template_{{ template.id }}" class="custom-control-input">
-										<label class="custom-control-label" for="checkbox_manage_templates_assignment_template_{{ template.id }}"></label>
-									</div>
-								</td>
-								<td>
-									{{ template.name }}
-								</td>
-								<td>
-									<button type="button" class="btn btn-primary btn-sm" data-id="{{ template.id }}" data-name="{{ template.name }}" data-toggle="modal" data-target="#modal_update_template_assignment">Update</button>
-								</td>
-								<td>
-									<button type="button" class="btn btn-primary btn-sm" data-id="{{ template.id }}" data-template="{{ template.template }}" data-toggle="modal" data-target="#modal_show_html">Show</button>
-								</td>
-							</tr>
-							{% endif %}
-							{% endfor %}
-						</tbody>
-					</table>
-					<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_add_template_assignment">Add template</button>
-					{% if db_obj_project.templates_assignment.count > 0 %}
-					<button type="submit" name="task" value="delete_templates_assignment" class="btn btn-danger">Delete selected</button>
-					{% endif %}
-				</fieldset>
+				<div class="row">
+					<div class="col">
+						{% csrf_token %}
+						<fieldset>
+							<legend>Manage requester assignment templates</legend>
+							<table class="table table-sm">
+								<thead>
+									<tr>
+										<th>Selection</th>
+										<th>Name</th>
+										<th>Update</th>
+										<th>HTML</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for template in list_templates_assignment_active %}
+									<tr {% if template ==  db_obj_project.fk_template_assignment_main %}class="table-active"{% endif %}>
+										<td>
+											<div class="custom-control custom-checkbox">
+												<input type="checkbox" name="templates" value="{{ template.id }}" id="checkbox_manage_templates_assignment_template_{{ template.id }}" class="custom-control-input">
+												<label class="custom-control-label" for="checkbox_manage_templates_assignment_template_{{ template.id }}"></label>
+											</div>
+										</td>
+										<td>
+											{{ template.name }}
+										</td>
+										<td>
+											<button type="button" class="btn btn-primary btn-sm" data-id="{{ template.id }}" data-name="{{ template.name }}" data-toggle="modal" data-target="#modal_update_template_assignment">Update</button>
+										</td>
+										<td>
+											<button type="button" class="btn btn-primary btn-sm" data-id="{{ template.id }}" data-template="{{ template.template }}" data-toggle="modal" data-target="#modal_show_html">Show</button>
+										</td>
+									</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</fieldset>
+					</div>
+				</div>
+				<div class="row mb-2">
+					<div class="col">
+						<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_add_template_assignment">Add template</button>
+						{% if db_obj_project.templates_assignment.count > 0 %}
+						<button type="submit" name="task" value="delete_templates_assignment" class="btn btn-danger">Delete selected</button>
+						{% endif %}
+					</div>
+				</div>
+				{% if list_templates_assignment_inactive|length > 0 %}
+				<div class="row">
+					<div class="col">
+						<button type="button" class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#collapse_templates_assignment_inactive">Toggle inactive assignment templates</button>
+					</div>
+				</div>
+				<div class="row mt-2 collapse" id="collapse_templates_assignment_inactive">
+					<div class="col">
+						<table class="table table-sm">
+							<thead>
+								<tr>
+									<th>Selection</th>
+									<th>Name</th>
+									<th>Update</th>
+									<th>HTML</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for template in list_templates_assignment_inactive %}
+								<tr {% if template ==  db_obj_project.fk_template_assignment_main %}class="table-active"{% endif %}>
+									<td>
+										<div class="custom-control custom-checkbox">
+											<input type="checkbox" name="templates" value="{{ template.id }}" id="checkbox_manage_templates_assignment_template_{{ template.id }}" class="custom-control-input">
+											<label class="custom-control-label" for="checkbox_manage_templates_assignment_template_{{ template.id }}"></label>
+										</div>
+									</td>
+									<td>
+										{{ template.name }}
+									</td>
+									<td>
+										<button type="button" class="btn btn-primary btn-sm" data-id="{{ template.id }}" data-name="{{ template.name }}" data-toggle="modal" data-target="#modal_update_template_assignment">Update</button>
+									</td>
+									<td>
+										<button type="button" class="btn btn-primary btn-sm" data-id="{{ template.id }}" data-template="{{ template.template }}" data-toggle="modal" data-target="#modal_show_html">Show</button>
+									</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+						<button type="submit" name="task" value="reactivate_templates_assignment" class="btn btn-info btn-sm">Reactivate selected</button>
+					</div>
+				</div>
+				{% endif %}
 			</form>
 		</div>
 	</div>
 	<hr>
 	<div class="row">
-		<div class="col-12 col-lg-6">
+		<div class="col">
 			<form method="post">
-				{% csrf_token %}
-				<fieldset>
-					<legend>Manage requester hit templates</legend>
-					<table class="table table-sm table-responsive-lg">
-						<thead>
-							<tr>
-								<th>Selection</th>
-								<th>Name</th>
-								<th>Update</th>
-								<th>HTML</th>
-							</tr>
-						</thead>
-						<tbody>
-							{% for template in db_obj_project.templates_hit.all %}
-							{% if template.is_active %}
-							<tr {% if template ==  db_obj_project.fk_template_hit_main %}class="table-active"{% endif %}>
-								<td>
-									<div class="custom-control custom-checkbox">
-										<input type="checkbox" name="templates" value="{{ template.id }}" id="checkbox_manage_templates_hit_template_{{ template.id }}" class="custom-control-input">
-										<label class="custom-control-label" for="checkbox_manage_templates_hit_template_{{ template.id }}"></label>
-									</div>
-								</td>
-								<td>
-									{{ template.name }}
-								</td>
-								<td>
-									<button type="button" class="btn btn-primary btn-sm" data-id="{{ template.id }}" data-name="{{ template.name }}" data-toggle="modal" data-target="#modal_update_template_hit">Update</button>
-								</td>
-								<td>
-									<button type="button" class="btn btn-primary btn-sm" data-id="{{ template.id }}" data-template="{{ template.template }}" data-toggle="modal" data-target="#modal_show_html">Show</button>
-								</td>
-							</tr>
-							{% endif %}
-							{% endfor %}
-						</tbody>
-					</table>
-					<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_add_template_hit">Add template</button>
-					{% if db_obj_project.templates_hit.count > 0 %}
-					<button type="submit" name="task" value="delete_templates_hit" class="btn btn-danger">Delete selected</button>
-					{% endif %}
-				</fieldset>
+				<div class="row">
+					<div class="col">
+						{% csrf_token %}
+						<fieldset>
+							<legend>Manage requester hit templates</legend>
+							<table class="table table-sm table-responsive-lg">
+								<thead>
+									<tr>
+										<th>Selection</th>
+										<th>Name</th>
+										<th>Update</th>
+										<th>HTML</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for template in list_templates_hit_active %}
+									<tr {% if template ==  db_obj_project.fk_template_hit_main %}class="table-active"{% endif %}>
+										<td>
+											<div class="custom-control custom-checkbox">
+												<input type="checkbox" name="templates" value="{{ template.id }}" id="checkbox_manage_templates_hit_template_{{ template.id }}" class="custom-control-input">
+												<label class="custom-control-label" for="checkbox_manage_templates_hit_template_{{ template.id }}"></label>
+											</div>
+										</td>
+										<td>
+											{{ template.name }}
+										</td>
+										<td>
+											<button type="button" class="btn btn-primary btn-sm" data-id="{{ template.id }}" data-name="{{ template.name }}" data-toggle="modal" data-target="#modal_update_template_hit">Update</button>
+										</td>
+										<td>
+											<button type="button" class="btn btn-primary btn-sm" data-id="{{ template.id }}" data-template="{{ template.template }}" data-toggle="modal" data-target="#modal_show_html">Show</button>
+										</td>
+									</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</fieldset>
+					</div>
+				</div>
+				<div class="row mb-2">
+					<div class="col">
+						<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_add_template_hit">Add template</button>
+						{% if db_obj_project.templates_hit.count > 0 %}
+						<button type="submit" name="task" value="delete_templates_hit" class="btn btn-danger">Delete selected</button>
+						{% endif %}
+					</div>
+				</div>
+				{% if list_templates_hit_inactive|length > 0 %}
+				<div class="row">
+					<div class="col">
+						<button type="button" class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#collapse_templates_hit_inactive">Toggle inactive assignment templates</button>
+					</div>
+				</div>
+				<div class="row mt-2 collapse" id="collapse_templates_hit_inactive">
+					<div class="col">
+						<table class="table table-sm">
+							<table class="table table-sm">
+								<thead>
+									<tr>
+										<th>Selection</th>
+										<th>Name</th>
+										<th>Update</th>
+										<th>HTML</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for template in list_templates_hit_inactive %}
+									<tr {% if template ==  db_obj_project.fk_template_hit_main %}class="table-active"{% endif %}>
+										<td>
+											<div class="custom-control custom-checkbox">
+												<input type="checkbox" name="templates" value="{{ template.id }}" id="checkbox_manage_templates_hit_template_{{ template.id }}" class="custom-control-input">
+												<label class="custom-control-label" for="checkbox_manage_templates_hit_template_{{ template.id }}"></label>
+											</div>
+										</td>
+										<td>
+											{{ template.name }}
+										</td>
+										<td>
+											<button type="button" class="btn btn-primary btn-sm" data-id="{{ template.id }}" data-name="{{ template.name }}" data-toggle="modal" data-target="#modal_update_template_hit">Update</button>
+										</td>
+										<td>
+											<button type="button" class="btn btn-primary btn-sm" data-id="{{ template.id }}" data-template="{{ template.template }}" data-toggle="modal" data-target="#modal_show_html">Show</button>
+										</td>
+									</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						<button type="submit" name="task" value="reactivate_templates_hit" class="btn btn-info btn-sm">Reactivate selected</button>
+					</div>
+				</div>
+				{% endif %}
 			</form>
 		</div>
 	</div>

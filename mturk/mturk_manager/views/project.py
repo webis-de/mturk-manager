@@ -78,6 +78,10 @@ def project(request, name):
             update_template(db_obj_project, request)
         elif request.POST['task'] == 'reactivate_templates':
             reactivate_templates(db_obj_project, request)
+        elif request.POST['task'] == 'reactivate_templates_assignment':
+            reactivate_templates_assignment(db_obj_project, request)
+        elif request.POST['task'] == 'reactivate_templates_hit':
+            reactivate_templates_hit(db_obj_project, request)
         elif request.POST['task'] == 'update_template_assignment':
             update_template_assignment(db_obj_project, request)
         elif request.POST['task'] == 'update_template_hit':
@@ -138,9 +142,37 @@ def project(request, name):
             list_templates_active.append(template)
         else:
             list_templates_inactive.append(template)
+            
+    list_templates_assignment_active = []
+    list_templates_assignment_inactive = []
+    name_default_template = 'default_template_assignment__{}'.format(db_obj_project.name)
+    for template in db_obj_project.templates_assignment.all():
+        if template.name == name_default_template:
+            continue
+            
+        if template.is_active:
+            list_templates_assignment_active.append(template)
+        else:
+            list_templates_assignment_inactive.append(template)
+            
+    list_templates_hit_active = []
+    list_templates_hit_inactive = []
+    name_default_template = 'default_template_hit__{}'.format(db_obj_project.name)
+    for template in db_obj_project.templates_hit.all():
+        if template.name == name_default_template:
+            continue
+            
+        if template.is_active:
+            list_templates_hit_active.append(template)
+        else:
+            list_templates_hit_inactive.append(template)
 
     context['list_templates_active'] = list_templates_active
     context['list_templates_inactive'] = list_templates_inactive
+    context['list_templates_assignment_active'] = list_templates_assignment_active
+    context['list_templates_assignment_inactive'] = list_templates_assignment_inactive
+    context['list_templates_hit_active'] = list_templates_hit_active
+    context['list_templates_hit_inactive'] = list_templates_hit_inactive
 
     context['dict_stats'] = dict_stats
     context['db_obj_project'] = db_obj_project
@@ -368,28 +400,46 @@ def synchronize_database(db_obj_project, request, use_sandbox):
         #         print(assignment)
 
 def delete_templates_hit(db_obj_project, request):
-    m_Template_Hit.objects.filter(
-        fk_project=db_obj_project, id__in=request.POST.getlist('templates')
-    ).update(
-        name=Concat(
-            F('name'),
-            Value('_'+str(int(time.time())))
-        ),
-        is_active=False
+    list_templates = request.POST.getlist('templates')
+    
+    queryset = m_Template_Hit.objects.filter(
+        fk_project=db_obj_project, id__in=list_templates
+    ).annotate(
+        count_templates=Count('templates_used')
     )
+
+    count_updated_rows = queryset.filter(
+        count_templates=0
+    ).delete()[0]
+
+    if not count_updated_rows == len(list_templates):
+        queryset.filter(
+            count_templates__gt=0
+        ).update(
+            is_active=False
+        )
 
     messages.success(request, 'Deleted template(s) successfully')
 
 def delete_templates_assignment(db_obj_project, request):
-    m_Template_Assignment.objects.filter(
-        fk_project=db_obj_project, id__in=request.POST.getlist('templates')
-    ).update(
-        name=Concat(
-            F('name'),
-            Value('_'+str(int(time.time())))
-        ),
-        is_active=False
+    list_templates = request.POST.getlist('templates')
+    
+    queryset = m_Template_Assignment.objects.filter(
+        fk_project=db_obj_project, id__in=list_templates
+    ).annotate(
+        count_templates=Count('templates_used')
     )
+
+    count_updated_rows = queryset.filter(
+        count_templates=0
+    ).delete()[0]
+
+    if not count_updated_rows == len(list_templates):
+        queryset.filter(
+            count_templates__gt=0
+        ).update(
+            is_active=False
+        )
 
     messages.success(request, 'Deleted template(s) successfully')
 
@@ -566,6 +616,28 @@ def add_message_reject(db_obj_project, request):
     m_Message_Reject.objects.create(fk_project=db_obj_project, message=request.POST['message'])
 
     messages.success(request, 'Added reject message successfully')
+
+def reactivate_templates_assignment(db_obj_project, request):
+    list_templates = request.POST.getlist('templates')
+
+    count_updated_rows = m_Template_Assignment.objects.filter(
+        fk_project=db_obj_project, id__in=list_templates
+    ).update(
+        is_active=True
+    )
+
+    messages.success(request, 'Activated template(s) successfully')
+
+def reactivate_templates_hit(db_obj_project, request):
+    list_templates = request.POST.getlist('templates')
+
+    count_updated_rows = m_Template_Hit.objects.filter(
+        fk_project=db_obj_project, id__in=list_templates
+    ).update(
+        is_active=True
+    )
+
+    messages.success(request, 'Activated template(s) successfully')
 
 def reactivate_templates(db_obj_project, request):
     list_templates = request.POST.getlist('templates')
