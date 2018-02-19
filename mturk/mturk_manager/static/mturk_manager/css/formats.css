@@ -2,6 +2,14 @@ html {
 	/*overflow-y: scroll*/
 }
 
+body {
+  display: none;
+}
+
+.fontawesome-i2svg-active body {
+  display: initial;
+}
+
 #page_index .col.d-flex {
 	height: 100vh;
 }
