@@ -32,7 +32,7 @@
 		console.log(state);
 		let result = `
 			<div class="custom-control custom-checkbox d-inline">
-				<input type="checkbox" class="custom-control-input" id="checkbox_assignment_PLACEHOLDER_ID" data-id_assignment="PLACEHOLDER_ID" name="checkbox_assignment" value="PLACEHOLDER_ID" PLACEHOLDER_DISABLED>
+				<input type="checkbox" data-kritten_checkbox="checkbox" class="custom-control-input" id="checkbox_assignment_PLACEHOLDER_ID" data-id_assignment="PLACEHOLDER_ID" name="checkbox_assignment" value="PLACEHOLDER_ID" PLACEHOLDER_DISABLED>
 				<label class="custom-control-label" for="checkbox_assignment_PLACEHOLDER_ID"></label>
 			</div>
 
@@ -128,6 +128,10 @@
 		</div>
 		<div class="row">
 			<div class="col-auto wrapper_buttons_selected">
+				<div class="custom-control custom-checkbox d-inline">
+					<input type="checkbox" data-kritten_checkbox_main="checkbox" class="custom-control-input" id="checkbox_assignments_main0">
+					<label class="custom-control-label" for="checkbox_assignments_main0"></label>
+				</div>
 				<span data-inject_count_assignments_selected>0</span> Assignments selected
 				<div class="btn-group btn-group-sm">
 					<button type="button" name="task" data-task="button_mturk_approve_selected" class="btn btn-success" disabled>Approve</button>
@@ -200,16 +204,10 @@
 		<hr>
 		<div class="row">
 			<div class="col wrapper_buttons_selected">
-				<!-- <button type="button" name="task" data-task="button_mturk_approve_selected" class="btn btn-success">Approve selected</button>
-				<div class="btn-group">
-	            	<button type="button" name="task" data-task="button_mturk_reject_selected" class="btn btn-danger">Reject selected</button>
-					<button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"></button>
-					<div class="dropdown-menu dropdown_reject_assignment_selected">
-					{% for message in db_obj_project.messages_reject.all %}
-						<a class="dropdown-item" href="#">{{ message.message }}</a>
-					{% endfor %}
-					</div>
-				</div> -->
+				<div class="custom-control custom-checkbox d-inline">
+					<input type="checkbox" data-kritten_checkbox="checkbox" class="custom-control-input" id="checkbox_assignments_main1">
+					<label class="custom-control-label" for="checkbox_assignments_main1"></label>
+				</div>
 				<span data-inject_count_assignments_selected>0</span> Assignments selected
 				<div class="btn-group btn-group-sm">
 					<button type="button" name="task" data-task="button_mturk_approve_selected" class="btn btn-success" disabled>Approve</button>
@@ -257,4 +255,5 @@
 
 {% block javascript %}
 	<script src="{% static 'mturk_manager/js/view.js' %}"></script>
+	<script src="{% static 'mturk_manager/js/kritten_checkbox.min.js' %}"></script>
 {% endblock %}	
