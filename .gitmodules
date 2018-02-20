@@ -1,4 +1,3 @@
-[submodule "corpus-viewer"]
-	path = corpus-viewer
-	url = https://github.com/webis-de/corpus-viewer.git
-	branch = master
+[submodule "submodules/corpus-viewer"]
+	path = submodules/corpus-viewer
+	url = https://github.com/webis-de/corpus-viewer
