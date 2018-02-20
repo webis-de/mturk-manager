@@ -1,3 +1,6 @@
 [submodule "submodules/corpus-viewer"]
 	path = submodules/corpus-viewer
 	url = https://github.com/webis-de/corpus-viewer
+[submodule "submodules/checkbox"]
+	path = submodules/checkbox
+	url = https://github.com/Kritten/checkbox
