@@ -1,2 +1,4 @@
 boto3
 xmltodict
+
+-r submodules/corpus-viewer/requirements.txt
