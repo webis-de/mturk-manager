@@ -88,7 +88,7 @@ WSGI_APPLICATION = 'mturk.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
-VERSION_PROJECT = 9
+VERSION_PROJECT = 10
 
 config = configparser.ConfigParser()
 config.read('../../mturk_settings.ini')

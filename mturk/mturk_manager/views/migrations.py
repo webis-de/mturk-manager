@@ -115,6 +115,68 @@ def migration_2(db_obj_project):
     )
 
 dict_migrations = {
+    10: [
+        {
+            'type': 'update_config_file',
+            'key': 'urls_header',
+            'content': [
+                {
+                    'link': '/project/${name_project}',
+                    'name': 'Project'
+                },
+                {
+                    'link': '/viewer/${name_project}',
+                    'name': 'Assignments'
+                },
+                {
+                    'link': '/viewer/${name_project}_workers',
+                    'name': 'Workers'
+                },
+                {
+                    'link': '/documentation',
+                    'name': 'Documentation'
+                },
+                {
+                    'link': '/',
+                    'name': 'Open/Add project'
+                },
+                {
+                    'link': '/settings',
+                    'name': 'Settings'
+                }
+            ]
+        },
+        {
+            'type': 'update_config_file_workers',
+            'key': 'urls_header',
+            'content': [
+                {
+                    'link': '/project/${name_project}',
+                    'name': 'Project'
+                },
+                {
+                    'link': '/viewer/${name_project}',
+                    'name': 'Assignments'
+                },
+                {
+                    'link': '/viewer/${name_project}_workers',
+                    'name': 'Workers'
+                },
+                {
+                    'link': '/documentation',
+                    'name': 'Documentation'
+                },
+                {
+                    'link': '/',
+                    'name': 'Open/Add project'
+                },
+                {
+                    'link': '/settings',
+                    'name': 'Settings'
+                }
+            ]
+        },
+    ],
     9: [
         {
             'type': 'execute_function',

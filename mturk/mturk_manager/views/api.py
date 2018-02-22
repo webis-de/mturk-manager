@@ -18,11 +18,27 @@ def api(request, name):
 
     return JsonResponse({})
 
+def api_assignments_real_approved(request, name):
+    dict_result = {} 
+
+    queryset = m_Assignment.objects.filter(
+        fk_hit__fk_batch__fk_project__name=name,
+        fk_hit__fk_batch__use_sandbox=False,
+        corpus_viewer_tags__name='approved'
+    )
+
+    list_assignments = [assignment.id_assignment for assignment in queryset]
+
+    dict_result['success'] = True
+    dict_result['assignments'] = list_assignments
+    dict_result['count_assignments'] = len(list_assignments)
+    return JsonResponse(dict_result)
+
 def api_status_worker(request, name, id_worker):
     dict_result = {} 
 
     try:
-        db_obj_worker = m_Worker.objects.get(name=id_worker)
+        db_obj_worker = m_Worker.objects.get(name=id_worker, fk_project__name=name)
     except m_Worker.DoesNotExist:
         dict_result['success'] = False
     else:
