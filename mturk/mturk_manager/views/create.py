@@ -314,11 +314,11 @@ def add_corpus_workers(request):
         },
         {
             'link': reverse('viewer:index', args=[request.POST['name']]),
-            'name': 'View Assignments'
+            'name': 'Assignments'
         },
         {
             'link': reverse('viewer:index', args=[request.POST['name'] + '_workers']),
-            'name': 'View Workers'
+            'name': 'Workers'
         },
         {
             'link': reverse('mturk_manager:documentation'),
@@ -353,11 +353,11 @@ def add_corpus_assignments(request):
         },
         {
             'link': reverse('viewer:index', args=[request.POST['name']]),
-            'name': 'View Assignments'
+            'name': 'Assignments'
         },
         {
             'link': reverse('viewer:index', args=[request.POST['name'] + '_workers']),
-            'name': 'View Workers'
+            'name': 'Workers'
         },
         {
             'link': reverse('mturk_manager:documentation'),
