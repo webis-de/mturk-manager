@@ -17,10 +17,12 @@ class m_Project(models.Model):
     lifetime = models.IntegerField(default=604800)
     duration = models.IntegerField(default=3600)
     use_sandbox = models.BooleanField(default=True)
+    block_workers = models.CharField(default='disabled', max_length=20)
     fk_template_main = models.OneToOneField('m_Template', on_delete=models.SET_NULL, null=True, related_name='project')
     fk_template_assignment_main = models.OneToOneField('m_Template_Assignment', on_delete=models.SET_NULL, null=True, related_name='project')
     fk_template_hit_main = models.OneToOneField('m_Template_Hit', on_delete=models.SET_NULL, null=True, related_name='project')
     fk_message_reject_default = models.OneToOneField('m_Message_Reject', on_delete=models.SET_NULL, null=True, related_name='project')
+    fk_message_block_default = models.OneToOneField('m_Message_Block', on_delete=models.SET_NULL, null=True, related_name='project')
 
 class m_Batch(models.Model):
     class Meta:
@@ -103,3 +105,7 @@ class m_Worker(models.Model):
 class m_Message_Reject(models.Model):
     fk_project = models.ForeignKey('m_Project', on_delete=models.CASCADE, related_name='messages_reject')
     message = models.CharField(max_length=1024)
+
+class m_Message_Block(models.Model):
+    fk_project = models.ForeignKey('m_Project', on_delete=models.CASCADE, related_name='messages_block')
+    message = models.TextField()

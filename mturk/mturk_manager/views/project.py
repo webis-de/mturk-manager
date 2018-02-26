@@ -76,6 +76,8 @@ def project(request, name):
             add_message_reject(db_obj_project, request)
         elif request.POST['task'] == 'update_template':
             update_template(db_obj_project, request)
+        elif request.POST['task'] == 'add_message_block':
+            add_message_block(db_obj_project, request)
         elif request.POST['task'] == 'reactivate_templates':
             reactivate_templates(db_obj_project, request)
         elif request.POST['task'] == 'reactivate_templates_assignment':
@@ -88,6 +90,8 @@ def project(request, name):
             update_template_hit(db_obj_project, request)
         elif request.POST['task'] == 'update_message_reject':
             update_message_reject(db_obj_project, request)
+        elif request.POST['task'] == 'update_message_block':
+            update_message_block(db_obj_project, request)
         elif request.POST['task'] == 'delete_templates':
             delete_templates(db_obj_project, request)
         elif request.POST['task'] == 'delete_templates_hit':
@@ -485,6 +489,18 @@ def update_message_reject(db_obj_project, request):
 
     messages.success(request, 'Updated reject message successfully')
 
+def update_message_block(db_obj_project, request):
+    if not code_shared.validate_form(request, [
+        {'type':'string', 'keys':['message'], 'message': 'Invalid message'},
+    ]):
+        return 
+
+    m_Message_Block.objects.filter(id=request.POST['id']).update(
+        message=request.POST['message'],
+    )
+
+    messages.success(request, 'Updated block message successfully')
+
 def update_template_hit(db_obj_project, request):
     if not code_shared.validate_form(request, [
         {'type':'string', 'keys':['name'], 'message': 'Invalid name'},
@@ -616,6 +632,16 @@ def add_message_reject(db_obj_project, request):
     m_Message_Reject.objects.create(fk_project=db_obj_project, message=request.POST['message'])
 
     messages.success(request, 'Added reject message successfully')
+
+def add_message_block(db_obj_project, request):
+    if not code_shared.validate_form(request, [
+        {'type':'string', 'keys':['message'], 'message': 'Invalid message'},
+    ]):
+        return 
+
+    m_Message_Block.objects.create(fk_project=db_obj_project, message=request.POST['message'])
+
+    messages.success(request, 'Added block message successfully')
 
 def reactivate_templates_assignment(db_obj_project, request):
     list_templates = request.POST.getlist('templates')
@@ -762,7 +788,13 @@ def update_settings(db_obj_project, request):
     db_obj_project.lifetime = request.POST['lifetime']
     db_obj_project.duration = request.POST['duration']
     db_obj_project.count_assignments = request.POST['count_assignments']
+    db_obj_project.block_workers = request.POST['block_workers_default']
     db_obj_project.use_sandbox = True if request.POST['use_sandbox'] == '1' else False
+
+    if request.POST['message_block_default'] != '':
+        db_obj_project.fk_message_block_default = m_Message_Block.objects.get(fk_project=db_obj_project, id=request.POST['message_block_default'])
+    else:
+        db_obj_project.fk_message_block_default = None
 
     if request.POST['message_reject_default'] != '':
         db_obj_project.fk_message_reject_default = m_Message_Reject.objects.get(fk_project=db_obj_project, id=request.POST['message_reject_default'])
