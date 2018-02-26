@@ -79,7 +79,7 @@
 					<legend>Batch settings</legend>
 					<div class="form-row form-group">
 						<div class="col">
-							<div class="input-group">
+							<div class="input-group input-group-sm">
 								<div class="input-group-prepend">
 									<span class="input-group-text">Title</span>
 								</div>
@@ -89,7 +89,7 @@
 					</div>
 					<div class="form-row form-group">
 						<div class="col">
-							<div class="input-group">
+							<div class="input-group input-group-sm">
 								<div class="input-group-prepend">
 									<span class="input-group-text">Description</span>
 								</div>
@@ -99,7 +99,7 @@
 					</div>
 					<div class="form-row form-group">
 						<div class="col-12 col-md-6 mb-3 mb-md-0">
-							<div class="input-group">
+							<div class="input-group input-group-sm">
 								<div class="input-group-prepend">
 									<span class="input-group-text">Reward</span>
 								</div>
@@ -110,7 +110,7 @@
 							</div>
 						</div>
 						<div class="col-12 col-md-6">
-							<div class="input-group">
+							<div class="input-group input-group-sm">
 								<div class="input-group-prepend">
 									<span class="input-group-text">Number of assignments</span>
 								</div>
@@ -120,7 +120,7 @@
 					</div>
 					<div class="form-row form-group">
 						<div class="col-12 col-md-6 mb-3 mb-md-0">
-							<div class="input-group">
+							<div class="input-group input-group-sm">
 								<div class="input-group-prepend">
 									<span class="input-group-text">Lifetime</span>
 								</div>
@@ -131,7 +131,7 @@
 							</div>
 						</div>
 						<div class="col-12 col-md-6">
-							<div class="input-group">
+							<div class="input-group input-group-sm">
 								<div class="input-group-prepend">
 									<span class="input-group-text">Duration</span>
 								</div>
@@ -144,7 +144,7 @@
 					</div>
 					<div class="form-row form-group">
 						<div class="col">
-							<div class="input-group">
+							<div class="input-group input-group-sm">
 								<div class="input-group-prepend">
 									<span class="input-group-text">Keywords (comma-separated)</span>
 								</div>
@@ -153,22 +153,22 @@
 						</div>
 					</div>
 					<div class="form-row form-group">
-						<div class="col input-group">
+						<div class="col input-group input-group-sm">
 							<div class="input-group-prepend">
 								<label class="input-group-text">Use sandbox</label>
 							</div>
-							<select class="custom-select" name="use_sandbox">
+							<select class="custom-select custom-select-sm" name="use_sandbox">
 								<option value="0" {% if False ==  db_obj_project.use_sandbox %}selected{% endif %}>no</option>
 								<option value="1" {% if True ==  db_obj_project.use_sandbox %}selected{% endif %}>yes</option>
 							</select>
 						</div>
 					</div>
 					<div class="form-row form-group">
-						<div class="col input-group">
+						<div class="col input-group input-group-sm">
 							<div class="input-group-prepend">
 								<label class="input-group-text">Default worker template</label>
 							</div>
-							<select class="custom-select" name="template_main">
+							<select class="custom-select custom-select-sm" name="template_main">
 								<option value="">please select a template</option>
 							{% for template in db_obj_project.templates.all %}
 							{% if template.is_active %}
@@ -179,11 +179,11 @@
 						</div>
 					</div>
 					<div class="form-row form-group">
-						<div class="col input-group">
+						<div class="col input-group input-group-sm">
 							<div class="input-group-prepend">
 								<label class="input-group-text">Default requester assignment template</label>
 							</div>
-							<select class="custom-select" name="template_assignment_main">
+							<select class="custom-select custom-select-sm" name="template_assignment_main">
 								<option value="">please select a template</option>
 							{% for template in db_obj_project.templates_assignment.all %}
 							{% if template.is_active %}
@@ -194,11 +194,11 @@
 						</div>
 					</div>
 					<div class="form-row form-group">
-						<div class="col input-group">
+						<div class="col input-group input-group-sm">
 							<div class="input-group-prepend">
 								<label class="input-group-text">Default requester hit template</label>
 							</div>
-							<select class="custom-select" name="template_hit_main">
+							<select class="custom-select custom-select-sm" name="template_hit_main">
 								<option value="">please select a template</option>
 							{% for template in db_obj_project.templates_hit.all %}
 							{% if template.is_active %}
@@ -209,11 +209,11 @@
 						</div>
 					</div>
 					<div class="form-row form-group">
-						<div class="col input-group">
+						<div class="col input-group input-group-sm">
 							<div class="input-group-prepend">
 								<label class="input-group-text">Default reject message</label>
 							</div>
-							<select class="custom-select" name="message_reject_default">
+							<select class="custom-select custom-select-sm" name="message_reject_default">
 								<option value="">please select a reject message</option>
 							{% for message in db_obj_project.messages_reject.all %}
 								<option value="{{ message.id }}" {% if message ==  db_obj_project.fk_message_reject_default %}selected{% endif %}>{{ message.message }}</option>
@@ -222,11 +222,11 @@
 						</div>
 					</div>
 					<div class="form-row form-group">
-						<div class="col input-group">
+						<div class="col input-group input-group-sm">
 							<div class="input-group-prepend">
 								<label class="input-group-text">Block workers</label>
 							</div>
-							<select class="custom-select" name="block_workers_default">
+							<select class="custom-select custom-select-sm" name="block_workers_default">
 								<option value="disabled" {% if db_obj_project.block_workers == 'disabled' %}selected{% endif %}>disabled</option>
 								<option value="enabled_inject" {% if db_obj_project.block_workers == 'enabled_inject' %}selected{% endif %}>enabled (inject workers into worker template)</option>
 								<option value="enabled_request" {% if db_obj_project.block_workers == 'enabled_request' %}selected{% endif %}>enabled (request the server for block status)</option>
@@ -234,11 +234,11 @@
 						</div>
 					</div>
 					<div class="form-row form-group">
-						<div class="col input-group">
+						<div class="col input-group input-group-sm">
 							<div class="input-group-prepend">
 								<label class="input-group-text">Default block message</label>
 							</div>
-							<select class="custom-select" name="message_block_default">
+							<select class="custom-select custom-select-sm" name="message_block_default">
 								<option value="">use default block message</option>
 							{% for message in db_obj_project.messages_block.all %}
 								<option value="{{ message.id }}" {% if message ==  db_obj_project.fk_message_block_default %}selected{% endif %}>{{ message.message }}</option>
@@ -939,7 +939,7 @@
 					<div class="container-fluid">
 						{% csrf_token %}
 						<div class="form-row form-group">
-							<div class="col input-group">
+							<div class="col input-group input-group-sm">
 								<div class="input-group-prepend">
 									<span class="input-group-text">Name</span>
 								</div>
@@ -947,20 +947,21 @@
 							</div>
 						</div>
 						<div class="form-row form-group">
-							<div class="col input-group">
+							<div class="col input-group input-group-sm">
 							  	<div class="input-group-prepend">
 						    		<span class="input-group-text">CSV file</span>
 							  	</div>
-								<label class="custom-file">
-									<input type="file" name="file_csv" class="custom-file-input">
-									<span class="custom-file-label"></span>
+								<label class="custom-file" style="height: calc(1.8125rem + 2px);
+    font-size: .875rem;">
+									<input type="file" name="file_csv" class="custom-file-input" style="padding-top: .375rem;padding-bottom: .375rem;height: calc(1.8125rem + 2px);">
+									<span class="custom-file-label" style="height: calc(1.8125rem + 2px);"></span>
 								</label>
 							</div>
 						</div>
 						<hr>
 						<div class="form-row form-group">
 							<div class="col">
-								<div class="input-group">
+								<div class="input-group input-group-sm">
 									<div class="input-group-prepend">
 										<span class="input-group-text">Title</span>
 									</div>
@@ -970,7 +971,7 @@
 						</div>
 						<div class="form-row form-group">
 							<div class="col">
-								<div class="input-group">
+								<div class="input-group input-group-sm">
 									<div class="input-group-prepend">
 										<span class="input-group-text">Description</span>
 									</div>
@@ -980,7 +981,7 @@
 						</div>
 						<div class="form-row form-group">
 							<div class="col-12 col-md-6 mb-3 mb-md-0">
-								<div class="input-group">
+								<div class="input-group input-group-sm">
 									<div class="input-group-prepend">
 										<span class="input-group-text">Reward</span>
 									</div>
@@ -991,7 +992,7 @@
 								</div>
 							</div>
 							<div class="col-12 col-md-6">
-								<div class="input-group">
+								<div class="input-group input-group-sm">
 									<div class="input-group-prepend">
 										<span class="input-group-text">Number of assignments</span>
 									</div>
@@ -1001,7 +1002,7 @@
 						</div>
 						<div class="form-row form-group">
 							<div class="col-12 col-md-6 mb-3 mb-md-0">
-								<div class="input-group">
+								<div class="input-group input-group-sm">
 									<div class="input-group-prepend">
 										<span class="input-group-text">Lifetime</span>
 									</div>
@@ -1012,7 +1013,7 @@
 								</div>
 							</div>
 							<div class="col-12 col-md-6">
-								<div class="input-group">
+								<div class="input-group input-group-sm">
 									<div class="input-group-prepend">
 										<span class="input-group-text">Duration</span>
 									</div>
@@ -1025,7 +1026,7 @@
 						</div>
 						<div class="form-row form-group">
 							<div class="col">
-								<div class="input-group">
+								<div class="input-group input-group-sm">
 									<div class="input-group-prepend">
 										<span class="input-group-text">Keywords (comma-separated)</span>
 									</div>
@@ -1034,22 +1035,22 @@
 							</div>
 						</div>
 						<div class="form-row form-group">
-							<div class="col input-group">
+							<div class="col input-group input-group-sm">
 								<div class="input-group-prepend">
 									<label class="input-group-text">Use sandbox</label>
 								</div>
-								<select class="custom-select" name="use_sandbox">
+								<select class="custom-select custom-select-sm" name="use_sandbox">
 									<option value="0" {% if False ==  db_obj_project.use_sandbox %}selected{% endif %}>no</option>
 									<option value="1" {% if True ==  db_obj_project.use_sandbox %}selected{% endif %}>yes</option>
 								</select>
 							</div>
 						</div>
 						<div class="form-row form-group">
-							<div class="col input-group">
+							<div class="col input-group input-group-sm">
 								<div class="input-group-prepend">
 									<label class="input-group-text">Worker template</label>
 								</div>
-								<select class="custom-select" name="template">
+								<select class="custom-select custom-select-sm" name="template">
 									<option value="">please select a template</option>
 								{% for template in db_obj_project.templates.all %}
 								{% if template.is_active %}
@@ -1060,11 +1061,11 @@
 							</div>
 						</div>
 						<div class="form-row form-group">
-							<div class="col input-group">
+							<div class="col input-group input-group-sm">
 								<div class="input-group-prepend">
 									<label class="input-group-text">Block workers</label>
 								</div>
-								<select class="custom-select" name="block_workers_default">
+								<select class="custom-select custom-select-sm" name="block_workers_default">
 									<option value="disabled" {% if db_obj_project.block_workers == 'disabled' %}selected{% endif %}>disabled</option>
 									<option value="enabled_inject" {% if db_obj_project.block_workers == 'enabled_inject' %}selected{% endif %}>enabled (inject workers into worker template)</option>
 									<option value="enabled_request" {% if db_obj_project.block_workers == 'enabled_request' %}selected{% endif %}>enabled (request the server for block status)</option>
@@ -1072,11 +1073,11 @@
 							</div>
 						</div>
 						<div class="form-row form-group">
-							<div class="col input-group">
+							<div class="col input-group input-group-sm">
 								<div class="input-group-prepend">
 									<label class="input-group-text">Default block message</label>
 								</div>
-								<select class="custom-select" name="message_block_default">
+								<select class="custom-select custom-select-sm" name="message_block_default">
 									<option value="">use default block message</option>
 								{% for message in db_obj_project.messages_block.all %}
 									<option value="{{ message.id }}" {% if message ==  db_obj_project.fk_message_block_default %}selected{% endif %}>{{ message.message }}</option>
