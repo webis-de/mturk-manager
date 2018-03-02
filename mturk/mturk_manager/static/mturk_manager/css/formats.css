@@ -40,3 +40,17 @@ html {
 .popover {
 	max-width: 50rem;
 }
+
+.custom_file_sm .input-group-text {
+	height: calc(1.8125rem + 2px);
+}
+
+.custom_file_sm label {
+	height: calc(1.8125rem + 2px);
+}
+.custom_file_sm label::after {
+	height: calc(1.8125rem);
+	padding:0.25rem 0.5rem;
+	border-radius: 0 0.2rem 0.2rem 0;
+    font-size: .875rem;
+}
