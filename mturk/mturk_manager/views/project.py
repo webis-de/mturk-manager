@@ -181,6 +181,7 @@ def project(request, name):
 
     context['dict_stats'] = dict_stats
     context['db_obj_project'] = db_obj_project
+    context['info_texts'] = code_shared.get_info_texts()
     return render(request, 'mturk_manager/project.html', context)
 
 def get_stats(db_obj_project, queryset):

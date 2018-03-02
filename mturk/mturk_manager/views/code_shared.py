@@ -1,6 +1,7 @@
 import boto3
 from mturk_manager.models import *
 from viewer.models import *
+from django.urls import reverse
 # from secrets import token_urlsafe
 from django.conf import settings as settings_django
 import uuid
@@ -123,3 +124,46 @@ def get_code_js_md5():
  */
 r.exports=function(r){return null!=r&&(t(r)||o(r)||!!r._isBuffer)}},function(r,n,t){r.exports=t(1)}]);
     '''
+
+def get_info_texts():
+    link_documentation = reverse('mturk_manager:documentation')
+
+    return {
+        'batch_settings': (
+            'Batch settings',
+            '''
+            <p>
+                These settings will define your project wide batch properties.<br>
+                Every time you create a new batch these settings are taken and used as properties for the new batch but you are able to override settings for the new batch.
+            </p>
+            '''
+        ),
+        'manage_template_worker': (
+            'Worker templates',
+            '''
+            <p>
+                A worker templates is mainly a HTML document which is used to define the layout of the task given to the worker.<br>
+                Exactly one requester assignment and hit template can be connected to a worker template to define the layout of the results of the worker template.<br>
+            </p>
+            <p class="mb-0">Read more about worker templates in the <a href={}#link_templates_worker>Documentation</a>.</p>
+            '''.format(link_documentation)
+        ),
+        'manage_template_requester_assignment': (
+            'Requester assignment templates',
+            '''
+            <p>
+                A requester assignment template defines the layout of the results of a assignment. <br>
+            </p>
+            <p class="mb-0">Read more about requester assignment templates in the <a href={}#link_templates_requester_assignemnt>Documentation</a>.</p>
+            '''.format(link_documentation)
+        ),
+        'manage_template_requester_hit': (
+            'Requester hit templates',
+            '''
+            <p>
+                A requester hit template can be used to wrap the results of assignments sharing the same hit<br>
+            </p>
+            <p class="mb-0">Read more about hit assignment templates in the <a href={}#link_templates_requester_hit>Documentation</a>.</p>
+            '''.format(link_documentation)
+        ),
+    }

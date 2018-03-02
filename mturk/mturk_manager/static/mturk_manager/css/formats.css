@@ -30,3 +30,13 @@ html {
     margin-left: 1em;
     font-size: 0.9em;
 }
+
+[data-type="info"] {
+	cursor: pointer;
+	outline: none;
+	opacity: 0.5;
+}
+
+.popover {
+	max-width: 50rem;
+}
