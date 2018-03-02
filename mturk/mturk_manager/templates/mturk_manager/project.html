@@ -15,7 +15,6 @@
 {% block body %}
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
 <link rel="stylesheet" href="{% static 'mturk_manager/css/sublime.css' %}">
-
 <div class="container-fluid" id="page_project">
 	<div class="row">
 		<div class="col">
@@ -76,7 +75,7 @@
 			<form method="post" enctype="multipart/form-data">
 				{% csrf_token %}
 				<fieldset class="form-group">
-					<legend>Batch settings</legend>
+					<legend>Batch settings {% render_info info_texts.batch_settings %}</legend>
 					<div class="form-row form-group">
 						<div class="col">
 							<div class="input-group input-group-sm">
@@ -259,7 +258,7 @@
 					<div class="col">
 						{% csrf_token %}
 						<fieldset>
-							<legend>Manage worker templates</legend>
+							<legend>Manage worker templates {% render_info info_texts.manage_template_worker %}</legend>
 							<div class="table-responsive">
 								<table class="table table-sm">
 									<thead>
@@ -418,7 +417,7 @@
 					<div class="col">
 						{% csrf_token %}
 						<fieldset>
-							<legend>Manage requester assignment templates</legend>
+							<legend>Manage requester assignment templates {% render_info info_texts.manage_template_requester_assignment %}</legend>
 							<div class="table-responsive">
 								<table class="table table-sm">
 									<thead>
@@ -529,7 +528,7 @@
 					<div class="col">
 						{% csrf_token %}
 						<fieldset>
-							<legend>Manage requester hit templates</legend>
+							<legend>Manage requester hit templates {% render_info info_texts.manage_template_requester_hit %}</legend>
 							<div class="table-responsive">
 								<table class="table table-sm">
 									<thead>

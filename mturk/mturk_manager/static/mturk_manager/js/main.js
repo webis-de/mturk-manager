@@ -31,4 +31,11 @@ $(document).ready(function()
 	    	hljs.highlightBlock(block);
 	  	});
 	})
+
+	$('[data-type="info"]').popover({
+		// trigger: 'click',
+		trigger: 'focus',
+		container: 'body',
+		'html': true,
+	});
 });
