@@ -820,6 +820,36 @@ def update_settings(db_obj_project, request):
 
     messages.success(request, 'Updated settings successfully')
 
+def preprocess_template_inject(request, db_obj_project, html_template):
+    queryset = m_Worker.objects.filter(fk_project=db_obj_project, is_blocked=True)
+    list_workers = [worker.name for worker in queryset]
+
+    injected = ''
+    injected += '''
+        <script>
+            var sturp = {list};
+        </script>
+        <script>console.log('this will include the blocking script)</script>
+    '''.format(list=json.dumps(list_workers))
+
+    html_template = html_template.replace('</head>', '{}</head>'.format(injected))
+    return html_template
+
+def preprocess_template_request(request, db_obj_project, html_template):
+    host = code_shared.get_url_block_worker(request) 
+    path = reverse('mturk_manager:api_status_worker', kwargs={'name':db_obj_project.name, 'id_worker':'a'})[:-1]
+    url = urllib.parse.urljoin(host, path)
+    injected = ''
+    injected += '''
+        <script>
+            var rkreu = {url}
+        </script>
+        <script>console.log('this will include the blocking script)</script>
+    '''.format(url=url)
+
+    html_template = html_template.replace('</head>', '{}</head>'.format(injected))
+    return html_template
+
 def create_batch(db_obj_project, request):
     if not code_shared.validate_form(request, [
         {'type':'number', 'keys':['count_assignments'], 'message': 'Invalid number of assignments'},
@@ -832,15 +862,29 @@ def create_batch(db_obj_project, request):
     ]):
         return 
 
-    if not 'file_csv' in request.FILES:
-        valid = False
-        messages.error(request, 'Invalid csv file')
-        return  
+    # if not 'file_csv' in request.FILES:
+    #     valid = False
+    #     messages.error(request, 'Invalid csv file')
+    #     return  
+
+
+    # block worker?
+    db_obj_template = m_Template.objects.get(fk_project=db_obj_project, id=request.POST['template'])
+    if request.POST['block_workers'] == 'enabled_inject':
+        db_obj_template.template = preprocess_template_inject(request, db_obj_project, db_obj_template.template)
+    elif request.POST['block_workers'] == 'enabled_request':
+        db_obj_template.template = preprocess_template_request(request, db_obj_project, db_obj_template.template)
+    print(db_obj_template.template[:1500])
+
+    print(request.POST['block_workers'])
+    print(request.POST['message_block_worker'])
+
+    return
+
 
     db_obj_batch = code_shared.glob_create_batch(db_obj_project, request)
     client = code_shared.get_client(db_obj_project, True if request.POST['use_sandbox'] == '1' else False)
     reader = csv.DictReader(io.StringIO(request.FILES['file_csv'].read().decode('utf-8')))
-    db_obj_template = m_Template.objects.get(fk_project=db_obj_project, id=request.POST['template'])
     # list_entities = []
     index = 0
     for dict_parameters in reader:

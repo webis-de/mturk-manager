@@ -158,4 +158,4 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-URL_BLOCK_WORKERS = 'https://webis24.medien.uni-weimar.de:8080'
+URL_BLOCK_WORKERS = 'https://webis16.medien.uni-weimar.de'
