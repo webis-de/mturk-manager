@@ -10,6 +10,20 @@ from collections import Counter
 
 glob_url_sandbox = 'https://mturk-requester-sandbox.us-east-1.amazonaws.com'
 
+def get_url_block_worker(request):
+    url = None
+    try:
+        url = settings_django.URL_BLOCK_WORKERS
+    except AttributeError:
+        url = request.get_host()
+
+    if url.startswith('http'):
+        url = url.replace('http://', 'https://')
+    else:
+        url = 'https://' + url
+
+    return url
+
 def count_parameters_in_template(string_template):
     list_matches = re.findall('\$\{([a-zA-Z0-9_-]+)\}', string_template)
     counter = Counter(list_matches)
