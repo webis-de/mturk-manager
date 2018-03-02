@@ -157,3 +157,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+URL_BLOCK_WORKERS = 'https://webis24.medien.uni-weimar.de:8080'

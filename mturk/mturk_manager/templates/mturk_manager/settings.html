@@ -68,6 +68,32 @@
 			</button>
 		</div>
 	</div>
+	<hr>
+	<div class="row">
+		<div class="col">
+			<h1>Block workers</h1>
+			<p>
+				If the blocking function is enabled the following URL will be used to request the block status of a worker:
+			</p>
+			<p>
+				<code>{{ url }}</code>
+			</p>
+			<p>
+				Ensure that this URL is accessible from the outside.
+			</p>
+			<h2>Change the URL</h2>
+			<p>
+				You are free to change the URL but the new host has to redirect the incoming request to the following URL:<br>
+				<code>{{ url_intern }}</code> 
+			</p>
+			<p>
+				You can change the URL by modifying the <code>URL_BLOCK_WORKERS</code> entry in <code>mturk/mturk/settings.py</code>.
+			</p>
+			<div class="alert alert-warning" role="alert">
+				Please make sure the provided URL supports and is accessed with SSL!
+			</div>
+		</div>
+	</div>
 </div>
 
 <div class="modal fade" tabindex="-1" id="modal_update_projects">

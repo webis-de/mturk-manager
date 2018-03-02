@@ -5,6 +5,7 @@ from mturk_manager.views.migrations import dict_migrations
 import urllib.parse
 import os
 from viewer.views.shared_code import glob_manager_data
+from .code_shared import get_url_block_worker
 import pprint
 from django.contrib import messages
 from django.conf import settings as settings_django
@@ -24,6 +25,13 @@ def settings(request):
     context['queryset_mturk'] = m_Account_Mturk.objects.all()
     context['queryset_projects'] = m_Project.objects.all().select_related('fk_account_mturk')
     context['version'] = settings_django.VERSION_PROJECT
+
+    context['url'] = get_url_block_worker(request)
+
+    if request.scheme == 'http':
+        context['url_intern'] = 'http://' + request.get_host()
+    else:
+        context['url_intern'] = 'https://' + request.get_host()
 
     return render(request, 'mturk_manager/settings.html', context)
 
