@@ -1065,7 +1065,7 @@
 								<div class="input-group-prepend">
 									<label class="input-group-text">Block workers</label>
 								</div>
-								<select class="custom-select custom-select-sm" name="block_workers_default">
+								<select class="custom-select custom-select-sm" name="block_workers">
 									<option value="disabled" {% if db_obj_project.block_workers == 'disabled' %}selected{% endif %}>disabled</option>
 									<option value="enabled_inject" {% if db_obj_project.block_workers == 'enabled_inject' %}selected{% endif %}>enabled (inject workers into worker template)</option>
 									<option value="enabled_request" {% if db_obj_project.block_workers == 'enabled_request' %}selected{% endif %}>enabled (request the server for block status)</option>
@@ -1077,7 +1077,7 @@
 								<div class="input-group-prepend">
 									<label class="input-group-text">Default block message</label>
 								</div>
-								<select class="custom-select custom-select-sm" name="message_block_default">
+								<select class="custom-select custom-select-sm" name="message_block_worker">
 									<option value="">use default block message</option>
 								{% for message in db_obj_project.messages_block.all %}
 									<option value="{{ message.id }}" {% if message ==  db_obj_project.fk_message_block_default %}selected{% endif %}>{{ message.message }}</option>
