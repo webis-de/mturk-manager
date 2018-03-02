@@ -45,7 +45,9 @@ def api_status_worker(request, name, id_worker):
         dict_result['success'] = True
         dict_result['blocked'] = db_obj_worker.is_blocked
     finally:
-        return JsonResponse(dict_result)
+        response_json = JsonResponse(dict_result)
+        response_json['Access-Control-Allow-Origin'] = '*'
+        return response_json
 
 def unblock_workers(request, db_obj_project):
     list_ids = request.POST.getlist('list_ids[]')
