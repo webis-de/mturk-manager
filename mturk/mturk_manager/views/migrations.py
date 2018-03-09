@@ -115,6 +115,59 @@ def migration_2(db_obj_project):
     )
 
 dict_migrations = {
+    11: [
+        {
+            'type': 'update_config_file',
+            'key': 'data_fields',
+            'content': {
+                # 'id': {
+                #     'type': 'number',
+                #     'display_name': 'ID'
+                # },
+                'id_assignment': {
+                    'type': 'string',
+                    'display_name': 'ID'
+                },
+                'fk_hit__id_hit': {
+                    'type': 'string',
+                    'display_name': 'HIT'
+                },
+                'fk_worker__name': {
+                    'type': 'string',
+                    'display_name': 'Worker'
+                },
+                'fk_hit__fk_batch__use_sandbox': {
+                    'type': 'boolean',
+                    'display_name': 'Sandbox'
+                },
+                'fk_hit__datetime_creation': {
+                    'display_name': 'Creation',
+                    'type': 'string'
+                },
+                'fk_hit__datetime_expiration': {
+                    'display_name': 'Expiration',
+                    'type': 'string'
+                },
+                'reviewer_score': {
+                    'display_name': 'Score',
+                    'type': 'number'
+                }
+            }
+        },
+        {
+            'type': 'update_config_file',
+            'key': 'displayed_fields',
+            'content': [
+                    'id_assignment',
+                    'fk_hit__id_hit',
+                    'fk_worker__name',
+                    'fk_hit__fk_batch__use_sandbox',
+                    'fk_hit__datetime_creation',
+                    'fk_hit__datetime_expiration',
+                    'reviewer_score'
+            ]
+        }
+    ],
     10: [
         {
             'type': 'update_config_file',

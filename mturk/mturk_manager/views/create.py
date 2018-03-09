@@ -54,6 +54,10 @@ glob_dict_settings = {
         'fk_hit__datetime_expiration': {
             'display_name': 'Expiration', 
             'type': 'string'
+        },
+        'reviewer_score': {
+            'display_name': 'Score',
+            'type': 'number'
         }
     },
     'id': 'id_assignment',
