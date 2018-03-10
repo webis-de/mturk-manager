@@ -380,6 +380,118 @@
 		</form>
 	</div>
 </div>
+<hr>
+<div class="row">
+	<div class="col">
+		<form method="post">
+			<div class="row">
+				<div class="col">
+					{% csrf_token %}
+					<fieldset>
+						<legend>Manage requester global templates {% render_info info_texts.manage_template_requester_hit%}</legend>
+						<div class="table-responsive">
+							<table class="table table-sm">
+								<thead>
+									<tr>
+										<th>
+											<div class="custom-control custom-checkbox">
+												<input type="checkbox" data-kritten_checkbox_main="manage_templates_global" id="checkbox_manage_templates_global_main" class="custom-control-input">
+												<label class="custom-control-label" for="checkbox_manage_templates_global_main"></label>
+											</div> 
+										</th>
+										<th>Name</th>
+										<th>Update</th>
+										<th>HTML</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for template in list_templates_global_active %}
+									<tr {% if template ==  db_obj_project.fk_template_global_main %}class="table-active"{% endif %}>
+										<td>
+											<div class="custom-control custom-checkbox">
+												<input type="checkbox" data-kritten_checkbox="manage_templates_global" name="templates" value="{{ template.id }}" id="checkbox_manage_templates_global_template_{{ template.id }}" class="custom-control-input">
+												<label class="custom-control-label" for="checkbox_manage_templates_global_template_{{ template.id }}"></label>
+											</div>
+										</td>
+										<td>
+											{{ template.name }}
+										</td>
+										<td>
+											<a href="#" data-id="{{ template.id }}" data-name="{{ template.name }}" data-toggle="modal" data-target="#modal_update_template_global"><i class="fas fa-edit"></i></a>
+										</td>
+										<td>
+											<a href="#" data-id="{{ template.id }}" data-template="{{ template.template }}" data-toggle="modal" data-target="#modal_show_html"><i class="fas fa-code"></i></a>
+										</td>
+									</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</fieldset>
+				</div>
+			</div>
+			<div class="row mb-2">
+				<div class="col">
+					<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal_add_template_global"><i class="fas fa-plus"></i> Add template</button>
+					{% if db_obj_project.templates_global.count > 0 %}
+					<button type="submit" name="task" value="delete_templates_global" class="btn btn-danger btn-sm"><i class="fas fa-minus"></i> Delete selected</button>
+					{% endif %}
+				</div>
+			</div>
+			{% if list_templates_global_inactive|length > 0 %}
+			<div class="row">
+				<div class="col">
+					<button type="button" class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#collapse_templates_global_inactive">Toggle inactive assignment templates</button>
+				</div>
+			</div>
+			<div class="row mt-2 collapse" id="collapse_templates_global_inactive">
+				<div class="col">
+					<table class="table table-sm">
+						<div class="table-responsive">
+							<table class="table table-sm">
+								<thead>
+									<tr>
+										<th>
+											<div class="custom-control custom-checkbox">
+												<input type="checkbox" data-kritten_checkbox_main="manage_templates_global_inactive" id="checkbox_manage_templates_global_inactive_main" class="custom-control-input">
+												<label class="custom-control-label" for="checkbox_manage_templates_global_inactive_main"></label>
+											</div> 
+										</th>
+										<th>Name</th>
+										<th>Update</th>
+										<th>HTML</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for template in list_templates_global_inactive %}
+									<tr {% if template ==  db_obj_project.fk_template_global_main %}class="table-active"{% endif %}>
+										<td>
+											<div class="custom-control custom-checkbox">
+												<input type="checkbox" data-kritten_checkbox="manage_templates_global_inactive" name="templates" value="{{ template.id }}" id="checkbox_manage_templates_global_template_{{ template.id }}" class="custom-control-input">
+												<label class="custom-control-label" for="checkbox_manage_templates_global_template_{{ template.id }}"></label>
+											</div>
+										</td>
+										<td>
+											{{ template.name }}
+										</td>
+										<td>
+											<a href="#" data-id="{{ template.id }}" data-name="{{ template.name }}" data-toggle="modal" data-target="#modal_update_template_global"><i class="fas fa-edit"></i></a>
+										</td>
+										<td>
+											<a href="#" data-id="{{ template.id }}" data-template="{{ template.template }}" data-toggle="modal" data-target="#modal_show_html"><i class="fas fa-code"></i></a>
+										</td>
+									</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					<button type="submit" name="task" value="reactivate_templates_global" class="btn btn-info btn-sm">Reactivate selected</button>
+				</div>
+			</div>
+			{% endif %}
+		</form>
+	</div>
+</div>
 <!--  -->
 <!--  -->
 <!--  -->
