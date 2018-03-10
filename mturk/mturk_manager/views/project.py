@@ -65,6 +65,7 @@ def project(request, name):
         if request.POST['task'] == 'synchronize_database':
             synchronize_database(db_obj_project, request, True)
             synchronize_database(db_obj_project, request, False)
+
         if request.POST['task'] == 'create_batch':
             create_batch(db_obj_project, request)
         elif request.POST['task'] == 'add_template':

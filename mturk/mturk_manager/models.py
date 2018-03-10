@@ -84,6 +84,7 @@ class m_Assignment(models.Model):
         # order_with_respect_to = 'fk_hit'
 
     id_assignment = models.CharField(max_length=200, unique=True, null=False)
+    reviewer_score = models.FloatField(null=True)
     fk_hit = models.ForeignKey('m_Hit', on_delete=models.CASCADE, related_name='assignments')
     fk_worker = models.ForeignKey('m_Worker', on_delete=models.CASCADE, related_name='assignments')
     # was_approved = models.NullBooleanField()
