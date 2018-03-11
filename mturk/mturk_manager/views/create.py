@@ -68,6 +68,7 @@ glob_dict_settings = {
         'fk_hit__fk_batch__use_sandbox',
         'fk_hit__datetime_creation',
         'fk_hit__datetime_expiration',
+        'reviewer_score',
     ],
     'page_size': 25,
     'filters': [
