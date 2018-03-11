@@ -37,8 +37,30 @@ def is_project_up_to_date(request, db_obj_project, name_project):
 
     return True
 
-def glob_create_batch(db_obj_project, request):
-    name = request.POST['name']
+def glob_create_batch(db_obj_project, request=None, dictionary=None):    
+    if not request == None:
+        name = request.POST['name']
+        title = request.POST['title']
+        description = request.POST['description']
+        keywords = request.POST['keywords']
+        count_assignments = request.POST['count_assignments']
+        use_sandbox = True if request.POST['use_sandbox'] == '1' else False
+        reward = request.POST['reward']
+        lifetime = request.POST['lifetime']
+        duration = request.POST['duration']
+        template = m_Template.objects.get(fk_project=db_obj_project, id=request.POST['template'])
+    else:
+        name = dictionary['name']
+        title = dictionary['title']
+        description = dictionary['description']
+        keywords = dictionary['keywords']
+        count_assignments = dictionary['count_assignments']
+        use_sandbox = dictionary['use_sandbox']
+        reward = dictionary['reward']
+        lifetime = dictionary['lifetime']
+        duration = dictionary['duration']
+        template = None
+
     if name.strip() == '':
         name = uuid.uuid4().hex
         # name = token_urlsafe()
@@ -46,15 +68,15 @@ def glob_create_batch(db_obj_project, request):
     return m_Batch.objects.create(
         name=name,
         fk_project=db_obj_project,
-        title=request.POST['title'],
-        description=request.POST['description'],
-        keywords=request.POST['keywords'],
-        count_assignments=request.POST['count_assignments'],
-        use_sandbox=True if request.POST['use_sandbox'] == '1' else False,
-        reward=request.POST['reward'],
-        lifetime=request.POST['lifetime'],
-        duration=request.POST['duration'],
-        fk_template=m_Template.objects.get(fk_project=db_obj_project, id=request.POST['template']),
+        title=title,
+        description=description,
+        keywords=keywords,
+        count_assignments=count_assignments,
+        use_sandbox=use_sandbox,
+        reward=reward,
+        lifetime=lifetime,
+        duration=duration,
+        fk_template=template,
     )
 
 def create_question(template, height_frame, dict_parameters):

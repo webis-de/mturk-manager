@@ -38,7 +38,7 @@ class m_Batch(models.Model):
     reward = models.CharField(max_length=10)
     lifetime = models.IntegerField()
     duration = models.IntegerField()
-    fk_template = models.ForeignKey('m_Template', on_delete=models.CASCADE, related_name='batches')
+    fk_template = models.ForeignKey('m_Template', on_delete=models.CASCADE, related_name='batches', null=True)
 
 class m_Hit(models.Model):
     id_hit = models.CharField(max_length=200, unique=True)

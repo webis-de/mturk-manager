@@ -14,6 +14,7 @@ import csv
 import io
 import random
 import html
+import datetime, pytz
 import json
 from django.conf import settings as settings_django
 import time
@@ -108,6 +109,8 @@ def project(request, name):
             return delete_project(db_obj_project, request)
         elif request.POST['task'] == 'clear_sandbox':
             clear_sandbox(db_obj_project, request)
+        elif request.POST['task'] == 'import_csv':
+            import_csv(db_obj_project, request)
 
         # db_obj_project = queryset.get(name=name)
         # AKIAJUD2Y77Z7DIHUB5A
@@ -184,6 +187,98 @@ def project(request, name):
     context['db_obj_project'] = db_obj_project
     context['info_texts'] = code_shared.get_info_texts()
     return render(request, 'mturk_manager/project.html', context)
+
+def import_csv(db_obj_project, request):
+    if 'file_csv' in request.FILES:
+        if request.FILES['file_csv'].charset == None:
+            string_csv = request.FILES['file_csv'].read().decode('utf-8')
+        else:
+            string_csv = request.FILES['file_csv'].read().decode(request.FILES['file_csv'].charset)
+        reader = csv.DictReader(string_csv.splitlines())
+
+        db_obj_tag_submitted = m_Tag.objects.get(key_corpus=db_obj_project.name, name='submitted')
+        db_obj_tag_rejected = m_Tag.objects.get(key_corpus=db_obj_project.name, name='rejected')
+        db_obj_tag_approved = m_Tag.objects.get(key_corpus=db_obj_project.name, name='approved')
+
+        db_obj_tag_batch = None
+        for index, row in enumerate(reader):
+            if index == 0:
+                db_obj_batch = code_shared.glob_create_batch(db_obj_project, dictionary={
+                    'name': '',
+                    'title': row['Title'],
+                    'description': row['Description'],
+                    'keywords': row['Keywords'],
+                    'count_assignments': row['MaxAssignments'],
+                    'use_sandbox': True,
+                    'reward': row['Reward'],
+                    'lifetime': row['AutoApprovalDelayInSeconds'],
+                    'duration': row['AssignmentDurationInSeconds'],                 
+                })
+
+                db_obj_tag_batch = m_Tag.objects.get_or_create(
+                    name=glob_prefix_name_tag_batch+db_obj_batch.name,
+                    key_corpus=db_obj_project.name
+                )[0]
+
+                # for key, value in sorted(row.items()):
+                #     print('{}: {}'.format(key, value)) 
+
+            dict_parameters = {}
+            for key, value in row.items():
+                if key.startswith('Input.'):
+                    dict_parameters[key[6:]] = value
+
+            db_obj_hit = m_Hit.objects.get_or_create(
+                id_hit=row['HITId'],
+                fk_batch=db_obj_batch,
+                parameters=json.dumps(dict_parameters),
+                datetime_expiration=pytz.timezone('US/Pacific').localize(datetime.datetime.strptime(row['Expiration'], "%a %b %d %H:%M:%S PST %Y")),
+                datetime_creation=pytz.timezone('US/Pacific').localize(datetime.datetime.strptime(row['CreationTime'], "%a %b %d %H:%M:%S PST %Y")),
+            )[0]
+
+            db_obj_tag_hit = m_Tag.objects.get_or_create(
+                name=glob_prefix_name_tag_hit+db_obj_hit.id_hit,
+                key_corpus=db_obj_project.name
+            )[0]
+
+
+            db_obj_worker = m_Worker.objects.get_or_create(
+                name=row['WorkerId'],
+                fk_project=db_obj_project,
+            )[0]
+
+            dict_parameters = {}
+            for key, value in row.items():
+                if key.startswith('Answer.'):
+                    dict_parameters[key[7:]] = value
+
+            db_obj_assignment = m_Assignment.objects.create(
+                id_assignment=row['AssignmentId'],
+                fk_hit=db_obj_hit,
+                fk_worker=db_obj_worker,
+                answer=json.dumps(dict_parameters),
+            )
+
+            db_obj_tag_batch.corpus_viewer_items.add(db_obj_assignment)
+
+            if row['AssignmentStatus'] == 'Approved':
+                db_obj_tag_approved.corpus_viewer_items.add(db_obj_assignment)
+            elif row['AssignmentStatus'] == 'Rejected':
+                db_obj_tag_rejected.corpus_viewer_items.add(db_obj_assignment)
+            else:
+                db_obj_tag_submitted.corpus_viewer_items.add(db_obj_assignment)
+
+            db_obj_tag_hit.corpus_viewer_items.add(db_obj_assignment)
+
+            db_obj_tag_worker = m_Tag.objects.get_or_create(
+                key_corpus=db_obj_project.name, 
+                name=glob_prefix_name_tag_worker+db_obj_worker.name, defaults={'color': '#0000ff'}
+            )[0]
+
+            db_obj_tag_worker.corpus_viewer_items.add(db_obj_assignment)
+
+            # break
+            # print(row['first_name'], row['last_name'])
 
 def get_stats(db_obj_project, queryset):
     dict_stats = {}
@@ -878,7 +973,7 @@ def create_batch(db_obj_project, request):
     elif request.POST['block_workers'] == 'enabled_request':
         db_obj_template.template = preprocess_template_request(request, db_obj_project, db_obj_template.template)
 
-    db_obj_batch = code_shared.glob_create_batch(db_obj_project, request)
+    db_obj_batch = code_shared.glob_create_batch(db_obj_project, request=request)
     client = code_shared.get_client(db_obj_project, True if request.POST['use_sandbox'] == '1' else False)
     reader = csv.DictReader(io.StringIO(request.FILES['file_csv'].read().decode('utf-8')))
     # list_entities = []
