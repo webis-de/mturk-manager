@@ -171,6 +171,44 @@
 	<hr>
 	<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal_delete_project"><i class="fas fa-minus"></i> Delete project</button>
 	<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modal_clear_sandbox"><i class="fas fa-eraser"></i> Clear sandbox</button>
+	<button type="button" class="btn btn-info" data-toggle="modal" data-target="#modal_import_csv"><i class="fas fa-upload"></i> Import CSV</button>
+</div>
+
+<div class="modal fade" tabindex="-1" id="modal_import_csv">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Import CSV file</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<form method="post" enctype="multipart/form-data">
+				<div class="modal-body">
+					<div class="container-fluid">
+						{% csrf_token %}
+						<div class="form-row form-group">
+							<div class="col">
+								<div class="input-group">
+								  	<div class="input-group-prepend">
+							    		<span class="input-group-text">CSV file</span>
+								  	</div>
+									<label class="custom-file">
+										<input type="file" name="file_csv" class="custom-file-input">
+										<span class="custom-file-label"></span>
+									</label>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" name="task" value="import_csv" class="btn btn-primary">Import</button>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				</div>
+			</form>
+		</div>
+	</div>
 </div>
 
 <div class="modal fade" tabindex="-1" id="modal_update_message_reject">
