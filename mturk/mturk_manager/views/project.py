@@ -348,18 +348,47 @@ def clear_sandbox(db_obj_project, request):
 
     queryset_batches.delete()
 
-    queryset_workers = m_Worker.objects.filter(
-        fk_project=db_obj_project,
-    ).annotate(
-        count_assignments=Count('assignments')
+    # queryset_workers = m_Worker.objects.filter(
+    #     fk_project=db_obj_project,
+    # ).annotate(
+    #     count_assignments=Count('assignments')
     # ).filter(
     #     count_assignments=0
-    )
-
-    for worker in queryset_workers:
-        print(worker.count_assignments)
-    print(queryset_workers)
+    # )
     # queryset_workers.delete()
+
+    # for worker in queryset_workers:
+    #     print(worker.count_assignments)
+    # print(queryset_workers)
+
+    # queryset_tags = m_Tag.objects.filter(
+    #     key_corpus=db_obj_project.name,
+    # ).exclude(
+    #     name__in=['approved', 'approved externally', 'rejected', 'rejected externally', 'submitted']
+    # ).annotate(
+    #     count_assignments=Count('corpus_viewer_workers'),
+    #     count_items=Count('corpus_viewer_items'),
+    # ).filter(
+    #     count_assignments=0,
+    #     count_items=0,
+    # )
+    # for worker in queryset_tags:
+    #     print(worker.count_assignments)
+    #     print(worker.count_items)
+
+    # queryset_tags.filter(
+    #     name__startswith='hit_'
+    # ).delete()
+
+    # queryset_tags.filter(
+    #     name__startswith='worker_'
+    # ).delete()
+
+    # queryset_tags.filter(
+    #     count_assignments__gt=0,
+    #     count_items=0,
+    # ).delete()
+    # queryset_tags.delete()
     # db_obj_project.objects.filter()
 
 def delete_project(db_obj_project, request):
