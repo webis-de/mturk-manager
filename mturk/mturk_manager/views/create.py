@@ -112,6 +112,52 @@ glob_dict_settings = {
                     {
                         $(document).on('update.cv.selected-items', function(e, list_items) { console.log(e);console.log(list_items) });
 
+                        $(document).on('click', '#button_mturk_approve', function(){
+                            const data = {};
+                            data.task = 'approve_assignments_selected';
+                        
+                            const list_ids = [];
+                            $.each(glob_selected_items, function( i, val ) {
+                                list_ids.push(val.viewer__id_item_internal);
+                            });
+
+                            data.list_ids = list_ids;
+                            
+                            $.ajax({
+                                url: '/project/PLACEHOLDER_NAME/api',
+                                method: 'POST',
+                                dataType: 'json',
+                                headers: {'X-CSRFToken':$('input[name="csrfmiddlewaretoken"]').val()},
+                                data: data,
+                                success: function(result) {
+                                    load_current_page();
+                                }
+                            });
+                        });
+
+                        $(document).on('click', '#button_mturk_reject', function(){
+                            const data = {};
+                            data.task = 'reject_assignments_selected';
+                        
+                            const list_ids = [];
+                            $.each(glob_selected_items, function( i, val ) {
+                                list_ids.push(val.viewer__id_item_internal);
+                            });
+
+                            data.list_ids = list_ids;
+                            
+                            $.ajax({
+                                url: '/project/PLACEHOLDER_NAME/api',
+                                method: 'POST',
+                                dataType: 'json',
+                                headers: {'X-CSRFToken':$('input[name="csrfmiddlewaretoken"]').val()},
+                                data: data,
+                                success: function(result) {
+                                    load_current_page();
+                                }
+                            });
+                        });
+
                         $(document).on('click', '#button_mturk_view', function(){
                             let url = 'PLACEHOLDER_URL_VIEW?list_ids=';
                             const list_ids = [];
@@ -390,6 +436,9 @@ def add_corpus_assignments(request):
 
     for key, value in dict_settings['database_filters'].items():
         dict_settings['database_filters'][key] = dict_settings['database_filters'][key].replace('PLACEHOLDER_NAME', request.POST['name'])
+    for card in dict_settings['cards']:
+        for key, value in card.items():
+            card[key] = card[key].replace('PLACEHOLDER_NAME', request.POST['name'])
 
     for card in dict_settings['cards']:
         card['content'] = card['content'].replace(

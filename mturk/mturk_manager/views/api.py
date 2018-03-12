@@ -1,6 +1,7 @@
 import urllib.parse
 from django.http import JsonResponse
 from mturk_manager.models import *
+from viewer.models import *
 import json
 
 def api(request, name):
@@ -15,6 +16,11 @@ def api(request, name):
             unblock_workers(request, db_obj_project)
         elif request.POST['task'] == 'block_workers':
             block_workers(request, db_obj_project)
+        elif request.POST['task'] == 'approve_assignments_selected':
+            approve_assignments_selected(request, db_obj_project)
+            block_workers(request, db_obj_project)
+        elif request.POST['task'] == 'reject_assignments_selected':
+            reject_assignments_selected(request, db_obj_project)
 
     return JsonResponse({})
 
@@ -48,6 +54,30 @@ def api_status_worker(request, name, id_worker):
         response_json = JsonResponse(dict_result)
         response_json['Access-Control-Allow-Origin'] = '*'
         return response_json
+
+def approve_assignments_selected(request, db_obj_project):
+    list_ids = request.POST.getlist('list_ids[]')
+    
+    db_obj_tag_submitted = m_Tag.objects.get(key_corpus=db_obj_project.name, name='submitted')
+    db_obj_tag_approved = m_Tag.objects.get(key_corpus=db_obj_project.name, name='approved')
+    db_obj_tag_rejected = m_Tag.objects.get(key_corpus=db_obj_project.name, name='rejected')
+    
+    for assignment in m_Assignment.objects.filter(id__in=list_ids):
+        db_obj_tag_submitted.corpus_viewer_items.remove(assignment)
+        db_obj_tag_rejected.corpus_viewer_items.remove(assignment)
+        db_obj_tag_approved.corpus_viewer_items.add(assignment)
+
+def reject_assignments_selected(request, db_obj_project):
+    list_ids = request.POST.getlist('list_ids[]')
+    
+    db_obj_tag_submitted = m_Tag.objects.get(key_corpus=db_obj_project.name, name='submitted')
+    db_obj_tag_approved = m_Tag.objects.get(key_corpus=db_obj_project.name, name='approved')
+    db_obj_tag_rejected = m_Tag.objects.get(key_corpus=db_obj_project.name, name='rejected')
+    
+    for assignment in m_Assignment.objects.filter(id__in=list_ids):
+        db_obj_tag_submitted.corpus_viewer_items.remove(assignment)
+        db_obj_tag_approved.corpus_viewer_items.remove(assignment)
+        db_obj_tag_rejected.corpus_viewer_items.add(assignment)
 
 def unblock_workers(request, db_obj_project):
     list_ids = request.POST.getlist('list_ids[]')
