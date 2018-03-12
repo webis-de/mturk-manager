@@ -88,7 +88,7 @@ WSGI_APPLICATION = 'mturk.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
-VERSION_PROJECT = 12
+VERSION_PROJECT = 13
 MESSAGE_BLOCK_DEFAULT = 'Some default block message'
 
 config = configparser.ConfigParser()
