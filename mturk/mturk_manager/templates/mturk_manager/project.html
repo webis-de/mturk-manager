@@ -17,18 +17,24 @@
 <link rel="stylesheet" href="{% static 'mturk_manager/css/sublime.css' %}">
 <div class="container-fluid mb-3" id="page_project">
 	<div class="row">
-		<div class="col">
+		<div class="col col-lg-6">
 			<div class="table-responsive">
-				<table class="table table-sm">
+				<table class="table table-sm table-bordered" id="table_stats">
 					<thead>
+						<tr>
+							<th></th>
+							<th></th>
+							<th></th>
+							<th colspan="4" class="text-center">Assignments</th>
+						</tr>
 						<tr>
 							<th></th>
 							<th>Batches</th>
 							<th>Hits</th>
-							<th>Total assignments</th>
-							<th>Processed assignments</th>
-							<th>Pending assignments</th>
-							<th>New assignments</th>
+							<th>Total</th>
+							<th>Processed</th>
+							<th>Pending</th>
+							<th>New</th>
 						</tr>
 					</thead>
 					<tbody>
