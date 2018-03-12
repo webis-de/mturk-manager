@@ -75,6 +75,8 @@ def project(request, name):
             add_template_assignment(db_obj_project, request)
         elif request.POST['task'] == 'add_template_hit':
             add_template_hit(db_obj_project, request)
+        elif request.POST['task'] == 'add_template_global':
+            add_template_global(db_obj_project, request)
         elif request.POST['task'] == 'add_message_reject':
             add_message_reject(db_obj_project, request)
         elif request.POST['task'] == 'update_template':
@@ -91,6 +93,8 @@ def project(request, name):
             update_template_assignment(db_obj_project, request)
         elif request.POST['task'] == 'update_template_hit':
             update_template_hit(db_obj_project, request)
+        elif request.POST['task'] == 'update_template_global':
+            update_template_global(db_obj_project, request)
         elif request.POST['task'] == 'update_message_reject':
             update_message_reject(db_obj_project, request)
         elif request.POST['task'] == 'update_message_block':
@@ -99,6 +103,8 @@ def project(request, name):
             delete_templates(db_obj_project, request)
         elif request.POST['task'] == 'delete_templates_hit':
             delete_templates_hit(db_obj_project, request)
+        elif request.POST['task'] == 'delete_templates_global':
+            delete_templates_global(db_obj_project, request)
         elif request.POST['task'] == 'delete_templates_assignment':
             delete_templates_assignment(db_obj_project, request)
         elif request.POST['task'] == 'delete_messages_reject':
@@ -530,6 +536,15 @@ def synchronize_database(db_obj_project, request, use_sandbox):
         #     for assignment in response['Assignments']:
         #         print(assignment)
 
+def delete_templates_global(db_obj_project, request):
+    list_templates = request.POST.getlist('templates')
+    
+    queryset = m_Template_Global.objects.filter(
+        fk_project=db_obj_project, id__in=list_templates
+    ).delete()
+
+    messages.success(request, 'Deleted template(s) successfully')
+
 def delete_templates_hit(db_obj_project, request):
     list_templates = request.POST.getlist('templates')
     
@@ -628,6 +643,38 @@ def update_message_block(db_obj_project, request):
 
     messages.success(request, 'Updated block message successfully')
 
+def update_template_global(db_obj_project, request):
+    if not code_shared.validate_form(request, [
+        {'type':'string', 'keys':['name'], 'message': 'Invalid name'},
+    ]):
+        return 
+
+    template = None
+    if request.POST['html_template'].strip() == '':
+        if 'file_template' in request.FILES:
+            if request.FILES['file_template'].charset == None:
+                template = request.FILES['file_template'].read().decode('utf-8')
+            else:
+                template = request.FILES['file_template'].read().decode(request.FILES['file_template'].charset)
+    else:
+        template = request.POST['html_template']
+
+    try:
+        if template == None:
+            m_Template_Global.objects.filter(id=request.POST['id']).update(
+                name=request.POST['name'],
+            )
+        else:
+            m_Template_Global.objects.filter(id=request.POST['id']).update(
+                name=request.POST['name'],
+                template=template
+            )
+    except IntegrityError:
+        messages.error(request, 'A template with this name already exists')
+        return
+
+    messages.success(request, 'Updated template successfully')
+
 def update_template_hit(db_obj_project, request):
     if not code_shared.validate_form(request, [
         {'type':'string', 'keys':['name'], 'message': 'Invalid name'},
@@ -691,6 +738,35 @@ def update_template_assignment(db_obj_project, request):
         return
 
     messages.success(request, 'Updated template successfully')
+
+def add_template_global(db_obj_project, request):
+    if not code_shared.validate_form(request, [
+        {'type':'string', 'keys':['name'], 'message': 'Invalid name'},
+        {'type':'template', 'keys':['html_template', 'file_template'], 'message': 'Invalid template'},
+    ]):
+        return 
+
+    template = None
+    if request.POST['html_template'].strip() == '':
+        if 'file_template' in request.FILES:
+            if request.FILES['file_template'].charset == None:
+                template = request.FILES['file_template'].read().decode('utf-8')
+            else:
+                template = request.FILES['file_template'].read().decode(request.FILES['file_template'].charset)
+    else:
+        template = request.POST['html_template']
+
+    try:
+        m_Template_Global.objects.create(
+            name=request.POST['name'],
+            template=template,
+            fk_project=db_obj_project
+        )
+    except IntegrityError:
+        messages.error(request, 'A template with this name already exists')
+        return
+
+    messages.success(request, 'Added template successfully')
 
 def add_template_hit(db_obj_project, request):
     if not code_shared.validate_form(request, [
@@ -942,6 +1018,11 @@ def update_settings(db_obj_project, request):
         db_obj_project.fk_template_hit_main = m_Template_Hit.objects.get(fk_project=db_obj_project, id=request.POST['template_hit_main'])
     else:
         db_obj_project.fk_template_hit_main = None
+
+    if request.POST['template_global_main'] != '':
+        db_obj_project.fk_template_global_main = m_Template_Global.objects.get(fk_project=db_obj_project, id=request.POST['template_global_main'])
+    else:
+        db_obj_project.fk_template_global_main = None
         
     db_obj_project.save()
 
