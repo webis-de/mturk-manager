@@ -187,8 +187,8 @@ def project(request, name):
     return render(request, 'mturk_manager/project.html', context)
 
 def update_scores(db_obj_project):
-    db_path = os.path.join(BASE_DIR, "viewer", "reviewerdata", "tweet_database.sqlite3")
-    model_path = os.path.join(BASE_DIR, "viewer", "reviewerdata", "model.pickle")
+    db_path = os.path.join(BASE_DIR, "mturk_manager", "reviewerdata", "tweet_database.sqlite3")
+    model_path = os.path.join(BASE_DIR, "mturk_manager", "reviewerdata", "model.pickle")
 
     assert(os.path.isfile(db_path))
     assert(os.path.isfile(model_path))
