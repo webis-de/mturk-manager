@@ -188,4 +188,12 @@ def get_info_texts():
             <p class="mb-0">Read more about hit assignment templates in the <a href={}#link_templates_requester_hit>Documentation</a>.</p>
             '''.format(link_documentation)
         ),
+        'manage_template_global': (
+            'Global templates',
+            '''
+            <p class="mb-0">
+                A global template is injected into the assignment-view page once at the beginning.<br>
+            </p>
+            '''
+        ),
     }
