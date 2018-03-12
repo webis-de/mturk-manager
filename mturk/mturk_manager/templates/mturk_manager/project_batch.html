@@ -137,6 +137,19 @@
 		<div class="form-row form-group">
 			<div class="col input-group input-group-sm">
 				<div class="input-group-prepend">
+					<label class="input-group-text">Default global template</label>
+				</div>
+				<select class="custom-select custom-select-sm" name="template_global_main">
+					<option value="">please select a template</option>
+				{% for template in db_obj_project.templates_global.all %}
+					<option value="{{ template.id }}" {% if template ==  db_obj_project.fk_template_global_main %}selected{% endif %}>{{ template.name }}</option>
+				{% endfor %}
+				</select>
+			</div>
+		</div>
+		<div class="form-row form-group">
+			<div class="col input-group input-group-sm">
+				<div class="input-group-prepend">
 					<label class="input-group-text">Default reject message</label>
 				</div>
 				<select class="custom-select custom-select-sm" name="message_reject_default">

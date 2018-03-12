@@ -388,7 +388,7 @@
 				<div class="col">
 					{% csrf_token %}
 					<fieldset>
-						<legend>Manage requester global templates {% render_info info_texts.manage_template_requester_hit%}</legend>
+						<legend>Manage global templates {% render_info info_texts.manage_template_requester_hit%}</legend>
 						<div class="table-responsive">
 							<table class="table table-sm">
 								<thead>
@@ -405,7 +405,7 @@
 									</tr>
 								</thead>
 								<tbody>
-									{% for template in list_templates_global_active %}
+									{% for template in db_obj_project.templates_global.all %}
 									<tr {% if template ==  db_obj_project.fk_template_global_main %}class="table-active"{% endif %}>
 										<td>
 											<div class="custom-control custom-checkbox">
@@ -438,63 +438,68 @@
 					{% endif %}
 				</div>
 			</div>
-			{% if list_templates_global_inactive|length > 0 %}
-			<div class="row">
-				<div class="col">
-					<button type="button" class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#collapse_templates_global_inactive">Toggle inactive assignment templates</button>
-				</div>
-			</div>
-			<div class="row mt-2 collapse" id="collapse_templates_global_inactive">
-				<div class="col">
-					<table class="table table-sm">
-						<div class="table-responsive">
-							<table class="table table-sm">
-								<thead>
-									<tr>
-										<th>
-											<div class="custom-control custom-checkbox">
-												<input type="checkbox" data-kritten_checkbox_main="manage_templates_global_inactive" id="checkbox_manage_templates_global_inactive_main" class="custom-control-input">
-												<label class="custom-control-label" for="checkbox_manage_templates_global_inactive_main"></label>
-											</div> 
-										</th>
-										<th>Name</th>
-										<th>Update</th>
-										<th>HTML</th>
-									</tr>
-								</thead>
-								<tbody>
-									{% for template in list_templates_global_inactive %}
-									<tr {% if template ==  db_obj_project.fk_template_global_main %}class="table-active"{% endif %}>
-										<td>
-											<div class="custom-control custom-checkbox">
-												<input type="checkbox" data-kritten_checkbox="manage_templates_global_inactive" name="templates" value="{{ template.id }}" id="checkbox_manage_templates_global_template_{{ template.id }}" class="custom-control-input">
-												<label class="custom-control-label" for="checkbox_manage_templates_global_template_{{ template.id }}"></label>
-											</div>
-										</td>
-										<td>
-											{{ template.name }}
-										</td>
-										<td>
-											<a href="#" data-id="{{ template.id }}" data-name="{{ template.name }}" data-toggle="modal" data-target="#modal_update_template_global"><i class="fas fa-edit"></i></a>
-										</td>
-										<td>
-											<a href="#" data-id="{{ template.id }}" data-template="{{ template.template }}" data-toggle="modal" data-target="#modal_show_html"><i class="fas fa-code"></i></a>
-										</td>
-									</tr>
-									{% endfor %}
-								</tbody>
-							</table>
-						</div>
-					<button type="submit" name="task" value="reactivate_templates_global" class="btn btn-info btn-sm">Reactivate selected</button>
-				</div>
-			</div>
-			{% endif %}
 		</form>
 	</div>
 </div>
 <!--  -->
 <!--  -->
 <!--  -->
+<div class="modal fade" tabindex="-1" id="modal_add_template_global">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Add global template</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<form method="post" enctype="multipart/form-data">
+				<div class="modal-body">
+					<div class="container-fluid">
+						{% csrf_token %}
+						<div class="form-row form-group">
+							<div class="col input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text">Name</span>
+								</div>
+								<input type="text" class="form-control" name="name" maxlength="200" placeholder="Name of the template">
+							</div>
+						</div>
+						<div class="form-row form-group">
+							<div class="col-12 col-lg-auto mb-3 mb-lg-0">
+								<div class="input-group">
+								  	<div class="input-group-prepend">
+							    		<span class="input-group-text">HTML snippet</span>
+								  	</div>
+								  	<textarea class="form-control" name="html_template" placeholder="paste the HTML code here" rows="1" style="resize: none;"></textarea>
+								</div>
+							</div>
+							<div class="col-auto d-flex align-items-center">
+								<div class="">or</div>
+							</div>
+							<div class="col">
+								<div class="input-group">
+								  	<div class="input-group-prepend">
+							    		<span class="input-group-text">HTML file</span>
+								  	</div>
+									<label class="custom-file">
+										<input type="file" name="file_template" class="custom-file-input">
+										<span class="custom-file-label"></span>
+									</label>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" name="task" value="add_template_global" class="btn btn-primary">Add</button>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
 <div class="modal fade" tabindex="-1" id="modal_add_template_hit">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
@@ -600,6 +605,63 @@
 				</div>
 				<div class="modal-footer">
 					<button type="submit" name="task" value="add_template_assignment" class="btn btn-primary">Add</button>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" tabindex="-1" id="modal_update_template_global">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Update global template</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<form method="post" enctype="multipart/form-data">
+				<div class="modal-body">
+					<div class="container-fluid">
+						{% csrf_token %}
+						<input type="hidden" name="id">
+						<div class="form-row form-group">
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text">Name</span>
+								</div>
+								<input type="text" class="form-control" name="name" maxlength="200" placeholder="Name of the template">
+							</div>
+						</div>
+						<div class="form-row form-group">
+							<div class="col-12 col-lg-auto mb-3 mb-lg-0">
+								<div class="input-group">
+								  	<div class="input-group-prepend">
+							    		<span class="input-group-text">HTML snippet</span>
+								  	</div>
+								  	<textarea class="form-control" name="html_template" placeholder="paste the HTML code here" rows="1" style="resize: none;"></textarea>
+								</div>
+							</div>
+							<div class="col-auto d-flex align-items-center">
+								<div class="">or</div>
+							</div>
+							<div class="col">
+								<div class="input-group">
+								  	<div class="input-group-prepend">
+							    		<span class="input-group-text">HTML file</span>
+								  	</div>
+									<label class="custom-file">
+										<input type="file" name="file_template" class="custom-file-input">
+										<span class="custom-file-label"></span>
+									</label>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" name="task" value="update_template_global" class="btn btn-primary">Update</button>
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 				</div>
 			</form>

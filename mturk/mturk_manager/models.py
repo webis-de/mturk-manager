@@ -21,6 +21,7 @@ class m_Project(models.Model):
     fk_template_main = models.OneToOneField('m_Template', on_delete=models.SET_NULL, null=True, related_name='project')
     fk_template_assignment_main = models.OneToOneField('m_Template_Assignment', on_delete=models.SET_NULL, null=True, related_name='project')
     fk_template_hit_main = models.OneToOneField('m_Template_Hit', on_delete=models.SET_NULL, null=True, related_name='project')
+    fk_template_global_main = models.OneToOneField('m_Template_Global', on_delete=models.SET_NULL, null=True, related_name='project')
     fk_message_reject_default = models.OneToOneField('m_Message_Reject', on_delete=models.SET_NULL, null=True, related_name='project')
     fk_message_block_default = models.OneToOneField('m_Message_Block', on_delete=models.SET_NULL, null=True, related_name='project')
 
@@ -77,6 +78,14 @@ class m_Template_Hit(models.Model):
     fk_project = models.ForeignKey('m_Project', on_delete=models.CASCADE, related_name='templates_hit')
     template = models.TextField()
     is_active = models.BooleanField(default=True)
+
+class m_Template_Global(models.Model):
+    class Meta:
+        unique_together = ("name", "fk_project")
+
+    name = models.CharField(max_length=200)
+    fk_project = models.ForeignKey('m_Project', on_delete=models.CASCADE, related_name='templates_global')
+    template = models.TextField()
 
 class m_Assignment(models.Model):
     class Meta:
