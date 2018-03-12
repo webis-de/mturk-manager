@@ -54,3 +54,13 @@ html {
 	border-radius: 0 0.2rem 0.2rem 0;
     font-size: .875rem;
 }
+
+#page_project #table_stats thead tr:nth-child(1) th {
+	border-bottom: none;
+}
+
+#page_project #table_stats thead tr:nth-child(2) th:nth-child(1),
+#page_project #table_stats thead tr:nth-child(2) th:nth-child(2),
+#page_project #table_stats thead tr:nth-child(2) th:nth-child(3) {
+	border-top: none;
+}
