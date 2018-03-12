@@ -58,6 +58,14 @@ glob_dict_settings = {
         'reviewer_score': {
             'display_name': 'Score',
             'type': 'number'
+        },
+        'fk_hit__parameters': {
+            'display_name': 'Question',
+            'type': 'text'
+        },
+        'answer': {
+            'display_name': 'Answer',
+            'type': 'text'
         }
     },
     'id': 'id_assignment',
@@ -69,6 +77,8 @@ glob_dict_settings = {
         'fk_hit__datetime_creation',
         'fk_hit__datetime_expiration',
         'reviewer_score',
+        'fk_hit__parameters',
+        'answer',
     ],
     'page_size': 25,
     'filters': [

@@ -37,14 +37,14 @@ def settings(request):
 
 def update_projects(request):
     # for project in m_Project.objects.filter(name='test'):
-    # try:
-    for project in m_Project.objects.filter(version__lt=settings_django.VERSION_PROJECT):
-        update_project(project)
-    # except Exception as e:
-    #     # print(e)
-    #     messages.error(request, 'The upgrade process failed!')
-    # else:
-    #     messages.success(request, 'All projects were updated to the most recent version.')
+    try:
+        for project in m_Project.objects.filter(version__lt=settings_django.VERSION_PROJECT):
+            update_project(project)
+    except Exception as e:
+        # print(e)
+        messages.error(request, 'The upgrade process failed!')
+    else:
+        messages.success(request, 'All projects were updated to the most recent version.')
 
 
     glob_manager_data.check_for_new_corpora()
