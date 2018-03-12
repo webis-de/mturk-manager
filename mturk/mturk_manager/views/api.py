@@ -25,7 +25,7 @@ def api(request, name):
     return JsonResponse({})
 
 def api_assignments_real_approved(request, name):
-    dict_result = {} 
+    dict_result = {}
 
     queryset = m_Assignment.objects.filter(
         fk_hit__fk_batch__fk_project__name=name,

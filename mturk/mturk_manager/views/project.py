@@ -4,24 +4,22 @@ from mturk_manager.models import *
 from viewer.models import *
 from django.urls import reverse
 from django.core.exceptions import ObjectDoesNotExist
-from django.db.models import F, Value, Count, Q, Sum, IntegerField, ExpressionWrapper
-from django.db.models.functions import Concat
+from django.db.models import F, Value, Count, Q, Sum, IntegerField
 import urllib.parse
-from django.utils.html import escape
 from django.db import IntegrityError
 from botocore.exceptions import ClientError
 import csv
 import io
 import random
-import html
 import datetime, pytz
 import json
-from django.conf import settings as settings_django
-import time
+import os
 from django.contrib import messages, humanize
 import xmltodict
 import hashlib
 from viewer.views.shared_code import glob_manager_data
+from mturk.settings import BASE_DIR
+import reviewer
 # from django.template.defaultfilters import apnumber
 
 glob_prefix_name_tag_batch = 'batch_'
@@ -66,7 +64,7 @@ def project(request, name):
         if request.POST['task'] == 'synchronize_database':
             synchronize_database(db_obj_project, request, True)
             synchronize_database(db_obj_project, request, False)
-
+            update_scores(db_obj_project)
         if request.POST['task'] == 'create_batch':
             create_batch(db_obj_project, request)
         elif request.POST['task'] == 'add_template':
@@ -187,6 +185,35 @@ def project(request, name):
     context['db_obj_project'] = db_obj_project
     context['info_texts'] = code_shared.get_info_texts()
     return render(request, 'mturk_manager/project.html', context)
+
+def update_scores(db_obj_project):
+    db_path = os.path.join(BASE_DIR, "viewer", "reviewerdata", "tweet_database.sqlite3")
+    model_path = os.path.join(BASE_DIR, "viewer", "reviewerdata", "model.pickle")
+
+    assert(os.path.isfile(db_path))
+    assert(os.path.isfile(model_path))
+
+    data = m_Assignment.objects.filter(
+        fk_hit__fk_batch__fk_project__name=db_obj_project.name,
+        # corpus_viewer_tags__name="submitted"
+    ).select_related("fk_hit")
+    for assignment in data:
+        params_dict = json.loads(assignment.fk_hit.parameters)
+        answers_dict = json.loads(assignment.answer)
+        answers = []
+        for key in answers_dict:
+            if not key.startswith("is_clickbait"):
+                continue
+            index = key[len("is_clickbait_"):]
+            answers.append((params_dict["tweet{}_id".format(index)],
+                            float(answers_dict["is_clickbait_{}".format(index)]) / 3.0))
+        assignment.reviewer_score = reviewer.review_hit(
+            db_path,
+            model_path,
+            assignment.fk_worker.name,
+            answers
+        )
+        assignment.save()
 
 def import_csv(db_obj_project, request):
     if 'file_csv' in request.FILES:
