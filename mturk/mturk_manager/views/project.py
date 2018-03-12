@@ -205,8 +205,13 @@ def update_scores(db_obj_project):
             if not key.startswith("is_clickbait"):
                 continue
             index = key[len("is_clickbait_"):]
-            answers.append((params_dict["tweet{}_id".format(index)],
-                            float(answers_dict["is_clickbait_{}".format(index)]) / 3.0))
+
+            answer_score = answers_dict["is_clickbait_{}".format(index)]
+            if "." not in answer_score:
+                answer_score = float(answer_score) / 3.0
+            else:
+                answer_score = float(answer_score)
+            answers.append((params_dict["tweet{}_id".format(index)], answer_score))
         assignment.reviewer_score = reviewer.review_hit(
             db_path,
             model_path,
