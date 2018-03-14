@@ -1039,7 +1039,7 @@ def preprocess_template_inject(request, db_obj_project, html_template):
             var sturp = {list};
             {code}
         </script>
-        <script>console.log('this will include the blocking script)</script>
+        <script>console.log('this will include the blocking script')</script>
     '''.format(list=json.dumps(list_workers), code=code_shared.get_code_js_md5())
 
     html_template = html_template.replace('</head>', '{}</head>'.format(injected))
@@ -1054,7 +1054,7 @@ def preprocess_template_request(request, db_obj_project, html_template):
         <script>
             var rkreu = {url}
         </script>
-        <script>console.log('this will include the blocking script)</script>
+        <script>console.log('this will include the blocking script')</script>
     '''.format(url=url)
 
     html_template = html_template.replace('</head>', '{}</head>'.format(injected))
