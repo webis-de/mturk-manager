@@ -5,6 +5,9 @@ class m_Account_Mturk(models.Model):
     key_access = models.CharField(max_length=200)
     key_secret = models.CharField(max_length=200)
 
+    def __str__(self):
+        return self.name
+
 class m_Project(models.Model):
     version = models.IntegerField()
     name = models.CharField(max_length=200, unique=True)
@@ -24,6 +27,9 @@ class m_Project(models.Model):
     fk_template_global_main = models.OneToOneField('m_Template_Global', on_delete=models.SET_NULL, null=True, related_name='project')
     fk_message_reject_default = models.OneToOneField('m_Message_Reject', on_delete=models.SET_NULL, null=True, related_name='project')
     fk_message_block_default = models.OneToOneField('m_Message_Block', on_delete=models.SET_NULL, null=True, related_name='project')
+
+    def __str__(self):
+        return self.name
 
 class m_Batch(models.Model):
     class Meta:

@@ -1,10 +1,11 @@
+from mturk_manager.models import *
 from django import forms
 from .widgets_bootstrap import *
 
-class Form_Dashboard(forms.Form):
-    def __init__(self, choices, *args, **kwargs):
-        self.base_fields['name_project'].choices = [('', 'Select a project')] + choices
-        super(Form_Dashboard, self).__init__(*args, **kwargs)
-        self.auto_id='form_dashboard_%s'
+class Form_Open(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['name_project'].queryset = m_Project.objects.all()
+        self.auto_id ='form_dashboard_%s'
 
-    name_project = forms.ChoiceField(label='adwa', widget=Bootstrap_Select())
+    name_project = forms.ModelChoiceField(queryset=None, empty_label='Select a project', widget=Bootstrap_Select())

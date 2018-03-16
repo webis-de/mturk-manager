@@ -6,6 +6,7 @@
 		<div class="col d-flex justify-content-center">
 			<form method="post">
 				{% csrf_token %}
+				
 				<h1>New project</h1>
 				{% if success == False %}
 					<div class="alert alert-danger" role="alert">
@@ -13,27 +14,24 @@
 					</div>
 				{% endif %}
 
+
 				<fieldset>
 					<!-- <legend>General</legend> -->
 					<div class="form-group">
 						<div class="input-group">
 							<div class="input-group-prepend">
-								<span class="input-group-text">Name</span>
+								<label for="{{ form.name.id_for_label }}" class="input-group-text">Name</label>
 							</div>
-							<input type="text" class="form-control" name="name" maxlength="200" placeholder="Name of the project">
+							{{ form.name }}
 						</div>
 					</div>
 
 					<div class="form-row form-group">
 						<div class="col input-group">
 							<div class="input-group-prepend">
-								<label class="input-group-text">Account</label>
+								<label for="{{ form.account_mturk.id_for_label }}" class="input-group-text">Account</label>
 							</div>
-							<select class="custom-select" name="name_account_mturk">
-							{% for account_mturk in queryset_account_mturk %}
-					    		<option value="{{ account_mturk.name }}">{{ account_mturk.name }}</option>
-							{% endfor %}
-							</select>
+							{{ form.account_mturk }}
 						</div>
 					</div>
 				</fieldset>
