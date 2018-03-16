@@ -5,7 +5,10 @@ from viewer.views.shared_code import glob_manager_data
 from django.urls import reverse
 from django.conf import settings
 import urllib.parse
+from django.db import IntegrityError
 import json
+from django.contrib import messages
+from mturk_manager.forms import *
 
 glob_dict_settings = {
     # possible values: 'csv-file', 'ldjson-file', 'custom', 'database'
@@ -293,35 +296,37 @@ glob_dict_settings_workers = {
 
 def create(request):
     context = {}
-    context['queryset_account_mturk'] = m_Account_Mturk.objects.all()
 
     if request.method == 'POST':
-        print(request.COOKIES)
-        print(request.POST)
-        print(request.FILES)
-        if not verify_input(request) == True:
-            context['success'] = False
-            return render(request, 'mturk_manager/create.html', context)
-            
-        create_project(request)
+        form = Form_Create_Project(request.POST)
+        if form.is_valid():
+            try:
+                create_project(form, request)
+            except IntegrityError:
+                messages.error(request, 'A project with this name already exists')
+                return redirect('mturk_manager:create')
 
-        context['success'] = True
-        return redirect('mturk_manager:project', name=urllib.parse.quote(request.POST['name'], safe=''))
+            return redirect('mturk_manager:project', name=urllib.parse.quote(form.cleaned_data['name'], safe=''))
+        else:
+            return redirect('mturk_manager:create')
+    else:
+        form = Form_Create_Project()
     
-
+    context['form'] = form
     return render(request, 'mturk_manager/create.html', context)
 
-def create_project(request):
-    db_obj_account_mturk = m_Account_Mturk.objects.get(name=request.POST['name_account_mturk'])
+def create_project(form, request):
+    db_obj_account_mturk = form.cleaned_data['account_mturk']
+    name_project = form.cleaned_data['name']
 
     db_obj_project = m_Project.objects.create(
         version=settings.VERSION_PROJECT,
-        name=request.POST['name'],
+        name=name_project,
         fk_account_mturk = db_obj_account_mturk,
     )
 
-    add_corpus_assignments(request)
-    add_corpus_workers(request)
+    add_corpus_assignments(name_project)
+    add_corpus_workers(name_project)
     glob_manager_data.check_for_new_corpora()
     
     m_Template_Assignment.objects.create(
@@ -339,46 +344,46 @@ def create_project(request):
     )
 
     m_Tag.objects.create(
-        key_corpus=request.POST['name'],
+        key_corpus=name_project,
         name='submitted',
         color='#17a2b8'
     )
     m_Tag.objects.create(
-        key_corpus=request.POST['name'],
+        key_corpus=name_project,
         name='rejected',
         color='#dc3545'
     )
     m_Tag.objects.create(
-        key_corpus=request.POST['name'],
+        key_corpus=name_project,
         name='approved',
         color='#28a745'
     )
     m_Tag.objects.create(
-        key_corpus=request.POST['name'],
+        key_corpus=name_project,
         name='rejected externally',
         color='#dc3545'
     )
     m_Tag.objects.create(
-        key_corpus=request.POST['name'],
+        key_corpus=name_project,
         name='approved externally',
         color='#28a745'
     )
 
-def add_corpus_workers(request):
+def add_corpus_workers(name_project):
     dict_settings = glob_dict_settings_workers.copy()
     dict_settings['name'] = 'Workers'
 
     dict_settings['urls_header'] = [
         {
-            'link': reverse('mturk_manager:project', args=[request.POST['name']]),
+            'link': reverse('mturk_manager:project', args=[name_project]),
             'name': 'Project'
         },
         {
-            'link': reverse('viewer:index', args=[request.POST['name']]),
+            'link': reverse('viewer:index', args=[name_project]),
             'name': 'Assignments'
         },
         {
-            'link': reverse('viewer:index', args=[request.POST['name'] + '_workers']),
+            'link': reverse('viewer:index', args=[name_project + '_workers']),
             'name': 'Workers'
         },
         {
@@ -396,28 +401,28 @@ def add_corpus_workers(request):
     ]
     
     for key, value in dict_settings['database_filters'].items():
-        dict_settings['database_filters'][key] = dict_settings['database_filters'][key].replace('PLACEHOLDER_NAME', request.POST['name'])
+        dict_settings['database_filters'][key] = dict_settings['database_filters'][key].replace('PLACEHOLDER_NAME', name_project)
     for card in dict_settings['cards']:
         for key, value in card.items():
-            card[key] = card[key].replace('PLACEHOLDER_NAME', request.POST['name'])
+            card[key] = card[key].replace('PLACEHOLDER_NAME', name_project)
     
-    glob_manager_data.add_settings_corpus(request.POST['name'] + '_workers', dict_settings)
+    glob_manager_data.add_settings_corpus(name_project + '_workers', dict_settings)
     
-def add_corpus_assignments(request):
+def add_corpus_assignments(name_project):
     dict_settings = glob_dict_settings.copy()
-    dict_settings['name'] = request.POST['name']
+    dict_settings['name'] = name_project
 
     dict_settings['urls_header'] = [
         {
-            'link': reverse('mturk_manager:project', args=[request.POST['name']]),
+            'link': reverse('mturk_manager:project', args=[name_project]),
             'name': 'Project'
         },
         {
-            'link': reverse('viewer:index', args=[request.POST['name']]),
+            'link': reverse('viewer:index', args=[name_project]),
             'name': 'Assignments'
         },
         {
-            'link': reverse('viewer:index', args=[request.POST['name'] + '_workers']),
+            'link': reverse('viewer:index', args=[name_project + '_workers']),
             'name': 'Workers'
         },
         {
@@ -435,28 +440,19 @@ def add_corpus_assignments(request):
     ]
 
     for key, value in dict_settings['database_filters'].items():
-        dict_settings['database_filters'][key] = dict_settings['database_filters'][key].replace('PLACEHOLDER_NAME', request.POST['name'])
+        dict_settings['database_filters'][key] = dict_settings['database_filters'][key].replace('PLACEHOLDER_NAME', name_project)
     for card in dict_settings['cards']:
         for key, value in card.items():
-            card[key] = card[key].replace('PLACEHOLDER_NAME', request.POST['name'])
+            card[key] = card[key].replace('PLACEHOLDER_NAME', name_project)
 
     for card in dict_settings['cards']:
         card['content'] = card['content'].replace(
-            'PLACEHOLDER_URL_VIEW', reverse('mturk_manager:view', args=[request.POST['name']])
+            'PLACEHOLDER_URL_VIEW', reverse('mturk_manager:view', args=[name_project])
         ).replace(
-            'PLACEHOLDER_URL_DOWNLOAD', reverse('mturk_manager:download', args=[request.POST['name']])
+            'PLACEHOLDER_URL_DOWNLOAD', reverse('mturk_manager:download', args=[name_project])
         )
 
-    glob_manager_data.add_settings_corpus(request.POST['name'], dict_settings)
-
-def verify_input(request):
-    try:
-        if request.POST['name'].strip() == '':
-            return False
-    except KeyError:
-        return False
-
-    return True
+    glob_manager_data.add_settings_corpus(name_project, dict_settings)
 
 import os
 import csv
