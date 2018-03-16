@@ -15,5 +15,5 @@ urlpatterns = [
     path('project/<str:name>/api/assignments_real_approved', views.api_assignments_real_approved, name='api_assignments_real_approved'),
 
     path('project/<str:name>', views.project, name='project'),
-    path('', views.index, name='index'),
+    path('', views.dashboard, name='index'),
 ]
