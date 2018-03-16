@@ -38,11 +38,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-
 # Application definition
 
 INSTALLED_APPS = [
-    # 'thesis.apps.ThesisConfig',
     'viewer.apps.ViewerConfig',
     'mturk_manager.apps.MturkManagerConfig',
     'django.contrib.admin',
@@ -53,6 +51,31 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
+
+
+import importlib, inspect, sys
+path_plugins = os.path.join(BASE_DIR, '..', 'plugins')
+try:
+    for name_plugin in os.listdir(path_plugins):
+        path_app = os.path.join(BASE_DIR, name_plugin)
+        try:
+            os.symlink(os.path.join(path_plugins, name_plugin), path_app)
+        except FileExistsError:
+            pass
+
+        print('installing plugin \'{}\''.format(name_plugin))
+        name_appsconfig = None
+        module_index_handle = importlib.import_module(name_plugin+'.apps')
+        for name, obj in inspect.getmembers(module_index_handle):
+            if inspect.isclass(obj):
+                if obj.__module__.startswith(name_plugin):
+                    name_appsconfig = obj.__name__
+                    break
+
+        INSTALLED_APPS = ['{}.apps.{}'.format(name_plugin, name_appsconfig)] + INSTALLED_APPS
+
+except FileNotFoundError: 
+    pass
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -157,5 +180,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+# STATIC_ROOT = 'static/'
 
 URL_BLOCK_WORKERS = 'https://webis16.medien.uni-weimar.de'
