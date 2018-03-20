@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"cla",
+				"classes_default"
+			],
+			[
 				"update",
 				"update_config_file"
 			],
@@ -510,10 +514,6 @@
 			[
 				"judg",
 				"judgements_user"
-			],
-			[
-				"tax",
-				"tax_class"
 			]
 		]
 	},
@@ -523,16 +523,8 @@
 			"file": "mturk/mturk_manager/models.py",
 			"settings":
 			{
-				"buffer_size": 5402,
+				"buffer_size": 6120,
 				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "mturk/viewer/models.py",
-			"settings":
-			{
-				"buffer_size": 1160,
 				"line_ending": "Unix"
 			}
 		},
@@ -540,7 +532,7 @@
 			"file": "mturk/mturk_manager/views/create.py",
 			"settings":
 			{
-				"buffer_size": 14111,
+				"buffer_size": 16622,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -566,7 +558,7 @@
 			"file": "mturk/mturk_manager/views/settings.py",
 			"settings":
 			{
-				"buffer_size": 5649,
+				"buffer_size": 5645,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -594,7 +586,61 @@
 			"file": "mturk/mturk_manager/views/project.py",
 			"settings":
 			{
-				"buffer_size": 43782,
+				"buffer_size": 47128,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "mturk/mturk_manager/forms/forms_dashboard.py",
+			"settings":
+			{
+				"buffer_size": 436,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "mturk/mturk_manager/forms/forms_project.py",
+			"settings":
+			{
+				"buffer_size": 2414,
+				"encoding": "UTF-8",
+				"line_ending": "Unix",
+				"name": "forms_project.py"
+			}
+		},
+		{
+			"file": "mturk/mturk_manager/forms/forms_create.py",
+			"settings":
+			{
+				"buffer_size": 553,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "mturk/mturk_manager/forms/__init__.py",
+			"settings":
+			{
+				"buffer_size": 121,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "mturk/mturk_manager/forms/widgets_bootstrap.py",
+			"settings":
+			{
+				"buffer_size": 1457,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "mturk/mturk_manager/views/index.py",
+			"settings":
+			{
+				"buffer_size": 507,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -603,7 +649,7 @@
 			"file": "mturk/mturk_manager/views/code_shared.py",
 			"settings":
 			{
-				"buffer_size": 12884,
+				"buffer_size": 13144,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -621,7 +667,7 @@
 			"file": "mturk/mturk_manager/urls.py",
 			"settings":
 			{
-				"buffer_size": 827,
+				"buffer_size": 831,
 				"line_ending": "Unix"
 			}
 		},
@@ -641,7 +687,16 @@
 			"file": "mturk/mturk_manager/templates/mturk_manager/project.html",
 			"settings":
 			{
-				"buffer_size": 14846,
+				"buffer_size": 14973,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "mturk/mturk_manager/templates/mturk_manager/dashboard.html",
+			"settings":
+			{
+				"buffer_size": 935,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -650,7 +705,7 @@
 			"file": "mturk/mturk_manager/templates/mturk_manager/project_batch.html",
 			"settings":
 			{
-				"buffer_size": 14922,
+				"buffer_size": 19045,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -659,7 +714,7 @@
 			"file": "mturk/mturk_manager/templates/mturk_manager/project_templates.html",
 			"settings":
 			{
-				"buffer_size": 37657,
+				"buffer_size": 39422,
 				"encoding": "UTF-8",
 				"line_ending": "Unix",
 				"name": "project_templates.html"
@@ -678,7 +733,7 @@
 			"file": "mturk/mturk_manager/static/mturk_manager/js/project.js",
 			"settings":
 			{
-				"buffer_size": 2199,
+				"buffer_size": 2613,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -687,7 +742,7 @@
 			"file": "mturk/mturk_manager/static/mturk_manager/css/formats.css",
 			"settings":
 			{
-				"buffer_size": 783,
+				"buffer_size": 1083,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -743,11 +798,7 @@
 		"/home/kritten/Documents/mturk-manager/mturk",
 		"/home/kritten/Documents/mturk-manager/mturk/mturk",
 		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager",
-		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/migrations",
-		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/static",
-		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/static/mturk_manager",
-		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/static/mturk_manager/css",
-		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/static/mturk_manager/js",
+		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/forms",
 		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/templates",
 		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/templates/mturk_manager",
 		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/views",
@@ -756,6 +807,8 @@
 	],
 	"file_history":
 	[
+		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/forms/forms_create.py",
+		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/templates/mturk_manager/create.html",
 		"/home/kritten/Documents/mturk-manager/Batch_2636686_batch_results2.csv",
 		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/views/example.csv",
 		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/views/migrations.py",
@@ -881,9 +934,7 @@
 		"/home/yiro4618/Documents/hiwi/wstud-viewer-framework-django/corpora/wikipedia_talk_labels/attack_annotations.tsv",
 		"/home/yiro4618/Documents/hiwi/wstud-viewer-framework-django/corpora/wikipedia_talk_labels/attack_worker_demographics.tsv",
 		"/home/yiro4618/Documents/hiwi/wstud-viewer-framework-django_live_system/viewer-framework/viewer/views/shared_code.py",
-		"/home/yiro4618/Downloads/test.html",
-		"/home/yiro4618/Documents/hiwi/wstud-viewer-framework-django/cache/settings_viewer_large_corpus.bin",
-		"/home/yiro4618/Documents/hiwi/wstud-viewer-framework-django/cache/settings_viewer_test.ldjson"
+		"/home/yiro4618/Downloads/test.html"
 	],
 	"find":
 	{
@@ -901,6 +952,31 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"fk_template_main",
+			"span",
+			"keywords",
+			"description",
+			"count_assignments",
+			"reward",
+			"description",
+			"title",
+			"name",
+			" ",
+			"messages.wa",
+			"messages.re",
+			"messag",
+			"render",
+			"request",
+			"form.cleaned_data['name']",
+			"request.POST['name']",
+			"name_account_mturk",
+			"verify_input",
+			"span",
+			"account_webis",
+			"dashboard",
+			"name_project",
+			"Form_Create_Project",
+			"Form_Dashboard",
 			"approved",
 			"submitted",
 			"%c",
@@ -973,7 +1049,7 @@
 	"groups":
 	[
 		{
-			"selected": 8,
+			"selected": 20,
 			"sheets":
 			[
 				{
@@ -982,15 +1058,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 5402,
+						"buffer_size": 6120,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								5034,
-								5034
+								3768,
+								3788
 							]
 						],
 						"settings":
@@ -1000,57 +1076,27 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1471.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "mturk/viewer/models.py",
-					"semi_transient": true,
-					"settings":
-					{
-						"buffer_size": 1160,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1021,
-								1031
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Python/Python.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 648.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 2,
 					"type": "text"
 				},
 				{
-					"buffer": 2,
+					"buffer": 1,
 					"file": "mturk/mturk_manager/views/create.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 14111,
+						"buffer_size": 16622,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								9712,
-								9734
+								11952,
+								11952
 							]
 						],
 						"settings":
@@ -1060,14 +1106,14 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 4968.0,
+						"translation.y": 162.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 11,
 					"type": "text"
 				},
 				{
-					"buffer": 3,
+					"buffer": 2,
 					"file": "README.md",
 					"semi_transient": false,
 					"settings":
@@ -1091,11 +1137,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 16,
+					"stack_index": 24,
 					"type": "text"
 				},
 				{
-					"buffer": 4,
+					"buffer": 3,
 					"file": "/home/kritten/Documents/examples.csv",
 					"semi_transient": false,
 					"settings":
@@ -1119,24 +1165,24 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 18,
+					"stack_index": 10,
 					"type": "text"
 				},
 				{
-					"buffer": 5,
+					"buffer": 4,
 					"file": "mturk/mturk_manager/views/settings.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 5649,
+						"buffer_size": 5645,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2989,
-								2989
+								0,
+								0
 							]
 						],
 						"settings":
@@ -1149,11 +1195,11 @@
 						"translation.y": 864.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 14,
+					"stack_index": 22,
 					"type": "text"
 				},
 				{
-					"buffer": 6,
+					"buffer": 5,
 					"file": "mturk/mturk_manager/views/documentation.py",
 					"semi_transient": false,
 					"settings":
@@ -1179,11 +1225,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 6,
+					"stack_index": 16,
 					"type": "text"
 				},
 				{
-					"buffer": 7,
+					"buffer": 6,
 					"file": "mturk/mturk_manager/templates/mturk_manager/documentation.html",
 					"semi_transient": false,
 					"settings":
@@ -1210,24 +1256,24 @@
 						"translation.y": 551.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 5,
+					"stack_index": 15,
 					"type": "text"
 				},
 				{
-					"buffer": 8,
+					"buffer": 7,
 					"file": "mturk/mturk_manager/views/project.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 43782,
+						"buffer_size": 47128,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								16035,
-								16035
+								1412,
+								1412
 							]
 						],
 						"settings":
@@ -1237,27 +1283,202 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 6104.0,
+						"translation.y": 594.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 4,
 					"type": "text"
 				},
 				{
-					"buffer": 9,
-					"file": "mturk/mturk_manager/views/code_shared.py",
+					"buffer": 8,
+					"file": "mturk/mturk_manager/forms/forms_dashboard.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 12884,
+						"buffer_size": 436,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2083,
-								2083
+								190,
+								190
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "mturk/mturk_manager/forms/forms_project.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2414,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1178,
+								1205
+							]
+						],
+						"settings":
+						{
+							"auto_name": "forms_project.py",
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 54.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "mturk/mturk_manager/forms/forms_create.py",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 553,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								463,
+								463
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "mturk/mturk_manager/forms/__init__.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 121,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								121,
+								121
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 12,
+					"type": "text"
+				},
+				{
+					"buffer": 12,
+					"file": "mturk/mturk_manager/forms/widgets_bootstrap.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1457,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								558,
+								558
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 13,
+					"file": "mturk/mturk_manager/views/index.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 507,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								125,
+								125
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 13,
+					"type": "text"
+				},
+				{
+					"buffer": 14,
+					"file": "mturk/mturk_manager/views/code_shared.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 13144,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
 							]
 						],
 						"settings":
@@ -1270,11 +1491,11 @@
 						"translation.y": 702.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 14,
 					"type": "text"
 				},
 				{
-					"buffer": 10,
+					"buffer": 15,
 					"file": "Batch_2636686_batch_results.csv",
 					"semi_transient": false,
 					"settings":
@@ -1298,24 +1519,24 @@
 						"translation.y": 93403.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 7,
+					"stack_index": 17,
 					"type": "text"
 				},
 				{
-					"buffer": 11,
+					"buffer": 16,
 					"file": "mturk/mturk_manager/urls.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 827,
+						"buffer_size": 831,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								132,
-								136
+								0,
+								0
 							]
 						],
 						"settings":
@@ -1328,11 +1549,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 13,
+					"stack_index": 21,
 					"type": "text"
 				},
 				{
-					"buffer": 12,
+					"buffer": 17,
 					"file": "mturk/mturk_manager/views/do_vandalism.html",
 					"semi_transient": false,
 					"settings":
@@ -1358,24 +1579,24 @@
 						"translation.y": 743.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 15,
+					"stack_index": 23,
 					"type": "text"
 				},
 				{
-					"buffer": 13,
+					"buffer": 18,
 					"file": "mturk/mturk_manager/templates/mturk_manager/project.html",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 14846,
+						"buffer_size": 14973,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								7673,
-								7673
+								1958,
+								1958
 							]
 						],
 						"settings":
@@ -1384,27 +1605,27 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 3176.0,
+						"translation.y": 594.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 8,
+					"stack_index": 9,
 					"type": "text"
 				},
 				{
-					"buffer": 14,
-					"file": "mturk/mturk_manager/templates/mturk_manager/project_batch.html",
+					"buffer": 19,
+					"file": "mturk/mturk_manager/templates/mturk_manager/dashboard.html",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 14922,
+						"buffer_size": 935,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1310,
-								1310
+								423,
+								435
 							]
 						],
 						"settings":
@@ -1416,24 +1637,61 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 10,
+					"stack_index": 8,
 					"type": "text"
 				},
 				{
-					"buffer": 15,
-					"file": "mturk/mturk_manager/templates/mturk_manager/project_templates.html",
+					"buffer": 20,
+					"file": "mturk/mturk_manager/templates/mturk_manager/project_batch.html",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 37657,
+						"buffer_size": 19045,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								22920,
-								23306
+								3428,
+								3428
+							],
+							[
+								3506,
+								3506
+							],
+							[
+								3572,
+								3572
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 6138.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 21,
+					"file": "mturk/mturk_manager/templates/mturk_manager/project_templates.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 39422,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
 							]
 						],
 						"settings":
@@ -1443,14 +1701,14 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 10309.0,
+						"translation.y": 10390.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 9,
+					"stack_index": 18,
 					"type": "text"
 				},
 				{
-					"buffer": 16,
+					"buffer": 22,
 					"file": "mturk/mturk_manager/static/mturk_manager/js/main.js",
 					"semi_transient": false,
 					"settings":
@@ -1475,24 +1733,24 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 11,
+					"stack_index": 19,
 					"type": "text"
 				},
 				{
-					"buffer": 17,
+					"buffer": 23,
 					"file": "mturk/mturk_manager/static/mturk_manager/js/project.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2199,
+						"buffer_size": 2613,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1765,
-								1765
+								0,
+								0
 							]
 						],
 						"settings":
@@ -1504,32 +1762,24 @@
 						"translation.y": 162.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 12,
+					"stack_index": 20,
 					"type": "text"
 				},
 				{
-					"buffer": 18,
+					"buffer": 24,
 					"file": "mturk/mturk_manager/static/mturk_manager/css/formats.css",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 783,
+						"buffer_size": 1083,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								164,
-								164
-							],
-							[
-								208,
-								208
-							],
-							[
-								263,
-								263
+								0,
+								0
 							]
 						],
 						"settings":
@@ -1540,7 +1790,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 17,
+					"stack_index": 7,
 					"type": "text"
 				}
 			]

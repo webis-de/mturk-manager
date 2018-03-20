@@ -10,6 +10,7 @@ import urllib.parse
 from django.utils.html import escape
 from django.db import IntegrityError
 from botocore.exceptions import ClientError
+from mturk_manager.forms import *
 import csv
 import io
 import random
@@ -123,6 +124,9 @@ def project(request, name):
         # ***REMOVED***
         return redirect('mturk_manager:project', name=name_quoted)
 
+    else:
+        form = Form_Update_Project(instance=db_obj_project)
+
     dict_stats = get_stats(db_obj_project, queryset)
 
     count_assignments_new = dict_stats['count_assignments_new']
@@ -192,6 +196,7 @@ def project(request, name):
     context['dict_stats'] = dict_stats
     context['db_obj_project'] = db_obj_project
     context['info_texts'] = code_shared.get_info_texts()
+    context['form'] = form
     return render(request, 'mturk_manager/project.html', context)
 
 def import_csv(db_obj_project, request):
