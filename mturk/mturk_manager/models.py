@@ -67,6 +67,9 @@ class m_Template(models.Model):
     fk_template_hit = models.ForeignKey('m_Template_Hit', on_delete=models.CASCADE, related_name='templates_used')
     json_dict_parameters = models.TextField()
 
+    def __str__(self):
+        return self.name
+
 class m_Template_Assignment(models.Model):
     class Meta:
         unique_together = ("name", "fk_project")
@@ -75,6 +78,9 @@ class m_Template_Assignment(models.Model):
     fk_project = models.ForeignKey('m_Project', on_delete=models.CASCADE, related_name='templates_assignment')
     template = models.TextField()
     is_active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.name
 
 class m_Template_Hit(models.Model):
     class Meta:
@@ -85,6 +91,9 @@ class m_Template_Hit(models.Model):
     template = models.TextField()
     is_active = models.BooleanField(default=True)
 
+    def __str__(self):
+        return self.name
+
 class m_Template_Global(models.Model):
     class Meta:
         unique_together = ("name", "fk_project")
@@ -92,6 +101,9 @@ class m_Template_Global(models.Model):
     name = models.CharField(max_length=200)
     fk_project = models.ForeignKey('m_Project', on_delete=models.CASCADE, related_name='templates_global')
     template = models.TextField()
+
+    def __str__(self):
+        return self.name
 
 class m_Assignment(models.Model):
     class Meta:
@@ -106,7 +118,6 @@ class m_Assignment(models.Model):
     # is_approved = models.NullBooleanField()
     answer = models.TextField()
     corpus_viewer_tags = models.ManyToManyField('viewer.m_Tag', related_name='corpus_viewer_items')
-
 
 class m_Worker(models.Model):
     class Meta:
