@@ -111,7 +111,9 @@ def project(request, name):
         elif request.POST['task'] == 'delete_messages_reject':
             delete_messages_reject(db_obj_project, request)
         elif request.POST['task'] == 'update_settings':
-            update_settings(db_obj_project, request)
+            form = Form_Update_Project(request.POST, instance=db_obj_project)
+            if form.is_valid():
+                form.save()
         elif request.POST['task'] == 'delete_project':
             return delete_project(db_obj_project, request)
         elif request.POST['task'] == 'clear_sandbox':
@@ -125,7 +127,7 @@ def project(request, name):
         return redirect('mturk_manager:project', name=name_quoted)
 
     else:
-        form = Form_Update_Project(instance=db_obj_project)
+        form_update_project = Form_Update_Project(instance=db_obj_project)
 
     dict_stats = get_stats(db_obj_project, queryset)
 
@@ -196,7 +198,7 @@ def project(request, name):
     context['dict_stats'] = dict_stats
     context['db_obj_project'] = db_obj_project
     context['info_texts'] = code_shared.get_info_texts()
-    context['form'] = form
+    context['form_update_project'] = form_update_project
     return render(request, 'mturk_manager/project.html', context)
 
 def import_csv(db_obj_project, request):
@@ -976,62 +978,6 @@ def add_template(db_obj_project, request):
         return
 
     messages.success(request, 'Added template successfully')
-
-def update_settings(db_obj_project, request):
-    code_shared.validate_form(request, [
-        {'type':'string', 'keys':['title'], 'message': 'Invalid title', 'state': 'warning'},
-        {'type':'string', 'keys':['description'], 'message': 'Invalid description', 'state': 'warning'},
-        {'type':'string', 'keys':['reward'], 'message': 'Invalid reward', 'state': 'warning'},
-        {'type':'number', 'keys':['count_assignments'], 'message': 'Invalid number of assignments', 'state': 'warning'},
-        {'type':'number', 'keys':['lifetime'], 'message': 'Invalid hit lifetime', 'state': 'warning'},
-        {'type':'number', 'keys':['duration'], 'message': 'Invalid hit duration', 'state': 'warning'},
-        {'type':'string', 'keys':['use_sandbox'], 'message': 'Invalid sandbox mode', 'state': 'warning'},
-        {'type':'string', 'keys':['template_main'], 'message': 'Invalid main template', 'state': 'warning'},
-    ])
-
-    db_obj_project.title = request.POST['title']
-    db_obj_project.description = request.POST['description']
-    db_obj_project.keywords = request.POST['keywords']
-    db_obj_project.reward = request.POST['reward']
-    db_obj_project.lifetime = request.POST['lifetime']
-    db_obj_project.duration = request.POST['duration']
-    db_obj_project.count_assignments = request.POST['count_assignments']
-    db_obj_project.block_workers = request.POST['block_workers_default']
-    db_obj_project.use_sandbox = True if request.POST['use_sandbox'] == '1' else False
-
-    if request.POST['message_block_default'] != '':
-        db_obj_project.fk_message_block_default = m_Message_Block.objects.get(fk_project=db_obj_project, id=request.POST['message_block_default'])
-    else:
-        db_obj_project.fk_message_block_default = None
-
-    if request.POST['message_reject_default'] != '':
-        db_obj_project.fk_message_reject_default = m_Message_Reject.objects.get(fk_project=db_obj_project, id=request.POST['message_reject_default'])
-    else:
-        db_obj_project.fk_message_reject_default = None
-
-    if request.POST['template_main'] != '':
-        db_obj_project.fk_template_main = m_Template.objects.get(fk_project=db_obj_project, id=request.POST['template_main'])
-    else:
-        db_obj_project.fk_template_main = None
-
-    if request.POST['template_assignment_main'] != '':
-        db_obj_project.fk_template_assignment_main = m_Template_Assignment.objects.get(fk_project=db_obj_project, id=request.POST['template_assignment_main'])
-    else:
-        db_obj_project.fk_template_assignment_main = None
-
-    if request.POST['template_hit_main'] != '':
-        db_obj_project.fk_template_hit_main = m_Template_Hit.objects.get(fk_project=db_obj_project, id=request.POST['template_hit_main'])
-    else:
-        db_obj_project.fk_template_hit_main = None
-
-    if request.POST['template_global_main'] != '':
-        db_obj_project.fk_template_global_main = m_Template_Global.objects.get(fk_project=db_obj_project, id=request.POST['template_global_main'])
-    else:
-        db_obj_project.fk_template_global_main = None
-        
-    db_obj_project.save()
-
-    messages.success(request, 'Updated settings successfully')
 
 def preprocess_template_inject(request, db_obj_project, html_template):
     queryset = m_Worker.objects.filter(fk_project=db_obj_project, is_blocked=True)

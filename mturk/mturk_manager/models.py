@@ -132,7 +132,13 @@ class m_Worker(models.Model):
 class m_Message_Reject(models.Model):
     fk_project = models.ForeignKey('m_Project', on_delete=models.CASCADE, related_name='messages_reject')
     message = models.CharField(max_length=1024)
+    
+    def __str__(self):
+        return self.message
 
 class m_Message_Block(models.Model):
     fk_project = models.ForeignKey('m_Project', on_delete=models.CASCADE, related_name='messages_block')
     message = models.TextField()
+    
+    def __str__(self):
+        return self.message

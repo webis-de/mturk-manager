@@ -8,12 +8,28 @@ class Form_Update_Project(forms.ModelForm):
         print(kwargs)
         super().__init__(*args, **kwargs)
         self.fields['fk_template_main'].queryset = kwargs['instance'].templates
-        self.fields['fk_template_assignment_main'].queryset = kwargs['instance'].templates_assignment
+        self.fields['fk_template_assignment_main'].queryset = kwargs['instance'].templates_assignment.exclude(name__startswith='default_template_assignment__')
+        self.fields['fk_template_hit_main'].queryset = kwargs['instance'].templates_hit.exclude(name__startswith='default_template_hit__')
+        self.fields['fk_template_global_main'].queryset = kwargs['instance'].templates_global
+        self.fields['fk_message_reject_default'].queryset = kwargs['instance'].messages_reject
+        self.fields['fk_message_block_default'].queryset = kwargs['instance'].messages_block
         self.auto_id ='form_update_project_%s'
-        
-    fk_template_main = forms.ModelChoiceField(queryset=None, label='Default worker template', empty_label='Please select a template', widget=Bootstrap_Select(small=True))
-    fk_template_assignment_main = forms.ModelChoiceField(queryset=None, label='Default requester assignment template', empty_label='Please select a template', widget=Bootstrap_Select(small=True))
 
+    title = forms.CharField(required=False, widget=Bootstrap_TextInput())
+    description = forms.CharField(required=False, widget=Bootstrap_TextInput())
+    keywords = forms.CharField(required=False, label='Keywords (comma-separated)', widget=Bootstrap_TextInput())
+        
+    fk_template_main = forms.ModelChoiceField(required=False, queryset=None, label='Worker template', empty_label='Please select a template', widget=Bootstrap_Select(small=True))
+    fk_template_assignment_main = forms.ModelChoiceField(required=False, queryset=None, label='Assignment template', empty_label='Please select a template', widget=Bootstrap_Select(small=True))
+    fk_template_hit_main = forms.ModelChoiceField(required=False, queryset=None, label='Hit template', empty_label='Please select a template', widget=Bootstrap_Select(small=True))
+    fk_template_global_main = forms.ModelChoiceField(required=False, queryset=None, label='Global template', empty_label='Please select a template', widget=Bootstrap_Select(small=True))
+    fk_message_reject_default = forms.ModelChoiceField(required=False, queryset=None, label='Reject message', empty_label='Please select a reject message', widget=Bootstrap_Select(small=True))
+    block_workers = forms.ChoiceField(choices=[
+        ('disabled', 'disabled'),
+        ('enabled_inject', 'enabled (inject workers into worker template)'),
+        ('enabled_request', 'enabled (request the server for block status)'),
+    ], label='Block workers', widget=Bootstrap_Select(small=True))
+    fk_message_block_default = forms.ModelChoiceField(required=False, queryset=None, label='Block message', empty_label='Please select a block message', widget=Bootstrap_Select(small=True))
 
     class Meta:
         model = m_Project
@@ -35,18 +51,17 @@ class Form_Update_Project(forms.ModelForm):
             'block_workers',
         ]
         widgets = {
-            'title': Bootstrap_TextInput(),
-            'description': Bootstrap_TextInput(),
+            # 'title': Bootstrap_TextInput(),
+            # 'description': Bootstrap_TextInput(),
             'reward': Bootstrap_NumberInput(attrs={'step': '0.01'}),
             'count_assignments': Bootstrap_NumberInput(),
             'lifetime': Bootstrap_NumberInput(),
             'duration': Bootstrap_NumberInput(),
-            'keywords': Bootstrap_TextInput(),
+            # 'keywords': Bootstrap_TextInput(),
             'use_sandbox': forms.CheckboxInput(),
         }
         labels = {
             'count_assignments': '#Assignements',
-            'keywords': 'Keywords (comma-separated)',
         }
     # def __init__(self, *args, **kwargs):
     #     super().__init__(*args, **kwargs)

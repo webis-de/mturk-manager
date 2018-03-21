@@ -11,7 +11,7 @@ class Bootstrap_Select(forms.Select):
             self.attrs['class'] = classes_default + self.attrs['class']
         except KeyError:
             self.attrs['class'] =  classes_default
-
+            
 class Bootstrap_TextInput(forms.TextInput):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
