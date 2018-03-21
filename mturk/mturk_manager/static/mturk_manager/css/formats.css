@@ -60,7 +60,6 @@ html {
 }
 
 #page_project #table_stats thead tr:nth-child(2) th:nth-child(1),
-#page_project #table_stats thead tr:nth-child(2) th:nth-child(2),
-#page_project #table_stats thead tr:nth-child(2) th:nth-child(3) {
+#page_project #table_stats thead tr:nth-child(2) th:nth-child(2) {
 	border-top: none;
 }

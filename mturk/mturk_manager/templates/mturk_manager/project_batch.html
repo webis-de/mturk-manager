@@ -26,26 +26,31 @@
 					<div class="container-fluid">
 						{% csrf_token %}
 						<div class="form-row form-group">
-							<div class="col input-group input-group-sm">
-								<div class="input-group-prepend">
-									<span class="input-group-text">Name</span>
+							<div class="col">
+								<div class="input-group input-group-sm">
+									<div class="input-group-prepend">
+										<label for="{{ form_create_batch.name.id_for_label }}" class="input-group-text">{{ form_create_batch.name.label }}</label>
+									</div>
+									{{ form_create_batch.name }}
 								</div>
-								<input type="text" class="form-control" name="name" maxlength="200" placeholder="Name of the batch">
 							</div>
 						</div>
+
 						<div class="form-row form-group">
 							<div class="col input-group input-group-sm custom_file_sm">
 							  	<div class="input-group-prepend">
-						    		<span class="input-group-text">CSV file</span>
+						    		<span class="input-group-text">{{ form_create_batch.file_csv.label }}</span>
 							  	</div>
 								<div class="custom-file">
-									<input type="file" name="file_csv" class="custom-file-input" id="modal_create_batch_file">
-									<label class="custom-file-label" for="modal_create_batch_file"></label>
+									{{ form_create_batch.file_csv }}
+									<label class="custom-file-label" for="{{ form_create_batch.file_csv.id_for_label }}"></label>
 								</div>
 							</div>
 						</div>
-						<hr>
-						{% include 'mturk_manager/form_settings_project.html' with form=form_update_project only %}
+							<a href="#" data-toggle="collapse" data-target="#wrapper_override_default_settings">Override default settings</a>
+							<div class="collapse" id="wrapper_override_default_settings">
+								{% include 'mturk_manager/form_settings_project.html' with form=form_create_batch only %}
+							</div>
 					</div>
 				</div>
 				<div class="modal-footer">
