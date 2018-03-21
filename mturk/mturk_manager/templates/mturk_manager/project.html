@@ -16,10 +16,10 @@
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
 <link rel="stylesheet" href="{% static 'mturk_manager/css/sublime.css' %}">
 <div class="container-fluid mb-3" id="page_project">
-	<div class="row">
+	<div class="row mt-3">
 		<div class="col col-lg-6">
 			<div class="table-responsive">
-				<table class="table table-sm table-bordered" id="table_stats">
+				<table class="table table-sm table-bordered mb-0" id="table_stats">
 					<thead>
 						<tr>
 							<th rowspan="2" class="text-center align-middle">
@@ -66,8 +66,8 @@
 				</table>
 			</div>
 		</div>
-		<div class="col-auto">
-			
+		<div class="col">
+			<p class="h1">Balance: <span id="balance_mturk_current"><i class="fas fa-sync fa-spin"></i></span></p>
 		</div>
 	</div>
 	<hr>

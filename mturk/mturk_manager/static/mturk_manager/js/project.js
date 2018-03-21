@@ -60,4 +60,11 @@ $(document).ready(function()
 		modal.find('input[name="id"]').val(id);
 		modal.find('input[name="message"]').val(message);
 	})
+
+	$.ajax({
+        url: window.location.href + '/api/balance',
+        success: function(result) {
+        	$('#balance_mturk_current').text(result.balance + '$');
+        }
+    })
 });
