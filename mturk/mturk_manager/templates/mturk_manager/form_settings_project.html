@@ -1,0 +1,145 @@
+<div class="form-row form-group">
+	<div class="col">
+		<div class="input-group input-group-sm">
+			<div class="input-group-prepend">
+				<label for="{{ form.title.id_for_label }}" class="input-group-text">{{ form.title.label }}</label>
+			</div>
+			{{ form.title }}
+		</div>
+	</div>
+</div>
+<div class="form-row form-group">
+	<div class="col">
+		<div class="input-group input-group-sm">
+			<div class="input-group-prepend">
+				<label for="{{ form.description.id_for_label }}" class="input-group-text">{{ form.description.label }}</label>
+			</div>
+			{{ form.description }}
+		</div>
+	</div>
+</div>
+<div class="form-row form-group">
+	<div class="col-12 col-md-6 mb-3 mb-md-0">
+		<div class="input-group input-group-sm">
+			<div class="input-group-prepend">
+				<label for="{{ form.reward.id_for_label }}" class="input-group-text">{{ form.reward.label }}</label>
+			</div>
+			{{ form.reward }}
+			<div class="input-group-append">
+				<span class="input-group-text">$</span>
+			</div>
+		</div>
+	</div>
+	<div class="col-12 col-md-6">
+		<div class="input-group input-group-sm">
+			<div class="input-group-prepend">
+				<label for="{{ form.count_assignments.id_for_label }}" class="input-group-text">{{ form.count_assignments.label }}</label>
+			</div>
+			{{ form.count_assignments }}
+		</div>
+	</div>
+</div>
+<div class="form-row form-group">
+	<div class="col-12 col-md-6 mb-3 mb-md-0">
+		<div class="input-group input-group-sm">
+			<div class="input-group-prepend">
+				<label for="{{ form.lifetime.id_for_label }}" class="input-group-text">{{ form.lifetime.label }}</label>
+			</div>
+			{{ form.lifetime }}
+			<div class="input-group-append">
+				<span class="input-group-text">s</span>
+			</div>
+		</div>
+	</div>
+	<div class="col-12 col-md-6">
+		<div class="input-group input-group-sm">
+			<div class="input-group-prepend">
+				<label for="{{ form.duration.id_for_label }}" class="input-group-text">{{ form.duration.label }}</label>
+			</div>
+			{{ form.duration }}
+			<div class="input-group-append">
+				<span class="input-group-text">s</span>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="form-row form-group">
+	<div class="col">
+		<div class="input-group input-group-sm">
+			<div class="input-group-prepend">
+				<label for="{{ form.keywords.id_for_label }}" class="input-group-text">{{ form.keywords.label }}</label>
+			</div>
+			{{ form.keywords }}
+		</div>
+	</div>
+</div>
+<div class="form-row form-group">
+	<div class="col">
+		<div class="input-group input-group-sm">
+			<div class="input-group-prepend">
+				<label for="{{ form.use_sandbox.id_for_label }}" class="input-group-text">{{ form.use_sandbox.label }}</label>
+			</div>
+			<div class="input-group-append">
+				<div class="input-group-text">
+					{{ form.use_sandbox }}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="form-row form-group">
+	<div class="col input-group input-group-sm">
+		<div class="input-group-prepend">
+			<label for="{{ form.fk_template_main.id_for_label }}" class="input-group-text">{{ form.fk_template_main.label }}</label>
+		</div>
+		{{ form.fk_template_main }}
+	</div>
+</div>
+<div class="form-row form-group">
+	<div class="col input-group input-group-sm">
+		<div class="input-group-prepend">
+			<label for="{{ form.fk_template_assignment_main.id_for_label }}" class="input-group-text">{{ form.fk_template_assignment_main.label }}</label>
+		</div>
+		{{ form.fk_template_assignment_main }}
+	</div>
+</div>
+<div class="form-row form-group">
+	<div class="col input-group input-group-sm">
+		<div class="input-group-prepend">
+			<label for="{{ form.fk_template_hit_main.id_for_label }}" class="input-group-text">{{ form.fk_template_hit_main.label }}</label>
+		</div>
+		{{ form.fk_template_hit_main }}
+	</div>
+</div>
+<div class="form-row form-group">
+	<div class="col input-group input-group-sm">
+		<div class="input-group-prepend">
+			<label for="{{ form.fk_template_global_main.id_for_label }}" class="input-group-text">{{ form.fk_template_global_main.label }}</label>
+		</div>
+		{{ form.fk_template_global_main }}
+	</div>
+</div>
+<div class="form-row form-group">
+	<div class="col input-group input-group-sm">
+		<div class="input-group-prepend">
+			<label for="{{ form.fk_message_reject_default.id_for_label }}" class="input-group-text">{{ form.fk_message_reject_default.label }}</label>
+		</div>
+		{{ form.fk_message_reject_default }}
+	</div>
+</div>
+<div class="form-row form-group">
+	<div class="col input-group input-group-sm">
+		<div class="input-group-prepend">
+			<label for="{{ form.block_workers.id_for_label }}" class="input-group-text">{{ form.block_workers.label }}</label>
+		</div>
+		{{ form.block_workers }}
+	</div>
+</div>
+<div class="form-row form-group">
+	<div class="col input-group input-group-sm">
+		<div class="input-group-prepend">
+			<label for="{{ form.fk_message_block_default.id_for_label }}" class="input-group-text">{{ form.fk_message_block_default.label }}</label>
+		</div>
+		{{ form.fk_message_block_default }}
+	</div>
+</div>
