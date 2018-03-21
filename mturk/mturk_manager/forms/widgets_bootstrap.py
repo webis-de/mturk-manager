@@ -11,7 +11,7 @@ class Bootstrap_Select(forms.Select):
             self.attrs['class'] = classes_default + self.attrs['class']
         except KeyError:
             self.attrs['class'] =  classes_default
-            
+
 class Bootstrap_TextInput(forms.TextInput):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -27,6 +27,16 @@ class Bootstrap_NumberInput(forms.NumberInput):
         super().__init__(*args, **kwargs)
 
         classes_default = 'form-control '
+        try:
+            self.attrs['class'] = classes_default + self.attrs['class']
+        except KeyError:
+            self.attrs['class'] =  classes_default
+
+class Bootstrap_FileInput(forms.FileInput):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        classes_default = 'custom-file-input '
         try:
             self.attrs['class'] = classes_default + self.attrs['class']
         except KeyError:

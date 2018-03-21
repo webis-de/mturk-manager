@@ -22,13 +22,19 @@
 				<table class="table table-sm table-bordered" id="table_stats">
 					<thead>
 						<tr>
-							<th></th>
+							<th rowspan="2" class="text-center align-middle">
+								<form method="post">
+									{% csrf_token %}
+									<button type="submit" name="task" value="synchronize_database" class="btn btn-primary"><i class="fas fa-sync-alt"></i></button>
+								</form>
+							</th>
+							<!-- <th></th> -->
 							<th></th>
 							<th></th>
 							<th colspan="4" class="text-center">Assignments</th>
 						</tr>
 						<tr>
-							<th></th>
+							<!-- <th></th> -->
 							<th>Batches</th>
 							<th>Hits</th>
 							<th>Total</th>
@@ -61,10 +67,7 @@
 			</div>
 		</div>
 		<div class="col-auto">
-			<form method="post">
-				{% csrf_token %}
-				<button type="submit" name="task" value="synchronize_database" class="btn btn-primary"><i class="fas fa-sync-alt"></i> Synchronize with MTurk</button>
-			</form>
+			
 		</div>
 	</div>
 	<hr>

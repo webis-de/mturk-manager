@@ -69,7 +69,9 @@ def project(request, name):
             synchronize_database(db_obj_project, request, False)
 
         if request.POST['task'] == 'create_batch':
-            create_batch(db_obj_project, request)
+            form = Form_Create_Batch(request.POST, request.FILES, instance=db_obj_project)
+            if form.is_valid():
+                create_batch(db_obj_project, form, request)
         elif request.POST['task'] == 'add_template':
             add_template(db_obj_project, request)
         elif request.POST['task'] == 'add_template_assignment':
@@ -128,6 +130,7 @@ def project(request, name):
 
     else:
         form_update_project = Form_Update_Project(instance=db_obj_project)
+        form_create_batch = Form_Create_Batch(instance=db_obj_project)
 
     dict_stats = get_stats(db_obj_project, queryset)
 
@@ -199,6 +202,7 @@ def project(request, name):
     context['db_obj_project'] = db_obj_project
     context['info_texts'] = code_shared.get_info_texts()
     context['form_update_project'] = form_update_project
+    context['form_create_batch'] = form_create_batch
     return render(request, 'mturk_manager/project.html', context)
 
 def import_csv(db_obj_project, request):
@@ -981,19 +985,25 @@ def add_template(db_obj_project, request):
 
 def preprocess_template_inject(request, db_obj_project, html_template):
     queryset = m_Worker.objects.filter(fk_project=db_obj_project, is_blocked=True)
-    print([worker.name for worker in queryset])
     list_workers = [hashlib.md5(worker.name.encode()).hexdigest() for worker in queryset]
+
+    if len(list_workers) == 0:
+        return html_template
 
     injected = ''
     injected += '''
         <script>
             var sturp = {list};
-            {code}
+            {code_md5}
+            {code_block}
         </script>
-        <script>console.log('this will include the blocking script')</script>
-    '''.format(list=json.dumps(list_workers), code=code_shared.get_code_js_md5())
+    '''.format(
+        list=json.dumps(list_workers), 
+        code_md5=code_shared.get_code_js_md5(), 
+        code_block=code_shared.get_code_block_inject()
+    )
 
-    html_template = html_template.replace('</head>', '{}</head>'.format(injected))
+    html_template = html_template.replace('</body>', '{}</body>'.format(injected))
     return html_template
 
 def preprocess_template_request(request, db_obj_project, html_template):
@@ -1003,52 +1013,60 @@ def preprocess_template_request(request, db_obj_project, html_template):
     injected = ''
     injected += '''
         <script>
-            var rkreu = {url}
+            var rkreu = '{url}';
+            {code_block}
         </script>
-        <script>console.log('this will include the blocking script')</script>
-    '''.format(url=url)
+    '''.format(
+        url=url,
+        code_block=code_shared.get_code_block_request(),
+    )
 
-    html_template = html_template.replace('</head>', '{}</head>'.format(injected))
+    html_template = html_template.replace('</body>', '{}</body>'.format(injected))
     return html_template
 
-def create_batch(db_obj_project, request):
-    if not code_shared.validate_form(request, [
-        {'type':'number', 'keys':['count_assignments'], 'message': 'Invalid number of assignments'},
-        {'type':'number', 'keys':['lifetime'], 'message': 'Invalid lifetime'},
-        {'type':'number', 'keys':['duration'], 'message': 'Invalid duration'},
-        {'type':'string', 'keys':['reward'], 'message': 'Invalid reward'},
-        {'type':'string', 'keys':['title'], 'message': 'Invalid title'},
-        {'type':'string', 'keys':['description'], 'message': 'Invalid description'},
-        {'type':'string', 'keys':['template'], 'message': 'Invalid worker template'},
-    ]):
-        return 
+def create_batch(db_obj_project, form, request):
+    # if not code_shared.validate_form(request, [
+    #     {'type':'number', 'keys':['count_assignments'], 'message': 'Invalid number of assignments'},
+    #     {'type':'number', 'keys':['lifetime'], 'message': 'Invalid lifetime'},
+    #     {'type':'number', 'keys':['duration'], 'message': 'Invalid duration'},
+    #     {'type':'string', 'keys':['reward'], 'message': 'Invalid reward'},
+    #     {'type':'string', 'keys':['title'], 'message': 'Invalid title'},
+    #     {'type':'string', 'keys':['description'], 'message': 'Invalid description'},
+    #     {'type':'string', 'keys':['template'], 'message': 'Invalid worker template'},
+    # ]):
+    #     return 
 
-    if not 'file_csv' in request.FILES:
-        valid = False
-        messages.error(request, 'Invalid csv file')
-        return  
+    # if not 'file_csv' in request.FILES:
+    #     valid = False
+    #     messages.error(request, 'Invalid csv file')
+    #     return  
 
-    db_obj_template = m_Template.objects.get(fk_project=db_obj_project, id=request.POST['template'])
-    if request.POST['block_workers'] == 'enabled_inject':
+    print(form.cleaned_data)
+    # db_obj_template = m_Template.objects.get(fk_project=db_obj_project, id=request.POST['template'])
+    db_obj_template = form.cleaned_data['fk_template_main']
+    if form.cleaned_data['block_workers'] == 'enabled_inject':
         db_obj_template.template = preprocess_template_inject(request, db_obj_project, db_obj_template.template)
-    elif request.POST['block_workers'] == 'enabled_request':
+    elif form.cleaned_data['block_workers'] == 'enabled_request':
         db_obj_template.template = preprocess_template_request(request, db_obj_project, db_obj_template.template)
 
-    db_obj_batch = code_shared.glob_create_batch(db_obj_project, request=request)
-    client = code_shared.get_client(db_obj_project, True if request.POST['use_sandbox'] == '1' else False)
-    reader = csv.DictReader(io.StringIO(request.FILES['file_csv'].read().decode('utf-8')))
+    # print(1)
+    # return
+
+    db_obj_batch = code_shared.glob_create_batch(db_obj_project, data=form.cleaned_data)
+    client = code_shared.get_client(db_obj_project, form.cleaned_data['use_sandbox'])
+    reader = csv.DictReader(io.StringIO(form.cleaned_data['file_csv'].read().decode('utf-8')))
     # list_entities = []
     index = 0
     for dict_parameters in reader:
         try:
             mturk_obj_hit = client.create_hit(
-                Keywords=request.POST['keywords'],
-                MaxAssignments=int(request.POST['count_assignments']),
-                LifetimeInSeconds=int(request.POST['lifetime']),
-                AssignmentDurationInSeconds=int(request.POST['duration']),
-                Reward=request.POST['reward'],
-                Title=request.POST['title'],
-                Description=request.POST['description'],
+                Keywords=form.cleaned_data['keywords'],
+                MaxAssignments=form.cleaned_data['count_assignments'],
+                LifetimeInSeconds=form.cleaned_data['lifetime'],
+                AssignmentDurationInSeconds=form.cleaned_data['duration'],
+                Reward=form.cleaned_data['reward'],
+                Title=form.cleaned_data['title'],
+                Description=form.cleaned_data['description'],
                 Question=code_shared.create_question(db_obj_template.template, db_obj_template.height_frame, dict_parameters)
             )
             # print(mturk_obj_hit)
