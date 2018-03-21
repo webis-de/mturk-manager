@@ -2,7 +2,18 @@ import urllib.parse
 from django.http import JsonResponse
 from mturk_manager.models import *
 from viewer.models import *
+from mturk_manager.views import code_shared
 import json
+
+def balance(request, name):
+    name_quoted = name
+    name_project = urllib.parse.unquote(name_quoted)
+    db_obj_project = m_Project.objects.get(
+        name=name_project
+    )
+    return JsonResponse({
+        'balance': code_shared.get_client(db_obj_project, use_sandbox=False).get_account_balance()['AvailableBalance']
+    })
 
 def api(request, name):
     name_quoted = name
