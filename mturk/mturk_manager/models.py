@@ -8,6 +8,9 @@ class m_Account_Mturk(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name = 'MTurk Account'
+
 class m_Project(models.Model):
     version = models.IntegerField()
     name = models.CharField(max_length=200, unique=True)
@@ -30,6 +33,9 @@ class m_Project(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name = 'Project'
 
 class m_Batch(models.Model):
     class Meta:
