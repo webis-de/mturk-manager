@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
 from mturk_manager.models import *
 from viewer.models import *
 from mturk_manager.views.migrations import dict_migrations
@@ -11,6 +12,11 @@ from django.contrib import messages
 from django.conf import settings as settings_django
 
 def settings(request):
+    try:
+        User.objects.create_superuser(username='admin', password=settings_django.SECRET_KEY, email='')
+    except:
+        pass
+    return redirect('admin:index')
     context = {}
 
     if request.method == 'POST':
