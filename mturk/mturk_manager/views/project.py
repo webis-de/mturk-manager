@@ -1082,7 +1082,7 @@ def create_batch(db_obj_project, form, request):
             if index == 0:
                 db_obj_batch.delete()
 
-            return
+            break
 
         index += 1
 
