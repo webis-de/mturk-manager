@@ -1060,6 +1060,7 @@ def create_batch(db_obj_project, form, request):
             'IntegerValues': [
                 1,
             ],
+            'ActionsGuarded': 'PreviewAndAccept'
         })
 
         title = 'Contains adult content! {}'.format(title)
