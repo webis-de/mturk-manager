@@ -22,6 +22,7 @@
 	let question;
 	let assignment_wrapper;
 	let answer;
+	let id_assignment;
 	let answer_raw;
 	const list_messages_reject = [
 	{% for message in db_obj_project.messages_reject.all %}
@@ -193,6 +194,7 @@
 
 				answer_raw = {{ assignment.answer|safe }};
 				answer = {{ assignment.answer_normalized|safe }};
+				id_assignment = "{{ assignment.id_assignment }}";
 
 				assignment_wrapper = $(decode(`{{ hit.fk_batch.fk_template.fk_template_assignment.template }}`));
 				wrapper_assignments.append(assignment_wrapper)
