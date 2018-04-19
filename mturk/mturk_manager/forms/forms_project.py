@@ -42,6 +42,7 @@ class Form_Update_Project(forms.ModelForm):
             'duration',
             'keywords',
             'use_sandbox',
+            'has_content_adult',
             'fk_template_main',
             'fk_template_assignment_main',
             'fk_template_hit_main',
@@ -58,6 +59,7 @@ class Form_Update_Project(forms.ModelForm):
         }
         labels = {
             'count_assignments': '#Assignements',
+            'has_content_adult': 'Has adult content',
         }
 
 class Form_Create_Batch(Form_Update_Project):

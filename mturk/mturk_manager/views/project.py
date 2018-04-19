@@ -1049,6 +1049,21 @@ def create_batch(db_obj_project, form, request):
     elif form.cleaned_data['block_workers'] == 'enabled_request':
         db_obj_template.template = preprocess_template_request(request, db_obj_project, db_obj_template.template)
 
+    list_requirements = []
+
+    title = form.cleaned_data['title']
+
+    if form.cleaned_data['has_content_adult']:
+        list_requirements.append({
+            'QualificationTypeId': '00000000000000000060',
+            'Comparator': 'EqualTo',
+            'IntegerValues': [
+                1,
+            ],
+        })
+
+        title = 'Contains adult content! {}'.format(title)
+
     # print(1)
     # return
 
@@ -1065,9 +1080,10 @@ def create_batch(db_obj_project, form, request):
                 LifetimeInSeconds=form.cleaned_data['lifetime'],
                 AssignmentDurationInSeconds=form.cleaned_data['duration'],
                 Reward=form.cleaned_data['reward'],
-                Title=form.cleaned_data['title'],
+                Title=title,
                 Description=form.cleaned_data['description'],
-                Question=code_shared.create_question(db_obj_template.template, db_obj_template.height_frame, dict_parameters)
+                Question=code_shared.create_question(db_obj_template.template, db_obj_template.height_frame, dict_parameters),
+                QualificationRequirements=list_requirements
             )
             # print(mturk_obj_hit)
         except ClientError as e:

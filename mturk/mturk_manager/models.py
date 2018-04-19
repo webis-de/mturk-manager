@@ -23,6 +23,7 @@ class m_Project(models.Model):
     lifetime = models.IntegerField(default=604800)
     duration = models.IntegerField(default=3600)
     use_sandbox = models.BooleanField(default=True)
+    has_content_adult = models.BooleanField(default=False)
     block_workers = models.CharField(default='disabled', max_length=20)
     fk_template_main = models.OneToOneField('m_Template', on_delete=models.SET_NULL, null=True, related_name='project')
     fk_template_assignment_main = models.OneToOneField('m_Template_Assignment', on_delete=models.SET_NULL, null=True, related_name='project')
