@@ -51,6 +51,51 @@ def api_assignments_real_approved(request, name):
     dict_result['count_assignments'] = len(list_assignments)
     return JsonResponse(dict_result)
 
+def api_assignments_real(request, name):
+    dict_result = {}
+ 
+    queryset = m_Assignment.objects.filter(
+        fk_hit__fk_batch__fk_project__name=name,
+        fk_hit__fk_batch__use_sandbox=False,
+    )
+
+    list_assignments = [assignment.id_assignment for assignment in queryset]
+
+    dict_result['success'] = True
+    dict_result['assignments'] = list_assignments
+    dict_result['count_assignments'] = len(list_assignments)
+    return JsonResponse(dict_result)
+
+def api_assignments_fake(request, name):
+    dict_result = {}
+ 
+    queryset = m_Assignment.objects.filter(
+        fk_hit__fk_batch__fk_project__name=name,
+        fk_hit__fk_batch__use_sandbox=True,
+    )
+
+    list_assignments = [assignment.id_assignment for assignment in queryset]
+
+    dict_result['success'] = True
+    dict_result['assignments'] = list_assignments
+    dict_result['count_assignments'] = len(list_assignments)
+    return JsonResponse(dict_result)
+
+def api_workers(request, name):
+    dict_result = {}
+ 
+    queryset = m_Worker.objects.filter(
+        assignments__fk_hit__fk_batch__fk_project__name=name,
+        assignments__fk_hit__fk_batch__use_sandbox=False,
+    )
+
+    list_workers = [worker.name for worker in queryset]
+
+    dict_result['success'] = True
+    dict_result['workers'] = list_workers
+    dict_result['count_workers'] = len(list_workers)
+    return JsonResponse(dict_result)
+
 def api_status_worker(request, name, id_worker):
     dict_result = {} 
 
