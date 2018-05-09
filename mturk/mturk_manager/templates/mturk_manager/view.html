@@ -23,6 +23,7 @@
 	let assignment_wrapper;
 	let answer;
 	let id_assignment;
+	let id_worker;
 	let answer_raw;
 	const list_messages_reject = [
 	{% for message in db_obj_project.messages_reject.all %}
@@ -195,8 +196,9 @@
 				answer_raw = {{ assignment.answer|safe }};
 				answer = {{ assignment.answer_normalized|safe }};
 				id_assignment = "{{ assignment.id_assignment }}";
+				id_worker = "{{ assignment.fk_worker.name }}";
 
-				assignment_wrapper = $(decode(`{{ hit.fk_batch.fk_template.fk_template_assignment.template }}`));
+				assignment_wrapper = $(decode(`{{ hit.fk_batch.fk_template.fk_template_assignment.template|escapejs }}`));
 				wrapper_assignments.append(assignment_wrapper)
 				
 				var wrapper_input_forms = $($('[data-inject_input_forms]')[$('[data-inject_input_forms]').length - 1]);

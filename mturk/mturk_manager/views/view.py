@@ -107,13 +107,14 @@ def submit_annotations(request, db_obj_project, obj):
             if dict_annotation['state'] == 'approve' or dict_annotation['state'] == 'reject_internally':
                 response = client.approve_assignment(
                     AssignmentId=assignment.id_assignment,
-                    # RequesterFeedback=feedback
+                    RequesterFeedback=feedback
                 )
             elif dict_annotation['state'] == 'reject' or dict_annotation['state'] == 'approve_internally':
                 response = client.reject_assignment(
                     AssignmentId=assignment.id_assignment,
                     RequesterFeedback=feedback
                 )
+            print(response)
         except Exception as e:
             print(e)
             continue

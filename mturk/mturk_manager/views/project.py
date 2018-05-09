@@ -48,6 +48,7 @@ def project(request, name):
         'messages_reject'
     )
 
+
     try:
         db_obj_project = queryset.get()
     except ObjectDoesNotExist:
@@ -60,8 +61,14 @@ def project(request, name):
     # create_data_dummy(db_obj_project)
     # client = code_shared.get_client(db_obj_project, use_sandbox=False)
     # print(client.get_account_balance())
-
+    # print(m_Hit.objects.get(id_hit='38G0E1M85M5A2C3Y7I2KXVHNW0WUV7').fk_batch.name)
     # print(client.get_hit(HITId='3T2HW4QDUV7GJB9VIQCOB76KV3Y9CB'))
+
+    # response = client.approve_assignment(
+    #     AssignmentId='3S4AW7T80BIACTVJ4AEYL2HF0GEL4S',
+    #     OverrideRejection=True
+    # )
+    # print(response)
 
     if request.method == 'POST':
         if request.POST['task'] == 'synchronize_database':
@@ -481,7 +488,7 @@ def synchronize_database(db_obj_project, request, use_sandbox):
     print(set_id_assignments_available)
 
     # response = client.list_assignments_for_hit(
-    #         HITId='3IZPORCT1F9D4JGXYZOI8UU2BC9RHC',
+    #         HITId='3XWUWJ18TLQAPXEY2SSF19F4ITNUUI',
     #         AssignmentStatuses=['Submitted']
     #     )
     # print(response['Assignments'][0]['Answer'])
@@ -492,8 +499,15 @@ def synchronize_database(db_obj_project, request, use_sandbox):
     dict_tags = {tag.name: tag for tag in m_Tag.objects.filter(key_corpus=db_obj_project.name)}
     db_obj_tag_submitted = m_Tag.objects.get(key_corpus=db_obj_project.name, name='submitted')
 
+    # for db_obj_hit in m_Hit.objects.filter(
+    #     # fk_batch__use_sandbox=use_sandbox,
+    #     # fk_batch__fk_project=db_obj_project,
 
-
+    #     id_hit__in=[
+    #         '38G0E1M85M5A2C3Y7I2KXVHNW0WUV7',
+    #         '3XWUWJ18TLQAPXEY2SSF19F4ITNUUI'
+    #     ]
+    # ).select_related('fk_batch'):
     for db_obj_hit in m_Hit.objects.annotate(
         count_assignments_current=Count('assignments')
     ).filter(
@@ -501,39 +515,70 @@ def synchronize_database(db_obj_project, request, use_sandbox):
         fk_batch__fk_project=db_obj_project,
         count_assignments_current__lt=F('fk_batch__count_assignments')
     ).select_related('fk_batch'):
+
         db_obj_tag_batch = dict_tags[glob_prefix_name_tag_batch+db_obj_hit.fk_batch.name]
         db_obj_tag_hit = dict_tags[glob_prefix_name_tag_hit+db_obj_hit.id_hit]
-        response = client.list_assignments_for_hit(
+        paginator = client.get_paginator('list_assignments_for_hit')
+
+        response_iterator = paginator.paginate(
             HITId=db_obj_hit.id_hit,
-            AssignmentStatuses=['Submitted']
+            AssignmentStatuses=[
+                'Submitted',
+            ],
+            PaginationConfig={
+                # 'MaxItems': None,
+                'PageSize': 100,
+                # 'StartingToken': 'string'
+            }
         )
-        for assignment in response['Assignments']:
-            id_assignment = assignment['AssignmentId']
-            id_worker = assignment['WorkerId']
-            if not id_assignment in set_id_assignments_available:
-                print(id_assignment)
-                try:
-                    db_obj_worker = dict_workers_available[id_worker]
-                except KeyError:
-                    db_obj_worker = m_Worker.objects.create(
-                        name=id_worker,
-                        fk_project=db_obj_project,
+        # response = client.list_assignments_for_hit(
+        #     HITId=db_obj_hit.id_hit,
+        #     AssignmentStatuses=['Submitted']
+        # )
+        # print(response['Assignments'])
+        count = 0
+        for iterator in response_iterator:
+            # count += len(iterator['Assignments'])
+            for assignment in iterator['Assignments']:
+                id_assignment = assignment['AssignmentId']
+                id_worker = assignment['WorkerId']
+                if not id_assignment in set_id_assignments_available:
+                    try:
+                        db_obj_worker = dict_workers_available[id_worker]
+                    except KeyError:
+                        db_obj_worker = m_Worker.objects.create(
+                            name=id_worker,
+                            fk_project=db_obj_project,
+                        )
+                        dict_workers_available[id_worker] = db_obj_worker
+
+                    db_obj_assignment = m_Assignment.objects.create(
+                        id_assignment=id_assignment,
+                        fk_hit=db_obj_hit,
+                        fk_worker=db_obj_worker,
+                        answer=json.dumps(xmltodict.parse(assignment['Answer'])),
                     )
-                    dict_workers_available[id_worker] = db_obj_worker
 
-                db_obj_assignment = m_Assignment.objects.create(
-                    id_assignment=id_assignment,
-                    fk_hit=db_obj_hit,
-                    fk_worker=db_obj_worker,
-                    answer=json.dumps(xmltodict.parse(assignment['Answer'])),
-                )
+                    db_obj_tag_batch.corpus_viewer_items.add(db_obj_assignment)
+                    db_obj_tag_submitted.corpus_viewer_items.add(db_obj_assignment)
+                    db_obj_tag_hit.corpus_viewer_items.add(db_obj_assignment)
 
-                db_obj_tag_batch.corpus_viewer_items.add(db_obj_assignment)
-                db_obj_tag_submitted.corpus_viewer_items.add(db_obj_assignment)
-                db_obj_tag_hit.corpus_viewer_items.add(db_obj_assignment)
+                    db_obj_tag_worker = m_Tag.objects.get_or_create(key_corpus=db_obj_project.name, name=glob_prefix_name_tag_worker+id_worker, defaults={'color': '#0000ff'})[0]
+                    db_obj_tag_worker.corpus_viewer_items.add(db_obj_assignment)
 
-                db_obj_tag_worker = m_Tag.objects.get_or_create(key_corpus=db_obj_project.name, name=glob_prefix_name_tag_worker+id_worker, defaults={'color': '#0000ff'})[0]
-                db_obj_tag_worker.corpus_viewer_items.add(db_obj_assignment)
+
+
+        print(count)
+
+
+
+
+
+
+
+
+
+
 
     # for db_obj_batch in db_obj_project.batches.all():
     #     pass
@@ -1080,6 +1125,7 @@ def create_batch(db_obj_project, form, request):
                 MaxAssignments=form.cleaned_data['count_assignments'],
                 LifetimeInSeconds=form.cleaned_data['lifetime'],
                 AssignmentDurationInSeconds=form.cleaned_data['duration'],
+                AutoApprovalDelayInSeconds=1209600,
                 Reward=form.cleaned_data['reward'],
                 Title=title,
                 Description=form.cleaned_data['description'],

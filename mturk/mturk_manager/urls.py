@@ -15,6 +15,9 @@ urlpatterns = [
 
     path('project/<str:name>/api', views.api, name='api'),
     path('project/<str:name>/api/worker/<str:id_worker>', views.api_status_worker, name='api_status_worker'),
+    path('project/<str:name>/api/workers', views.api_workers, name='api_workers'),
+    path('project/<str:name>/api/assignments_real', views.api_assignments_real, name='api_assignments_real'),
+    path('project/<str:name>/api/assignments_fake', views.api_assignments_fake, name='api_assignments_fake'),
     path('project/<str:name>/api/assignments_real_approved', views.api_assignments_real_approved, name='api_assignments_real_approved'),
     path('project/<str:name>/api/balance', views.balance, name='balance'),
 
