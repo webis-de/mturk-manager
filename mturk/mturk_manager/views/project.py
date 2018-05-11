@@ -1031,10 +1031,11 @@ def add_template(db_obj_project, request):
 def preprocess_template_inject(request, db_obj_project, html_template):
     queryset = m_Worker.objects.filter(fk_project=db_obj_project, is_blocked=True)
     list_workers = [hashlib.md5(worker.name.encode()).hexdigest() for worker in queryset]
-
+    print(list_workers)
     if len(list_workers) == 0:
         return html_template
 
+    print(list_workers)
     injected = ''
     injected += '''
         <script>
@@ -1105,7 +1106,8 @@ def create_batch(db_obj_project, form, request):
             'IntegerValues': [
                 1,
             ],
-            'ActionsGuarded': 'PreviewAndAccept'
+            'RequiredToPreview': True
+            # 'ActionsGuarded': 'PreviewAndAccept'
         })
 
         title = 'Contains adult content! {}'.format(title)

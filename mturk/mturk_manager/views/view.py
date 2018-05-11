@@ -74,11 +74,55 @@ def view(request, name):
             else:
                 assignment.state = 'submitted'
 
+
+            assignment.info_worker = json.dumps(get_info_worker(assignment))
+
     context['queryset_hits'] = queryset_hits
     context['name_project'] = name_project
     context['db_obj_project'] = db_obj_project
     # context['queryset_messages_reject'] = m_Message_Reject.objects.filter(fk_project=db_obj_project)
     return render(request, 'mturk_manager/view.html', context)
+
+def get_info_worker(db_obj_assignment):
+    dict_result = {} 
+
+    db_obj_batch = db_obj_assignment.fk_hit.fk_batch
+    db_obj_worker = db_obj_assignment.fk_worker
+
+    count_assignments_submitted = 0
+    count_assignments_approved = 0
+    count_assignments_rejected = 0
+    # get all assignments from this worker from this batch
+    for assignment in m_Assignment.objects.prefetch_related('corpus_viewer_tags').filter(
+        fk_worker=db_obj_worker,
+        fk_hit__fk_batch=db_obj_batch
+    ).annotate(
+        count_tags_approved=Count('corpus_viewer_tags', filter=Q(corpus_viewer_tags__name='approved'), distinct=True),
+        count_tags_rejected=Count('corpus_viewer_tags', filter=Q(corpus_viewer_tags__name='rejected'), distinct=True),
+        count_tags_rejected_externally=Count('corpus_viewer_tags', filter=Q(corpus_viewer_tags__name='rejected externally'), distinct=True),
+        count_tags_approved_externally=Count('corpus_viewer_tags', filter=Q(corpus_viewer_tags__name='approved externally'), distinct=True),
+    ).distinct():
+            if assignment.id == db_obj_assignment.id:
+                continue
+
+
+            if assignment.count_tags_approved_externally == 1:
+                count_assignments_rejected += 1
+            elif assignment.count_tags_rejected_externally == 1:
+                count_assignments_approved += 1
+            elif assignment.count_tags_approved == 1:
+                count_assignments_approved += 1
+            elif assignment.count_tags_rejected == 1:
+                count_assignments_rejected += 1
+            else:
+                count_assignments_submitted += 1
+
+    dict_result["id_worker"] = db_obj_worker.name
+    dict_result["count_assignments_submitted"] = count_assignments_submitted
+    dict_result["count_assignments_approved"] = count_assignments_approved
+    dict_result["count_assignments_rejected"] = count_assignments_rejected
+
+    return dict_result
 
 def submit_annotations(request, db_obj_project, obj):
     client_sandbox = code_shared.get_client(db_obj_project, True)
@@ -90,6 +134,8 @@ def submit_annotations(request, db_obj_project, obj):
     db_obj_tag_approved_externally = m_Tag.objects.get(key_corpus=db_obj_project.name, name='approved externally')
 
     dict_annotations = obj['dict_assignments']
+    softblock_on_reject = obj['softblock_on_reject']
+    extend_hit_on_reject = obj['extend_hit_on_reject']
     message_reject_default = obj['message_reject_default']
     list_ids = [id_assignment for id_assignment in dict_annotations.keys()]
     for assignment in m_Assignment.objects.filter(id__in=list_ids):
@@ -114,10 +160,22 @@ def submit_annotations(request, db_obj_project, obj):
                     AssignmentId=assignment.id_assignment,
                     RequesterFeedback=feedback
                 )
+
             print(response)
         except Exception as e:
             print(e)
             continue
+
+
+        if dict_annotation['state'] == 'reject' or dict_annotation['state'] == 'approve_internally':
+            if extend_hit_on_reject == True:
+                create_additional_assignment_for_hit(assignment.fk_hit, client)
+
+        if dict_annotation['state'] == 'reject' or dict_annotation['state'] == 'approve_internally' or dict_annotation['state'] == 'reject_internally':
+            if softblock_on_reject == True:
+                softblock_worker(assignment.fk_worker, client)
+
+
 
         db_obj_tag_submitted.corpus_viewer_items.remove(assignment)
         if dict_annotation['state'] == 'approve':
@@ -132,6 +190,36 @@ def submit_annotations(request, db_obj_project, obj):
             db_obj_tag_rejected_externally.corpus_viewer_items.add(assignment)
 
     print(obj)
+
+def softblock_worker(db_obj_worker, client):
+    # response = client.create_worker_block(
+    #     WorkerId=db_obj_worker.name,
+    #     Reason='blocked because recject',
+    # )
+
+    # print(response)
+
+    db_obj_worker.is_blocked = True
+    db_obj_worker.save()
+
+def create_additional_assignment_for_hit(db_obj_hit, client):
+    response = client.create_additional_assignments_for_hit(
+        HITId=db_obj_hit.id_hit,
+        NumberOfAdditionalAssignments=1
+    )
+    print(response)
+
+    response = client.update_expiration_for_hit(
+        HITId=db_obj_hit.id_hit,
+        NumberOfAdditionalAssignments=1
+    )
+    print(response)
+
+    db_obj_hit.count_assignments_additional = db_obj_hit.count_assignments_additional * 1
+    db_obj_hit.save()
+
+
+
 
 def normalize_answer(answer):
     dict_answer = json.loads(answer)
