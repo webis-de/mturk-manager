@@ -60,6 +60,7 @@ class m_Hit(models.Model):
     datetime_creation = models.DateTimeField()
     datetime_expiration = models.DateTimeField()
     parameters = models.TextField()
+    count_assignments_additional = models.IntegerField(default=0)
 
 class m_Template(models.Model):
     class Meta:

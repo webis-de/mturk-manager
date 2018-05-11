@@ -61,6 +61,8 @@ $(document).ready(function()
 		const data = {};
 		data.task = 'submit_annotations';
 		data.dict_assignments = glob_dict_assignemnts;
+		data.softblock_on_reject = $('#input_softblock_on_reject').is(':checked');
+		data.extend_hit_on_reject = $('#input_extend_hit_on_reject').is(':checked');
 		data.message_reject_default = $('#input_message_reject_default').val();
 
 		if(data.message_reject_default.trim() == '')

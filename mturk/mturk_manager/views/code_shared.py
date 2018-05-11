@@ -194,7 +194,7 @@ def get_code_block_inject():
   if(worker == undefined || worker == '') return;
   if (isInArray(md5(worker),sturpArr)) {
     document.body.innerHTML =
-      "<h1>Temporary limit reached. Please return this HIT.</h1><p>We would like to review your work done so far first, before you can work on further HITs in this category. We decided for this procedure, so we don't have to reject many HITs and affect your ratings. We will inform you via mail when you can work on further HITs. Thank you.</p>"
+      "<h1>You are blocked for this type of HITs! Please return this HIT.</h1><p>We decided for this procedure, so we don't have to reject many of your HITs and affect your ratings.</p><p>Thank you.</p>"
   }
 }
 

@@ -24,6 +24,7 @@
 	let answer;
 	let id_assignment;
 	let id_worker;
+	let info_worker;
 	let answer_raw;
 	const list_messages_reject = [
 	{% for message in db_obj_project.messages_reject.all %}
@@ -162,6 +163,18 @@
 					</div>
 				</div>
 			</div>
+			<div class="col-auto">
+				<div class="custom-control custom-checkbox d-inline">
+					<input type="checkbox" class="custom-control-input" id="input_softblock_on_reject" checked>
+					<label class="custom-control-label" for="input_softblock_on_reject">Softblock</label>
+				</div>
+			</div>
+			<div class="col-auto">
+				<div class="custom-control custom-checkbox d-inline">
+					<input type="checkbox" class="custom-control-input" id="input_extend_hit_on_reject">
+					<label class="custom-control-label" for="input_extend_hit_on_reject">Extend HIT on reject</label>
+				</div>
+			</div>
 			<div class="col">
 				<div class="input-group input-group-sm">
 					<div class="input-group-prepend">
@@ -196,6 +209,7 @@
 				answer_raw = {{ assignment.answer|safe }};
 				answer = {{ assignment.answer_normalized|safe }};
 				id_assignment = "{{ assignment.id_assignment }}";
+				info_worker = JSON.parse('{{ assignment.info_worker|safe }}');
 				id_worker = "{{ assignment.fk_worker.name }}";
 
 				assignment_wrapper = $(decode(`{{ hit.fk_batch.fk_template.fk_template_assignment.template|escapejs }}`));
