@@ -43,6 +43,27 @@ $(document).ready(function()
 		update_info();
 	});
 
+	$(document).on('click', '#checkbox_assignments_main0', function() {
+		if($(this).is(':checked')) 
+		{
+			$.each($('[name="checkbox_assignment"]'), function(i, e) {
+				$(e).prop('checked', true);
+			});
+			$('.wrapper_buttons_selected button').prop('disabled', '');
+			$('.wrapper_buttons_selected .dropdown-toggle.dropdown-toggle-split').prop('disabled', '');
+
+		} else {
+			
+			$.each($('[name="checkbox_assignment"]'), function(i, e) {
+				$(e).prop('checked', false);
+			});
+			$('.wrapper_buttons_selected button').prop('disabled', 'disabled');
+			$('.wrapper_buttons_selected .dropdown-toggle.dropdown-toggle-split').prop('disabled', 'disabled');
+		}
+		const count_assignments_selected = $('[name="checkbox_assignment"]:checked').length;
+		$('[data-inject_count_assignments_selected]').text(count_assignments_selected);
+	});
+
 	$(document).on('click', '[name="checkbox_assignment"]', function() {
 		const count_assignments_selected = $('[name="checkbox_assignment"]:checked').length;
 		$('[data-inject_count_assignments_selected]').text(count_assignments_selected);
@@ -213,6 +234,7 @@ $(document).ready(function()
 
 			elem_checkbox.prop('checked', false);
 		})
+
 	}
 
 	function update_info()
