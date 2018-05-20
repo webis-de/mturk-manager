@@ -35,6 +35,23 @@ def api(request, name):
 
     return JsonResponse({})
 
+def api_assignments_real_approved_for_batch(request, name, name_batch):
+    dict_result = {}
+
+    queryset = m_Assignment.objects.filter(
+        fk_hit__fk_batch__fk_project__name=name,
+        fk_hit__fk_batch__use_sandbox=False,
+        corpus_viewer_tags__name='approved',
+        fk_hit__fk_batch__name=name_batch,
+    )
+
+    list_assignments = [assignment.id_assignment for assignment in queryset]
+
+    dict_result['success'] = True
+    dict_result['assignments'] = list_assignments
+    dict_result['count_assignments'] = len(list_assignments)
+    return JsonResponse(dict_result)
+
 def api_assignments_real_approved(request, name):
     dict_result = {}
  
@@ -49,6 +66,18 @@ def api_assignments_real_approved(request, name):
     dict_result['success'] = True
     dict_result['assignments'] = list_assignments
     dict_result['count_assignments'] = len(list_assignments)
+    return JsonResponse(dict_result)
+
+def api_assignment(request, name, id_assignment):
+    dict_result = {}
+ 
+    obj_db_assignment = m_Assignment.objects.get(
+        id_assignment=id_assignment
+    )
+
+
+    dict_result['success'] = True
+    dict_result['answer'] = obj_db_assignment.answer
     return JsonResponse(dict_result)
 
 def api_assignments_real(request, name):

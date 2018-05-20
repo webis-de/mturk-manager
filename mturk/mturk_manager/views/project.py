@@ -58,17 +58,28 @@ def project(request, name):
     if not code_shared.is_project_up_to_date(request, db_obj_project, name_project):    
         return redirect('mturk_manager:index')
 
+    #approve assignment#####################################
+    for id_assignment in [
+        # '340UGXU9DY1CPW1SXK7MLFDBQSPVUV',
+    ]:
+        set_to_approve(id_assignment, name_project)
+        # set_to_internal_reject(id_assignment, name_project)
+    ######################################
+
+
     # create_data_dummy(db_obj_project)
     # client = code_shared.get_client(db_obj_project, use_sandbox=False)
-    # print(client.get_account_balance())
-    # print(m_Hit.objects.get(id_hit='38G0E1M85M5A2C3Y7I2KXVHNW0WUV7').fk_batch.name)
-    # print(client.get_hit(HITId='3T2HW4QDUV7GJB9VIQCOB76KV3Y9CB'))
+    # # print(client.get_account_balance())
+    # # print(m_Hit.objects.get(id_hit='38G0E1M85M5A2C3Y7I2KXVHNW0WUV7').fk_batch.name)
+    # # print(client.get_hit(HITId='3T2HW4QDUV7GJB9VIQCOB76KV3Y9CB'))
 
-    # response = client.approve_assignment(
-    #     AssignmentId='3S4AW7T80BIACTVJ4AEYL2HF0GEL4S',
-    #     OverrideRejection=True
-    # )
-    # print(response)
+    # obj_db_worker = m_Worker.objects.get(name='A3QRYD01WEPHCS')
+    # for assignment in obj_db_worker.assignments.all():
+    #     response = client.approve_assignment(
+    #         AssignmentId=assignment.id_assignment,
+    #         OverrideRejection=True
+    #     )
+    #     print(response)
 
     if request.method == 'POST':
         if request.POST['task'] == 'synchronize_database':
@@ -211,6 +222,28 @@ def project(request, name):
     context['form_update_project'] = form_update_project
     context['form_create_batch'] = form_create_batch
     return render(request, 'mturk_manager/project.html', context)
+
+def set_to_internal_reject(id_assignment, name_project):
+    obj_db_tag_approve_externally = m_Tag.objects.get(name='approved externally', key_corpus=name_project)
+    obj_db_tag_rejected = m_Tag.objects.get(name='rejected', key_corpus=name_project)
+    obj_db_assignment = m_Assignment.objects.get(id_assignment=id_assignment)
+    for tag in obj_db_assignment.corpus_viewer_tags.all():
+        print(tag.name)
+        if tag.name == 'approved' or tag.name == 'approved externally' or tag.name == 'rejected externally':
+            obj_db_assignment.corpus_viewer_tags.remove(tag)
+
+    obj_db_assignment.corpus_viewer_tags.add(obj_db_tag_approve_externally)
+    obj_db_assignment.corpus_viewer_tags.add(obj_db_tag_rejected)
+
+def set_to_approve(id_assignment, name_project):
+    obj_db_tag_approve = m_Tag.objects.get(name='approved', key_corpus=name_project)
+    obj_db_assignment = m_Assignment.objects.get(id_assignment=id_assignment)
+    for tag in obj_db_assignment.corpus_viewer_tags.all():
+        print(tag.name)
+        if tag.name == 'rejected' or tag.name == 'approved externally' or tag.name == 'rejected externally':
+            obj_db_assignment.corpus_viewer_tags.remove(tag)
+
+    obj_db_assignment.corpus_viewer_tags.add(obj_db_tag_approve)
 
 def import_csv(db_obj_project, request):
     if 'file_csv' in request.FILES:

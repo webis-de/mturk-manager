@@ -22,6 +22,7 @@
 	let question;
 	let assignment_wrapper;
 	let answer;
+	let id_hit;
 	let id_assignment;
 	let id_worker;
 	let info_worker;
@@ -165,7 +166,8 @@
 			</div>
 			<div class="col-auto">
 				<div class="custom-control custom-checkbox d-inline">
-					<input type="checkbox" class="custom-control-input" id="input_softblock_on_reject" checked>
+					<input type="checkbox" class="custom-control-input" id="input_softblock_on_reject">
+					<!-- <input type="checkbox" class="custom-control-input" id="input_softblock_on_reject" checked> -->
 					<label class="custom-control-label" for="input_softblock_on_reject">Softblock</label>
 				</div>
 			</div>
@@ -208,6 +210,7 @@
 
 				answer_raw = {{ assignment.answer|safe }};
 				answer = {{ assignment.answer_normalized|safe }};
+				id_hit = "{{ hit.id_hit }}";
 				id_assignment = "{{ assignment.id_assignment }}";
 				info_worker = JSON.parse('{{ assignment.info_worker|safe }}');
 				id_worker = "{{ assignment.fk_worker.name }}";
