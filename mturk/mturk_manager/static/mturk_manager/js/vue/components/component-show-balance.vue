@@ -1,20 +1,13 @@
 <template>
-<div class="display-1">
+<div class="headline">
 	Current balance:
-	<template v-if="balance == undefined">
-		<v-progress-circular
-			indeterminate
-		></v-progress-circular>
-	</template>
-	<template v-else>
-		<component-display-money v-bind:amount="balance"></component-display-money>
-		<v-tooltip top>
-	        <v-btn flat icon v-bind:loading="updating" v-on:click="update_balance_custom" slot="activator">
-	          <v-icon>refresh</v-icon>
-	        </v-btn>
-          	<span>Refresh current balance</span>
-	    </v-tooltip>
-	</template>
+	<component-display-money v-if="balance != undefined" v-bind:amount="balance"></component-display-money>
+	<v-tooltip top>
+        <v-btn flat icon small v-bind:loading="show_spinner" v-on:click="update_balance_custom" slot="activator" class="ma-0">
+          <v-icon>refresh</v-icon>
+        </v-btn>
+      	<span>Refresh current balance</span>
+    </v-tooltip>
 </div>
 </template>
 
@@ -29,12 +22,16 @@ export default {
         }
     },
     computed: {
+    	show_spinner: function() {
+    		return this.updating || this.balance == undefined;
+    	},
         // ...mapGetters('moduleMoney', ['balance']),
         ...mapState('moduleMoney', ['balance']),
     },
     methods: {
     	update_balance_custom: function() {
     		this.updating = true;
+    		
     		this.update_balance().then((result) => {
     			this.updating = false;
     		});
@@ -49,6 +46,11 @@ export default {
     //         this.url_api_get_balance = config.url_api_get_balance;
     //     },
     },
+    // watch: {
+    // 	balance: function() {
+    // 		this.updating = false;
+    // 	}
+    // },
     // created: function() {
     //     this.load_config();
     //     console.log(this.balance);
