@@ -1,5 +1,5 @@
 <template>
-<div class="display-1">
+<div class="headline">
 	Spent money:
     <template>
         <component-display-money v-bind:amount="money_spent"></component-display-money>

@@ -32,6 +32,7 @@ export const store = new Vuex.Store({
                     list_hits.push([
                         hit.id_hit,
                         (hit.count_assignments * batch.reward).toFixed(2),
+                        id_batch,
                     ]);
                 });
             });
