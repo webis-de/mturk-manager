@@ -8,3 +8,4 @@ from .view import *
 from .download import *
 from .migrations import *
 from .api import *
+from .money import *

@@ -48,6 +48,7 @@ def project(request, name):
         'messages_reject'
     )
 
+    # print(m_Worker.objects.get(name='A357BORERBTE76').is_blocked)
 
     try:
         db_obj_project = queryset.get()
