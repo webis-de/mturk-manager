@@ -3,7 +3,9 @@ from django.http import JsonResponse
 from mturk_manager.models import *
 from viewer.models import *
 from mturk_manager.views import code_shared
-import json
+import json, time
+from django.db.models import F, Value, Count, Q, Sum, IntegerField, ExpressionWrapper
+
 
 def balance(request, name):
     name_quoted = name
@@ -12,7 +14,7 @@ def balance(request, name):
         name=name_project
     )
     return JsonResponse({
-        'balance': code_shared.get_client(db_obj_project, use_sandbox=False).get_account_balance()['AvailableBalance']
+        'balance': float(code_shared.get_client(db_obj_project, use_sandbox=False).get_account_balance()['AvailableBalance'])
     })
 
 def api(request, name):
@@ -67,6 +69,62 @@ def api_assignments_real_approved(request, name):
     dict_result['assignments'] = list_assignments
     dict_result['count_assignments'] = len(list_assignments)
     return JsonResponse(dict_result)
+
+def api_assignments_real_approved_tmp(request, name):
+    dict_batches = {}
+    list_hits = []
+
+    queryset = m_Hit.objects.filter(
+        fk_batch__fk_project__name=name,
+        fk_batch__use_sandbox=False,
+    ).select_related(
+        'fk_batch'
+    ).annotate(
+        count_assignments=Count('assignments', filter=Q(
+            # fk_batch__use_sandbox=False,
+            assignments__corpus_viewer_tags__name='approved',
+        ), distinct=True),
+
+    ).order_by('-datetime_creation')
+
+
+    for obj_db_hit in queryset:
+        if not obj_db_hit.fk_batch.name in dict_batches:
+            dict_batches[obj_db_hit.fk_batch.name] = {
+                'id': obj_db_hit.fk_batch.name,
+                'reward': obj_db_hit.fk_batch.reward,
+            }
+
+        list_hits.append({
+            'id_batch': obj_db_hit.fk_batch.name,    
+            'id_hit': obj_db_hit.id_hit,
+            'count_assignments': obj_db_hit.count_assignments,
+            'datetime_creation': obj_db_hit.datetime_creation,
+        })   
+    
+    # queryset = m_Assignment.objects.filter(
+    #     fk_hit__fk_batch__fk_project__name=name,
+    #     fk_hit__fk_batch__use_sandbox=False,
+    #     corpus_viewer_tags__name='approved'
+    # ).select_related(
+    #     'fk_hit__fk_batch'
+    # ).order_by('fk_hit__datetime_creation')
+
+
+
+
+    # for assignment in queryset:
+    #     list_result.append({
+    #         'id_assigment': assignment.id_assignment,
+    #         'datetime_creation': assignment.fk_hit.datetime_creation,
+    #         'id_hit': assignment.fk_hit.id_hit,
+    #         'id_batch': assignment.fk_hit.fk_batch.name,
+    #     })
+
+    return JsonResponse({
+        'dict_batches': dict_batches, 
+        'list_hits': list_hits, 
+    }, safe=False)
 
 def api_assignment(request, name, id_assignment):
     dict_result = {}
