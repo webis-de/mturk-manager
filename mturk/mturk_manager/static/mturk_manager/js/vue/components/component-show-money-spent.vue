@@ -1,10 +1,14 @@
 <template>
-<div class="headline">
-	Spent money:
-    <template>
-        <component-display-money v-bind:amount="money_spent"></component-display-money>
-    </template>
-</div>
+<span>
+    <span class="headline">
+        Max costs:
+        <component-display-money v-bind:amount="money_spent_max"></component-display-money>
+    </span>
+    <span class="subheading">
+        (costs so far:
+        <component-display-money v-bind:amount="money_spent"></component-display-money>)
+    </span>
+</span>
 </template>
 
 <script>
@@ -20,9 +24,21 @@ export default {
     },
     computed: {
         money_spent: function() {
-            return _.sumBy(this.list_batches, 'money_spent');
+            if(this.show_with_fee) {
+                return _.sumBy(this.list_batches, 'money_spent_with_fee');
+            } else {
+                return _.sumBy(this.list_batches, 'money_spent_without_fee');
+            }
+        },
+        money_spent_max: function() {
+            if(this.show_with_fee) {
+                return _.sumBy(this.list_batches, 'money_spent_max_with_fee');
+            } else {
+                return _.sumBy(this.list_batches, 'money_spent_max_without_fee');
+            }
         },
         ...mapGetters(['list_batches']),
+        ...mapState(['show_with_fee']),
     },
     methods: {
         ...mapActions('moduleMoney', {

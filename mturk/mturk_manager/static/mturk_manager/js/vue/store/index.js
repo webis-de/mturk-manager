@@ -16,6 +16,7 @@ export const store = new Vuex.Store({
     },
     state: {
         name_project: undefined,
+        show_with_fee: true,
         url_project: undefined,
         url_api_get_balance: undefined,
         url_api_assignments_real_approved: undefined,
@@ -67,11 +68,17 @@ export const store = new Vuex.Store({
                 // datetime of last hit is created time of batch
                 batch.datetime_creation = batch.hits[0].datetime_creation;
 
-                batch.number_assignments_approved = _.sumBy(
-                    batch.hits, 'count_assignments'
+                batch.count_assignments_approved = _.sumBy(
+                    batch.hits, 'count_assignments_approved'
                 );
 
-                batch.money_spent = batch.number_assignments_approved * batch.reward
+                batch.count_assignments_total =  batch.hits.length * batch.count_assignments_per_hit;
+
+                batch.money_spent_without_fee = batch.count_assignments_approved * batch.reward;
+                batch.money_spent_with_fee = batch.money_spent_without_fee * 1.2;
+
+                batch.money_spent_max_without_fee = batch.count_assignments_total * batch.reward;
+                batch.money_spent_max_with_fee = batch.money_spent_max_without_fee * 1.2;
             });
 
             console.log(state.object_batches)
@@ -89,6 +96,9 @@ export const store = new Vuex.Store({
         },
         setUrlApiAssignmentsRealApproved(state, url_new) {
             state.url_api_assignments_real_approved = url_new;
+        },
+        setShowWithFee(state, show) {
+            state.show_with_fee = show;
         },
     },
     actions: {
@@ -110,6 +120,10 @@ export const store = new Vuex.Store({
             .then(response => {
                 commit('setBatchesAndHits', response.data);
             })
+        },
+        async set_show_with_fee({commit, state}, show) {
+            commit('setShowWithFee', show);
+
         },
     }
 })

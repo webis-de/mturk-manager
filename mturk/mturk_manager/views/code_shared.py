@@ -80,8 +80,10 @@ def glob_create_batch(db_obj_project, data=None, dictionary=None):
     )
 
 def create_question(template, height_frame, dict_parameters):
-    print(dict_parameters)
     for key, value in dict_parameters.items():
+        # print('####')
+        # print(key)
+        # print(value)
         template = template.replace('${'+key+'}', value)
 
     return '''

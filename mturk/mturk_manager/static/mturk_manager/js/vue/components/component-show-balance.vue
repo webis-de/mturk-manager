@@ -1,5 +1,5 @@
 <template>
-<div class="headline">
+<div class="headline text-xs-right">
 	Current balance:
 	<component-display-money v-if="balance != undefined" v-bind:amount="balance"></component-display-money>
 	<v-tooltip top>

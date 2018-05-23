@@ -29,13 +29,20 @@
 				></v-checkbox>
 			</td>
 			<td>{{ props.item.id }}</td>
-			<!-- <td>{{ props.item.id_hit }}</td> -->
-			<!-- <td>{{ props.item.id_assigment }}</td> -->
 			<td>{{ props.item.datetime_creation.toLocaleString() }}</td>
-			<!-- <td>{{ props.item.count_assignments }}</td> -->
-			<td class="text-xs-right"><component-display-money v-bind:amount="props.item.money_spent"></component-display-money></td>
+
+			<td>{{ props.item.hits.length }}</td>
+			<td>{{ props.item.count_assignments_per_hit }}</td>
+			<td>{{ props.item.count_assignments_total }}</td>
+			<td>{{ props.item.count_assignments_approved }}</td>
+
+			<td class="text-xs-right">
+				<component-display-money v-bind:amount="show_with_fee ? props.item.money_spent_max_with_fee : props.item.money_spent_max_without_fee"></component-display-money>
+			</td>
+			<td class="text-xs-right">
+				<component-display-money v-bind:amount="show_with_fee ? props.item.money_spent_with_fee : props.item.money_spent_without_fee"></component-display-money>
+			</td>
 		</template>
-		 <!-- <template slot="expand" slot-scope="props"> -->
 	</v-data-table>
 
 	<v-btn
@@ -86,14 +93,31 @@ export default {
 					value: 'datetime_creation',
 				},
         		{
-					text: 'costs',
-					value: 'money_spent',
+					text: '#hits',
+					value: 'hits.length',
+				},
+        		{
+					text: '#assignments per hit',
+					value: 'count_assignments_per_hit',
+				},
+        		{
+					text: '#assignments',
+					value: 'count_assignments_total',
+				},
+        		{
+					text: '#approved assignments',
+					value: 'count_assignments_approved',
+				},
+        		{
+					text: 'max costs',
+					value: 'money_spent_max_with_fee',
 					align: 'right'
 				},
-    //     		{
-				// 	text: '#assignments',
-				// 	value: 'count_assignments',
-				// },
+        		{
+					text: 'costs so far',
+					value: 'money_spent_with_fee',
+					align: 'right'
+				},
         	]
         }
     },
@@ -113,6 +137,7 @@ export default {
     		}
     	},
         ...mapGetters(['list_batches', 'list_hits_for_csv']),
+        ...mapState(['show_with_fee']),
     },
     methods: {
     	download_csv: function() {
