@@ -59,12 +59,29 @@ def project(request, name):
     if not code_shared.is_project_up_to_date(request, db_obj_project, name_project):    
         return redirect('mturk_manager:index')
 
+    client = code_shared.get_client(db_obj_project, use_sandbox=False)
+
     #approve assignment#####################################
     for id_assignment in [
         # '340UGXU9DY1CPW1SXK7MLFDBQSPVUV',
     ]:
         set_to_approve(id_assignment, name_project)
         # set_to_internal_reject(id_assignment, name_project)
+    ######################################
+
+    #extend hits#####################################
+
+    # for obj_db_hit in m_Hit.objects.filter(
+    #     fk_batch__fk_project=db_obj_project,
+    #     fk_batch__use_sandbox=False,
+
+    #     # assignments__corpus_viewer_tags__name='batch_8833333fba7f4b16894cbab9d628d31f',
+    # ).distinct():
+        # datetime_new = obj_db_hit.datetime_expiration +  datetime.timedelta(hours=10)
+        # print(client.update_expiration_for_hit(HITId=obj_db_hit.id_hit, ExpireAt=datetime_new))
+        # obj_db_hit.datetime_expiration = datetime_new
+        # obj_db_hit.save()
+        # print(obj_db_hit.datetime_expiration +  datetime.timedelta(hours=10))
     ######################################
 
 
@@ -1154,7 +1171,10 @@ def create_batch(db_obj_project, form, request):
     reader = csv.DictReader(io.StringIO(form.cleaned_data['file_csv'].read().decode('utf-8')))
     # list_entities = []
     index = 0
-    for dict_parameters in reader:
+    for index_reader, dict_parameters in enumerate(reader):
+        # print(index_reader)
+        # print(len(dict_parameters))
+        # print(dict_parameters)
         try:
             mturk_obj_hit = client.create_hit(
                 Keywords=form.cleaned_data['keywords'],

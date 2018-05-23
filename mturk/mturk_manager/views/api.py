@@ -80,7 +80,7 @@ def api_assignments_real_approved_tmp(request, name):
     ).select_related(
         'fk_batch'
     ).annotate(
-        count_assignments=Count('assignments', filter=Q(
+        count_assignments_approved=Count('assignments', filter=Q(
             # fk_batch__use_sandbox=False,
             assignments__corpus_viewer_tags__name='approved',
         ), distinct=True),
@@ -93,14 +93,16 @@ def api_assignments_real_approved_tmp(request, name):
             dict_batches[obj_db_hit.fk_batch.name] = {
                 'id': obj_db_hit.fk_batch.name,
                 'reward': obj_db_hit.fk_batch.reward,
+                'count_assignments_per_hit': obj_db_hit.fk_batch.count_assignments,
             }
 
         list_hits.append({
             'id_batch': obj_db_hit.fk_batch.name,    
             'id_hit': obj_db_hit.id_hit,
-            'count_assignments': obj_db_hit.count_assignments,
+            'count_assignments_approved': obj_db_hit.count_assignments_approved,
             'datetime_creation': obj_db_hit.datetime_creation,
         })   
+    # time.sleep(3)
     
     # queryset = m_Assignment.objects.filter(
     #     fk_hit__fk_batch__fk_project__name=name,

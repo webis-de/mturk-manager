@@ -1,7 +1,5 @@
 <template>
-<span>
-	{{ amount_formatted }}
-</span>
+<span>{{ amount_formatted }}</span>
 </template>
 
 <script>
