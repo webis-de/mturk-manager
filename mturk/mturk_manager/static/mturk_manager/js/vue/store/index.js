@@ -1,44 +1,38 @@
 import Vuex from 'vuex';
+// import Vue from 'vue/dist/vue.common';
 import Vue from 'vue';
 import axios from 'axios';
 import VueAxios from 'vue-axios';
 import _ from 'lodash';
-import Papa from 'papaparse';
 
+import VueCookies from 'vue-cookies'
 Vue.use(Vuex)
+Vue.use(VueCookies)
 Vue.use(VueAxios, axios)
 
 import { moduleMoney } from './modules/money.js';
+import { modulePolicies } from './modules/policies.js';
+import { moduleWorkers } from './modules/workers.js';
+import { moduleBatches } from './modules/batches.js';
 
 export const store = new Vuex.Store({
     modules: {
-        moduleMoney
+        moduleMoney,
+        modulePolicies,
+        moduleWorkers,
+        moduleBatches,
     },
     state: {
         name_project: undefined,
         show_with_fee: true,
+        show_progress_indicator: 0,
+
         url_project: undefined,
-        url_api_get_balance: undefined,
-        url_api_assignments_real_approved: undefined,
-        object_batches: {},
     },
     getters: {
-        list_batches: state => {
-            return _.orderBy(state.object_batches, ['datetime_creation'], ['desc']);
-        },
-        list_hits_for_csv: state => {
-            const list_hits = [];
-            _.forIn(state.object_batches, function(batch, id_batch) {
-                _.forEach(batch.hits, function(hit){
-                    list_hits.push([
-                        hit.id_hit,
-                        (hit.count_assignments * batch.reward).toFixed(2),
-                        id_batch,
-                    ]);
-                });
-            });
-            return list_hits;
-        },
+        get_show_progress_indicator(state) {
+            return state.show_progress_indicator > 0 ? true : false;
+        }
     },
     mutations: {
         setNameProject(state, name_project) {
@@ -47,58 +41,12 @@ export const store = new Vuex.Store({
         setUrlProject(state, url_project) {
             state.url_project = url_project;
         },
-        setBatchesAndHits(state, {list_hits, dict_batches}) {
-            // set batches
-            _.forIn(dict_batches, function(batch, id_batch) {
-                state.object_batches[id_batch] = batch;
-                state.object_batches[id_batch]['hits'] = [];
-
-            });
-
-            // set hits
-            _.forEach(list_hits, function(hit){
-                // console.log(Date.parse(hit.datetime_creation));
-                hit.datetime_creation = new Date(hit.datetime_creation);
-
-                state.object_batches[hit.id_batch].hits.push(hit);
-            });
-
-
-            _.forIn(state.object_batches, function(batch, id_batch) {
-                // datetime of last hit is created time of batch
-                batch.datetime_creation = batch.hits[0].datetime_creation;
-
-                batch.count_assignments_approved = _.sumBy(
-                    batch.hits, 'count_assignments_approved'
-                );
-
-                batch.count_assignments_total =  batch.hits.length * batch.count_assignments_per_hit;
-
-                batch.money_spent_without_fee = batch.count_assignments_approved * batch.reward;
-                batch.money_spent_with_fee = batch.money_spent_without_fee * 1.2;
-
-                batch.money_spent_max_without_fee = batch.count_assignments_total * batch.reward;
-                batch.money_spent_max_with_fee = batch.money_spent_max_without_fee * 1.2;
-            });
-
-            console.log(state.object_batches)
-
-            state.object_batches = dict_batches;
-        },
-        setObjectBatches(state, dict_batches) {
-            for(let id_batch in dict_batches) {
-                state.object_batches[id_batch] = dict_batches[id_batch];
-            };
-            state.object_batches = dict_batches;
-        },
-        setUrlApiGetBalance(state, url_new) {
-            state.url_api_get_balance = url_new;
-        },
-        setUrlApiAssignmentsRealApproved(state, url_new) {
-            state.url_api_assignments_real_approved = url_new;
-        },
-        setShowWithFee(state, show) {
+       
+        set_show_with_fee(state, show) {
             state.show_with_fee = show;
+        },
+        set_show_progress_indicator(state, show) {
+            state.show_progress_indicator += show == true ? 1 : -1;
         },
     },
     actions: {
@@ -106,24 +54,25 @@ export const store = new Vuex.Store({
             const configElement = document.getElementById( 'config' );
             const config = JSON.parse( configElement.innerHTML );
             console.log(config);
- 
-            commit('setUrlApiGetBalance', config.url_api_get_balance);
-            commit('setUrlApiAssignmentsRealApproved', config.url_api_assignments_real_approved);
+
             commit('setNameProject', config.name_project);
+
             commit('setUrlProject', config.url_project);
 
-            dispatch('moduleMoney/update_balance');
-            dispatch('refresh_data');
-        },
-        async refresh_data({commit, state}) {
-            await axios.get(state.url_api_assignments_real_approved)
-            .then(response => {
-                commit('setBatchesAndHits', response.data);
-            })
+            commit('moduleBatches/set_url_api_assignments_real_approved', config.url_api_assignments_real_approved);
+
+            commit('moduleMoney/setUrlApiGetBalance', config.url_api_get_balance);
+            
+            commit('modulePolicies/set_url_api_policies', config.url_api_policies);
+
+            commit('moduleWorkers/set_url_api_workers', config.url_api_workers);
         },
         async set_show_with_fee({commit, state}, show) {
-            commit('setShowWithFee', show);
+            commit('set_show_with_fee', show);
 
+        },
+        async set_show_progress_indicator({commit, state}, show) {
+            commit('set_show_progress_indicator', show);
         },
     }
 })

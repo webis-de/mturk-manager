@@ -23,10 +23,11 @@ urlpatterns = [
     path('project/<str:name>/api/assignments_real_approved_tmp', views.api_assignments_real_approved_tmp, name='api_assignments_real_approved_tmp'),
     path('project/<str:name>/api/assignments_real_approved_for_batch/<str:name_batch>', views.api_assignments_real_approved_for_batch, name='api_assignments_real_approved_for_batch'),
     path('project/<str:name>/api/balance', views.balance, name='balance'),
+    path('project/<str:name>/api/policies', views.api_policies, name='api_policies'),
 
     path('project/<str:name>', views.project, name='project'),
 
-    path('project/<str:name>/money', views.money, name='money'),
+    path('project/<str:name>/tmp', views.money, name='money'),
 
     path('', views.dashboard, name='index'),
 

@@ -84,6 +84,10 @@ def api_assignments_real_approved_tmp(request, name):
             # fk_batch__use_sandbox=False,
             assignments__corpus_viewer_tags__name='approved',
         ), distinct=True),
+        count_assignments_rejected=Count('assignments', filter=Q(
+            # fk_batch__use_sandbox=False,
+            assignments__corpus_viewer_tags__name='rejected',
+        ), distinct=True),
 
     ).order_by('-datetime_creation')
 
@@ -92,7 +96,7 @@ def api_assignments_real_approved_tmp(request, name):
         if not obj_db_hit.fk_batch.name in dict_batches:
             dict_batches[obj_db_hit.fk_batch.name] = {
                 'id': obj_db_hit.fk_batch.name,
-                'reward': obj_db_hit.fk_batch.reward,
+                'reward': float(obj_db_hit.fk_batch.reward),
                 'count_assignments_per_hit': obj_db_hit.fk_batch.count_assignments,
             }
 
@@ -100,9 +104,10 @@ def api_assignments_real_approved_tmp(request, name):
             'id_batch': obj_db_hit.fk_batch.name,    
             'id_hit': obj_db_hit.id_hit,
             'count_assignments_approved': obj_db_hit.count_assignments_approved,
+            'count_assignments_rejected': obj_db_hit.count_assignments_rejected,
             'datetime_creation': obj_db_hit.datetime_creation,
         })   
-    # time.sleep(3)
+    time.sleep(3)
     
     # queryset = m_Assignment.objects.filter(
     #     fk_hit__fk_batch__fk_project__name=name,
@@ -170,21 +175,6 @@ def api_assignments_fake(request, name):
     dict_result['count_assignments'] = len(list_assignments)
     return JsonResponse(dict_result)
 
-def api_workers(request, name):
-    dict_result = {}
- 
-    queryset = m_Worker.objects.filter(
-        assignments__fk_hit__fk_batch__fk_project__name=name,
-        assignments__fk_hit__fk_batch__use_sandbox=False,
-    )
-
-    list_workers = [worker.name for worker in queryset]
-
-    dict_result['success'] = True
-    dict_result['workers'] = list_workers
-    dict_result['count_workers'] = len(list_workers)
-    return JsonResponse(dict_result)
-
 def api_status_worker(request, name, id_worker):
     dict_result = {} 
 
@@ -239,3 +229,132 @@ def block_workers(request, db_obj_project):
         fk_project=db_obj_project,
         id__in=list_ids
     ).update(is_blocked=True)
+# WORKERS #################################
+
+
+def api_workers(request, name):
+    dict_result = {}
+ 
+    queryset = m_Worker.objects.filter(
+        assignments__fk_hit__fk_batch__fk_project__name=name,
+        assignments__fk_hit__fk_batch__use_sandbox=False,
+    )
+
+    list_workers = [{'name': worker.name} for worker in queryset]
+
+    dict_result['success'] = True
+    dict_result['workers'] = list_workers
+    dict_result['count_workers'] = len(list_workers)
+    return JsonResponse(dict_result)
+
+    # name_quoted = name
+    # name_project = urllib.parse.unquote(name_quoted)
+    # db_obj_project = m_Project.objects.get(
+    #     name=name_project
+    # )
+
+    # response = {}
+
+    # client = code_shared.get_client(db_obj_project, use_sandbox=True)
+    # # client = code_shared.get_client(db_obj_project, use_sandbox=False)
+
+    # if request.method == 'GET':
+    #     response = client.list_qualification_types(
+    #         MustBeRequestable=False,
+    #         MustBeOwnedByCaller=True,
+    #     )
+    #     response = response['QualificationTypes']
+
+    # elif request.method == 'POST':
+    #     print(request.POST)
+    #     response = client.create_qualification_type(
+    #         Name=request.POST.get('name'),
+    #         # Keywords=request.POST['keywords'],
+    #         Description=request.POST.get('description'),
+    #         QualificationTypeStatus=request.POST.get('status'),
+    #         # RetryDelayInSeconds=request.POST['delay_retry_seconds'],
+    #         # Test=janek ist doof!,
+    #         # AnswerKey=request.POST['answer'],
+    #         # TestDurationInSeconds=request.POST['duration_test_seconds'],
+    #         # AutoGranted=request.POST['is_auto_granted'],
+    #         # AutoGrantedValue=request.POST['value_if_auto_granted'],
+    #     )['QualificationType']
+    # elif request.method == 'PUT':
+    #     print(request.POST)
+    #     response = client.update_qualification_type(
+    #         QualificationTypeId=request.POST.get('id'),
+    #         # Keywords=request.POST['keywords'],
+    #         Description=request.POST.get('description'),
+    #         QualificationTypeStatus=request.POST.get('status'),
+    #         # Keywords=request.POST['keywords'],
+    #         # Description=request.POST['description'],
+    #         # QualificationTypeStatus=request.POST['status'],
+    #         # RetryDelayInSeconds=request.POST['delay_retry_seconds'],
+    #         # # Test=janek ist doof!,
+    #         # AnswerKey=request.POST['answer'],
+    #         # TestDurationInSeconds=request.POST['duration_test_seconds'],
+    #         # AutoGranted=request.POST['is_auto_granted'],
+    #         # AutoGrantedValue=request.POST['value_if_auto_granted'],
+    #     )
+
+    # return JsonResponse(response, safe=False)
+# POLICIES #################################
+def api_policies(request, name):
+    name_quoted = name
+    name_project = urllib.parse.unquote(name_quoted)
+    db_obj_project = m_Project.objects.get(
+        name=name_project
+    )
+
+# check if random description for qualification is allowed
+# hide messages from workers
+
+    response = {}
+
+    client = code_shared.get_client(db_obj_project, use_sandbox=True)
+    # client = code_shared.get_client(db_obj_project, use_sandbox=False)
+
+    if request.method == 'GET':
+        response = client.list_qualification_types(
+            MustBeRequestable=False,
+            MustBeOwnedByCaller=True,
+        )
+        response = response['QualificationTypes']
+
+    elif request.method == 'POST':
+        print(request.POST)
+        response = client.create_qualification_type(
+            Name=request.POST.get('name'),
+            # Keywords=request.POST['keywords'],
+            Description=request.POST.get('description'),
+            QualificationTypeStatus=request.POST.get('status'),
+            # RetryDelayInSeconds=request.POST['delay_retry_seconds'],
+            # Test=janek ist doof!,
+            # AnswerKey=request.POST['answer'],
+            # TestDurationInSeconds=request.POST['duration_test_seconds'],
+            # AutoGranted=request.POST['is_auto_granted'],
+            # AutoGrantedValue=request.POST['value_if_auto_granted'],
+        )['QualificationType']
+    elif request.method == 'PUT':
+        print(request.POST)
+        response = client.update_qualification_type(
+            QualificationTypeId=request.POST.get('id'),
+            # Keywords=request.POST['keywords'],
+            Description=request.POST.get('description'),
+            QualificationTypeStatus=request.POST.get('status'),
+            # Keywords=request.POST['keywords'],
+            # Description=request.POST['description'],
+            # QualificationTypeStatus=request.POST['status'],
+            # RetryDelayInSeconds=request.POST['delay_retry_seconds'],
+            # # Test=janek ist doof!,
+            # AnswerKey=request.POST['answer'],
+            # TestDurationInSeconds=request.POST['duration_test_seconds'],
+            # AutoGranted=request.POST['is_auto_granted'],
+            # AutoGrantedValue=request.POST['value_if_auto_granted'],
+        )
+    elif request.method == 'DELETE':
+        response = client.delete_qualification_type(
+            QualificationTypeId=request.POST['id']
+        )
+
+    return JsonResponse(response, safe=False)
