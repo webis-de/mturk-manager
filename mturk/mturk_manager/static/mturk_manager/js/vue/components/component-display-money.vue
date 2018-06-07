@@ -13,7 +13,7 @@ export default {
     },
     computed: {
     	amount_formatted: function() {
-    		return this.amount.toFixed(2) + '$';
+    		return this.amount.toFixed(2) + ' $';
     	},
     },
 }

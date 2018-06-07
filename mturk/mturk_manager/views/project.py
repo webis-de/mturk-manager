@@ -63,9 +63,10 @@ def project(request, name):
 
     #approve assignment#####################################
     for id_assignment in [
-        # '340UGXU9DY1CPW1SXK7MLFDBQSPVUV',
+        # '3JAOYWH7VI4B9Z1VL5AP2ASVMEGL9O',
     ]:
-        set_to_approve(id_assignment, name_project)
+        pass
+        # set_to_approve(id_assignment, name_project)
         # set_to_internal_reject(id_assignment, name_project)
     ######################################
 
@@ -84,12 +85,13 @@ def project(request, name):
         # print(obj_db_hit.datetime_expiration +  datetime.timedelta(hours=10))
     ######################################
 
+   
 
     # create_data_dummy(db_obj_project)
     # client = code_shared.get_client(db_obj_project, use_sandbox=False)
     # # print(client.get_account_balance())
     # # print(m_Hit.objects.get(id_hit='38G0E1M85M5A2C3Y7I2KXVHNW0WUV7').fk_batch.name)
-    # # print(client.get_hit(HITId='3T2HW4QDUV7GJB9VIQCOB76KV3Y9CB'))
+    print(client.get_hit(HITId='3ZFRE2BDQ9EJS023DK2A28TNG8KXZZ')['HIT']['HITStatus'])
 
     # obj_db_worker = m_Worker.objects.get(name='A3QRYD01WEPHCS')
     # for assignment in obj_db_worker.assignments.all():

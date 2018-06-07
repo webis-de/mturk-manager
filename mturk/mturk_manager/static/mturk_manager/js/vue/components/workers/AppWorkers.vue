@@ -1,0 +1,126 @@
+<template>
+<div>
+    <v-layout wrap>
+        <v-flex>
+            <v-data-table
+                v-bind:items="list_workers"
+                v-bind:headers="list_headers"
+                disable-initial-sort
+				v-bind:pagination.sync="pagination"
+				v-model="workers_selected"
+                select-all
+                item-key="name"
+                class="elevation-1"
+            >
+                 <template slot="items" slot-scope="props">
+                    <td>
+                        <v-checkbox
+                            v-model="props.selected"
+                            primary
+                            hide-details
+                        ></v-checkbox>
+                    </td>
+                    <td>{{ props.item.name }}</td>
+                    <!-- <td class="justify-end layout">
+                        <v-btn icon class="mx-0" v-on:click="init_edit_policy(props.item)">
+                            <v-icon color="teal">edit</v-icon>
+                        </v-btn>
+                        <v-btn icon class="mx-0" v-on:click="delete_policy(props.item)">
+                            <v-icon color="pink">delete</v-icon>
+                        </v-btn>
+                    </td> -->
+                </template>
+            </v-data-table>
+        </v-flex>
+    </v-layout>
+</div>
+</template>
+
+<script>
+    import { mapState, mapActions, mapGetters } from 'vuex';
+    // import { Policy } from '../../store/modules/policies.js';
+	
+    // import ComponentShowBalance from './component-show-balance.vue';
+    // import ComponentShowMoneySpent from './component-show-money-spent.vue';
+    // import ComponentShowBatches from './component-show-batches.vue';
+export default {
+    name: 'app-finances',
+
+    data () {
+        return {
+        	workers_selected: [],
+		    pagination: {
+		      rowsPerPage: 10,
+		    },
+            list_headers: [
+                {
+                    text: 'Name',
+                    value: 'name',
+                },
+            ],
+
+            show_dialog_policy: false,
+            policy_to_be_edited: null,
+            // policy_new: new Policy({
+            //     QualificationTypeStatus: 'Active',
+            // }),
+        }
+    },
+    computed: {
+        // policy_dialog: function() {
+        //     return this.policy_to_be_edited == null ? this.policy_new : this.policy_to_be_edited;
+        // },
+        // title_dialog_policy: function() {
+        //     return this.policy_to_be_edited == null ? 'New Policy' : 'Edit Policy';
+        // },
+        ...mapGetters('moduleWorkers', {
+            'list_workers': 'list_workers',
+        }),
+    },
+    methods: {
+        // add_or_edit_policy() {
+        //     if(this.policy_to_be_edited == null)
+        //     {
+        //         this.add_policy_custom();
+        //     } else {
+        //         this.edit_policy();
+        //     }
+        // },
+        // delete_policy(item) {
+        //     if(confirm(`Do you really want to delete the '${item.get_name()}' policy?`))
+        //     {
+
+        //     }
+        // },
+        // init_edit_policy(policy_to_be_edited) {
+        //     this.policy_to_be_edited = policy_to_be_edited;
+        //     this.show_dialog_policy = true;
+        // },
+        // edit_policy() {
+        //     this.update_policy(this.policy_dialog).then(() => {
+        //         this.show_dialog_policy = false;
+        //     });
+        // },
+        // add_policy_custom() {
+        //     this.add_policy(this.policy_dialog).then(() => {
+        //         this.show_dialog_policy = false;
+        //     });
+        // },
+        // cancel() {
+        //     this.show_dialog_policy = false;
+        // },
+        ...mapActions('moduleWorkers', {
+            'sync_workers': 'sync_workers',
+        }),
+    },
+    created: function() {
+        this.sync_workers();
+    },
+
+    components: {
+     // ComponentShowBalance,
+     // ComponentShowMoneySpent,
+     // ComponentShowBatches,
+    },
+}
+</script>
