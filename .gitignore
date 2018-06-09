@@ -1,3 +1,6 @@
+mturk/node_modules
+.directory
+
 venv
 __pycache__
 mturk/thesis
