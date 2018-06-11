@@ -3,7 +3,7 @@ This repository houses a web server which is able to completely replace the requ
 
 The user is able to manage projects, upload batches, create different templates for better reviewing the results and many more.
 
-The instructions of how to write that file can be found in the 'Documentation' page inside of the tool.  
+The instructions of how to write that file can be found in the [Wiki](https://github.com/webis-de/mturk-manager/wiki) of this repository.  
 
 The whole tool is built on top of the [Django-Framework](https://www.djangoproject.com/).  
 
