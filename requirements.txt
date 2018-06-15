@@ -1,4 +1,5 @@
 boto3
 xmltodict
+djangorestframework
 
 -r submodules/corpus-viewer/requirements.txt
