@@ -107,7 +107,7 @@ def api_assignments_real_approved_tmp(request, name):
             'count_assignments_rejected': obj_db_hit.count_assignments_rejected,
             'datetime_creation': obj_db_hit.datetime_creation,
         })   
-    time.sleep(3)
+    # time.sleep(3)
     
     # queryset = m_Assignment.objects.filter(
     #     fk_hit__fk_batch__fk_project__name=name,
