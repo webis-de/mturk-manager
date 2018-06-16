@@ -303,7 +303,7 @@ def create(request):
             try:
                 create_project(form, request)
             except IntegrityError:
-                messages.error(request, 'A project with this name already exists')
+                messages.error(request, 'Please choose a different name.')
                 return redirect('mturk_manager:create')
 
             return redirect('mturk_manager:project', name=urllib.parse.quote(form.cleaned_data['name'], safe=''))
