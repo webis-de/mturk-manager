@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.text import slugify
 
 class m_Account_Mturk(models.Model):
     name = models.CharField(max_length=200, unique=True)
@@ -14,6 +15,7 @@ class m_Account_Mturk(models.Model):
 class m_Project(models.Model):
     version = models.IntegerField()
     name = models.CharField(max_length=200, unique=True)
+    slug_project = models.SlugField(max_length=200, unique=True)
     fk_account_mturk = models.ForeignKey('m_Account_Mturk', on_delete=models.SET_NULL, null=True, related_name='projects')
     title = models.TextField(default='')
     description = models.TextField(default='')
