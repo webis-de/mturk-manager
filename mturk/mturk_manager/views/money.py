@@ -22,7 +22,7 @@ def money(request, name):
     	'url_project': reverse('mturk_manager:project', args=[name_project]),
     	'url_api_get_balance': reverse('mturk_manager:balance', args=[name_project]),
         'url_api_assignments_real_approved': reverse('mturk_manager:api_assignments_real_approved_tmp', args=[name_project]),
-        'url_api_policies': reverse('mturk_manager:api_policies', args=[name_project]),
+        'url_api_qualifications': reverse('mturk_manager:qualifications_for_project', args=[name_project]),
     	'url_api_workers': reverse('mturk_manager:api_workers', args=[name_project]),
     }
 

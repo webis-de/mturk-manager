@@ -14,3 +14,4 @@ from .money import *
 # from .projects import ViewSet_Projects
 from .workers import Workers, Worker
 from .projects import Projects, Project
+from .qualifications import Qualifications, Qualification

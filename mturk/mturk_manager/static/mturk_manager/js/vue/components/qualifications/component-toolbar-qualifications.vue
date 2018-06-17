@@ -30,7 +30,7 @@ export default {
 	        });
         },
         ...mapActions(['set_show_progress_indicator']),
-        ...mapActions('modulePolicies', {
+        ...mapActions('moduleQualifications', {
         	'sync_policies': 'sync_policies',
         }),
     }

@@ -21,5 +21,4 @@ class SqlPrintMiddleware:
         print("Page render: " + str(sqltime) + " sec for " + str(counter) + " queries")
         print('___________________________________________________________')
         print('___________________________________________________________')
-
         return response

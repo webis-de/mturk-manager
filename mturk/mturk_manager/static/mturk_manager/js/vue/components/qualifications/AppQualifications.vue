@@ -44,7 +44,7 @@
 
 <script>
     import { mapState, mapActions, mapGetters } from 'vuex';
-    import { Policy } from '../../store/modules/policies.js';
+    import { Qualification } from '../../classes/qualifications.js';
 	
     import ComponentAddQualification from './component-add-qualification.vue';
     // import ComponentShowMoneySpent from './component-show-money-spent.vue';
@@ -77,7 +77,7 @@ export default {
 
             show_dialog_policy: false,
             policy_to_be_edited: null,
-            policy_new: new Policy({
+            policy_new: new Qualification({
                 QualificationTypeStatus: 'Active',
             }),
         }
@@ -87,9 +87,9 @@ export default {
             return this.policy_to_be_edited == null ? this.policy_new : this.policy_to_be_edited;
         },
         title_dialog_policy: function() {
-            return this.policy_to_be_edited == null ? 'New Policy' : 'Edit Policy';
+            return this.policy_to_be_edited == null ? 'New Qualification' : 'Edit Qualification';
         },
-        ...mapGetters('modulePolicies', {
+        ...mapGetters('moduleQualifications', {
             'list_policies': 'list_policies',
         }),
     },
@@ -126,7 +126,7 @@ export default {
         cancel() {
             this.show_dialog_policy = false;
         },
-        ...mapActions('modulePolicies', {
+        ...mapActions('moduleQualifications', {
             'sync_policies': 'sync_policies',
             'add_policy': 'add_policy',
             'update_policy': 'update_policy',

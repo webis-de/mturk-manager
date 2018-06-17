@@ -64,8 +64,8 @@ export default {
 	                icon: 'person',
 	            },
 	            {
-	                name: 'Policies',
-	                path: '/policies',
+	                name: 'Qualifications',
+	                path: '/qualifications',
 	                icon: 'stars',
 	            },
 	        ],

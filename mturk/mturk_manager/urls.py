@@ -12,11 +12,16 @@ from mturk_manager import views
 app_name = 'mturk_manager'
 urlpatterns = format_suffix_patterns([
 
-    path('api/workers/', views.Workers.as_view(), name='workers'),
+    # path('api/qualifications/', views.Qualifications.as_view(), name='qualifications'),
+    # path('api/qualifications/<str:name>/', views.Qualification.as_view(), name='qualification'),
+
+    # path('api/workers/', views.Workers.as_view(), name='workers'),
     path('api/workers/<str:name>/', views.Worker.as_view(), name='worker'),
-    path('api/projects/', views.Projects.as_view(), name='projects'),
+
+    # path('api/projects/', views.Projects.as_view(), name='projects'),
     path('api/projects/<str:slug_project>/', views.Project.as_view(), name='project_api_tmp'),
     path('api/projects/<str:slug_project>/workers/', views.Workers.as_view(), name='workers_for_project'),
+    path('api/projects/<str:slug_project>/qualifications/', views.Qualifications.as_view(), name='qualifications_for_project'),
 
     path('view/<str:name>', views.view, name='view'),
     path('documentation', views.documentation, name='documentation'),

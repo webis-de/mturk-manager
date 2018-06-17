@@ -157,3 +157,9 @@ class m_Message_Block(models.Model):
     
     def __str__(self):
         return self.message
+
+class Model_Qualification(models.Model):
+    id_mturk = models.CharField(max_length=200, unique=True)
+    name = models.CharField(max_length=200, unique=True)
+    description = models.TextField()
+        

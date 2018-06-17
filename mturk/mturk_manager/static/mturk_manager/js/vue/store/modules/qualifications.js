@@ -1,11 +1,12 @@
 import axios from 'axios';
 import Vue from 'vue';
 import _ from 'lodash';
+import { Qualification } from '../../classes/qualifications.js';
 
-export const modulePolicies = {
+export const moduleQualifications = {
 	namespaced: true,
 	state: {
-        url_api_policies: undefined,
+        url_api_qualifications: undefined,
         object_policies: null,
 	},  
     getters: {
@@ -19,13 +20,13 @@ export const modulePolicies = {
     	},
 	},
 	mutations: {
-        set_url_api_policies(state, url_new) {
-            state.url_api_policies = url_new;
+        set_url_api_qualifications(state, url_new) {
+            state.url_api_qualifications = url_new;
         },
 		set_policies(state, data_policies) {
 			state.object_policies = {};
         	_.forEach(data_policies, function(data_policy){
-    			const obj_policy = new Policy(data_policy);
+    			const obj_policy = new Qualification(data_policy);
     			Vue.set(state.object_policies, obj_policy.id, obj_policy);
         	});
 		},
@@ -36,7 +37,7 @@ export const modulePolicies = {
 	actions: {
 		async sync_policies({commit, state}, force=false) {
             if(state.object_policies == null || force) {
-				await axios.get(state.url_api_policies)
+				await axios.get(state.url_api_qualifications)
 			    .then(response => {
 	                commit('set_policies', response.data);
 			    })
@@ -47,13 +48,13 @@ export const modulePolicies = {
 			const token = document.cookie.match(new RegExp('csrftoken=([^;]+)'))[1]
 
 			await axios.post(
-				state.url_api_policies, 
+				state.url_api_qualifications, 
 				obj_policy.get_as_formdata(),
 				{
 					headers: {"X-CSRFToken": token}
 				}
 			).then(response => {
-                commit('add_policy', new Policy(response.data));
+                commit('add_policy', new Qualification(response.data));
 		    })
 		},
 		async update_policy({commit, state}, obj_policy) {
@@ -61,45 +62,14 @@ export const modulePolicies = {
 			const token = document.cookie.match(new RegExp('csrftoken=([^;]+)'))[1]
 
 			await axios.put(
-				state.url_api_policies, 
+				state.url_api_qualifications, 
 				obj_policy.get_as_formdata(),
 				{
 					headers: {"X-CSRFToken": token}
 				}
 			).then(response => {
-                // commit('add_policy', new Policy(response.data));
+                // commit('add_policy', new Qualification(response.data));
 		    })
 		},
 	},
-}
-
-export class Policy {
-	constructor(data) {
-		this.id = data.QualificationTypeId;
-		// this.created_at = new Date(data.CreationTime);
-		this.description = data.Description;
-		this.is_requestable = data.IsRequestable;
-		this.name = data.Name;
-		this.status = data.QualificationTypeStatus;
-	}
-
-	get_as_formdata() {
-		const form_data = new FormData();
-		form_data.set('id', this.id);
-		form_data.set('created_at', this.created_at);
-		form_data.set('description', this.description);
-		form_data.set('is_requestable', this.is_requestable);
-		form_data.set('name', this.name);
-		form_data.set('status', this.status);
-
-		return form_data;
-		return {
-			id: this.id,
-			created_at: this.created_at,
-			description: this.description,
-			is_requestable: this.is_requestable,
-			name: this.name,
-			status: this.status,
-		};
-	}
 }

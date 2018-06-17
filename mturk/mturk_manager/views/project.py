@@ -59,7 +59,7 @@ def project(request, name):
     if not code_shared.is_project_up_to_date(request, db_obj_project, name_project):    
         return redirect('mturk_manager:index')
 
-    client = code_shared.get_client(db_obj_project, use_sandbox=False)
+    client = code_shared.get_client(db_obj_project, use_sandbox=True)
 
     #approve assignment#####################################
     for id_assignment in [
@@ -84,14 +84,17 @@ def project(request, name):
         # obj_db_hit.save()
         # print(obj_db_hit.datetime_expiration +  datetime.timedelta(hours=10))
     ######################################
-
+    print(client.list_qualification_types(
+        MustBeRequestable=False,
+        MustBeOwnedByCaller=True
+    ))
    
 
     # create_data_dummy(db_obj_project)
     # client = code_shared.get_client(db_obj_project, use_sandbox=False)
     # # print(client.get_account_balance())
     # # print(m_Hit.objects.get(id_hit='38G0E1M85M5A2C3Y7I2KXVHNW0WUV7').fk_batch.name)
-    print(client.get_hit(HITId='3ZFRE2BDQ9EJS023DK2A28TNG8KXZZ')['HIT']['HITStatus'])
+    # print(client.get_hit(HITId='3ZFRE2BDQ9EJS023DK2A28TNG8KXZZ')['HIT']['HITStatus'])
 
     # obj_db_worker = m_Worker.objects.get(name='A3QRYD01WEPHCS')
     # for assignment in obj_db_worker.assignments.all():

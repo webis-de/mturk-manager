@@ -74,7 +74,7 @@
     import { mapState, mapActions, mapGetters } from 'vuex';
     import ComponentNavigationDrawer from './components/component-navigation-drawer.vue';
     import ComponentToolbarBatches from './components/batches/component-toolbar-batches.vue';
-    import ComponentToolbarQualifications from './components/policies/component-toolbar-qualifications.vue';
+    import ComponentToolbarQualifications from './components/qualifications/component-toolbar-qualifications.vue';
 export default {
     name: 'app',
     data() {

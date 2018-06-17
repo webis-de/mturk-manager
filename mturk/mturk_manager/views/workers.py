@@ -16,8 +16,9 @@ from rest_framework import status
 class Workers(APIView):
     def get(self, request, slug_project=None, format=None):
         workers = m_Worker.objects.all()
-        # if slug_project != None:
-        #     workers = workers.filter(fk_project)
+        
+        if slug_project != None:
+            workers = workers.filter(fk_project__slug=slug_project)
 
         serializer = Serializer_Worker(workers, many=True)
         return Response(serializer.data)
