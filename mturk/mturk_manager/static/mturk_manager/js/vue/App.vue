@@ -93,7 +93,7 @@ export default {
             {
                 case 'Finances':
                     return ComponentToolbarBatches;
-                case 'Policies':
+                case 'Qualifications':
                     return ComponentToolbarQualifications;
                 case 'Workers':
                     return ComponentToolbarBatches;

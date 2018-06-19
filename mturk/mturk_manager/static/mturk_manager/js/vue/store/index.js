@@ -64,6 +64,7 @@ export const store = new Vuex.Store({
             commit('moduleMoney/setUrlApiGetBalance', config.url_api_get_balance);
             
             commit('moduleQualifications/set_url_api_qualifications', config.url_api_qualifications);
+            commit('moduleQualifications/set_url_api_qualification', config.url_api_qualification);
 
             commit('moduleWorkers/set_url_api_workers', config.url_api_workers);
         },

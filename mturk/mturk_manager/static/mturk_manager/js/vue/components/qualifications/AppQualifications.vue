@@ -9,6 +9,7 @@
                 v-bind:headers="list_headers"
                 disable-initial-sort
                 v-model="policies_selected"
+                item-key="id_mturk"
                 select-all
                 class="elevation-1"
             >
@@ -20,8 +21,9 @@
                             hide-details
                         ></v-checkbox>
                     </td>
-                    <td>{{ props.item.name }}</td>
-                    <td>{{ props.item.description }}</td>
+                    <td>{{ props.item.name_mturk }}</td>
+                    <td>{{ props.item.description_mturk }}</td>
+                    <td>{{ props.item.created_at.toLocaleString() }}</td>
                     <td class="justify-end layout">
                         <v-btn icon class="mx-0" v-on:click="init_edit_policy(props.item)">
                             <v-icon color="teal">edit</v-icon>
@@ -36,9 +38,11 @@
     </v-layout>
 
     <component-add-qualification
-        v-bind:show_dialog_qualification_add="show_dialog_qualification_add"
-        v-on:finished="show_dialog_qualification_add = false"
     ></component-add-qualification>
+
+    <component-delete-qualification
+        v-bind:qualifications_selected="policies_selected"
+    ></component-delete-qualification>
 </div>
 </template>
 
@@ -47,6 +51,7 @@
     import { Qualification } from '../../classes/qualifications.js';
 	
     import ComponentAddQualification from './component-add-qualification.vue';
+    import ComponentDeleteQualification from './component-delete-qualification.vue';
     // import ComponentShowMoneySpent from './component-show-money-spent.vue';
     // import ComponentShowBatches from './component-show-batches.vue';
 export default {
@@ -58,52 +63,32 @@ export default {
             list_headers: [
                 {
                     text: 'Name',
-                    value: 'name',
+                    value: 'name_mturk',
                 },
                 {
                     text: 'Description',
-                    value: 'description',
+                    value: 'description_mturk',
+                },
+                {
+                    text: 'Created At',
+                    value: 'created_at',
                 },
                 { 
-                    text: 
-                    'Actions', 
+                    text: 'Actions', 
                     value: 'name', 
                     sortable: false,
                     align: 'right'
                 }
             ],
-
-            show_dialog_qualification_add: false,
-
-            show_dialog_policy: false,
-            policy_to_be_edited: null,
-            policy_new: new Qualification({
-                QualificationTypeStatus: 'Active',
-            }),
         }
     },
     computed: {
-        policy_dialog: function() {
-            return this.policy_to_be_edited == null ? this.policy_new : this.policy_to_be_edited;
-        },
-        title_dialog_policy: function() {
-            return this.policy_to_be_edited == null ? 'New Qualification' : 'Edit Qualification';
-        },
         ...mapGetters('moduleQualifications', {
             'list_policies': 'list_policies',
         }),
     },
     methods: {
-        add_or_edit_policy() {
-            if(this.policy_to_be_edited == null)
-            {
-                this.add_policy_custom();
-            } else {
-                this.edit_policy();
-            }
-        },
         delete_policy(item) {
-            this.show_dialog_qualification_add = true;
             // if(confirm(`Do you really want to delete the '${item.name}' policy?`))
             // {
 
@@ -111,24 +96,13 @@ export default {
         },
         init_edit_policy(policy_to_be_edited) {
             this.policy_to_be_edited = policy_to_be_edited;
-            this.show_dialog_policy = true;
         },
         edit_policy() {
             this.update_policy(this.policy_dialog).then(() => {
-                this.show_dialog_policy = false;
             });
-        },
-        add_policy_custom() {
-            this.add_policy(this.policy_dialog).then(() => {
-                this.show_dialog_policy = false;
-            });
-        },
-        cancel() {
-            this.show_dialog_policy = false;
         },
         ...mapActions('moduleQualifications', {
-            'sync_policies': 'sync_policies',
-            'add_policy': 'add_policy',
+            'sync_qualifications': 'sync_qualifications',
             'update_policy': 'update_policy',
         }),
         ...mapActions(['set_show_progress_indicator']),
@@ -136,13 +110,14 @@ export default {
     created: function() {
         this.set_show_progress_indicator(true);
 
-        this.sync_policies().then(() => {
+        this.sync_qualifications().then(() => {
             this.set_show_progress_indicator(false);
         });
     },
 
     components: {
         ComponentAddQualification,
+        ComponentDeleteQualification,
      // ComponentShowMoneySpent,
      // ComponentShowBatches,
     },

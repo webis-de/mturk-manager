@@ -7,6 +7,7 @@ export const moduleQualifications = {
 	namespaced: true,
 	state: {
         url_api_qualifications: undefined,
+        url_api_qualification: undefined,
         object_policies: null,
 	},  
     getters: {
@@ -23,38 +24,62 @@ export const moduleQualifications = {
         set_url_api_qualifications(state, url_new) {
             state.url_api_qualifications = url_new;
         },
-		set_policies(state, data_policies) {
+        set_url_api_qualification(state, url_new) {
+            state.url_api_qualification = url_new;
+        },
+		set_qualificiations(state, data_policies) {
 			state.object_policies = {};
         	_.forEach(data_policies, function(data_policy){
     			const obj_policy = new Qualification(data_policy);
-    			Vue.set(state.object_policies, obj_policy.id, obj_policy);
+    			Vue.set(state.object_policies, obj_policy.id_mturk, obj_policy);
         	});
 		},
-		add_policy(state, obj_policy) {
+		add_qualification(state, obj_policy) {
 			Vue.set(state.object_policies, obj_policy.id, obj_policy);
 		},
+		// delete_qualifications(state, obj_policy) {
+		// 	Vue.set(state.object_policies, obj_policy.id, obj_policy);
+		// },
 	},
 	actions: {
-		async sync_policies({commit, state}, force=false) {
+		async sync_qualifications({commit, state}, force=false) {
             if(state.object_policies == null || force) {
 				await axios.get(state.url_api_qualifications)
 			    .then(response => {
-	                commit('set_policies', response.data);
+	                commit('set_qualificiations', response.data);
 			    })
 			}
 		},
-		async add_policy({commit, state}, obj_policy) {
-			console.log(obj_policy.get_as_formdata())
+		async add_qualification({commit, state}, object_qualification) {
+			console.log(object_qualification.get_as_formdata())
 			const token = document.cookie.match(new RegExp('csrftoken=([^;]+)'))[1]
 
 			await axios.post(
 				state.url_api_qualifications, 
-				obj_policy.get_as_formdata(),
+				object_qualification.get_as_formdata(),
 				{
 					headers: {"X-CSRFToken": token}
 				}
 			).then(response => {
-                commit('add_policy', new Qualification(response.data));
+                commit('add_qualification', new Qualification(response.data));
+		    })
+		},
+		async delete_qualifications({commit, state}, list_qualifications) {
+			const token = document.cookie.match(new RegExp('csrftoken=([^;]+)'))[1]
+			// const list_ids = list_qualifications.map(qualifiction => qualifiction.id_mturk)
+
+
+			// _.forEach(list_qualifications, qualification => form_data.append('id_mturk[]', qualification.id_mturk))
+				
+			const string_parameter = '?' + list_qualifications.map(qualifiction => 'ids=' + qualifiction.id_mturk).join('&');
+
+			await axios.delete(
+				state.url_api_qualifications + string_parameter, 
+				{
+					headers: {"X-CSRFToken": token}
+				}
+			).then(response => {
+                // commit('add_qualification', new Qualification(response.data));
 		    })
 		},
 		async update_policy({commit, state}, obj_policy) {

@@ -25,13 +25,13 @@ export default {
         refresh_data: function() {
             this.set_show_progress_indicator(true);
 
-            this.sync_policies(true).then(() => {
+            this.sync_qualifications(true).then(() => {
 	            this.set_show_progress_indicator(false);
 	        });
         },
         ...mapActions(['set_show_progress_indicator']),
         ...mapActions('moduleQualifications', {
-        	'sync_policies': 'sync_policies',
+        	'sync_qualifications': 'sync_qualifications',
         }),
     }
 }
