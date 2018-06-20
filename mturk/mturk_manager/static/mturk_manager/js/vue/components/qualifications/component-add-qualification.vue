@@ -13,9 +13,9 @@
                                     <v-flex xs12 md10>
                                         <v-text-field v-model="object_qualification.name_database" label="Name"></v-text-field>
                                     </v-flex>
-                                    <v-flex xs12 md2>
+                                   <!--  <v-flex xs12 md2>
                                         <v-switch v-bind:label="object_qualification.is_active ? 'Active' : 'Inactive'" v-model="object_qualification.is_active"></v-switch>
-                                    </v-flex>
+                                    </v-flex> -->
                                 </v-layout>
                                 <v-layout wrap align-center>
                                     <v-flex xs12>
@@ -49,7 +49,7 @@
                     </v-card-text>
                     <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn color="blue darken-1" flat v-bind:disabled="is_creating" v-on:click.native="cancel">Cancel</v-btn>
+                        <v-btn color="blue darken-1" flat v-bind:disabled="is_creating" v-on:click.native="clear">Cancel</v-btn>
                         <v-btn color="blue darken-1" v-bind:loading="is_creating" flat v-on:click.native="save">Save</v-btn>
                     </v-card-actions>
             </v-card>
@@ -76,9 +76,7 @@ export default {
             add_custom_mturk: false,
             title_dialog: 'Add Qualification',
 
-            object_qualification: new Qualification({
-                is_active: true,
-            }),
+            object_qualification: new Qualification(),
         }
     },
     computed: {
@@ -87,12 +85,13 @@ export default {
         save: function() {
             this.is_creating = true;
             this.add_qualification(this.object_qualification).then(() => {
-                this.show_dialog = false;
-                this.is_creating = false;
+                this.clear();
             });
         },
-        cancel: function() {
+        clear: function() {
             this.show_dialog = false;
+            this.is_creating = false;
+            this.object_qualification = new Qualification();
         },
         ...mapActions('moduleQualifications', {
             'add_qualification': 'add_qualification',

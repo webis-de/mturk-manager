@@ -22,7 +22,7 @@ urlpatterns = format_suffix_patterns([
     path('api/projects/<str:slug_project>/', views.Project.as_view(), name='project_api_tmp'),
     path('api/projects/<str:slug_project>/workers/', views.Workers.as_view(), name='workers_for_project'),
     path('api/projects/<str:slug_project>/qualifications/', views.Qualifications.as_view(), name='qualifications_for_project'),
-    path('api/projects/<str:slug_project>/qualification/', views.Qualification.as_view(), name='qualification_for_project'),
+    path('api/projects/<str:slug_project>/qualifications/<str:id_mturk>', views.Qualification.as_view(), name='qualification_for_project'),
 
     path('view/<str:name>', views.view, name='view'),
     path('documentation', views.documentation, name='documentation'),

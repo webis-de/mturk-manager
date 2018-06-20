@@ -47,11 +47,13 @@ class Qualification(APIView):
         serializer = Serializer_Qualification(qualification, context={'request': request})
         return Response(serializer.data)
 
-    def put(self, request, name, format=None):
-        qualification = self.get_object(name)
-        serializer = Serializer_Qualification(qualification, data=request.data)
+    @add_database_object_project
+    def put(self, request, slug_project, database_object_project, id_mturk, format=None):
+        # qualification = self.get_object(id_mturk)
+        serializer = Serializer_Qualification(request.data, data=request.data)
+        # serializer = Serializer_Qualification(qualification, data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            serializer.save(database_object_project=database_object_project, id_mturk=id_mturk)
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

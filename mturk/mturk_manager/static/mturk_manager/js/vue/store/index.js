@@ -24,9 +24,10 @@ export const store = new Vuex.Store({
     },
     state: {
         name_project: undefined,
+        token_csrf: undefined,
         show_with_fee: true,
         show_progress_indicator: 0,
-
+        use_sandbox: false,
         url_project: undefined,
     },
     getters: {
@@ -41,9 +42,14 @@ export const store = new Vuex.Store({
         setUrlProject(state, url_project) {
             state.url_project = url_project;
         },
-       
+        set_token_csrf(state, token_csrf) {
+            state.token_csrf = token_csrf;
+        },
         set_show_with_fee(state, show) {
             state.show_with_fee = show;
+        },
+        set_use_sandbox(state, use_sandbox) {
+            state.use_sandbox = use_sandbox;
         },
         set_show_progress_indicator(state, show) {
             state.show_progress_indicator += show == true ? 1 : -1;
@@ -56,6 +62,7 @@ export const store = new Vuex.Store({
             console.log(config);
 
             commit('setNameProject', config.name_project);
+            commit('set_token_csrf', config.token_csrf);
 
             commit('setUrlProject', config.url_project);
 
@@ -64,7 +71,7 @@ export const store = new Vuex.Store({
             commit('moduleMoney/setUrlApiGetBalance', config.url_api_get_balance);
             
             commit('moduleQualifications/set_url_api_qualifications', config.url_api_qualifications);
-            commit('moduleQualifications/set_url_api_qualification', config.url_api_qualification);
+            // commit('moduleQualifications/set_url_api_qualification', config.url_api_qualification);
 
             commit('moduleWorkers/set_url_api_workers', config.url_api_workers);
         },

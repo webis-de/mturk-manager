@@ -13,7 +13,10 @@
                                     <v-text-field v-model="object_qualification.name_database" label="Name"></v-text-field>
                                 </v-flex>
                                 <v-flex xs12 md2>
-                                    <v-switch v-bind:label="object_qualification.is_active ? 'Active' : 'Inactive'" v-model="object_qualification.is_active"></v-switch>
+                                    <!-- <v-switch 
+                                        v-bind:label="object_qualification.is_active ? 'Active' : 'Inactive'" 
+                                        v-model="object_qualification.is_active"
+                                    ></v-switch> -->
                                 </v-flex>
                             </v-layout>
                             <v-layout wrap align-center>
@@ -48,7 +51,7 @@
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" flat v-bind:disabled="is_updating" v-on:click.native="$emit('finished');">Cancel</v-btn>
+                    <v-btn color="blue darken-1" flat v-bind:disabled="is_updating" v-on:click.native="clear">Cancel</v-btn>
                     <v-btn color="blue darken-1" v-bind:loading="is_updating" flat v-on:click.native="update">Update</v-btn>
                 </v-card-actions>
         </v-card>
@@ -78,9 +81,7 @@ export default {
             add_custom_mturk: false,
             title_dialog: 'Update Qualification',
 
-            object_qualification: new Qualification({
-                is_active: true,
-            }),
+            object_qualification: new Qualification(),
         }
     },
     computed: {
@@ -91,20 +92,28 @@ export default {
     methods: {
         update: function() {
             this.is_updating = true;
-            this.add_qualification(this.object_qualification).then(() => {
-                this.show_dialog = false;
-                this.is_updating = false;
-                this.$emit('finished');
+            this.update_qualification(this.object_qualification).then(() => {
+                this.clear();
             });
         },
-        cancel: function() {
+        clear: function() {
             this.show_dialog = false;
+            this.is_updating = false;
+            this.$emit('finished');
         },
         ...mapActions('moduleQualifications', {
-            'add_qualification': 'add_qualification',
+            'update_qualification': 'update_qualification',
         }),
     },
     watch: {
+        qualification_to_be_edited: function() {
+            console.log(this.qualification_to_be_edited)
+            if(this.qualification_to_be_edited == undefined) {
+                this.object_qualification = new Qualification();
+            } else {
+                this.object_qualification = this.qualification_to_be_edited.copy();
+            }
+        }
     }
 }
 </script>

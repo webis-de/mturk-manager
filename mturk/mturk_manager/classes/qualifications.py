@@ -81,6 +81,72 @@ class Manager_Qualifications(object):
 
         return response
 
+
+    @staticmethod
+    def update(database_object_project, id_mturk, validated_data, use_sandbox=True):
+        print(validated_data)
+        dictionary_changed_fields = {
+            'QualificationTypeId': id_mturk,
+        }
+
+        description_mturk = validated_data.get('Description')
+        if description_mturk != None:
+            dictionary_changed_fields['Description'] = description_mturk
+
+        # is_active = validated_data.get('QualificationTypeStatus', 'Inactive')
+        # if is_active != None:
+        #     dictionary_changed_fields['QualificationTypeStatus'] = is_active
+
+            # Description=description_mturk,
+            # QualificationTypeStatus=validated_data.get('QualificationTypeStatus', 'Inactive'),
+        print(dictionary_changed_fields)
+
+        if len(dictionary_changed_fields) > 1:
+            client = Manager_Projects.get_mturk_api(database_object_project, use_sandbox)
+            response = client.update_qualification_type(
+                **dictionary_changed_fields
+                # QualificationTypeStatus='Active' if validated_data.get('is_active') else 'Inactive',
+                # Name=validated_data.get('name_database'),
+            )['QualificationType']
+
+        ###########################
+        ###########################
+        ###########################
+        dictionary_changed_fields = {}
+
+        name_database = validated_data.get('name_database')
+        if name_database != None:
+            dictionary_changed_fields['name'] = name_database
+
+        description_database = validated_data.get('description_database')
+        if description_database != None:
+            dictionary_changed_fields['description'] = description_database
+
+        was_created = False
+        try:
+            object_qualification = Model_Qualification.objects.get(id_mturk=id_mturk)
+        except Model_Qualification.DoesNotExist:
+            if len(dictionary_changed_fields) < 2:
+                # if it does not exist and is not required
+                return response
+            else:
+                was_created = True
+                object_qualification = Model_Qualification.objects.create(
+                    id_mturk=id_mturk,
+                    **dictionary_changed_fields
+                )
+
+        if not was_created:
+            object_qualification.name = validated_data.get('name_database')
+            object_qualification.description = validated_data.get('description_database')
+            object_qualification.save()
+
+        response['name_database'] = object_qualification.name
+        response['description_database'] = object_qualification.description
+
+        return response
+
+
     @staticmethod
     def load_from_mturk(database_object_project, use_sandbox=True):
         client = Manager_Projects.get_mturk_api(database_object_project, use_sandbox)

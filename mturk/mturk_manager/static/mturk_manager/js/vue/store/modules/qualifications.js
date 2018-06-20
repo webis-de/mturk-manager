@@ -7,7 +7,7 @@ export const moduleQualifications = {
 	namespaced: true,
 	state: {
         url_api_qualifications: undefined,
-        url_api_qualification: undefined,
+        // url_api_qualification: undefined,
         object_policies: null,
 	},  
     getters: {
@@ -24,9 +24,9 @@ export const moduleQualifications = {
         set_url_api_qualifications(state, url_new) {
             state.url_api_qualifications = url_new;
         },
-        set_url_api_qualification(state, url_new) {
-            state.url_api_qualification = url_new;
-        },
+        // set_url_api_qualification(state, url_new) {
+        //     state.url_api_qualification = url_new;
+        // },
 		set_qualificiations(state, data_policies) {
 			state.object_policies = {};
         	_.forEach(data_policies, function(data_policy){
@@ -35,7 +35,7 @@ export const moduleQualifications = {
         	});
 		},
 		add_qualification(state, obj_policy) {
-			Vue.set(state.object_policies, obj_policy.id, obj_policy);
+			Vue.set(state.object_policies, obj_policy.id_mturk, obj_policy);
 		},
 		delete_qualifications(state, list_ids) {
         	_.forEach(list_ids, id => Vue.delete(state.object_policies, id) );
@@ -53,22 +53,32 @@ export const moduleQualifications = {
 			    })
 			}
 		},
-		async add_qualification({commit, state}, object_qualification) {
+		async update_qualification({commit, state, rootState}, object_qualification) {
+			await axios.put(
+				state.url_api_qualifications + object_qualification.id_mturk, 
+				object_qualification.get_as_formdata(true),
+				{
+					headers: {"X-CSRFToken": rootState.token_csrf}
+				}
+			).then(response => {
+                commit('add_qualification', new Qualification(response.data));
+		    })
+
+		},
+		async add_qualification({commit, state, rootState}, object_qualification) {
 			console.log(object_qualification.get_as_formdata())
-			const token = document.cookie.match(new RegExp('csrftoken=([^;]+)'))[1]
 
 			await axios.post(
 				state.url_api_qualifications, 
 				object_qualification.get_as_formdata(),
 				{
-					headers: {"X-CSRFToken": token}
+					headers: {"X-CSRFToken": rootState.token_csrf}
 				}
 			).then(response => {
                 commit('add_qualification', new Qualification(response.data));
 		    })
 		},
-		async delete_qualifications({commit, state}, list_qualifications) {
-			const token = document.cookie.match(new RegExp('csrftoken=([^;]+)'))[1]
+		async delete_qualifications({commit, state, rootState}, list_qualifications) {
 			// const list_ids = list_qualifications.map(qualifiction => qualifiction.id_mturk)
 
 
@@ -80,25 +90,11 @@ export const moduleQualifications = {
 			await axios.delete(
 				state.url_api_qualifications + string_parameter, 
 				{
-					headers: {"X-CSRFToken": token}
+					headers: {"X-CSRFToken": rootState.token_csrf}
 				}
 			).then(response => {
 				commit('delete_qualifications', list_ids);
                 // commit('add_qualification', new Qualification(response.data));
-		    })
-		},
-		async update_policy({commit, state}, obj_policy) {
-			console.log(obj_policy.get_as_formdata())
-			const token = document.cookie.match(new RegExp('csrftoken=([^;]+)'))[1]
-
-			await axios.put(
-				state.url_api_qualifications, 
-				obj_policy.get_as_formdata(),
-				{
-					headers: {"X-CSRFToken": token}
-				}
-			).then(response => {
-                // commit('add_policy', new Qualification(response.data));
 		    })
 		},
 	},

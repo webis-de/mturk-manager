@@ -26,7 +26,7 @@
                     <td>{{ props.item.created_at.toLocaleString() }}</td>
                     <td class="justify-end layout">
                         <v-tooltip left>
-                            <v-btn v-if="!props.item.has_database_entry()" icon class="mx-0" v-on:click="init_edit_policy(props.item)" slot="activator">
+                            <v-btn v-if="!props.item.has_database_entry()" icon class="mx-0" slot="activator">
                                 <v-icon color="warning">warning</v-icon>
                             </v-btn>
                             <span>No database entry for this qualification was found!</span>

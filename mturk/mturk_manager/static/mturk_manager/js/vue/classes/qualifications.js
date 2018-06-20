@@ -9,7 +9,7 @@ export class Qualification {
 		this.name_database = data.name_database;
 		this.description_database = data.description_database;
 		this.is_requestable = data.is_requestable;
-		this.is_active = data.is_active;
+		// this.is_active = data.is_active != undefined ? data.is_active : false;
 		this.is_auto_granted = data.is_auto_granted;
 		this.keywords = data.keywords;
 	}
@@ -26,11 +26,25 @@ export class Qualification {
 		return this.description_database == undefined ? this.description_mturk: this.description_database;
 	}
 
-	get_as_formdata() {
+	get_as_formdata(only_updateable_fields=false) {
 		const form_data = new FormData();
+
+		const set_updateable_fields = new Set([
+			'name_database',
+			'description_database',
+			'description_mturk',
+			// 'is_active',
+		]);
+		console.log(set_updateable_fields)
 
 		_.forOwn(this, function(value, key) {
 			if(value != undefined) {
+				if(only_updateable_fields == true) {
+					if(!set_updateable_fields.has(key)) {
+						return true;
+					}
+				}
+
 				form_data.set(key, value);
 			}
 		});
@@ -38,5 +52,15 @@ export class Qualification {
 		// form_data.set('name_mturk', 'something,else');
 
 		return form_data;
+	}
+
+	copy() {
+		const result = {};
+
+		_.forOwn(this, function(value, key) {
+				result[key] = value;
+		});
+		
+		return new Qualification(result);
 	}
 }

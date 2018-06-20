@@ -4,7 +4,7 @@ from mturk_manager.models import *
 import urllib.parse, json, csv
 from django.urls import reverse
 from mturk_manager.forms import *
-
+from django.middleware.csrf import get_token
 def money(request, name):
     name_quoted = name
     name_project = urllib.parse.unquote(name_quoted)
@@ -18,12 +18,13 @@ def money(request, name):
         # form = Form_Open()
 
     dict_config = {
-    	'name_project': name_project,
+        'name_project': name_project,
+    	'token_csrf': get_token(request),
     	'url_project': reverse('mturk_manager:project', args=[name_project]),
     	'url_api_get_balance': reverse('mturk_manager:balance', args=[name_project]),
         'url_api_assignments_real_approved': reverse('mturk_manager:api_assignments_real_approved_tmp', args=[name_project]),
         'url_api_qualifications': reverse('mturk_manager:qualifications_for_project', args=[name_project]),
-        'url_api_qualification': reverse('mturk_manager:qualification_for_project', args=[name_project]),
+        # 'url_api_qualification': reverse('mturk_manager:qualification_for_project', args=[name_project, 'da']),
     	'url_api_workers': reverse('mturk_manager:api_workers', args=[name_project]),
     }
 
