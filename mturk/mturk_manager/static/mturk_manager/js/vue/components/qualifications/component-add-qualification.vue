@@ -5,31 +5,52 @@
                     <v-card-title>
                         <span class="headline">{{ title_dialog }}</span>
                     </v-card-title>
+                    {{is_form_valid}}
                     <v-card-text>
                         <v-container grid-list-md>
-                            <v-layout wrap>
-                                <v-flex xs12>
-                                    <v-text-field v-model="object_qualification.name_database" label="Name"></v-text-field>
-                                </v-flex>
-                                <v-flex xs12>
-                                    <v-text-field v-model="object_qualification.description_database" label="Description"></v-text-field>
-                                </v-flex>
-                                <v-flex xs12 sm6 md4>
-                                    <v-text-field v-model="object_qualification.keywords" label="Keywords"></v-text-field>
-                                </v-flex>
-                                <v-flex xs12 sm6 md4>
-                                    <v-checkbox
-                                        label="Active"
-                                        v-model="object_qualification.is_active"
-                                    ></v-checkbox>
-                                </v-flex>
-                            </v-layout>
+                            <v-form v-model="is_form_valid">
+                                <v-layout row align-center wrap>
+                                    <v-flex xs12 md10>
+                                        <v-text-field v-model="object_qualification.name_database" label="Name"></v-text-field>
+                                    </v-flex>
+                                    <v-flex xs12 md2>
+                                        <v-switch v-bind:label="object_qualification.is_active ? 'Active' : 'Inactive'" v-model="object_qualification.is_active"></v-switch>
+                                    </v-flex>
+                                </v-layout>
+                                <v-layout wrap align-center>
+                                    <v-flex xs12>
+                                        <v-text-field v-model="object_qualification.description_database" label="Description"></v-text-field>
+                                    </v-flex>
+                                </v-layout>
+                                <v-layout wrap align-center>
+                                    <v-flex xs12>
+                                        <v-text-field v-model="object_qualification.keywords" label="Keywords"></v-text-field>
+                                    </v-flex>
+                                </v-layout>
+                                <v-layout wrap >
+                                    <v-flex xs12>
+                                        <v-checkbox label="Custom name and description for MTurk?" v-model="add_custom_mturk"></v-checkbox>
+                                    </v-flex>
+                                </v-layout>
+                                <template v-if="add_custom_mturk">
+                                    <v-layout row align-center wrap>
+                                        <v-flex xs12>
+                                            <v-text-field v-model="object_qualification.name_mturk" label="Name displayed in MTurk"></v-text-field>
+                                        </v-flex>
+                                    </v-layout>
+                                    <v-layout wrap align-center>
+                                        <v-flex xs12>
+                                            <v-text-field v-model="object_qualification.description_mturk" label="Description displayed in MTurk"></v-text-field>
+                                        </v-flex>
+                                    </v-layout>
+                                </template>
+                            </v-form>
                         </v-container>
                     </v-card-text>
                     <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn color="blue darken-1" flat v-on:click.native="cancel">Cancel</v-btn>
-                        <v-btn color="blue darken-1" flat v-on:click.native="save">Save</v-btn>
+                        <v-btn color="blue darken-1" flat v-bind:disabled="is_creating" v-on:click.native="cancel">Cancel</v-btn>
+                        <v-btn color="blue darken-1" v-bind:loading="is_creating" flat v-on:click.native="save">Save</v-btn>
                     </v-card-actions>
             </v-card>
     </v-dialog>
@@ -50,17 +71,24 @@ export default {
     data () {
         return {
             show_dialog: false,
+            is_creating: false,
+            is_form_valid: false,
+            add_custom_mturk: false,
             title_dialog: 'Add Qualification',
 
-            object_qualification: new Qualification(),
+            object_qualification: new Qualification({
+                is_active: true,
+            }),
         }
     },
     computed: {
     },
     methods: {
         save: function() {
+            this.is_creating = true;
             this.add_qualification(this.object_qualification).then(() => {
                 this.show_dialog = false;
+                this.is_creating = false;
             });
         },
         cancel: function() {

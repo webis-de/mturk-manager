@@ -14,6 +14,18 @@ export class Qualification {
 		this.keywords = data.keywords;
 	}
 
+	has_database_entry() {
+		return this.name_database != undefined;
+	}
+
+	display_name() {
+		return this.name_database == undefined ? this.name_mturk: this.name_database;
+	}
+
+	display_description() {
+		return this.description_database == undefined ? this.description_mturk: this.description_database;
+	}
+
 	get_as_formdata() {
 		const form_data = new FormData();
 

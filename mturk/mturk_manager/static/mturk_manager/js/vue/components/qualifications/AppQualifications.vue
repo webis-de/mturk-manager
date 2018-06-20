@@ -21,16 +21,22 @@
                             hide-details
                         ></v-checkbox>
                     </td>
-                    <td>{{ props.item.name_mturk }}</td>
-                    <td>{{ props.item.description_mturk }}</td>
+                    <td>{{ props.item.display_name() }}</td>
+                    <td>{{ props.item.display_description() }}</td>
                     <td>{{ props.item.created_at.toLocaleString() }}</td>
                     <td class="justify-end layout">
-                        <v-btn icon class="mx-0" v-on:click="init_edit_policy(props.item)">
-                            <v-icon color="teal">edit</v-icon>
+                        <v-tooltip left>
+                            <v-btn v-if="!props.item.has_database_entry()" icon class="mx-0" v-on:click="init_edit_policy(props.item)" slot="activator">
+                                <v-icon color="warning">warning</v-icon>
+                            </v-btn>
+                            <span>No database entry for this qualification was found!</span>
+                         </v-tooltip>
+                        <v-btn icon class="mx-0" v-on:click="qualification_to_be_edited = props.item">
+                            <v-icon color="success">edit</v-icon>
                         </v-btn>
-                        <v-btn icon class="mx-0" v-on:click="delete_policy(props.item)">
-                            <v-icon color="pink">delete</v-icon>
-                        </v-btn>
+                        <!-- <v-btn icon class="mx-0" v-on:click="delete_policy(props.item)">
+                            <v-icon color="error">delete</v-icon>
+                        </v-btn> -->
                     </td>
                 </template>
             </v-data-table>
@@ -43,6 +49,11 @@
     <component-delete-qualification
         v-bind:qualifications_selected="policies_selected"
     ></component-delete-qualification>
+
+    <component-update-qualification
+        v-bind:qualification_to_be_edited="qualification_to_be_edited"
+        v-on:finished="qualification_to_be_edited = undefined"
+    ></component-update-qualification>
 </div>
 </template>
 
@@ -52,6 +63,7 @@
 	
     import ComponentAddQualification from './component-add-qualification.vue';
     import ComponentDeleteQualification from './component-delete-qualification.vue';
+    import ComponentUpdateQualification from './component-update-qualification.vue';
     // import ComponentShowMoneySpent from './component-show-money-spent.vue';
     // import ComponentShowBatches from './component-show-batches.vue';
 export default {
@@ -74,12 +86,15 @@ export default {
                     value: 'created_at',
                 },
                 { 
-                    text: 'Actions', 
+                    text: '', 
+                    // text: 'Actions', 
                     value: 'name', 
                     sortable: false,
                     align: 'right'
                 }
             ],
+
+            qualification_to_be_edited: undefined,
         }
     },
     computed: {
@@ -93,9 +108,6 @@ export default {
             // {
 
             // }
-        },
-        init_edit_policy(policy_to_be_edited) {
-            this.policy_to_be_edited = policy_to_be_edited;
         },
         edit_policy() {
             this.update_policy(this.policy_dialog).then(() => {
@@ -118,6 +130,7 @@ export default {
     components: {
         ComponentAddQualification,
         ComponentDeleteQualification,
+        ComponentUpdateQualification,
      // ComponentShowMoneySpent,
      // ComponentShowBatches,
     },

@@ -27,13 +27,12 @@ class Qualifications(APIView):
 
     @add_database_object_project
     def delete(self, request, slug_project, database_object_project, format=None):
-        print('DELETE')
         try:
             list_ids = parse_qs(request.META['QUERY_STRING'])['ids']
         except KeyError:
             return Response(status=status.HTTP_204_NO_CONTENT)
             
-        print(list_ids)
+        count_deleted = Manager_Qualifications.delete(database_object_project, list_ids)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 class Qualification(APIView):

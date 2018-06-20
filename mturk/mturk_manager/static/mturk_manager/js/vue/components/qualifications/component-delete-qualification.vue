@@ -16,12 +16,23 @@
                                     Do you really want to delete the following qualification(s)?
                                 </v-flex>
                             </v-layout>
+                            <v-layout wrap>
+                                <v-flex xs12>
+                                    <v-list dense >
+                                        <v-list-tile v-for="(qualification, index) in qualifications_selected" :key="qualification.id_mturk">
+                                            <v-list-tile-content>
+                                                <v-list-tile-title>{{ qualification.display_name() }}</v-list-tile-title>
+                                            </v-list-tile-content>
+                                        </v-list-tile>
+                                    </v-list>
+                                </v-flex>
+                            </v-layout>
                         </v-container>
                     </v-card-text>
                     <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn color="blue darken-1" flat v-on:click.native="cancel">Cancel</v-btn>
-                        <v-btn color="red darken-1" flat v-on:click.native="remove">Delete</v-btn>
+                        <v-btn color="blue darken-1" flat v-bind:disabled="is_deleting" v-on:click.native="cancel">Cancel</v-btn>
+                        <v-btn color="red darken-1" v-bind:loading="is_deleting" flat v-on:click.native="remove">Delete</v-btn>
                     </v-card-actions>
             </v-card>
     </v-dialog>
@@ -46,6 +57,7 @@ export default {
     data () {
         return {
             show_dialog: false,
+            is_deleting: false,
             title_dialog: 'Delete Qualification(s)',
         }
     },
@@ -59,8 +71,10 @@ export default {
     },
     methods: {
         remove: function() {
+            this.is_deleting = true;
             this.delete_qualifications(this.qualifications_selected).then(() => {
-                // this.show_dialog = false;
+                this.show_dialog = false;
+                this.is_deleting = false;
             });
         },
         cancel: function() {

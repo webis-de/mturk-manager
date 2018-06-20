@@ -37,6 +37,9 @@ export const moduleQualifications = {
 		add_qualification(state, obj_policy) {
 			Vue.set(state.object_policies, obj_policy.id, obj_policy);
 		},
+		delete_qualifications(state, list_ids) {
+        	_.forEach(list_ids, id => Vue.delete(state.object_policies, id) );
+		},
 		// delete_qualifications(state, obj_policy) {
 		// 	Vue.set(state.object_policies, obj_policy.id, obj_policy);
 		// },
@@ -70,8 +73,9 @@ export const moduleQualifications = {
 
 
 			// _.forEach(list_qualifications, qualification => form_data.append('id_mturk[]', qualification.id_mturk))
-				
-			const string_parameter = '?' + list_qualifications.map(qualifiction => 'ids=' + qualifiction.id_mturk).join('&');
+			const list_ids = list_qualifications.map(qualifiction => qualifiction.id_mturk);
+
+			const string_parameter = '?' + list_ids.map(id => 'ids=' + id).join('&');
 
 			await axios.delete(
 				state.url_api_qualifications + string_parameter, 
@@ -79,6 +83,7 @@ export const moduleQualifications = {
 					headers: {"X-CSRFToken": token}
 				}
 			).then(response => {
+				commit('delete_qualifications', list_ids);
                 // commit('add_qualification', new Qualification(response.data));
 		    })
 		},
