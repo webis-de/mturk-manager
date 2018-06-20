@@ -31505,7 +31505,7 @@ exports.mapGetters = mapGetters;
 exports.mapActions = mapActions;
 exports.createNamespacedHelpers = createNamespacedHelpers;
 exports.default = index_esm;
-},{}],93:[function(require,module,exports) {
+},{}],97:[function(require,module,exports) {
 
 // https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
 var global = module.exports = typeof window != 'undefined' && window.Math == Math
@@ -31514,7 +31514,7 @@ var global = module.exports = typeof window != 'undefined' && window.Math == Mat
   : Function('return this')();
 if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
 
-},{}],74:[function(require,module,exports) {
+},{}],78:[function(require,module,exports) {
 var core = module.exports = { version: '2.5.6' };
 if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
 
@@ -31551,14 +31551,14 @@ module.exports = function (it) {
   return typeof it === 'object' ? it !== null : typeof it === 'function';
 };
 
-},{}],129:[function(require,module,exports) {
+},{}],133:[function(require,module,exports) {
 var isObject = require('./_is-object');
 module.exports = function (it) {
   if (!isObject(it)) throw TypeError(it + ' is not an object!');
   return it;
 };
 
-},{"./_is-object":107}],156:[function(require,module,exports) {
+},{"./_is-object":107}],160:[function(require,module,exports) {
 module.exports = function (exec) {
   try {
     return !!exec();
@@ -31567,13 +31567,13 @@ module.exports = function (exec) {
   }
 };
 
-},{}],137:[function(require,module,exports) {
+},{}],150:[function(require,module,exports) {
 // Thank's IE8 for his funny defineProperty
 module.exports = !require('./_fails')(function () {
   return Object.defineProperty({}, 'a', { get: function () { return 7; } }).a != 7;
 });
 
-},{"./_fails":156}],150:[function(require,module,exports) {
+},{"./_fails":160}],146:[function(require,module,exports) {
 var isObject = require('./_is-object');
 var document = require('./_global').document;
 // typeof document.createElement is 'object' in old IE
@@ -31582,12 +31582,12 @@ module.exports = function (it) {
   return is ? document.createElement(it) : {};
 };
 
-},{"./_is-object":107,"./_global":93}],162:[function(require,module,exports) {
+},{"./_is-object":107,"./_global":97}],166:[function(require,module,exports) {
 module.exports = !require('./_descriptors') && !require('./_fails')(function () {
   return Object.defineProperty(require('./_dom-create')('div'), 'a', { get: function () { return 7; } }).a != 7;
 });
 
-},{"./_descriptors":137,"./_fails":156,"./_dom-create":150}],163:[function(require,module,exports) {
+},{"./_descriptors":150,"./_fails":160,"./_dom-create":146}],167:[function(require,module,exports) {
 // 7.1.1 ToPrimitive(input [, PreferredType])
 var isObject = require('./_is-object');
 // instead of the ES6 spec version, we didn't implement @@toPrimitive case
@@ -31601,7 +31601,7 @@ module.exports = function (it, S) {
   throw TypeError("Can't convert object to primitive value");
 };
 
-},{"./_is-object":107}],135:[function(require,module,exports) {
+},{"./_is-object":107}],149:[function(require,module,exports) {
 var anObject = require('./_an-object');
 var IE8_DOM_DEFINE = require('./_ie8-dom-define');
 var toPrimitive = require('./_to-primitive');
@@ -31619,7 +31619,7 @@ exports.f = require('./_descriptors') ? Object.defineProperty : function defineP
   return O;
 };
 
-},{"./_an-object":129,"./_ie8-dom-define":162,"./_to-primitive":163,"./_descriptors":137}],136:[function(require,module,exports) {
+},{"./_an-object":133,"./_ie8-dom-define":166,"./_to-primitive":167,"./_descriptors":150}],154:[function(require,module,exports) {
 module.exports = function (bitmap, value) {
   return {
     enumerable: !(bitmap & 1),
@@ -31629,7 +31629,7 @@ module.exports = function (bitmap, value) {
   };
 };
 
-},{}],99:[function(require,module,exports) {
+},{}],120:[function(require,module,exports) {
 var dP = require('./_object-dp');
 var createDesc = require('./_property-desc');
 module.exports = require('./_descriptors') ? function (object, key, value) {
@@ -31639,13 +31639,13 @@ module.exports = require('./_descriptors') ? function (object, key, value) {
   return object;
 };
 
-},{"./_object-dp":135,"./_property-desc":136,"./_descriptors":137}],128:[function(require,module,exports) {
+},{"./_object-dp":149,"./_property-desc":154,"./_descriptors":150}],132:[function(require,module,exports) {
 var hasOwnProperty = {}.hasOwnProperty;
 module.exports = function (it, key) {
   return hasOwnProperty.call(it, key);
 };
 
-},{}],92:[function(require,module,exports) {
+},{}],96:[function(require,module,exports) {
 
 var global = require('./_global');
 var core = require('./_core');
@@ -31710,14 +31710,14 @@ $export.U = 64;  // safe
 $export.R = 128; // real proto method for `library`
 module.exports = $export;
 
-},{"./_global":93,"./_core":74,"./_ctx":105,"./_hide":99,"./_has":128}],143:[function(require,module,exports) {
+},{"./_global":97,"./_core":78,"./_ctx":105,"./_hide":120,"./_has":132}],139:[function(require,module,exports) {
 var toString = {}.toString;
 
 module.exports = function (it) {
   return toString.call(it).slice(8, -1);
 };
 
-},{}],155:[function(require,module,exports) {
+},{}],159:[function(require,module,exports) {
 // fallback for non-array-like ES3 and non-enumerable old V8 strings
 var cof = require('./_cof');
 // eslint-disable-next-line no-prototype-builtins
@@ -31725,14 +31725,14 @@ module.exports = Object('z').propertyIsEnumerable(0) ? Object : function (it) {
   return cof(it) == 'String' ? it.split('') : Object(it);
 };
 
-},{"./_cof":143}],131:[function(require,module,exports) {
+},{"./_cof":139}],138:[function(require,module,exports) {
 // 7.2.1 RequireObjectCoercible(argument)
 module.exports = function (it) {
   if (it == undefined) throw TypeError("Can't call method on  " + it);
   return it;
 };
 
-},{}],139:[function(require,module,exports) {
+},{}],153:[function(require,module,exports) {
 // to indexed object, toObject with fallback for non-array-like ES3 strings
 var IObject = require('./_iobject');
 var defined = require('./_defined');
@@ -31740,7 +31740,7 @@ module.exports = function (it) {
   return IObject(defined(it));
 };
 
-},{"./_iobject":155,"./_defined":131}],130:[function(require,module,exports) {
+},{"./_iobject":159,"./_defined":138}],137:[function(require,module,exports) {
 // 7.1.4 ToInteger
 var ceil = Math.ceil;
 var floor = Math.floor;
@@ -31748,7 +31748,7 @@ module.exports = function (it) {
   return isNaN(it = +it) ? 0 : (it > 0 ? floor : ceil)(it);
 };
 
-},{}],146:[function(require,module,exports) {
+},{}],142:[function(require,module,exports) {
 // 7.1.15 ToLength
 var toInteger = require('./_to-integer');
 var min = Math.min;
@@ -31756,7 +31756,7 @@ module.exports = function (it) {
   return it > 0 ? min(toInteger(it), 0x1fffffffffffff) : 0; // pow(2, 53) - 1 == 9007199254740991
 };
 
-},{"./_to-integer":130}],170:[function(require,module,exports) {
+},{"./_to-integer":137}],174:[function(require,module,exports) {
 var toInteger = require('./_to-integer');
 var max = Math.max;
 var min = Math.min;
@@ -31765,7 +31765,7 @@ module.exports = function (index, length) {
   return index < 0 ? max(index + length, 0) : min(index, length);
 };
 
-},{"./_to-integer":130}],168:[function(require,module,exports) {
+},{"./_to-integer":137}],172:[function(require,module,exports) {
 // false -> Array#indexOf
 // true  -> Array#includes
 var toIObject = require('./_to-iobject');
@@ -31790,10 +31790,10 @@ module.exports = function (IS_INCLUDES) {
   };
 };
 
-},{"./_to-iobject":139,"./_to-length":146,"./_to-absolute-index":170}],104:[function(require,module,exports) {
+},{"./_to-iobject":153,"./_to-length":142,"./_to-absolute-index":174}],104:[function(require,module,exports) {
 module.exports = true;
 
-},{}],141:[function(require,module,exports) {
+},{}],147:[function(require,module,exports) {
 
 var core = require('./_core');
 var global = require('./_global');
@@ -31808,21 +31808,21 @@ var store = global[SHARED] || (global[SHARED] = {});
   copyright: '© 2018 Denis Pushkarev (zloirock.ru)'
 });
 
-},{"./_core":74,"./_global":93,"./_library":104}],142:[function(require,module,exports) {
+},{"./_core":78,"./_global":97,"./_library":104}],148:[function(require,module,exports) {
 var id = 0;
 var px = Math.random();
 module.exports = function (key) {
   return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
 };
 
-},{}],161:[function(require,module,exports) {
+},{}],165:[function(require,module,exports) {
 var shared = require('./_shared')('keys');
 var uid = require('./_uid');
 module.exports = function (key) {
   return shared[key] || (shared[key] = uid(key));
 };
 
-},{"./_shared":141,"./_uid":142}],164:[function(require,module,exports) {
+},{"./_shared":147,"./_uid":148}],168:[function(require,module,exports) {
 var has = require('./_has');
 var toIObject = require('./_to-iobject');
 var arrayIndexOf = require('./_array-includes')(false);
@@ -31841,13 +31841,13 @@ module.exports = function (object, names) {
   return result;
 };
 
-},{"./_has":128,"./_to-iobject":139,"./_array-includes":168,"./_shared-key":161}],165:[function(require,module,exports) {
+},{"./_has":132,"./_to-iobject":153,"./_array-includes":172,"./_shared-key":165}],169:[function(require,module,exports) {
 // IE 8- don't enum bug keys
 module.exports = (
   'constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf'
 ).split(',');
 
-},{}],151:[function(require,module,exports) {
+},{}],155:[function(require,module,exports) {
 // 19.1.2.14 / 15.2.3.14 Object.keys(O)
 var $keys = require('./_object-keys-internal');
 var enumBugKeys = require('./_enum-bug-keys');
@@ -31856,20 +31856,20 @@ module.exports = Object.keys || function keys(O) {
   return $keys(O, enumBugKeys);
 };
 
-},{"./_object-keys-internal":164,"./_enum-bug-keys":165}],152:[function(require,module,exports) {
+},{"./_object-keys-internal":168,"./_enum-bug-keys":169}],156:[function(require,module,exports) {
 exports.f = Object.getOwnPropertySymbols;
 
-},{}],153:[function(require,module,exports) {
+},{}],157:[function(require,module,exports) {
 exports.f = {}.propertyIsEnumerable;
 
-},{}],154:[function(require,module,exports) {
+},{}],158:[function(require,module,exports) {
 // 7.1.13 ToObject(argument)
 var defined = require('./_defined');
 module.exports = function (it) {
   return Object(defined(it));
 };
 
-},{"./_defined":131}],118:[function(require,module,exports) {
+},{"./_defined":138}],122:[function(require,module,exports) {
 'use strict';
 // 19.1.2.1 Object.assign(target, source, ...)
 var getKeys = require('./_object-keys');
@@ -31905,19 +31905,19 @@ module.exports = !$assign || require('./_fails')(function () {
   } return T;
 } : $assign;
 
-},{"./_object-keys":151,"./_object-gops":152,"./_object-pie":153,"./_to-object":154,"./_iobject":155,"./_fails":156}],75:[function(require,module,exports) {
+},{"./_object-keys":155,"./_object-gops":156,"./_object-pie":157,"./_to-object":158,"./_iobject":159,"./_fails":160}],79:[function(require,module,exports) {
 // 19.1.3.1 Object.assign(target, source)
 var $export = require('./_export');
 
 $export($export.S + $export.F, 'Object', { assign: require('./_object-assign') });
 
-},{"./_export":92,"./_object-assign":118}],57:[function(require,module,exports) {
+},{"./_export":96,"./_object-assign":122}],62:[function(require,module,exports) {
 require('../../modules/es6.object.assign');
 module.exports = require('../../modules/_core').Object.assign;
 
-},{"../../modules/es6.object.assign":75,"../../modules/_core":74}],37:[function(require,module,exports) {
+},{"../../modules/es6.object.assign":79,"../../modules/_core":78}],41:[function(require,module,exports) {
 module.exports = { "default": require("core-js/library/fn/object/assign"), __esModule: true };
-},{"core-js/library/fn/object/assign":57}],29:[function(require,module,exports) {
+},{"core-js/library/fn/object/assign":62}],33:[function(require,module,exports) {
 "use strict";
 
 exports.__esModule = true;
@@ -31941,7 +31941,7 @@ exports.default = _assign2.default || function (target) {
 
   return target;
 };
-},{"../core-js/object/assign":37}],25:[function(require,module,exports) {
+},{"../core-js/object/assign":41}],25:[function(require,module,exports) {
 var Vue // late bind
 var version
 var map = (window.__VUE_HOT_MAP__ = Object.create(null))
@@ -32183,7 +32183,7 @@ exports.reload = tryWrap(function (id, options) {
   })
 })
 
-},{}],17:[function(require,module,exports) {
+},{}],18:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32217,8 +32217,8 @@ exports.default = {
                 path: '/workers',
                 icon: 'person'
             }, {
-                name: 'Policies',
-                path: '/policies',
+                name: 'Qualifications',
+                path: '/qualifications',
                 icon: 'stars'
             }]
         };
@@ -32397,7 +32397,7 @@ render._withStripped = true
         
       }
     })();
-},{"babel-runtime/helpers/extends":29,"vuex":10,"vue-hot-reload-api":25,"vue":3}],19:[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":33,"vuex":10,"vue-hot-reload-api":25,"vue":3}],20:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32510,7 +32510,7 @@ render._withStripped = true
         
       }
     })();
-},{"babel-runtime/helpers/extends":29,"vuex":10,"vue-hot-reload-api":25,"vue":3}],20:[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":33,"vuex":10,"vue-hot-reload-api":25,"vue":3}],19:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32543,12 +32543,12 @@ exports.default = {
 
             this.set_show_progress_indicator(true);
 
-            this.sync_policies(true).then(function () {
+            this.sync_qualifications(true).then(function () {
                 _this.set_show_progress_indicator(false);
             });
         }
-    }, (0, _vuex.mapActions)(['set_show_progress_indicator']), (0, _vuex.mapActions)('modulePolicies', {
-        'sync_policies': 'sync_policies'
+    }, (0, _vuex.mapActions)(['set_show_progress_indicator']), (0, _vuex.mapActions)('moduleQualifications', {
+        'sync_qualifications': 'sync_qualifications'
     }))
 }; //
 //
@@ -32559,13 +32559,13 @@ exports.default = {
 //
 //
 //
-      var $bdb0e1 = exports.default || module.exports;
-      if (typeof $bdb0e1 === 'function') {
-        $bdb0e1 = $bdb0e1.options;
+      var $ed102e = exports.default || module.exports;
+      if (typeof $ed102e === 'function') {
+        $ed102e = $ed102e.options;
       }
     
         /* template */
-        Object.assign($bdb0e1, (function () {
+        Object.assign($ed102e, (function () {
           var render = function() {
   var _vm = this
   var _h = _vm.$createElement
@@ -32614,16 +32614,16 @@ render._withStripped = true
         if (api.compatible) {
           module.hot.accept();
           if (!module.hot.data) {
-            api.createRecord('$bdb0e1', $bdb0e1);
+            api.createRecord('$ed102e', $ed102e);
           } else {
-            api.reload('$bdb0e1', $bdb0e1);
+            api.reload('$ed102e', $ed102e);
           }
         }
 
         
       }
     })();
-},{"babel-runtime/helpers/extends":29,"vuex":10,"vue-hot-reload-api":25,"vue":3}],35:[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":33,"vuex":10,"vue-hot-reload-api":25,"vue":3}],39:[function(require,module,exports) {
 var bundleURL = null;
 function getBundleURLCached() {
   if (!bundleURL) {
@@ -32653,7 +32653,7 @@ function getBaseURL(url) {
 
 exports.getBundleURL = getBundleURLCached;
 exports.getBaseURL = getBaseURL;
-},{}],18:[function(require,module,exports) {
+},{}],17:[function(require,module,exports) {
 var bundle = require('./bundle-url');
 
 function updateLink(link) {
@@ -32684,7 +32684,7 @@ function reloadCSS() {
 }
 
 module.exports = reloadCSS;
-},{"./bundle-url":35}],2:[function(require,module,exports) {
+},{"./bundle-url":39}],2:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32705,7 +32705,7 @@ var _componentToolbarBatches = require('./components/batches/component-toolbar-b
 
 var _componentToolbarBatches2 = _interopRequireDefault(_componentToolbarBatches);
 
-var _componentToolbarQualifications = require('./components/policies/component-toolbar-qualifications.vue');
+var _componentToolbarQualifications = require('./components/qualifications/component-toolbar-qualifications.vue');
 
 var _componentToolbarQualifications2 = _interopRequireDefault(_componentToolbarQualifications);
 
@@ -32802,7 +32802,7 @@ exports.default = {
             switch (this.$route.name) {
                 case 'Finances':
                     return _componentToolbarBatches2.default;
-                case 'Policies':
+                case 'Qualifications':
                     return _componentToolbarQualifications2.default;
                 case 'Workers':
                     return _componentToolbarBatches2.default;
@@ -32945,7 +32945,7 @@ render._withStripped = true
       
       }
     })();
-},{"babel-runtime/helpers/extends":29,"vuex":10,"./components/component-navigation-drawer.vue":17,"./components/batches/component-toolbar-batches.vue":19,"./components/policies/component-toolbar-qualifications.vue":20,"_css_loader":18,"vue-hot-reload-api":25,"vue":3}],40:[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":33,"vuex":10,"./components/component-navigation-drawer.vue":18,"./components/batches/component-toolbar-batches.vue":20,"./components/qualifications/component-toolbar-qualifications.vue":19,"_css_loader":17,"vue-hot-reload-api":25,"vue":3}],44:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -33012,7 +33012,7 @@ render._withStripped = true
         
       }
     })();
-},{"vue-hot-reload-api":25,"vue":3}],26:[function(require,module,exports) {
+},{"vue-hot-reload-api":25,"vue":3}],27:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -33169,7 +33169,7 @@ render._withStripped = true
       
       }
     })();
-},{"babel-runtime/helpers/extends":29,"./../component-display-money.vue":40,"vuex":10,"_css_loader":18,"vue-hot-reload-api":25,"vue":3}],46:[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":33,"./../component-display-money.vue":44,"vuex":10,"_css_loader":17,"vue-hot-reload-api":25,"vue":3}],50:[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -33239,7 +33239,7 @@ var index = {
 };
 
 exports.default = index;
-},{}],55:[function(require,module,exports) {
+},{}],58:[function(require,module,exports) {
 'use strict'
 
 exports.byteLength = byteLength
@@ -33392,7 +33392,7 @@ function fromByteArray (uint8) {
   return parts.join('')
 }
 
-},{}],56:[function(require,module,exports) {
+},{}],59:[function(require,module,exports) {
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
   var e, m
   var eLen = (nBytes * 8) - mLen - 1
@@ -33478,14 +33478,14 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
   buffer[offset + i - d] |= s * 128
 }
 
-},{}],54:[function(require,module,exports) {
+},{}],60:[function(require,module,exports) {
 var toString = {}.toString;
 
 module.exports = Array.isArray || function (arr) {
   return toString.call(arr) == '[object Array]';
 };
 
-},{}],39:[function(require,module,exports) {
+},{}],43:[function(require,module,exports) {
 
 var global = arguments[3];
 /*!
@@ -35278,7 +35278,7 @@ function isnan (val) {
   return val !== val // eslint-disable-line no-self-compare
 }
 
-},{"base64-js":55,"ieee754":56,"isarray":54,"buffer":39}],33:[function(require,module,exports) {
+},{"base64-js":58,"ieee754":59,"isarray":60,"buffer":43}],37:[function(require,module,exports) {
 var global = arguments[3];
 var Buffer = require("buffer").Buffer;
 var define;
@@ -52388,7 +52388,7 @@ var define;
   }
 }.call(this));
 
-},{"buffer":39}],27:[function(require,module,exports) {
+},{"buffer":43}],28:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -52574,9 +52574,9 @@ render._withStripped = true
       
       }
     })();
-},{"babel-runtime/helpers/extends":29,"vue":3,"v-runtime-template":46,"vuex":10,"./../component-display-money.vue":40,"lodash":33,"_css_loader":18,"vue-hot-reload-api":25}],68:[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":33,"vue":3,"v-runtime-template":50,"vuex":10,"./../component-display-money.vue":44,"lodash":37,"_css_loader":17,"vue-hot-reload-api":25}],72:[function(require,module,exports) {
 
-},{}],96:[function(require,module,exports) {
+},{}],100:[function(require,module,exports) {
 var toInteger = require('./_to-integer');
 var defined = require('./_defined');
 // true  -> String#at
@@ -52595,13 +52595,13 @@ module.exports = function (TO_STRING) {
   };
 };
 
-},{"./_to-integer":130,"./_defined":131}],132:[function(require,module,exports) {
+},{"./_to-integer":137,"./_defined":138}],134:[function(require,module,exports) {
 module.exports = require('./_hide');
 
-},{"./_hide":99}],100:[function(require,module,exports) {
+},{"./_hide":120}],121:[function(require,module,exports) {
 module.exports = {};
 
-},{}],167:[function(require,module,exports) {
+},{}],170:[function(require,module,exports) {
 var dP = require('./_object-dp');
 var anObject = require('./_an-object');
 var getKeys = require('./_object-keys');
@@ -52616,11 +52616,11 @@ module.exports = require('./_descriptors') ? Object.defineProperties : function 
   return O;
 };
 
-},{"./_object-dp":135,"./_an-object":129,"./_object-keys":151,"./_descriptors":137}],149:[function(require,module,exports) {
+},{"./_object-dp":149,"./_an-object":133,"./_object-keys":155,"./_descriptors":150}],145:[function(require,module,exports) {
 var document = require('./_global').document;
 module.exports = document && document.documentElement;
 
-},{"./_global":93}],157:[function(require,module,exports) {
+},{"./_global":97}],161:[function(require,module,exports) {
 // 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
 var anObject = require('./_an-object');
 var dPs = require('./_object-dps');
@@ -52663,7 +52663,7 @@ module.exports = Object.create || function create(O, Properties) {
   return Properties === undefined ? result : dPs(result, Properties);
 };
 
-},{"./_an-object":129,"./_object-dps":167,"./_enum-bug-keys":165,"./_shared-key":161,"./_dom-create":150,"./_html":149}],101:[function(require,module,exports) {
+},{"./_an-object":133,"./_object-dps":170,"./_enum-bug-keys":169,"./_shared-key":165,"./_dom-create":146,"./_html":145}],114:[function(require,module,exports) {
 var store = require('./_shared')('wks');
 var uid = require('./_uid');
 var Symbol = require('./_global').Symbol;
@@ -52676,7 +52676,7 @@ var $exports = module.exports = function (name) {
 
 $exports.store = store;
 
-},{"./_shared":141,"./_uid":142,"./_global":93}],115:[function(require,module,exports) {
+},{"./_shared":147,"./_uid":148,"./_global":97}],116:[function(require,module,exports) {
 var def = require('./_object-dp').f;
 var has = require('./_has');
 var TAG = require('./_wks')('toStringTag');
@@ -52685,7 +52685,7 @@ module.exports = function (it, tag, stat) {
   if (it && !has(it = stat ? it : it.prototype, TAG)) def(it, TAG, { configurable: true, value: tag });
 };
 
-},{"./_object-dp":135,"./_has":128,"./_wks":101}],133:[function(require,module,exports) {
+},{"./_object-dp":149,"./_has":132,"./_wks":114}],135:[function(require,module,exports) {
 'use strict';
 var create = require('./_object-create');
 var descriptor = require('./_property-desc');
@@ -52700,7 +52700,7 @@ module.exports = function (Constructor, NAME, next) {
   setToStringTag(Constructor, NAME + ' Iterator');
 };
 
-},{"./_object-create":157,"./_property-desc":136,"./_set-to-string-tag":115,"./_hide":99,"./_wks":101}],134:[function(require,module,exports) {
+},{"./_object-create":161,"./_property-desc":154,"./_set-to-string-tag":116,"./_hide":120,"./_wks":114}],136:[function(require,module,exports) {
 // 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
 var has = require('./_has');
 var toObject = require('./_to-object');
@@ -52715,7 +52715,7 @@ module.exports = Object.getPrototypeOf || function (O) {
   } return O instanceof Object ? ObjectProto : null;
 };
 
-},{"./_has":128,"./_to-object":154,"./_shared-key":161}],97:[function(require,module,exports) {
+},{"./_has":132,"./_to-object":158,"./_shared-key":165}],101:[function(require,module,exports) {
 'use strict';
 var LIBRARY = require('./_library');
 var $export = require('./_export');
@@ -52786,7 +52786,7 @@ module.exports = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCE
   return methods;
 };
 
-},{"./_library":104,"./_export":92,"./_redefine":132,"./_hide":99,"./_iterators":100,"./_iter-create":133,"./_set-to-string-tag":115,"./_object-gpo":134,"./_wks":101}],69:[function(require,module,exports) {
+},{"./_library":104,"./_export":96,"./_redefine":134,"./_hide":120,"./_iterators":121,"./_iter-create":135,"./_set-to-string-tag":116,"./_object-gpo":136,"./_wks":114}],73:[function(require,module,exports) {
 'use strict';
 var $at = require('./_string-at')(true);
 
@@ -52805,15 +52805,15 @@ require('./_iter-define')(String, 'String', function (iterated) {
   return { value: point, done: false };
 });
 
-},{"./_string-at":96,"./_iter-define":97}],138:[function(require,module,exports) {
+},{"./_string-at":100,"./_iter-define":101}],151:[function(require,module,exports) {
 module.exports = function () { /* empty */ };
 
-},{}],140:[function(require,module,exports) {
+},{}],152:[function(require,module,exports) {
 module.exports = function (done, value) {
   return { value: value, done: !!done };
 };
 
-},{}],98:[function(require,module,exports) {
+},{}],119:[function(require,module,exports) {
 'use strict';
 var addToUnscopables = require('./_add-to-unscopables');
 var step = require('./_iter-step');
@@ -52849,7 +52849,7 @@ addToUnscopables('keys');
 addToUnscopables('values');
 addToUnscopables('entries');
 
-},{"./_add-to-unscopables":138,"./_iter-step":140,"./_iterators":100,"./_to-iobject":139,"./_iter-define":97}],70:[function(require,module,exports) {
+},{"./_add-to-unscopables":151,"./_iter-step":152,"./_iterators":121,"./_to-iobject":153,"./_iter-define":101}],74:[function(require,module,exports) {
 
 require('./es6.array.iterator');
 var global = require('./_global');
@@ -52871,7 +52871,7 @@ for (var i = 0; i < DOMIterables.length; i++) {
   Iterators[NAME] = Iterators.Array;
 }
 
-},{"./es6.array.iterator":98,"./_global":93,"./_hide":99,"./_iterators":100,"./_wks":101}],114:[function(require,module,exports) {
+},{"./es6.array.iterator":119,"./_global":97,"./_hide":120,"./_iterators":121,"./_wks":114}],115:[function(require,module,exports) {
 var hide = require('./_hide');
 module.exports = function (target, src, safe) {
   for (var key in src) {
@@ -52880,14 +52880,14 @@ module.exports = function (target, src, safe) {
   } return target;
 };
 
-},{"./_hide":99}],109:[function(require,module,exports) {
+},{"./_hide":120}],109:[function(require,module,exports) {
 module.exports = function (it, Constructor, name, forbiddenField) {
   if (!(it instanceof Constructor) || (forbiddenField !== undefined && forbiddenField in it)) {
     throw TypeError(name + ': incorrect invocation!');
   } return it;
 };
 
-},{}],144:[function(require,module,exports) {
+},{}],140:[function(require,module,exports) {
 // call something on iterator step with safe closing on error
 var anObject = require('./_an-object');
 module.exports = function (iterator, fn, value, entries) {
@@ -52901,7 +52901,7 @@ module.exports = function (iterator, fn, value, entries) {
   }
 };
 
-},{"./_an-object":129}],145:[function(require,module,exports) {
+},{"./_an-object":133}],141:[function(require,module,exports) {
 // check on default Array iterator
 var Iterators = require('./_iterators');
 var ITERATOR = require('./_wks')('iterator');
@@ -52911,7 +52911,7 @@ module.exports = function (it) {
   return it !== undefined && (Iterators.Array === it || ArrayProto[ITERATOR] === it);
 };
 
-},{"./_iterators":100,"./_wks":101}],106:[function(require,module,exports) {
+},{"./_iterators":121,"./_wks":114}],106:[function(require,module,exports) {
 // getting tag from 19.1.3.6 Object.prototype.toString()
 var cof = require('./_cof');
 var TAG = require('./_wks')('toStringTag');
@@ -52936,7 +52936,7 @@ module.exports = function (it) {
     : (B = cof(O)) == 'Object' && typeof O.callee == 'function' ? 'Arguments' : B;
 };
 
-},{"./_cof":143,"./_wks":101}],147:[function(require,module,exports) {
+},{"./_cof":139,"./_wks":114}],143:[function(require,module,exports) {
 var classof = require('./_classof');
 var ITERATOR = require('./_wks')('iterator');
 var Iterators = require('./_iterators');
@@ -52946,7 +52946,7 @@ module.exports = require('./_core').getIteratorMethod = function (it) {
     || Iterators[classof(it)];
 };
 
-},{"./_classof":106,"./_wks":101,"./_iterators":100,"./_core":74}],110:[function(require,module,exports) {
+},{"./_classof":106,"./_wks":114,"./_iterators":121,"./_core":78}],110:[function(require,module,exports) {
 var ctx = require('./_ctx');
 var call = require('./_iter-call');
 var isArrayIter = require('./_is-array-iter');
@@ -52973,7 +52973,7 @@ var exports = module.exports = function (iterable, entries, fn, that, ITERATOR) 
 exports.BREAK = BREAK;
 exports.RETURN = RETURN;
 
-},{"./_ctx":105,"./_iter-call":144,"./_is-array-iter":145,"./_an-object":129,"./_to-length":146,"./core.get-iterator-method":147}],116:[function(require,module,exports) {
+},{"./_ctx":105,"./_iter-call":140,"./_is-array-iter":141,"./_an-object":133,"./_to-length":142,"./core.get-iterator-method":143}],117:[function(require,module,exports) {
 
 'use strict';
 var global = require('./_global');
@@ -52990,7 +52990,7 @@ module.exports = function (KEY) {
   });
 };
 
-},{"./_global":93,"./_core":74,"./_object-dp":135,"./_descriptors":137,"./_wks":101}],158:[function(require,module,exports) {
+},{"./_global":97,"./_core":78,"./_object-dp":149,"./_descriptors":150,"./_wks":114}],162:[function(require,module,exports) {
 var META = require('./_uid')('meta');
 var isObject = require('./_is-object');
 var has = require('./_has');
@@ -53045,14 +53045,14 @@ var meta = module.exports = {
   onFreeze: onFreeze
 };
 
-},{"./_uid":142,"./_is-object":107,"./_has":128,"./_object-dp":135,"./_fails":156}],123:[function(require,module,exports) {
+},{"./_uid":148,"./_is-object":107,"./_has":132,"./_object-dp":149,"./_fails":160}],126:[function(require,module,exports) {
 var isObject = require('./_is-object');
 module.exports = function (it, TYPE) {
   if (!isObject(it) || it._t !== TYPE) throw TypeError('Incompatible receiver, ' + TYPE + ' required!');
   return it;
 };
 
-},{"./_is-object":107}],122:[function(require,module,exports) {
+},{"./_is-object":107}],125:[function(require,module,exports) {
 'use strict';
 var dP = require('./_object-dp').f;
 var create = require('./_object-create');
@@ -53198,14 +53198,14 @@ module.exports = {
   }
 };
 
-},{"./_object-dp":135,"./_object-create":157,"./_redefine-all":114,"./_ctx":105,"./_an-instance":109,"./_for-of":110,"./_iter-define":97,"./_iter-step":140,"./_set-species":116,"./_descriptors":137,"./_meta":158,"./_validate-collection":123}],171:[function(require,module,exports) {
+},{"./_object-dp":149,"./_object-create":161,"./_redefine-all":115,"./_ctx":105,"./_an-instance":109,"./_for-of":110,"./_iter-define":101,"./_iter-step":152,"./_set-species":117,"./_descriptors":150,"./_meta":162,"./_validate-collection":126}],175:[function(require,module,exports) {
 // 7.2.2 IsArray(argument)
 var cof = require('./_cof');
 module.exports = Array.isArray || function isArray(arg) {
   return cof(arg) == 'Array';
 };
 
-},{"./_cof":143}],169:[function(require,module,exports) {
+},{"./_cof":139}],173:[function(require,module,exports) {
 var isObject = require('./_is-object');
 var isArray = require('./_is-array');
 var SPECIES = require('./_wks')('species');
@@ -53223,7 +53223,7 @@ module.exports = function (original) {
   } return C === undefined ? Array : C;
 };
 
-},{"./_is-object":107,"./_is-array":171,"./_wks":101}],166:[function(require,module,exports) {
+},{"./_is-object":107,"./_is-array":175,"./_wks":114}],171:[function(require,module,exports) {
 // 9.4.2.3 ArraySpeciesCreate(originalArray, length)
 var speciesConstructor = require('./_array-species-constructor');
 
@@ -53231,7 +53231,7 @@ module.exports = function (original, length) {
   return new (speciesConstructor(original))(length);
 };
 
-},{"./_array-species-constructor":169}],159:[function(require,module,exports) {
+},{"./_array-species-constructor":173}],163:[function(require,module,exports) {
 // 0 -> Array#forEach
 // 1 -> Array#map
 // 2 -> Array#filter
@@ -53277,7 +53277,7 @@ module.exports = function (TYPE, $create) {
   };
 };
 
-},{"./_ctx":105,"./_iobject":155,"./_to-object":154,"./_to-length":146,"./_array-species-create":166}],124:[function(require,module,exports) {
+},{"./_ctx":105,"./_iobject":159,"./_to-object":158,"./_to-length":142,"./_array-species-create":171}],127:[function(require,module,exports) {
 
 'use strict';
 var global = require('./_global');
@@ -53339,7 +53339,7 @@ module.exports = function (NAME, wrapper, methods, common, IS_MAP, IS_WEAK) {
   return C;
 };
 
-},{"./_global":93,"./_export":92,"./_meta":158,"./_fails":156,"./_hide":99,"./_redefine-all":114,"./_for-of":110,"./_an-instance":109,"./_is-object":107,"./_set-to-string-tag":115,"./_object-dp":135,"./_array-methods":159,"./_descriptors":137}],77:[function(require,module,exports) {
+},{"./_global":97,"./_export":96,"./_meta":162,"./_fails":160,"./_hide":120,"./_redefine-all":115,"./_for-of":110,"./_an-instance":109,"./_is-object":107,"./_set-to-string-tag":116,"./_object-dp":149,"./_array-methods":163,"./_descriptors":150}],81:[function(require,module,exports) {
 'use strict';
 var strong = require('./_collection-strong');
 var validate = require('./_validate-collection');
@@ -53355,7 +53355,7 @@ module.exports = require('./_collection')(SET, function (get) {
   }
 }, strong);
 
-},{"./_collection-strong":122,"./_validate-collection":123,"./_collection":124}],160:[function(require,module,exports) {
+},{"./_collection-strong":125,"./_validate-collection":126,"./_collection":127}],164:[function(require,module,exports) {
 var forOf = require('./_for-of');
 
 module.exports = function (iter, ITERATOR) {
@@ -53364,7 +53364,7 @@ module.exports = function (iter, ITERATOR) {
   return result;
 };
 
-},{"./_for-of":110}],121:[function(require,module,exports) {
+},{"./_for-of":110}],128:[function(require,module,exports) {
 // https://github.com/DavidBruant/Map-Set.prototype.toJSON
 var classof = require('./_classof');
 var from = require('./_array-from-iterable');
@@ -53375,13 +53375,13 @@ module.exports = function (NAME) {
   };
 };
 
-},{"./_classof":106,"./_array-from-iterable":160}],78:[function(require,module,exports) {
+},{"./_classof":106,"./_array-from-iterable":164}],82:[function(require,module,exports) {
 // https://github.com/DavidBruant/Map-Set.prototype.toJSON
 var $export = require('./_export');
 
 $export($export.P + $export.R, 'Set', { toJSON: require('./_collection-to-json')('Set') });
 
-},{"./_export":92,"./_collection-to-json":121}],125:[function(require,module,exports) {
+},{"./_export":96,"./_collection-to-json":128}],129:[function(require,module,exports) {
 'use strict';
 // https://tc39.github.io/proposal-setmap-offrom/
 var $export = require('./_export');
@@ -53395,11 +53395,11 @@ module.exports = function (COLLECTION) {
   } });
 };
 
-},{"./_export":92}],79:[function(require,module,exports) {
+},{"./_export":96}],83:[function(require,module,exports) {
 // https://tc39.github.io/proposal-setmap-offrom/#sec-set.of
 require('./_set-collection-of')('Set');
 
-},{"./_set-collection-of":125}],126:[function(require,module,exports) {
+},{"./_set-collection-of":129}],130:[function(require,module,exports) {
 'use strict';
 // https://tc39.github.io/proposal-setmap-offrom/
 var $export = require('./_export');
@@ -53429,11 +53429,11 @@ module.exports = function (COLLECTION) {
   } });
 };
 
-},{"./_export":92,"./_a-function":108,"./_ctx":105,"./_for-of":110}],80:[function(require,module,exports) {
+},{"./_export":96,"./_a-function":108,"./_ctx":105,"./_for-of":110}],84:[function(require,module,exports) {
 // https://tc39.github.io/proposal-setmap-offrom/#sec-set.from
 require('./_set-collection-from')('Set');
 
-},{"./_set-collection-from":126}],61:[function(require,module,exports) {
+},{"./_set-collection-from":130}],65:[function(require,module,exports) {
 require('../modules/es6.object.to-string');
 require('../modules/es6.string.iterator');
 require('../modules/web.dom.iterable');
@@ -53443,9 +53443,9 @@ require('../modules/es7.set.of');
 require('../modules/es7.set.from');
 module.exports = require('../modules/_core').Set;
 
-},{"../modules/es6.object.to-string":68,"../modules/es6.string.iterator":69,"../modules/web.dom.iterable":70,"../modules/es6.set":77,"../modules/es7.set.to-json":78,"../modules/es7.set.of":79,"../modules/es7.set.from":80,"../modules/_core":74}],43:[function(require,module,exports) {
+},{"../modules/es6.object.to-string":72,"../modules/es6.string.iterator":73,"../modules/web.dom.iterable":74,"../modules/es6.set":81,"../modules/es7.set.to-json":82,"../modules/es7.set.of":83,"../modules/es7.set.from":84,"../modules/_core":78}],47:[function(require,module,exports) {
 module.exports = { "default": require("core-js/library/fn/set"), __esModule: true };
-},{"core-js/library/fn/set":61}],48:[function(require,module,exports) {
+},{"core-js/library/fn/set":65}],52:[function(require,module,exports) {
 'use strict';
 
 module.exports = function bind(fn, thisArg) {
@@ -53458,7 +53458,7 @@ module.exports = function bind(fn, thisArg) {
   };
 };
 
-},{}],67:[function(require,module,exports) {
+},{}],71:[function(require,module,exports) {
 /*!
  * Determine if an object is a Buffer
  *
@@ -53481,7 +53481,7 @@ function isSlowBuffer (obj) {
   return typeof obj.readFloatLE === 'function' && typeof obj.slice === 'function' && isBuffer(obj.slice(0, 0))
 }
 
-},{}],44:[function(require,module,exports) {
+},{}],48:[function(require,module,exports) {
 'use strict';
 
 var bind = require('./helpers/bind');
@@ -53786,7 +53786,7 @@ module.exports = {
   trim: trim
 };
 
-},{"./helpers/bind":48,"is-buffer":67}],62:[function(require,module,exports) {
+},{"./helpers/bind":52,"is-buffer":71}],66:[function(require,module,exports) {
 'use strict';
 
 var utils = require('../utils');
@@ -53800,7 +53800,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
   });
 };
 
-},{"../utils":44}],127:[function(require,module,exports) {
+},{"../utils":48}],131:[function(require,module,exports) {
 'use strict';
 
 /**
@@ -53823,7 +53823,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
   return error;
 };
 
-},{}],85:[function(require,module,exports) {
+},{}],89:[function(require,module,exports) {
 'use strict';
 
 var enhanceError = require('./enhanceError');
@@ -53843,7 +53843,7 @@ module.exports = function createError(message, config, code, request, response) 
   return enhanceError(error, config, code, request, response);
 };
 
-},{"./enhanceError":127}],81:[function(require,module,exports) {
+},{"./enhanceError":131}],85:[function(require,module,exports) {
 'use strict';
 
 var createError = require('./createError');
@@ -53871,7 +53871,7 @@ module.exports = function settle(resolve, reject, response) {
   }
 };
 
-},{"./createError":85}],82:[function(require,module,exports) {
+},{"./createError":89}],86:[function(require,module,exports) {
 'use strict';
 
 var utils = require('./../utils');
@@ -53939,7 +53939,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
   return url;
 };
 
-},{"./../utils":44}],83:[function(require,module,exports) {
+},{"./../utils":48}],87:[function(require,module,exports) {
 'use strict';
 
 var utils = require('./../utils');
@@ -53994,7 +53994,7 @@ module.exports = function parseHeaders(headers) {
   return parsed;
 };
 
-},{"./../utils":44}],84:[function(require,module,exports) {
+},{"./../utils":48}],88:[function(require,module,exports) {
 'use strict';
 
 var utils = require('./../utils');
@@ -54064,7 +54064,7 @@ module.exports = (
   })()
 );
 
-},{"./../utils":44}],86:[function(require,module,exports) {
+},{"./../utils":48}],90:[function(require,module,exports) {
 'use strict';
 
 // btoa polyfill for IE<10 courtesy https://github.com/davidchambers/Base64.js
@@ -54102,7 +54102,7 @@ function btoa(input) {
 
 module.exports = btoa;
 
-},{}],87:[function(require,module,exports) {
+},{}],91:[function(require,module,exports) {
 'use strict';
 
 var utils = require('./../utils');
@@ -54157,7 +54157,7 @@ module.exports = (
   })()
 );
 
-},{"./../utils":44}],63:[function(require,module,exports) {
+},{"./../utils":48}],67:[function(require,module,exports) {
 'use strict';
 
 var utils = require('./../utils');
@@ -54332,7 +54332,7 @@ module.exports = function xhrAdapter(config) {
     request.send(requestData);
   });
 };
-},{"./../utils":44,"./../core/settle":81,"./../helpers/buildURL":82,"./../helpers/parseHeaders":83,"./../helpers/isURLSameOrigin":84,"../core/createError":85,"./../helpers/btoa":86,"./../helpers/cookies":87}],64:[function(require,module,exports) {
+},{"./../utils":48,"./../core/settle":85,"./../helpers/buildURL":86,"./../helpers/parseHeaders":87,"./../helpers/isURLSameOrigin":88,"../core/createError":89,"./../helpers/btoa":90,"./../helpers/cookies":91}],68:[function(require,module,exports) {
 
 // shim for using process in browser
 var process = module.exports = {};
@@ -54519,7 +54519,7 @@ process.chdir = function (dir) {
 process.umask = function () {
     return 0;
 };
-},{}],45:[function(require,module,exports) {
+},{}],49:[function(require,module,exports) {
 var process = require("process");
 'use strict';
 
@@ -54618,7 +54618,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = defaults;
 
-},{"./utils":44,"./helpers/normalizeHeaderName":62,"./adapters/xhr":63,"./adapters/http":63,"process":64}],65:[function(require,module,exports) {
+},{"./utils":48,"./helpers/normalizeHeaderName":66,"./adapters/xhr":67,"./adapters/http":67,"process":68}],69:[function(require,module,exports) {
 'use strict';
 
 var utils = require('./../utils');
@@ -54672,7 +54672,7 @@ InterceptorManager.prototype.forEach = function forEach(fn) {
 
 module.exports = InterceptorManager;
 
-},{"./../utils":44}],89:[function(require,module,exports) {
+},{"./../utils":48}],93:[function(require,module,exports) {
 'use strict';
 
 var utils = require('./../utils');
@@ -54694,14 +54694,14 @@ module.exports = function transformData(data, headers, fns) {
   return data;
 };
 
-},{"./../utils":44}],52:[function(require,module,exports) {
+},{"./../utils":48}],56:[function(require,module,exports) {
 'use strict';
 
 module.exports = function isCancel(value) {
   return !!(value && value.__CANCEL__);
 };
 
-},{}],90:[function(require,module,exports) {
+},{}],94:[function(require,module,exports) {
 'use strict';
 
 /**
@@ -54717,7 +54717,7 @@ module.exports = function isAbsoluteURL(url) {
   return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url);
 };
 
-},{}],91:[function(require,module,exports) {
+},{}],95:[function(require,module,exports) {
 'use strict';
 
 /**
@@ -54733,7 +54733,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
     : baseURL;
 };
 
-},{}],66:[function(require,module,exports) {
+},{}],70:[function(require,module,exports) {
 'use strict';
 
 var utils = require('./../utils');
@@ -54821,7 +54821,7 @@ module.exports = function dispatchRequest(config) {
   });
 };
 
-},{"./../utils":44,"./transformData":89,"../cancel/isCancel":52,"../defaults":45,"./../helpers/isAbsoluteURL":90,"./../helpers/combineURLs":91}],49:[function(require,module,exports) {
+},{"./../utils":48,"./transformData":93,"../cancel/isCancel":56,"../defaults":49,"./../helpers/isAbsoluteURL":94,"./../helpers/combineURLs":95}],53:[function(require,module,exports) {
 'use strict';
 
 var defaults = require('./../defaults');
@@ -54902,7 +54902,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = Axios;
 
-},{"./../defaults":45,"./../utils":44,"./InterceptorManager":65,"./dispatchRequest":66}],50:[function(require,module,exports) {
+},{"./../defaults":49,"./../utils":48,"./InterceptorManager":69,"./dispatchRequest":70}],54:[function(require,module,exports) {
 'use strict';
 
 /**
@@ -54923,7 +54923,7 @@ Cancel.prototype.__CANCEL__ = true;
 
 module.exports = Cancel;
 
-},{}],51:[function(require,module,exports) {
+},{}],55:[function(require,module,exports) {
 'use strict';
 
 var Cancel = require('./Cancel');
@@ -54982,7 +54982,7 @@ CancelToken.source = function source() {
 
 module.exports = CancelToken;
 
-},{"./Cancel":50}],53:[function(require,module,exports) {
+},{"./Cancel":54}],57:[function(require,module,exports) {
 'use strict';
 
 /**
@@ -55011,7 +55011,7 @@ module.exports = function spread(callback) {
   };
 };
 
-},{}],36:[function(require,module,exports) {
+},{}],40:[function(require,module,exports) {
 'use strict';
 
 var utils = require('./utils');
@@ -55065,9 +55065,9 @@ module.exports = axios;
 // Allow use of default import syntax in TypeScript
 module.exports.default = axios;
 
-},{"./utils":44,"./helpers/bind":48,"./core/Axios":49,"./defaults":45,"./cancel/Cancel":50,"./cancel/CancelToken":51,"./cancel/isCancel":52,"./helpers/spread":53}],31:[function(require,module,exports) {
+},{"./utils":48,"./helpers/bind":52,"./core/Axios":53,"./defaults":49,"./cancel/Cancel":54,"./cancel/CancelToken":55,"./cancel/isCancel":56,"./helpers/spread":57}],35:[function(require,module,exports) {
 module.exports = require('./lib/axios');
-},{"./lib/axios":36}],47:[function(require,module,exports) {
+},{"./lib/axios":40}],51:[function(require,module,exports) {
 var define;
 var global = arguments[3];
 /*@license
@@ -56725,7 +56725,7 @@ var global = arguments[3];
 	return Papa;
 }));
 
-},{}],28:[function(require,module,exports) {
+},{}],29:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -57134,7 +57134,7 @@ render._withStripped = true
       
       }
     })();
-},{"babel-runtime/core-js/set":43,"babel-runtime/helpers/extends":29,"vuex":10,"./../component-display-money.vue":40,"axios":31,"papaparse":47,"lodash":33,"_css_loader":18,"vue-hot-reload-api":25,"vue":3}],5:[function(require,module,exports) {
+},{"babel-runtime/core-js/set":47,"babel-runtime/helpers/extends":33,"vuex":10,"./../component-display-money.vue":44,"axios":35,"papaparse":51,"lodash":37,"_css_loader":17,"vue-hot-reload-api":25,"vue":3}],5:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -57302,7 +57302,7 @@ render._withStripped = true
         
       }
     })();
-},{"babel-runtime/helpers/extends":29,"vuex":10,"./component-show-balance.vue":26,"./component-show-money-spent.vue":27,"./component-show-batches.vue":28,"vue-hot-reload-api":25,"vue":3}],41:[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":33,"vuex":10,"./component-show-balance.vue":27,"./component-show-money-spent.vue":28,"./component-show-batches.vue":29,"vue-hot-reload-api":25,"vue":3}],45:[function(require,module,exports) {
 "use strict";
 
 exports.__esModule = true;
@@ -57312,21 +57312,21 @@ exports.default = function (instance, Constructor) {
     throw new TypeError("Cannot call a class as a function");
   }
 };
-},{}],120:[function(require,module,exports) {
+},{}],124:[function(require,module,exports) {
 var $export = require('./_export');
 // 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
 $export($export.S + $export.F * !require('./_descriptors'), 'Object', { defineProperty: require('./_object-dp').f });
 
-},{"./_export":92,"./_descriptors":137,"./_object-dp":135}],76:[function(require,module,exports) {
+},{"./_export":96,"./_descriptors":150,"./_object-dp":149}],80:[function(require,module,exports) {
 require('../../modules/es6.object.define-property');
 var $Object = require('../../modules/_core').Object;
 module.exports = function defineProperty(it, key, desc) {
   return $Object.defineProperty(it, key, desc);
 };
 
-},{"../../modules/es6.object.define-property":120,"../../modules/_core":74}],59:[function(require,module,exports) {
+},{"../../modules/es6.object.define-property":124,"../../modules/_core":78}],63:[function(require,module,exports) {
 module.exports = { "default": require("core-js/library/fn/object/define-property"), __esModule: true };
-},{"core-js/library/fn/object/define-property":76}],42:[function(require,module,exports) {
+},{"core-js/library/fn/object/define-property":80}],46:[function(require,module,exports) {
 "use strict";
 
 exports.__esModule = true;
@@ -57354,7 +57354,1904 @@ exports.default = function () {
     return Constructor;
   };
 }();
-},{"../core-js/object/define-property":59}],119:[function(require,module,exports) {
+},{"../core-js/object/define-property":63}],26:[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.Qualification = undefined;
+
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Qualification = exports.Qualification = function () {
+	function Qualification() {
+		var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+		(0, _classCallCheck3.default)(this, Qualification);
+
+		this.id_mturk = data.id_mturk;
+		this.created_at = data.created_at != undefined ? new Date(data.created_at) : undefined;
+		this.name_mturk = data.name_mturk;
+		this.description_mturk = data.description_mturk;
+		this.name_database = data.name_database;
+		this.description_database = data.description_database;
+		this.is_requestable = data.is_requestable;
+		this.is_active = data.is_active;
+		this.is_auto_granted = data.is_auto_granted;
+		this.keywords = data.keywords;
+	}
+
+	(0, _createClass3.default)(Qualification, [{
+		key: 'has_database_entry',
+		value: function has_database_entry() {
+			return this.name_database != undefined;
+		}
+	}, {
+		key: 'display_name',
+		value: function display_name() {
+			return this.name_database == undefined ? this.name_mturk : this.name_database;
+		}
+	}, {
+		key: 'display_description',
+		value: function display_description() {
+			return this.description_database == undefined ? this.description_mturk : this.description_database;
+		}
+	}, {
+		key: 'get_as_formdata',
+		value: function get_as_formdata() {
+			var form_data = new FormData();
+
+			_lodash2.default.forOwn(this, function (value, key) {
+				if (value != undefined) {
+					form_data.set(key, value);
+				}
+			});
+			// form_data.set('keywords', 'something,else');
+			// form_data.set('name_mturk', 'something,else');
+
+			return form_data;
+		}
+	}]);
+	return Qualification;
+}();
+},{"babel-runtime/helpers/classCallCheck":45,"babel-runtime/helpers/createClass":46,"lodash":37}],31:[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends2 = require('babel-runtime/helpers/extends');
+
+var _extends3 = _interopRequireDefault(_extends2);
+
+var _vuex = require('vuex');
+
+var _qualifications = require('../../classes/qualifications.js');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// import ComponentShowBalance from './component-show-balance.vue';
+// import ComponentShowMoneySpent from './component-show-money-spent.vue';
+// import ComponentShowBatches from './component-show-batches.vue';
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+exports.default = {
+    name: 'component-add-qualification',
+    props: {},
+    data: function data() {
+        return {
+            show_dialog: false,
+            is_creating: false,
+            is_form_valid: false,
+            add_custom_mturk: false,
+            title_dialog: 'Add Qualification',
+
+            object_qualification: new _qualifications.Qualification({
+                is_active: true
+            })
+        };
+    },
+
+    computed: {},
+    methods: (0, _extends3.default)({
+        save: function save() {
+            var _this = this;
+
+            this.is_creating = true;
+            this.add_qualification(this.object_qualification).then(function () {
+                _this.show_dialog = false;
+                _this.is_creating = false;
+            });
+        },
+        cancel: function cancel() {
+            this.show_dialog = false;
+        }
+    }, (0, _vuex.mapActions)('moduleQualifications', {
+        'add_qualification': 'add_qualification'
+    })),
+    watch: {}
+};
+// import { Policy } from '../../store/modules/policies.js';
+      var $3868f2 = exports.default || module.exports;
+      if (typeof $3868f2 === 'function') {
+        $3868f2 = $3868f2.options;
+      }
+    
+        /* template */
+        Object.assign($3868f2, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-dialog",
+    {
+      attrs: { "max-width": "800px", persistent: "" },
+      model: {
+        value: _vm.show_dialog,
+        callback: function($$v) {
+          _vm.show_dialog = $$v
+        },
+        expression: "show_dialog"
+      }
+    },
+    [
+      _c(
+        "v-btn",
+        {
+          staticClass: "mb-2",
+          attrs: { slot: "activator", color: "primary", dark: "" },
+          on: {
+            click: function($event) {
+              _vm.policy_to_be_edited = null
+            }
+          },
+          slot: "activator"
+        },
+        [_vm._v("New Qualification")]
+      ),
+      _vm._v(" "),
+      _c(
+        "v-card",
+        [
+          _c("v-card-title", [
+            _c("span", { staticClass: "headline" }, [
+              _vm._v(_vm._s(_vm.title_dialog))
+            ])
+          ]),
+          _vm._v(
+            "\n                " +
+              _vm._s(_vm.is_form_valid) +
+              "\n                "
+          ),
+          _c(
+            "v-card-text",
+            [
+              _c(
+                "v-container",
+                { attrs: { "grid-list-md": "" } },
+                [
+                  _c(
+                    "v-form",
+                    {
+                      model: {
+                        value: _vm.is_form_valid,
+                        callback: function($$v) {
+                          _vm.is_form_valid = $$v
+                        },
+                        expression: "is_form_valid"
+                      }
+                    },
+                    [
+                      _c(
+                        "v-layout",
+                        { attrs: { row: "", "align-center": "", wrap: "" } },
+                        [
+                          _c(
+                            "v-flex",
+                            { attrs: { xs12: "", md10: "" } },
+                            [
+                              _c("v-text-field", {
+                                attrs: { label: "Name" },
+                                model: {
+                                  value: _vm.object_qualification.name_database,
+                                  callback: function($$v) {
+                                    _vm.$set(
+                                      _vm.object_qualification,
+                                      "name_database",
+                                      $$v
+                                    )
+                                  },
+                                  expression:
+                                    "object_qualification.name_database"
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-flex",
+                            { attrs: { xs12: "", md2: "" } },
+                            [
+                              _c("v-switch", {
+                                attrs: {
+                                  label: _vm.object_qualification.is_active
+                                    ? "Active"
+                                    : "Inactive"
+                                },
+                                model: {
+                                  value: _vm.object_qualification.is_active,
+                                  callback: function($$v) {
+                                    _vm.$set(
+                                      _vm.object_qualification,
+                                      "is_active",
+                                      $$v
+                                    )
+                                  },
+                                  expression: "object_qualification.is_active"
+                                }
+                              })
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-layout",
+                        { attrs: { wrap: "", "align-center": "" } },
+                        [
+                          _c(
+                            "v-flex",
+                            { attrs: { xs12: "" } },
+                            [
+                              _c("v-text-field", {
+                                attrs: { label: "Description" },
+                                model: {
+                                  value:
+                                    _vm.object_qualification
+                                      .description_database,
+                                  callback: function($$v) {
+                                    _vm.$set(
+                                      _vm.object_qualification,
+                                      "description_database",
+                                      $$v
+                                    )
+                                  },
+                                  expression:
+                                    "object_qualification.description_database"
+                                }
+                              })
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-layout",
+                        { attrs: { wrap: "", "align-center": "" } },
+                        [
+                          _c(
+                            "v-flex",
+                            { attrs: { xs12: "" } },
+                            [
+                              _c("v-text-field", {
+                                attrs: { label: "Keywords" },
+                                model: {
+                                  value: _vm.object_qualification.keywords,
+                                  callback: function($$v) {
+                                    _vm.$set(
+                                      _vm.object_qualification,
+                                      "keywords",
+                                      $$v
+                                    )
+                                  },
+                                  expression: "object_qualification.keywords"
+                                }
+                              })
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-layout",
+                        { attrs: { wrap: "" } },
+                        [
+                          _c(
+                            "v-flex",
+                            { attrs: { xs12: "" } },
+                            [
+                              _c("v-checkbox", {
+                                attrs: {
+                                  label:
+                                    "Custom name and description for MTurk?"
+                                },
+                                model: {
+                                  value: _vm.add_custom_mturk,
+                                  callback: function($$v) {
+                                    _vm.add_custom_mturk = $$v
+                                  },
+                                  expression: "add_custom_mturk"
+                                }
+                              })
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _vm.add_custom_mturk
+                        ? [
+                            _c(
+                              "v-layout",
+                              {
+                                attrs: { row: "", "align-center": "", wrap: "" }
+                              },
+                              [
+                                _c(
+                                  "v-flex",
+                                  { attrs: { xs12: "" } },
+                                  [
+                                    _c("v-text-field", {
+                                      attrs: {
+                                        label: "Name displayed in MTurk"
+                                      },
+                                      model: {
+                                        value:
+                                          _vm.object_qualification.name_mturk,
+                                        callback: function($$v) {
+                                          _vm.$set(
+                                            _vm.object_qualification,
+                                            "name_mturk",
+                                            $$v
+                                          )
+                                        },
+                                        expression:
+                                          "object_qualification.name_mturk"
+                                      }
+                                    })
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "v-layout",
+                              { attrs: { wrap: "", "align-center": "" } },
+                              [
+                                _c(
+                                  "v-flex",
+                                  { attrs: { xs12: "" } },
+                                  [
+                                    _c("v-text-field", {
+                                      attrs: {
+                                        label: "Description displayed in MTurk"
+                                      },
+                                      model: {
+                                        value:
+                                          _vm.object_qualification
+                                            .description_mturk,
+                                        callback: function($$v) {
+                                          _vm.$set(
+                                            _vm.object_qualification,
+                                            "description_mturk",
+                                            $$v
+                                          )
+                                        },
+                                        expression:
+                                          "object_qualification.description_mturk"
+                                      }
+                                    })
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            )
+                          ]
+                        : _vm._e()
+                    ],
+                    2
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-card-actions",
+            [
+              _c("v-spacer"),
+              _vm._v(" "),
+              _c(
+                "v-btn",
+                {
+                  attrs: {
+                    color: "blue darken-1",
+                    flat: "",
+                    disabled: _vm.is_creating
+                  },
+                  nativeOn: {
+                    click: function($event) {
+                      return _vm.cancel($event)
+                    }
+                  }
+                },
+                [_vm._v("Cancel")]
+              ),
+              _vm._v(" "),
+              _c(
+                "v-btn",
+                {
+                  attrs: {
+                    color: "blue darken-1",
+                    loading: _vm.is_creating,
+                    flat: ""
+                  },
+                  nativeOn: {
+                    click: function($event) {
+                      return _vm.save($event)
+                    }
+                  }
+                },
+                [_vm._v("Save")]
+              )
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: null,
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$3868f2', $3868f2);
+          } else {
+            api.reload('$3868f2', $3868f2);
+          }
+        }
+
+        
+      }
+    })();
+},{"babel-runtime/helpers/extends":33,"vuex":10,"../../classes/qualifications.js":26,"vue-hot-reload-api":25,"vue":3}],30:[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends2 = require('babel-runtime/helpers/extends');
+
+var _extends3 = _interopRequireDefault(_extends2);
+
+var _vuex = require('vuex');
+
+var _qualifications = require('../../classes/qualifications.js');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// import ComponentShowBalance from './component-show-balance.vue';
+// import ComponentShowMoneySpent from './component-show-money-spent.vue';
+// import ComponentShowBatches from './component-show-batches.vue';
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+exports.default = {
+    name: 'component-delete-qualification',
+    props: {
+        qualifications_selected: {
+            type: Array,
+            required: true
+        }
+    },
+    data: function data() {
+        return {
+            show_dialog: false,
+            is_deleting: false,
+            title_dialog: 'Delete Qualification(s)'
+        };
+    },
+
+    computed: {
+        is_disabled: function is_disabled() {
+            return this.qualifications_selected.length == 0;
+        },
+        title_button: function title_button() {
+            return 'delete ' + this.qualifications_selected.length + ' Qualification(s)';
+        }
+    },
+    methods: (0, _extends3.default)({
+        remove: function remove() {
+            var _this = this;
+
+            this.is_deleting = true;
+            this.delete_qualifications(this.qualifications_selected).then(function () {
+                _this.show_dialog = false;
+                _this.is_deleting = false;
+            });
+        },
+        cancel: function cancel() {
+            this.show_dialog = false;
+        }
+    }, (0, _vuex.mapActions)('moduleQualifications', {
+        'delete_qualifications': 'delete_qualifications'
+    })),
+    watch: {}
+};
+// import { Policy } from '../../store/modules/policies.js';
+      var $0f9d72 = exports.default || module.exports;
+      if (typeof $0f9d72 === 'function') {
+        $0f9d72 = $0f9d72.options;
+      }
+    
+        /* template */
+        Object.assign($0f9d72, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-dialog",
+    {
+      attrs: { "max-width": "800px", persistent: "" },
+      model: {
+        value: _vm.show_dialog,
+        callback: function($$v) {
+          _vm.show_dialog = $$v
+        },
+        expression: "show_dialog"
+      }
+    },
+    [
+      _c(
+        "v-btn",
+        {
+          staticClass: "mb-2",
+          attrs: {
+            slot: "activator",
+            disabled: _vm.is_disabled,
+            color: "error",
+            dark: ""
+          },
+          on: {
+            click: function($event) {
+              _vm.policy_to_be_edited = null
+            }
+          },
+          slot: "activator"
+        },
+        [
+          _c("v-icon", [_vm._v("delete")]),
+          _vm._v(_vm._s(_vm.title_button) + "\n        ")
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-card",
+        [
+          _c("v-card-title", [
+            _c("span", { staticClass: "headline" }, [
+              _vm._v(_vm._s(_vm.title_dialog))
+            ])
+          ]),
+          _vm._v(" "),
+          _c(
+            "v-card-text",
+            [
+              _c(
+                "v-container",
+                { attrs: { "grid-list-md": "" } },
+                [
+                  _c(
+                    "v-layout",
+                    { attrs: { wrap: "" } },
+                    [
+                      _c("v-flex", { attrs: { xs12: "" } }, [
+                        _vm._v(
+                          "\n                                Do you really want to delete the following qualification(s)?\n                            "
+                        )
+                      ])
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-layout",
+                    { attrs: { wrap: "" } },
+                    [
+                      _c(
+                        "v-flex",
+                        { attrs: { xs12: "" } },
+                        [
+                          _c(
+                            "v-list",
+                            { attrs: { dense: "" } },
+                            _vm._l(_vm.qualifications_selected, function(
+                              qualification,
+                              index
+                            ) {
+                              return _c(
+                                "v-list-tile",
+                                { key: qualification.id_mturk },
+                                [
+                                  _c(
+                                    "v-list-tile-content",
+                                    [
+                                      _c("v-list-tile-title", [
+                                        _vm._v(
+                                          _vm._s(qualification.display_name())
+                                        )
+                                      ])
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              )
+                            })
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-card-actions",
+            [
+              _c("v-spacer"),
+              _vm._v(" "),
+              _c(
+                "v-btn",
+                {
+                  attrs: {
+                    color: "blue darken-1",
+                    flat: "",
+                    disabled: _vm.is_deleting
+                  },
+                  nativeOn: {
+                    click: function($event) {
+                      return _vm.cancel($event)
+                    }
+                  }
+                },
+                [_vm._v("Cancel")]
+              ),
+              _vm._v(" "),
+              _c(
+                "v-btn",
+                {
+                  attrs: {
+                    color: "red darken-1",
+                    loading: _vm.is_deleting,
+                    flat: ""
+                  },
+                  nativeOn: {
+                    click: function($event) {
+                      return _vm.remove($event)
+                    }
+                  }
+                },
+                [_vm._v("Delete")]
+              )
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: null,
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$0f9d72', $0f9d72);
+          } else {
+            api.reload('$0f9d72', $0f9d72);
+          }
+        }
+
+        
+      }
+    })();
+},{"babel-runtime/helpers/extends":33,"vuex":10,"../../classes/qualifications.js":26,"vue-hot-reload-api":25,"vue":3}],32:[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends2 = require('babel-runtime/helpers/extends');
+
+var _extends3 = _interopRequireDefault(_extends2);
+
+var _vuex = require('vuex');
+
+var _qualifications = require('../../classes/qualifications.js');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// import ComponentShowBalance from './component-show-balance.vue';
+// import ComponentShowMoneySpent from './component-show-money-spent.vue';
+// import ComponentShowBatches from './component-show-batches.vue';
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+exports.default = {
+    name: 'component-update-qualification',
+    props: {
+        qualification_to_be_edited: {
+            required: true
+        }
+    },
+    data: function data() {
+        return {
+            show_dialog: false,
+            is_updating: false,
+            is_form_valid: false,
+            add_custom_mturk: false,
+            title_dialog: 'Update Qualification',
+
+            object_qualification: new _qualifications.Qualification({
+                is_active: true
+            })
+        };
+    },
+
+    computed: {
+        has_qualification: function has_qualification() {
+            return this.qualification_to_be_edited != undefined;
+        }
+    },
+    methods: (0, _extends3.default)({
+        update: function update() {
+            var _this = this;
+
+            this.is_updating = true;
+            this.add_qualification(this.object_qualification).then(function () {
+                _this.show_dialog = false;
+                _this.is_updating = false;
+                _this.$emit('finished');
+            });
+        },
+        cancel: function cancel() {
+            this.show_dialog = false;
+        }
+    }, (0, _vuex.mapActions)('moduleQualifications', {
+        'add_qualification': 'add_qualification'
+    })),
+    watch: {}
+};
+// import { Policy } from '../../store/modules/policies.js';
+      var $9fac4b = exports.default || module.exports;
+      if (typeof $9fac4b === 'function') {
+        $9fac4b = $9fac4b.options;
+      }
+    
+        /* template */
+        Object.assign($9fac4b, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-dialog",
+    {
+      attrs: { "max-width": "800px", persistent: "" },
+      model: {
+        value: _vm.has_qualification,
+        callback: function($$v) {
+          _vm.has_qualification = $$v
+        },
+        expression: "has_qualification"
+      }
+    },
+    [
+      _c(
+        "v-card",
+        [
+          _c("v-card-title", [
+            _c("span", { staticClass: "headline" }, [
+              _vm._v(_vm._s(_vm.title_dialog))
+            ])
+          ]),
+          _vm._v(
+            "\n            " + _vm._s(_vm.is_form_valid) + "\n            "
+          ),
+          _c(
+            "v-card-text",
+            [
+              _c(
+                "v-container",
+                { attrs: { "grid-list-md": "" } },
+                [
+                  _c(
+                    "v-form",
+                    {
+                      model: {
+                        value: _vm.is_form_valid,
+                        callback: function($$v) {
+                          _vm.is_form_valid = $$v
+                        },
+                        expression: "is_form_valid"
+                      }
+                    },
+                    [
+                      _c(
+                        "v-layout",
+                        { attrs: { row: "", "align-center": "", wrap: "" } },
+                        [
+                          _c(
+                            "v-flex",
+                            { attrs: { xs12: "", md10: "" } },
+                            [
+                              _c("v-text-field", {
+                                attrs: { label: "Name" },
+                                model: {
+                                  value: _vm.object_qualification.name_database,
+                                  callback: function($$v) {
+                                    _vm.$set(
+                                      _vm.object_qualification,
+                                      "name_database",
+                                      $$v
+                                    )
+                                  },
+                                  expression:
+                                    "object_qualification.name_database"
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-flex",
+                            { attrs: { xs12: "", md2: "" } },
+                            [
+                              _c("v-switch", {
+                                attrs: {
+                                  label: _vm.object_qualification.is_active
+                                    ? "Active"
+                                    : "Inactive"
+                                },
+                                model: {
+                                  value: _vm.object_qualification.is_active,
+                                  callback: function($$v) {
+                                    _vm.$set(
+                                      _vm.object_qualification,
+                                      "is_active",
+                                      $$v
+                                    )
+                                  },
+                                  expression: "object_qualification.is_active"
+                                }
+                              })
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-layout",
+                        { attrs: { wrap: "", "align-center": "" } },
+                        [
+                          _c(
+                            "v-flex",
+                            { attrs: { xs12: "" } },
+                            [
+                              _c("v-text-field", {
+                                attrs: { label: "Description" },
+                                model: {
+                                  value:
+                                    _vm.object_qualification
+                                      .description_database,
+                                  callback: function($$v) {
+                                    _vm.$set(
+                                      _vm.object_qualification,
+                                      "description_database",
+                                      $$v
+                                    )
+                                  },
+                                  expression:
+                                    "object_qualification.description_database"
+                                }
+                              })
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-layout",
+                        { attrs: { wrap: "", "align-center": "" } },
+                        [
+                          _c(
+                            "v-flex",
+                            { attrs: { xs12: "" } },
+                            [
+                              _c("v-text-field", {
+                                attrs: { label: "Keywords" },
+                                model: {
+                                  value: _vm.object_qualification.keywords,
+                                  callback: function($$v) {
+                                    _vm.$set(
+                                      _vm.object_qualification,
+                                      "keywords",
+                                      $$v
+                                    )
+                                  },
+                                  expression: "object_qualification.keywords"
+                                }
+                              })
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-layout",
+                        { attrs: { wrap: "" } },
+                        [
+                          _c(
+                            "v-flex",
+                            { attrs: { xs12: "" } },
+                            [
+                              _c("v-checkbox", {
+                                attrs: {
+                                  label:
+                                    "Custom name and description for MTurk?"
+                                },
+                                model: {
+                                  value: _vm.add_custom_mturk,
+                                  callback: function($$v) {
+                                    _vm.add_custom_mturk = $$v
+                                  },
+                                  expression: "add_custom_mturk"
+                                }
+                              })
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _vm.add_custom_mturk
+                        ? [
+                            _c(
+                              "v-layout",
+                              {
+                                attrs: { row: "", "align-center": "", wrap: "" }
+                              },
+                              [
+                                _c(
+                                  "v-flex",
+                                  { attrs: { xs12: "" } },
+                                  [
+                                    _c("v-text-field", {
+                                      attrs: {
+                                        label: "Name displayed in MTurk"
+                                      },
+                                      model: {
+                                        value:
+                                          _vm.object_qualification.name_mturk,
+                                        callback: function($$v) {
+                                          _vm.$set(
+                                            _vm.object_qualification,
+                                            "name_mturk",
+                                            $$v
+                                          )
+                                        },
+                                        expression:
+                                          "object_qualification.name_mturk"
+                                      }
+                                    })
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "v-layout",
+                              { attrs: { wrap: "", "align-center": "" } },
+                              [
+                                _c(
+                                  "v-flex",
+                                  { attrs: { xs12: "" } },
+                                  [
+                                    _c("v-text-field", {
+                                      attrs: {
+                                        label: "Description displayed in MTurk"
+                                      },
+                                      model: {
+                                        value:
+                                          _vm.object_qualification
+                                            .description_mturk,
+                                        callback: function($$v) {
+                                          _vm.$set(
+                                            _vm.object_qualification,
+                                            "description_mturk",
+                                            $$v
+                                          )
+                                        },
+                                        expression:
+                                          "object_qualification.description_mturk"
+                                      }
+                                    })
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            )
+                          ]
+                        : _vm._e()
+                    ],
+                    2
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-card-actions",
+            [
+              _c("v-spacer"),
+              _vm._v(" "),
+              _c(
+                "v-btn",
+                {
+                  attrs: {
+                    color: "blue darken-1",
+                    flat: "",
+                    disabled: _vm.is_updating
+                  },
+                  nativeOn: {
+                    click: function($event) {
+                      _vm.$emit("finished")
+                    }
+                  }
+                },
+                [_vm._v("Cancel")]
+              ),
+              _vm._v(" "),
+              _c(
+                "v-btn",
+                {
+                  attrs: {
+                    color: "blue darken-1",
+                    loading: _vm.is_updating,
+                    flat: ""
+                  },
+                  nativeOn: {
+                    click: function($event) {
+                      return _vm.update($event)
+                    }
+                  }
+                },
+                [_vm._v("Update")]
+              )
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: null,
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$9fac4b', $9fac4b);
+          } else {
+            api.reload('$9fac4b', $9fac4b);
+          }
+        }
+
+        
+      }
+    })();
+},{"babel-runtime/helpers/extends":33,"vuex":10,"../../classes/qualifications.js":26,"vue-hot-reload-api":25,"vue":3}],7:[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends2 = require('babel-runtime/helpers/extends');
+
+var _extends3 = _interopRequireDefault(_extends2);
+
+var _vuex = require('vuex');
+
+var _qualifications = require('../../classes/qualifications.js');
+
+var _componentAddQualification = require('./component-add-qualification.vue');
+
+var _componentAddQualification2 = _interopRequireDefault(_componentAddQualification);
+
+var _componentDeleteQualification = require('./component-delete-qualification.vue');
+
+var _componentDeleteQualification2 = _interopRequireDefault(_componentDeleteQualification);
+
+var _componentUpdateQualification = require('./component-update-qualification.vue');
+
+var _componentUpdateQualification2 = _interopRequireDefault(_componentUpdateQualification);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// import ComponentShowMoneySpent from './component-show-money-spent.vue';
+// import ComponentShowBatches from './component-show-batches.vue';
+exports.default = {
+    name: 'app-qualifications',
+
+    data: function data() {
+        return {
+            policies_selected: [],
+            list_headers: [{
+                text: 'Name',
+                value: 'name_mturk'
+            }, {
+                text: 'Description',
+                value: 'description_mturk'
+            }, {
+                text: 'Created At',
+                value: 'created_at'
+            }, {
+                text: '',
+                // text: 'Actions', 
+                value: 'name',
+                sortable: false,
+                align: 'right'
+            }],
+
+            qualification_to_be_edited: undefined
+        };
+    },
+
+    computed: (0, _extends3.default)({}, (0, _vuex.mapGetters)('moduleQualifications', {
+        'list_policies': 'list_policies'
+    })),
+    methods: (0, _extends3.default)({
+        delete_policy: function delete_policy(item) {
+            // if(confirm(`Do you really want to delete the '${item.name}' policy?`))
+            // {
+
+            // }
+        },
+        edit_policy: function edit_policy() {
+            this.update_policy(this.policy_dialog).then(function () {});
+        }
+    }, (0, _vuex.mapActions)('moduleQualifications', {
+        'sync_qualifications': 'sync_qualifications',
+        'update_policy': 'update_policy'
+    }), (0, _vuex.mapActions)(['set_show_progress_indicator'])),
+    created: function created() {
+        var _this = this;
+
+        this.set_show_progress_indicator(true);
+
+        this.sync_qualifications().then(function () {
+            _this.set_show_progress_indicator(false);
+        });
+    },
+
+    components: {
+        ComponentAddQualification: _componentAddQualification2.default,
+        ComponentDeleteQualification: _componentDeleteQualification2.default,
+        ComponentUpdateQualification: _componentUpdateQualification2.default
+        // ComponentShowMoneySpent,
+        // ComponentShowBatches,
+    }
+}; //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+      var $41cfd0 = exports.default || module.exports;
+      if (typeof $41cfd0 === 'function') {
+        $41cfd0 = $41cfd0.options;
+      }
+    
+        /* template */
+        Object.assign($41cfd0, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c(
+        "v-layout",
+        { attrs: { wrap: "" } },
+        [
+          _c(
+            "v-flex",
+            [
+              _c("v-data-table", {
+                staticClass: "elevation-1",
+                attrs: {
+                  items: _vm.list_policies,
+                  headers: _vm.list_headers,
+                  "disable-initial-sort": "",
+                  "item-key": "id_mturk",
+                  "select-all": ""
+                },
+                scopedSlots: _vm._u([
+                  {
+                    key: "items",
+                    fn: function(props) {
+                      return [
+                        _c(
+                          "td",
+                          [
+                            _c("v-checkbox", {
+                              attrs: { primary: "", "hide-details": "" },
+                              model: {
+                                value: props.selected,
+                                callback: function($$v) {
+                                  _vm.$set(props, "selected", $$v)
+                                },
+                                expression: "props.selected"
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(props.item.display_name()))]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _vm._v(_vm._s(props.item.display_description()))
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _vm._v(_vm._s(props.item.created_at.toLocaleString()))
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "td",
+                          { staticClass: "justify-end layout" },
+                          [
+                            _c(
+                              "v-tooltip",
+                              { attrs: { left: "" } },
+                              [
+                                !props.item.has_database_entry()
+                                  ? _c(
+                                      "v-btn",
+                                      {
+                                        staticClass: "mx-0",
+                                        attrs: { slot: "activator", icon: "" },
+                                        on: {
+                                          click: function($event) {
+                                            _vm.init_edit_policy(props.item)
+                                          }
+                                        },
+                                        slot: "activator"
+                                      },
+                                      [
+                                        _c(
+                                          "v-icon",
+                                          { attrs: { color: "warning" } },
+                                          [_vm._v("warning")]
+                                        )
+                                      ],
+                                      1
+                                    )
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                _c("span", [
+                                  _vm._v(
+                                    "No database entry for this qualification was found!"
+                                  )
+                                ])
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "v-btn",
+                              {
+                                staticClass: "mx-0",
+                                attrs: { icon: "" },
+                                on: {
+                                  click: function($event) {
+                                    _vm.qualification_to_be_edited = props.item
+                                  }
+                                }
+                              },
+                              [
+                                _c("v-icon", { attrs: { color: "success" } }, [
+                                  _vm._v("edit")
+                                ])
+                              ],
+                              1
+                            )
+                          ],
+                          1
+                        )
+                      ]
+                    }
+                  }
+                ]),
+                model: {
+                  value: _vm.policies_selected,
+                  callback: function($$v) {
+                    _vm.policies_selected = $$v
+                  },
+                  expression: "policies_selected"
+                }
+              })
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("component-add-qualification"),
+      _vm._v(" "),
+      _c("component-delete-qualification", {
+        attrs: { qualifications_selected: _vm.policies_selected }
+      }),
+      _vm._v(" "),
+      _c("component-update-qualification", {
+        attrs: { qualification_to_be_edited: _vm.qualification_to_be_edited },
+        on: {
+          finished: function($event) {
+            _vm.qualification_to_be_edited = undefined
+          }
+        }
+      })
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: null,
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$41cfd0', $41cfd0);
+          } else {
+            api.reload('$41cfd0', $41cfd0);
+          }
+        }
+
+        
+      }
+    })();
+},{"babel-runtime/helpers/extends":33,"vuex":10,"../../classes/qualifications.js":26,"./component-add-qualification.vue":31,"./component-delete-qualification.vue":30,"./component-update-qualification.vue":32,"vue-hot-reload-api":25,"vue":3}],6:[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends2 = require('babel-runtime/helpers/extends');
+
+var _extends3 = _interopRequireDefault(_extends2);
+
+var _vuex = require('vuex');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// import { Policy } from '../../store/modules/policies.js';
+
+// import ComponentShowBalance from './component-show-balance.vue';
+// import ComponentShowMoneySpent from './component-show-money-spent.vue';
+// import ComponentShowBatches from './component-show-batches.vue';
+exports.default = {
+    name: 'app-finances',
+
+    data: function data() {
+        return {
+            workers_selected: [],
+            pagination: {
+                rowsPerPage: 10
+            },
+            list_headers: [{
+                text: 'Name',
+                value: 'name'
+            }],
+
+            show_dialog_policy: false,
+            policy_to_be_edited: null
+            // policy_new: new Policy({
+            //     QualificationTypeStatus: 'Active',
+            // }),
+        };
+    },
+
+    computed: (0, _extends3.default)({}, (0, _vuex.mapGetters)('moduleWorkers', {
+        'list_workers': 'list_workers'
+    })),
+    methods: (0, _extends3.default)({}, (0, _vuex.mapActions)('moduleWorkers', {
+        'sync_workers': 'sync_workers'
+    })),
+    created: function created() {
+        this.sync_workers();
+    },
+
+    components: {
+        // ComponentShowBalance,
+        // ComponentShowMoneySpent,
+        // ComponentShowBatches,
+    }
+}; //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+      var $29f522 = exports.default || module.exports;
+      if (typeof $29f522 === 'function') {
+        $29f522 = $29f522.options;
+      }
+    
+        /* template */
+        Object.assign($29f522, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c(
+        "v-layout",
+        { attrs: { wrap: "" } },
+        [
+          _c(
+            "v-flex",
+            [
+              _c("v-data-table", {
+                staticClass: "elevation-1",
+                attrs: {
+                  items: _vm.list_workers,
+                  headers: _vm.list_headers,
+                  "disable-initial-sort": "",
+                  pagination: _vm.pagination,
+                  "select-all": "",
+                  "item-key": "name"
+                },
+                on: {
+                  "update:pagination": function($event) {
+                    _vm.pagination = $event
+                  }
+                },
+                scopedSlots: _vm._u([
+                  {
+                    key: "items",
+                    fn: function(props) {
+                      return [
+                        _c(
+                          "td",
+                          [
+                            _c("v-checkbox", {
+                              attrs: { primary: "", "hide-details": "" },
+                              model: {
+                                value: props.selected,
+                                callback: function($$v) {
+                                  _vm.$set(props, "selected", $$v)
+                                },
+                                expression: "props.selected"
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(props.item.name))])
+                      ]
+                    }
+                  }
+                ]),
+                model: {
+                  value: _vm.workers_selected,
+                  callback: function($$v) {
+                    _vm.workers_selected = $$v
+                  },
+                  expression: "workers_selected"
+                }
+              })
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: null,
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$29f522', $29f522);
+          } else {
+            api.reload('$29f522', $29f522);
+          }
+        }
+
+        
+      }
+    })();
+},{"babel-runtime/helpers/extends":33,"vuex":10,"vue-hot-reload-api":25,"vue":3}],123:[function(require,module,exports) {
 var global = arguments[3];
 /**
  * Copyright (c) 2014-present, Facebook, Inc.
@@ -58084,7 +59981,7 @@ var global = arguments[3];
   (function() { return this })() || Function("return this")()
 );
 
-},{}],88:[function(require,module,exports) {
+},{}],92:[function(require,module,exports) {
 /**
  * Copyright (c) 2014-present, Facebook, Inc.
  *
@@ -58121,10 +60018,10 @@ if (hadRuntime) {
   }
 }
 
-},{"./runtime":119}],60:[function(require,module,exports) {
+},{"./runtime":123}],64:[function(require,module,exports) {
 module.exports = require("regenerator-runtime");
 
-},{"regenerator-runtime":88}],94:[function(require,module,exports) {
+},{"regenerator-runtime":92}],98:[function(require,module,exports) {
 // 7.3.20 SpeciesConstructor(O, defaultConstructor)
 var anObject = require('./_an-object');
 var aFunction = require('./_a-function');
@@ -58135,7 +60032,7 @@ module.exports = function (O, D) {
   return C === undefined || (S = anObject(C)[SPECIES]) == undefined ? D : aFunction(S);
 };
 
-},{"./_an-object":129,"./_a-function":108,"./_wks":101}],148:[function(require,module,exports) {
+},{"./_an-object":133,"./_a-function":108,"./_wks":114}],144:[function(require,module,exports) {
 // fast apply, http://jsperf.lnkit.com/fast-apply/5
 module.exports = function (fn, args, that) {
   var un = that === undefined;
@@ -58241,7 +60138,7 @@ module.exports = {
   clear: clearTask
 };
 
-},{"./_ctx":105,"./_invoke":148,"./_html":149,"./_dom-create":150,"./_global":93,"./_cof":143}],112:[function(require,module,exports) {
+},{"./_ctx":105,"./_invoke":144,"./_html":145,"./_dom-create":146,"./_global":97,"./_cof":139}],112:[function(require,module,exports) {
 
 
 var global = require('./_global');
@@ -58314,7 +60211,7 @@ module.exports = function () {
   };
 };
 
-},{"./_global":93,"./_task":111,"./_cof":143}],102:[function(require,module,exports) {
+},{"./_global":97,"./_task":111,"./_cof":139}],102:[function(require,module,exports) {
 'use strict';
 // 25.4.1.5 NewPromiseCapability(C)
 var aFunction = require('./_a-function');
@@ -58350,7 +60247,7 @@ var navigator = global.navigator;
 
 module.exports = navigator && navigator.userAgent || '';
 
-},{"./_global":93}],95:[function(require,module,exports) {
+},{"./_global":97}],99:[function(require,module,exports) {
 var anObject = require('./_an-object');
 var isObject = require('./_is-object');
 var newPromiseCapability = require('./_new-promise-capability');
@@ -58364,7 +60261,7 @@ module.exports = function (C, x) {
   return promiseCapability.promise;
 };
 
-},{"./_an-object":129,"./_is-object":107,"./_new-promise-capability":102}],117:[function(require,module,exports) {
+},{"./_an-object":133,"./_is-object":107,"./_new-promise-capability":102}],118:[function(require,module,exports) {
 var ITERATOR = require('./_wks')('iterator');
 var SAFE_CLOSING = false;
 
@@ -58388,7 +60285,7 @@ module.exports = function (exec, skipClosing) {
   return safe;
 };
 
-},{"./_wks":101}],71:[function(require,module,exports) {
+},{"./_wks":114}],75:[function(require,module,exports) {
 
 
 'use strict';
@@ -58678,7 +60575,7 @@ $export($export.S + $export.F * !(USE_NATIVE && require('./_iter-detect')(functi
   }
 });
 
-},{"./_library":104,"./_global":93,"./_ctx":105,"./_classof":106,"./_export":92,"./_is-object":107,"./_a-function":108,"./_an-instance":109,"./_for-of":110,"./_species-constructor":94,"./_task":111,"./_microtask":112,"./_new-promise-capability":102,"./_perform":103,"./_user-agent":113,"./_promise-resolve":95,"./_wks":101,"./_redefine-all":114,"./_set-to-string-tag":115,"./_set-species":116,"./_core":74,"./_iter-detect":117}],72:[function(require,module,exports) {
+},{"./_library":104,"./_global":97,"./_ctx":105,"./_classof":106,"./_export":96,"./_is-object":107,"./_a-function":108,"./_an-instance":109,"./_for-of":110,"./_species-constructor":98,"./_task":111,"./_microtask":112,"./_new-promise-capability":102,"./_perform":103,"./_user-agent":113,"./_promise-resolve":99,"./_wks":114,"./_redefine-all":115,"./_set-to-string-tag":116,"./_set-species":117,"./_core":78,"./_iter-detect":118}],76:[function(require,module,exports) {
 
 // https://github.com/tc39/proposal-promise-finally
 'use strict';
@@ -58701,7 +60598,7 @@ $export($export.P + $export.R, 'Promise', { 'finally': function (onFinally) {
   );
 } });
 
-},{"./_export":92,"./_core":74,"./_global":93,"./_species-constructor":94,"./_promise-resolve":95}],73:[function(require,module,exports) {
+},{"./_export":96,"./_core":78,"./_global":97,"./_species-constructor":98,"./_promise-resolve":99}],77:[function(require,module,exports) {
 'use strict';
 // https://github.com/tc39/proposal-promise-try
 var $export = require('./_export');
@@ -58715,7 +60612,7 @@ $export($export.S, 'Promise', { 'try': function (callbackfn) {
   return promiseCapability.promise;
 } });
 
-},{"./_export":92,"./_new-promise-capability":102,"./_perform":103}],58:[function(require,module,exports) {
+},{"./_export":96,"./_new-promise-capability":102,"./_perform":103}],61:[function(require,module,exports) {
 require('../modules/es6.object.to-string');
 require('../modules/es6.string.iterator');
 require('../modules/web.dom.iterable');
@@ -58724,9 +60621,9 @@ require('../modules/es7.promise.finally');
 require('../modules/es7.promise.try');
 module.exports = require('../modules/_core').Promise;
 
-},{"../modules/es6.object.to-string":68,"../modules/es6.string.iterator":69,"../modules/web.dom.iterable":70,"../modules/es6.promise":71,"../modules/es7.promise.finally":72,"../modules/es7.promise.try":73,"../modules/_core":74}],38:[function(require,module,exports) {
+},{"../modules/es6.object.to-string":72,"../modules/es6.string.iterator":73,"../modules/web.dom.iterable":74,"../modules/es6.promise":75,"../modules/es7.promise.finally":76,"../modules/es7.promise.try":77,"../modules/_core":78}],42:[function(require,module,exports) {
 module.exports = { "default": require("core-js/library/fn/promise"), __esModule: true };
-},{"core-js/library/fn/promise":58}],34:[function(require,module,exports) {
+},{"core-js/library/fn/promise":61}],38:[function(require,module,exports) {
 "use strict";
 
 exports.__esModule = true;
@@ -58765,865 +60662,10 @@ exports.default = function (fn) {
     });
   };
 };
-},{"../core-js/promise":38}],22:[function(require,module,exports) {
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-exports.Policy = exports.modulePolicies = undefined;
-
-var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
-
-var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-var _createClass2 = require('babel-runtime/helpers/createClass');
-
-var _createClass3 = _interopRequireDefault(_createClass2);
-
-var _regenerator = require('babel-runtime/regenerator');
-
-var _regenerator2 = _interopRequireDefault(_regenerator);
-
-var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
-
-var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
-
-var _axios = require('axios');
-
-var _axios2 = _interopRequireDefault(_axios);
-
-var _vue = require('vue');
-
-var _vue2 = _interopRequireDefault(_vue);
-
-var _lodash = require('lodash');
-
-var _lodash2 = _interopRequireDefault(_lodash);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var modulePolicies = exports.modulePolicies = {
-	namespaced: true,
-	state: {
-		url_api_policies: undefined,
-		object_policies: null
-	},
-	getters: {
-		list_policies: function list_policies(state) {
-			if (state.object_policies == null) {
-				return [];
-			}
-
-			return _lodash2.default.orderBy(state.object_policies, ['created_at'], ['desc']);
-		}
-	},
-	mutations: {
-		set_url_api_policies: function set_url_api_policies(state, url_new) {
-			state.url_api_policies = url_new;
-		},
-		set_policies: function set_policies(state, data_policies) {
-			state.object_policies = {};
-			_lodash2.default.forEach(data_policies, function (data_policy) {
-				var obj_policy = new Policy(data_policy);
-				_vue2.default.set(state.object_policies, obj_policy.id, obj_policy);
-			});
-		},
-		add_policy: function add_policy(state, obj_policy) {
-			_vue2.default.set(state.object_policies, obj_policy.id, obj_policy);
-		}
-	},
-	actions: {
-		sync_policies: function () {
-			var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(_ref) {
-				var commit = _ref.commit,
-				    state = _ref.state;
-				var force = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-				return _regenerator2.default.wrap(function _callee$(_context) {
-					while (1) {
-						switch (_context.prev = _context.next) {
-							case 0:
-								if (!(state.object_policies == null || force)) {
-									_context.next = 3;
-									break;
-								}
-
-								_context.next = 3;
-								return _axios2.default.get(state.url_api_policies).then(function (response) {
-									commit('set_policies', response.data);
-								});
-
-							case 3:
-							case 'end':
-								return _context.stop();
-						}
-					}
-				}, _callee, this);
-			}));
-
-			function sync_policies(_x2) {
-				return _ref2.apply(this, arguments);
-			}
-
-			return sync_policies;
-		}(),
-		add_policy: function () {
-			var _ref4 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(_ref3, obj_policy) {
-				var commit = _ref3.commit,
-				    state = _ref3.state;
-				var token;
-				return _regenerator2.default.wrap(function _callee2$(_context2) {
-					while (1) {
-						switch (_context2.prev = _context2.next) {
-							case 0:
-								console.log(obj_policy.get_as_formdata());
-								token = document.cookie.match(new RegExp('csrftoken=([^;]+)'))[1];
-								_context2.next = 4;
-								return _axios2.default.post(state.url_api_policies, obj_policy.get_as_formdata(), {
-									headers: { "X-CSRFToken": token }
-								}).then(function (response) {
-									commit('add_policy', new Policy(response.data));
-								});
-
-							case 4:
-							case 'end':
-								return _context2.stop();
-						}
-					}
-				}, _callee2, this);
-			}));
-
-			function add_policy(_x3, _x4) {
-				return _ref4.apply(this, arguments);
-			}
-
-			return add_policy;
-		}(),
-		update_policy: function () {
-			var _ref6 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3(_ref5, obj_policy) {
-				var commit = _ref5.commit,
-				    state = _ref5.state;
-				var token;
-				return _regenerator2.default.wrap(function _callee3$(_context3) {
-					while (1) {
-						switch (_context3.prev = _context3.next) {
-							case 0:
-								console.log(obj_policy.get_as_formdata());
-								token = document.cookie.match(new RegExp('csrftoken=([^;]+)'))[1];
-								_context3.next = 4;
-								return _axios2.default.put(state.url_api_policies, obj_policy.get_as_formdata(), {
-									headers: { "X-CSRFToken": token }
-								}).then(function (response) {
-									// commit('add_policy', new Policy(response.data));
-								});
-
-							case 4:
-							case 'end':
-								return _context3.stop();
-						}
-					}
-				}, _callee3, this);
-			}));
-
-			function update_policy(_x5, _x6) {
-				return _ref6.apply(this, arguments);
-			}
-
-			return update_policy;
-		}()
-	}
-};
-
-var Policy = exports.Policy = function () {
-	function Policy(data) {
-		(0, _classCallCheck3.default)(this, Policy);
-
-		this.id = data.QualificationTypeId;
-		// this.created_at = new Date(data.CreationTime);
-		this.description = data.Description;
-		this.is_requestable = data.IsRequestable;
-		this.name = data.Name;
-		this.status = data.QualificationTypeStatus;
-	}
-
-	(0, _createClass3.default)(Policy, [{
-		key: 'get_as_formdata',
-		value: function get_as_formdata() {
-			var form_data = new FormData();
-			form_data.set('id', this.id);
-			form_data.set('created_at', this.created_at);
-			form_data.set('description', this.description);
-			form_data.set('is_requestable', this.is_requestable);
-			form_data.set('name', this.name);
-			form_data.set('status', this.status);
-
-			return form_data;
-			return {
-				id: this.id,
-				created_at: this.created_at,
-				description: this.description,
-				is_requestable: this.is_requestable,
-				name: this.name,
-				status: this.status
-			};
-		}
-	}]);
-	return Policy;
-}();
-},{"babel-runtime/helpers/classCallCheck":41,"babel-runtime/helpers/createClass":42,"babel-runtime/regenerator":60,"babel-runtime/helpers/asyncToGenerator":34,"axios":31,"vue":3,"lodash":33}],177:[function(require,module,exports) {
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-// import { mapState, mapActions, mapGetters } from 'vuex';
-// import { Policy } from '../../store/modules/policies.js';
-
-// import ComponentShowBalance from './component-show-balance.vue';
-// import ComponentShowMoneySpent from './component-show-money-spent.vue';
-// import ComponentShowBatches from './component-show-batches.vue';
-exports.default = {
-    name: 'component-add-qualification',
-    props: {
-        show_dialog_qualification_add: {
-            required: true,
-            type: Boolean
-        }
-    },
-    data: function data() {
-        return {};
-    },
-
-    computed: {},
-    methods: {
-        init: function init() {
-            var _this = this;
-
-            console.log('init');
-            setTimeout(function () {
-                _this.$emit('finished');
-            }, 1000);
-        }
-    },
-    watch: {
-        show_dialog_qualification_add: function show_dialog_qualification_add(value_new) {
-            if (value_new == true) {
-                this.init();
-            } else {
-                console.log('called but is false');
-            }
-        }
-    }
-};
-      var $a5af76 = exports.default || module.exports;
-      if (typeof $a5af76 === 'function') {
-        $a5af76 = $a5af76.options;
-      }
-    
-        /* template */
-        Object.assign($a5af76, (function () {
-          var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div")
-}
-var staticRenderFns = []
-render._withStripped = true
-
-          return {
-            render: render,
-            staticRenderFns: staticRenderFns,
-            _compiled: true,
-            _scopeId: null,
-            functional: undefined
-          };
-        })());
-      
-    /* hot reload */
-    (function () {
-      if (module.hot) {
-        var api = require('vue-hot-reload-api');
-        api.install(require('vue'));
-        if (api.compatible) {
-          module.hot.accept();
-          if (!module.hot.data) {
-            api.createRecord('$a5af76', $a5af76);
-          } else {
-            api.reload('$a5af76', $a5af76);
-          }
-        }
-
-        
-      }
-    })();
-},{"vue-hot-reload-api":25,"vue":3}],7:[function(require,module,exports) {
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _extends2 = require('babel-runtime/helpers/extends');
-
-var _extends3 = _interopRequireDefault(_extends2);
-
-var _vuex = require('vuex');
-
-var _policies = require('../../store/modules/policies.js');
-
-var _componentAddQualification = require('./component-add-qualification.vue');
-
-var _componentAddQualification2 = _interopRequireDefault(_componentAddQualification);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-// import ComponentShowMoneySpent from './component-show-money-spent.vue';
-// import ComponentShowBatches from './component-show-batches.vue';
-exports.default = {
-    name: 'app-qualifications',
-
-    data: function data() {
-        return {
-            policies_selected: [],
-            list_headers: [{
-                text: 'Name',
-                value: 'name'
-            }, {
-                text: 'Description',
-                value: 'description'
-            }, {
-                text: 'Actions',
-                value: 'name',
-                sortable: false,
-                align: 'right'
-            }],
-
-            show_dialog_qualification_add: false,
-
-            show_dialog_policy: false,
-            policy_to_be_edited: null,
-            policy_new: new _policies.Policy({
-                QualificationTypeStatus: 'Active'
-            })
-        };
-    },
-
-    computed: (0, _extends3.default)({
-        policy_dialog: function policy_dialog() {
-            return this.policy_to_be_edited == null ? this.policy_new : this.policy_to_be_edited;
-        },
-        title_dialog_policy: function title_dialog_policy() {
-            return this.policy_to_be_edited == null ? 'New Policy' : 'Edit Policy';
-        }
-    }, (0, _vuex.mapGetters)('modulePolicies', {
-        'list_policies': 'list_policies'
-    })),
-    methods: (0, _extends3.default)({
-        add_or_edit_policy: function add_or_edit_policy() {
-            if (this.policy_to_be_edited == null) {
-                this.add_policy_custom();
-            } else {
-                this.edit_policy();
-            }
-        },
-        delete_policy: function delete_policy(item) {
-            this.show_dialog_qualification_add = true;
-            // if(confirm(`Do you really want to delete the '${item.name}' policy?`))
-            // {
-
-            // }
-        },
-        init_edit_policy: function init_edit_policy(policy_to_be_edited) {
-            this.policy_to_be_edited = policy_to_be_edited;
-            this.show_dialog_policy = true;
-        },
-        edit_policy: function edit_policy() {
-            var _this = this;
-
-            this.update_policy(this.policy_dialog).then(function () {
-                _this.show_dialog_policy = false;
-            });
-        },
-        add_policy_custom: function add_policy_custom() {
-            var _this2 = this;
-
-            this.add_policy(this.policy_dialog).then(function () {
-                _this2.show_dialog_policy = false;
-            });
-        },
-        cancel: function cancel() {
-            this.show_dialog_policy = false;
-        }
-    }, (0, _vuex.mapActions)('modulePolicies', {
-        'sync_policies': 'sync_policies',
-        'add_policy': 'add_policy',
-        'update_policy': 'update_policy'
-    }), (0, _vuex.mapActions)(['set_show_progress_indicator'])),
-    created: function created() {
-        var _this3 = this;
-
-        this.set_show_progress_indicator(true);
-
-        this.sync_policies().then(function () {
-            _this3.set_show_progress_indicator(false);
-        });
-    },
-
-    components: {
-        ComponentAddQualification: _componentAddQualification2.default
-        // ComponentShowMoneySpent,
-        // ComponentShowBatches,
-    }
-}; //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-      var $4abaa5 = exports.default || module.exports;
-      if (typeof $4abaa5 === 'function') {
-        $4abaa5 = $4abaa5.options;
-      }
-    
-        /* template */
-        Object.assign($4abaa5, (function () {
-          var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _c(
-        "v-layout",
-        { attrs: { wrap: "" } },
-        [
-          _c(
-            "v-flex",
-            [
-              _c("v-data-table", {
-                staticClass: "elevation-1",
-                attrs: {
-                  items: _vm.list_policies,
-                  headers: _vm.list_headers,
-                  "disable-initial-sort": "",
-                  "select-all": ""
-                },
-                scopedSlots: _vm._u([
-                  {
-                    key: "items",
-                    fn: function(props) {
-                      return [
-                        _c(
-                          "td",
-                          [
-                            _c("v-checkbox", {
-                              attrs: { primary: "", "hide-details": "" },
-                              model: {
-                                value: props.selected,
-                                callback: function($$v) {
-                                  _vm.$set(props, "selected", $$v)
-                                },
-                                expression: "props.selected"
-                              }
-                            })
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(props.item.name))]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(props.item.description))]),
-                        _vm._v(" "),
-                        _c(
-                          "td",
-                          { staticClass: "justify-end layout" },
-                          [
-                            _c(
-                              "v-btn",
-                              {
-                                staticClass: "mx-0",
-                                attrs: { icon: "" },
-                                on: {
-                                  click: function($event) {
-                                    _vm.init_edit_policy(props.item)
-                                  }
-                                }
-                              },
-                              [
-                                _c("v-icon", { attrs: { color: "teal" } }, [
-                                  _vm._v("edit")
-                                ])
-                              ],
-                              1
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "v-btn",
-                              {
-                                staticClass: "mx-0",
-                                attrs: { icon: "" },
-                                on: {
-                                  click: function($event) {
-                                    _vm.delete_policy(props.item)
-                                  }
-                                }
-                              },
-                              [
-                                _c("v-icon", { attrs: { color: "pink" } }, [
-                                  _vm._v("delete")
-                                ])
-                              ],
-                              1
-                            )
-                          ],
-                          1
-                        )
-                      ]
-                    }
-                  }
-                ]),
-                model: {
-                  value: _vm.policies_selected,
-                  callback: function($$v) {
-                    _vm.policies_selected = $$v
-                  },
-                  expression: "policies_selected"
-                }
-              })
-            ],
-            1
-          )
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c("component-add-qualification", {
-        attrs: {
-          show_dialog_qualification_add: _vm.show_dialog_qualification_add
-        },
-        on: {
-          finished: function($event) {
-            _vm.show_dialog_qualification_add = false
-          }
-        }
-      })
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-
-          return {
-            render: render,
-            staticRenderFns: staticRenderFns,
-            _compiled: true,
-            _scopeId: null,
-            functional: undefined
-          };
-        })());
-      
-    /* hot reload */
-    (function () {
-      if (module.hot) {
-        var api = require('vue-hot-reload-api');
-        api.install(require('vue'));
-        if (api.compatible) {
-          module.hot.accept();
-          if (!module.hot.data) {
-            api.createRecord('$4abaa5', $4abaa5);
-          } else {
-            api.reload('$4abaa5', $4abaa5);
-          }
-        }
-
-        
-      }
-    })();
-},{"babel-runtime/helpers/extends":29,"vuex":10,"../../store/modules/policies.js":22,"./component-add-qualification.vue":177,"vue-hot-reload-api":25,"vue":3}],6:[function(require,module,exports) {
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _extends2 = require('babel-runtime/helpers/extends');
-
-var _extends3 = _interopRequireDefault(_extends2);
-
-var _vuex = require('vuex');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-// import { Policy } from '../../store/modules/policies.js';
-
-// import ComponentShowBalance from './component-show-balance.vue';
-// import ComponentShowMoneySpent from './component-show-money-spent.vue';
-// import ComponentShowBatches from './component-show-batches.vue';
-exports.default = {
-    name: 'app-finances',
-
-    data: function data() {
-        return {
-            workers_selected: [],
-            pagination: {
-                rowsPerPage: 10
-            },
-            list_headers: [{
-                text: 'Name',
-                value: 'name'
-            }],
-
-            show_dialog_policy: false,
-            policy_to_be_edited: null
-            // policy_new: new Policy({
-            //     QualificationTypeStatus: 'Active',
-            // }),
-        };
-    },
-
-    computed: (0, _extends3.default)({}, (0, _vuex.mapGetters)('moduleWorkers', {
-        'list_workers': 'list_workers'
-    })),
-    methods: (0, _extends3.default)({}, (0, _vuex.mapActions)('moduleWorkers', {
-        'sync_workers': 'sync_workers'
-    })),
-    created: function created() {
-        this.sync_workers();
-    },
-
-    components: {
-        // ComponentShowBalance,
-        // ComponentShowMoneySpent,
-        // ComponentShowBatches,
-    }
-}; //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-      var $29f522 = exports.default || module.exports;
-      if (typeof $29f522 === 'function') {
-        $29f522 = $29f522.options;
-      }
-    
-        /* template */
-        Object.assign($29f522, (function () {
-          var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _c(
-        "v-layout",
-        { attrs: { wrap: "" } },
-        [
-          _c(
-            "v-flex",
-            [
-              _c("v-data-table", {
-                staticClass: "elevation-1",
-                attrs: {
-                  items: _vm.list_workers,
-                  headers: _vm.list_headers,
-                  "disable-initial-sort": "",
-                  pagination: _vm.pagination,
-                  "select-all": "",
-                  "item-key": "name"
-                },
-                on: {
-                  "update:pagination": function($event) {
-                    _vm.pagination = $event
-                  }
-                },
-                scopedSlots: _vm._u([
-                  {
-                    key: "items",
-                    fn: function(props) {
-                      return [
-                        _c(
-                          "td",
-                          [
-                            _c("v-checkbox", {
-                              attrs: { primary: "", "hide-details": "" },
-                              model: {
-                                value: props.selected,
-                                callback: function($$v) {
-                                  _vm.$set(props, "selected", $$v)
-                                },
-                                expression: "props.selected"
-                              }
-                            })
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(props.item.name))])
-                      ]
-                    }
-                  }
-                ]),
-                model: {
-                  value: _vm.workers_selected,
-                  callback: function($$v) {
-                    _vm.workers_selected = $$v
-                  },
-                  expression: "workers_selected"
-                }
-              })
-            ],
-            1
-          )
-        ],
-        1
-      )
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-
-          return {
-            render: render,
-            staticRenderFns: staticRenderFns,
-            _compiled: true,
-            _scopeId: null,
-            functional: undefined
-          };
-        })());
-      
-    /* hot reload */
-    (function () {
-      if (module.hot) {
-        var api = require('vue-hot-reload-api');
-        api.install(require('vue'));
-        if (api.compatible) {
-          module.hot.accept();
-          if (!module.hot.data) {
-            api.createRecord('$29f522', $29f522);
-          } else {
-            api.reload('$29f522', $29f522);
-          }
-        }
-
-        
-      }
-    })();
-},{"babel-runtime/helpers/extends":29,"vuex":10,"vue-hot-reload-api":25,"vue":3}],30:[function(require,module,exports) {
+},{"../core-js/promise":42}],34:[function(require,module,exports) {
 var define;
 "use strict";var _typeof="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(o){return typeof o}:function(o){return o&&"function"==typeof Symbol&&o.constructor===Symbol&&o!==Symbol.prototype?"symbol":typeof o};!function(){function o(e,t){if(!o.installed){if(o.installed=!0,!t)return void console.error("You have to install axios");e.axios=t,Object.defineProperties(e.prototype,{axios:{get:function(){return t}},$http:{get:function(){return t}}})}}"object"==("undefined"==typeof exports?"undefined":_typeof(exports))?module.exports=o:"function"==typeof define&&define.amd?define([],function(){return o}):window.Vue&&window.axios&&Vue.use(o,window.axios)}();
-},{}],32:[function(require,module,exports) {
+},{}],36:[function(require,module,exports) {
 var define;
 /**
  * Vue Cookies v1.5.4
@@ -59790,7 +60832,221 @@ var moduleMoney = exports.moduleMoney = {
 		}()
 	}
 };
-},{"babel-runtime/regenerator":60,"babel-runtime/helpers/asyncToGenerator":34,"axios":31}],23:[function(require,module,exports) {
+},{"babel-runtime/regenerator":64,"babel-runtime/helpers/asyncToGenerator":38,"axios":35}],22:[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.moduleQualifications = undefined;
+
+var _regenerator = require('babel-runtime/regenerator');
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
+
+var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
+
+var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
+
+var _axios = require('axios');
+
+var _axios2 = _interopRequireDefault(_axios);
+
+var _vue = require('vue');
+
+var _vue2 = _interopRequireDefault(_vue);
+
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _qualifications = require('../../classes/qualifications.js');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var moduleQualifications = exports.moduleQualifications = {
+	namespaced: true,
+	state: {
+		url_api_qualifications: undefined,
+		url_api_qualification: undefined,
+		object_policies: null
+	},
+	getters: {
+		list_policies: function list_policies(state) {
+			if (state.object_policies == null) {
+				return [];
+			}
+
+			return _lodash2.default.orderBy(state.object_policies, ['created_at'], ['desc']);
+		}
+	},
+	mutations: {
+		set_url_api_qualifications: function set_url_api_qualifications(state, url_new) {
+			state.url_api_qualifications = url_new;
+		},
+		set_url_api_qualification: function set_url_api_qualification(state, url_new) {
+			state.url_api_qualification = url_new;
+		},
+		set_qualificiations: function set_qualificiations(state, data_policies) {
+			state.object_policies = {};
+			_lodash2.default.forEach(data_policies, function (data_policy) {
+				var obj_policy = new _qualifications.Qualification(data_policy);
+				_vue2.default.set(state.object_policies, obj_policy.id_mturk, obj_policy);
+			});
+		},
+		add_qualification: function add_qualification(state, obj_policy) {
+			_vue2.default.set(state.object_policies, obj_policy.id, obj_policy);
+		},
+		delete_qualifications: function delete_qualifications(state, list_ids) {
+			_lodash2.default.forEach(list_ids, function (id) {
+				return _vue2.default.delete(state.object_policies, id);
+			});
+		}
+	},
+	actions: {
+		sync_qualifications: function () {
+			var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(_ref) {
+				var commit = _ref.commit,
+				    state = _ref.state;
+				var force = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+				return _regenerator2.default.wrap(function _callee$(_context) {
+					while (1) {
+						switch (_context.prev = _context.next) {
+							case 0:
+								if (!(state.object_policies == null || force)) {
+									_context.next = 3;
+									break;
+								}
+
+								_context.next = 3;
+								return _axios2.default.get(state.url_api_qualifications).then(function (response) {
+									commit('set_qualificiations', response.data);
+								});
+
+							case 3:
+							case 'end':
+								return _context.stop();
+						}
+					}
+				}, _callee, this);
+			}));
+
+			function sync_qualifications(_x2) {
+				return _ref2.apply(this, arguments);
+			}
+
+			return sync_qualifications;
+		}(),
+		add_qualification: function () {
+			var _ref4 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(_ref3, object_qualification) {
+				var commit = _ref3.commit,
+				    state = _ref3.state;
+				var token;
+				return _regenerator2.default.wrap(function _callee2$(_context2) {
+					while (1) {
+						switch (_context2.prev = _context2.next) {
+							case 0:
+								console.log(object_qualification.get_as_formdata());
+								token = document.cookie.match(new RegExp('csrftoken=([^;]+)'))[1];
+								_context2.next = 4;
+								return _axios2.default.post(state.url_api_qualifications, object_qualification.get_as_formdata(), {
+									headers: { "X-CSRFToken": token }
+								}).then(function (response) {
+									commit('add_qualification', new _qualifications.Qualification(response.data));
+								});
+
+							case 4:
+							case 'end':
+								return _context2.stop();
+						}
+					}
+				}, _callee2, this);
+			}));
+
+			function add_qualification(_x3, _x4) {
+				return _ref4.apply(this, arguments);
+			}
+
+			return add_qualification;
+		}(),
+		delete_qualifications: function () {
+			var _ref6 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3(_ref5, list_qualifications) {
+				var commit = _ref5.commit,
+				    state = _ref5.state;
+				var token, list_ids, string_parameter;
+				return _regenerator2.default.wrap(function _callee3$(_context3) {
+					while (1) {
+						switch (_context3.prev = _context3.next) {
+							case 0:
+								token = document.cookie.match(new RegExp('csrftoken=([^;]+)'))[1];
+								// const list_ids = list_qualifications.map(qualifiction => qualifiction.id_mturk)
+
+
+								// _.forEach(list_qualifications, qualification => form_data.append('id_mturk[]', qualification.id_mturk))
+
+								list_ids = list_qualifications.map(function (qualifiction) {
+									return qualifiction.id_mturk;
+								});
+								string_parameter = '?' + list_ids.map(function (id) {
+									return 'ids=' + id;
+								}).join('&');
+								_context3.next = 5;
+								return _axios2.default.delete(state.url_api_qualifications + string_parameter, {
+									headers: { "X-CSRFToken": token }
+								}).then(function (response) {
+									commit('delete_qualifications', list_ids);
+									// commit('add_qualification', new Qualification(response.data));
+								});
+
+							case 5:
+							case 'end':
+								return _context3.stop();
+						}
+					}
+				}, _callee3, this);
+			}));
+
+			function delete_qualifications(_x5, _x6) {
+				return _ref6.apply(this, arguments);
+			}
+
+			return delete_qualifications;
+		}(),
+		update_policy: function () {
+			var _ref8 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee4(_ref7, obj_policy) {
+				var commit = _ref7.commit,
+				    state = _ref7.state;
+				var token;
+				return _regenerator2.default.wrap(function _callee4$(_context4) {
+					while (1) {
+						switch (_context4.prev = _context4.next) {
+							case 0:
+								console.log(obj_policy.get_as_formdata());
+								token = document.cookie.match(new RegExp('csrftoken=([^;]+)'))[1];
+								_context4.next = 4;
+								return _axios2.default.put(state.url_api_qualifications, obj_policy.get_as_formdata(), {
+									headers: { "X-CSRFToken": token }
+								}).then(function (response) {
+									// commit('add_policy', new Qualification(response.data));
+								});
+
+							case 4:
+							case 'end':
+								return _context4.stop();
+						}
+					}
+				}, _callee4, this);
+			}));
+
+			function update_policy(_x7, _x8) {
+				return _ref8.apply(this, arguments);
+			}
+
+			return update_policy;
+		}()
+	}
+};
+},{"babel-runtime/regenerator":64,"babel-runtime/helpers/asyncToGenerator":38,"axios":35,"vue":3,"lodash":37,"../../classes/qualifications.js":26}],23:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -59941,7 +61197,7 @@ var Worker = exports.Worker = function () {
 	}]);
 	return Worker;
 }();
-},{"babel-runtime/helpers/classCallCheck":41,"babel-runtime/helpers/createClass":42,"babel-runtime/regenerator":60,"babel-runtime/helpers/asyncToGenerator":34,"axios":31,"vue":3,"lodash":33}],24:[function(require,module,exports) {
+},{"babel-runtime/helpers/classCallCheck":45,"babel-runtime/helpers/createClass":46,"babel-runtime/regenerator":64,"babel-runtime/helpers/asyncToGenerator":38,"axios":35,"vue":3,"lodash":37}],24:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -60110,7 +61366,7 @@ var moduleBatches = exports.moduleBatches = {
         }()
     }
 };
-},{"babel-runtime/regenerator":60,"babel-runtime/helpers/asyncToGenerator":34,"vuex":10,"vue":3,"axios":31,"vue-axios":30,"lodash":33,"vue-cookies":32}],4:[function(require,module,exports) {
+},{"babel-runtime/regenerator":64,"babel-runtime/helpers/asyncToGenerator":38,"vuex":10,"vue":3,"axios":35,"vue-axios":34,"lodash":37,"vue-cookies":36}],4:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -60152,7 +61408,7 @@ var _vueCookies2 = _interopRequireDefault(_vueCookies);
 
 var _money = require('./modules/money.js');
 
-var _policies = require('./modules/policies.js');
+var _qualifications = require('./modules/qualifications.js');
 
 var _workers = require('./modules/workers.js');
 
@@ -60169,7 +61425,7 @@ _vue2.default.use(_vueAxios2.default, _axios2.default);
 var store = exports.store = new _vuex2.default.Store({
     modules: {
         moduleMoney: _money.moduleMoney,
-        modulePolicies: _policies.modulePolicies,
+        moduleQualifications: _qualifications.moduleQualifications,
         moduleWorkers: _workers.moduleWorkers,
         moduleBatches: _batches.moduleBatches
     },
@@ -60222,11 +61478,12 @@ var store = exports.store = new _vuex2.default.Store({
 
                                 commit('moduleMoney/setUrlApiGetBalance', config.url_api_get_balance);
 
-                                commit('modulePolicies/set_url_api_policies', config.url_api_policies);
+                                commit('moduleQualifications/set_url_api_qualifications', config.url_api_qualifications);
+                                commit('moduleQualifications/set_url_api_qualification', config.url_api_qualification);
 
                                 commit('moduleWorkers/set_url_api_workers', config.url_api_workers);
 
-                            case 9:
+                            case 10:
                             case 'end':
                                 return _context.stop();
                         }
@@ -60290,19 +61547,19 @@ var store = exports.store = new _vuex2.default.Store({
         }()
     }
 });
-},{"babel-runtime/regenerator":60,"babel-runtime/helpers/asyncToGenerator":34,"vuex":10,"vue":3,"axios":31,"vue-axios":30,"lodash":33,"vue-cookies":32,"./modules/money.js":21,"./modules/policies.js":22,"./modules/workers.js":23,"./modules/batches.js":24}],11:[function(require,module,exports) {
+},{"babel-runtime/regenerator":64,"babel-runtime/helpers/asyncToGenerator":38,"vuex":10,"vue":3,"axios":35,"vue-axios":34,"lodash":37,"vue-cookies":36,"./modules/money.js":21,"./modules/qualifications.js":22,"./modules/workers.js":23,"./modules/batches.js":24}],11:[function(require,module,exports) {
 
         var reloadCSS = require('_css_loader');
         module.hot.dispose(reloadCSS);
         module.hot.accept(reloadCSS);
       
-},{"_css_loader":18}],12:[function(require,module,exports) {
+},{"_css_loader":17}],12:[function(require,module,exports) {
 
         var reloadCSS = require('_css_loader');
         module.hot.dispose(reloadCSS);
         module.hot.accept(reloadCSS);
       
-},{"./fonts/MaterialIcons-Regular.eot":[["MaterialIcons-Regular.77f82c01.eot",13],13],"./fonts/MaterialIcons-Regular.woff2":[["MaterialIcons-Regular.96b2842f.woff2",14],14],"./fonts/MaterialIcons-Regular.woff":[["MaterialIcons-Regular.7f6c51ef.woff",15],15],"./fonts/MaterialIcons-Regular.ttf":[["MaterialIcons-Regular.1eda5fde.ttf",16],16],"_css_loader":18}],1:[function(require,module,exports) {
+},{"./fonts/MaterialIcons-Regular.eot":[["MaterialIcons-Regular.77f82c01.eot",13],13],"./fonts/MaterialIcons-Regular.woff2":[["MaterialIcons-Regular.96b2842f.woff2",14],14],"./fonts/MaterialIcons-Regular.woff":[["MaterialIcons-Regular.7f6c51ef.woff",15],15],"./fonts/MaterialIcons-Regular.ttf":[["MaterialIcons-Regular.1eda5fde.ttf",16],16],"_css_loader":17}],1:[function(require,module,exports) {
 'use strict';
 
 var _vue = require('vue');
@@ -60329,9 +61586,9 @@ var _AppFinances = require('./components/finances/AppFinances.vue');
 
 var _AppFinances2 = _interopRequireDefault(_AppFinances);
 
-var _AppPolicies = require('./components/policies/AppPolicies.vue');
+var _AppQualifications = require('./components/qualifications/AppQualifications.vue');
 
-var _AppPolicies2 = _interopRequireDefault(_AppPolicies);
+var _AppQualifications2 = _interopRequireDefault(_AppQualifications);
 
 var _AppWorkers = require('./components/workers/AppWorkers.vue');
 
@@ -60354,9 +61611,9 @@ var routes = [{
 	name: 'Finances',
 	component: _AppFinances2.default
 }, {
-	path: '/policies',
-	name: 'Policies',
-	component: _AppPolicies2.default
+	path: '/qualifications',
+	name: 'Qualifications',
+	component: _AppQualifications2.default
 }, {
 	path: '/workers',
 	name: 'Workers',
@@ -60375,7 +61632,7 @@ new _vue2.default({
 		return h(_App2.default);
 	}
 });
-},{"vue":3,"vue-router":8,"vuetify":9,"vuex":10,"./App.vue":2,"./components/finances/AppFinances.vue":5,"./components/policies/AppPolicies.vue":7,"./components/workers/AppWorkers.vue":6,"./store/index.js":4,"vuetify/dist/vuetify.min.css":11,"material-design-icons-iconfont/dist/material-design-icons.css":12}],191:[function(require,module,exports) {
+},{"vue":3,"vue-router":8,"vuetify":9,"vuex":10,"./App.vue":2,"./components/finances/AppFinances.vue":5,"./components/qualifications/AppQualifications.vue":7,"./components/workers/AppWorkers.vue":6,"./store/index.js":4,"vuetify/dist/vuetify.min.css":11,"material-design-icons-iconfont/dist/material-design-icons.css":12}],176:[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 
@@ -60404,7 +61661,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = '' || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + '36673' + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '45991' + '/');
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
 
@@ -60545,5 +61802,5 @@ function hmrAccept(bundle, id) {
     return hmrAccept(global.parcelRequire, id);
   });
 }
-},{}]},{},[191,1], null)
+},{}]},{},[176,1], null)
 //# sourceMappingURL=/index.map

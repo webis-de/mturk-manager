@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.text import slugify
 
 class m_Account_Mturk(models.Model):
     name = models.CharField(max_length=200, unique=True)
@@ -14,6 +15,7 @@ class m_Account_Mturk(models.Model):
 class m_Project(models.Model):
     version = models.IntegerField()
     name = models.CharField(max_length=200, unique=True)
+    slug = models.SlugField(null=False, max_length=200, unique=True)
     fk_account_mturk = models.ForeignKey('m_Account_Mturk', on_delete=models.SET_NULL, null=True, related_name='projects')
     title = models.TextField(default='')
     description = models.TextField(default='')
@@ -34,6 +36,11 @@ class m_Project(models.Model):
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        print('created slug for project {}'.format(self.name))
+        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = 'Project'
@@ -150,3 +157,8 @@ class m_Message_Block(models.Model):
     
     def __str__(self):
         return self.message
+
+class Model_Qualification(models.Model):
+    id_mturk = models.CharField(max_length=200, unique=True)
+    name = models.CharField(max_length=200, unique=True)
+    description = models.TextField()

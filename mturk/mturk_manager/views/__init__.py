@@ -9,3 +9,9 @@ from .download import *
 from .migrations import *
 from .api import *
 from .money import *
+
+# from .workers import ViewSet_Workers
+# from .projects import ViewSet_Projects
+from .workers import Workers, Worker
+from .projects import Projects, Project
+from .qualifications import Qualifications, Qualification

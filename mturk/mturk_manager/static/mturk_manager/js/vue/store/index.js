@@ -11,14 +11,14 @@ Vue.use(VueCookies)
 Vue.use(VueAxios, axios)
 
 import { moduleMoney } from './modules/money.js';
-import { modulePolicies } from './modules/policies.js';
+import { moduleQualifications } from './modules/qualifications.js';
 import { moduleWorkers } from './modules/workers.js';
 import { moduleBatches } from './modules/batches.js';
 
 export const store = new Vuex.Store({
     modules: {
         moduleMoney,
-        modulePolicies,
+        moduleQualifications,
         moduleWorkers,
         moduleBatches,
     },
@@ -63,7 +63,8 @@ export const store = new Vuex.Store({
 
             commit('moduleMoney/setUrlApiGetBalance', config.url_api_get_balance);
             
-            commit('modulePolicies/set_url_api_policies', config.url_api_policies);
+            commit('moduleQualifications/set_url_api_qualifications', config.url_api_qualifications);
+            commit('moduleQualifications/set_url_api_qualification', config.url_api_qualification);
 
             commit('moduleWorkers/set_url_api_workers', config.url_api_workers);
         },

@@ -1,0 +1,2 @@
+from .qualifications import Manager_Qualifications
+from .projects import Manager_Projects

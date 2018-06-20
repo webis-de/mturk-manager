@@ -5,7 +5,7 @@ import Vuetify from 'vuetify';
 import Vuex from 'vuex';
 import App from './App.vue';
 import AppFinances from './components/finances/AppFinances.vue';
-import AppPolicies from './components/policies/AppPolicies.vue';
+import AppQualifications from './components/qualifications/AppQualifications.vue';
 import AppWorkers from './components/workers/AppWorkers.vue';
 import {store} from './store/index.js';
 
@@ -22,9 +22,9 @@ const routes = [
 		component: AppFinances,
 	},
 	{ 
-		path: '/policies', 
-		name: 'Policies',
-		component: AppPolicies,
+		path: '/qualifications', 
+		name: 'Qualifications',
+		component: AppQualifications,
 	},
 	{ 
 		path: '/workers', 
