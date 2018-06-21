@@ -43,17 +43,23 @@
         </v-flex>
     </v-layout>
 
-    <component-add-qualification
-    ></component-add-qualification>
+    <v-layout wrap>
+        <component-add-qualification
+        ></component-add-qualification>
 
-    <component-delete-qualification
-        v-bind:qualifications_selected="policies_selected"
-    ></component-delete-qualification>
+        <component-delete-qualification
+            v-bind:qualifications_selected="policies_selected"
+        ></component-delete-qualification>
 
-    <component-update-qualification
-        v-bind:qualification_to_be_edited="qualification_to_be_edited"
-        v-on:finished="qualification_to_be_edited = undefined"
-    ></component-update-qualification>
+        <component-update-qualification
+            v-bind:qualification_to_be_edited="qualification_to_be_edited"
+            v-on:finished="qualification_to_be_edited = undefined"
+        ></component-update-qualification>
+
+        <component-download-qualifications
+            v-bind:qualifications_selected="policies_selected"
+        ></component-download-qualifications>
+    </v-layout>
 </div>
 </template>
 
@@ -64,6 +70,7 @@
     import ComponentAddQualification from './component-add-qualification.vue';
     import ComponentDeleteQualification from './component-delete-qualification.vue';
     import ComponentUpdateQualification from './component-update-qualification.vue';
+    import ComponentDownloadQualifications from './component-download-qualifications.vue';
     // import ComponentShowMoneySpent from './component-show-money-spent.vue';
     // import ComponentShowBatches from './component-show-batches.vue';
 export default {
@@ -131,6 +138,7 @@ export default {
         ComponentAddQualification,
         ComponentDeleteQualification,
         ComponentUpdateQualification,
+        ComponentDownloadQualifications,
      // ComponentShowMoneySpent,
      // ComponentShowBatches,
     },

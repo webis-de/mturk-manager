@@ -1,8 +1,7 @@
 <template>
-
     <v-dialog v-bind:disabled="is_disabled" v-model="show_dialog" max-width="800px" persistent>
-            <v-btn slot="activator" v-bind:disabled="is_disabled" v-on:click="policy_to_be_edited = null" color="error" dark class="mb-2">
-                <v-icon>delete</v-icon>{{ title_button }}
+            <v-btn slot="activator" v-bind:disabled="is_disabled" color="error" class="mb-2">
+                <v-icon left>delete</v-icon>{{ title_button }}
             </v-btn>
 
             <v-card>

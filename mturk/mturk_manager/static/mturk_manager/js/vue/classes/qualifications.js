@@ -26,6 +26,14 @@ export class Qualification {
 		return this.description_database == undefined ? this.description_mturk: this.description_database;
 	}
 
+	get_json() {
+		return JSON.stringify({
+			id_mturk: this.id_mturk,
+			name: this.name_database,
+			description: this.description_database,
+		});
+	}
+
 	get_as_formdata(only_updateable_fields=false) {
 		const form_data = new FormData();
 
