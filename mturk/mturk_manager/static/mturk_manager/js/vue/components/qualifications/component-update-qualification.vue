@@ -26,7 +26,7 @@
                             </v-layout>
                             <v-layout wrap align-center>
                                 <v-flex xs12>
-                                    <v-text-field v-model="object_qualification.keywords" label="Keywords"></v-text-field>
+                                    <v-text-field disabled v-model="object_qualification.keywords" label="Keywords"></v-text-field>
                                 </v-flex>
                             </v-layout>
                             <v-layout wrap >
@@ -37,7 +37,7 @@
                             <template v-if="add_custom_mturk">
                                 <v-layout row align-center wrap>
                                     <v-flex xs12>
-                                        <v-text-field v-model="object_qualification.name_mturk" label="Name displayed in MTurk"></v-text-field>
+                                        <v-text-field disabled v-model="object_qualification.name_mturk" label="Name displayed in MTurk"></v-text-field>
                                     </v-flex>
                                 </v-layout>
                                 <v-layout wrap align-center>

@@ -1,4 +1,5 @@
 from mturk_manager.models import m_Project
+from urllib.parse import parse_qs
 
 def add_database_object_project(some_function):
 
@@ -10,7 +11,19 @@ def add_database_object_project(some_function):
         else:
             database_object_project = m_Project.objects.get(slug=slug_project)
 
-        kwargs['database_object_project'] = database_object_project   
+        kwargs['database_object_project'] = database_object_project 
+        # print(args)
+        # print(args)
+        # print(kwargs)
+        # print(parse_qs(args[1].META))
+        # print(parse_qs(args[1].META))
+        # print(parse_qs(args[1].META))
+        try:
+            use_sandbox = False if parse_qs(args[1].META['QUERY_STRING'])['use_sandbox'][0] == 'false' else True
+        except KeyError:
+            use_sandbox = True
+
+        kwargs['use_sandbox'] = use_sandbox 
 
         return some_function(*args, **kwargs)
 

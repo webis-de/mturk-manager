@@ -27,7 +27,7 @@ export const store = new Vuex.Store({
         token_csrf: undefined,
         show_with_fee: true,
         show_progress_indicator: 0,
-        use_sandbox: false,
+        use_sandbox: true,
         url_project: undefined,
     },
     getters: {
@@ -81,6 +81,9 @@ export const store = new Vuex.Store({
         },
         async set_show_progress_indicator({commit, state}, show) {
             commit('set_show_progress_indicator', show);
+        },
+        async set_use_sandbox({commit, state}, use_sandbox) {
+            commit('set_use_sandbox', use_sandbox);
         },
     }
 })

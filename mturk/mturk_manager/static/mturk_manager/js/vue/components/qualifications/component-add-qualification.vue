@@ -11,7 +11,12 @@
                             <v-form v-model="is_form_valid">
                                 <v-layout row align-center wrap>
                                     <v-flex xs12 md10>
-                                        <v-text-field v-model="object_qualification.name_database" label="Name"></v-text-field>
+                                        <v-text-field 
+                                            v-model="object_qualification.name_database" 
+                                            label="Name"
+                                            hint="Will not be shown to the workers!"
+                                            persistent-hint
+                                        ></v-text-field>
                                     </v-flex>
                                    <!--  <v-flex xs12 md2>
                                         <v-switch v-bind:label="object_qualification.is_active ? 'Active' : 'Inactive'" v-model="object_qualification.is_active"></v-switch>
@@ -19,12 +24,22 @@
                                 </v-layout>
                                 <v-layout wrap align-center>
                                     <v-flex xs12>
-                                        <v-text-field v-model="object_qualification.description_database" label="Description"></v-text-field>
+                                        <v-text-field 
+                                            v-model="object_qualification.description_database" 
+                                            label="Description"
+                                            hint="Will not be shown to the workers!"
+                                            persistent-hint
+                                        ></v-text-field>
                                     </v-flex>
                                 </v-layout>
                                 <v-layout wrap align-center>
                                     <v-flex xs12>
-                                        <v-text-field v-model="object_qualification.keywords" label="Keywords"></v-text-field>
+                                        <v-text-field 
+                                        v-model="object_qualification.keywords" 
+                                        label="Keywords"
+                                        hint="Separated by a comma."
+                                        persistent-hint
+                                    ></v-text-field>
                                     </v-flex>
                                 </v-layout>
                                 <v-layout wrap >
@@ -35,12 +50,22 @@
                                 <template v-if="add_custom_mturk">
                                     <v-layout row align-center wrap>
                                         <v-flex xs12>
-                                            <v-text-field v-model="object_qualification.name_mturk" label="Name displayed in MTurk"></v-text-field>
+                                            <v-text-field 
+                                                v-model="object_qualification.name_mturk" 
+                                                label="Name displayed in MTurk"
+                                                hint="Will be a random token by default."
+                                                persistent-hint
+                                            ></v-text-field>
                                         </v-flex>
                                     </v-layout>
                                     <v-layout wrap align-center>
                                         <v-flex xs12>
-                                            <v-text-field v-model="object_qualification.description_mturk" label="Description displayed in MTurk"></v-text-field>
+                                            <v-text-field 
+                                                v-model="object_qualification.description_mturk" 
+                                                label="Description displayed in MTurk"
+                                                hint="Will be a random token by default."
+                                                persistent-hint
+                                            ></v-text-field>
                                         </v-flex>
                                     </v-layout>
                                 </template>

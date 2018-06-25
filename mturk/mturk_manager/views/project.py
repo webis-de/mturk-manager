@@ -90,7 +90,7 @@ def project(request, name):
     # client = code_shared.get_client(db_obj_project, use_sandbox=False)
     # # print(client.get_account_balance())
     # # print(m_Hit.objects.get(id_hit='38G0E1M85M5A2C3Y7I2KXVHNW0WUV7').fk_batch.name)
-    print(client.get_hit(HITId='3ZFRE2BDQ9EJS023DK2A28TNG8KXZZ')['HIT']['HITStatus'])
+    # print(client.get_hit(HITId='3ZFRE2BDQ9EJS023DK2A28TNG8KXZZ')['HIT']['HITStatus'])
     # obj_db_worker = m_Worker.objects.get(name='A3QRYD01WEPHCS')
     # for assignment in obj_db_worker.assignments.all():
     #     response = client.approve_assignment(

@@ -17,10 +17,25 @@
         app 
         fixed 
         clipped-left
+        v-bind:style="object_styles_toolbar"
     >
         <v-toolbar-side-icon @click.stop="show_drawer = !show_drawer"></v-toolbar-side-icon>
         <v-toolbar-title>"{{ name_project }}" - {{name_route_current}}</v-toolbar-title>
         <v-spacer></v-spacer>
+
+        <v-tooltip bottom>
+            <v-switch 
+                hide-details 
+                slot="activator" 
+                v-bind:label="use_sandbox ? 'Use Sandbox' : 'Use Sandbox'" 
+                v-bind:input-value="use_sandbox" 
+                v-on:click.native="toggle_use_sandbox"
+            ></v-switch>
+            <span>You are currently <b v-if="!use_sandbox">not</b> using the Sandbox</span>
+        </v-tooltip>
+
+        <!-- <v-spacer></v-spacer> -->
+
         <component 
             v-bind:is="currentTabComponent"
             v-bind:show_progress_indicator="show_progress_indicator"
@@ -88,6 +103,13 @@ export default {
         }
     },
     computed: {
+        object_styles_toolbar: function() {
+            if(this.use_sandbox) {
+                return {'background-color': '#dd6e00'};
+            } else {
+                return {};
+            }
+        },
         currentTabComponent: function() {
             switch(this.$route.name) 
             {
@@ -114,9 +136,12 @@ export default {
                 this.set_show_with_fee(value);
             }
         },
-        ...mapState(['name_project', 'show_with_fee']),
+        ...mapState(['name_project', 'show_with_fee', 'use_sandbox']),
     },
     methods: {
+        toggle_use_sandbox: function() {
+            this.set_use_sandbox(!this.use_sandbox);
+        },
         // refresh_data: function() {
         //     this.is_refreshing = true;
         //     this.sync_database(true).then((result) => {
@@ -124,7 +149,7 @@ export default {
         //         this.show_snackbar = true;
         //     });
         // },
-        ...mapActions(['init', 'set_show_with_fee', 'set_show_progress_indicator']),
+        ...mapActions(['init', 'set_show_with_fee', 'set_show_progress_indicator', 'set_use_sandbox']),
         ...mapGetters(['get_show_progress_indicator']),
         // load_config: function() {
         //     const configElement = document.getElementById( 'config' );

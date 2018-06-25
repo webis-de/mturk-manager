@@ -104,6 +104,16 @@ export default {
             qualification_to_be_edited: undefined,
         }
     },
+    watch: {
+        list_policies: function() {
+            this.set_show_progress_indicator(true);
+
+            this.sync_qualifications().then(() => {
+                this.set_show_progress_indicator(false);
+            });
+            console.log("dwadaw");
+        },
+    },
     computed: {
         ...mapGetters('moduleQualifications', {
             'list_policies': 'list_policies',

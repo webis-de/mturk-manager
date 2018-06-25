@@ -52,8 +52,11 @@ class Serializer_Qualification(serializers.Serializer):
         print(validated_data)
         print('validated_data')
 
-        dictionary_qualification = Manager_Qualifications.create(validated_data.get('database_object_project'), validated_data)
-
+        dictionary_qualification = Manager_Qualifications.create(
+            database_object_project=validated_data.get('database_object_project'), 
+            use_sandbox=validated_data.get('use_sandbox'), 
+            validated_data=validated_data
+        )
 
         return dictionary_qualification
 
@@ -61,7 +64,13 @@ class Serializer_Qualification(serializers.Serializer):
         print('validated_data')
         print(validated_data)
         print('validated_data')
-        dictionary_qualification = Manager_Qualifications.update(validated_data.get('database_object_project'), validated_data.get('id_mturk'), validated_data)
+        dictionary_qualification = Manager_Qualifications.update(
+            database_object_project=validated_data.get('database_object_project'), 
+            use_sandbox=validated_data.get('use_sandbox'), 
+            id_mturk=validated_data.get('id_mturk'), 
+            validated_data=validated_data
+        )
+        
         return dictionary_qualification
 
     # def get_is_active(self, obj):

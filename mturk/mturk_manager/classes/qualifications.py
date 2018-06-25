@@ -63,7 +63,8 @@ class Manager_Qualifications(object):
             Name=name_mturk,
             Keywords=validated_data.get('Keywords', ''),
             Description=description_mturk,
-            QualificationTypeStatus=validated_data.get('QualificationTypeStatus', 'Inactive'),
+            QualificationTypeStatus='Active',
+            # QualificationTypeStatus=validated_data.get('QualificationTypeStatus', 'Inactive'),
             # QualificationTypeStatus='Active' if validated_data.get('is_active') else 'Inactive',
             # Name=validated_data.get('name_database'),
         )['QualificationType']
