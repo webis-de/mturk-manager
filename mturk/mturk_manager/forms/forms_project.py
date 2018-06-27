@@ -31,6 +31,10 @@ class Form_Update_Project(forms.ModelForm):
     ], label='Block workers', widget=Bootstrap_Select(small=True))
     fk_message_block_default = forms.ModelChoiceField(required=False, queryset=None, label='Block message', empty_label='Please select a block message', widget=Bootstrap_Select(small=True))
 
+    qualification_assignments_approved = forms.IntegerField(required=False, widget=Bootstrap_NumberInput())
+    qualification_locale = forms.CharField(required=False, widget=Bootstrap_TextInput())
+
+
     class Meta:
         model = m_Project
         fields = [
@@ -43,6 +47,8 @@ class Form_Update_Project(forms.ModelForm):
             'keywords',
             'use_sandbox',
             'has_content_adult',
+            'qualification_assignments_approved',
+            'qualification_locale',
             'fk_template_main',
             'fk_template_assignment_main',
             'fk_template_hit_main',

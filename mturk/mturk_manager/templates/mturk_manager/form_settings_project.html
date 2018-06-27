@@ -100,6 +100,29 @@
 	</div>
 </div>
 <div class="form-row form-group">
+	<div class="col-auto">
+		<div class="input-group input-group-sm">
+			<div class="input-group-prepend">
+				<label for="{{ form.qualification_assignments_approved.id_for_label }}" class="input-group-text">{{ form.qualification_assignments_approved.label }}</label>
+			</div>
+			{{ form.qualification_assignments_approved }}
+			<div class="input-group-append">
+				<span class="input-group-text">%</span>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="form-row form-group">
+	<div class="col-auto">
+		<div class="input-group input-group-sm">
+			<div class="input-group-prepend">
+				<label for="{{ form.qualification_locale.id_for_label }}" class="input-group-text">{{ form.qualification_locale.label }}</label>
+			</div>
+			{{ form.qualification_locale }}
+		</div>
+	</div>
+</div>
+<div class="form-row form-group">
 	<div class="col input-group input-group-sm">
 		<div class="input-group-prepend">
 			<label for="{{ form.fk_template_main.id_for_label }}" class="input-group-text">{{ form.fk_template_main.label }}</label>

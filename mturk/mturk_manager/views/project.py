@@ -1079,7 +1079,7 @@ def add_template(db_obj_project, request):
 def preprocess_template_inject(request, db_obj_project, html_template):
     queryset = m_Worker.objects.filter(fk_project=db_obj_project, is_blocked=True)
     list_workers = [hashlib.md5(worker.name.encode()).hexdigest() for worker in queryset]
-    print(list_workers)
+    # print(list_workers)
     if len(list_workers) == 0:
         return html_template
 
@@ -1147,6 +1147,24 @@ def create_batch(db_obj_project, form, request):
 
     title = form.cleaned_data['title']
 
+    if form.cleaned_data['qualification_locale']:
+        list_requirements.append({
+            'QualificationTypeId': '00000000000000000071',
+            'Comparator': 'In',
+            'LocaleValues': [{'Country': locale.strip().upper()} for locale in form.cleaned_data['qualification_locale'].split(',')],
+            'RequiredToPreview': True
+            # 'ActionsGuarded': 'PreviewAndAccept'
+        })
+    if form.cleaned_data['qualification_assignments_approved']:
+        list_requirements.append({
+            'QualificationTypeId': '000000000000000000L0',
+            'Comparator': 'GreaterThanOrEqualTo',
+            'IntegerValues': [
+                form.cleaned_data['qualification_assignments_approved'],
+            ],
+            'RequiredToPreview': True
+            # 'ActionsGuarded': 'PreviewAndAccept'
+        })
     if form.cleaned_data['has_content_adult']:
         list_requirements.append({
             'QualificationTypeId': '00000000000000000060',
@@ -1160,7 +1178,7 @@ def create_batch(db_obj_project, form, request):
 
         title = 'Contains adult content! {}'.format(title)
 
-    # print(1)
+    print(list_requirements)
     # return
 
     db_obj_batch = code_shared.glob_create_batch(db_obj_project, data=form.cleaned_data)

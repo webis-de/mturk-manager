@@ -26,6 +26,10 @@ class m_Project(models.Model):
     duration = models.IntegerField(default=3600)
     use_sandbox = models.BooleanField(default=True)
     has_content_adult = models.BooleanField(default=False)
+
+    qualification_assignments_approved = models.IntegerField(null=True)
+    qualification_locale = models.TextField(null=True)
+    
     block_workers = models.CharField(default='disabled', max_length=20)
     fk_template_main = models.OneToOneField('m_Template', on_delete=models.SET_NULL, null=True, related_name='project')
     fk_template_assignment_main = models.OneToOneField('m_Template_Assignment', on_delete=models.SET_NULL, null=True, related_name='project')
