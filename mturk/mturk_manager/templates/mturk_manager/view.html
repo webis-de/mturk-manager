@@ -199,7 +199,7 @@
 		<div class="row" id="wrapper_hits">
 		{% for hit in queryset_hits %}
 			<script>
-				question = JSON.parse('{{hit.parameters|safe}}');
+				question = JSON.parse(`{{hit.parameters|escapejs}}`);
 				
 				hit_wrapper = $(decode(`{{ hit.fk_batch.fk_template.fk_template_hit.template }}`));
 				$('#wrapper_hits').append(hit_wrapper)
@@ -212,7 +212,7 @@
 				answer = {{ assignment.answer_normalized|safe }};
 				id_hit = "{{ hit.id_hit }}";
 				id_assignment = "{{ assignment.id_assignment }}";
-				info_worker = JSON.parse('{{ assignment.info_worker|safe }}');
+				info_worker = JSON.parse('{{ assignment.info_worker|escapejs }}');
 				id_worker = "{{ assignment.fk_worker.name }}";
 
 				assignment_wrapper = $(decode(`{{ hit.fk_batch.fk_template.fk_template_assignment.template|escapejs }}`));
