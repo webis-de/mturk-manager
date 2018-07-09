@@ -32,6 +32,7 @@ class Form_Update_Project(forms.ModelForm):
     fk_message_block_default = forms.ModelChoiceField(required=False, queryset=None, label='Block message', empty_label='Please select a block message', widget=Bootstrap_Select(small=True))
 
     qualification_assignments_approved = forms.IntegerField(required=False, widget=Bootstrap_NumberInput())
+    qualification_hits_approved = forms.IntegerField(required=False, widget=Bootstrap_NumberInput())
     qualification_locale = forms.CharField(required=False, widget=Bootstrap_TextInput())
 
 
@@ -48,6 +49,7 @@ class Form_Update_Project(forms.ModelForm):
             'use_sandbox',
             'has_content_adult',
             'qualification_assignments_approved',
+            'qualification_hits_approved',
             'qualification_locale',
             'fk_template_main',
             'fk_template_assignment_main',

@@ -28,6 +28,7 @@ class m_Project(models.Model):
     has_content_adult = models.BooleanField(default=False)
 
     qualification_assignments_approved = models.IntegerField(null=True)
+    qualification_hits_approved = models.IntegerField(null=True)
     qualification_locale = models.TextField(null=True)
     
     block_workers = models.CharField(default='disabled', max_length=20)

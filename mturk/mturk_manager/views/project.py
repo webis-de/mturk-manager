@@ -1165,6 +1165,16 @@ def create_batch(db_obj_project, form, request):
             'RequiredToPreview': True
             # 'ActionsGuarded': 'PreviewAndAccept'
         })
+    if form.cleaned_data['qualification_hits_approved']:
+        list_requirements.append({
+            'QualificationTypeId': '00000000000000000040',
+            'Comparator': 'GreaterThanOrEqualTo',
+            'IntegerValues': [
+                form.cleaned_data['qualification_hits_approved'],
+            ],
+            'RequiredToPreview': True
+            # 'ActionsGuarded': 'PreviewAndAccept'
+        })
     if form.cleaned_data['has_content_adult']:
         list_requirements.append({
             'QualificationTypeId': '00000000000000000060',

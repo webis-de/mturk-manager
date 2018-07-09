@@ -116,6 +116,16 @@
 	<div class="col-auto">
 		<div class="input-group input-group-sm">
 			<div class="input-group-prepend">
+				<label for="{{ form.qualification_hits_approved.id_for_label }}" class="input-group-text">{{ form.qualification_hits_approved.label }}</label>
+			</div>
+			{{ form.qualification_hits_approved }}
+		</div>
+	</div>
+</div>
+<div class="form-row form-group">
+	<div class="col-auto">
+		<div class="input-group input-group-sm">
+			<div class="input-group-prepend">
 				<label for="{{ form.qualification_locale.id_for_label }}" class="input-group-text">{{ form.qualification_locale.label }}</label>
 			</div>
 			{{ form.qualification_locale }}
