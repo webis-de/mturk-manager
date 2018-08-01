@@ -1,6 +1,5 @@
 from mturk_manager.models import Model_Qualification
 from mturk_manager.classes.projects import Manager_Projects
-from secrets import token_urlsafe
 import uuid
 
 class Manager_Qualifications(object):
