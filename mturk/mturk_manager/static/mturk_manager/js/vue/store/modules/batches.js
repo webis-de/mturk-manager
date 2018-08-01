@@ -13,12 +13,22 @@ Vue.use(VueAxios, axios)
 export const moduleBatches= {
 	namespaced: true,
 	state: {
-		object_batches: null,
+        object_batches: null,
+		object_batches_sandbox: null,
         url_api_assignments_real_approved: undefined,
 	},
     getters: {
-        list_batches: state => {
-            return _.orderBy(state.object_batches, ['datetime_creation'], ['desc']);
+        get_object_batches: (state, getters, rootState) => {
+            return rootState.use_sandbox ? state.object_batches_sandbox : state.object_batches;
+        },
+        list_batches: (state, getters) => {
+            if(getters.get_object_batches == null)
+            {
+                return [];
+                // return {};
+            }
+
+            return _.orderBy(getters.get_object_batches, ['datetime_creation'], ['desc']);
         },
         list_hits_for_csv: state => {
             const list_hits = [];
@@ -35,7 +45,64 @@ export const moduleBatches= {
         },
     },
 	mutations: {
-	 	setBatchesAndHits(state, {list_hits, dict_batches}) {
+        setBatchesAndHits_sandbox(state, {list_hits, dict_batches}) {
+            // set batches
+            state.object_batches_sandbox = {};
+            _.forIn(dict_batches, function(batch, id_batch) {
+                state.object_batches_sandbox[id_batch] = batch;
+                state.object_batches_sandbox[id_batch]['hits'] = [];
+
+            });
+
+            // set hits
+            _.forEach(list_hits, function(hit){
+                // console.log(Date.parse(hit.datetime_creation));
+                hit.datetime_creation = new Date(hit.datetime_creation);
+
+                state.object_batches_sandbox[hit.id_batch].hits.push(hit);
+            });
+
+
+            _.forIn(state.object_batches_sandbox, function(batch, id_batch) {
+                // datetime of last hit is created time of batch
+                batch.datetime_creation = batch.hits[0].datetime_creation;
+
+                batch.count_assignments_approved = _.sumBy(
+                    batch.hits, 'count_assignments_approved'
+                );
+                batch.count_assignments_rejected = _.sumBy(
+                    batch.hits, 'count_assignments_rejected'
+                );
+
+                batch.count_assignments_total =  batch.hits.length * batch.count_assignments_per_hit;
+
+                batch.money_spent_without_fee = batch.count_assignments_approved * batch.reward;
+                if(batch.count_assignments_per_hit < 10) {
+                    batch.money_spent_with_fee = batch.money_spent_without_fee * 1.2;
+                } else {
+                    batch.money_spent_with_fee = batch.money_spent_without_fee * 1.4;
+                }
+
+                batch.money_spent_max_without_fee = batch.count_assignments_total * batch.reward;
+                if(batch.count_assignments_per_hit < 10) {
+                    batch.money_spent_max_with_fee = batch.money_spent_max_without_fee * 1.2;
+                } else {
+                    batch.money_spent_max_with_fee = batch.money_spent_max_without_fee * 1.4;
+                }
+
+                batch.money_not_spent_without_fee = batch.count_assignments_rejected * batch.reward;
+                if(batch.count_assignments_per_hit < 10) {
+                    batch.money_not_spent_with_fee = batch.money_not_spent_without_fee * 1.2;
+                } else {
+                    batch.money_not_spent_with_fee = batch.money_not_spent_without_fee * 1.4;
+                }
+            });
+
+            console.log(state.object_batches_sandbox)
+
+            state.object_batches_sandbox = dict_batches;
+        },
+        setBatchesAndHits(state, {list_hits, dict_batches}) {
             // set batches
             state.object_batches = {};
             _.forIn(dict_batches, function(batch, id_batch) {
@@ -103,11 +170,15 @@ export const moduleBatches= {
         },
 	},
 	actions: {
-        async sync_database({commit, state}, force=false) {
-            if(state.object_batches == null || force) {
-                await axios.get(state.url_api_assignments_real_approved)
+        async sync_database({commit, state, getters, rootState, rootGetters}, force=false) {
+            if(getters.get_object_batches == null || force) {
+                await axios.get(rootGetters.get_url_api(state.url_api_assignments_real_approved))
                 .then(response => {
-                    commit('setBatchesAndHits', response.data);
+                    if(rootState.use_sandbox) {
+                        commit('setBatchesAndHits_sandbox', response.data);
+                    } else {
+                        commit('setBatchesAndHits', response.data);
+                    }
                 })
             }
         },

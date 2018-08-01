@@ -1,6 +1,5 @@
 from mturk_manager.models import m_Worker
 from mturk_manager.classes.projects import Manager_Projects
-from secrets import token_urlsafe
 from mturk_manager.enums import STATUS_BLOCK
 from django.db.models import F, Value, Count, Q, Sum, IntegerField, ExpressionWrapper
 

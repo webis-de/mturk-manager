@@ -73,13 +73,18 @@ def api_assignments_real_approved(request, name):
     dict_result['count_assignments'] = len(list_assignments)
     return JsonResponse(dict_result)
 
-def api_assignments_real_approved_tmp(request, name):
+def api_assignments_real_approved_tmp(request, slug_project):
+    try:
+        use_sandbox = False if urllib.parse.parse_qs(request.META['QUERY_STRING'])['use_sandbox'][0] == 'false' else True
+    except KeyError:
+        use_sandbox = True
+    
     dict_batches = {}
     list_hits = []
 
     queryset = m_Hit.objects.filter(
-        fk_batch__fk_project__name=name,
-        fk_batch__use_sandbox=True,
+        fk_batch__fk_project__slug=slug_project,
+        fk_batch__use_sandbox=use_sandbox,
         # fk_batch__use_sandbox=False,
     ).select_related(
         'fk_batch'

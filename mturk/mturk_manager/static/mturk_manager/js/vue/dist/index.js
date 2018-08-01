@@ -68220,11 +68220,20 @@ var moduleBatches = exports.moduleBatches = {
     namespaced: true,
     state: {
         object_batches: null,
+        object_batches_sandbox: null,
         url_api_assignments_real_approved: undefined
     },
     getters: {
-        list_batches: function list_batches(state) {
-            return _lodash2.default.orderBy(state.object_batches, ['datetime_creation'], ['desc']);
+        get_object_batches: function get_object_batches(state, getters, rootState) {
+            return rootState.use_sandbox ? state.object_batches_sandbox : state.object_batches;
+        },
+        list_batches: function list_batches(state, getters) {
+            if (getters.get_object_batches == null) {
+                return [];
+                // return {};
+            }
+
+            return _lodash2.default.orderBy(getters.get_object_batches, ['datetime_creation'], ['desc']);
         },
         list_hits_for_csv: function list_hits_for_csv(state) {
             var list_hits = [];
@@ -68237,9 +68246,63 @@ var moduleBatches = exports.moduleBatches = {
         }
     },
     mutations: {
-        setBatchesAndHits: function setBatchesAndHits(state, _ref) {
+        setBatchesAndHits_sandbox: function setBatchesAndHits_sandbox(state, _ref) {
             var list_hits = _ref.list_hits,
                 dict_batches = _ref.dict_batches;
+
+            // set batches
+            state.object_batches_sandbox = {};
+            _lodash2.default.forIn(dict_batches, function (batch, id_batch) {
+                state.object_batches_sandbox[id_batch] = batch;
+                state.object_batches_sandbox[id_batch]['hits'] = [];
+            });
+
+            // set hits
+            _lodash2.default.forEach(list_hits, function (hit) {
+                // console.log(Date.parse(hit.datetime_creation));
+                hit.datetime_creation = new Date(hit.datetime_creation);
+
+                state.object_batches_sandbox[hit.id_batch].hits.push(hit);
+            });
+
+            _lodash2.default.forIn(state.object_batches_sandbox, function (batch, id_batch) {
+                // datetime of last hit is created time of batch
+                batch.datetime_creation = batch.hits[0].datetime_creation;
+
+                batch.count_assignments_approved = _lodash2.default.sumBy(batch.hits, 'count_assignments_approved');
+                batch.count_assignments_rejected = _lodash2.default.sumBy(batch.hits, 'count_assignments_rejected');
+
+                batch.count_assignments_total = batch.hits.length * batch.count_assignments_per_hit;
+
+                batch.money_spent_without_fee = batch.count_assignments_approved * batch.reward;
+                if (batch.count_assignments_per_hit < 10) {
+                    batch.money_spent_with_fee = batch.money_spent_without_fee * 1.2;
+                } else {
+                    batch.money_spent_with_fee = batch.money_spent_without_fee * 1.4;
+                }
+
+                batch.money_spent_max_without_fee = batch.count_assignments_total * batch.reward;
+                if (batch.count_assignments_per_hit < 10) {
+                    batch.money_spent_max_with_fee = batch.money_spent_max_without_fee * 1.2;
+                } else {
+                    batch.money_spent_max_with_fee = batch.money_spent_max_without_fee * 1.4;
+                }
+
+                batch.money_not_spent_without_fee = batch.count_assignments_rejected * batch.reward;
+                if (batch.count_assignments_per_hit < 10) {
+                    batch.money_not_spent_with_fee = batch.money_not_spent_without_fee * 1.2;
+                } else {
+                    batch.money_not_spent_with_fee = batch.money_not_spent_without_fee * 1.4;
+                }
+            });
+
+            console.log(state.object_batches_sandbox);
+
+            state.object_batches_sandbox = dict_batches;
+        },
+        setBatchesAndHits: function setBatchesAndHits(state, _ref2) {
+            var list_hits = _ref2.list_hits,
+                dict_batches = _ref2.dict_batches;
 
             // set batches
             state.object_batches = {};
@@ -68303,22 +68366,29 @@ var moduleBatches = exports.moduleBatches = {
     },
     actions: {
         sync_database: function () {
-            var _ref3 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(_ref2) {
-                var commit = _ref2.commit,
-                    state = _ref2.state;
+            var _ref4 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(_ref3) {
+                var commit = _ref3.commit,
+                    state = _ref3.state,
+                    getters = _ref3.getters,
+                    rootState = _ref3.rootState,
+                    rootGetters = _ref3.rootGetters;
                 var force = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
                 return _regenerator2.default.wrap(function _callee$(_context) {
                     while (1) {
                         switch (_context.prev = _context.next) {
                             case 0:
-                                if (!(state.object_batches == null || force)) {
+                                if (!(getters.get_object_batches == null || force)) {
                                     _context.next = 3;
                                     break;
                                 }
 
                                 _context.next = 3;
-                                return _axios2.default.get(state.url_api_assignments_real_approved).then(function (response) {
-                                    commit('setBatchesAndHits', response.data);
+                                return _axios2.default.get(rootGetters.get_url_api(state.url_api_assignments_real_approved)).then(function (response) {
+                                    if (rootState.use_sandbox) {
+                                        commit('setBatchesAndHits_sandbox', response.data);
+                                    } else {
+                                        commit('setBatchesAndHits', response.data);
+                                    }
                                 });
 
                             case 3:
@@ -68330,7 +68400,7 @@ var moduleBatches = exports.moduleBatches = {
             }));
 
             function sync_database(_x2) {
-                return _ref3.apply(this, arguments);
+                return _ref4.apply(this, arguments);
             }
 
             return sync_database;

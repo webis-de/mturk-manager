@@ -1,6 +1,7 @@
 from mturk_manager.models import Model_Qualification
 from mturk_manager.classes.projects import Manager_Projects
 from secrets import token_urlsafe
+import uuid
 
 class Manager_Qualifications(object):
     def __init__(self, arg):
@@ -53,10 +54,10 @@ class Manager_Qualifications(object):
 
         name_mturk = validated_data.get('Name')
         if name_mturk == None:
-            name_mturk = token_urlsafe()
+            name_mturk = uuid.uuid4().hex
         description_mturk = validated_data.get('Description')
         if description_mturk == None:
-            description_mturk = token_urlsafe()
+            description_mturk = uuid.uuid4().hex
 
         print(validated_data)
         response = client.create_qualification_type(
