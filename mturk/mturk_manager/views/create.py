@@ -301,12 +301,13 @@ def create(request):
         form = Form_Create_Project(request.POST)
         if form.is_valid():
             try:
-                create_project(form, request)
+                db_obj_project = create_project(form, request)
             except IntegrityError:
                 messages.error(request, 'Please choose a different name.')
                 return redirect('mturk_manager:create')
 
-            return redirect('mturk_manager:project', name=urllib.parse.quote(form.cleaned_data['name'], safe=''))
+            return redirect('mturk_manager:project', slug_project=db_obj_project.slug)
+            # return redirect('mturk_manager:project', name=urllib.parse.quote(form.cleaned_data['name'], safe=''))
         else:
             return redirect('mturk_manager:create')
     else:
@@ -368,6 +369,8 @@ def create_project(form, request):
         name='approved externally',
         color='#28a745'
     )
+
+    return db_obj_project
 
 def add_corpus_workers(name_project):
     dict_settings = glob_dict_settings_workers.copy()
