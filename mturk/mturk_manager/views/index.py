@@ -7,7 +7,7 @@ def dashboard(request):
     if request.method == 'POST':
         form = Form_Open(request.POST)
         if form.is_valid():
-            return redirect('mturk_manager:project', name=form.cleaned_data['name_project'].slug)
+            return redirect('mturk_manager:project', slug_project=form.cleaned_data['name_project'].slug)
             # return redirect('mturk_manager:project', name=urllib.parse.quote(form.cleaned_data['name_project'].slug, safe=''))
     else:
         form = Form_Open()
