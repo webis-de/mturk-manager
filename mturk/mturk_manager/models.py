@@ -1,5 +1,7 @@
 from django.db import models
 from django.utils.text import slugify
+# import mturk_manager.classes.workers
+from mturk_manager.enums import workers
 
 class m_Account_Mturk(models.Model):
     name = models.CharField(max_length=200, unique=True)
@@ -146,7 +148,8 @@ class m_Worker(models.Model):
 
     name = models.CharField(max_length=200)
     fk_project = models.ForeignKey('m_Project', on_delete=models.CASCADE, null=True, related_name='workers')
-    is_blocked = models.BooleanField(default=False)
+    is_blocked = models.IntegerField(choices=[(status.value, status.name) for status in workers.STATUS_BLOCK], default=workers.STATUS_BLOCK.NONE.value)
+    # is_blocked_soft = models.BooleanField(default=False)
     corpus_viewer_tags = models.ManyToManyField('viewer.m_Tag', related_name='corpus_viewer_workers')
 
 class m_Message_Reject(models.Model):

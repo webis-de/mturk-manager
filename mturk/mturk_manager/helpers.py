@@ -13,13 +13,20 @@ def add_database_object_project(some_function):
 
         kwargs['database_object_project'] = database_object_project 
         # print(args)
-        # print(args)
-        # print(kwargs)
+        print(args)
+        print(kwargs)
+        # print(parse_qs(args[1]))
         # print(parse_qs(args[1].META))
         # print(parse_qs(args[1].META))
-        # print(parse_qs(args[1].META))
+
         try:
-            use_sandbox = False if parse_qs(args[1].META['QUERY_STRING'])['use_sandbox'][0] == 'false' else True
+            request = args[1]
+        except IndexError:
+            request = args[0]
+
+        print(request)
+        try:
+            use_sandbox = False if parse_qs(request.META['QUERY_STRING'])['use_sandbox'][0] == 'false' else True
         except KeyError:
             use_sandbox = True
 

@@ -30,7 +30,7 @@
                                 <v-icon color="warning">warning</v-icon>
                             </v-btn>
                             <span>No database entry for this qualification was found!</span>
-                         </v-tooltip>
+                        </v-tooltip>
                         <v-btn icon class="mx-0" v-on:click="qualification_to_be_edited = props.item">
                             <v-icon color="success">edit</v-icon>
                         </v-btn>
@@ -105,21 +105,24 @@ export default {
         }
     },
     watch: {
-        list_policies: function() {
+        use_sandbox: function() {
+            this.refresh_data();
+        },
+    },
+    computed: {
+        ...mapGetters('moduleQualifications', {
+            list_policies: 'list_policies',
+        }),
+        ...mapState(['use_sandbox']),
+    },
+    methods: {
+        refresh_data() {
             this.set_show_progress_indicator(true);
 
             this.sync_qualifications().then(() => {
                 this.set_show_progress_indicator(false);
             });
-            console.log("dwadaw");
         },
-    },
-    computed: {
-        ...mapGetters('moduleQualifications', {
-            'list_policies': 'list_policies',
-        }),
-    },
-    methods: {
         delete_policy(item) {
             // if(confirm(`Do you really want to delete the '${item.name}' policy?`))
             // {
@@ -137,11 +140,7 @@ export default {
         ...mapActions(['set_show_progress_indicator']),
     },
     created: function() {
-        this.set_show_progress_indicator(true);
-
-        this.sync_qualifications().then(() => {
-            this.set_show_progress_indicator(false);
-        });
+        this.refresh_data();
     },
 
     components: {

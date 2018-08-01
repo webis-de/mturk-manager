@@ -7,14 +7,17 @@ import json, time
 from django.db.models import F, Value, Count, Q, Sum, IntegerField, ExpressionWrapper
 
 
-def balance(request, name):
-    name_quoted = name
-    name_project = urllib.parse.unquote(name_quoted)
+def balance(request, slug_project):
+    try:
+        use_sandbox = False if urllib.parse.parse_qs(request.META['QUERY_STRING'])['use_sandbox'][0] == 'false' else True
+    except KeyError:
+        use_sandbox = True
+
     db_obj_project = m_Project.objects.get(
-        name=name_project
+        slug=slug_project
     )
     return JsonResponse({
-        'balance': float(code_shared.get_client(db_obj_project, use_sandbox=False).get_account_balance()['AvailableBalance'])
+        'balance': float(code_shared.get_client(db_obj_project, use_sandbox=use_sandbox).get_account_balance()['AvailableBalance'])
     })
 
 def api(request, name):
@@ -76,7 +79,8 @@ def api_assignments_real_approved_tmp(request, name):
 
     queryset = m_Hit.objects.filter(
         fk_batch__fk_project__name=name,
-        fk_batch__use_sandbox=False,
+        fk_batch__use_sandbox=True,
+        # fk_batch__use_sandbox=False,
     ).select_related(
         'fk_batch'
     ).annotate(
@@ -90,8 +94,7 @@ def api_assignments_real_approved_tmp(request, name):
         ), distinct=True),
 
     ).order_by('-datetime_creation')
-
-
+    
     for obj_db_hit in queryset:
         if not obj_db_hit.fk_batch.name in dict_batches:
             dict_batches[obj_db_hit.fk_batch.name] = {

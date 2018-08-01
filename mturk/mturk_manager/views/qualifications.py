@@ -58,9 +58,7 @@ class Qualification(APIView):
 
     @add_database_object_project
     def put(self, request, slug_project, database_object_project, use_sandbox, id_mturk, format=None):
-        # qualification = self.get_object(id_mturk)
         serializer = Serializer_Qualification(request.data, data=request.data)
-        # serializer = Serializer_Qualification(qualification, data=request.data)
         if serializer.is_valid():
             serializer.save(database_object_project=database_object_project, use_sandbox=use_sandbox, id_mturk=id_mturk)
             return Response(serializer.data)

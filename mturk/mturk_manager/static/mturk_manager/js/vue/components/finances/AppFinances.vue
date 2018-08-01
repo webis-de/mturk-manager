@@ -38,6 +38,18 @@ export default {
         }
     },
     methods: {
+        refresh_data() {
+            this.set_show_progress_indicator(true);
+            this.set_show_progress_indicator(true);
+
+            this.sync_database().then(() => {
+                this.set_show_progress_indicator(false);
+            });
+            
+            this.update_balance().then(() => {
+                this.set_show_progress_indicator(false);
+            });
+        },
         ...mapActions(['set_show_progress_indicator']),
         ...mapActions('moduleBatches', {
         	'sync_database': 'sync_database', 
@@ -46,23 +58,16 @@ export default {
         	'update_balance': 'update_balance'
         }),
     },
+    watch: {
+        use_sandbox: function() {
+            this.refresh_data();
+        },
+    },
+    computed: {
+        ...mapState(['use_sandbox']),
+    },
     created: function() {
-        this.set_show_progress_indicator(true);
-        let count_loaded = '0';
-
-    	this.sync_database().then(() => {
-    		if(++count_loaded == 2) 
-    		{
-        		this.set_show_progress_indicator(false);
-    		}
-    	});
-    	
-    	this.update_balance().then(() => {
-    		if(++count_loaded == 2) 
-    		{
-        		this.set_show_progress_indicator(false);
-    		}
-    	});
+        this.refresh_data();
     },
 
     components: {

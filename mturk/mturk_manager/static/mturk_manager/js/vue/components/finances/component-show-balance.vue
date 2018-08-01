@@ -1,7 +1,7 @@
 <template>
 <div class="headline">
 	Current balance:
-	<component-display-money v-if="balance != undefined" v-bind:amount="balance"></component-display-money>
+	<component-display-money v-if="get_balance != undefined" v-bind:amount="get_balance"></component-display-money>
 	<v-tooltip top>
         <v-btn flat icon small v-bind:loading="show_spinner" v-on:click="update_balance_custom" slot="activator" class="ma-0">
           <v-icon>refresh</v-icon>
@@ -13,7 +13,7 @@
 
 <script>
     import ComponentDisplayMoney from './../component-display-money.vue';
-    import { mapState, mapActions } from 'vuex';
+    import { mapState, mapActions, mapGetters } from 'vuex';
 export default {
     name: 'component-show-balance',
     data () {
@@ -23,10 +23,13 @@ export default {
     },
     computed: {
     	show_spinner: function() {
-    		return this.updating || this.balance == undefined;
+    		return this.updating || this.get_balance == undefined;
     	},
+        ...mapGetters('moduleMoney', {
+            'get_balance': 'get_balance',
+        }),
         // ...mapGetters('moduleMoney', ['balance']),
-        ...mapState('moduleMoney', ['balance']),
+        // ...mapState('moduleMoney', ['balance']),
     },
     methods: {
     	update_balance_custom: function() {
@@ -37,7 +40,7 @@ export default {
     		});
     	},
         ...mapActions('moduleMoney', {
-        	'update_balance': 'update_balance'
+        	'update_balance': 'update_balance',
         }),
     //     load_config: function() {
     //         const configElement = document.getElementById( 'config' );

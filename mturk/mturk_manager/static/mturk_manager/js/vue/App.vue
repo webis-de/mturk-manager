@@ -90,6 +90,7 @@
     import ComponentNavigationDrawer from './components/component-navigation-drawer.vue';
     import ComponentToolbarBatches from './components/batches/component-toolbar-batches.vue';
     import ComponentToolbarQualifications from './components/qualifications/component-toolbar-qualifications.vue';
+    import ComponentToolbarWorkers from './components/workers/component_toolbar_workers.vue';
 export default {
     name: 'app',
     data() {
@@ -118,7 +119,7 @@ export default {
                 case 'Qualifications':
                     return ComponentToolbarQualifications;
                 case 'Workers':
-                    return ComponentToolbarBatches;
+                    return ComponentToolbarWorkers;
             }
         },
         show_progress_indicator: function() {

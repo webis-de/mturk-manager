@@ -1,38 +1,11 @@
 <template>
 <div>
-    <v-layout wrap>
-        <v-flex>
-            <v-data-table
-                v-bind:items="list_workers"
-                v-bind:headers="list_headers"
-                disable-initial-sort
-				v-bind:pagination.sync="pagination"
-				v-model="workers_selected"
-                select-all
-                item-key="name"
-                class="elevation-1"
-            >
-                 <template slot="items" slot-scope="props">
-                    <td>
-                        <v-checkbox
-                            v-model="props.selected"
-                            primary
-                            hide-details
-                        ></v-checkbox>
-                    </td>
-                    <td>{{ props.item.name }}</td>
-                    <!-- <td class="justify-end layout">
-                        <v-btn icon class="mx-0" v-on:click="init_edit_policy(props.item)">
-                            <v-icon color="teal">edit</v-icon>
-                        </v-btn>
-                        <v-btn icon class="mx-0" v-on:click="delete_policy(props.item)">
-                            <v-icon color="pink">delete</v-icon>
-                        </v-btn>
-                    </td> -->
-                </template>
-            </v-data-table>
-        </v-flex>
-    </v-layout>
+    <!-- <v-layout wrap> -->
+        <!-- <v-flex> -->
+        <component-list-workers>
+        </component-list-workers>
+        <!-- </v-flex> -->
+    <!-- </v-layout> -->
 </div>
 </template>
 
@@ -40,7 +13,7 @@
     import { mapState, mapActions, mapGetters } from 'vuex';
     // import { Policy } from '../../store/modules/policies.js';
 	
-    // import ComponentShowBalance from './component-show-balance.vue';
+    import ComponentListWorkers from './component_list_workers.vue';
     // import ComponentShowMoneySpent from './component-show-money-spent.vue';
     // import ComponentShowBatches from './component-show-batches.vue';
 export default {
@@ -66,6 +39,11 @@ export default {
             // }),
         }
     },
+    watch: {
+        use_sandbox: function() {
+            this.refresh_data();
+        },
+    },
     computed: {
         // policy_dialog: function() {
         //     return this.policy_to_be_edited == null ? this.policy_new : this.policy_to_be_edited;
@@ -73,11 +51,19 @@ export default {
         // title_dialog_policy: function() {
         //     return this.policy_to_be_edited == null ? 'New Policy' : 'Edit Policy';
         // },
-        ...mapGetters('moduleWorkers', {
-            'list_workers': 'list_workers',
-        }),
+        // ...mapGetters('moduleWorkers', {
+        //     'list_workers': 'list_workers',
+        // }),
+        ...mapState(['use_sandbox']),
     },
     methods: {
+        refresh_data() {
+            this.set_show_progress_indicator(true);
+
+            this.sync_workers().then(() => {
+                this.set_show_progress_indicator(false);
+            });
+        },
         // add_or_edit_policy() {
         //     if(this.policy_to_be_edited == null)
         //     {
@@ -112,13 +98,14 @@ export default {
         ...mapActions('moduleWorkers', {
             'sync_workers': 'sync_workers',
         }),
+        ...mapActions(['set_show_progress_indicator']),
     },
     created: function() {
-        this.sync_workers();
+        this.refresh_data();
     },
 
     components: {
-     // ComponentShowBalance,
+     ComponentListWorkers,
      // ComponentShowMoneySpent,
      // ComponentShowBatches,
     },

@@ -23,19 +23,18 @@ from django.contrib import messages, humanize
 import xmltodict
 import hashlib
 from viewer.views.shared_code import glob_manager_data
+from mturk_manager.enums import STATUS_BLOCK
 # from django.template.defaultfilters import apnumber
 
 glob_prefix_name_tag_batch = 'batch_'
 glob_prefix_name_tag_worker = 'worker_'
 glob_prefix_name_tag_hit = 'hit_'
 
-def project(request, name):
+def project(request, slug_project):
     context = {}
-    name_quoted = name
-    name_project = urllib.parse.unquote(name_quoted)
 
     queryset = m_Project.objects.filter(
-        name=name_project
+        slug=slug_project
     ).select_related(
         'fk_account_mturk',
         'fk_template_main',
@@ -53,10 +52,10 @@ def project(request, name):
     try:
         db_obj_project = queryset.get()
     except ObjectDoesNotExist:
-        messages.error(request, 'Project "{}" does not exist'.format(name_project))
+        messages.error(request, 'Project "{}" does not exist'.format(slug_project))
         return redirect('mturk_manager:index')
 
-    if not code_shared.is_project_up_to_date(request, db_obj_project, name_project):    
+    if not code_shared.is_project_up_to_date(request, db_obj_project, slug_project):    
         return redirect('mturk_manager:index')
 
     client = code_shared.get_client(db_obj_project, use_sandbox=True)
@@ -160,7 +159,7 @@ def project(request, name):
             import_csv(db_obj_project, request)
 
         # db_obj_project = queryset.get(name=name)
-        return redirect('mturk_manager:project', name=name_quoted)
+        return redirect('mturk_manager:project', slug_project=slug_project)
 
     else:
         form_update_project = Form_Update_Project(instance=db_obj_project)
@@ -752,7 +751,7 @@ def update_template_global(db_obj_project, request):
         {'type':'string', 'keys':['name'], 'message': 'Invalid name'},
     ]):
         return 
-
+    
     template = None
     if request.POST['html_template'].strip() == '':
         if 'file_template' in request.FILES:
@@ -1077,7 +1076,7 @@ def add_template(db_obj_project, request):
     messages.success(request, 'Added template successfully')
 
 def preprocess_template_inject(request, db_obj_project, html_template):
-    queryset = m_Worker.objects.filter(fk_project=db_obj_project, is_blocked=True)
+    queryset = m_Worker.objects.filter(fk_project=db_obj_project, is_blocked=STATUS_BLOCK.SOFT)
     list_workers = [hashlib.md5(worker.name.encode()).hexdigest() for worker in queryset]
     # print(list_workers)
     if len(list_workers) == 0:

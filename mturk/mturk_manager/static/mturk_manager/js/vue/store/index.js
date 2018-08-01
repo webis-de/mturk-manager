@@ -27,13 +27,24 @@ export const store = new Vuex.Store({
         token_csrf: undefined,
         show_with_fee: true,
         show_progress_indicator: 0,
+        // use_sandbox: false,
         use_sandbox: true,
         url_project: undefined,
     },
     getters: {
         get_show_progress_indicator(state) {
             return state.show_progress_indicator > 0 ? true : false;
-        }
+        },
+        get_url_api: (state, getters, rootState) => (url, value='') => {
+            url += value;
+
+            if(!rootState.use_sandbox) {
+                url += '?use_sandbox=false&';
+            } else {
+                url += '?';
+            }
+            return url;
+        },
     },
     mutations: {
         setNameProject(state, name_project) {

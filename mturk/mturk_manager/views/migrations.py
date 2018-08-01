@@ -7,6 +7,9 @@ import os
 import json
 import pprint
 
+def migration_14(db_obj_project):
+    db_obj_project.save()
+
 def migration_9(db_obj_project):
     for db_obj_template in db_obj_project.templates.all():
         dict_parameters = code_shared.count_parameters_in_template(db_obj_template.template)
@@ -115,6 +118,12 @@ def migration_2(db_obj_project):
     )
 
 dict_migrations = {
+    14: [
+        {
+            'type': 'execute_function',
+            'function':  migration_14
+        }
+    ],
     13: [
         {
             'type': 'update_config_file',

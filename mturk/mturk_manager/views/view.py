@@ -30,8 +30,6 @@ def view(request, name):
         messages.error(request, 'Please provide assignments')
         return redirect('mturk_manager:project', name=name_quoted)
 
-
-
     if request.method == 'POST':
         obj = json.loads(request.body.decode("utf-8"))
 
