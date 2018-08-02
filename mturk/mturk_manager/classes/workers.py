@@ -2,13 +2,9 @@ from mturk_manager.models import m_Worker
 from mturk_manager.classes.projects import Manager_Projects
 from mturk_manager.enums import STATUS_BLOCK
 from django.db.models import F, Value, Count, Q, Sum, IntegerField, ExpressionWrapper
+from mturk_manager.classes import Manager_Qualifications
 
 class Manager_Workers(object):
-    def __init__(self, arg):
-        pass
-        # super(Qualification, self).__init__()
-        # self.arg = arg
-        
     @classmethod
     def get_all(cls, database_object_project, use_sandbox=True):
 
@@ -68,26 +64,33 @@ class Manager_Workers(object):
     def update_status_block(cls, value_new, value_old, object_worker, database_object_project, use_sandbox):
         # print(value_new)
         # print(value_old)
-        if value_old == STATUS_BLOCK.HARD and value_new != STATUS_BLOCK.HARD:
-            client = Manager_Projects.get_mturk_api(database_object_project, use_sandbox)
+        client = Manager_Projects.get_mturk_api(database_object_project, use_sandbox)
+
+        if value_old == STATUS_BLOCK.HARD:
             
             response = client.delete_worker_block(
                 WorkerId=object_worker.name,
                 Reason='unknown',
             )
 
-        elif value_new == STATUS_BLOCK.HARD:
-            client = Manager_Projects.get_mturk_api(database_object_project, use_sandbox)
+        if value_new == STATUS_BLOCK.HARD:
 
             response = client.create_worker_block(
                 WorkerId=object_worker.name,
                 Reason='unknown',
             )
-            
 
-        #     print('HARD')
-        # else:
+        if value_old == STATUS_BLOCK.SOFT:
+            raise Exception('Kristof forgot to remove this safety guard...')
+            response = client.disassociate_qualification_from_worker(
+                QualificationTypeId=Manager_Qualifications.get_id_qualification_block_soft(database_object_project, use_sandbox),
+                WorkerId=object_worker.name,
+            )
 
-
-        # print(response)
-        # return response['QualificationTypes']
+        if value_new == STATUS_BLOCK.SOFT:
+            response = client.associate_qualification_with_worker(
+                QualificationTypeId=Manager_Qualifications.get_id_qualification_block_soft(database_object_project, use_sandbox),
+                WorkerId=object_worker.name,
+                IntegerValue=1,
+                SendNotification=False,
+            )

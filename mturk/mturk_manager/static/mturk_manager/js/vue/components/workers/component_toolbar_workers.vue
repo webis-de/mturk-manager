@@ -1,6 +1,6 @@
 <template>
     <v-tooltip bottom>
-        <v-btn icon v-bind:loading="show_progress_indicator" v-on:click="refresh_data" slot="activator">
+        <v-btn icon v-bind:loading="get_show_progress_indicator" v-on:click="refresh_data" slot="activator">
             <v-icon>refresh</v-icon>
         </v-btn>
         <span>Refresh Workers</span>
@@ -8,18 +8,15 @@
 </template>
 
 <script>
-    import { mapState, mapActions } from 'vuex';
+    import { mapState, mapActions, mapGetters } from 'vuex';
 export default {
-    name: 'component-toolbar-batches',
-    props: {
-        show_progress_indicator: {
-            required: true,
-            type: Boolean,
-        }
-    } ,
+    name: 'component-toolbar-workers',
     data() {
         return {
         }
+    },
+    computed: {
+        ...mapGetters(['get_show_progress_indicator']),
     },
     methods: {
         refresh_data: function() {

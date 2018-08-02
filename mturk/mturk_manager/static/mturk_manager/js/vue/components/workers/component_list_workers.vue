@@ -1,6 +1,6 @@
 <template>
         <span>
-            <v-layout row>
+            <v-layout>
                 <v-flex xs1>
                     <v-switch label="Not Blocked" v-model="show_workers_blocked_none"></v-switch>
                 </v-flex>

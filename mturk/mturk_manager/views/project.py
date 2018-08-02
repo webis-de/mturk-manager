@@ -24,6 +24,8 @@ import xmltodict
 import hashlib
 from viewer.views.shared_code import glob_manager_data
 from mturk_manager.enums import STATUS_BLOCK
+from mturk_manager.classes import Manager_Qualifications
+
 # from django.template.defaultfilters import apnumber
 
 glob_prefix_name_tag_batch = 'batch_'
@@ -1133,16 +1135,22 @@ def create_batch(db_obj_project, form, request):
     #     valid = False
     #     messages.error(request, 'Invalid csv file')
     #     return  
+    list_requirements = []
 
     print(form.cleaned_data)
     # db_obj_template = m_Template.objects.get(fk_project=db_obj_project, id=request.POST['template'])
     db_obj_template = form.cleaned_data['fk_template_main']
     if form.cleaned_data['block_workers'] == 'enabled_inject':
-        db_obj_template.template = preprocess_template_inject(request, db_obj_project, db_obj_template.template)
+        # db_obj_template.template = preprocess_template_inject(request, db_obj_project, db_obj_template.template)
+        list_requirements.append({
+            'QualificationTypeId': Manager_Qualifications.get_id_qualification_block_soft(db_obj_project, form.cleaned_data['use_sandbox']),
+            'Comparator': 'DoesNotExist',
+            'RequiredToPreview': True
+        })
+        print(list_requirements)
     elif form.cleaned_data['block_workers'] == 'enabled_request':
         db_obj_template.template = preprocess_template_request(request, db_obj_project, db_obj_template.template)
 
-    list_requirements = []
 
     title = form.cleaned_data['title']
 

@@ -34800,16 +34800,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.default = {
     name: 'component-toolbar-batches',
-    props: {
-        show_progress_indicator: {
-            required: true,
-            type: Boolean
-        }
-    },
     data: function data() {
         return {};
     },
 
+    computed: (0, _extends3.default)({}, (0, _vuex.mapGetters)(['get_show_progress_indicator'])),
     methods: (0, _extends3.default)({
         refresh_data: function refresh_data() {
             var _this = this;
@@ -34854,7 +34849,7 @@ exports.default = {
           attrs: {
             slot: "activator",
             icon: "",
-            loading: _vm.show_progress_indicator
+            loading: _vm.get_show_progress_indicator
           },
           on: { click: _vm.refresh_data },
           slot: "activator"
@@ -34914,16 +34909,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.default = {
     name: 'component-toolbar-qualifications',
-    props: {
-        show_progress_indicator: {
-            required: true,
-            type: Boolean
-        }
-    },
     data: function data() {
         return {};
     },
 
+    computed: (0, _extends3.default)({}, (0, _vuex.mapGetters)(['get_show_progress_indicator'])),
     methods: (0, _extends3.default)({
         refresh_data: function refresh_data() {
             var _this = this;
@@ -34968,7 +34958,7 @@ exports.default = {
           attrs: {
             slot: "activator",
             icon: "",
-            loading: _vm.show_progress_indicator
+            loading: _vm.get_show_progress_indicator
           },
           on: { click: _vm.refresh_data },
           slot: "activator"
@@ -35027,17 +35017,12 @@ var _vuex = require('vuex');
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
-    name: 'component-toolbar-batches',
-    props: {
-        show_progress_indicator: {
-            required: true,
-            type: Boolean
-        }
-    },
+    name: 'component-toolbar-workers',
     data: function data() {
         return {};
     },
 
+    computed: (0, _extends3.default)({}, (0, _vuex.mapGetters)(['get_show_progress_indicator'])),
     methods: (0, _extends3.default)({
         refresh_data: function refresh_data() {
             var _this = this;
@@ -35082,7 +35067,7 @@ exports.default = {
           attrs: {
             slot: "activator",
             icon: "",
-            loading: _vm.show_progress_indicator
+            loading: _vm.get_show_progress_indicator
           },
           on: { click: _vm.refresh_data },
           slot: "activator"
@@ -35248,9 +35233,6 @@ exports.default = {
                     return _component_toolbar_workers2.default;
             }
         },
-        show_progress_indicator: function show_progress_indicator() {
-            return this.get_show_progress_indicator();
-        },
         name_route_current: function name_route_current() {
             // return this.$router.currentRoute;
             return this.$route.name;
@@ -35263,12 +35245,12 @@ exports.default = {
                 this.set_show_with_fee(value);
             }
         }
-    }, (0, _vuex.mapState)(['name_project', 'show_with_fee', 'use_sandbox'])),
+    }, (0, _vuex.mapState)(['name_project', 'show_with_fee', 'use_sandbox']), (0, _vuex.mapGetters)(['get_show_progress_indicator'])),
     methods: (0, _extends3.default)({
         toggle_use_sandbox: function toggle_use_sandbox() {
             this.set_use_sandbox(!this.use_sandbox);
         }
-    }, (0, _vuex.mapActions)(['init', 'set_show_with_fee', 'set_show_progress_indicator', 'set_use_sandbox']), (0, _vuex.mapGetters)(['get_show_progress_indicator'])),
+    }, (0, _vuex.mapActions)(['init', 'set_show_with_fee', 'set_show_progress_indicator', 'set_use_sandbox'])),
     created: function created() {
         var _this = this;
 
@@ -35281,7 +35263,6 @@ exports.default = {
         ComponentNavigationDrawer: _componentNavigationDrawer2.default
     }
 }; //
-//
 //
 //
 //
@@ -35395,7 +35376,7 @@ exports.default = {
       _c("v-progress-linear", {
         staticStyle: { "z-index": "50", position: "absolute", margin: "0" },
         attrs: {
-          active: _vm.show_progress_indicator,
+          active: _vm.get_show_progress_indicator,
           height: "4",
           app: "",
           indeterminate: ""
@@ -35457,10 +35438,7 @@ exports.default = {
             1
           ),
           _vm._v(" "),
-          _c(_vm.currentTabComponent, {
-            tag: "component",
-            attrs: { show_progress_indicator: _vm.show_progress_indicator }
-          })
+          _c(_vm.currentTabComponent, { tag: "component" })
         ],
         1
       ),
@@ -65338,6 +65316,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 exports.default = {
     name: 'component-block-worker',
@@ -65369,7 +65353,7 @@ exports.default = {
             });
         }
     },
-    computed: {},
+    computed: (0, _extends3.default)({}, (0, _vuex.mapGetters)(['get_show_progress_indicator'])),
     methods: (0, _extends3.default)({}, (0, _vuex.mapActions)('moduleWorkers', {
         'update_status_block': 'update_status_block'
     }), (0, _vuex.mapActions)(['set_show_progress_indicator'])),
@@ -65389,26 +65373,38 @@ exports.default = {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "span",
+    "v-layout",
+    { attrs: { "align-center": "" } },
     [
+      _c("v-flex", { attrs: { "mr-3": "" } }, [
+        _vm._v("\n        Block:\n    ")
+      ]),
+      _vm._v(" "),
       _c(
-        "v-radio-group",
-        {
-          attrs: { row: "" },
-          model: {
-            value: _vm.status_block_new,
-            callback: function($$v) {
-              _vm.status_block_new = $$v
+        "v-flex",
+        [
+          _c(
+            "v-radio-group",
+            {
+              attrs: { disabled: _vm.get_show_progress_indicator, row: "" },
+              model: {
+                value: _vm.status_block_new,
+                callback: function($$v) {
+                  _vm.status_block_new = $$v
+                },
+                expression: "status_block_new"
+              }
             },
-            expression: "status_block_new"
-          }
-        },
-        _vm._l(_vm.labels_ticks, function(n, i) {
-          return _c("v-radio", {
-            key: _vm.worker.name + "_" + n,
-            attrs: { name: _vm.worker.name, label: n, value: _vm.values[i] }
-          })
-        })
+            _vm._l(_vm.labels_ticks, function(n, i) {
+              return _c("v-radio", {
+                key: _vm.worker.name + "_" + n,
+                staticClass: "mb-0",
+                attrs: { name: _vm.worker.name, label: n, value: _vm.values[i] }
+              })
+            })
+          )
+        ],
+        1
       )
     ],
     1
@@ -65890,7 +65886,6 @@ exports.default = {
     [
       _c(
         "v-layout",
-        { attrs: { row: "" } },
         [
           _c(
             "v-flex",
@@ -68832,7 +68827,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = '' || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + '36399' + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '40567' + '/');
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
 

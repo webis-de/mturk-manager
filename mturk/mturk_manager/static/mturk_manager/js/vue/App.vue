@@ -6,7 +6,7 @@
     ></component-navigation-drawer>
 
     <v-progress-linear 
-        v-bind:active="show_progress_indicator" 
+        v-bind:active="get_show_progress_indicator" 
         height="4" 
         app 
         indeterminate 
@@ -38,7 +38,6 @@
 
         <component 
             v-bind:is="currentTabComponent"
-            v-bind:show_progress_indicator="show_progress_indicator"
         ></component>
 
     </v-toolbar>
@@ -122,9 +121,6 @@ export default {
                     return ComponentToolbarWorkers;
             }
         },
-        show_progress_indicator: function() {
-            return this.get_show_progress_indicator();
-        },
         name_route_current: function() {
             // return this.$router.currentRoute;
             return this.$route.name;
@@ -138,6 +134,7 @@ export default {
             }
         },
         ...mapState(['name_project', 'show_with_fee', 'use_sandbox']),
+        ...mapGetters(['get_show_progress_indicator']),
     },
     methods: {
         toggle_use_sandbox: function() {
@@ -151,7 +148,6 @@ export default {
         //     });
         // },
         ...mapActions(['init', 'set_show_with_fee', 'set_show_progress_indicator', 'set_use_sandbox']),
-        ...mapGetters(['get_show_progress_indicator']),
         // load_config: function() {
         //     const configElement = document.getElementById( 'config' );
         //     const config = JSON.parse( configElement.innerHTML );

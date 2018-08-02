@@ -4,6 +4,38 @@
 		"selected_items":
 		[
 			[
+				"show_",
+				"show_workers_blocked_none"
+			],
+			[
+				"data",
+				"data_workers"
+			],
+			[
+				"database",
+				"database_object_project"
+			],
+			[
+				"value",
+				"value_new"
+			],
+			[
+				"obje",
+				"object_worker"
+			],
+			[
+				"Status",
+				"STATUS_BLOCK"
+			],
+			[
+				"status",
+				"status_block"
+			],
+			[
+				"St",
+				"STATUS_BLOCK"
+			],
+			[
 				"qualific",
 				"qualification_to_be_edited"
 			],
@@ -204,10 +236,6 @@
 				"dict_corpora_with_exceptions"
 			],
 			[
-				"value",
-				"value"
-			],
-			[
 				"obj_",
 				"obj_tmp_key"
 			],
@@ -360,10 +388,6 @@
 				"module_settings"
 			],
 			[
-				"data",
-				"data_only_ids"
-			],
-			[
 				"tmp",
 				"tmp_dict"
 			],
@@ -490,30 +514,6 @@
 			[
 				"background",
 				"background-color"
-			],
-			[
-				"spl",
-				"splitted_time"
-			],
-			[
-				"count",
-				"count_queries"
-			],
-			[
-				"pr",
-				"process_timegap"
-			],
-			[
-				"store",
-				"store_log"
-			],
-			[
-				"fil",
-				"file_name_output"
-			],
-			[
-				"content",
-				"content_length"
 			]
 		]
 	},
@@ -523,16 +523,25 @@
 			"file": "mturk/mturk_manager/models.py",
 			"settings":
 			{
-				"buffer_size": 7078,
+				"buffer_size": 7381,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "mturk/mturk_manager/static/mturk_manager/js/vue/index.js",
+			"file": "mturk/mturk_manager/views/migrations.py",
 			"settings":
 			{
-				"buffer_size": 987,
+				"buffer_size": 23793,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "mturk/mturk/settings.py",
+			"settings":
+			{
+				"buffer_size": 5219,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -550,9 +559,19 @@
 			"file": "mturk/mturk_manager/static/mturk_manager/js/vue/App.vue",
 			"settings":
 			{
-				"buffer_size": 5662,
+				"buffer_size": 5756,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "mturk/mturk_manager/static/mturk_manager/js/vue/components/workers/component_toolbar_workers.vue",
+			"settings":
+			{
+				"buffer_size": 954,
+				"encoding": "UTF-8",
+				"line_ending": "Unix",
+				"name": "component_toolbar_workers.vue"
 			}
 		},
 		{
@@ -569,7 +588,7 @@
 			"file": "mturk/mturk_manager/static/mturk_manager/js/vue/store/index.js",
 			"settings":
 			{
-				"buffer_size": 2959,
+				"buffer_size": 3276,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -578,7 +597,7 @@
 			"file": "mturk/mturk_manager/static/mturk_manager/js/vue/store/modules/qualifications.js",
 			"settings":
 			{
-				"buffer_size": 5127,
+				"buffer_size": 4585,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -587,7 +606,118 @@
 			"file": "mturk/mturk_manager/static/mturk_manager/js/vue/components/qualifications/AppQualifications.vue",
 			"settings":
 			{
-				"buffer_size": 5352,
+				"buffer_size": 5286,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "mturk/mturk_manager/static/mturk_manager/js/vue/store/modules/money.js",
+			"settings":
+			{
+				"buffer_size": 1066,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "mturk/mturk_manager/static/mturk_manager/js/vue/components/workers/AppWorkers.vue",
+			"settings":
+			{
+				"buffer_size": 3258,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "mturk/mturk_manager/static/mturk_manager/js/vue/components/finances/AppFinances.vue",
+			"settings":
+			{
+				"buffer_size": 2061,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "Searching 19656 files for \"secrets\"\n\n/home/kritten/Documents/mturk-manager/db.sqlite3:\n    <binary>\n\n/home/kritten/Documents/mturk-manager/mturk/db (1).sqlite3:\n    <binary>\n\n/home/kritten/Documents/mturk-manager/mturk/db.sqlite3:\n    <binary>\n\n/home/kritten/Documents/mturk-manager/mturk/db_old.sqlite3:\n    <binary>\n\n/home/kritten/Documents/mturk-manager/mturk/mturk_manager/classes/qualifications.py:\n    1  from mturk_manager.models import Model_Qualification\n    2  from mturk_manager.classes.projects import Manager_Projects\n    3: from secrets import token_urlsafe\n    4  \n    5  class Manager_Qualifications(object):\n\n/home/kritten/Documents/mturk-manager/mturk/mturk_manager/classes/workers.py:\n    1  from mturk_manager.models import m_Worker\n    2  from mturk_manager.classes.projects import Manager_Projects\n    3: from secrets import token_urlsafe\n    4  from mturk_manager.enums import STATUS_BLOCK\n    5  from django.db.models import F, Value, Count, Q, Sum, IntegerField, ExpressionWrapper\n\n/home/kritten/Documents/mturk-manager/mturk/mturk_manager/views/code_shared.py:\n    3  from viewer.models import *\n    4  from django.urls import reverse\n    5: # from secrets import token_urlsafe\n    6  from django.conf import settings as settings_django\n    7  import uuid\n\n/home/kritten/Documents/mturk-manager/mturk/node_modules/crypto-browserify/test/dh.js:\n   20        var pub1 = dh1.computeSecret(pubk2).toString('hex')\n   21        var pub2 = dh2.computeSecret(dh1.getPublicKey()).toString('hex')\n   22:       t.equals(pub1, pub2, 'equal secrets')\n   23      })\n   24    })\n   ..\n   44        var pub1 = dh1.computeSecret(pubk2).toString('hex')\n   45        var pub2 = dh2.computeSecret(dh1.getPublicKey()).toString('hex')\n   46:       t.equals(pub1, pub2, 'equal secrets')\n   47      })\n   48    })\n\n/home/kritten/Documents/mturk-manager/mturk/node_modules/crypto-browserify/test/ecdh.js:\n   22      var pub1 = dh1.computeSecret(pubk2).toString('hex')\n   23      var pub2 = dh2.computeSecret(pubk1).toString('hex')\n   24:     t.equals(pub1, pub2, 'equal secrets')\n   25    })\n   26  \n   ..\n   36      var pub1 = dh1.computeSecret(pubk2).toString('hex')\n   37      var pub2 = dh2.computeSecret(pubk1).toString('hex')\n   38:     t.equals(pub1, pub2, 'equal secrets')\n   39    })\n   40  \n   ..\n   57      var pub1 = dh1.computeSecret(pubk2).toString('hex')\n   58      var pub2 = dh2.computeSecret(pubk1).toString('hex')\n   59:     t.equals(pub1, pub2, 'equal secrets')\n   60    })\n   61  })\n\n/home/kritten/Documents/mturk-manager/mturk/node_modules/crypto-browserify/test/node/dh.js:\n   22        var pub1 = dh1.computeSecret(pubk2).toString('hex')\n   23        var pub2 = dh2.computeSecret(pubk1).toString('hex')\n   24:       t.equals(pub1, pub2, 'equal secrets')\n   25      })\n   26    })\n   ..\n   46        var pub1 = dh1.computeSecret(pubk2).toString('hex')\n   47        var pub2 = dh2.computeSecret(dh1.getPublicKey()).toString('hex')\n   48:       t.equals(pub1, pub2, 'equal secrets')\n   49      })\n   50    })\n\n/home/kritten/Documents/mturk-manager/mturk/node_modules/elliptic/README.md:\n  130  var shared2 = key2.derive(key1.getPublic());\n  131  \n  132: console.log('Both shared secrets are BN instances');\n  133  console.log(shared1.toString(16));\n  134  console.log(shared2.toString(16));\n\n/home/kritten/Documents/mturk-manager/mturk/node_modules/node-forge/lib/tls.js:\n  291    var rval = forge.util.createBuffer();\n  292  \n  293:   /* For TLS 1.0, the secret is split in half, into two secrets of equal\n  294      length. If the secret has an odd length then the last byte of the first\n  295      half will be the same as the first byte of the second. The length of the\n  296:     two secrets is half of the secret rounded up. */\n  297    var idx = (secret.length >> 1);\n  298    var slen = idx + (secret.length & 1);\n  ...\n 1773   * Meaning of this message:\n 1774   *   The finished message is the first protected with the just-\n 1775:  *   negotiated algorithms, keys, and secrets. Recipients of finished\n 1776   *   messages must verify that the contents are correct.  Once a side\n 1777   *   has sent its Finished message and received and validated the\n\n/home/kritten/Documents/mturk-manager/requirements.txt:\n    3  djangorestframework\n    4  markdown\n    5: secrets\n    6  \n    7  -r submodules/corpus-viewer/requirements.txt\n\n/home/kritten/Documents/mturk-manager/venv/lib/python3.6/site-packages/botocore-1.10.39.dist-info/RECORD:\n  200  botocore/data/rekognition/2016-06-27/paginators-1.json,sha256=q7MuYMm5kzMdQLuBqh2vApI65VFN2IwDFbkhpYIqfGo,642\n  201  botocore/data/rekognition/2016-06-27/service-2.json,sha256=3tkvugd_N_U97Uiq74Vs5qCD3Y3RqmcLcKiFKrjWp4I,163860\n  202: botocore/data/secretsmanager/2017-10-17/paginators-1.json,sha256=hIQ7AbLBsY4fPSNLVMg0dS45m6cjZKFTjbp3ZLh4zj8,23\n  203: botocore/data/secretsmanager/2017-10-17/service-2.json,sha256=3R37hK4-D2AtktjbM_SyWstk1NbiYcHLUpS422Ok4sU,100122\n  204  botocore/data/cloudformation/2010-05-15/examples-1.json,sha256=gm_RqBO5j_WGR7ft7DnGJQokXca_j19gwyDlUFwrO3s,4308\n  205  botocore/data/cloudformation/2010-05-15/waiters-2.json,sha256=7lsqeh7RU_Qgnbc330iYLIbOCx0extlTVmhAq3_Xw5U,4779\n\n/home/kritten/Documents/mturk-manager/venv/lib/python3.6/site-packages/botocore/data/codepipeline/2015-07-09/service-2.json:\n  632          \"secret\":{\n  633            \"shape\":\"Boolean\",\n  634:           \"documentation\":\"<p>Whether the configuration property is secret. Secrets are hidden from all calls except for GetJobDetails, GetThirdPartyJobDetails, PollForJobs, and PollForThirdPartyJobs.</p> <p>When updating a pipeline, passing * * * * * without changing any other values of the action will preserve the prior value of the secret.</p>\"\n  635          },\n  636          \"queryable\":{\n\n/home/kritten/Documents/mturk-manager/venv/lib/python3.6/site-packages/botocore/data/dms/2016-01-01/service-2.json:\n  845          },\n  846          \"Password\":{\n  847:           \"shape\":\"SecretString\",\n  848            \"documentation\":\"<p>The password to be used to login to the endpoint database.</p>\"\n  849          },\n  ...\n 2185          },\n 2186          \"Password\":{\n 2187:           \"shape\":\"SecretString\",\n 2188            \"documentation\":\"<p>The password to be used to login to the endpoint database.</p>\"\n 2189          },\n ....\n 2432          },\n 2433          \"Password\":{\n 2434:           \"shape\":\"SecretString\",\n 2435            \"documentation\":\"<p> The password for the user account you use to access the MongoDB source endpoint. </p>\"\n 2436          },\n ....\n 3097        \"member\":{\"shape\":\"String\"}\n 3098      },\n 3099:     \"SecretString\":{\n 3100        \"type\":\"string\",\n 3101        \"sensitive\":true\n\n/home/kritten/Documents/mturk-manager/venv/lib/python3.6/site-packages/botocore/data/endpoints.json:\n 1666          }\n 1667        },\n 1668:       \"secretsmanager\" : {\n 1669          \"endpoints\" : {\n 1670            \"ap-northeast-1\" : { },\n\n/home/kritten/Documents/mturk-manager/venv/lib/python3.6/site-packages/botocore/data/secretsmanager/2017-10-17/service-2.json:\n    3    \"metadata\":{\n    4      \"apiVersion\":\"2017-10-17\",\n    5:     \"endpointPrefix\":\"secretsmanager\",\n    6      \"jsonVersion\":\"1.1\",\n    7      \"protocol\":\"json\",\n    8:     \"serviceFullName\":\"AWS Secrets Manager\",\n    9:     \"serviceId\":\"Secrets Manager\",\n   10      \"signatureVersion\":\"v4\",\n   11:     \"signingName\":\"secretsmanager\",\n   12:     \"targetPrefix\":\"secretsmanager\",\n   13:     \"uid\":\"secretsmanager-2017-10-17\"\n   14    },\n   15    \"operations\":{\n   ..\n   28          {\"shape\":\"InvalidRequestException\"}\n   29        ],\n   30:       \"documentation\":\"<p>Disables automatic scheduled rotation and cancels the rotation of a secret if one is currently in progress.</p> <p>To re-enable scheduled rotation, call <a>RotateSecret</a> with <code>AutomaticallyRotateAfterDays</code> set to a value greater than 0. This will immediately rotate your secret and then enable the automatic schedule.</p> <note> <p>If you cancel a rotation that is in progress, it can leave the <code>VersionStage</code> labels in an unexpected state. Depending on what step of the rotation was in progress, you might need to remove the staging label <code>AWSPENDING</code> from the partially created version, specified by the <code>SecretVersionId</code> response value. You should also evaluate the partially rotated new version to see if it should be deleted, which you can do by removing all staging labels from the new version's <code>VersionStage</code> field.</p> </note> <p>To successfully start a rotation, the staging label <code>AWSPENDING</code> must be in one of the following states:</p> <ul> <li> <p>Not be attached to any version at all</p> </li> <li> <p>Attached to the same version as the staging label <code>AWSCURRENT</code> </p> </li> </ul> <p>If the staging label <code>AWSPENDING</code> is attached to a different version than the version with <code>AWSCURRENT</code> then the attempt to rotate fails.</p> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:CancelRotateSecret</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To configure rotation for a secret or to manually trigger a rotation, use <a>RotateSecret</a>.</p> </li> <li> <p>To get the rotation configuration details for a secret, use <a>DescribeSecret</a>.</p> </li> <li> <p>To list all of the currently available secrets, use <a>ListSecrets</a>.</p> </li> <li> <p>To list all of the versions currently associated with a secret, use <a>ListSecretVersionIds</a>.</p> </li> </ul>\"\n   31      },\n   32      \"CreateSecret\":{\n   ..\n   48          {\"shape\":\"InternalServiceError\"}\n   49        ],\n   50:       \"documentation\":\"<p>Creates a new secret. A secret in Secrets Manager consists of both the protected secret data and the important information needed to manage the secret.</p> <p>Secrets Manager stores the encrypted secret data in one of a collection of \\\"versions\\\" associated with the secret. Each version contains a copy of the encrypted secret data. Each version is associated with one or more \\\"staging labels\\\" that identify where the version is in the rotation cycle. The <code>SecretVersionsToStages</code> field of the secret contains the mapping of staging labels to the active versions of the secret. Versions without a staging label are considered deprecated and are not included in the list.</p> <p>You provide the secret data to be encrypted by putting text in either the <code>SecretString</code> parameter or binary data in the <code>SecretBinary</code> parameter, but not both. If you include <code>SecretString</code> or <code>SecretBinary</code> then Secrets Manager also creates an initial secret version and automatically attaches the staging label <code>AWSCURRENT</code> to the new version.</p> <note> <ul> <li> <p>If you call an operation that needs to encrypt or decrypt the <code>SecretString</code> or <code>SecretBinary</code> for a secret in the same account as the calling user and that secret doesn't specify a AWS KMS encryption key, Secrets Manager uses the account's default AWS managed customer master key (CMK) with the alias <code>aws/secretsmanager</code>. If this key doesn't already exist in your account then Secrets Manager creates it for you automatically. All users in the same AWS account automatically have access to use the default CMK. Note that if an Secrets Manager API call results in AWS having to create the account's AWS-managed CMK, it can result in a one-time significant delay in returning the result.</p> </li> <li> <p>If the secret is in a different AWS account from the credentials calling an API that requires encryption or decryption of the secret value then you must create and use a custom AWS KMS CMK because you can't access the default CMK for the account using credentials from a different AWS account. Store the ARN of the CMK in the secret when you create the secret or when you update it by including it in the <code>KMSKeyId</code>. If you call an API that must encrypt or decrypt <code>SecretString</code> or <code>SecretBinary</code> using credentials from a different account then the AWS KMS key policy must grant cross-account access to that other account's user or role for both the kms:GenerateDataKey and kms:Decrypt operations.</p> </li> </ul> </note> <p> </p> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:CreateSecret</p> </li> <li> <p>kms:GenerateDataKey - needed only if you use a customer-managed AWS KMS key to encrypt the secret. You do not need this permission to use the account's default AWS managed CMK for Secrets Manager.</p> </li> <li> <p>kms:Decrypt - needed only if you use a customer-managed AWS KMS key to encrypt the secret. You do not need this permission to use the account's default AWS managed CMK for Secrets Manager.</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To delete a secret, use <a>DeleteSecret</a>.</p> </li> <li> <p>To modify an existing secret, use <a>UpdateSecret</a>.</p> </li> <li> <p>To create a new version of a secret, use <a>PutSecretValue</a>.</p> </li> <li> <p>To retrieve the encrypted secure string and secure binary values, use <a>GetSecretValue</a>.</p> </li> <li> <p>To retrieve all other details for a secret, use <a>DescribeSecret</a>. This does not include the encrypted secure string and secure binary values.</p> </li> <li> <p>To retrieve the list of secret versions associated with the current secret, use <a>DescribeSecret</a> and examine the <code>SecretVersionsToStages</code> response value.</p> </li> </ul>\"\n   51      },\n   52      \"DeleteSecret\":{\n   ..\n   64          {\"shape\":\"InternalServiceError\"}\n   65        ],\n   66:       \"documentation\":\"<p>Deletes an entire secret and all of its versions. You can optionally include a recovery window during which you can restore the secret. If you don't specify a recovery window value, the operation defaults to 30 days. Secrets Manager attaches a <code>DeletionDate</code> stamp to the secret that specifies the end of the recovery window. At the end of the recovery window, Secrets Manager deletes the secret permanently.</p> <p>At any time before recovery window ends, you can use <a>RestoreSecret</a> to remove the <code>DeletionDate</code> and cancel the deletion of the secret.</p> <p>You cannot access the encrypted secret information in any secret that is scheduled for deletion. If you need to access that information, you must cancel the deletion with <a>RestoreSecret</a> and then retrieve the information.</p> <note> <ul> <li> <p>There is no explicit operation to delete a version of a secret. Instead, remove all staging labels from the <code>VersionStage</code> field of a version. That marks the version as deprecated and allows Secrets Manager to delete it as needed. Versions that do not have any staging labels do not show up in <a>ListSecretVersionIds</a> unless you specify <code>IncludeDeprecated</code>.</p> </li> <li> <p>The permanent secret deletion at the end of the waiting period is performed as a background task with low priority. There is no guarantee of a specific time after the recovery window for the actual delete operation to occur.</p> </li> </ul> </note> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:DeleteSecret</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To create a secret, use <a>CreateSecret</a>.</p> </li> <li> <p>To cancel deletion of a version of a secret before the recovery window has expired, use <a>RestoreSecret</a>.</p> </li> </ul>\"\n   67      },\n   68      \"DescribeSecret\":{\n   ..\n   78          {\"shape\":\"InternalServiceError\"}\n   79        ],\n   80:       \"documentation\":\"<p>Retrieves the details of a secret. It does not include the encrypted fields. Only those fields that are populated with a value are returned in the response. </p> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:DescribeSecret</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To create a secret, use <a>CreateSecret</a>.</p> </li> <li> <p>To modify a secret, use <a>UpdateSecret</a>.</p> </li> <li> <p>To retrieve the encrypted secret information in a version of the secret, use <a>GetSecretValue</a>.</p> </li> <li> <p>To list all of the secrets in the AWS account, use <a>ListSecrets</a>.</p> </li> </ul>\"\n   81      },\n   82      \"GetRandomPassword\":{\n   ..\n   93          {\"shape\":\"InternalServiceError\"}\n   94        ],\n   95:       \"documentation\":\"<p>Generates a random password of the specified complexity. This operation is intended for use in the Lambda rotation function. Per best practice, we recommend that you specify the maximum length and include every character type that the system you are generating a password for can support.</p> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:GetRandomPassword</p> </li> </ul>\"\n   96      },\n   97      \"GetSecretValue\":{\n   ..\n  110          {\"shape\":\"InternalServiceError\"}\n  111        ],\n  112:       \"documentation\":\"<p>Retrieves the contents of the encrypted fields <code>SecretString</code> or <code>SecretBinary</code> from the specified version of a secret, whichever contains content.</p> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:GetSecretValue</p> </li> <li> <p>kms:Decrypt - required only if you use a customer-managed AWS KMS key to encrypt the secret. You do not need this permission to use the account's default AWS managed CMK for Secrets Manager.</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To create a new version of the secret with different encrypted information, use <a>PutSecretValue</a>.</p> </li> <li> <p>To retrieve the non-encrypted details for the secret, use <a>DescribeSecret</a>.</p> </li> </ul>\"\n  113      },\n  114      \"ListSecretVersionIds\":{\n  ...\n  125          {\"shape\":\"InternalServiceError\"}\n  126        ],\n  127:       \"documentation\":\"<p>Lists all of the versions attached to the specified secret. The output does not include the <code>SecretString</code> or <code>SecretBinary</code> fields. By default, the list includes only versions that have at least one staging label in <code>VersionStage</code> attached.</p> <note> <p>Always check the <code>NextToken</code> response parameter when calling any of the <code>List*</code> operations. These operations can occasionally return an empty or shorter than expected list of results even when there are more results available. When this happens, the <code>NextToken</code> response parameter contains a value to pass to the next call to the same API to request the next part of the list.</p> </note> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:ListSecretVersionIds</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To list the secrets in an account, use <a>ListSecrets</a>.</p> </li> </ul>\"\n  128      },\n  129:     \"ListSecrets\":{\n  130:       \"name\":\"ListSecrets\",\n  131        \"http\":{\n  132          \"method\":\"POST\",\n  133          \"requestUri\":\"/\"\n  134        },\n  135:       \"input\":{\"shape\":\"ListSecretsRequest\"},\n  136:       \"output\":{\"shape\":\"ListSecretsResponse\"},\n  137        \"errors\":[\n  138          {\"shape\":\"InvalidParameterException\"},\n  ...\n  140          {\"shape\":\"InternalServiceError\"}\n  141        ],\n  142:       \"documentation\":\"<p>Lists all of the secrets that are stored by Secrets Manager in the AWS account. To list the versions currently stored for a specific secret, use <a>ListSecretVersionIds</a>. The encrypted fields <code>SecretString</code> and <code>SecretBinary</code> are not included in the output. To get that information, call the <a>GetSecretValue</a> operation.</p> <note> <p>Always check the <code>NextToken</code> response parameter when calling any of the <code>List*</code> operations. These operations can occasionally return an empty or shorter than expected list of results even when there are more results available. When this happens, the <code>NextToken</code> response parameter contains a value to pass to the next call to the same API to request the next part of the list.</p> </note> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:ListSecrets</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To list the versions attached to a secret, use <a>ListSecretVersionIds</a>.</p> </li> </ul>\"\n  143      },\n  144      \"PutSecretValue\":{\n  ...\n  159          {\"shape\":\"InternalServiceError\"}\n  160        ],\n  161:       \"documentation\":\"<p>Stores a new encrypted secret value in the specified secret. To do this, the operation creates a new version and attaches it to the secret. The version can contain a new <code>SecretString</code> value or a new <code>SecretBinary</code> value. You can also specify the staging labels that are initially attached to the new version.</p> <note> <p>The Secrets Manager console uses only the <code>SecretString</code> field. To add binary data to a secret with the <code>SecretBinary</code> field you must use the AWS CLI or one of the AWS SDKs.</p> </note> <ul> <li> <p>If this operation creates the first version for the secret then Secrets Manager automatically attaches the staging label <code>AWSCURRENT</code> to the new version.</p> </li> <li> <p>If another version of this secret already exists, then this operation does not automatically move any staging labels other than those that you explicitly specify in the <code>VersionStages</code> parameter.</p> </li> <li> <p>If this operation moves the staging label <code>AWSCURRENT</code> from another version to this version (because you included it in the <code>StagingLabels</code> parameter) then Secrets Manager also automatically moves the staging label <code>AWSPREVIOUS</code> to the version that <code>AWSCURRENT</code> was removed from.</p> </li> <li> <p>This operation is idempotent. If a version with a <code>SecretVersionId</code> with the same value as the <code>ClientRequestToken</code> parameter already exists and you specify the same secret data, the operation succeeds but does nothing. However, if the secret data is different, then the operation fails because you cannot modify an existing version; you can only create new ones.</p> </li> </ul> <note> <ul> <li> <p>If you call an operation that needs to encrypt or decrypt the <code>SecretString</code> or <code>SecretBinary</code> for a secret in the same account as the calling user and that secret doesn't specify a AWS KMS encryption key, Secrets Manager uses the account's default AWS managed customer master key (CMK) with the alias <code>aws/secretsmanager</code>. If this key doesn't already exist in your account then Secrets Manager creates it for you automatically. All users in the same AWS account automatically have access to use the default CMK. Note that if an Secrets Manager API call results in AWS having to create the account's AWS-managed CMK, it can result in a one-time significant delay in returning the result.</p> </li> <li> <p>If the secret is in a different AWS account from the credentials calling an API that requires encryption or decryption of the secret value then you must create and use a custom AWS KMS CMK because you can't access the default CMK for the account using credentials from a different AWS account. Store the ARN of the CMK in the secret when you create the secret or when you update it by including it in the <code>KMSKeyId</code>. If you call an API that must encrypt or decrypt <code>SecretString</code> or <code>SecretBinary</code> using credentials from a different account then the AWS KMS key policy must grant cross-account access to that other account's user or role for both the kms:GenerateDataKey and kms:Decrypt operations.</p> </li> </ul> </note> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:PutSecretValue</p> </li> <li> <p>kms:GenerateDataKey - needed only if you use a customer-managed AWS KMS key to encrypt the secret. You do not need this permission to use the account's default AWS managed CMK for Secrets Manager.</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To retrieve the encrypted value you store in the version of a secret, use <a>GetSecretValue</a>.</p> </li> <li> <p>To create a secret, use <a>CreateSecret</a>.</p> </li> <li> <p>To get the details for a secret, use <a>DescribeSecret</a>.</p> </li> <li> <p>To list the versions attached to a secret, use <a>ListSecretVersionIds</a>.</p> </li> </ul>\"\n  162      },\n  163      \"RestoreSecret\":{\n  ...\n  175          {\"shape\":\"InternalServiceError\"}\n  176        ],\n  177:       \"documentation\":\"<p>Cancels the scheduled deletion of a secret by removing the <code>DeletedDate</code> time stamp. This makes the secret accessible to query once again.</p> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:RestoreSecret</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To delete a secret, use <a>DeleteSecret</a>.</p> </li> </ul>\"\n  178      },\n  179      \"RotateSecret\":{\n  ...\n  191          {\"shape\":\"InvalidRequestException\"}\n  192        ],\n  193:       \"documentation\":\"<p>Configures and starts the asynchronous process of rotating this secret. If you include the configuration parameters, the operation sets those values for the secret and then immediately starts a rotation. If you do not include the configuration parameters, the operation starts a rotation with the values already stored in the secret. After the rotation completes, the protected service and its clients all use the new version of the secret. </p> <p>This required configuration information includes the ARN of an AWS Lambda function and the time between scheduled rotations. The Lambda rotation function creates a new version of the secret and creates or updates the credentials on the protected service to match. After testing the new credentials, the function marks the new secret with the staging label <code>AWSCURRENT</code> so that your clients all immediately begin to use the new version. For more information about rotating secrets and how to configure a Lambda function to rotate the secrets for your protected service, see <a href=\\\"http://docs.aws.amazon.com/secretsmanager/latest/userguide/rotating-secrets.html\\\">Rotating Secrets in AWS Secrets Manager</a> in the <i>AWS Secrets Manager User Guide</i>.</p> <p>The rotation function must end with the versions of the secret in one of two states:</p> <ul> <li> <p>The <code>AWSPENDING</code> and <code>AWSCURRENT</code> staging labels are attached to the same version of the secret, or</p> </li> <li> <p>The <code>AWSPENDING</code> staging label is not attached to any version of the secret.</p> </li> </ul> <p>If instead the <code>AWSPENDING</code> staging label is present but is not attached to the same version as <code>AWSCURRENT</code> then any later invocation of <code>RotateSecret</code> assumes that a previous rotation request is still in progress and returns an error.</p> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:RotateSecret</p> </li> <li> <p>lambda:InvokeFunction (on the function specified in the secret's metadata)</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To list the secrets in your account, use <a>ListSecrets</a>.</p> </li> <li> <p>To get the details for a version of a secret, use <a>DescribeSecret</a>.</p> </li> <li> <p>To create a new version of a secret, use <a>CreateSecret</a>.</p> </li> <li> <p>To attach staging labels to or remove staging labels from a version of a secret, use <a>UpdateSecretVersionStage</a>.</p> </li> </ul>\"\n  194      },\n  195      \"TagResource\":{\n  ...\n  205          {\"shape\":\"InternalServiceError\"}\n  206        ],\n  207:       \"documentation\":\"<p>Attaches one or more tags, each consisting of a key name and a value, to the specified secret. Tags are part of the secret's overall metadata, and are not associated with any specific version of the secret. This operation only appends tags to the existing list of tags. To remove tags, you must use <a>UntagResource</a>.</p> <p>The following basic restrictions apply to tags:</p> <ul> <li> <p>Maximum number of tags per secret—50</p> </li> <li> <p>Maximum key length—127 Unicode characters in UTF-8</p> </li> <li> <p>Maximum value length—255 Unicode characters in UTF-8</p> </li> <li> <p>Tag keys and values are case sensitive.</p> </li> <li> <p>Do not use the <code>aws:</code> prefix in your tag names or values because it is reserved for AWS use. You can't edit or delete tag names or values with this prefix. Tags with this prefix do not count against your tags per secret limit.</p> </li> <li> <p>If your tagging schema will be used across multiple services and resources, remember that other services might have restrictions on allowed characters. Generally allowed characters are: letters, spaces, and numbers representable in UTF-8, plus the following special characters: + - = . _ : / @.</p> </li> </ul> <important> <p>If you use tags as part of your security strategy, then adding or removing a tag can change permissions. If successfully completing this operation would result in you losing your permissions for this secret, then the operation is blocked and returns an Access Denied error.</p> </important> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:TagResource</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To remove one or more tags from the collection attached to a secret, use <a>UntagResource</a>.</p> </li> <li> <p>To view the list of tags attached to a secret, use <a>DescribeSecret</a>.</p> </li> </ul>\"\n  208      },\n  209      \"UntagResource\":{\n  ...\n  219          {\"shape\":\"InternalServiceError\"}\n  220        ],\n  221:       \"documentation\":\"<p>Removes one or more tags from the specified secret.</p> <p>This operation is idempotent. If a requested tag is not attached to the secret, no error is returned and the secret metadata is unchanged.</p> <important> <p>If you use tags as part of your security strategy, then removing a tag can change permissions. If successfully completing this operation would result in you losing your permissions for this secret, then the operation is blocked and returns an Access Denied error.</p> </important> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:UntagResource</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To add one or more tags to the collection attached to a secret, use <a>TagResource</a>.</p> </li> <li> <p>To view the list of tags attached to a secret, use <a>DescribeSecret</a>.</p> </li> </ul>\"\n  222      },\n  223      \"UpdateSecret\":{\n  ...\n  239          {\"shape\":\"InternalServiceError\"}\n  240        ],\n  241:       \"documentation\":\"<p>Modifies many of the details of a secret. If you include a <code>ClientRequestToken</code> and either <code>SecretString</code> or <code>SecretBinary</code> then it also creates a new version attached to the secret.</p> <p>To modify the rotation configuration of a secret, use <a>RotateSecret</a> instead.</p> <note> <p>The Secrets Manager console uses only the <code>SecretString</code> parameter and therefore limits you to encrypting and storing only a text string. To encrypt and store binary data as part of the version of a secret, you must use either the AWS CLI or one of the AWS SDKs.</p> </note> <ul> <li> <p>If a version with a <code>SecretVersionId</code> with the same value as the <code>ClientRequestToken</code> parameter already exists, the operation generates an error. You cannot modify an existing version, you can only create new ones.</p> </li> <li> <p>If you include <code>SecretString</code> or <code>SecretBinary</code> to create a new secret version, Secrets Manager automatically attaches the staging label <code>AWSCURRENT</code> to the new version. </p> </li> </ul> <note> <ul> <li> <p>If you call an operation that needs to encrypt or decrypt the <code>SecretString</code> or <code>SecretBinary</code> for a secret in the same account as the calling user and that secret doesn't specify a AWS KMS encryption key, Secrets Manager uses the account's default AWS managed customer master key (CMK) with the alias <code>aws/secretsmanager</code>. If this key doesn't already exist in your account then Secrets Manager creates it for you automatically. All users in the same AWS account automatically have access to use the default CMK. Note that if an Secrets Manager API call results in AWS having to create the account's AWS-managed CMK, it can result in a one-time significant delay in returning the result.</p> </li> <li> <p>If the secret is in a different AWS account from the credentials calling an API that requires encryption or decryption of the secret value then you must create and use a custom AWS KMS CMK because you can't access the default CMK for the account using credentials from a different AWS account. Store the ARN of the CMK in the secret when you create the secret or when you update it by including it in the <code>KMSKeyId</code>. If you call an API that must encrypt or decrypt <code>SecretString</code> or <code>SecretBinary</code> using credentials from a different account then the AWS KMS key policy must grant cross-account access to that other account's user or role for both the kms:GenerateDataKey and kms:Decrypt operations.</p> </li> </ul> </note> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:UpdateSecret</p> </li> <li> <p>kms:GenerateDataKey - needed only if you use a custom AWS KMS key to encrypt the secret. You do not need this permission to use the account's AWS managed CMK for Secrets Manager.</p> </li> <li> <p>kms:Decrypt - needed only if you use a custom AWS KMS key to encrypt the secret. You do not need this permission to use the account's AWS managed CMK for Secrets Manager.</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To create a new secret, use <a>CreateSecret</a>.</p> </li> <li> <p>To add only a new version to an existing secret, use <a>PutSecretValue</a>.</p> </li> <li> <p>To get the details for a secret, use <a>DescribeSecret</a>.</p> </li> <li> <p>To list the versions contained in a secret, use <a>ListSecretVersionIds</a>.</p> </li> </ul>\"\n  242      },\n  243      \"UpdateSecretVersionStage\":{\n  ...\n  256          {\"shape\":\"InternalServiceError\"}\n  257        ],\n  258:       \"documentation\":\"<p>Modifies the staging labels attached to a version of a secret. Staging labels are used to track a version as it progresses through the secret rotation process. You can attach a staging label to only one version of a secret at a time. If a staging label to be added is already attached to another version, then it is moved--removed from the other version first and then attached to this one. For more information about staging labels, see <a href=\\\"http://docs.aws.amazon.com/secretsmanager/latest/userguide/terms-concepts.html#term_staging-label\\\">Staging Labels</a> in the <i>AWS Secrets Manager User Guide</i>. </p> <p>The staging labels that you specify in the <code>VersionStage</code> parameter are added to the existing list of staging labels--they don't replace it.</p> <p>You can move the <code>AWSCURRENT</code> staging label to this version by including it in this call.</p> <note> <p>Whenever you move <code>AWSCURRENT</code>, Secrets Manager automatically moves the label <code>AWSPREVIOUS</code> to the version that <code>AWSCURRENT</code> was removed from.</p> </note> <p>If this action results in the last label being removed from a version, then the version is considered to be 'deprecated' and can be deleted by Secrets Manager.</p> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:UpdateSecretVersionStage</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To get the list of staging labels that are currently associated with a version of a secret, use <code> <a>DescribeSecret</a> </code> and examine the <code>SecretVersionsToStages</code> response value. </p> </li> </ul>\"\n  259      }\n  260    },\n  ...\n  308          \"ClientRequestToken\":{\n  309            \"shape\":\"ClientRequestTokenType\",\n  310:           \"documentation\":\"<p>(Optional) If you include <code>SecretString</code> or <code>SecretBinary</code>, then an initial version is created as part of the secret, and this parameter specifies a unique identifier for the new version. </p> <note> <p>If you use the AWS CLI or one of the AWS SDK to call this operation, then you can leave this parameter empty. The CLI or SDK generates a random UUID for you and includes it as the value for this parameter in the request. If you don't use the SDK and instead generate a raw HTTP request to the Secrets Manager service endpoint, then you must generate a <code>ClientRequestToken</code> yourself for the new version and include that value in the request.</p> </note> <p>This value helps ensure idempotency. Secrets Manager uses this value to prevent the accidental creation of duplicate versions if there are failures and retries during a rotation. We recommend that you generate a <a href=\\\"https://wikipedia.org/wiki/Universally_unique_identifier\\\">UUID-type</a> value to ensure uniqueness of your versions within the specified secret. </p> <ul> <li> <p>If the <code>ClientRequestToken</code> value isn't already associated with a version of the secret then a new version of the secret is created. </p> </li> <li> <p>If a version with this value already exists and that version's <code>SecretString</code> and <code>SecretBinary</code> values are the same as those in the request, then the request is ignored (the operation is idempotent).</p> </li> <li> <p>If a version with this value already exists and that version's <code>SecretString</code> and <code>SecretBinary</code> values are different from those in the request then the request fails because you cannot modify an existing version. Instead, use <a>PutSecretValue</a> to create a new version.</p> </li> </ul> <p>This value becomes the <code>SecretVersionId</code> of the new version.</p>\",\n  311            \"idempotencyToken\":true\n  312          },\n  ...\n  317          \"KmsKeyId\":{\n  318            \"shape\":\"KmsKeyIdType\",\n  319:           \"documentation\":\"<p>(Optional) Specifies the ARN, Key ID, or alias of the AWS KMS customer master key (CMK) to be used to encrypt the <code>SecretString</code> or <code>SecretBinary</code> values in the versions stored in this secret.</p> <p>You can specify any of the supported ways to identify a AWS KMS key ID. If you need to reference a CMK in a different account, you can use only the key ARN or the alias ARN.</p> <p>If you don't specify this value, then Secrets Manager defaults to using the AWS account's default CMK (the one named <code>aws/secretsmanager</code>). If a AWS KMS CMK with that name doesn't yet exist, then Secrets Manager creates it for you automatically the first time it needs to encrypt a version's <code>SecretString</code> or <code>SecretBinary</code> fields.</p> <important> <p>You can use the account's default CMK to encrypt and decrypt only if you call this operation using credentials from the same account that owns the secret. If the secret is in a different account, then you must create a custom CMK and specify the ARN in this field. </p> </important>\"\n  320          },\n  321          \"SecretBinary\":{\n  322            \"shape\":\"SecretBinaryType\",\n  323:           \"documentation\":\"<p>(Optional) Specifies binary data that you want to encrypt and store in the new version of the secret. To use this parameter in the command-line tools, we recommend that you store your binary data in a file and then use the appropriate technique for your tool to pass the contents of the file as a parameter.</p> <p>Either <code>SecretString</code> or <code>SecretBinary</code> must have a value, but not both. They cannot both be empty.</p> <p>This parameter is not available using the Secrets Manager console. It can be accessed only by using the AWS CLI or one of the AWS SDKs.</p>\"\n  324          },\n  325:         \"SecretString\":{\n  326:           \"shape\":\"SecretStringType\",\n  327:           \"documentation\":\"<p>(Optional) Specifies text data that you want to encrypt and store in this new version of the secret.</p> <p>Either <code>SecretString</code> or <code>SecretBinary</code> must have a value, but not both. They cannot both be empty.</p> <p>If you create a secret by using the Secrets Manager console then Secrets Manager puts the protected secret text in only the <code>SecretString</code> parameter. The Secrets Manager console stores the information as a JSON structure of key/value pairs that the Lambda rotation function knows how to parse.</p> <p>For storing multiple values, we recommend that you use a JSON text string argument and specify key/value pairs. For information on how to format a JSON parameter for the various command line tool environments, see <a href=\\\"http://docs.aws.amazon.com/cli/latest/userguide/cli-using-param.html#cli-using-param-json\\\">Using JSON for Parameters</a> in the <i>AWS CLI User Guide</i>. For example:</p> <p> <code>[{\\\"username\\\":\\\"bob\\\"},{\\\"password\\\":\\\"abc123xyz456\\\"}]</code> </p> <p>If your command-line tool or SDK requires quotation marks around the parameter, you should use single quotes to avoid confusion with the double quotes required in the JSON text. </p>\"\n  328          },\n  329          \"Tags\":{\n  330            \"shape\":\"TagListType\",\n  331:           \"documentation\":\"<p>(Optional) Specifies a list of user-defined tags that are attached to the secret. Each tag is a \\\"Key\\\" and \\\"Value\\\" pair of strings. This operation only appends tags to the existing list of tags. To remove tags, you must use <a>UntagResource</a>.</p> <important> <ul> <li> <p>Secrets Manager tag key names are case sensitive. A tag with the key \\\"ABC\\\" is a different tag from one with key \\\"abc\\\".</p> </li> <li> <p>If you check tags in IAM policy <code>Condition</code> elements as part of your security strategy, then adding or removing a tag can change permissions. If the successful completion of this operation would result in you losing your permissions for this secret, then this operation is blocked and returns an <code>Access Denied</code> error.</p> </li> </ul> </important> <p>This parameter requires a JSON text string argument. For information on how to format a JSON parameter for the various command line tool environments, see <a href=\\\"http://docs.aws.amazon.com/cli/latest/userguide/cli-using-param.html#cli-using-param-json\\\">Using JSON for Parameters</a> in the <i>AWS CLI User Guide</i>. For example:</p> <p> <code>[{\\\"Key\\\":\\\"CostCenter\\\",\\\"Value\\\":\\\"12345\\\"},{\\\"Key\\\":\\\"environment\\\",\\\"Value\\\":\\\"production\\\"}]</code> </p> <p>If your command-line tool or SDK requires quotation marks around the parameter, you should use single quotes to avoid confusion with the double quotes required in the JSON text. </p> <p>The following basic restrictions apply to tags:</p> <ul> <li> <p>Maximum number of tags per secret—50</p> </li> <li> <p>Maximum key length—127 Unicode characters in UTF-8</p> </li> <li> <p>Maximum value length—255 Unicode characters in UTF-8</p> </li> <li> <p>Tag keys and values are case sensitive.</p> </li> <li> <p>Do not use the <code>aws:</code> prefix in your tag names or values because it is reserved for AWS use. You can't edit or delete tag names or values with this prefix. Tags with this prefix do not count against your tags per secret limit.</p> </li> <li> <p>If your tagging schema will be used across multiple services and resources, remember that other services might have restrictions on allowed characters. Generally allowed characters are: letters, spaces, and numbers representable in UTF-8, plus the following special characters: + - = . _ : / @.</p> </li> </ul>\"\n  332          }\n  333        }\n  ...\n  338          \"ARN\":{\n  339            \"shape\":\"SecretARNType\",\n  340:           \"documentation\":\"<p>The Amazon Resource Name (ARN) of the secret that you just created.</p> <note> <p>Secrets Manager automatically adds several random characters to the name at the end of the ARN when you initially create a secret. This affects only the ARN and not the actual friendly name. This ensures that if you create a new secret with the same name as an old secret that you previously deleted, then users with access to the old secret <i>don't</i> automatically get access to the new secret because the ARNs are different.</p> </note>\"\n  341          },\n  342          \"Name\":{\n  ...\n  356          \"Message\":{\"shape\":\"ErrorMessage\"}\n  357        },\n  358:       \"documentation\":\"<p>Secrets Manager can't decrypt the protected secret text using the provided KMS key. </p>\",\n  359        \"exception\":true\n  360      },\n  ...\n  369          \"RecoveryWindowInDays\":{\n  370            \"shape\":\"RecoveryWindowInDaysType\",\n  371:           \"documentation\":\"<p>(Optional) Specifies the number of days that Secrets Manager waits before it can delete the secret.</p> <p>This value can range from 7 to 30 days. The default value is 30.</p>\",\n  372            \"box\":true\n  373          }\n  ...\n  387          \"DeletionDate\":{\n  388            \"shape\":\"DeletionDateType\",\n  389:           \"documentation\":\"<p>The date and time after which this secret can be deleted by Secrets Manager and can no longer be restored. This value is the date and time of the delete request plus the number of days specified in <code>RecoveryWindowInDays</code>.</p>\",\n  390            \"box\":true\n  391          }\n  ...\n  421          \"KmsKeyId\":{\n  422            \"shape\":\"KmsKeyIdType\",\n  423:           \"documentation\":\"<p>The ARN or alias of the AWS KMS customer master key (CMK) that's used to encrypt the <code>SecretString</code> or <code>SecretBinary</code> fields in each version of the secret. If you don't provide a key, then Secrets Manager defaults to encrypting the secret fields with the default AWS KMS CMK (the one named <code>awssecretsmanager</code>) for this account.</p>\"\n  424          },\n  425          \"RotationEnabled\":{\n  ...\n  430          \"RotationLambdaARN\":{\n  431            \"shape\":\"RotationLambdaARNType\",\n  432:           \"documentation\":\"<p>The ARN of a Lambda function that's invoked by Secrets Manager to rotate the secret either automatically per the schedule or manually by a call to <code>RotateSecret</code>.</p>\"\n  433          },\n  434          \"RotationRules\":{\n  ...\n  438          \"LastRotatedDate\":{\n  439            \"shape\":\"LastRotatedDateType\",\n  440:           \"documentation\":\"<p>The last date and time that the Secrets Manager rotation process for this secret was invoked.</p>\",\n  441            \"box\":true\n  442          },\n  ...\n  453          \"DeletedDate\":{\n  454            \"shape\":\"DeletedDateType\",\n  455:           \"documentation\":\"<p>This value exists if the secret is scheduled for deletion. Some time after the specified date and time, Secrets Manager deletes the secret and all of its versions.</p> <p>If a secret is scheduled for deletion, then its details, including the encrypted secret information, is not accessible. To cancel a scheduled deletion and restore access, use <a>RestoreSecret</a>.</p>\",\n  456            \"box\":true\n  457          },\n  ...\n  475          \"Message\":{\"shape\":\"ErrorMessage\"}\n  476        },\n  477:       \"documentation\":\"<p>Secrets Manager can't encrypt the protected secret text using the provided KMS key. Check that the customer master key (CMK) is available, enabled, and not in an invalid state. For more information, see <a href=\\\"http://docs.aws.amazon.com/kms/latest/developerguide/key-state.html\\\">How Key State Affects Use of a Customer Master Key</a>.</p>\",\n  478        \"exception\":true\n  479      },\n  ...\n  576          \"SecretBinary\":{\n  577            \"shape\":\"SecretBinaryType\",\n  578:           \"documentation\":\"<p>The decrypted part of the protected secret information that was originally provided as binary data in the form of a byte array. The response parameter represents the binary data as a <a href=\\\"https://tools.ietf.org/html/rfc4648#section-4\\\">base64-encoded</a> string.</p> <p>This parameter is not used if the secret is created by the Secrets Manager console.</p> <p>If you store custom information in this field of the secret, then you must code your Lambda rotation function to parse and interpret whatever you store in the <code>SecretString</code> or <code>SecretBinary</code> fields.</p>\"\n  579          },\n  580:         \"SecretString\":{\n  581:           \"shape\":\"SecretStringType\",\n  582:           \"documentation\":\"<p>The decrypted part of the protected secret information that was originally provided as a string.</p> <p>If you create this secret by using the Secrets Manager console then only the <code>SecretString</code> parameter contains data. Secrets Manager stores the information as a JSON structure of key/value pairs that the Lambda rotation function knows how to parse.</p> <p>If you store custom information in the secret by using the <a>CreateSecret</a>, <a>UpdateSecret</a>, or <a>PutSecretValue</a> API operations instead of the Secrets Manager console, or by using the <b>Other secret type</b> in the console, then you must code your Lambda rotation function to parse and interpret those values.</p>\"\n  583          },\n  584          \"VersionStages\":{\n  ...\n  640          \"Message\":{\"shape\":\"ErrorMessage\"}\n  641        },\n  642:       \"documentation\":\"<p>The request failed because it would exceed one of the Secrets Manager internal limits.</p>\",\n  643        \"exception\":true\n  644      },\n  ...\n  653          \"MaxResults\":{\n  654            \"shape\":\"MaxResultsType\",\n  655:           \"documentation\":\"<p>(Optional) Limits the number of results that you want to include in the response. If you don't include this parameter, it defaults to a value that's specific to the operation. If additional items exist beyond the maximum you specify, the <code>NextToken</code> response element is present and has a value (isn't null). Include that value as the <code>NextToken</code> request parameter in the next call to the operation to get the next part of the results. Note that Secrets Manager might return fewer results than the maximum even when there are more results available. You should check <code>NextToken</code> after every operation to ensure that you receive all of the results.</p>\",\n  656            \"box\":true\n  657          },\n  ...\n  662          \"IncludeDeprecated\":{\n  663            \"shape\":\"BooleanType\",\n  664:           \"documentation\":\"<p>(Optional) Specifies that you want the results to include versions that do not have any staging labels attached to them. Such versions are considered deprecated and are subject to deletion by Secrets Manager as needed.</p>\",\n  665            \"box\":true\n  666          }\n  ...\n  680          \"ARN\":{\n  681            \"shape\":\"SecretARNType\",\n  682:           \"documentation\":\"<p>The Amazon Resource Name (ARN) for the secret.</p> <note> <p>Secrets Manager automatically adds several random characters to the name at the end of the ARN when you initially create a secret. This affects only the ARN and not the actual friendly name. This ensures that if you create a new secret with the same name as an old secret that you previously deleted, then users with access to the old secret <i>don't</i> automatically get access to the new secret because the ARNs are different.</p> </note>\"\n  683          },\n  684          \"Name\":{\n  ...\n  688        }\n  689      },\n  690:     \"ListSecretsRequest\":{\n  691        \"type\":\"structure\",\n  692        \"members\":{\n  693          \"MaxResults\":{\n  694            \"shape\":\"MaxResultsType\",\n  695:           \"documentation\":\"<p>(Optional) Limits the number of results that you want to include in the response. If you don't include this parameter, it defaults to a value that's specific to the operation. If additional items exist beyond the maximum you specify, the <code>NextToken</code> response element is present and has a value (isn't null). Include that value as the <code>NextToken</code> request parameter in the next call to the operation to get the next part of the results. Note that Secrets Manager might return fewer results than the maximum even when there are more results available. You should check <code>NextToken</code> after every operation to ensure that you receive all of the results.</p>\",\n  696            \"box\":true\n  697          },\n  ...\n  702        }\n  703      },\n  704:     \"ListSecretsResponse\":{\n  705        \"type\":\"structure\",\n  706        \"members\":{\n  707          \"SecretList\":{\n  708            \"shape\":\"SecretListType\",\n  709:           \"documentation\":\"<p>A list of the secrets in the account.</p>\"\n  710          },\n  711          \"NextToken\":{\n  ...\n  753          \"ClientRequestToken\":{\n  754            \"shape\":\"ClientRequestTokenType\",\n  755:           \"documentation\":\"<p>(Optional) Specifies a unique identifier for the new version of the secret. </p> <note> <p>If you use the AWS CLI or one of the AWS SDK to call this operation, then you can leave this parameter empty. The CLI or SDK generates a random UUID for you and includes that in the request. If you don't use the SDK and instead generate a raw HTTP request to the Secrets Manager service endpoint, then you must generate a <code>ClientRequestToken</code> yourself for new versions and include that value in the request. </p> </note> <p>This value helps ensure idempotency. Secrets Manager uses this value to prevent the accidental creation of duplicate versions if there are failures and retries during the Lambda rotation function's processing. We recommend that you generate a <a href=\\\"https://wikipedia.org/wiki/Universally_unique_identifier\\\">UUID-type</a> value to ensure uniqueness within the specified secret. </p> <ul> <li> <p>If the <code>ClientRequestToken</code> value isn't already associated with a version of the secret then a new version of the secret is created. </p> </li> <li> <p>If a version with this value already exists and that version's <code>SecretString</code> or <code>SecretBinary</code> values are the same as those in the request then the request is ignored (the operation is idempotent). </p> </li> <li> <p>If a version with this value already exists and that version's <code>SecretString</code> and <code>SecretBinary</code> values are different from those in the request then the request fails because you cannot modify an existing secret version. You can only create new versions to store new secret values.</p> </li> </ul> <p>This value becomes the <code>SecretVersionId</code> of the new version.</p>\",\n  756            \"idempotencyToken\":true\n  757          },\n  758          \"SecretBinary\":{\n  759            \"shape\":\"SecretBinaryType\",\n  760:           \"documentation\":\"<p>(Optional) Specifies binary data that you want to encrypt and store in the new version of the secret. To use this parameter in the command-line tools, we recommend that you store your binary data in a file and then use the appropriate technique for your tool to pass the contents of the file as a parameter. Either <code>SecretBinary</code> or <code>SecretString</code> must have a value, but not both. They cannot both be empty.</p> <p>This parameter is not accessible if the secret using the Secrets Manager console.</p> <p/>\"\n  761          },\n  762:         \"SecretString\":{\n  763:           \"shape\":\"SecretStringType\",\n  764:           \"documentation\":\"<p>(Optional) Specifies text data that you want to encrypt and store in this new version of the secret. Either <code>SecretString</code> or <code>SecretBinary</code> must have a value, but not both. They cannot both be empty.</p> <p>If you create this secret by using the Secrets Manager console then Secrets Manager puts the protected secret text in only the <code>SecretString</code> parameter. The Secrets Manager console stores the information as a JSON structure of key/value pairs that the default Lambda rotation function knows how to parse.</p> <p>For storing multiple values, we recommend that you use a JSON text string argument and specify key/value pairs. For information on how to format a JSON parameter for the various command line tool environments, see <a href=\\\"http://docs.aws.amazon.com/cli/latest/userguide/cli-using-param.html#cli-using-param-json\\\">Using JSON for Parameters</a> in the <i>AWS CLI User Guide</i>.</p> <p> For example:</p> <p> <code>[{\\\"username\\\":\\\"bob\\\"},{\\\"password\\\":\\\"abc123xyz456\\\"}]</code> </p> <p>If your command-line tool or SDK requires quotation marks around the parameter, you should use single quotes to avoid confusion with the double quotes required in the JSON text.</p>\"\n  765          },\n  766          \"VersionStages\":{\n  767            \"shape\":\"SecretVersionStagesType\",\n  768:           \"documentation\":\"<p>(Optional) Specifies a list of staging labels that are attached to this version of the secret. These staging labels are used to track the versions through the rotation process by the Lambda rotation function.</p> <p>A staging label must be unique to a single version of the secret. If you specify a staging label that's already associated with a different version of the same secret then that staging label is automatically removed from the other version and attached to this version.</p> <p>If you do not specify a value for <code>VersionStages</code> then Secrets Manager automatically moves the staging label <code>AWSCURRENT</code> to this new version.</p>\"\n  769          }\n  770        }\n  ...\n  847          \"ClientRequestToken\":{\n  848            \"shape\":\"ClientRequestTokenType\",\n  849:           \"documentation\":\"<p>(Optional) Specifies a unique identifier for the new version of the secret that helps ensure idempotency. </p> <p>If you use the AWS CLI or one of the AWS SDK to call this operation, then you can leave this parameter empty. The CLI or SDK generates a random UUID for you and includes that in the request for this parameter. If you don't use the SDK and instead generate a raw HTTP request to the Secrets Manager service endpoint, then you must generate a <code>ClientRequestToken</code> yourself for new versions and include that value in the request.</p> <p>You only need to specify your own value if you are implementing your own retry logic and want to ensure that a given secret is not created twice. We recommend that you generate a <a href=\\\"https://wikipedia.org/wiki/Universally_unique_identifier\\\">UUID-type</a> value to ensure uniqueness within the specified secret. </p> <p>Secrets Manager uses this value to prevent the accidental creation of duplicate versions if there are failures and retries during the function's processing.</p> <ul> <li> <p>If the <code>ClientRequestToken</code> value isn't already associated with a version of the secret then a new version of the secret is created. </p> </li> <li> <p>If a version with this value already exists and that version's <code>SecretString</code> and <code>SecretBinary</code> values are the same as the request, then the request is ignored (the operation is idempotent). </p> </li> <li> <p>If a version with this value already exists and that version's <code>SecretString</code> and <code>SecretBinary</code> values are different from the request then an error occurs because you cannot modify an existing secret value.</p> </li> </ul> <p>This value becomes the <code>SecretVersionId</code> of the new version.</p>\",\n  850            \"idempotencyToken\":true\n  851          },\n  ...\n  916          \"ARN\":{\n  917            \"shape\":\"SecretARNType\",\n  918:           \"documentation\":\"<p>The Amazon Resource Name (ARN) of the secret.</p> <p>For more information about ARNs in Secrets Manager, see <a href=\\\"http://docs.aws.amazon.com/secretsmanager/latest/userguide/reference_iam-permissions.html#iam-resources\\\">Policy Resources</a> in the <i>AWS Secrets Manager User Guide</i>.</p>\"\n  919          },\n  920          \"Name\":{\n  ...\n  928          \"KmsKeyId\":{\n  929            \"shape\":\"KmsKeyIdType\",\n  930:           \"documentation\":\"<p>The ARN or alias of the AWS KMS customer master key (CMK) that's used to encrypt the <code>SecretString</code> and <code>SecretBinary</code> fields in each version of the secret. If you don't provide a key, then Secrets Manager defaults to encrypting the secret fields with the default KMS CMK (the one named <code>awssecretsmanager</code>) for this account.</p>\"\n  931          },\n  932          \"RotationEnabled\":{\n  ...\n  937          \"RotationLambdaARN\":{\n  938            \"shape\":\"RotationLambdaARNType\",\n  939:           \"documentation\":\"<p>The ARN of an AWS Lambda function that's invoked by Secrets Manager to rotate and expire the secret either automatically per the schedule or manually by a call to <a>RotateSecret</a>.</p>\"\n  940          },\n  941          \"RotationRules\":{\n  ...\n  960          \"DeletedDate\":{\n  961            \"shape\":\"DeletedDateType\",\n  962:           \"documentation\":\"<p>The date and time on which this secret was deleted. Not present on active secrets. The secret can be recovered until the number of days in the recovery window has passed, as specified in the <code>RecoveryWindowInDays</code> parameter of the <a>DeleteSecret</a> operation.</p>\"\n  963          },\n  964          \"Tags\":{\n  ...\n  971          }\n  972        },\n  973:       \"documentation\":\"<p>A structure that contains the details about a secret. It does not include the encrypted <code>SecretString</code> and <code>SecretBinary</code> values. To get those values, use the <a>GetSecretValue</a> operation.</p>\"\n  974      },\n  975      \"SecretListType\":{\n  ...\n  982        \"min\":1\n  983      },\n  984:     \"SecretStringType\":{\n  985        \"type\":\"string\",\n  986        \"max\":4096,\n  ...\n 1113          \"ClientRequestToken\":{\n 1114            \"shape\":\"ClientRequestTokenType\",\n 1115:           \"documentation\":\"<p>(Optional) If you want to add a new version to the secret, this parameter specifies a unique identifier for the new version that helps ensure idempotency. </p> <p>If you use the AWS CLI or one of the AWS SDK to call this operation, then you can leave this parameter empty. The CLI or SDK generates a random UUID for you and includes that in the request. If you don't use the SDK and instead generate a raw HTTP request to the Secrets Manager service endpoint, then you must generate a <code>ClientRequestToken</code> yourself for new versions and include that value in the request.</p> <p>You typically only need to interact with this value if you implement your own retry logic and want to ensure that a given secret is not created twice. We recommend that you generate a <a href=\\\"https://wikipedia.org/wiki/Universally_unique_identifier\\\">UUID-type</a> value to ensure uniqueness within the specified secret. </p> <p>Secrets Manager uses this value to prevent the accidental creation of duplicate versions if there are failures and retries during the Lambda rotation function's processing.</p> <ul> <li> <p>If the <code>ClientRequestToken</code> value isn't already associated with a version of the secret then a new version of the secret is created. </p> </li> <li> <p>If a version with this value already exists and that version's <code>SecretString</code> and <code>SecretBinary</code> values are the same as those in the request then the request is ignored (the operation is idempotent). </p> </li> <li> <p>If a version with this value already exists and that version's <code>SecretString</code> and <code>SecretBinary</code> values are different from the request then an error occurs because you cannot modify an existing secret value.</p> </li> </ul> <p>This value becomes the <code>SecretVersionId</code> of the new version.</p>\",\n 1116            \"idempotencyToken\":true\n 1117          },\n ....\n 1122          \"KmsKeyId\":{\n 1123            \"shape\":\"KmsKeyIdType\",\n 1124:           \"documentation\":\"<p>(Optional) Specifies the ARN or alias of the AWS KMS customer master key (CMK) to be used to encrypt the protected text in the versions of this secret.</p> <p>If you don't specify this value, then Secrets Manager defaults to using the default CMK in the account (the one named <code>aws/secretsmanager</code>). If a AWS KMS CMK with that name doesn't exist, then Secrets Manager creates it for you automatically the first time it needs to encrypt a version's <code>Plaintext</code> or <code>PlaintextString</code> fields.</p> <important> <p>You can only use the account's default CMK to encrypt and decrypt if you call this operation using credentials from the same account that owns the secret. If the secret is in a different account, then you must create a custom CMK and provide the ARN in this field. </p> </important>\"\n 1125          },\n 1126          \"SecretBinary\":{\n 1127            \"shape\":\"SecretBinaryType\",\n 1128:           \"documentation\":\"<p>(Optional) Specifies binary data that you want to encrypt and store in the new version of the secret. To use this parameter in the command-line tools, we recommend that you store your binary data in a file and then use the appropriate technique for your tool to pass the contents of the file as a parameter. Either <code>SecretBinary</code> or <code>SecretString</code> must have a value, but not both. They cannot both be empty.</p> <p>This parameter is not accessible using the Secrets Manager console.</p>\"\n 1129          },\n 1130:         \"SecretString\":{\n 1131:           \"shape\":\"SecretStringType\",\n 1132:           \"documentation\":\"<p>(Optional) Specifies text data that you want to encrypt and store in this new version of the secret. Either <code>SecretBinary</code> or <code>SecretString</code> must have a value, but not both. They cannot both be empty.</p> <p>If you create this secret by using the Secrets Manager console then Secrets Manager puts the protected secret text in only the <code>SecretString</code> parameter. The Secrets Manager console stores the information as a JSON structure of key/value pairs that the default Lambda rotation function knows how to parse.</p> <p>For storing multiple values, we recommend that you use a JSON text string argument and specify key/value pairs. For information on how to format a JSON parameter for the various command line tool environments, see <a href=\\\"http://docs.aws.amazon.com/cli/latest/userguide/cli-using-param.html#cli-using-param-json\\\">Using JSON for Parameters</a> in the <i>AWS CLI User Guide</i>. For example:</p> <p> <code>[{\\\"username\\\":\\\"bob\\\"},{\\\"password\\\":\\\"abc123xyz456\\\"}]</code> </p> <p>If your command-line tool or SDK requires quotation marks around the parameter, you should use single quotes to avoid confusion with the double quotes required in the JSON text.</p>\"\n 1133          }\n 1134        }\n ....\n 1139          \"ARN\":{\n 1140            \"shape\":\"SecretARNType\",\n 1141:           \"documentation\":\"<p>The ARN of this secret.</p> <note> <p>Secrets Manager automatically adds several random characters to the name at the end of the ARN when you initially create a secret. This affects only the ARN and not the actual friendly name. This ensures that if you create a new secret with the same name as an old secret that you previously deleted, then users with access to the old secret <i>don't</i> automatically get access to the new secret because the ARNs are different.</p> </note>\"\n 1142          },\n 1143          \"Name\":{\n ....\n 1192      }\n 1193    },\n 1194:   \"documentation\":\"<fullname>AWS Secrets Manager API Reference</fullname> <p>AWS Secrets Manager is a web service that enables you to store, manage, and retrieve, secrets.</p> <p>This guide provides descriptions of the Secrets Manager API. For more information about using this service, see the <a href=\\\"http://docs.aws.amazon.com/secretsmanager/latest/userguide/introduction.html\\\">AWS Secrets Manager User Guide</a>.</p> <p> <b>API Version</b> </p> <p>This version of the Secrets Manager API Reference documents the Secrets Manager API version 2017-10-17.</p> <note> <p>As an alternative to using the API directly, you can use one of the AWS SDKs, which consist of libraries and sample code for various programming languages and platforms (such as Java, Ruby, .NET, iOS, and Android). The SDKs provide a convenient way to create programmatic access to AWS Secrets Manager. For example, the SDKs take care of cryptographically signing requests, managing errors, and retrying requests automatically. For more information about the AWS SDKs, including how to download and install them, see <a href=\\\"http://aws.amazon.com/tools/\\\">Tools for Amazon Web Services</a>.</p> </note> <p>We recommend that you use the AWS SDKs to make programmatic API calls to Secrets Manager. However, you also can use the Secrets Manager HTTP Query API to make direct calls to the Secrets Manager web service. To learn more about the Secrets Manager HTTP Query API, see <a href=\\\"http://docs.aws.amazon.com/secretsmanager/latest/userguide/query-requests.html\\\">Making Query Requests</a> in the <i>AWS Secrets Manager User Guide</i>. </p> <p>Secrets Manager supports GET and POST requests for all actions. That is, the API doesn't require you to use GET for some actions and POST for others. However, GET requests are subject to the limitation size of a URL. Therefore, for operations that require larger sizes, use a POST request.</p> <p> <b>Support and Feedback for AWS Secrets Manager</b> </p> <p>We welcome your feedback. Send your comments to <a href=\\\"mailto:awssecretsmanager-feedback@amazon.com\\\">awssecretsmanager-feedback@amazon.com</a>, or post your feedback and questions in the <a href=\\\"http://forums.aws.amazon.com/forum.jspa?forumID=296\\\">AWS Secrets Manager Discussion Forum</a>. For more information about the AWS Discussion Forums, see <a href=\\\"http://forums.aws.amazon.com/help.jspa\\\">Forums Help</a>.</p> <p> <b>How examples are presented</b> </p> <p>The JSON that AWS Secrets Manager expects as your request parameters and that the service returns as a response to HTTP query requests are single, long strings without line breaks or white space formatting. The JSON shown in the examples is formatted with both line breaks and white space to improve readability. When example input parameters would also result in long strings that extend beyond the screen, we insert line breaks to enhance readability. You should always submit the input as a single JSON text string.</p> <p> <b>Logging API Requests</b> </p> <p>AWS Secrets Manager supports AWS CloudTrail, a service that records AWS API calls for your AWS account and delivers log files to an Amazon S3 bucket. By using information that's collected by AWS CloudTrail, you can determine which requests were successfully made to Secrets Manager, who made the request, when it was made, and so on. For more about AWS Secrets Manager and its support for AWS CloudTrail, see <a href=\\\"http://docs.aws.amazon.com/secretsmanager/latest/userguide/monitoring.html#monitoring_cloudtrail\\\">Logging AWS Secrets Manager Events with AWS CloudTrail</a> in the <i>AWS Secrets Manager User Guide</i>. To learn more about CloudTrail, including how to turn it on and find your log files, see the <a href=\\\"http://docs.aws.amazon.com/awscloudtrail/latest/userguide/what_is_cloud_trail_top_level.html\\\">AWS CloudTrail User Guide</a>.</p>\"\n 1195  }\n 1196  \n\n/home/kritten/Documents/mturk-manager/venv/lib/python3.6/site-packages/django/middleware/csrf.py:\n  112          # Older Django versions set cookies to values of CSRF_SECRET_LENGTH\n  113          # alphanumeric characters. For backwards compatibility, accept\n  114:         # such values as unsalted secrets.\n  115          # It's easier to salt here and be consistent later, rather than add\n  116          # different code paths in the checks, although that might be a tad more\n\n252 matches across 19 files\n\n\nSearching 19656 files for \"from secrets\"\n\n/home/kritten/Documents/mturk-manager/mturk/mturk_manager/classes/qualifications.py:\n    1  from mturk_manager.models import Model_Qualification\n    2  from mturk_manager.classes.projects import Manager_Projects\n    3: from secrets import token_urlsafe\n    4  \n    5  class Manager_Qualifications(object):\n\n/home/kritten/Documents/mturk-manager/mturk/mturk_manager/classes/workers.py:\n    1  from mturk_manager.models import m_Worker\n    2  from mturk_manager.classes.projects import Manager_Projects\n    3: from secrets import token_urlsafe\n    4  from mturk_manager.enums import STATUS_BLOCK\n    5  from django.db.models import F, Value, Count, Q, Sum, IntegerField, ExpressionWrapper\n\n/home/kritten/Documents/mturk-manager/mturk/mturk_manager/views/code_shared.py:\n    3  from viewer.models import *\n    4  from django.urls import reverse\n    5: # from secrets import token_urlsafe\n    6  from django.conf import settings as settings_django\n    7  import uuid\n\n3 matches across 3 files\n",
+			"settings":
+			{
+				"buffer_size": 73704,
+				"line_ending": "Unix",
+				"name": "Find Results",
+				"scratch": true
+			}
+		},
+		{
+			"file": "mturk/mturk_manager/static/mturk_manager/js/vue/store/modules/batches.js",
+			"settings":
+			{
+				"buffer_size": 7448,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "mturk/mturk_manager/static/mturk_manager/js/vue/components/finances/component-show-balance.vue",
+			"settings":
+			{
+				"buffer_size": 2024,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "mturk/mturk_manager/static/mturk_manager/js/vue/components/workers/component_list_workers.vue",
+			"settings":
+			{
+				"buffer_size": 6428,
+				"encoding": "UTF-8",
+				"line_ending": "Unix",
+				"name": "component_list_workers.vue"
+			}
+		},
+		{
+			"file": "mturk/mturk_manager/static/mturk_manager/js/vue/components/workers/component_item_worker.vue",
+			"settings":
+			{
+				"buffer_size": 3062,
+				"encoding": "UTF-8",
+				"line_ending": "Unix",
+				"name": "component_item_worker.vue"
+			}
+		},
+		{
+			"file": "mturk/mturk_manager/views/index.py",
+			"settings":
+			{
+				"buffer_size": 615,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "mturk/mturk_manager/static/mturk_manager/js/vue/components/workers/component_block_worker.vue",
+			"settings":
+			{
+				"buffer_size": 1928,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "mturk/mturk_manager/static/mturk_manager/js/vue/store/modules/workers.js",
+			"settings":
+			{
+				"buffer_size": 2984,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "mturk/mturk_manager/static/mturk_manager/js/vue/classes/enums.js",
+			"settings":
+			{
+				"buffer_size": 70,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -643,7 +773,7 @@
 			"file": "mturk/mturk_manager/views/workers.py",
 			"settings":
 			{
-				"buffer_size": 2009,
+				"buffer_size": 3138,
 				"encoding": "UTF-8",
 				"line_ending": "Unix",
 				"name": "workers.py"
@@ -653,10 +783,19 @@
 			"file": "mturk/mturk_manager/serializers/serializer_worker.py",
 			"settings":
 			{
-				"buffer_size": 1505,
+				"buffer_size": 927,
 				"encoding": "UTF-8",
 				"line_ending": "Unix",
 				"name": "serializer_worker.py"
+			}
+		},
+		{
+			"file": "mturk/mturk_manager/classes/workers.py",
+			"settings":
+			{
+				"buffer_size": 3761,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
 			}
 		},
 		{
@@ -689,19 +828,10 @@
 			}
 		},
 		{
-			"file": "mturk/mturk_manager/classes/__init__.py",
-			"settings":
-			{
-				"buffer_size": 89,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
 			"file": "mturk/mturk_manager/views/create.py",
 			"settings":
 			{
-				"buffer_size": 16614,
+				"buffer_size": 16747,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -733,6 +863,24 @@
 			}
 		},
 		{
+			"file": "mturk/mturk_manager/views/view.py",
+			"settings":
+			{
+				"buffer_size": 10102,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "mturk/mturk_manager/templates/mturk_manager/view.html",
+			"settings":
+			{
+				"buffer_size": 13252,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
 			"file": "mturk/mturk_manager/views/documentation.py",
 			"settings":
 			{
@@ -755,16 +903,8 @@
 			"file": "mturk/mturk_manager/views/project.py",
 			"settings":
 			{
-				"buffer_size": 49893,
+				"buffer_size": 50309,
 				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "mturk/mturk/urls.py",
-			"settings":
-			{
-				"buffer_size": 956,
 				"line_ending": "Unix"
 			}
 		},
@@ -798,19 +938,10 @@
 			"file": "mturk/mturk_manager/forms/forms_project.py",
 			"settings":
 			{
-				"buffer_size": 4528,
+				"buffer_size": 4672,
 				"encoding": "UTF-8",
 				"line_ending": "Unix",
 				"name": "forms_project.py"
-			}
-		},
-		{
-			"file": "mturk/mturk_manager/forms/__init__.py",
-			"settings":
-			{
-				"buffer_size": 121,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
 			}
 		},
 		{
@@ -827,15 +958,6 @@
 			"settings":
 			{
 				"buffer_size": 18831,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "mturk/mturk/settings.py",
-			"settings":
-			{
-				"buffer_size": 5219,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -873,16 +995,7 @@
 			"file": "mturk/mturk_manager/urls.py",
 			"settings":
 			{
-				"buffer_size": 3148,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "mturk/mturk_manager/views/__init__.py",
-			"settings":
-			{
-				"buffer_size": 495,
+				"buffer_size": 3444,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -903,7 +1016,7 @@
 			"file": "mturk/mturk_manager/templates/mturk_manager/project.html",
 			"settings":
 			{
-				"buffer_size": 15344,
+				"buffer_size": 15448,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -927,19 +1040,11 @@
 			}
 		},
 		{
-			"file": "mturk/mturk_manager/templates/mturk_manager/form_settings_project.html",
-			"settings":
-			{
-				"buffer_size": 6139,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
 			"file": "mturk/mturk_manager/views/api.py",
 			"settings":
 			{
-				"buffer_size": 13425,
+				"buffer_size": 13791,
+				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
@@ -947,7 +1052,7 @@
 			"file": "mturk/mturk_manager/views/money.py",
 			"settings":
 			{
-				"buffer_size": 1519,
+				"buffer_size": 1530,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -966,7 +1071,7 @@
 			"file": "mturk/mturk_manager/classes/qualifications.py",
 			"settings":
 			{
-				"buffer_size": 6586,
+				"buffer_size": 6566,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -985,7 +1090,7 @@
 			"file": "mturk/mturk_manager/views/qualifications.py",
 			"settings":
 			{
-				"buffer_size": 3576,
+				"buffer_size": 3442,
 				"encoding": "UTF-8",
 				"line_ending": "Unix",
 				"name": "qualifications.py"
@@ -995,7 +1100,7 @@
 			"file": "mturk/mturk_manager/helpers.py",
 			"settings":
 			{
-				"buffer_size": 937,
+				"buffer_size": 1053,
 				"encoding": "UTF-8",
 				"line_ending": "Unix",
 				"name": "decorator.py"
@@ -1033,15 +1138,6 @@
 			"settings":
 			{
 				"buffer_size": 2794,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "mturk/mturk_manager/static/mturk_manager/css/formats.css",
-			"settings":
-			{
-				"buffer_size": 1017,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -1098,15 +1194,46 @@
 		"/home/kritten/Documents/mturk-manager/mturk/mturk",
 		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager",
 		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/classes",
+		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/enums",
 		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/forms",
-		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/migrations",
 		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/serializers",
+		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/static",
+		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/static/mturk_manager",
+		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/static/mturk_manager/js",
+		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/static/mturk_manager/js/vue",
+		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/static/mturk_manager/js/vue/classes",
+		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/static/mturk_manager/js/vue/components",
+		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/static/mturk_manager/js/vue/components/batches",
+		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/static/mturk_manager/js/vue/components/finances",
+		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/static/mturk_manager/js/vue/components/qualifications",
+		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/static/mturk_manager/js/vue/components/workers",
+		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/static/mturk_manager/js/vue/store",
+		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/static/mturk_manager/js/vue/store/modules",
 		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/templates",
 		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/templates/mturk_manager",
 		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/views"
 	],
 	"file_history":
 	[
+		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/static/mturk_manager/js/vue/classes/workers.js",
+		"/home/kritten/Documents/mturk-manager/requirements.txt",
+		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/enums/__init__.py",
+		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/enums/workers.py",
+		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/classes/__init__.py",
+		"/home/kritten/Downloads/continuous.csv",
+		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/views/index.py",
+		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/forms/__init__.py",
+		"/home/kritten/Downloads/wetransfer-1a2a26/prepare-real-money-02.py",
+		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/views/__init__.py",
+		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/static/mturk_manager/css/formats.css",
+		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/classes/workers.py",
+		"/home/kritten/Documents/mturk-manager/mturk/mturk/settings.py",
+		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/classes/utils.py",
+		"/home/kritten/Documents/mturk-manager/mturk/parcel.sh",
+		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/static/mturk_manager/js/vue/index.js",
+		"/home/kritten/Downloads/requester-assignment-template.html",
+		"/home/kritten/Downloads/global-template.html",
+		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/templates/mturk_manager/form_settings_project.html",
 		"/home/kritten/Documents/wstud-thesis-komlossy-master/src-py/scripts/edit.csv",
 		"/home/kritten/Documents/wstud-thesis-komlossy-master/src-py/scripts/edit_single.csv",
 		"/home/kritten/Documents/mturk-manager/mturk/package.json",
@@ -1116,21 +1243,17 @@
 		"/home/kritten/Downloads/rootkey.csv",
 		"/home/kritten/Documents/mturk-manager/passwords.txt",
 		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/middleware.py",
-		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/classes/__init__.py",
-		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/views/index.py",
 		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/static/mturk_manager/js/vue/components/qualifications/AppQualifications.vue",
 		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/static/mturk_manager/js/vue/components/qualifications/component-toolbar-qualifications.vue",
 		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/static/mturk_manager/js/vue/dist/index.js",
 		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/static/mturk_manager/js/vue/dist/index.map",
 		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/serializers/serializer_batch.py",
 		"/home/kritten/Documents/mturk-manager/venv/lib/python3.6/site-packages/rest_framework/permissions.py",
-		"/home/kritten/Documents/mturk-manager/requirements.txt",
 		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/forms/forms_create.py",
 		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/templates/mturk_manager/create.html",
 		"/home/kritten/Documents/mturk-manager/Batch_2636686_batch_results2.csv",
 		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/views/example.csv",
 		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/views/migrations.py",
-		"/home/kritten/Documents/mturk-manager/mturk/mturk/settings.py",
 		"/home/kritten/Documents/mturk-manager/settings/awgeg_workers.py",
 		"/home/kritten/Downloads/tags_awgeg_.json",
 		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/views/view.py",
@@ -1138,7 +1261,6 @@
 		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/templates/mturk_manager/base.html",
 		"/home/kritten/Documents/mturk-manager/settings/test.py",
 		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/urls.py",
-		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/views/__init__.py",
 		"/home/yiro4618/Documents/hiwi/wstud-viewer-framework-django/viewer-framework/viewer/templates/viewer/header_pure.html",
 		"/home/yiro4618/Documents/hiwi/wstud-viewer-framework-django/viewer-framework/viewer/static/viewer/js/index.js",
 		"/home/yiro4618/Documents/hiwi/wstud-viewer-framework-django/viewer-framework/dashboard/static/dashboard/css/formats.css",
@@ -1220,31 +1342,19 @@
 		"/home/yiro4618/Documents/hiwi/wstud-viewer-framework-django/viewer-framework/settings_viewer/settings_viewer_cbc.py",
 		"/home/yiro4618/Documents/hiwi/wstud-viewer-framework-django/install.sh",
 		"/run/user/1001/gvfs/sftp:host=webis26,user=webis/home/kipu5728/Documents/Release/GitHub/SIGIR-17/data/corpora/webis-query-speller-corpus/webis-query-speller-corpus.csv",
-		"/home/yiro4618/Documents/hiwi/wstud-viewer-framework-django/viewer-framework/viewer/classes/index/Handle_Index_Dictionary.py",
-		"/home/yiro4618/Documents/hiwi/wstud-viewer-framework-django/viewer-framework/viewer/classes/index/Handle_Index_Lucene.py",
-		"/home/yiro4618/Documents/hiwi/wstud-viewer-framework-django/viewer-framework/viewer/classes/index/Handle_Index.py",
-		"/run/user/1001/gvfs/sftp:host=webis26,user=webis/home/kipu5728/Documents/Release/GitHub/SIGIR-17/data/corpora/webis-query-speller-corpus/webis-query-speller-corpus-error-annotations.csv",
-		"/home/yiro4618/Documents/hiwi/wstud-viewer-framework-django/docs/source/conf.py",
-		"/home/yiro4618/Documents/hiwi/wstud-viewer-framework-django/docs/source/api.rst",
-		"/home/yiro4618/Documents/hiwi/wstud-viewer-framework-django/docs/source/index.rst",
-		"/home/yiro4618/Documents/hiwi/wstud-viewer-framework-django/docs/make.bat",
-		"/home/yiro4618/Documents/hiwi/wstud-viewer-framework-django/docs/Makefile",
-		"/home/yiro4618/Downloads/Python-3.6.2/Lib/glob.py",
-		"/home/yiro4618/Downloads/Python-3.6.2/Lib/pickle.py",
-		"/home/yiro4618/Documents/hiwi/wstud-viewer-framework-django/install_django.sh",
-		"/home/yiro4618/Documents/hiwi/wstud-viewer-framework-django/viewer-framework/install_django.sh",
-		"/home/yiro4618/Documents/hiwi/wstud-viewer-framework-django/viewer-framework/install.sh",
-		"/home/yiro4618/Documents/hiwi/wstud-viewer-framework-django/viewer-framework/performance_whoosh.txt"
+		"/home/yiro4618/Documents/hiwi/wstud-viewer-framework-django/viewer-framework/viewer/classes/index/Handle_Index_Dictionary.py"
 	],
 	"find":
 	{
-		"height": 26.0
+		"height": 39.0
 	},
 	"find_in_files":
 	{
 		"height": 149.0,
 		"where_history":
 		[
+			"/home/kritten/Documents/mturk-manager",
+			"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/static/mturk_manager/js/vue",
 			"/home/kritten/Documents/mturk-manager/mturk/mturk_manager",
 			"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/views",
 			"/home/kritten/Documents/mturk-manager/mturk/mturk_manager",
@@ -1258,6 +1368,90 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"span",
+			":lab",
+			"Switch ",
+			"show_wo",
+			"items",
+			"custom_filter",
+			"items",
+			"token_urlsafe",
+			"token_urlsafe()",
+			"token_urlsafe",
+			"from secrets",
+			"secrets",
+			"use_sandbox",
+			"state.object_batches",
+			"0",
+			"md",
+			"span",
+			"getters",
+			"get_url_api",
+			"get_url_api_qualifications",
+			"get_url_api_workers",
+			"get_url_api_qualifications",
+			"setBalance",
+			"set_show_progress_indicator",
+			" this.set_show_progress_indicator(true);\n\n            this.sync_workers().then(() => {\n                this.set_show_progress_indicator(false);\n            });",
+			"\n            this.set_show_progress_indicator(true);\n\n            this.sync_workers().then(() => {\n                this.set_show_progress_indicator(false);\n            });",
+			"redirect",
+			"name_project",
+			"name_quoted",
+			"preprocess_template_inject",
+			"get_stats",
+			")\n",
+			"()",
+			"getters",
+			"set_workers_sandbox",
+			"object_workers_sandbox",
+			"sync_workers",
+			"toggle_use_sandbox",
+			"root",
+			"state.object_workers",
+			"set_qualificiations_sandbox",
+			"set_workers",
+			"ComponentToolbarQualifications",
+			"get_url_api_qualifications",
+			"prepare-batch-size-1k",
+			"href",
+			"Enum",
+			"value_old",
+			" == STATUS_BLOCK.HARD",
+			"Model_Worker",
+			"id_mturk",
+			"load_from_mturk",
+			"id_mturk",
+			"dictionary_qualification",
+			"id_mturk",
+			"is_blocked",
+			"get_url_api_qualifications",
+			"s",
+			"set_url_api_workers",
+			"status_block_new",
+			"worker",
+			"this",
+			"sync_workers",
+			":",
+			"STATUS_BLOCK",
+			"status_block",
+			"title",
+			"props.item",
+			"sync_workers",
+			" =",
+			"NONE",
+			"name",
+			"...",
+			">>>",
+			"hit_wrapper",
+			"wrapper_hits",
+			"add_template_global",
+			"modal_add_template_global",
+			"update_template_global",
+			"global",
+			"qualification_assignments_approved",
+			"escapejs",
+			"\\\"",
+			"queryset_hits",
 			"), ",
 			" (",
 			"qualification_assignments_approved",
@@ -1301,91 +1495,7 @@
 			"name",
 			"mturk",
 			"name_mturk",
-			"database",
-			"delete_qualifications",
-			"database",
-			"item",
-			"urlparse",
-			"delete_qualifications",
-			"list_qualifictiaons",
-			"object_qualification",
-			"add_qualification",
-			"data",
-			"is_auto_granted",
-			"description_database",
-			"dictionary_qualifications",
-			", required=False",
-			"IsRequestable",
-			"is_active",
-			"status",
-			"name_mturk",
-			"description",
-			"id",
-			"ations",
-			"ifications",
-			"obj_policy",
-			"add_policy",
-			"add_policy_custom",
-			"add_policy",
-			"show_dialog_qualification",
-			"sync_policies",
-			"show_dialog_qualification_add",
-			"policy_dialog",
-			"show_dialog_policy",
-			"title_dialog_policy",
-			"show_dialog_qualification_add",
-			"description_mturk",
-			"name_database",
-			"name_mturk",
-			"description",
-			"name",
-			"is_active",
-			"sync_policies",
-			"set_policies",
-			"show_dialog_policy",
-			"HJRh8+QG6uIfiq9foIgy3MmVFgOGC5nR",
-			"AKIAJUD2Y77Z7DIHUB5A",
-			"allow_null",
-			"False",
-			"required",
-			"source=",
-			", source=",
-			"turk",
-			"mturk",
-			"queryset_qualifications",
-			"name",
-			"qualifiction",
-			"db_obj_project",
-			"boto3",
-			"format",
-			"my_decorator",
-			"url_api_policies",
-			"'),",
-			"new Policy",
-			"Policy",
-			"modulePolicies",
-			"Policy",
-			"poli",
-			"AppPolicies",
-			", ",
-			"Project",
-			"Worker",
-			"Workers",
-			"project",
-			"Serializer_Project",
-			"project",
-			"worker",
-			"as_view",
-			"Worker",
-			"Workers",
-			"workers",
-			"worker",
-			"Worker",
-			"workers",
-			"Serializer_Worker",
-			"m_Worker",
-			"snippet",
-			"SnippetSerializer"
+			"database"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -1404,7 +1514,7 @@
 	"groups":
 	[
 		{
-			"selected": 42,
+			"selected": 19,
 			"sheets":
 			[
 				{
@@ -1413,15 +1523,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 7078,
+						"buffer_size": 7381,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								930,
-								930
+								579,
+								579
 							]
 						],
 						"settings":
@@ -1434,40 +1544,71 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 10,
+					"stack_index": 14,
 					"type": "text"
 				},
 				{
 					"buffer": 1,
-					"file": "mturk/mturk_manager/static/mturk_manager/js/vue/index.js",
+					"file": "mturk/mturk_manager/views/migrations.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 987,
+						"buffer_size": 23793,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								728,
-								728
+								1250,
+								1250
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"translate_tabs_to_spaces": false
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 34,
+					"stack_index": 33,
 					"type": "text"
 				},
 				{
 					"buffer": 2,
+					"file": "mturk/mturk/settings.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5219,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1117,
+								1117
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 270.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 12,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
 					"file": "mturk/mturk_manager/static/mturk_manager/js/vue/components/component-navigation-drawer.vue",
 					"semi_transient": false,
 					"settings":
@@ -1490,27 +1631,27 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 324.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 39,
+					"stack_index": 40,
 					"type": "text"
 				},
 				{
-					"buffer": 3,
+					"buffer": 4,
 					"file": "mturk/mturk_manager/static/mturk_manager/js/vue/App.vue",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 5662,
+						"buffer_size": 5756,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								874,
-								874
+								1050,
+								1050
 							]
 						],
 						"settings":
@@ -1520,14 +1661,43 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 54.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 25,
+					"stack_index": 27,
 					"type": "text"
 				},
 				{
-					"buffer": 4,
+					"buffer": 5,
+					"file": "mturk/mturk_manager/static/mturk_manager/js/vue/components/workers/component_toolbar_workers.vue",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 954,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								645,
+								645
+							]
+						],
+						"settings":
+						{
+							"auto_name": "component_toolbar_workers.vue",
+							"syntax": "Packages/HTML/HTML.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 26,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
 					"file": "mturk/mturk_manager/static/mturk_manager/js/vue/components/qualifications/component-update-qualification.vue",
 					"semi_transient": false,
 					"settings":
@@ -1551,27 +1721,27 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 324.0,
+						"translation.y": 162.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 21,
+					"stack_index": 24,
 					"type": "text"
 				},
 				{
-					"buffer": 5,
+					"buffer": 7,
 					"file": "mturk/mturk_manager/static/mturk_manager/js/vue/store/index.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2959,
+						"buffer_size": 3276,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								733,
-								733
+								829,
+								829
 							]
 						],
 						"settings":
@@ -1584,24 +1754,24 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 23,
+					"stack_index": 25,
 					"type": "text"
 				},
 				{
-					"buffer": 6,
+					"buffer": 8,
 					"file": "mturk/mturk_manager/static/mturk_manager/js/vue/store/modules/qualifications.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 5127,
+						"buffer_size": 4585,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								5127,
-								5127
+								3447,
+								3500
 							]
 						],
 						"settings":
@@ -1609,27 +1779,27 @@
 							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
 						},
 						"translation.x": 0.0,
-						"translation.y": 486.0,
+						"translation.y": 1512.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 19,
+					"stack_index": 30,
 					"type": "text"
 				},
 				{
-					"buffer": 7,
+					"buffer": 9,
 					"file": "mturk/mturk_manager/static/mturk_manager/js/vue/components/qualifications/AppQualifications.vue",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 5352,
+						"buffer_size": 5286,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								4385,
-								4385
+								5006,
+								5006
 							]
 						],
 						"settings":
@@ -1639,14 +1809,1332 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1620.0,
+						"translation.y": 2088.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 27,
+					"stack_index": 23,
 					"type": "text"
 				},
 				{
-					"buffer": 8,
+					"buffer": 10,
+					"file": "mturk/mturk_manager/static/mturk_manager/js/vue/store/modules/money.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1066,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								813,
+								813
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 54.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 29,
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "mturk/mturk_manager/static/mturk_manager/js/vue/components/workers/AppWorkers.vue",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3258,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								346,
+								346
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 108.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 12,
+					"file": "mturk/mturk_manager/static/mturk_manager/js/vue/components/finances/AppFinances.vue",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2061,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1218,
+								1231
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 432.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 17,
+					"type": "text"
+				},
+				{
+					"buffer": 13,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 73704,
+						"regions":
+						{
+							"match":
+							{
+								"flags": 112,
+								"regions":
+								[
+									[
+										543,
+										550
+									],
+									[
+										832,
+										839
+									],
+									[
+										1175,
+										1182
+									],
+									[
+										1554,
+										1561
+									],
+									[
+										1780,
+										1787
+									],
+									[
+										2071,
+										2078
+									],
+									[
+										2272,
+										2279
+									],
+									[
+										2473,
+										2480
+									],
+									[
+										2769,
+										2776
+									],
+									[
+										2995,
+										3002
+									],
+									[
+										3201,
+										3208
+									],
+									[
+										3512,
+										3519
+									],
+									[
+										3711,
+										3718
+									],
+									[
+										4001,
+										4008
+									],
+									[
+										4290,
+										4297
+									],
+									[
+										4720,
+										4727
+									],
+									[
+										4839,
+										4846
+									],
+									[
+										5446,
+										5453
+									],
+									[
+										5956,
+										5963
+									],
+									[
+										6168,
+										6175
+									],
+									[
+										6380,
+										6387
+									],
+									[
+										6611,
+										6618
+									],
+									[
+										6836,
+										6843
+									],
+									[
+										7145,
+										7152
+									],
+									[
+										7258,
+										7265
+									],
+									[
+										7300,
+										7307
+									],
+									[
+										7380,
+										7387
+									],
+									[
+										7424,
+										7431
+									],
+									[
+										7459,
+										7466
+									],
+									[
+										9090,
+										9097
+									],
+									[
+										9441,
+										9448
+									],
+									[
+										9461,
+										9468
+									],
+									[
+										9785,
+										9792
+									],
+									[
+										9910,
+										9917
+									],
+									[
+										10523,
+										10530
+									],
+									[
+										10647,
+										10654
+									],
+									[
+										10701,
+										10708
+									],
+									[
+										10937,
+										10944
+									],
+									[
+										11097,
+										11104
+									],
+									[
+										11203,
+										11210
+									],
+									[
+										11281,
+										11288
+									],
+									[
+										11431,
+										11438
+									],
+									[
+										12090,
+										12097
+									],
+									[
+										12491,
+										12498
+									],
+									[
+										12717,
+										12724
+									],
+									[
+										12924,
+										12931
+									],
+									[
+										14048,
+										14055
+									],
+									[
+										14203,
+										14210
+									],
+									[
+										14871,
+										14878
+									],
+									[
+										15438,
+										15445
+									],
+									[
+										16147,
+										16154
+									],
+									[
+										16504,
+										16511
+									],
+									[
+										16543,
+										16550
+									],
+									[
+										17134,
+										17141
+									],
+									[
+										17384,
+										17391
+									],
+									[
+										17623,
+										17630
+									],
+									[
+										17845,
+										17852
+									],
+									[
+										18396,
+										18403
+									],
+									[
+										19127,
+										19134
+									],
+									[
+										19239,
+										19246
+									],
+									[
+										19273,
+										19280
+									],
+									[
+										19333,
+										19340
+									],
+									[
+										19369,
+										19376
+									],
+									[
+										19516,
+										19523
+									],
+									[
+										19570,
+										19577
+									],
+									[
+										19787,
+										19794
+									],
+									[
+										19814,
+										19821
+									],
+									[
+										19971,
+										19978
+									],
+									[
+										20674,
+										20681
+									],
+									[
+										20693,
+										20700
+									],
+									[
+										21181,
+										21188
+									],
+									[
+										21355,
+										21362
+									],
+									[
+										21399,
+										21406
+									],
+									[
+										21636,
+										21643
+									],
+									[
+										22158,
+										22165
+									],
+									[
+										22812,
+										22819
+									],
+									[
+										22972,
+										22979
+									],
+									[
+										23078,
+										23085
+									],
+									[
+										23156,
+										23163
+									],
+									[
+										23306,
+										23313
+									],
+									[
+										23965,
+										23972
+									],
+									[
+										24357,
+										24364
+									],
+									[
+										24585,
+										24592
+									],
+									[
+										25433,
+										25440
+									],
+									[
+										26668,
+										26675
+									],
+									[
+										26729,
+										26736
+									],
+									[
+										26806,
+										26813
+									],
+									[
+										26847,
+										26854
+									],
+									[
+										26871,
+										26878
+									],
+									[
+										26886,
+										26893
+									],
+									[
+										26920,
+										26927
+									],
+									[
+										27700,
+										27707
+									],
+									[
+										27897,
+										27904
+									],
+									[
+										27933,
+										27940
+									],
+									[
+										30051,
+										30058
+									],
+									[
+										31108,
+										31115
+									],
+									[
+										31651,
+										31658
+									],
+									[
+										31867,
+										31874
+									],
+									[
+										31911,
+										31918
+									],
+									[
+										32438,
+										32445
+									],
+									[
+										32519,
+										32526
+									],
+									[
+										32725,
+										32732
+									],
+									[
+										32885,
+										32892
+									],
+									[
+										32991,
+										32998
+									],
+									[
+										33069,
+										33076
+									],
+									[
+										33219,
+										33226
+									],
+									[
+										33878,
+										33885
+									],
+									[
+										34270,
+										34277
+									],
+									[
+										34478,
+										34485
+									],
+									[
+										34667,
+										34674
+									],
+									[
+										35713,
+										35720
+									],
+									[
+										35819,
+										35826
+									],
+									[
+										36176,
+										36183
+									],
+									[
+										36467,
+										36474
+									],
+									[
+										36606,
+										36613
+									],
+									[
+										37118,
+										37125
+									],
+									[
+										37604,
+										37611
+									],
+									[
+										37815,
+										37822
+									],
+									[
+										38396,
+										38403
+									],
+									[
+										38637,
+										38644
+									],
+									[
+										39252,
+										39259
+									],
+									[
+										39573,
+										39580
+									],
+									[
+										39662,
+										39669
+									],
+									[
+										39742,
+										39749
+									],
+									[
+										39844,
+										39851
+									],
+									[
+										40664,
+										40671
+									],
+									[
+										40822,
+										40829
+									],
+									[
+										40955,
+										40962
+									],
+									[
+										40997,
+										41004
+									],
+									[
+										41174,
+										41181
+									],
+									[
+										41326,
+										41333
+									],
+									[
+										41355,
+										41362
+									],
+									[
+										41420,
+										41427
+									],
+									[
+										41455,
+										41462
+									],
+									[
+										42662,
+										42669
+									],
+									[
+										44931,
+										44938
+									],
+									[
+										45521,
+										45528
+									],
+									[
+										45837,
+										45844
+									],
+									[
+										46195,
+										46202
+									],
+									[
+										46622,
+										46629
+									],
+									[
+										46742,
+										46749
+									],
+									[
+										46852,
+										46859
+									],
+									[
+										47128,
+										47135
+									],
+									[
+										47469,
+										47476
+									],
+									[
+										47805,
+										47812
+									],
+									[
+										48226,
+										48233
+									],
+									[
+										49069,
+										49076
+									],
+									[
+										49266,
+										49273
+									],
+									[
+										49362,
+										49369
+									],
+									[
+										49404,
+										49411
+									],
+									[
+										49603,
+										49610
+									],
+									[
+										49647,
+										49654
+									],
+									[
+										49692,
+										49699
+									],
+									[
+										49987,
+										49994
+									],
+									[
+										50370,
+										50377
+									],
+									[
+										51036,
+										51043
+									],
+									[
+										51613,
+										51620
+									],
+									[
+										51860,
+										51867
+									],
+									[
+										52396,
+										52403
+									],
+									[
+										53049,
+										53056
+									],
+									[
+										53365,
+										53372
+									],
+									[
+										53566,
+										53573
+									],
+									[
+										54128,
+										54135
+									],
+									[
+										54337,
+										54344
+									],
+									[
+										54932,
+										54939
+									],
+									[
+										55172,
+										55179
+									],
+									[
+										56027,
+										56034
+									],
+									[
+										56171,
+										56178
+									],
+									[
+										56240,
+										56247
+									],
+									[
+										56282,
+										56289
+									],
+									[
+										56452,
+										56459
+									],
+									[
+										56607,
+										56614
+									],
+									[
+										56636,
+										56643
+									],
+									[
+										56701,
+										56708
+									],
+									[
+										56736,
+										56743
+									],
+									[
+										58259,
+										58266
+									],
+									[
+										58923,
+										58930
+									],
+									[
+										59412,
+										59419
+									],
+									[
+										59818,
+										59825
+									],
+									[
+										60051,
+										60058
+									],
+									[
+										60564,
+										60571
+									],
+									[
+										60622,
+										60629
+									],
+									[
+										60736,
+										60743
+									],
+									[
+										61018,
+										61025
+									],
+									[
+										61139,
+										61146
+									],
+									[
+										61245,
+										61252
+									],
+									[
+										61526,
+										61533
+									],
+									[
+										61906,
+										61913
+									],
+									[
+										62318,
+										62325
+									],
+									[
+										62540,
+										62547
+									],
+									[
+										63173,
+										63180
+									],
+									[
+										63667,
+										63674
+									],
+									[
+										64089,
+										64096
+									],
+									[
+										64330,
+										64337
+									],
+									[
+										64956,
+										64963
+									],
+									[
+										65046,
+										65053
+									],
+									[
+										65122,
+										65129
+									],
+									[
+										66066,
+										66073
+									],
+									[
+										66196,
+										66203
+									],
+									[
+										66260,
+										66267
+									],
+									[
+										66302,
+										66309
+									],
+									[
+										66501,
+										66508
+									],
+									[
+										66627,
+										66634
+									],
+									[
+										66656,
+										66663
+									],
+									[
+										66721,
+										66728
+									],
+									[
+										66756,
+										66763
+									],
+									[
+										67751,
+										67758
+									],
+									[
+										68307,
+										68314
+									],
+									[
+										68355,
+										68362
+									],
+									[
+										68437,
+										68444
+									],
+									[
+										68493,
+										68500
+									],
+									[
+										68606,
+										68613
+									],
+									[
+										68662,
+										68669
+									],
+									[
+										68749,
+										68756
+									],
+									[
+										68793,
+										68800
+									],
+									[
+										69133,
+										69140
+									],
+									[
+										69528,
+										69535
+									],
+									[
+										69575,
+										69582
+									],
+									[
+										69634,
+										69641
+									],
+									[
+										69687,
+										69694
+									],
+									[
+										69760,
+										69767
+									],
+									[
+										69854,
+										69861
+									],
+									[
+										69894,
+										69901
+									],
+									[
+										70224,
+										70231
+									],
+									[
+										70320,
+										70327
+									],
+									[
+										70360,
+										70367
+									],
+									[
+										70511,
+										70518
+									],
+									[
+										70743,
+										70750
+									],
+									[
+										71292,
+										71299
+									],
+									[
+										71554,
+										71561
+									],
+									[
+										71641,
+										71648
+									],
+									[
+										71734,
+										71741
+									],
+									[
+										71818,
+										71825
+									],
+									[
+										71879,
+										71886
+									],
+									[
+										72463,
+										72470
+									],
+									[
+										72934,
+										72946
+									],
+									[
+										73223,
+										73235
+									],
+									[
+										73566,
+										73578
+									]
+								],
+								"scope": ""
+							}
+						},
+						"selection":
+						[
+							[
+								73572,
+								73572
+							]
+						],
+						"settings":
+						{
+							"detect_indentation": false,
+							"line_numbers": false,
+							"output_tag": 2,
+							"result_base_dir": "",
+							"result_file_regex": "^([^ \t].*):$",
+							"result_line_regex": "^ +([0-9]+):",
+							"scroll_past_end": true,
+							"syntax": "Packages/Default/Find Results.hidden-tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 15966.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 19,
+					"type": "text"
+				},
+				{
+					"buffer": 14,
+					"file": "mturk/mturk_manager/static/mturk_manager/js/vue/store/modules/batches.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7448,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2157,
+								2157
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 558.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 22,
+					"type": "text"
+				},
+				{
+					"buffer": 15,
+					"file": "mturk/mturk_manager/static/mturk_manager/js/vue/components/finances/component-show-balance.vue",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2024,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								669,
+								669
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 31,
+					"type": "text"
+				},
+				{
+					"buffer": 16,
+					"file": "mturk/mturk_manager/static/mturk_manager/js/vue/components/workers/component_list_workers.vue",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 6428,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								77,
+								77
+							]
+						],
+						"settings":
+						{
+							"auto_name": "component_list_workers.vue",
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 17,
+					"file": "mturk/mturk_manager/static/mturk_manager/js/vue/components/workers/component_item_worker.vue",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3062,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								530,
+								530
+							]
+						],
+						"settings":
+						{
+							"auto_name": "component_item_worker.vue",
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 18,
+					"file": "mturk/mturk_manager/views/index.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 615,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								615,
+								615
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 19,
+					"file": "mturk/mturk_manager/static/mturk_manager/js/vue/components/workers/component_block_worker.vue",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1928,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								64,
+								64
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 5.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 20,
+					"file": "mturk/mturk_manager/static/mturk_manager/js/vue/store/modules/workers.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2984,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								805,
+								805
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 21,
+					"file": "mturk/mturk_manager/static/mturk_manager/js/vue/classes/enums.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 70,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								70,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 45,
+					"type": "text"
+				},
+				{
+					"buffer": 22,
 					"file": "mturk/mturk_manager/static/mturk_manager/js/vue/components/qualifications/component-download-qualifications.vue",
 					"semi_transient": false,
 					"settings":
@@ -1665,17 +3153,19 @@
 						"settings":
 						{
 							"auto_name": "component-download-qualification.vue",
-							"syntax": "Packages/HTML/HTML.sublime-syntax"
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 324.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 30,
+					"stack_index": 58,
 					"type": "text"
 				},
 				{
-					"buffer": 9,
+					"buffer": 23,
 					"file": "mturk/mturk_manager/static/mturk_manager/js/vue/components/qualifications/component-add-qualification.vue",
 					"semi_transient": false,
 					"settings":
@@ -1701,11 +3191,11 @@
 						"translation.y": 972.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 24,
+					"stack_index": 57,
 					"type": "text"
 				},
 				{
-					"buffer": 10,
+					"buffer": 24,
 					"file": "mturk/mturk_manager/static/mturk_manager/js/vue/components/qualifications/component-toolbar-qualifications.vue",
 					"semi_transient": false,
 					"settings":
@@ -1731,11 +3221,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 28,
+					"stack_index": 41,
 					"type": "text"
 				},
 				{
-					"buffer": 11,
+					"buffer": 25,
 					"file": "mturk/mturk_manager/static/mturk_manager/js/vue/classes/qualifications.js",
 					"semi_transient": false,
 					"settings":
@@ -1747,24 +3237,25 @@
 						"selection":
 						[
 							[
-								595,
-								613
+								1507,
+								1507
 							]
 						],
 						"settings":
 						{
 							"auto_name": "qualifications.js",
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
 						"translation.y": 162.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 31,
+					"stack_index": 43,
 					"type": "text"
 				},
 				{
-					"buffer": 12,
+					"buffer": 26,
 					"file": "mturk/mturk_manager/migrations/0013_m_project_slug.py",
 					"semi_transient": false,
 					"settings":
@@ -1790,69 +3281,101 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 48,
+					"stack_index": 13,
 					"type": "text"
 				},
 				{
-					"buffer": 13,
+					"buffer": 27,
 					"file": "mturk/mturk_manager/views/workers.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2009,
+						"buffer_size": 3138,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								529,
-								548
+								2423,
+								2423
 							]
 						],
 						"settings":
 						{
 							"auto_name": "workers.py",
-							"syntax": "Packages/Python/Python.sublime-syntax"
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 432.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 42,
+					"stack_index": 4,
 					"type": "text"
 				},
 				{
-					"buffer": 14,
+					"buffer": 28,
 					"file": "mturk/mturk_manager/serializers/serializer_worker.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1505,
+						"buffer_size": 927,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								204,
-								204
+								635,
+								635
 							]
 						],
 						"settings":
 						{
 							"auto_name": "serializer_worker.py",
-							"syntax": "Packages/Python/Python.sublime-syntax"
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 26,
+					"stack_index": 38,
 					"type": "text"
 				},
 				{
-					"buffer": 15,
+					"buffer": 29,
+					"file": "mturk/mturk_manager/classes/workers.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3761,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								102,
+								102
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 54.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				},
+				{
+					"buffer": 30,
 					"file": "mturk/mturk_manager/serializers/serializer_project.py",
 					"semi_transient": false,
 					"settings":
@@ -1871,17 +3394,19 @@
 						"settings":
 						{
 							"auto_name": "serializer_project.py",
-							"syntax": "Packages/Python/Python.sublime-syntax"
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 49,
+					"stack_index": 42,
 					"type": "text"
 				},
 				{
-					"buffer": 16,
+					"buffer": 31,
 					"file": "mturk/mturk_manager/views/projects.py",
 					"semi_transient": false,
 					"settings":
@@ -1900,17 +3425,19 @@
 						"settings":
 						{
 							"auto_name": "projects.py",
-							"syntax": "Packages/Python/Python.sublime-syntax"
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 36,
+					"stack_index": 37,
 					"type": "text"
 				},
 				{
-					"buffer": 17,
+					"buffer": 32,
 					"file": "mturk/mturk_manager/serializers/__init__.py",
 					"semi_transient": false,
 					"settings":
@@ -1934,52 +3461,24 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 43,
+					"stack_index": 47,
 					"type": "text"
 				},
 				{
-					"buffer": 18,
-					"file": "mturk/mturk_manager/classes/__init__.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 89,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								89,
-								89
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Python/Python.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 41,
-					"type": "text"
-				},
-				{
-					"buffer": 19,
+					"buffer": 33,
 					"file": "mturk/mturk_manager/views/create.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 16614,
+						"buffer_size": 16747,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								9845,
-								9845
+								11878,
+								11878
 							]
 						],
 						"settings":
@@ -1989,14 +3488,14 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 4579.0,
+						"translation.y": 4705.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 46,
+					"stack_index": 10,
 					"type": "text"
 				},
 				{
-					"buffer": 20,
+					"buffer": 34,
 					"file": "README.md",
 					"semi_transient": false,
 					"settings":
@@ -2020,11 +3519,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 38,
+					"stack_index": 59,
 					"type": "text"
 				},
 				{
-					"buffer": 21,
+					"buffer": 35,
 					"file": "/home/kritten/Documents/examples.csv",
 					"semi_transient": false,
 					"settings":
@@ -2048,11 +3547,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 52,
+					"stack_index": 63,
 					"type": "text"
 				},
 				{
-					"buffer": 22,
+					"buffer": 36,
 					"file": "mturk/mturk_manager/views/settings.py",
 					"semi_transient": false,
 					"settings":
@@ -2075,14 +3574,77 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 919.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 37,
+					"stack_index": 52,
 					"type": "text"
 				},
 				{
-					"buffer": 23,
+					"buffer": 37,
+					"file": "mturk/mturk_manager/views/view.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 10102,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1154,
+								1154
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 49,
+					"type": "text"
+				},
+				{
+					"buffer": 38,
+					"file": "mturk/mturk_manager/templates/mturk_manager/view.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 13252,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								836,
+								847
+							],
+							[
+								9483,
+								9494
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 3593.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 48,
+					"type": "text"
+				},
+				{
+					"buffer": 39,
 					"file": "mturk/mturk_manager/views/documentation.py",
 					"semi_transient": false,
 					"settings":
@@ -2108,11 +3670,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 55,
+					"stack_index": 65,
 					"type": "text"
 				},
 				{
-					"buffer": 24,
+					"buffer": 40,
 					"file": "mturk/mturk_manager/templates/mturk_manager/documentation.html",
 					"semi_transient": false,
 					"settings":
@@ -2139,54 +3701,24 @@
 						"translation.y": 746.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 54,
+					"stack_index": 64,
 					"type": "text"
 				},
 				{
-					"buffer": 25,
+					"buffer": 41,
 					"file": "mturk/mturk_manager/views/project.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 49893,
+						"buffer_size": 50309,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								46706,
-								46706
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Python/Python.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 20521.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 6,
-					"type": "text"
-				},
-				{
-					"buffer": 26,
-					"file": "mturk/mturk/urls.py",
-					"semi_transient": true,
-					"settings":
-					{
-						"buffer_size": 956,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
+								687,
+								687
 							]
 						],
 						"settings":
@@ -2199,11 +3731,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 5,
+					"stack_index": 32,
 					"type": "text"
 				},
 				{
-					"buffer": 27,
+					"buffer": 42,
 					"semi_transient": false,
 					"settings":
 					{
@@ -2227,11 +3759,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 45,
+					"stack_index": 61,
 					"type": "text"
 				},
 				{
-					"buffer": 28,
+					"buffer": 43,
 					"file": "/home/kritten/Downloads/4_articles/3A1COHJ8NJV99YZVPSPDAM4DLOE8HY__Ford_Global_Anthem/3A1COHJ8NJV99YZVPSPDAM4DLOE8HY__Ford_Global_Anthem.json",
 					"semi_transient": false,
 					"settings":
@@ -2249,17 +3781,19 @@
 						],
 						"settings":
 						{
-							"syntax": "Packages/JavaScript/JSON.sublime-syntax"
+							"syntax": "Packages/JavaScript/JSON.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 44,
+					"stack_index": 60,
 					"type": "text"
 				},
 				{
-					"buffer": 29,
+					"buffer": 44,
 					"file": "mturk/mturk_manager/forms/forms_dashboard.py",
 					"semi_transient": false,
 					"settings":
@@ -2271,8 +3805,8 @@
 						"selection":
 						[
 							[
-								190,
-								190
+								436,
+								436
 							]
 						],
 						"settings":
@@ -2283,24 +3817,28 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 14,
+					"stack_index": 11,
 					"type": "text"
 				},
 				{
-					"buffer": 30,
+					"buffer": 45,
 					"file": "mturk/mturk_manager/forms/forms_project.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 4528,
+						"buffer_size": 4672,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2747,
-								2767
+								2639,
+								2673
+							],
+							[
+								3244,
+								3278
 							]
 						],
 						"settings":
@@ -2311,42 +3849,14 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 162.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 9,
+					"stack_index": 36,
 					"type": "text"
 				},
 				{
-					"buffer": 31,
-					"file": "mturk/mturk_manager/forms/__init__.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 121,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								121,
-								121
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Python/Python.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 53,
-					"type": "text"
-				},
-				{
-					"buffer": 32,
+					"buffer": 46,
 					"file": "mturk/mturk_manager/forms/widgets_bootstrap.py",
 					"semi_transient": false,
 					"settings":
@@ -2372,11 +3882,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 54,
 					"type": "text"
 				},
 				{
-					"buffer": 33,
+					"buffer": 47,
 					"file": "mturk/mturk_manager/views/code_shared.py",
 					"semi_transient": false,
 					"settings":
@@ -2388,55 +3898,25 @@
 						"selection":
 						[
 							[
-								323,
-								323
+								207,
+								207
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/Python/Python.sublime-syntax",
-							"tab_size": 4,
+							"tab_size": 2,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 40,
+					"stack_index": 18,
 					"type": "text"
 				},
 				{
-					"buffer": 34,
-					"file": "mturk/mturk/settings.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 5219,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1222,
-								1222
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Python/Python.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 162.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 4,
-					"type": "text"
-				},
-				{
-					"buffer": 35,
+					"buffer": 48,
 					"semi_transient": false,
 					"settings":
 					{
@@ -2580,11 +4060,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 55,
 					"type": "text"
 				},
 				{
-					"buffer": 36,
+					"buffer": 49,
 					"file": "mturk/mturk_manager/classes/projects.py",
 					"semi_transient": false,
 					"settings":
@@ -2602,17 +4082,19 @@
 						],
 						"settings":
 						{
-							"syntax": "Packages/Python/Python.sublime-syntax"
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 33,
+					"stack_index": 20,
 					"type": "text"
 				},
 				{
-					"buffer": 37,
+					"buffer": 50,
 					"file": "Batch_2636686_batch_results.csv",
 					"semi_transient": false,
 					"settings":
@@ -2636,24 +4118,24 @@
 						"translation.y": 3078.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 53,
 					"type": "text"
 				},
 				{
-					"buffer": 38,
+					"buffer": 51,
 					"file": "mturk/mturk_manager/urls.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3148,
+						"buffer_size": 3444,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1568,
-								1568
+								3341,
+								3350
 							]
 						],
 						"settings":
@@ -2663,42 +4145,14 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 324.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 18,
+					"stack_index": 5,
 					"type": "text"
 				},
 				{
-					"buffer": 39,
-					"file": "mturk/mturk_manager/views/__init__.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 495,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								495,
-								495
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Python/Python.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 16,
-					"type": "text"
-				},
-				{
-					"buffer": 40,
+					"buffer": 52,
 					"file": "mturk/mturk_manager/views/do_vandalism.html",
 					"semi_transient": false,
 					"settings":
@@ -2721,27 +4175,27 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 380.0,
+						"translation.y": 38.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 47,
+					"stack_index": 46,
 					"type": "text"
 				},
 				{
-					"buffer": 41,
+					"buffer": 53,
 					"file": "mturk/mturk_manager/templates/mturk_manager/project.html",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 15344,
+						"buffer_size": 15448,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2790,
-								2803
+								457,
+								457
 							]
 						],
 						"settings":
@@ -2750,14 +4204,14 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 180.0,
+						"translation.y": 36.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 8,
+					"stack_index": 3,
 					"type": "text"
 				},
 				{
-					"buffer": 42,
+					"buffer": 54,
 					"file": "mturk/mturk_manager/templates/mturk_manager/dashboard.html",
 					"semi_transient": false,
 					"settings":
@@ -2769,8 +4223,8 @@
 						"selection":
 						[
 							[
-								423,
-								435
+								457,
+								457
 							]
 						],
 						"settings":
@@ -2782,11 +4236,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 35,
 					"type": "text"
 				},
 				{
-					"buffer": 43,
+					"buffer": 55,
 					"file": "mturk/mturk_manager/templates/mturk_manager/project_batch.html",
 					"semi_transient": false,
 					"settings":
@@ -2798,8 +4252,8 @@
 						"selection":
 						[
 							[
-								174,
-								195
+								1830,
+								1830
 							]
 						],
 						"settings":
@@ -2808,56 +4262,27 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 324.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 12,
+					"stack_index": 51,
 					"type": "text"
 				},
 				{
-					"buffer": 44,
-					"file": "mturk/mturk_manager/templates/mturk_manager/form_settings_project.html",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 6139,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								3633,
-								3633
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/HTML/HTML.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 1625.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 7,
-					"type": "text"
-				},
-				{
-					"buffer": 45,
+					"buffer": 56,
 					"file": "mturk/mturk_manager/views/api.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 13425,
+						"buffer_size": 13791,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								12568,
-								12568
+								5380,
+								5380
 							]
 						],
 						"settings":
@@ -2867,27 +4292,27 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 5474.0,
+						"translation.y": 2153.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 35,
+					"stack_index": 21,
 					"type": "text"
 				},
 				{
-					"buffer": 46,
+					"buffer": 57,
 					"file": "mturk/mturk_manager/views/money.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1519,
+						"buffer_size": 1530,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1156,
-								1156
+								740,
+								740
 							]
 						],
 						"settings":
@@ -2900,11 +4325,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 29,
+					"stack_index": 34,
 					"type": "text"
 				},
 				{
-					"buffer": 47,
+					"buffer": 58,
 					"file": "mturk/mturk_manager/serializers/serializers_qualification.py",
 					"semi_transient": false,
 					"settings":
@@ -2916,37 +4341,39 @@
 						"selection":
 						[
 							[
-								1868,
-								1868
+								139,
+								139
 							]
 						],
 						"settings":
 						{
 							"auto_name": "serializers_qualification.py",
-							"syntax": "Packages/Python/Python.sublime-syntax"
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 689.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 22,
+					"stack_index": 16,
 					"type": "text"
 				},
 				{
-					"buffer": 48,
+					"buffer": 59,
 					"file": "mturk/mturk_manager/classes/qualifications.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 6586,
+						"buffer_size": 6566,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3844,
-								3844
+								113,
+								113
 							]
 						],
 						"settings":
@@ -2956,14 +4383,14 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1188.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 11,
+					"stack_index": 15,
 					"type": "text"
 				},
 				{
-					"buffer": 49,
+					"buffer": 60,
 					"file": "mturk/mturk_manager/static/mturk_manager/js/vue/components/qualifications/component-delete-qualification.vue",
 					"semi_transient": false,
 					"settings":
@@ -2982,75 +4409,81 @@
 						"settings":
 						{
 							"auto_name": "component-delete-quialification.vue",
-							"syntax": "Packages/HTML/HTML.sublime-syntax"
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 324.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 20,
+					"stack_index": 56,
 					"type": "text"
 				},
 				{
-					"buffer": 50,
+					"buffer": 61,
 					"file": "mturk/mturk_manager/views/qualifications.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3576,
+						"buffer_size": 3442,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2523,
-								2523
+								821,
+								831
 							]
 						],
 						"settings":
 						{
 							"auto_name": "qualifications.py",
-							"syntax": "Packages/Python/Python.sublime-syntax"
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 162.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 17,
+					"stack_index": 39,
 					"type": "text"
 				},
 				{
-					"buffer": 51,
+					"buffer": 62,
 					"file": "mturk/mturk_manager/helpers.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 937,
+						"buffer_size": 1053,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								470,
-								470
+								60,
+								48
 							]
 						],
 						"settings":
 						{
 							"auto_name": "decorator.py",
-							"syntax": "Packages/Python/Python.sublime-syntax"
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 15,
+					"stack_index": 28,
 					"type": "text"
 				},
 				{
-					"buffer": 52,
+					"buffer": 63,
 					"file": ".gitignore",
 					"semi_transient": false,
 					"settings":
@@ -3074,11 +4507,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 50,
+					"stack_index": 62,
 					"type": "text"
 				},
 				{
-					"buffer": 53,
+					"buffer": 64,
 					"file": "mturk/mturk_manager/templates/mturk_manager/project_templates.html",
 					"semi_transient": false,
 					"settings":
@@ -3090,8 +4523,8 @@
 						"selection":
 						[
 							[
-								0,
-								0
+								20087,
+								20087
 							]
 						],
 						"settings":
@@ -3101,14 +4534,14 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 534.0,
+						"translation.y": 9175.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 13,
+					"stack_index": 50,
 					"type": "text"
 				},
 				{
-					"buffer": 54,
+					"buffer": 65,
 					"file": "mturk/mturk_manager/static/mturk_manager/js/main.js",
 					"semi_transient": false,
 					"settings":
@@ -3133,11 +4566,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 56,
+					"stack_index": 66,
 					"type": "text"
 				},
 				{
-					"buffer": 55,
+					"buffer": 66,
 					"file": "mturk/mturk_manager/static/mturk_manager/js/project.js",
 					"semi_transient": false,
 					"settings":
@@ -3149,8 +4582,8 @@
 						"selection":
 						[
 							[
-								0,
-								0
+								1433,
+								1433
 							]
 						],
 						"settings":
@@ -3162,35 +4595,7 @@
 						"translation.y": 171.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 32,
-					"type": "text"
-				},
-				{
-					"buffer": 56,
-					"file": "mturk/mturk_manager/static/mturk_manager/css/formats.css",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1017,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/CSS/CSS.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 51,
+					"stack_index": 44,
 					"type": "text"
 				}
 			]

@@ -1,8 +1,11 @@
 from mturk_manager.models import Model_Qualification
 from mturk_manager.classes.projects import Manager_Projects
+from django.conf import settings as settings_django
 import uuid
 
 class Manager_Qualifications(object):
+    dictionary_id_qualification_block_soft = {}
+
     def __init__(self, arg):
         pass
         # super(Qualification, self).__init__()
@@ -158,3 +161,30 @@ class Manager_Qualifications(object):
         )
 
         return response['QualificationTypes']
+
+    @classmethod
+    def get_id_qualification_block_soft(cls, database_object_project, use_sandbox):
+        client = Manager_Projects.get_mturk_api(database_object_project, use_sandbox)
+
+        try:
+            id_qualification_block_soft = cls.dictionary_id_qualification_block_soft[database_object_project.id]
+        except KeyError:
+            try:
+                response = client.create_qualification_type(
+                    Name=settings_django.NAME_QUALIFICATION_BLOCK_SOFT,
+                    Description=settings_django.DESCRIPTION_QUALIFICATION_BLOCK_SOFT,
+                    QualificationTypeStatus='Active',
+                )
+            except Exception:
+                response = client.list_qualification_types(
+                    Query=settings_django.NAME_QUALIFICATION_BLOCK_SOFT,
+                    MustBeRequestable=False,
+                    MustBeOwnedByCaller=True,
+                )
+                id_qualification_block_soft = response['QualificationTypes'][0]['QualificationTypeId']
+            else:
+                id_qualification_block_soft = response['QualificationType']['QualificationTypeId']
+
+            cls.dictionary_id_qualification_block_soft[database_object_project.id] = id_qualification_block_soft
+
+        return id_qualification_block_soft

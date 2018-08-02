@@ -10,17 +10,23 @@
         ticks="always"
         tick-size="1"
     ></v-slider> -->
-<span>
-    <v-radio-group v-model="status_block_new" row>
-        <v-radio
-            v-for="(n, i) in labels_ticks"
-            v-bind:key="`${worker.name}_${n}`"
-            v-bind:name="worker.name"
-            v-bind:label="n"
-            v-bind:value="values[i]"
-        ></v-radio>
-    </v-radio-group>
-</span>
+<v-layout align-center>
+    <v-flex mr-3>
+        Block:
+    </v-flex>
+    <v-flex>
+        <v-radio-group :disabled="get_show_progress_indicator" v-model="status_block_new" row>
+            <v-radio
+                v-for="(n, i) in labels_ticks"
+                v-bind:key="`${worker.name}_${n}`"
+                v-bind:name="worker.name"
+                v-bind:label="n"
+                v-bind:value="values[i]"
+                class="mb-0"
+            ></v-radio>
+        </v-radio-group>
+    </v-flex>
+</v-layout>
 </template>
 <script>
     import { mapState, mapActions, mapGetters } from 'vuex';
@@ -53,6 +59,7 @@ export default {
         },
     },
     computed: {
+        ...mapGetters(['get_show_progress_indicator']),
     },
     methods: {
         ...mapActions('moduleWorkers', {
