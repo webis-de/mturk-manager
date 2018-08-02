@@ -65714,6 +65714,8 @@ var _extends3 = _interopRequireDefault(_extends2);
 
 var _vuex = require('vuex');
 
+var _enums = require('../../classes/enums.js');
+
 var _component_item_worker = require('./component_item_worker.vue');
 
 var _component_item_worker2 = _interopRequireDefault(_component_item_worker);
@@ -65722,78 +65724,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 // import ComponentShowMoneySpent from './component-show-money-spent.vue';
 // import ComponentShowBatches from './component-show-batches.vue';
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
+// import { Policy } from '../../store/modules/policies.js';
 exports.default = {
     name: 'component-list-workers',
     data: function data() {
@@ -65805,7 +65737,12 @@ exports.default = {
 
             items_per_page: [12, 24],
 
-            search: ''
+            search: '',
+
+            show_workers_blocked_none: true,
+            show_workers_blocked_soft: true,
+            show_workers_blocked_hard: true
+
             // search: 'A10BOAO1EONNS7',
             // policy_new: new Policy({
             //     QualificationTypeStatus: 'Active',
@@ -65817,45 +65754,125 @@ exports.default = {
         'list_workers': 'list_workers'
     })),
     methods: {
-        // add_or_edit_policy() {
-        //     if(this.policy_to_be_edited == null)
-        //     {
-        //         this.add_policy_custom();
-        //     } else {
-        //         this.edit_policy();
-        //     }
-        // },
-        // delete_policy(item) {
-        //     if(confirm(`Do you really want to delete the '${item.get_name()}' policy?`))
-        //     {
+        custom_filter: function custom_filter(items, search, filter) {
+            if (!this.show_workers_blocked_none) {
+                items = items.filter(function (e) {
+                    return e.is_blocked != _enums.STATUS_BLOCK.NONE;
+                });
+            }
+            if (!this.show_workers_blocked_soft) {
+                items = items.filter(function (e) {
+                    return e.is_blocked != _enums.STATUS_BLOCK.SOFT;
+                });
+            }
+            if (!this.show_workers_blocked_hard) {
+                items = items.filter(function (e) {
+                    return e.is_blocked != _enums.STATUS_BLOCK.HARD;
+                });
+            }
 
-        //     }
-        // },
-        // init_edit_policy(policy_to_be_edited) {
-        //     this.policy_to_be_edited = policy_to_be_edited;
-        //     this.show_dialog_policy = true;
-        // },
-        // edit_policy() {
-        //     this.update_policy(this.policy_dialog).then(() => {
-        //         this.show_dialog_policy = false;
-        //     });
-        // },
-        // add_policy_custom() {
-        //     this.add_policy(this.policy_dialog).then(() => {
-        //         this.show_dialog_policy = false;
-        //     });
-        // },
-        // cancel() {
-        //     this.show_dialog_policy = false;
-        // },
+            // console.log(items)
+            search = search.trim();
+            if (search != '') {
+                items = items.filter(function (e) {
+                    return filter(e.name, search);
+                });
+            }
+            // console.log(filter)
+            return items;
+        }
     },
     created: function created() {},
 
     components: {
         ComponentItemWorker: _component_item_worker2.default
     }
-};
-// import { Policy } from '../../store/modules/policies.js';
+}; //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
         var $11f39b = exports.default || module.exports;
       
       if (typeof $11f39b === 'function') {
@@ -65871,22 +65888,89 @@ exports.default = {
   return _c(
     "span",
     [
-      _c("v-text-field", {
-        staticClass: "mb-2",
-        attrs: {
-          "append-icon": "search",
-          label: "Search",
-          "single-line": "",
-          "hide-details": ""
-        },
-        model: {
-          value: _vm.search,
-          callback: function($$v) {
-            _vm.search = $$v
-          },
-          expression: "search"
-        }
-      }),
+      _c(
+        "v-layout",
+        { attrs: { row: "" } },
+        [
+          _c(
+            "v-flex",
+            { attrs: { xs1: "" } },
+            [
+              _c("v-switch", {
+                attrs: { label: "Not Blocked" },
+                model: {
+                  value: _vm.show_workers_blocked_none,
+                  callback: function($$v) {
+                    _vm.show_workers_blocked_none = $$v
+                  },
+                  expression: "show_workers_blocked_none"
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-flex",
+            { attrs: { xs1: "" } },
+            [
+              _c("v-switch", {
+                attrs: { label: "Soft Blocked" },
+                model: {
+                  value: _vm.show_workers_blocked_soft,
+                  callback: function($$v) {
+                    _vm.show_workers_blocked_soft = $$v
+                  },
+                  expression: "show_workers_blocked_soft"
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-flex",
+            { attrs: { xs1: "" } },
+            [
+              _c("v-switch", {
+                attrs: { label: "Hard Blocked" },
+                model: {
+                  value: _vm.show_workers_blocked_hard,
+                  callback: function($$v) {
+                    _vm.show_workers_blocked_hard = $$v
+                  },
+                  expression: "show_workers_blocked_hard"
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-flex",
+            [
+              _c("v-text-field", {
+                staticClass: "mb-2",
+                attrs: {
+                  "append-icon": "search",
+                  label: "Search for name",
+                  "single-line": "",
+                  "hide-details": ""
+                },
+                model: {
+                  value: _vm.search,
+                  callback: function($$v) {
+                    _vm.search = $$v
+                  },
+                  expression: "search"
+                }
+              })
+            ],
+            1
+          )
+        ],
+        1
+      ),
       _vm._v(" "),
       _c("v-data-iterator", {
         attrs: {
@@ -65896,7 +65980,7 @@ exports.default = {
           row: "",
           wrap: "",
           search: _vm.search,
-          "item-key": "name"
+          "custom-filter": _vm.custom_filter
         },
         scopedSlots: _vm._u([
           {
@@ -65947,7 +66031,7 @@ render._withStripped = true
         
       }
     })();
-},{"babel-runtime/helpers/extends":"../../../../../node_modules/babel-runtime/helpers/extends.js","vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","./component_item_worker.vue":"components/workers/component_item_worker.vue","vue-hot-reload-api":"../../../../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../../../../node_modules/vue/dist/vue.common.js"}],"components/workers/AppWorkers.vue":[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":"../../../../../node_modules/babel-runtime/helpers/extends.js","vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","../../classes/enums.js":"classes/enums.js","./component_item_worker.vue":"components/workers/component_item_worker.vue","vue-hot-reload-api":"../../../../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../../../../node_modules/vue/dist/vue.common.js"}],"components/workers/AppWorkers.vue":[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -67942,7 +68026,7 @@ var Worker = exports.Worker = function () {
 	function Worker(data) {
 		(0, _classCallCheck3.default)(this, Worker);
 
-		this.id = data.name;
+		this.id = data.id;
 		// this.m_created_at = new Date(data.CreationTime);
 		// this.m_description = data.Description;
 		// this.m_is_requestable = data.IsRequestable;
@@ -68050,7 +68134,6 @@ var moduleWorkers = exports.moduleWorkers = {
 				return [];
 				// return {};
 			}
-			// console.log(object_current)
 			return _lodash2.default.values(getters.get_object_workers);
 			// return _.orderBy(object_current, ['created_at'], ['desc']);
 		}

@@ -23,7 +23,6 @@ export const moduleWorkers = {
     			return [];
     			// return {};
 			}
-			// console.log(object_current)
             return _.values(getters.get_object_workers);
             // return _.orderBy(object_current, ['created_at'], ['desc']);
     	},

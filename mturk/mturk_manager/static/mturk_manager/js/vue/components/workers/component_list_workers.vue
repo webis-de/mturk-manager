@@ -1,15 +1,28 @@
 <template>
-    <!-- <v-layout row wrap> -->
         <span>
-            <v-text-field
-                v-model="search"
-                append-icon="search"
-                label="Search"
-                single-line
-                hide-details
-                class="mb-2"
-            ></v-text-field>
+            <v-layout row>
+                <v-flex xs1>
+                    <v-switch label="Not Blocked" v-model="show_workers_blocked_none"></v-switch>
+                </v-flex>
+                <v-flex xs1>
+                    <v-switch label="Soft Blocked" v-model="show_workers_blocked_soft"></v-switch>
+                </v-flex>
+                <v-flex xs1>
+                    <v-switch label="Hard Blocked" v-model="show_workers_blocked_hard"></v-switch>
+                </v-flex>
+            
+                <v-flex>
+                    <v-text-field
+                        v-model="search"
+                        append-icon="search"
+                        label="Search for name"
+                        single-line
+                        hide-details
+                        class="mb-2"
+                    ></v-text-field>
+                </v-flex>
 
+            </v-layout>
         <!-- <v-divider></v-divider> -->
 
             <!-- <v-container grid-list-md fluid> -->
@@ -20,8 +33,10 @@
                 row
                 wrap
                 v-bind:search="search"
-                item-key="name"
+                v-bind:custom-filter="custom_filter"
             >
+                <!-- v-bind:filter="custom" -->
+                <!-- item-key="is_blocked" -->
                 <v-flex
                     slot="item"
                     slot-scope="props"
@@ -72,6 +87,7 @@
 <script>
     import { mapState, mapActions, mapGetters } from 'vuex';
     // import { Policy } from '../../store/modules/policies.js';
+    import { STATUS_BLOCK } from '../../classes/enums.js';
     
     import ComponentItemWorker from './component_item_worker.vue';
     // import ComponentShowMoneySpent from './component-show-money-spent.vue';
@@ -88,6 +104,11 @@ export default {
             items_per_page: [12, 24],
 
             search: '',
+
+            show_workers_blocked_none: true,
+            show_workers_blocked_soft: true,
+            show_workers_blocked_hard: true,
+
             // search: 'A10BOAO1EONNS7',
             // policy_new: new Policy({
             //     QualificationTypeStatus: 'Active',
@@ -106,6 +127,36 @@ export default {
         }),
     },
     methods: {
+        custom_filter(items, search, filter) {
+            if(!this.show_workers_blocked_none)
+            {
+                items = items.filter(e => e.is_blocked != STATUS_BLOCK.NONE);
+            }
+            if(!this.show_workers_blocked_soft)
+            {
+                items = items.filter(e => e.is_blocked != STATUS_BLOCK.SOFT);
+            }
+            if(!this.show_workers_blocked_hard)
+            {
+                items = items.filter(e => e.is_blocked != STATUS_BLOCK.HARD);
+            }
+
+
+            // console.log(items)
+            search = search.trim()
+            if(search != '')
+            {
+                items = items.filter(e => filter(e.name, search));
+                
+            }
+            // console.log(filter)
+            return items
+        },
+        // custom(object, search) {
+        //     console.log(object)
+        //     console.log(search)
+        //     return true
+        // },
         // add_or_edit_policy() {
         //     if(this.policy_to_be_edited == null)
         //     {

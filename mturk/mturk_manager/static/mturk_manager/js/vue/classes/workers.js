@@ -4,7 +4,7 @@ export class Worker
 {
 	constructor(data) 
 	{
-		this.id = data.name;
+		this.id = data.id;
 		// this.m_created_at = new Date(data.CreationTime);
 		// this.m_description = data.Description;
 		// this.m_is_requestable = data.IsRequestable;
