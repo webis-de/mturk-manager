@@ -4132,6 +4132,10 @@ upath@^1.0.5:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/upath/-/upath-1.1.0.tgz#35256597e46a581db4793d0ce47fa9aebfc9fabd"
 
+upload-button@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/upload-button/-/upload-button-0.1.0.tgz#f600d01688ae9f1b65d1b84403f1af83b46444b4"
+
 urix@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/urix/-/urix-0.1.0.tgz#da937f7a62e21fec1fd18d49b35c2935067a6c72"
@@ -4223,9 +4227,13 @@ vue@^2.5.16:
   version "2.5.16"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.5.16.tgz#07edb75e8412aaeed871ebafa99f4672584a0085"
 
-vuetify@1.1.0-rc.2:
-  version "1.1.0-rc.2"
-  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-1.1.0-rc.2.tgz#55081cc45b85f5e2ba86d6dfa45dd6abaf91726f"
+vuetify-upload-button@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/vuetify-upload-button/-/vuetify-upload-button-0.1.2.tgz#7d570b74ee0e834e4e02c5ac13eb5243e9243401"
+
+vuetify@1.2.0-beta.0:
+  version "1.2.0-beta.0"
+  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-1.2.0-beta.0.tgz#01f590fad755f13d18bbb70b95400fd362176671"
 
 vuex@^3.0.1:
   version "3.0.1"

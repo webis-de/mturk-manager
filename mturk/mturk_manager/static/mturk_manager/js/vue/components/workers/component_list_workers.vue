@@ -16,7 +16,6 @@
                         v-model="search"
                         append-icon="search"
                         label="Search for name"
-                        single-line
                         hide-details
                         class="mb-2"
                     ></v-text-field>

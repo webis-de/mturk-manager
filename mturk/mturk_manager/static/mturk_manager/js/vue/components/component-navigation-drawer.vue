@@ -53,11 +53,17 @@ export default {
     data() {
         return {
             list_items_menu: [
-	            {
-	                name: 'Finances',
-	                path: '/finances',
-	                icon: 'attach_money',
-	            },
+                {
+                    name: 'Batches',
+                    path: '/batches',
+                    icon: 'notes',
+                    // icon: 'ballot',
+                },
+                {
+                    name: 'Finances',
+                    path: '/finances',
+                    icon: 'attach_money',
+                },
 	            {
 	                name: 'Workers',
 	                path: '/workers',
