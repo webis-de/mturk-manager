@@ -35,10 +35,10 @@ export const store = new Vuex.Store({
         get_show_progress_indicator(state) {
             return state.show_progress_indicator > 0 ? true : false;
         },
-        get_url_api: (state, getters, rootState) => (url, value='') => {
+        get_url_api: (state, getters) => (url, use_sandbox, value='') => {
             url += value;
 
-            if(!rootState.use_sandbox) {
+            if(!use_sandbox) {
                 url += '?use_sandbox=false&';
             } else {
                 url += '?';
@@ -85,6 +85,7 @@ export const store = new Vuex.Store({
             // commit('moduleQualifications/set_url_api_qualification', config.url_api_qualification);
 
             commit('moduleWorkers/set_url_api_workers', config.url_api_workers);
+            commit('moduleWorkers/set_url_api_status_block', config.url_api_status_block);
         },
         async set_show_with_fee({commit, state}, show) {
             commit('set_show_with_fee', show);

@@ -2,9 +2,11 @@ from mturk_manager.models import Model_Qualification
 from mturk_manager.classes.projects import Manager_Projects
 from django.conf import settings as settings_django
 import uuid
+import hashlib
 
 class Manager_Qualifications(object):
     dictionary_id_qualification_block_soft = {}
+    dictionary_id_qualification_block_soft_sandbox = {}
 
     def __init__(self, arg):
         pass
@@ -151,33 +153,38 @@ class Manager_Qualifications(object):
         return response
 
 
-    @staticmethod
-    def load_from_mturk(database_object_project, use_sandbox=True):
-        client = Manager_Projects.get_mturk_api(database_object_project, use_sandbox)
+    # @staticmethod
+    # def load_from_mturk(database_object_project, use_sandbox=True):
+    #     client = Manager_Projects.get_mturk_api(database_object_project, use_sandbox)
 
-        response = client.list_qualification_types(
-            MustBeRequestable=False,
-            MustBeOwnedByCaller=True,
-        )
+    #     response = client.list_qualification_types(
+    #         MustBeRequestable=False,
+    #         MustBeOwnedByCaller=True,
+    #     )
 
-        return response['QualificationTypes']
+    #     return response['QualificationTypes']
 
     @classmethod
     def get_id_qualification_block_soft(cls, database_object_project, use_sandbox):
         client = Manager_Projects.get_mturk_api(database_object_project, use_sandbox)
 
         try:
-            id_qualification_block_soft = cls.dictionary_id_qualification_block_soft[database_object_project.id]
+            if use_sandbox:
+                id_qualification_block_soft = cls.dictionary_id_qualification_block_soft_sandbox[database_object_project.id]
+            else:
+                id_qualification_block_soft = cls.dictionary_id_qualification_block_soft[database_object_project.id]
         except KeyError:
             try:
                 response = client.create_qualification_type(
-                    Name=settings_django.NAME_QUALIFICATION_BLOCK_SOFT,
+                    Name=cls.get_name_qualification_block_soft_hashed(database_object_project),
                     Description=settings_django.DESCRIPTION_QUALIFICATION_BLOCK_SOFT,
                     QualificationTypeStatus='Active',
+                    AutoGranted=True,
+                    AutoGrantedValue=0,
                 )
             except Exception:
                 response = client.list_qualification_types(
-                    Query=settings_django.NAME_QUALIFICATION_BLOCK_SOFT,
+                    Query=cls.get_name_qualification_block_soft_hashed(database_object_project),
                     MustBeRequestable=False,
                     MustBeOwnedByCaller=True,
                 )
@@ -185,6 +192,57 @@ class Manager_Qualifications(object):
             else:
                 id_qualification_block_soft = response['QualificationType']['QualificationTypeId']
 
-            cls.dictionary_id_qualification_block_soft[database_object_project.id] = id_qualification_block_soft
+            if use_sandbox:
+                cls.dictionary_id_qualification_block_soft_sandbox[database_object_project.id] = id_qualification_block_soft
+            else:
+                cls.dictionary_id_qualification_block_soft[database_object_project.id] = id_qualification_block_soft
 
         return id_qualification_block_soft
+
+    @classmethod
+    def get_name_qualification_block_soft_hashed(csl, database_object_project):
+        name_qualification = database_object_project.name
+        return settings_django.PREEFIX_QUALIFICATION_BLOCK_SOFT + hashlib.md5(name_qualification.encode()).hexdigest()
+
+    @classmethod
+    def get_workers_for_qualification(cls, id_qualification_type, database_object_project, use_sandbox):
+        client = Manager_Projects.get_mturk_api(database_object_project, use_sandbox)
+
+        paginator = client.get_paginator('list_workers_with_qualification_type')
+
+        response_iterator = paginator.paginate(
+            QualificationTypeId=id_qualification_type,
+            PaginationConfig={
+                'PageSize': 100,
+            }
+        )
+
+        list_workers = []
+
+        for iterator in response_iterator:
+            for qualification in iterator['Qualifications']:
+                list_workers.append(qualification)
+
+        return list_workers
+
+    @classmethod
+    def get_all_own_qualifications(cls, database_object_project, use_sandbox):
+        client = Manager_Projects.get_mturk_api(database_object_project, use_sandbox)
+
+        paginator = client.get_paginator('list_qualification_types')
+
+        response_iterator = paginator.paginate(
+            MustBeRequestable=False,
+            MustBeOwnedByCaller=True,
+            PaginationConfig={
+                'PageSize': 100,
+            }
+        )
+
+        list_qualifications = []
+
+        for iterator in response_iterator:
+            for qualification in iterator['QualificationTypes']:
+                list_qualifications.append(qualification)
+
+        return list_qualifications

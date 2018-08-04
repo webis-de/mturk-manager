@@ -67368,6 +67368,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+//
+//
+//
+//
 
 exports.default = {
     name: 'component-block-worker',
@@ -67379,27 +67383,41 @@ exports.default = {
     },
     data: function data() {
         return {
-            status_block_new: this.worker.is_blocked,
             labels_ticks: ['None', 'Soft', 'Hard'],
-            values: [_enums.STATUS_BLOCK.NONE, _enums.STATUS_BLOCK.SOFT, _enums.STATUS_BLOCK.HARD]
+            values: [_enums.STATUS_BLOCK.NONE, _enums.STATUS_BLOCK.SOFT, _enums.STATUS_BLOCK.HARD],
+            is_updating: false,
+            status_block_current: undefined,
+            status_block_new: undefined
         };
     },
 
     watch: {
-        status_block_new: function status_block_new() {
+        'worker.is_blocked': function workerIs_blocked(value) {
+            this.status_block_current = value;
+        },
+        status_block_new: function status_block_new(value_new) {
             var _this = this;
 
             this.set_show_progress_indicator(true);
+            this.is_updating = true;
+
+            this.status_block_current = value_new;
 
             this.update_status_block({
                 worker: this.worker,
-                status_block_new: this.status_block_new
+                status_block_new: value_new,
+                status_block_old: this.worker.is_blocked
             }).then(function () {
+                _this.is_updating = false;
                 _this.set_show_progress_indicator(false);
             });
         }
     },
-    computed: (0, _extends3.default)({}, (0, _vuex.mapGetters)(['get_show_progress_indicator'])),
+    computed: {
+        is_enabled: function is_enabled() {
+            return !this.is_updating && this.worker.is_blocked != undefined;
+        }
+    },
     methods: (0, _extends3.default)({}, (0, _vuex.mapActions)('moduleWorkers', {
         'update_status_block': 'update_status_block'
     }), (0, _vuex.mapActions)(['set_show_progress_indicator'])),
@@ -67432,13 +67450,15 @@ exports.default = {
           _c(
             "v-radio-group",
             {
-              attrs: { disabled: _vm.get_show_progress_indicator, row: "" },
-              model: {
-                value: _vm.status_block_new,
-                callback: function($$v) {
-                  _vm.status_block_new = $$v
-                },
-                expression: "status_block_new"
+              attrs: {
+                disabled: !_vm.is_enabled,
+                value: _vm.status_block_current,
+                row: ""
+              },
+              on: {
+                input: function($event) {
+                  _vm.status_block_new = $event
+                }
               }
             },
             _vm._l(_vm.labels_ticks, function(n, i) {
@@ -67521,6 +67541,14 @@ exports.default = {
     // },
     computed: {
         status_block: function status_block() {
+            if (this.worker.is_blocked == undefined) {
+                return {
+                    description: 'Loading',
+                    color: 'success',
+                    icon: ''
+                };
+            }
+
             switch (this.worker.is_blocked) {
                 case _enums.STATUS_BLOCK.NONE:
                     return {
@@ -67684,7 +67712,11 @@ exports.default = {
                       _c(
                         "v-btn",
                         {
-                          attrs: { slot: "activator", icon: "" },
+                          attrs: {
+                            slot: "activator",
+                            icon: "",
+                            loading: _vm.status_block.icon == ""
+                          },
                           slot: "activator"
                         },
                         [
@@ -68136,7 +68168,6 @@ exports.default = {
             var _this = this;
 
             this.set_show_progress_indicator(true);
-
             this.sync_workers().then(function () {
                 _this.set_show_progress_indicator(false);
             });
@@ -70070,7 +70101,7 @@ var Worker = exports.Worker = function () {
 		// this.m_description = data.Description;
 		// this.m_is_requestable = data.IsRequestable;
 		this.name = data.name;
-		this.is_blocked = data.is_blocked;
+		// this.is_blocked = data.is_blocked;
 		// this.m_status = data.QualificationTypeStatus;
 	}
 
@@ -70130,6 +70161,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.moduleWorkers = undefined;
 
+var _stringify = require('babel-runtime/core-js/json/stringify');
+
+var _stringify2 = _interopRequireDefault(_stringify);
+
 var _regenerator = require('babel-runtime/regenerator');
 
 var _regenerator2 = _interopRequireDefault(_regenerator);
@@ -70137,6 +70172,10 @@ var _regenerator2 = _interopRequireDefault(_regenerator);
 var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
 
 var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
+
+var _set = require('babel-runtime/core-js/set');
+
+var _set2 = _interopRequireDefault(_set);
 
 var _axios = require('axios');
 
@@ -70152,6 +70191,8 @@ var _lodash2 = _interopRequireDefault(_lodash);
 
 var _workers = require('../../classes/workers.js');
 
+var _enums = require('../../classes/enums.js');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var moduleWorkers = exports.moduleWorkers = {
@@ -70159,21 +70200,34 @@ var moduleWorkers = exports.moduleWorkers = {
 	state: {
 		url_api_workers: undefined,
 		object_workers: null,
-		object_workers_sandbox: null
+		object_workers_sandbox: null,
+
+		url_api_status_block: undefined
+		// loaded_status_block: false,
+		// loaded_status_block_sandbox: false,
 	},
 	getters: {
+		// get_object_workers: (state, getters, rootState) => {
 		get_object_workers: function get_object_workers(state, getters, rootState) {
-			return rootState.use_sandbox ? state.object_workers_sandbox : state.object_workers;
+			return function () {
+				var use_sandbox = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
+
+				if (use_sandbox == undefined) {
+					return rootState.use_sandbox ? state.object_workers_sandbox : state.object_workers;
+				} else {
+					return use_sandbox ? state.object_workers_sandbox : state.object_workers;
+				}
+			};
 		},
 		list_workers: function list_workers(state, getters, rootState) {
 			// console.log('done')
 			// const object_current = rootState.use_sandbox ? state.object_workers_sandbox : state.object_workers;
 			// console.log(state.object_workers_sandbox)
-			if (getters.get_object_workers == null) {
+			if (getters.get_object_workers() == null) {
 				return [];
 				// return {};
 			}
-			return _lodash2.default.values(getters.get_object_workers);
+			return _lodash2.default.values(getters.get_object_workers());
 			// return _.orderBy(object_current, ['created_at'], ['desc']);
 		}
 	},
@@ -70181,57 +70235,118 @@ var moduleWorkers = exports.moduleWorkers = {
 		set_url_api_workers: function set_url_api_workers(state, url_new) {
 			state.url_api_workers = url_new;
 		},
-		update_worker: function update_worker(state, data_worker) {
-			var obj_worker = new _workers.Worker(data_worker);
-			_vue2.default.set(state.object_workers, obj_worker.name, obj_worker);
+		set_url_api_status_block: function set_url_api_status_block(state, url_new) {
+			state.url_api_status_block = url_new;
 		},
-		update_worker_sandbox: function update_worker_sandbox(state, data_worker) {
+		update_worker: function update_worker(state, _ref) {
+			var data_worker = _ref.data_worker,
+			    use_sandbox = _ref.use_sandbox;
+
+			var object_workers = null;
+			if (use_sandbox) {
+				object_workers = state.object_workers_sandbox;
+			} else {
+				object_workers = state.object_workers;
+			}
+
 			var obj_worker = new _workers.Worker(data_worker);
-			_vue2.default.set(state.object_workers_sandbox, obj_worker.name, obj_worker);
+			_vue2.default.set(object_workers, obj_worker.name, obj_worker);
 		},
-		set_workers: function set_workers(state, data_workers) {
-			state.object_workers = {};
+		update_worker_status_block: function update_worker_status_block(state, _ref2) {
+			var worker = _ref2.worker,
+			    status_block_new = _ref2.status_block_new,
+			    use_sandbox = _ref2.use_sandbox;
+
+			var object_workers = null;
+			if (use_sandbox) {
+				object_workers = state.object_workers_sandbox;
+			} else {
+				object_workers = state.object_workers;
+			}
+
+			_vue2.default.set(object_workers[worker.name], 'is_blocked', status_block_new);
+		},
+
+		// update_worker_sandbox(state, data_worker) {
+		// 	const obj_worker = new Worker(data_worker);
+		// 	Vue.set(state.object_workers_sandbox, obj_worker.name, obj_worker);
+		// },
+		set_workers: function set_workers(state, _ref3) {
+			var data_workers = _ref3.data_workers,
+			    use_sandbox = _ref3.use_sandbox;
+
+			var object_workers = null;
+			if (use_sandbox) {
+				state.object_workers_sandbox = {};
+				object_workers = state.object_workers_sandbox;
+			} else {
+				state.object_workers = {};
+				object_workers = state.object_workers;
+			}
+
 			_lodash2.default.forEach(data_workers, function (data_worker) {
 				var obj_worker = new _workers.Worker(data_worker);
-				_vue2.default.set(state.object_workers, obj_worker.name, obj_worker);
+				_vue2.default.set(object_workers, obj_worker.name, obj_worker);
 			});
 		},
-		set_workers_sandbox: function set_workers_sandbox(state, data_workers) {
-			state.object_workers_sandbox = {};
-			_lodash2.default.forEach(data_workers, function (data_worker) {
-				var obj_worker = new _workers.Worker(data_worker);
-				_vue2.default.set(state.object_workers_sandbox, obj_worker.name, obj_worker);
+		set_status_block: function set_status_block(state, _ref4) {
+			var data_status_block = _ref4.data_status_block,
+			    use_sandbox = _ref4.use_sandbox;
+
+			var set_blocked_soft = new _set2.default(data_status_block.soft);
+			var set_blocked_hard = new _set2.default(data_status_block.hard);
+
+			var object_workers = null;
+			if (use_sandbox) {
+				object_workers = state.object_workers_sandbox;
+			} else {
+				object_workers = state.object_workers;
+			}
+
+			_lodash2.default.forEach(object_workers, function (worker) {
+				if (set_blocked_soft.has(worker.name)) {
+					_vue2.default.set(worker, 'is_blocked', _enums.STATUS_BLOCK.SOFT);
+				} else if (set_blocked_hard.has(worker.name)) {
+					_vue2.default.set(worker, 'is_blocked', _enums.STATUS_BLOCK.HARD);
+				} else {
+					_vue2.default.set(worker, 'is_blocked', _enums.STATUS_BLOCK.NONE);
+				}
 			});
 		}
 	},
 	actions: {
 		sync_workers: function () {
-			var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(_ref) {
-				var commit = _ref.commit,
-				    state = _ref.state,
-				    getters = _ref.getters,
-				    rootState = _ref.rootState,
-				    rootGetters = _ref.rootGetters;
+			var _ref6 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(_ref5) {
+				var commit = _ref5.commit,
+				    state = _ref5.state,
+				    getters = _ref5.getters,
+				    rootState = _ref5.rootState,
+				    rootGetters = _ref5.rootGetters;
 				var force = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+				var use_sandbox;
 				return _regenerator2.default.wrap(function _callee$(_context) {
 					while (1) {
 						switch (_context.prev = _context.next) {
 							case 0:
-								if (!(getters.get_object_workers == null || force)) {
-									_context.next = 3;
+								use_sandbox = rootState.use_sandbox;
+
+								if (!(getters.get_object_workers(use_sandbox) == null || force)) {
+									_context.next = 6;
 									break;
 								}
 
-								_context.next = 3;
-								return _axios2.default.get(rootGetters.get_url_api(state.url_api_workers)).then(function (response) {
-									if (rootState.use_sandbox) {
-										commit('set_workers_sandbox', response.data);
-									} else {
-										commit('set_workers', response.data);
-									}
+								_context.next = 4;
+								return _axios2.default.get(rootGetters.get_url_api(state.url_api_workers, use_sandbox)).then(function (response) {
+									commit('set_workers', { 'data_workers': response.data, use_sandbox: use_sandbox });
 								});
 
-							case 3:
+							case 4:
+								_context.next = 6;
+								return _axios2.default.get(rootGetters.get_url_api(state.url_api_status_block, use_sandbox)).then(function (response) {
+									commit('set_status_block', { 'data_status_block': response.data, use_sandbox: use_sandbox });
+								});
+
+							case 6:
 							case 'end':
 								return _context.stop();
 						}
@@ -70239,42 +70354,47 @@ var moduleWorkers = exports.moduleWorkers = {
 				}, _callee, this);
 			}));
 
-			function sync_workers(_x2) {
-				return _ref2.apply(this, arguments);
+			function sync_workers(_x3) {
+				return _ref6.apply(this, arguments);
 			}
 
 			return sync_workers;
 		}(),
 		update_status_block: function () {
-			var _ref5 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(_ref3, _ref4) {
-				var commit = _ref3.commit,
-				    state = _ref3.state,
-				    getters = _ref3.getters,
-				    rootState = _ref3.rootState,
-				    rootGetters = _ref3.rootGetters;
-				var worker = _ref4.worker,
-				    status_block_new = _ref4.status_block_new;
-				var form_data;
+			var _ref9 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(_ref7, _ref8) {
+				var commit = _ref7.commit,
+				    state = _ref7.state,
+				    getters = _ref7.getters,
+				    rootState = _ref7.rootState,
+				    rootGetters = _ref7.rootGetters;
+				var worker = _ref8.worker,
+				    status_block_new = _ref8.status_block_new,
+				    status_block_old = _ref8.status_block_old;
+				var use_sandbox, form_data;
 				return _regenerator2.default.wrap(function _callee2$(_context2) {
 					while (1) {
 						switch (_context2.prev = _context2.next) {
 							case 0:
+								use_sandbox = rootState.use_sandbox;
 								form_data = new FormData();
 
-								form_data.set('is_blocked', status_block_new);
+								form_data.set('is_blocked', (0, _stringify2.default)({
+									status_block_new: status_block_new,
+									status_block_old: status_block_old
+								}));
 
-								_context2.next = 4;
-								return _axios2.default.put(rootGetters.get_url_api(state.url_api_workers, worker.name), form_data, {
+								_context2.next = 5;
+								return _axios2.default.put(rootGetters.get_url_api(state.url_api_workers, use_sandbox, worker.name), form_data, {
 									headers: { "X-CSRFToken": rootState.token_csrf }
 								}).then(function (response) {
-									if (rootState.use_sandbox) {
-										commit('update_worker_sandbox', response.data);
-									} else {
-										commit('update_worker', response.data);
-									}
+									// if(rootState.use_sandbox) {
+									//      		commit('update_worker_sandbox', response.data);
+									// } else {
+									commit('update_worker_status_block', { worker: worker, status_block_new: status_block_new, use_sandbox: use_sandbox });
+									// }
 								});
 
-							case 4:
+							case 5:
 							case 'end':
 								return _context2.stop();
 						}
@@ -70282,15 +70402,15 @@ var moduleWorkers = exports.moduleWorkers = {
 				}, _callee2, this);
 			}));
 
-			function update_status_block(_x3, _x4) {
-				return _ref5.apply(this, arguments);
+			function update_status_block(_x4, _x5) {
+				return _ref9.apply(this, arguments);
 			}
 
 			return update_status_block;
 		}()
 	}
 };
-},{"babel-runtime/regenerator":"../../../../../node_modules/babel-runtime/regenerator/index.js","babel-runtime/helpers/asyncToGenerator":"../../../../../node_modules/babel-runtime/helpers/asyncToGenerator.js","axios":"../../../../../node_modules/axios/index.js","vue":"../../../../../node_modules/vue/dist/vue.common.js","lodash":"../../../../../node_modules/lodash/lodash.js","../../classes/workers.js":"classes/workers.js"}],"store/modules/batches.js":[function(require,module,exports) {
+},{"babel-runtime/core-js/json/stringify":"../../../../../node_modules/babel-runtime/core-js/json/stringify.js","babel-runtime/regenerator":"../../../../../node_modules/babel-runtime/regenerator/index.js","babel-runtime/helpers/asyncToGenerator":"../../../../../node_modules/babel-runtime/helpers/asyncToGenerator.js","babel-runtime/core-js/set":"../../../../../node_modules/babel-runtime/core-js/set.js","axios":"../../../../../node_modules/axios/index.js","vue":"../../../../../node_modules/vue/dist/vue.common.js","lodash":"../../../../../node_modules/lodash/lodash.js","../../classes/workers.js":"classes/workers.js","../../classes/enums.js":"classes/enums.js"}],"store/modules/batches.js":[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -70606,13 +70726,13 @@ var store = exports.store = new _vuex2.default.Store({
             return state.show_progress_indicator > 0 ? true : false;
         },
 
-        get_url_api: function get_url_api(state, getters, rootState) {
-            return function (url) {
-                var value = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
+        get_url_api: function get_url_api(state, getters) {
+            return function (url, use_sandbox) {
+                var value = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
 
                 url += value;
 
-                if (!rootState.use_sandbox) {
+                if (!use_sandbox) {
                     url += '?use_sandbox=false&';
                 } else {
                     url += '?';
@@ -70669,8 +70789,9 @@ var store = exports.store = new _vuex2.default.Store({
                                 // commit('moduleQualifications/set_url_api_qualification', config.url_api_qualification);
 
                                 commit('moduleWorkers/set_url_api_workers', config.url_api_workers);
+                                commit('moduleWorkers/set_url_api_status_block', config.url_api_status_block);
 
-                            case 10:
+                            case 11:
                             case 'end':
                                 return _context.stop();
                         }
@@ -70884,7 +71005,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = '' || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + '42067' + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '45475' + '/');
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
 

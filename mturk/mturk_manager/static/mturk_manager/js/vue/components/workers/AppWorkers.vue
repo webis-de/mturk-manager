@@ -59,7 +59,6 @@ export default {
     methods: {
         refresh_data() {
             this.set_show_progress_indicator(true);
-
             this.sync_workers().then(() => {
                 this.set_show_progress_indicator(false);
             });

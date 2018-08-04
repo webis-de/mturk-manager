@@ -32,14 +32,14 @@
                 </v-list>
             </v-menu>
         </v-card-title>
-
         <v-divider></v-divider>
         <v-list dense>
             <v-list-tile>
                 <v-list-tile-content>Block Status:</v-list-tile-content>
                 <v-list-tile-content class="align-end">
+
                     <v-tooltip left>
-                        <v-btn icon slot="activator">
+                        <v-btn icon v-bind:loading="status_block.icon == ''" slot="activator">
                             <v-icon v-bind:color="status_block.color">{{ status_block.icon }}</v-icon>
                         </v-btn>
                         <span>{{ status_block.description }}</span>
@@ -73,6 +73,15 @@ export default {
     // },
     computed: {
         status_block() {
+            if(this.worker.is_blocked == undefined)
+            {
+                return {
+                    description: 'Loading',
+                    color: 'success',
+                    icon: '',
+                };
+            }
+
             switch(this.worker.is_blocked)
             {
                 case STATUS_BLOCK.NONE:

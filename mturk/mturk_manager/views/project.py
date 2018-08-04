@@ -1144,7 +1144,8 @@ def create_batch(db_obj_project, form, request):
         # db_obj_template.template = preprocess_template_inject(request, db_obj_project, db_obj_template.template)
         list_requirements.append({
             'QualificationTypeId': Manager_Qualifications.get_id_qualification_block_soft(db_obj_project, form.cleaned_data['use_sandbox']),
-            'Comparator': 'DoesNotExist',
+            'Comparator': 'NotEqualTo',
+            'IntegerValues': [1],
             'RequiredToPreview': True
         })
         print(list_requirements)

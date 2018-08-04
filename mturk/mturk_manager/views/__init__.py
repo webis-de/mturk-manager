@@ -12,6 +12,6 @@ from .money import *
 
 # from .workers import ViewSet_Workers
 # from .projects import ViewSet_Projects
-from .workers import Workers, Worker
+from .workers import Workers, Worker, get_status_block
 from .projects import Projects, Project
 from .qualifications import Qualifications, Qualification, import_qualifications

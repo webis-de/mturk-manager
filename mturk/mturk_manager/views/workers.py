@@ -33,6 +33,11 @@ class Workers(APIView):
     #         return Response(serializer.data, status=status.HTTP_201_CREATED)
     #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['GET'])
+@add_database_object_project
+def get_status_block(request, slug_project, database_object_project, use_sandbox, format=None):
+    dictionary_data = Manager_Workers.get_status_block(database_object_project, use_sandbox)
+    return Response(dictionary_data)
 
 # @api_view(['PUT'])
 # @add_database_object_project

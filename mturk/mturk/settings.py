@@ -185,5 +185,6 @@ STATIC_URL = '/static/'
 # STATIC_ROOT = 'static/'
 
 URL_BLOCK_WORKERS = 'https://webis16.medien.uni-weimar.de'
-NAME_QUALIFICATION_BLOCK_SOFT = 'SOFT_BLOCK'
-DESCRIPTION_QUALIFICATION_BLOCK_SOFT = 'You are blocked.'
+PREEFIX_QUALIFICATION_BLOCK_SOFT = 'fbqeqihngl-'
+NAME_QUALIFICATION_BLOCK_SOFT = 'fbqeqihngl'
+DESCRIPTION_QUALIFICATION_BLOCK_SOFT = 'If you request this qualification, it is automatically granted!'
