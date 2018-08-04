@@ -29,6 +29,8 @@ def download(request, name):
         # print(dict_answer.keys())
 
         dict_result = collections.OrderedDict()
+        dict_result['id_assignment'] = assignment.id_assignment
+        dict_result['id_hit'] = assignment.fk_hit.id_hit
         dict_result['id_worker'] = assignment.fk_worker.name
         dict_result.update(dict_question)
         dict_result.update(dict_answer)
