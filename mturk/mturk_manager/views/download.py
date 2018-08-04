@@ -1,6 +1,6 @@
 import urllib.parse
 import json, csv
-import os
+import os, collections
 from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
 from django.shortcuts import render, redirect
 from mturk_manager.models import *
@@ -21,20 +21,21 @@ def download(request, name):
     writer = None
     list_ids = json.loads(request.GET['list_ids'])
 
-    for index, assignment in enumerate(m_Assignment.objects.filter(id__in=list_ids).select_related('fk_hit')):
+    for index, assignment in enumerate(m_Assignment.objects.filter(id__in=list_ids).select_related('fk_hit', 'fk_worker')):
         dict_question = json.loads(assignment.fk_hit.parameters)
         # print(dict_question.keys())
 
         dict_answer = json.loads(normalize_answer(assignment.answer))
         # print(dict_answer.keys())
 
-        dict_result = {}
+        dict_result = collections.OrderedDict()
+        dict_result['id_worker'] = assignment.fk_worker.name
         dict_result.update(dict_question)
         dict_result.update(dict_answer)
 
-
         if index == 0:
-            writer = csv.DictWriter(response, fieldnames=sorted(dict_result.keys()))
+            writer = csv.DictWriter(response, fieldnames=dict_result.keys())
+            # writer = csv.DictWriter(response, fieldnames=sorted(dict_result.keys()))
             writer.writeheader()
 
         writer.writerow(dict_result)
