@@ -33,6 +33,7 @@
                 wrap
                 v-bind:search="search"
                 v-bind:custom-filter="custom_filter"
+                select-all
             >
                 <!-- v-bind:filter="custom" -->
                 <!-- item-key="is_blocked" -->

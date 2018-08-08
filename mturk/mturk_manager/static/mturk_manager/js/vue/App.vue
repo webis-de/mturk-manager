@@ -115,8 +115,8 @@ export default {
             {
                 case 'Finances':
                     return ComponentToolbarBatches;
-                case 'Qualifications':
-                    return ComponentToolbarQualifications;
+                // case 'Qualifications':
+                //     return ComponentToolbarQualifications;
                 case 'Workers':
                     return ComponentToolbarWorkers;
             }

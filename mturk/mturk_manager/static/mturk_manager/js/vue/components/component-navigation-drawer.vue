@@ -69,11 +69,11 @@ export default {
 	                path: '/workers',
 	                icon: 'person',
 	            },
-	            {
-	                name: 'Qualifications',
-	                path: '/qualifications',
-	                icon: 'stars',
-	            },
+	            // {
+	            //     name: 'Qualifications',
+	            //     path: '/qualifications',
+	            //     icon: 'stars',
+	            // },
 	        ],
         }
     },

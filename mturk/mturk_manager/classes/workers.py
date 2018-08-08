@@ -88,6 +88,7 @@ class Manager_Workers(object):
             # response = client.disassociate_qualification_from_worker(
             #     QualificationTypeId=Manager_Qualifications.get_id_qualification_block_soft(database_object_project, use_sandbox),
             #     WorkerId=object_worker.name,
+            #     SendNotification=False,
             # )
             response = client.associate_qualification_with_worker(
                 QualificationTypeId=Manager_Qualifications.get_id_qualification_block_soft(database_object_project, use_sandbox),

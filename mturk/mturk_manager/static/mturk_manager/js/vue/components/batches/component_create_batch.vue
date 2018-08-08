@@ -68,7 +68,7 @@ export default {
     data () {
         return {
             is_creating_batch: true,
-            number_step_current: 1,
+            number_step_current: 2,
             list_steps: [
                 {
                     number: 1,
