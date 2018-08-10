@@ -185,7 +185,7 @@ STATIC_URL = '/static/'
 
 URL_GLOBAL_DB = 'http://localhost:8002'
 URL_MTURK_SANDBOX = 'https://mturk-requester-sandbox.us-east-1.amazonaws.com'
-URL_BLOCK_WORKERS = 'https://webis16.medien.uni-weimar.de'
+# URL_BLOCK_WORKERS = 'https://webis16.medien.uni-weimar.de'
 PREEFIX_QUALIFICATION_BLOCK_SOFT = 'fbqeqihngl-'
 NAME_QUALIFICATION_BLOCK_SOFT = 'fbqeqihngl'
 DESCRIPTION_QUALIFICATION_BLOCK_SOFT = 'If you request this qualification, it is automatically granted!'

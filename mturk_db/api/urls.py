@@ -11,6 +11,8 @@ from api import views
 
 app_name = 'api'
 urlpatterns = format_suffix_patterns([
+    path('projects/worker/<str:id_worker>/status_block', views.status_block_for_worker),
+
     path('projects/<str:slug_project>/workers/status_block', views.Workers.as_view()),
     path('projects/<str:slug_project>/workers/<str:id_worker>/add_block_soft', views.add_block_soft_for_worker),
     path('projects/<str:slug_project>/workers/<str:id_worker>/remove_block_soft', views.remove_block_soft_for_worker),

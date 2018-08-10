@@ -6,7 +6,7 @@ from api.classes import Manager_Workers
 from rest_framework.decorators import api_view, permission_classes
 from api.helpers import add_database_object_project
 
-PERMISSIONS_WORKERS_ONLY = (IsAuthenticated, IsWorker,)
+PERMISSIONS_WORKER_ONLY = (IsAuthenticated, IsWorker,)
 PERMISSIONS_INSTANCE_ONLY = (IsAuthenticated, IsInstance,)
 
 class Workers(APIView):
@@ -44,4 +44,10 @@ def add_block_soft_for_worker(request, slug_project, database_object_project, id
 @add_database_object_project
 def remove_block_soft_for_worker(request, slug_project, database_object_project, id_worker, use_sandbox, format=None):
     dictionary_data = Manager_Workers.remove_block_soft_for_worker(id_worker, database_object_project, use_sandbox)
+    return Response(dictionary_data)
+
+@api_view(['GET'])
+@permission_classes(PERMISSIONS_WORKER_ONLY)
+def status_block_for_worker(request, id_worker, format=None):
+    dictionary_data = Manager_Workers.status_block_for_worker(id_worker)
     return Response(dictionary_data)
