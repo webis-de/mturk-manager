@@ -3,11 +3,13 @@ from mturk_db.settings import URL_MTURK_SANDBOX
 import boto3
 
 class Manager_Projects(object):
-    object_account_mturk = Account_Mturk.objects.get(name='webis')
+    try:
+        object_account_mturk = Account_Mturk.objects.get(name='webis')
+    except:
+        print('ERROR IN MANAGER_PROJECTS')
 
     @classmethod
     def get_mturk_api(cls, use_sandbox=True):
-
         if use_sandbox:
             return boto3.client('mturk',
                 aws_access_key_id=cls.object_account_mturk.key_access,
@@ -21,3 +23,5 @@ class Manager_Projects(object):
                 aws_secret_access_key=cls.object_account_mturk.key_secret,
                 region_name='us-east-1'
             )
+
+
