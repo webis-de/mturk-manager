@@ -167,9 +167,7 @@ class Manager_Workers(object):
             pass
 
     @classmethod
-    def get_status_block_for_worker(id_worker):
-        Worker_Block_Project.objects.exists()
-
+    def get_status_block_for_worker(database_object_project, id_worker):
         return {
             'is_blocked': Worker_Block_Project.objects.filter(
                 fk_project=database_object_project,

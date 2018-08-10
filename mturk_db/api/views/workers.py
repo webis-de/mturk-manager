@@ -47,8 +47,9 @@ def remove_block_soft_for_worker(request, slug_project, database_object_project,
 
 @api_view(['GET'])
 @permission_classes(PERMISSIONS_WORKER_ONLY)
-def status_block_for_worker(request, id_worker, format=None):
-    dictionary_data = Manager_Workers.get_status_block_for_worker(id_worker)
+@add_database_object_project
+def status_block_for_worker(request, slug_project, database_object_project, id_worker, use_sandbox, format=None):
+    dictionary_data = Manager_Workers.get_status_block_for_worker(database_object_project, id_worker)
     # dictionary_data = {}
     # return Response(True)
     return Response(dictionary_data)
