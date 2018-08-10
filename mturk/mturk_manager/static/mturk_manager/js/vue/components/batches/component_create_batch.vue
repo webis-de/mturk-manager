@@ -61,6 +61,7 @@
     
     import ComponentStepUploadCSV from './component_step_upload_csv.vue';
     import ComponentStepSettings from './component_step_settings.vue';
+    import ComponentStepOverview from './component_step_overview.vue';
     // import ComponentShowMoneySpent from './component-show-money-spent.vue';
     // import ComponentShowBatches from './component-show-batches.vue';
 export default {
@@ -68,7 +69,7 @@ export default {
     data () {
         return {
             is_creating_batch: true,
-            number_step_current: 2,
+            number_step_current: 3,
             list_steps: [
                 {
                     number: 1,
@@ -85,9 +86,12 @@ export default {
                 {
                     number: 3,
                     label: 'Done',
+                    component: ComponentStepOverview,
 
                 },
             ],
+
+            // data_csv
         }
     },
     methods: {

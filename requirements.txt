@@ -2,5 +2,6 @@ boto3
 xmltodict
 djangorestframework
 markdown
+requests
 
 -r submodules/corpus-viewer/requirements.txt

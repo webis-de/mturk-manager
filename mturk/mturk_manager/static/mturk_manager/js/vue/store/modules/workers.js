@@ -99,7 +99,7 @@ export const moduleWorkers = {
 			} else {
 				object_workers = state.object_workers;
 			}
-
+			
 			_.forEach(object_workers, (worker) => {
 				if(set_blocked_soft.has(worker.name))
 				{

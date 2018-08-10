@@ -13,7 +13,7 @@
         v-bind:disabled="!is_step_completed"
         color="primary"
         v-on:click="$emit('next')"
-    >Continue</v-btn>
+    >{{ label_submit }}</v-btn>
 
     <v-btn 
         flat 
@@ -54,6 +54,14 @@ export default {
         }
     },
     computed: {
+        label_submit() {
+            if(this.step.number == 3)
+            {
+                return 'Upload';
+            } else {
+                return 'Continue';
+            }
+        },
         is_disabled_back() {
             return this.step.number == 1;
         },

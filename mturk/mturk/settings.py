@@ -26,8 +26,6 @@ MESSAGE_TAGS = {
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-URL_MTURK_SANDBOX = 'https://mturk-requester-sandbox.us-east-1.amazonaws.com'
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
@@ -184,6 +182,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 # STATIC_ROOT = 'static/'
 
+
+URL_GLOBAL_DB = 'http://localhost:8002'
+URL_MTURK_SANDBOX = 'https://mturk-requester-sandbox.us-east-1.amazonaws.com'
 URL_BLOCK_WORKERS = 'https://webis16.medien.uni-weimar.de'
 PREEFIX_QUALIFICATION_BLOCK_SOFT = 'fbqeqihngl-'
 NAME_QUALIFICATION_BLOCK_SOFT = 'fbqeqihngl'

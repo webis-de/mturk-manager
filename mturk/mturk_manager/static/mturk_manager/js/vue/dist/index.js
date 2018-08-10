@@ -36392,6 +36392,13 @@ exports.default = {
     },
 
     computed: {
+        label_submit: function label_submit() {
+            if (this.step.number == 3) {
+                return 'Upload';
+            } else {
+                return 'Continue';
+            }
+        },
         is_disabled_back: function is_disabled_back() {
             return this.step.number == 1;
         }
@@ -36449,7 +36456,7 @@ exports.default = {
             }
           }
         },
-        [_vm._v("Continue")]
+        [_vm._v(_vm._s(_vm.label_submit))]
       ),
       _vm._v(" "),
       _c("v-btn", { attrs: { flat: "" }, on: { click: _vm.cancel } }, [
@@ -45114,7 +45121,217 @@ render._withStripped = true
         
       }
     })();
-},{"babel-runtime/helpers/toConsumableArray":"../../../../../node_modules/babel-runtime/helpers/toConsumableArray.js","vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","./component_create_batch_navigation.vue":"components/batches/component_create_batch_navigation.vue","../../classes/enums":"classes/enums.js","vue-hot-reload-api":"../../../../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../../../../node_modules/vue/dist/vue.common.js"}],"components/batches/component_create_batch.vue":[function(require,module,exports) {
+},{"babel-runtime/helpers/toConsumableArray":"../../../../../node_modules/babel-runtime/helpers/toConsumableArray.js","vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","./component_create_batch_navigation.vue":"components/batches/component_create_batch_navigation.vue","../../classes/enums":"classes/enums.js","vue-hot-reload-api":"../../../../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../../../../node_modules/vue/dist/vue.common.js"}],"components/batches/component_step_overview.vue":[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _keys = require('babel-runtime/core-js/object/keys');
+
+var _keys2 = _interopRequireDefault(_keys);
+
+var _vuex = require('vuex');
+
+var _vuetifyUploadButton = require('vuetify-upload-button');
+
+var _vuetifyUploadButton2 = _interopRequireDefault(_vuetifyUploadButton);
+
+var _component_create_batch_navigation = require('./component_create_batch_navigation.vue');
+
+var _component_create_batch_navigation2 = _interopRequireDefault(_component_create_batch_navigation);
+
+var _papaparse = require('papaparse');
+
+var _papaparse2 = _interopRequireDefault(_papaparse);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// import ComponentStepUploadCSV from './component_step_upload_csv.vue';
+// import ComponentShowMoneySpent from './component-show-money-spent.vue';
+// import ComponentShowBatches from './component-show-batches.vue';
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+exports.default = {
+    name: 'component-step-overview',
+    props: {
+        step: {
+            required: true,
+            type: Object
+        }
+        // list_steps: {
+        //     required: true,
+        //     type: Array,
+        // },
+    },
+    data: function data() {
+        return {
+            file_csv: null,
+            parsed_csv: null,
+            is_parsing_csv: false
+        };
+    },
+
+    methods: {
+        file_changed: function file_changed(file) {
+            var _this = this;
+
+            this.file_csv = file;
+
+            if (file == null) {
+                this.reset();
+                return;
+            };
+
+            this.is_parsing_csv = true;
+            _papaparse2.default.parse(file, {
+                header: true,
+                skipEmptyLines: true,
+                complete: function complete(results, file) {
+                    _this.parsed_csv = results;
+                    console.log(_this.parsed_csv);
+                    _this.is_parsing_csv = false;
+                }
+            });
+        },
+        reset: function reset() {
+            this.file_csv = null;
+            this.parsed_csv = null;
+            this.is_parsing_csv = false;
+        }
+    },
+    computed: {
+        tmp_name_file: function tmp_name_file() {
+            if (this.file_csv != null) {
+                return this.file_csv.name;
+            }
+            return null;
+        },
+        count_hits: function count_hits() {
+            if (this.is_valid_csv) {
+                return this.data_csv.length;
+            }
+            return null;
+        },
+        get_variables: function get_variables() {
+            if (this.is_valid_csv) {
+                return (0, _keys2.default)(this.data_csv[0]);
+            }
+            return null;
+        },
+        data_csv: function data_csv() {
+            if (this.is_valid_csv) {
+                return this.parsed_csv.data;
+            }
+            return null;
+        },
+        is_valid_csv: function is_valid_csv() {
+            if (this.parsed_csv == null) {
+                return false;
+            } else {
+                return this.parsed_csv.errors.length == 0;
+            }
+        },
+        is_step_completed: function is_step_completed() {
+            return this.is_valid_csv;
+        }
+    },
+    components: {
+        UploadBtn: _vuetifyUploadButton2.default,
+        ComponentCreateBatchNavigation: _component_create_batch_navigation2.default
+    }
+};
+        var $0fc50e = exports.default || module.exports;
+      
+      if (typeof $0fc50e === 'function') {
+        $0fc50e = $0fc50e.options;
+      }
+    
+        /* template */
+        Object.assign($0fc50e, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "span",
+    [
+      _c("component-create-batch-navigation", {
+        attrs: { step: _vm.step, reset: _vm.reset },
+        on: {
+          cancel: function($event) {
+            _vm.$emit("cancel")
+          },
+          next: function($event) {
+            _vm.$emit("next")
+          },
+          back: function($event) {
+            _vm.$emit("back")
+          }
+        }
+      })
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: "data-v-0fc50e",
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$0fc50e', $0fc50e);
+          } else {
+            api.reload('$0fc50e', $0fc50e);
+          }
+        }
+
+        
+        var reloadCSS = require('_css_loader');
+        module.hot.dispose(reloadCSS);
+        module.hot.accept(reloadCSS);
+      
+      }
+    })();
+},{"babel-runtime/core-js/object/keys":"../../../../../node_modules/babel-runtime/core-js/object/keys.js","vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","vuetify-upload-button":"../../../../../node_modules/vuetify-upload-button/dist/vuetify-upload-button.js","./component_create_batch_navigation.vue":"components/batches/component_create_batch_navigation.vue","papaparse":"../../../../../node_modules/papaparse/papaparse.js","_css_loader":"../../../../../node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"../../../../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../../../../node_modules/vue/dist/vue.common.js"}],"components/batches/component_create_batch.vue":[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -45131,16 +45348,79 @@ var _component_step_settings = require('./component_step_settings.vue');
 
 var _component_step_settings2 = _interopRequireDefault(_component_step_settings);
 
+var _component_step_overview = require('./component_step_overview.vue');
+
+var _component_step_overview2 = _interopRequireDefault(_component_step_overview);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // import ComponentShowMoneySpent from './component-show-money-spent.vue';
 // import ComponentShowBatches from './component-show-batches.vue';
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 exports.default = {
     name: 'component-create-batch',
     data: function data() {
         return {
             is_creating_batch: true,
-            number_step_current: 2,
+            number_step_current: 3,
             list_steps: [{
                 number: 1,
                 label: 'Upload CSV',
@@ -45153,9 +45433,12 @@ exports.default = {
 
             }, {
                 number: 3,
-                label: 'Done'
+                label: 'Done',
+                component: _component_step_overview2.default
 
             }]
+
+            // data_csv
         };
     },
 
@@ -45185,64 +45468,7 @@ exports.default = {
         // ComponentShowMoneySpent,
         // ComponentShowBatches,
     }
-}; //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+};
         var $32af7f = exports.default || module.exports;
       
       if (typeof $32af7f === 'function') {
@@ -45423,7 +45649,7 @@ render._withStripped = true
       
       }
     })();
-},{"vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","./component_step_upload_csv.vue":"components/batches/component_step_upload_csv.vue","./component_step_settings.vue":"components/batches/component_step_settings.vue","_css_loader":"../../../../../node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"../../../../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../../../../node_modules/vue/dist/vue.common.js"}],"components/batches/app_batches.vue":[function(require,module,exports) {
+},{"vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","./component_step_upload_csv.vue":"components/batches/component_step_upload_csv.vue","./component_step_settings.vue":"components/batches/component_step_settings.vue","./component_step_overview.vue":"components/batches/component_step_overview.vue","_css_loader":"../../../../../node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"../../../../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../../../../node_modules/vue/dist/vue.common.js"}],"components/batches/app_batches.vue":[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -71382,7 +71608,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = '' || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + '39039' + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '37489' + '/');
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
 

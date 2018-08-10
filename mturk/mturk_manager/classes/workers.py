@@ -1,8 +1,10 @@
 from mturk_manager.models import m_Worker
 from mturk_manager.classes.projects import Manager_Projects
+from mturk_manager.classes.projects import Manager_Projects
 from mturk_manager.enums import STATUS_BLOCK
 from django.db.models import F, Value, Count, Q, Sum, IntegerField, ExpressionWrapper
 from mturk_manager.classes import Manager_Qualifications
+from mturk_manager.classes import Manager_Global_DB
 
 class Manager_Workers(object):
     @classmethod
@@ -84,26 +86,28 @@ class Manager_Workers(object):
             )
 
         if value_old == STATUS_BLOCK.SOFT:
+            Manager_Global_DB.remove_block_soft_for_worker(object_worker.name, database_object_project, use_sandbox)
             # raise Exception('Kristof forgot to remove this safety guard...')
             # response = client.disassociate_qualification_from_worker(
             #     QualificationTypeId=Manager_Qualifications.get_id_qualification_block_soft(database_object_project, use_sandbox),
             #     WorkerId=object_worker.name,
             #     SendNotification=False,
             # )
-            response = client.associate_qualification_with_worker(
-                QualificationTypeId=Manager_Qualifications.get_id_qualification_block_soft(database_object_project, use_sandbox),
-                WorkerId=object_worker.name,
-                IntegerValue=0,
-                SendNotification=False,
-            )
+            # response = client.associate_qualification_with_worker(
+            #     QualificationTypeId=Manager_Qualifications.get_id_qualification_block_soft(database_object_project, use_sandbox),
+            #     WorkerId=object_worker.name,
+            #     IntegerValue=0,
+            #     SendNotification=False,
+            # )
 
         if value_new == STATUS_BLOCK.SOFT:
-            response = client.associate_qualification_with_worker(
-                QualificationTypeId=Manager_Qualifications.get_id_qualification_block_soft(database_object_project, use_sandbox),
-                WorkerId=object_worker.name,
-                IntegerValue=1,
-                SendNotification=False,
-            )
+            Manager_Global_DB.add_block_soft_for_worker(object_worker.name, database_object_project, use_sandbox)
+            # response = client.associate_qualification_with_worker(
+            #     QualificationTypeId=Manager_Qualifications.get_id_qualification_block_soft(database_object_project, use_sandbox),
+            #     WorkerId=object_worker.name,
+            #     IntegerValue=1,
+            #     SendNotification=False,
+            # )
 
     @classmethod
     def get_workers_blocked(cls, database_object_project, use_sandbox):
@@ -127,7 +131,9 @@ class Manager_Workers(object):
 
     @classmethod
     def get_status_block(cls, database_object_project, use_sandbox):
-        client = Manager_Projects.get_mturk_api(database_object_project, use_sandbox)
+        # client = Manager_Projects.get_mturk_api(database_object_project, use_sandbox)
+
+        return Manager_Global_DB.get_status_block(database_object_project, use_sandbox)
 
         id_qualification_block_soft = Manager_Qualifications.get_id_qualification_block_soft(database_object_project, use_sandbox)
         list_qualifications = Manager_Qualifications.get_workers_for_qualification(id_qualification_block_soft, database_object_project, use_sandbox)

@@ -3,6 +3,11 @@ from django.utils.text import slugify
 # import mturk_manager.classes.workers
 from mturk_manager.enums import workers
 
+class Global_DB(models.Model):
+    name = models.CharField(max_length=200)
+    token_instance = models.CharField(max_length=200)
+    token_worker = models.CharField(max_length=200)
+
 class m_Account_Mturk(models.Model):
     name = models.CharField(max_length=200, unique=True)
     key_access = models.CharField(max_length=200)
