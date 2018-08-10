@@ -3,5 +3,6 @@ xmltodict
 djangorestframework
 markdown
 requests
+django-cors-headers
 
 -r submodules/corpus-viewer/requirements.txt

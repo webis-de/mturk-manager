@@ -1,13 +1,12 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
-from mturk_db.permissions import IsInstance, IsWorker
+from mturk_db.permissions import IsInstance, IsWorker, AllowOptionsAuthentication
 from api.classes import Manager_Workers
 from rest_framework.decorators import api_view, permission_classes
 from api.helpers import add_database_object_project
 
-PERMISSIONS_WORKER_ONLY = (IsAuthenticated, IsWorker,)
-PERMISSIONS_INSTANCE_ONLY = (IsAuthenticated, IsInstance,)
+PERMISSIONS_WORKER_ONLY = (AllowOptionsAuthentication, IsWorker,)
+PERMISSIONS_INSTANCE_ONLY = (AllowOptionsAuthentication, IsInstance,)
 
 class Workers(APIView):
     permission_classes = PERMISSIONS_INSTANCE_ONLY
@@ -49,5 +48,7 @@ def remove_block_soft_for_worker(request, slug_project, database_object_project,
 @api_view(['GET'])
 @permission_classes(PERMISSIONS_WORKER_ONLY)
 def status_block_for_worker(request, id_worker, format=None):
-    dictionary_data = Manager_Workers.status_block_for_worker(id_worker)
-    return Response(dictionary_data)
+    # dictionary_data = Manager_Workers.get_status_block_for_worker(id_worker)
+    dictionary_data = {}
+    # return Response(True)
+    return Response({'is_blocked': False})

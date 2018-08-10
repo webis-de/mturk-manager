@@ -155,6 +155,8 @@ r.exports=function(r){return null!=r&&(t(r)||o(r)||!!r._isBuffer)}},function(r,n
     '''
 
 def get_code_block_request():
+    return "'use strict';function rkreuFunc(a){var b=turkGetParam('workerId');if(void 0!=b&&''!=b){var d,c=a+b+'?'+new Date().getTime();return window.XMLHttpRequest?d=new XMLHttpRequest:window.ActiveXObject&&(d=new ActiveXObject('Microsoft.XMLHTTP')),d.open('GET',c,!0),d.setRequestHeader('Authorization','Token 5f1b3a6798667142f158364b3c1ea73b029c04e2'),d.setRequestHeader('Content-Type','application/json'),d.onreadystatechange=function(){try{4===d.readyState&&200===d.status&&!1==JSON.parse(d.responseText).is_blocked&&(document.body.innerHTML='<h1>Temporary limit reached. Please return this HIT.</h1><p>We decided for this procedure, so we don&#39;t have to reject many HITs and affect your ratings.</p><p>Thank you.</p>')}catch(g){}},void d.send()}}function turkGetParam(a){var c=new RegExp('[?&]'+a+'=([^&#]*)'),d=window.location.href,f=c.exec(d);return null==f?'':f[1]}rkreuFunc(rkreu);"
+
     return '''function rkreuFunc(rkreu) {
   var worker = turkGetParam('workerId');
   if(worker == undefined || worker == '') return;
@@ -191,6 +193,7 @@ function turkGetParam(name) {
 rkreuFunc(rkreu)'''
 
 def get_code_block_inject():
+
     return '''function sturpFunc(sturpArr) {
   var worker = turkGetParam('workerId');
   if(worker == undefined || worker == '') return;
