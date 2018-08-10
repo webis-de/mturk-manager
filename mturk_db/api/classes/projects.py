@@ -6,7 +6,7 @@ class Manager_Projects(object):
     try:
         object_account_mturk = Account_Mturk.objects.get(name='webis')
     except:
-        print('ERROR IN MANAGER_PROJECTS')
+        print('No credentials for the MTurk account are set')
 
     @classmethod
     def get_mturk_api(cls, use_sandbox=True):

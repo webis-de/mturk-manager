@@ -48,7 +48,8 @@ def remove_block_soft_for_worker(request, slug_project, database_object_project,
 @api_view(['GET'])
 @permission_classes(PERMISSIONS_WORKER_ONLY)
 def status_block_for_worker(request, id_worker, format=None):
-    # dictionary_data = Manager_Workers.get_status_block_for_worker(id_worker)
-    dictionary_data = {}
+    dictionary_data = Manager_Workers.get_status_block_for_worker(id_worker)
+    # dictionary_data = {}
     # return Response(True)
-    return Response({'is_blocked': False})
+    return Response(dictionary_data)
+    # return Response({'is_blocked': False})

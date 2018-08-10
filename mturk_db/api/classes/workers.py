@@ -166,6 +166,17 @@ class Manager_Workers(object):
         except:
             pass
 
+    @classmethod
+    def get_status_block_for_worker(id_worker):
+        Worker_Block_Project.objects.exists()
+
+        return {
+            'is_blocked': Worker_Block_Project.objects.filter(
+                fk_project=database_object_project,
+                fk_worker__id_worker=id_worker,
+            ).exists()
+        }
+
     # @classmethod
     # def get_status_block(cls, database_object_project, use_sandbox):
     #     client = Manager_Projects.get_mturk_api(database_object_project, use_sandbox)

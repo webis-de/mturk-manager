@@ -1102,7 +1102,7 @@ def preprocess_template_inject(request, db_obj_project, html_template):
     return html_template
 
 def preprocess_template_request(request, db_obj_project, html_template):
-    host = code_shared.get_url_block_worker(request) 
+    host = code_shared.get_url_block_worker(db_obj_project) 
     # path = reverse('mturk_manager:api_status_worker', kwargs={'name':db_obj_project.name, 'id_worker':'a'})[:-1]
     # url = urllib.parse.urljoin(host, path)
     url = host

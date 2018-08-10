@@ -183,7 +183,7 @@ STATIC_URL = '/static/'
 # STATIC_ROOT = 'static/'
 
 
-URL_GLOBAL_DB = 'http://localhost:8002/status_block/'
+URL_GLOBAL_DB = 'http://localhost:8002'
 URL_MTURK_SANDBOX = 'https://mturk-requester-sandbox.us-east-1.amazonaws.com'
 # URL_BLOCK_WORKERS = 'https://webis16.medien.uni-weimar.de'
 PREEFIX_QUALIFICATION_BLOCK_SOFT = 'fbqeqihngl-'
