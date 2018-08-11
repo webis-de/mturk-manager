@@ -8,6 +8,7 @@ import requests, urllib
 
 class Manager_Global_DB(object):
     object_global_db = Global_DB.objects.get(name='webis')
+
     headers = {
         'Authorization': 'Token {}'.format(object_global_db.token_instance)
     }
@@ -37,7 +38,7 @@ class Manager_Global_DB(object):
             database_object_project.slug,
             id_worker,
         ), use_sandbox)
-        
+
         return requests.post(url, headers=cls.headers)
 
     @classmethod
@@ -48,4 +49,3 @@ class Manager_Global_DB(object):
         ), use_sandbox)
         
         return requests.delete(url, headers=cls.headers)
-
