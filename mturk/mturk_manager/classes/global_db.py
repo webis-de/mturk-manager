@@ -9,12 +9,12 @@ import requests, urllib
 class Manager_Global_DB(object):
     try:
         object_global_db = Global_DB.objects.get(name='webis')
+        headers = {
+            'Authorization': 'Token {}'.format(object_global_db.token_instance)
+        }
     except:
         print('No credentials for the global DB are set')
 
-    headers = {
-        'Authorization': 'Token {}'.format(object_global_db.token_instance)
-    }
 
     @classmethod
     def get_url_absolute(cls, path='', use_sandbox=True):
