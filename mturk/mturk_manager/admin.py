@@ -12,7 +12,7 @@ class MyAdminSite(admin.AdminSite):
 
     def index(self, request, extra_context=None):
         extra_context = extra_context or {}
-        extra_context['url'] = get_url_block_worker(request)
+        # extra_context['url'] = get_url_block_worker(request)
         
         if request.scheme == 'http':
             extra_context['url_intern'] = 'http://' + request.get_host()

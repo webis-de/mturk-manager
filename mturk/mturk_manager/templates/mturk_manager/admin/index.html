@@ -19,10 +19,8 @@
 	{% with projects=app_list.0.models.1 %}
 		<a href="{{ projects.admin_url }}"><h2>Projects</h2></a>
 	{% endwith %}
-
-	<hr>
 	
-	<h2>Block workers</h2>
+	<!-- <h2>Block workers</h2>
 	<p>
 		If the blocking function is enabled the following URL will be used to request the block status of a worker:
 	</p>
@@ -42,7 +40,7 @@
 	</p>
 	<div style="color: red">
 		Please make sure the provided URL supports and is accessed with SSL!
-	</div>
+	</div> -->
 	   <!--  {% for app in app_list %}
 	        <div class="app-{{ app.app_label }} module">
 	        <table>
