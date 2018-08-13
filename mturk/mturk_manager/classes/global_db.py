@@ -7,7 +7,10 @@ from mturk.settings import URL_GLOBAL_DB
 import requests, urllib
 
 class Manager_Global_DB(object):
-    object_global_db = Global_DB.objects.get(name='webis')
+    try:
+        object_global_db = Global_DB.objects.get(name='webis')
+    except:
+        print('No credentials for the global DB are set')
 
     headers = {
         'Authorization': 'Token {}'.format(object_global_db.token_instance)
