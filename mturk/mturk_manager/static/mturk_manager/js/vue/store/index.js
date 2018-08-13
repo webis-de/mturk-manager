@@ -10,6 +10,7 @@ Vue.use(Vuex)
 Vue.use(VueCookies)
 Vue.use(VueAxios, axios)
 
+import { moduleProjects } from './modules/projects.js';
 import { moduleMoney } from './modules/money.js';
 import { moduleQualifications } from './modules/qualifications.js';
 import { moduleWorkers } from './modules/workers.js';
@@ -17,6 +18,7 @@ import { moduleBatches } from './modules/batches.js';
 
 export const store = new Vuex.Store({
     modules: {
+        moduleProjects,
         moduleMoney,
         moduleQualifications,
         moduleWorkers,
@@ -86,6 +88,9 @@ export const store = new Vuex.Store({
 
             commit('moduleWorkers/set_url_api_workers', config.url_api_workers);
             commit('moduleWorkers/set_url_api_status_block', config.url_api_status_block);
+
+            commit('moduleProjects/set_url_api_projects', config.url_api_projects);
+            dispatch('moduleProjects/load_projects');
         },
         async set_show_with_fee({commit, state}, show) {
             commit('set_show_with_fee', show);

@@ -16,8 +16,13 @@ export const moduleBatches= {
         object_batches: null,
 		object_batches_sandbox: null,
         url_api_assignments_real_approved: undefined,
+
+        object_csv_parsed: undefined,
 	},
     getters: {
+        get_object_csv_parsed: (state) => {
+            return state.object_csv_parsed;
+        },
         get_object_batches: (state, getters, rootState) => {
             return rootState.use_sandbox ? state.object_batches_sandbox : state.object_batches;
         },
@@ -167,6 +172,9 @@ export const moduleBatches= {
         },
         set_url_api_assignments_real_approved(state, url_new) {
             state.url_api_assignments_real_approved = url_new;
+        },
+        set_csv_parsed(state, csv_parsed) {
+            state.object_csv_parsed = csv_parsed;
         },
 	},
 	actions: {

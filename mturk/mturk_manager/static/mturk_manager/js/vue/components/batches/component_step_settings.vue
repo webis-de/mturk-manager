@@ -2,6 +2,7 @@
     <span>
         <!-- {{valid}} -->
     <v-form v-model="valid" lazy-validation>
+        {{get_object_project}}
         <v-text-field
             required
             v-model="title"
@@ -114,7 +115,7 @@
 </template>
 
 <script>
-    import { mapState, mapActions, mapGetters } from 'vuex';
+    import { mapState, mapMutations, mapActions, mapGetters } from 'vuex';
     import ComponentCreateBatchNavigation from './component_create_batch_navigation.vue';
     import { VALIDATIONS, DESCRIPTIONS } from '../../classes/enums';
     
@@ -176,8 +177,12 @@ export default {
             this.keywords = [...this.keywords]
         },
         reset() {
-
         },
+    },
+    computed: {
+        ...mapGetters('moduleProjects', {
+            'get_object_project': 'get_object_project',
+        }),
     },
     components: {
       ComponentCreateBatchNavigation,

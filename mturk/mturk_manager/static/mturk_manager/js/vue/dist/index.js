@@ -36394,7 +36394,7 @@ exports.default = {
     computed: {
         label_submit: function label_submit() {
             if (this.step.number == 3) {
-                return 'Upload';
+                return 'Submit';
             } else {
                 return 'Continue';
             }
@@ -43820,6 +43820,10 @@ var _keys = require('babel-runtime/core-js/object/keys');
 
 var _keys2 = _interopRequireDefault(_keys);
 
+var _extends2 = require('babel-runtime/helpers/extends');
+
+var _extends3 = _interopRequireDefault(_extends2);
+
 var _vuex = require('vuex');
 
 var _vuetifyUploadButton = require('vuetify-upload-button');
@@ -43943,7 +43947,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
-//
 
 exports.default = {
     name: 'component-step-upload-csv',
@@ -43952,20 +43955,15 @@ exports.default = {
             required: true,
             type: Object
         }
-        // list_steps: {
-        //     required: true,
-        //     type: Array,
-        // },
     },
     data: function data() {
         return {
             file_csv: null,
-            parsed_csv: null,
             is_parsing_csv: false
         };
     },
 
-    methods: {
+    methods: (0, _extends3.default)({
         file_changed: function file_changed(file) {
             var _this = this;
 
@@ -43981,19 +43979,20 @@ exports.default = {
                 header: true,
                 skipEmptyLines: true,
                 complete: function complete(results, file) {
-                    _this.parsed_csv = results;
-                    console.log(_this.parsed_csv);
                     _this.is_parsing_csv = false;
+                    _this.set_csv_parsed(results);
                 }
             });
         },
         reset: function reset() {
             this.file_csv = null;
-            this.parsed_csv = null;
             this.is_parsing_csv = false;
+            this.set_csv_parsed(undefined);
         }
-    },
-    computed: {
+    }, (0, _vuex.mapMutations)('moduleBatches', {
+        'set_csv_parsed': 'set_csv_parsed'
+    })),
+    computed: (0, _extends3.default)({
         tmp_name_file: function tmp_name_file() {
             if (this.file_csv != null) {
                 return this.file_csv.name;
@@ -44014,21 +44013,23 @@ exports.default = {
         },
         data_csv: function data_csv() {
             if (this.is_valid_csv) {
-                return this.parsed_csv.data;
+                return this.get_object_csv_parsed.data;
             }
             return null;
         },
         is_valid_csv: function is_valid_csv() {
-            if (this.parsed_csv == null) {
+            if (this.get_object_csv_parsed == null) {
                 return false;
             } else {
-                return this.parsed_csv.errors.length == 0;
+                return this.get_object_csv_parsed.errors.length == 0;
             }
         },
         is_step_completed: function is_step_completed() {
             return this.is_valid_csv;
         }
-    },
+    }, (0, _vuex.mapGetters)('moduleBatches', {
+        'get_object_csv_parsed': 'get_object_csv_parsed'
+    })),
     components: {
         UploadBtn: _vuetifyUploadButton2.default,
         ComponentCreateBatchNavigation: _component_create_batch_navigation2.default
@@ -44288,7 +44289,7 @@ render._withStripped = true
       
       }
     })();
-},{"babel-runtime/core-js/object/keys":"../../../../../node_modules/babel-runtime/core-js/object/keys.js","vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","vuetify-upload-button":"../../../../../node_modules/vuetify-upload-button/dist/vuetify-upload-button.js","./component_create_batch_navigation.vue":"components/batches/component_create_batch_navigation.vue","papaparse":"../../../../../node_modules/papaparse/papaparse.js","_css_loader":"../../../../../node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"../../../../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../../../../node_modules/vue/dist/vue.common.js"}],"../../../../../node_modules/core-js/library/modules/_string-at.js":[function(require,module,exports) {
+},{"babel-runtime/core-js/object/keys":"../../../../../node_modules/babel-runtime/core-js/object/keys.js","babel-runtime/helpers/extends":"../../../../../node_modules/babel-runtime/helpers/extends.js","vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","vuetify-upload-button":"../../../../../node_modules/vuetify-upload-button/dist/vuetify-upload-button.js","./component_create_batch_navigation.vue":"components/batches/component_create_batch_navigation.vue","papaparse":"../../../../../node_modules/papaparse/papaparse.js","_css_loader":"../../../../../node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"../../../../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../../../../node_modules/vue/dist/vue.common.js"}],"../../../../../node_modules/core-js/library/modules/_string-at.js":[function(require,module,exports) {
 var toInteger = require('./_to-integer');
 var defined = require('./_defined');
 // true  -> String#at
@@ -44716,6 +44717,10 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _extends2 = require('babel-runtime/helpers/extends');
+
+var _extends3 = _interopRequireDefault(_extends2);
+
 var _toConsumableArray2 = require('babel-runtime/helpers/toConsumableArray');
 
 var _toConsumableArray3 = _interopRequireDefault(_toConsumableArray2);
@@ -44774,10 +44779,14 @@ exports.default = {
         },
         reset: function reset() {}
     },
+    computed: (0, _extends3.default)({}, (0, _vuex.mapGetters)('moduleProjects', {
+        'get_object_project': 'get_object_project'
+    })),
     components: {
         ComponentCreateBatchNavigation: _component_create_batch_navigation2.default
     }
 }; //
+//
 //
 //
 //
@@ -44920,6 +44929,7 @@ exports.default = {
           }
         },
         [
+          _vm._v("\n        " + _vm._s(_vm.get_object_project) + "\n        "),
           _c("v-text-field", {
             attrs: {
               required: "",
@@ -45121,7 +45131,7 @@ render._withStripped = true
         
       }
     })();
-},{"babel-runtime/helpers/toConsumableArray":"../../../../../node_modules/babel-runtime/helpers/toConsumableArray.js","vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","./component_create_batch_navigation.vue":"components/batches/component_create_batch_navigation.vue","../../classes/enums":"classes/enums.js","vue-hot-reload-api":"../../../../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../../../../node_modules/vue/dist/vue.common.js"}],"components/batches/component_step_overview.vue":[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":"../../../../../node_modules/babel-runtime/helpers/extends.js","babel-runtime/helpers/toConsumableArray":"../../../../../node_modules/babel-runtime/helpers/toConsumableArray.js","vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","./component_create_batch_navigation.vue":"components/batches/component_create_batch_navigation.vue","../../classes/enums":"classes/enums.js","vue-hot-reload-api":"../../../../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../../../../node_modules/vue/dist/vue.common.js"}],"components/batches/component_step_overview.vue":[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -45414,13 +45424,14 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+//
 
 exports.default = {
     name: 'component-create-batch',
     data: function data() {
         return {
             is_creating_batch: true,
-            number_step_current: 3,
+            number_step_current: 2,
             list_steps: [{
                 number: 1,
                 label: 'Upload CSV',
@@ -45436,9 +45447,9 @@ exports.default = {
                 label: 'Done',
                 component: _component_step_overview2.default
 
-            }]
+            }],
 
-            // data_csv
+            data_csv: undefined
         };
     },
 
@@ -45446,6 +45457,8 @@ exports.default = {
         cancel: function cancel() {
             this.is_creating_batch = false;
             this.number_step_current = 1;
+            this.data_csv = undefined;
+            this.$refs[1][0].reset();
         },
         next: function next() {
             this.number_step_current += 1;
@@ -45590,6 +45603,8 @@ exports.default = {
                 { attrs: { step: step.number } },
                 [
                   _c(step.component, {
+                    ref: step.number,
+                    refInFor: true,
                     tag: "component",
                     attrs: { step: _vm.step_current },
                     on: {
@@ -70342,7 +70357,141 @@ var define;
 
 
 })()
-},{}],"store/modules/money.js":[function(require,module,exports) {
+},{}],"classes/project.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Project = undefined;
+
+var _classCallCheck2 = require("babel-runtime/helpers/classCallCheck");
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Project = exports.Project = function Project(data) {
+  (0, _classCallCheck3.default)(this, Project);
+
+  this.id = data.id;
+  this.name = data.name;
+  this.slug = data.slug;
+  this.title = data.title;
+  this.description = data.description;
+  this.keywords = data.keywords;
+  this.count_assignments = data.count_assignments;
+  this.reward = data.reward;
+  this.lifetime = data.lifetime;
+  this.duration = data.duration;
+  this.use_sandbox = data.use_sandbox;
+  this.has_content_adult = data.has_content_adult;
+  this.qualification_assignments_approved = data.qualification_assignments_approved;
+  this.qualification_hits_approved = data.qualification_hits_approved;
+  this.qualification_locale = data.qualification_locale;
+  this.block_workers = data.block_workers;
+};
+},{"babel-runtime/helpers/classCallCheck":"../../../../../node_modules/babel-runtime/helpers/classCallCheck.js"}],"store/modules/projects.js":[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.moduleProjects = undefined;
+
+var _regenerator = require('babel-runtime/regenerator');
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
+
+var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
+
+var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
+
+var _vue = require('vue');
+
+var _vue2 = _interopRequireDefault(_vue);
+
+var _axios = require('axios');
+
+var _axios2 = _interopRequireDefault(_axios);
+
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _project = require('../../classes/project.js');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var moduleProjects = exports.moduleProjects = {
+  namespaced: true,
+  state: {
+    object_projects: null,
+    slug_project_current: null,
+    url_api_projects: undefined
+  },
+  getters: {
+    get_object_project: function get_object_project(state, getters, rootState) {
+      console.log(rootState.name_project);
+      return state.object_projects;
+    },
+    get_object_projects: function get_object_projects(state) {
+      return state.object_projects;
+    }
+  },
+  mutations: {
+    set_url_api_projects: function set_url_api_projects(state, url_new) {
+      state.url_api_projects = url_new;
+    },
+    set_projects: function set_projects(state, data_projects) {
+      state.object_projects = {};
+
+      _lodash2.default.forEach(data_projects, function (data_project) {
+        var object_project = new _project.Project(data_project);
+        _vue2.default.set(state.object_projects, object_project.slug, object_project);
+      });
+    }
+  },
+  actions: {
+    load_projects: function () {
+      var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(_ref) {
+        var state = _ref.state,
+            commit = _ref.commit,
+            getters = _ref.getters,
+            rootGetters = _ref.rootGetters,
+            dispatch = _ref.dispatch;
+        return _regenerator2.default.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                if (!(getters.get_object_projects == null)) {
+                  _context.next = 3;
+                  break;
+                }
+
+                _context.next = 3;
+                return _axios2.default.get(rootGetters.get_url_api(state.url_api_projects, false)).then(function (response) {
+                  console.log(response.data);
+                  commit('set_projects', response.data);
+                });
+
+              case 3:
+              case 'end':
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function load_projects(_x) {
+        return _ref2.apply(this, arguments);
+      }
+
+      return load_projects;
+    }()
+  }
+};
+},{"babel-runtime/regenerator":"../../../../../node_modules/babel-runtime/regenerator/index.js","babel-runtime/helpers/asyncToGenerator":"../../../../../node_modules/babel-runtime/helpers/asyncToGenerator.js","vue":"../../../../../node_modules/vue/dist/vue.common.js","axios":"../../../../../node_modules/axios/index.js","lodash":"../../../../../node_modules/lodash/lodash.js","../../classes/project.js":"classes/project.js"}],"store/modules/money.js":[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -71066,9 +71215,14 @@ var moduleBatches = exports.moduleBatches = {
     state: {
         object_batches: null,
         object_batches_sandbox: null,
-        url_api_assignments_real_approved: undefined
+        url_api_assignments_real_approved: undefined,
+
+        object_csv_parsed: undefined
     },
     getters: {
+        get_object_csv_parsed: function get_object_csv_parsed(state) {
+            return state.object_csv_parsed;
+        },
         get_object_batches: function get_object_batches(state, getters, rootState) {
             return rootState.use_sandbox ? state.object_batches_sandbox : state.object_batches;
         },
@@ -71207,6 +71361,9 @@ var moduleBatches = exports.moduleBatches = {
         },
         set_url_api_assignments_real_approved: function set_url_api_assignments_real_approved(state, url_new) {
             state.url_api_assignments_real_approved = url_new;
+        },
+        set_csv_parsed: function set_csv_parsed(state, csv_parsed) {
+            state.object_csv_parsed = csv_parsed;
         }
     },
     actions: {
@@ -71292,6 +71449,8 @@ var _vueCookies = require('vue-cookies');
 
 var _vueCookies2 = _interopRequireDefault(_vueCookies);
 
+var _projects = require('./modules/projects.js');
+
 var _money = require('./modules/money.js');
 
 var _qualifications = require('./modules/qualifications.js');
@@ -71310,6 +71469,7 @@ _vue2.default.use(_vueAxios2.default, _axios2.default);
 
 var store = exports.store = new _vuex2.default.Store({
     modules: {
+        moduleProjects: _projects.moduleProjects,
         moduleMoney: _money.moduleMoney,
         moduleQualifications: _qualifications.moduleQualifications,
         moduleWorkers: _workers.moduleWorkers,
@@ -71394,7 +71554,10 @@ var store = exports.store = new _vuex2.default.Store({
                                 commit('moduleWorkers/set_url_api_workers', config.url_api_workers);
                                 commit('moduleWorkers/set_url_api_status_block', config.url_api_status_block);
 
-                            case 11:
+                                commit('moduleProjects/set_url_api_projects', config.url_api_projects);
+                                dispatch('moduleProjects/load_projects');
+
+                            case 13:
                             case 'end':
                                 return _context.stop();
                         }
@@ -71482,7 +71645,7 @@ var store = exports.store = new _vuex2.default.Store({
         }()
     }
 });
-},{"babel-runtime/regenerator":"../../../../../node_modules/babel-runtime/regenerator/index.js","babel-runtime/helpers/asyncToGenerator":"../../../../../node_modules/babel-runtime/helpers/asyncToGenerator.js","vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","vue":"../../../../../node_modules/vue/dist/vue.common.js","axios":"../../../../../node_modules/axios/index.js","vue-axios":"../../../../../node_modules/vue-axios/dist/vue-axios.min.js","lodash":"../../../../../node_modules/lodash/lodash.js","vue-cookies":"../../../../../node_modules/vue-cookies/vue-cookies.js","./modules/money.js":"store/modules/money.js","./modules/qualifications.js":"store/modules/qualifications.js","./modules/workers.js":"store/modules/workers.js","./modules/batches.js":"store/modules/batches.js"}],"../../../../../node_modules/material-design-icons-iconfont/dist/material-design-icons.css":[function(require,module,exports) {
+},{"babel-runtime/regenerator":"../../../../../node_modules/babel-runtime/regenerator/index.js","babel-runtime/helpers/asyncToGenerator":"../../../../../node_modules/babel-runtime/helpers/asyncToGenerator.js","vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","vue":"../../../../../node_modules/vue/dist/vue.common.js","axios":"../../../../../node_modules/axios/index.js","vue-axios":"../../../../../node_modules/vue-axios/dist/vue-axios.min.js","lodash":"../../../../../node_modules/lodash/lodash.js","vue-cookies":"../../../../../node_modules/vue-cookies/vue-cookies.js","./modules/projects.js":"store/modules/projects.js","./modules/money.js":"store/modules/money.js","./modules/qualifications.js":"store/modules/qualifications.js","./modules/workers.js":"store/modules/workers.js","./modules/batches.js":"store/modules/batches.js"}],"../../../../../node_modules/material-design-icons-iconfont/dist/material-design-icons.css":[function(require,module,exports) {
 
         var reloadCSS = require('_css_loader');
         module.hot.dispose(reloadCSS);

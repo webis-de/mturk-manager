@@ -18,7 +18,7 @@ urlpatterns = format_suffix_patterns([
     # path('api/workers/', views.Workers.as_view(), name='workers'),
     # path('api/workers/<str:name>/', views.Worker.as_view(), name='worker'),
 
-    # path('api/projects/', views.Projects.as_view(), name='projects'),
+    path('api/projects/', views.Projects.as_view(), name='projects'),
     path('api/projects/<str:slug_project>/', views.Project.as_view(), name='project_api_tmp'),
 
     path('api/projects/<str:slug_project>/workers/', views.Workers.as_view(), name='workers_for_project'),

@@ -57,7 +57,7 @@ export default {
         label_submit() {
             if(this.step.number == 3)
             {
-                return 'Upload';
+                return 'Submit';
             } else {
                 return 'Continue';
             }

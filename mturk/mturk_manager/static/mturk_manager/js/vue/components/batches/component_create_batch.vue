@@ -45,6 +45,7 @@
                     <!-- v-bind:list_steps="list_steps" -->
                 <component 
                     v-bind:is="step.component"
+                    v-bind:ref="step.number"
                     v-bind:step="step_current"
                     v-on:cancel="cancel()"
                     v-on:next="next()"
@@ -69,7 +70,7 @@ export default {
     data () {
         return {
             is_creating_batch: true,
-            number_step_current: 3,
+            number_step_current: 2,
             list_steps: [
                 {
                     number: 1,
@@ -91,13 +92,15 @@ export default {
                 },
             ],
 
-            // data_csv
+            data_csv: undefined,
         }
     },
     methods: {
         cancel() {
             this.is_creating_batch = false;
             this.number_step_current = 1;
+            this.data_csv = undefined;
+            this.$refs[1][0].reset()
         },
         next() {
             this.number_step_current += 1;

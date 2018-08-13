@@ -12,7 +12,6 @@
              {{ tmp_name_file }}
         </v-flex>
     </v-layout>
-
     <template v-if="is_valid_csv">
         <v-divider class="my-3"></v-divider>
         <v-list 
@@ -104,7 +103,7 @@
 </template>
 
 <script>
-    import { mapState, mapActions, mapGetters } from 'vuex';
+    import { mapState, mapMutations, mapActions, mapGetters } from 'vuex';
     import UploadBtn from 'vuetify-upload-button';
     import ComponentCreateBatchNavigation from './component_create_batch_navigation.vue';
 
@@ -119,15 +118,10 @@ export default {
             required: true,
             type: Object,
         },
-        // list_steps: {
-        //     required: true,
-        //     type: Array,
-        // },
     },
     data () {
         return {
             file_csv: null,
-            parsed_csv: null,
             is_parsing_csv: false,
         }
     },
@@ -146,17 +140,19 @@ export default {
                 header: true,
                 skipEmptyLines: true,
                 complete: (results, file) => {
-                    this.parsed_csv = results;
-                    console.log(this.parsed_csv);
                     this.is_parsing_csv = false;
+                    this.set_csv_parsed(results);
                 }
             });
         },
         reset() {
             this.file_csv = null;
-            this.parsed_csv = null;
             this.is_parsing_csv = false;
+            this.set_csv_parsed(undefined);
         },
+        ...mapMutations('moduleBatches', {
+            'set_csv_parsed': 'set_csv_parsed',
+        }),
     },
     computed: {
         tmp_name_file() {
@@ -183,21 +179,24 @@ export default {
         data_csv() {
             if(this.is_valid_csv) 
             {
-                return this.parsed_csv.data;
+                return this.get_object_csv_parsed.data;
             }
             return null;
         },
         is_valid_csv() {
-            if(this.parsed_csv == null) 
+            if(this.get_object_csv_parsed == null) 
             {
                 return false;
             } else {
-                return this.parsed_csv.errors.length == 0;
+                return this.get_object_csv_parsed.errors.length == 0;
             }
         },
         is_step_completed() {
             return this.is_valid_csv;
         },
+        ...mapGetters('moduleBatches', {
+            'get_object_csv_parsed': 'get_object_csv_parsed',
+        }),
     },
     components: {
       UploadBtn,
