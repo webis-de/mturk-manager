@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import axios from 'axios';
 import _ from 'lodash';
-import { Project } from '../../classes/project.js';
+import Project from '../../classes/project';
 
 export const moduleProjects = {
 	namespaced: true,
@@ -23,6 +23,10 @@ export const moduleProjects = {
     	},
 	},
 	mutations: {
+        edit_project(state, data) {
+        	const project = new Project(data);
+        	Vue.set(state.object_projects, project.id, project);
+        },
         set_slug_project_current(state, slug_project_current) {
             state.slug_project_current = slug_project_current;
         },
@@ -52,6 +56,23 @@ export const moduleProjects = {
     //             	commit('set_status_block', {'data_status_block': response.data, use_sandbox});
 			 //    })
 			}
+        },
+        async edit_project({state, commit, getters, rootState, rootGetters, dispatch}, {project, project_new}) {
+			await axios.put(
+				rootGetters.get_url_api(state.url_api_projects, false, project.slug),
+				JSON.stringify(project.get_changes(project_new)),
+				// project.get_changes_as_formdata(project_new),
+				{
+					headers: {
+						"X-CSRFToken": rootState.token_csrf,
+						// "Content-Type": 'multipart/form-data',
+						"Content-Type": 'application/json',
+					},
+				},
+			)
+		    .then(response => {
+            	commit('edit_project', response.data);
+		    })
         },
 	},
 }

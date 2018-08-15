@@ -1,38 +1,39 @@
 import humanizeDuration from 'humanize-duration';
 import { VALIDATIONS, DESCRIPTIONS } from '../classes/enums';
 import { mapState, mapMutations, mapActions, mapGetters } from 'vuex';
+import Project from '../classes/project';
 export default {
 	data() {
 		return {
+			project: new Project(),
 			valid: false,
-            title: '',
             rules_title: [
                 VALIDATIONS.REQUIRED,
             ],
-            description: '',
+            // description: '',
             rules_description: [
                 VALIDATIONS.REQUIRED,
             ],
-            reward: 0,
+            // reward: 0,
             rules_reward: [
                 VALIDATIONS.REQUIRED,
             ],
-            assignments_max: 1,
+            // assignments_max: 1,
             rules_assignments_max: [
                 VALIDATIONS.REQUIRED,
                 VALIDATIONS.POSITIVE,
             ],
-            lifetime: 1,
+            // lifetime: 1,
             rules_lifetime: [
                 VALIDATIONS.REQUIRED,
                 VALIDATIONS.POSITIVE,
             ],
-            duration: 1,
+            // duration: 1,
             rules_duration: [
                 VALIDATIONS.REQUIRED,
                 VALIDATIONS.POSITIVE,
             ],
-            keywords: [],
+            // keywords: [],
             rules_keywords: [
             ],
 
@@ -43,16 +44,24 @@ export default {
     	format_duration(label, duration) {
     		return `${label} (${humanizeDuration(duration * 1000)})`;
     	},
+        remove(item) {
+            this.project.keywords.splice(this.project.keywords.indexOf(item), 1)
+            this.project.keywords = [...this.project.keywords]
+        },
 	},
     created() {
-    	console.log(this.project_current);
-        this.title = this.project_current.title;
-        this.description = this.project_current.description;
-        this.reward = this.project_current.reward;
-        this.assignments_max = this.project_current.assignments_max;
-        this.lifetime = this.project_current.lifetime;
-        this.duration = this.project_current.duration;
-        this.keywords = this.project_current.keywords;
+        this.project.title = this.project_current.title;
+        this.project.description = this.project_current.description;
+        this.project.reward = this.project_current.reward;
+        this.project.assignments_max = this.project_current.assignments_max;
+        this.project.lifetime = this.project_current.lifetime;
+        this.project.duration = this.project_current.duration;
+    //     this.project.keywords = [
+				// {
+				// 	text: 'foo',
+				// 	value: 1,
+				// },];
+        this.project.keywords = this.project_current.keywords;
     },
     computed: {
         ...mapGetters('moduleProjects', {

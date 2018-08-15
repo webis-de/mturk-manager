@@ -1,6 +1,6 @@
-export class Project 
+export default class Project 
 {
-	constructor(data) 
+	constructor(data={}) 
 	{
 		this.id = data.id;
 		this.name = data.name;
@@ -18,5 +18,42 @@ export class Project
         this.qualification_hits_approved = data.qualification_hits_approved;
         this.qualification_locale = data.qualification_locale;
         this.block_workers = data.block_workers;
+	}
+
+	get_changes(project) {
+		const object = {};
+		for(const key in this)
+		{
+			if(project[key] != undefined)
+			{
+				if(this[key] != project[key])
+				{
+					console.log(`Changed value: ${key}`);
+					if(key == 'keywords')
+					{
+						const keywords_processed = [];
+						for(let keyword of project[key])
+						{
+							if(typeof(keyword) == 'string')
+							{
+								keyword = {'text': keyword}
+							}
+
+							keywords_processed.push(keyword)
+						}
+						object[key] = keywords_processed;
+					} else {
+						if(typeof(project[key]) == 'object')
+						{
+							object[key] = project[key];
+						} else {
+							object[key] = project[key];
+						}
+					}
+				}
+			}
+		}
+
+		return object;
 	}
 }

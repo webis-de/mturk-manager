@@ -1,6 +1,6 @@
 import { STATUS_BLOCK } from './enums.js';
 
-export class Worker 
+export default class Worker 
 {
 	constructor(data) 
 	{

@@ -4,8 +4,8 @@ input[type=file][data-v-8f53f5] {
     left: -99999px;
 }
 div.v-dialog__content[data-v-32af7f] {
-align-items: flex-start;
-margin-top: 10vh;
+        /*align-items: flex-start;*/
+        /*margin-top: 10vh;*/
 }@font-face {
   font-family: 'Material Icons';
   font-style: normal;

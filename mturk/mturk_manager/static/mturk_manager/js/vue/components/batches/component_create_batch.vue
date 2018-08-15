@@ -69,8 +69,8 @@ export default {
     name: 'component-create-batch',
     data () {
         return {
-            is_creating_batch: false,
-            number_step_current: 1,
+            is_creating_batch: true,
+            number_step_current: 2,
             list_steps: [
                 {
                     number: 1,
@@ -152,7 +152,7 @@ export default {
 
 <style scoped>
    div.v-dialog__content {
-align-items: flex-start;
-margin-top: 10vh;
+        /*align-items: flex-start;*/
+        /*margin-top: 10vh;*/
 } 
 </style>

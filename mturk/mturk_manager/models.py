@@ -180,3 +180,6 @@ class Model_Qualification(models.Model):
 
 class Keyword(models.Model):
     text = models.CharField(max_length=200, unique=True)
+
+    def __str__(self):
+        return self.text
