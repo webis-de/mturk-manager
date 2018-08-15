@@ -1211,7 +1211,8 @@ def create_batch(db_obj_project, form, request):
         # print(dict_parameters)
         try:
             mturk_obj_hit = client.create_hit(
-                Keywords=form.cleaned_data['keywords'],
+                Keywords='',
+                # Keywords=form.cleaned_data['keywords'],
                 MaxAssignments=form.cleaned_data['count_assignments'],
                 LifetimeInSeconds=form.cleaned_data['lifetime'],
                 AssignmentDurationInSeconds=form.cleaned_data['duration'],

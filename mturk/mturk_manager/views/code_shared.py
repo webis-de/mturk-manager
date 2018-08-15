@@ -42,7 +42,8 @@ def glob_create_batch(db_obj_project, data=None, dictionary=None):
         name = data['name']
         title = data['title']
         description = data['description']
-        keywords = data['keywords']
+        keywords = ''
+        # keywords = data['keywords']
         count_assignments = data['count_assignments']
         use_sandbox = data['use_sandbox']
         reward = data['reward']
@@ -53,7 +54,8 @@ def glob_create_batch(db_obj_project, data=None, dictionary=None):
         name = dictionary['name']
         title = dictionary['title']
         description = dictionary['description']
-        keywords = dictionary['keywords']
+        keywords = ''
+        # keywords = dictionary['keywords']
         count_assignments = dictionary['count_assignments']
         use_sandbox = dictionary['use_sandbox']
         reward = dictionary['reward']
