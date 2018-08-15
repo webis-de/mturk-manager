@@ -7,5 +7,12 @@ git submodule update --recursive --remote --init
 pip3 install -r requirements.txt
 
 cd ./mturk
-python3 manage.py createcachetable
-python3 manage.py migrate
+
+if [ $OSTYPE = "msys" ]; then
+	command="python"
+else
+	command="python3"
+fi
+
+$command manage.py createcachetable
+$command manage.py migrate

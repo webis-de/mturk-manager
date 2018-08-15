@@ -26,7 +26,7 @@ class m_Project(models.Model):
     fk_account_mturk = models.ForeignKey('m_Account_Mturk', on_delete=models.SET_NULL, null=True, related_name='projects')
     title = models.TextField(default='')
     description = models.TextField(default='')
-    keywords = models.TextField(default='')
+    # keywords = models.TextField(default='')
     count_assignments = models.IntegerField(default=1)
     reward = models.CharField(default='0.0', max_length=10)
     lifetime = models.IntegerField(default=604800)
@@ -45,6 +45,8 @@ class m_Project(models.Model):
     fk_template_global_main = models.OneToOneField('m_Template_Global', on_delete=models.SET_NULL, null=True, related_name='project')
     fk_message_reject_default = models.OneToOneField('m_Message_Reject', on_delete=models.SET_NULL, null=True, related_name='project')
     fk_message_block_default = models.OneToOneField('m_Message_Block', on_delete=models.SET_NULL, null=True, related_name='project')
+    
+    keywords = models.ManyToManyField('Keyword', related_name='projects')
 
     def __str__(self):
         return self.name
@@ -175,3 +177,6 @@ class Model_Qualification(models.Model):
     id_mturk = models.CharField(max_length=200, unique=True)
     name = models.CharField(max_length=200, unique=True)
     description = models.TextField()
+
+class Keyword(models.Model):
+    text = models.CharField(max_length=200, unique=True)

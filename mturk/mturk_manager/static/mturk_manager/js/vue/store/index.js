@@ -25,7 +25,7 @@ export const store = new Vuex.Store({
         moduleBatches,
     },
     state: {
-        name_project: undefined,
+        has_loaded_projects: false,
         token_csrf: undefined,
         show_with_fee: true,
         show_progress_indicator: 0,
@@ -49,9 +49,6 @@ export const store = new Vuex.Store({
         },
     },
     mutations: {
-        setNameProject(state, name_project) {
-            state.name_project = name_project;
-        },
         setUrlProject(state, url_project) {
             state.url_project = url_project;
         },
@@ -69,12 +66,11 @@ export const store = new Vuex.Store({
         },
     },
     actions: {
-        async init({commit, dispatch}) {
+        async init({state, commit, dispatch}) {
             const configElement = document.getElementById( 'config' );
             const config = JSON.parse( configElement.innerHTML );
             console.log(config);
 
-            commit('setNameProject', config.name_project);
             commit('set_token_csrf', config.token_csrf);
 
             commit('setUrlProject', config.url_project);
@@ -90,7 +86,10 @@ export const store = new Vuex.Store({
             commit('moduleWorkers/set_url_api_status_block', config.url_api_status_block);
 
             commit('moduleProjects/set_url_api_projects', config.url_api_projects);
-            dispatch('moduleProjects/load_projects');
+            commit('moduleProjects/set_slug_project_current', config.slug_project_current);
+
+            await dispatch('moduleProjects/load_projects');
+            state.has_loaded_projects = true;
         },
         async set_show_with_fee({commit, state}, show) {
             commit('set_show_with_fee', show);

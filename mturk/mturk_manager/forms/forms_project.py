@@ -17,7 +17,7 @@ class Form_Update_Project(forms.ModelForm):
 
     title = forms.CharField(required=False, widget=Bootstrap_TextInput())
     description = forms.CharField(required=False, widget=Bootstrap_TextInput())
-    keywords = forms.CharField(required=False, label='Keywords (comma-separated)', widget=Bootstrap_TextInput())
+    # keywords = forms.CharField(required=False, label='Keywords (comma-separated)', widget=Bootstrap_TextInput())
         
     fk_template_main = forms.ModelChoiceField(required=False, queryset=None, label='Worker template', empty_label='Please select a template', widget=Bootstrap_Select(small=True))
     fk_template_assignment_main = forms.ModelChoiceField(required=False, queryset=None, label='Assignment template', empty_label='Please select a template', widget=Bootstrap_Select(small=True))
@@ -45,7 +45,7 @@ class Form_Update_Project(forms.ModelForm):
             'count_assignments',
             'lifetime',
             'duration',
-            'keywords',
+            # 'keywords',
             'use_sandbox',
             'has_content_adult',
             'qualification_assignments_approved',

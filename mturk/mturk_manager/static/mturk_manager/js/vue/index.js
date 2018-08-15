@@ -8,6 +8,7 @@ import app_batches from './components/batches/app_batches.vue';
 import AppFinances from './components/finances/AppFinances.vue';
 import AppQualifications from './components/qualifications/AppQualifications.vue';
 import AppWorkers from './components/workers/AppWorkers.vue';
+import AppSettingsProject from './components/settings_project/app_settings_project.vue';
 import {store} from './store/index.js';
 import UploadButton from 'vuetify-upload-button';
 
@@ -29,15 +30,20 @@ const routes = [
 		name: 'Finances',
 		component: AppFinances,
 	},
-	{ 
-		path: '/qualifications', 
-		name: 'Qualifications',
-		component: AppQualifications,
-	},
+	// { 
+	// 	path: '/qualifications', 
+	// 	name: 'Qualifications',
+	// 	component: AppQualifications,
+	// },
 	{ 
 		path: '/workers', 
 		name: 'Workers',
 		component: AppWorkers,
+	},
+	{ 
+		path: '/settings_project', 
+		name: 'Project Settings',
+		component: AppSettingsProject,
 	},
 ]
 

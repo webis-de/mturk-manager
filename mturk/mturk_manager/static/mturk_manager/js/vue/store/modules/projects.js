@@ -11,6 +11,9 @@ export const moduleProjects = {
         url_api_projects: undefined,
 	},
 	getters: {
+		get_project_current(state) {
+			return state.object_projects[state.slug_project_current];
+		},
     	get_object_project: (state, getters, rootState) => {
     		console.log(rootState.name_project)
 			return state.object_projects;
@@ -20,6 +23,9 @@ export const moduleProjects = {
     	},
 	},
 	mutations: {
+        set_slug_project_current(state, slug_project_current) {
+            state.slug_project_current = slug_project_current;
+        },
         set_url_api_projects(state, url_new) {
             state.url_api_projects = url_new;
         },

@@ -8,7 +8,7 @@ export class Project
         this.title = data.title;
         this.description = data.description;
         this.keywords = data.keywords;
-        this.count_assignments = data.count_assignments;
+        this.assignments_max = data.count_assignments;
         this.reward = data.reward;
         this.lifetime = data.lifetime;
         this.duration = data.duration;

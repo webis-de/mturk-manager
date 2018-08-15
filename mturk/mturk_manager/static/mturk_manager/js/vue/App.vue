@@ -1,55 +1,64 @@
 <template>
 <v-app dark>
+    <template v-if="has_loaded_projects">
+        <component-navigation-drawer
+            v-bind:show_drawer.sync="show_drawer"
+        ></component-navigation-drawer>
 
-    <component-navigation-drawer
-        v-bind:show_drawer.sync="show_drawer"
-    ></component-navigation-drawer>
+        <v-progress-linear 
+            v-bind:active="get_show_progress_indicator" 
+            height="4" 
+            app 
+            indeterminate 
+            style="z-index: 50; position: absolute; margin: 0"
+        ></v-progress-linear>
 
-    <v-progress-linear 
-        v-bind:active="get_show_progress_indicator" 
-        height="4" 
-        app 
-        indeterminate 
-        style="z-index: 50; position: absolute; margin: 0"
-    ></v-progress-linear>
+        <v-toolbar 
+            app 
+            fixed 
+            clipped-left
+            v-bind:style="object_styles_toolbar"
+        >
+            <v-toolbar-side-icon @click.stop="show_drawer = !show_drawer"></v-toolbar-side-icon>
+            <v-toolbar-title>"{{ project_current.name }}" - {{name_route_current}}</v-toolbar-title>
+            <v-spacer></v-spacer>
 
-    <v-toolbar 
-        app 
-        fixed 
-        clipped-left
-        v-bind:style="object_styles_toolbar"
-    >
-        <v-toolbar-side-icon @click.stop="show_drawer = !show_drawer"></v-toolbar-side-icon>
-        <v-toolbar-title>"{{ name_project }}" - {{name_route_current}}</v-toolbar-title>
+            <v-tooltip bottom>
+                <v-switch 
+                    hide-details 
+                    slot="activator" 
+                    v-bind:label="use_sandbox ? 'Use Sandbox' : 'Use Sandbox'" 
+                    v-bind:input-value="use_sandbox" 
+                    v-on:click.native="toggle_use_sandbox"
+                ></v-switch>
+                <span>You are currently <b v-if="!use_sandbox">not</b> using the Sandbox</span>
+            </v-tooltip>
+
+            <!-- <v-spacer></v-spacer> -->
+
+            <component  
+                v-bind:is="currentTabComponent"
+            ></component>
+
+        </v-toolbar>
+
+
+        <v-content>
+            <v-container fluid>
+                <router-view></router-view>
+            </v-container>
+        </v-content>
+    </template>
+    <template v-else>
         <v-spacer></v-spacer>
-
-        <v-tooltip bottom>
-            <v-switch 
-                hide-details 
-                slot="activator" 
-                v-bind:label="use_sandbox ? 'Use Sandbox' : 'Use Sandbox'" 
-                v-bind:input-value="use_sandbox" 
-                v-on:click.native="toggle_use_sandbox"
-            ></v-switch>
-            <span>You are currently <b v-if="!use_sandbox">not</b> using the Sandbox</span>
-        </v-tooltip>
-
-        <!-- <v-spacer></v-spacer> -->
-
-        <component 
-            v-bind:is="currentTabComponent"
-        ></component>
-
-    </v-toolbar>
-
-
-    <v-content>
-        <v-container fluid>
-            <router-view></router-view>
-        </v-container>
-    </v-content>
-
-
+            <div class="text-xs-center">
+                <v-progress-circular
+                    indeterminate
+                    color="primary"
+                ></v-progress-circular>
+            </div>
+        <v-spacer></v-spacer>
+    </template>
 <!--     <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
         <v-card>
           <v-toolbar dark color="primary">
@@ -115,8 +124,8 @@ export default {
             {
                 case 'Finances':
                     return ComponentToolbarBatches;
-                // case 'Qualifications':
-                //     return ComponentToolbarQualifications;
+                case 'Qualifications':
+                    return ComponentToolbarQualifications;
                 case 'Workers':
                     return ComponentToolbarWorkers;
             }
@@ -133,7 +142,10 @@ export default {
                 this.set_show_with_fee(value);
             }
         },
-        ...mapState(['name_project', 'show_with_fee', 'use_sandbox']),
+        ...mapState(['show_with_fee', 'use_sandbox', 'has_loaded_projects']),
+        ...mapGetters('moduleProjects', {
+            'project_current': 'get_project_current',
+        }),
         ...mapGetters(['get_show_progress_indicator']),
     },
     methods: {
