@@ -14,12 +14,6 @@ export default {
 
     data () {
         return {
-            dialog: false,
-
-            drawer: false,
-            is_refreshing: true,
-            show_snackbar: false,
-            text_snackbar: 'Finished refreshing the data',
         }
     },
     methods: {

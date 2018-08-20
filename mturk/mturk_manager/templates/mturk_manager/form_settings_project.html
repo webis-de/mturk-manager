@@ -177,7 +177,11 @@
 		<div class="input-group-prepend">
 			<label for="{{ form.block_workers.id_for_label }}" class="input-group-text">{{ form.block_workers.label }}</label>
 		</div>
-		{{ form.block_workers }}
+		<div class="input-group-append">
+			<div class="input-group-text">
+				{{ form.block_workers }}
+			</div>
+		</div>
 	</div>
 </div>
 <div class="form-row form-group">

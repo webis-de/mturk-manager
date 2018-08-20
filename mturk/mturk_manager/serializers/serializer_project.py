@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from mturk_manager.models import m_Project, Keyword
-from mturk_manager.serializers import Serializer_Keyword
+# from mturk_manager.serializers import Serializer_Keyword
+from mturk_manager.serializers import Serializer_Keyword, Serializer_Template_Worker
+# from mturk_manager.serializers import Serializer_Batch
 from django.db import IntegrityError
 
 class Serializer_Project(serializers.ModelSerializer):
@@ -13,6 +15,7 @@ class Serializer_Project(serializers.ModelSerializer):
     # url = serializers.HyperlinkedIdentityField(view_name='mturk_manager:project_api_tmp', lookup_field='name')
     # workers = Serializer_Worker(many=True, read_only=True)
     keywords = Serializer_Keyword(many=True)
+    templates = Serializer_Template_Worker(many=True)
 
     class Meta:
         model = m_Project
@@ -34,6 +37,8 @@ class Serializer_Project(serializers.ModelSerializer):
             'qualification_hits_approved',
             'qualification_locale',
             'block_workers',
+            'templates',
+            'fk_template_main',
         )
 
     def update(self, instance, validated_data):

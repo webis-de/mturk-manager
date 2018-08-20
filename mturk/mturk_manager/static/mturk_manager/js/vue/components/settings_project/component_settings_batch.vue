@@ -61,6 +61,20 @@
             suffix="s"
         ></v-text-field>
     		<!-- v-bind:search-input.sync="search" -->
+
+        <v-select
+            v-model="project.template"
+            v-bind:items="project.templates"
+            label="Worker Template"
+            item-text="name"
+            item-value="id"
+        ></v-select>
+
+        <v-switch
+            label="Soft Block Workers"
+            v-model="project.block_workers"
+        ></v-switch>
+            
         <v-combobox
             v-model="project.keywords"
             v-bind:rules="rules_keywords"
@@ -107,16 +121,6 @@ export default {
 	data () {
 		return {
 			// search: undefined,
-			list_keywords: [
-				{
-					text: 'foo',
-					id: 1,
-				},
-				{
-					text: 'bar',
-					id: 2,
-				},
-			],
 		}
 	},
 	methods: {

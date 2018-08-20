@@ -19,95 +19,68 @@
         </v-btn>
     </v-fab-transition>
 
-    <v-stepper v-show="is_creating_batch" v-model="number_step_current">
-        <v-stepper-header>
-            <template
-                v-for="(step, index) in list_steps"
-            >
-                <v-stepper-step 
-                    v-bind:key="`${index}_step`"
-                    v-bind:complete="number_step_current > step.number" 
-                    v-bind:step="step.number"
-                >
-                    {{ step.label }}
-                </v-stepper-step>
-                <v-divider
-                    v-bind:key="index"
-                    v-if="index != list_steps.length - 1"
-                ></v-divider>
-            </template>
-        </v-stepper-header>
-        <v-stepper-items>
-            <v-stepper-content 
-                v-for="step in list_steps"
-                v-bind:step="step.number"
-            >
-                    <!-- v-bind:list_steps="list_steps" -->
-                <component 
-                    v-bind:is="step.component"
-                    v-bind:ref="step.number"
-                    v-bind:step="step_current"
-                    v-on:cancel="cancel()"
-                    v-on:next="next()"
-                    v-on:back="back()"
-                ></component>
-            </v-stepper-content>
-        </v-stepper-items>
-    </v-stepper>
+    <v-card>
+        <v-card-title>
+            <span class="headline">Create Batch</span>
+        </v-card-title>
+        <v-card-text>
+            <v-container class="mx-0">
+                <v-layout row wrap>
+                    <v-flex xs6>
+                        <component-upload-csv></component-upload-csv>
+                        <v-divider class="my-3"></v-divider>
+                        <component-settings-batch
+                            v-bind:project.sync="project"
+                        ></component-settings-batch>
+                    </v-flex>
+
+                    <v-flex xs6>
+                        <component-overview
+                            v-bind:project="project"
+                        ></component-overview>
+                        <component-submit-batch
+                            v-bind:project="project"
+                        ></component-submit-batch>
+                    </v-flex>
+                </v-layout>
+            </v-container>
+        </v-card-text>
+    </v-card>
 </v-dialog>
 </template>
 
 <script>
     import { mapState, mapActions, mapGetters } from 'vuex';
     
-    import ComponentStepUploadCSV from './component_step_upload_csv.vue';
-    import ComponentStepSettings from './component_step_settings.vue';
-    import ComponentStepOverview from './component_step_overview.vue';
+    import ComponentUploadCsv from './component_upload_csv.vue';
+    import ComponentSettingsBatch from './component_settings_batch.vue';
+    import ComponentOverview from './component_overview.vue';
+    import ComponentSubmitBatch from './component_submit_batch.vue';
+    // import ComponentStepSettings from './component_step_settings.vue';
+    // import ComponentStepOverview from './component_step_overview.vue';
     // import ComponentShowMoneySpent from './component-show-money-spent.vue';
     // import ComponentShowBatches from './component-show-batches.vue';
 export default {
     name: 'component-create-batch',
     data () {
         return {
+            project: undefined,
             is_creating_batch: true,
-            number_step_current: 2,
-            list_steps: [
-                {
-                    number: 1,
-                    label: 'Upload CSV',
-                    component: ComponentStepUploadCSV,
-
-                },
-                {
-                    number: 2,
-                    label: 'Settings',
-                    component: ComponentStepSettings,
-
-                },
-                {
-                    number: 3,
-                    label: 'Done',
-                    component: ComponentStepOverview,
-
-                },
-            ],
-
-            data_csv: undefined,
         }
     },
     methods: {
-        cancel() {
-            this.is_creating_batch = false;
-            this.number_step_current = 1;
-            this.data_csv = undefined;
-            this.$refs[1][0].reset()
-        },
-        next() {
-            this.number_step_current += 1;
-        },
-        back() {
-            this.number_step_current -= 1;
-        },
+        // cancel() {
+        //     this.is_creating_batch = false;
+        //     this.number_step_current = 1;
+        //     this.data_csv = undefined;
+        //     this.$refs[1][0].reset()
+        // },
+        // next() {
+        //     this.number_step_current += 1;
+        // },
+        // back() {
+        //     this.number_step_current -= 1;
+        // },
     //     refresh_data() {
     //         this.set_show_progress_indicator(true);
     //         this.set_show_progress_indicator(true);
@@ -134,25 +107,64 @@ export default {
     //     },
     },
     computed: {
-        step_current: function() {
-            return this.list_steps[this.number_step_current - 1];
-        },
+        // count_hits() {
+        //     if(this.is_valid_csv)
+        //     {
+        //         return this.data_csv.length;
+        //     }
+        //     return null;
+        // },
+        // name_file() {
+        //     if(this.file_csv != null)
+        //     {
+        //         return this.file_csv.name;
+        //     } 
+        //     return null;
+        // },
+        // get_variables() {
+        //     if(this.is_valid_csv)
+        //     {
+        //         return Object.keys(this.data_csv[0]);
+        //     }
+
+        //     return [];
+        // },
+        // data_csv() {
+        //     if(this.is_valid_csv) 
+        //     {
+        //         return this.object_csv_parsed.data;
+        //     }
+        //     return null;
+        // },
+        // is_valid_csv() {
+        //     if(this.object_csv_parsed == undefined) 
+        //     {
+        //         return false;
+        //     } else {
+        //         return this.object_csv_parsed.errors.length == 0;
+        //     }
+        // },
+        // step_current: function() {
+        //     return this.list_steps[this.number_step_current - 1];
+        // },
     //     ...mapState(['use_sandbox']),
+        ...mapGetters('moduleBatches', {
+            // 'get_object_csv_parsed': 'get_object_csv_parsed',
+            // 'is_valid_csv': 'is_valid_csv',
+        }),
     },
     // created: function() {
     //     this.refresh_data();
     // },
 
     components: {
-     // ComponentShowMoneySpent,
-     // ComponentShowBatches,
+        ComponentUploadCsv,
+        ComponentSettingsBatch,
+        ComponentOverview,
+        ComponentSubmitBatch,
     },
 }
 </script>
 
 <style scoped>
-   div.v-dialog__content {
-        /*align-items: flex-start;*/
-        /*margin-top: 10vh;*/
-} 
 </style>

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import Vue from 'vue';
 import _ from 'lodash';
-import { Worker } from '../../classes/workers.js';
+import Worker from '../../classes/workers.js';
 import { STATUS_BLOCK } from '../../classes/enums.js';
 
 export const moduleWorkers = {

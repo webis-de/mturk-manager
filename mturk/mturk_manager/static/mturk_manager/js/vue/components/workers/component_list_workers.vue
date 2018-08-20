@@ -188,8 +188,17 @@ export default {
         // cancel() {
         //     this.show_dialog_policy = false;
         // },
+        ...mapActions('moduleWorkers', {
+            'update_status_block': 'update_status_block',
+        }),
     },
     created: function() {
+
+            this.update_status_block({
+                worker: {name: 'A7W013PM199BS'},
+                status_block_new: 1,
+                status_block_old: 2,
+            });
     },
 
     components: {

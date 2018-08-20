@@ -1117,7 +1117,7 @@ def preprocess_template_request(request, db_obj_project, html_template):
         code_block=code_shared.get_code_block_request(),
     )
 
-    html_template = html_template.replace('</body>', '{}</body>'.format(injected))
+    html_template = html_template.replace('</head>', '{}</head>'.format(injected))
     return html_template
 
 def create_batch(db_obj_project, form, request):
@@ -1150,7 +1150,7 @@ def create_batch(db_obj_project, form, request):
     #         'RequiredToPreview': True
     #     })
     #     print(list_requirements)
-    if form.cleaned_data['block_workers'] == 'enabled_request':
+    if form.cleaned_data['block_workers']:
         db_obj_template.template = preprocess_template_request(request, db_obj_project, db_obj_template.template)
 
 

@@ -36322,204 +36322,10 @@ render._withStripped = true
       
       }
     })();
-},{"babel-runtime/helpers/extends":"../../../../../node_modules/babel-runtime/helpers/extends.js","vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","./components/component-navigation-drawer.vue":"components/component-navigation-drawer.vue","./components/batches/component-toolbar-batches.vue":"components/batches/component-toolbar-batches.vue","./components/qualifications/component-toolbar-qualifications.vue":"components/qualifications/component-toolbar-qualifications.vue","./components/workers/component_toolbar_workers.vue":"components/workers/component_toolbar_workers.vue","_css_loader":"../../../../../node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"../../../../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../../../../node_modules/vue/dist/vue.common.js"}],"../../../../../node_modules/core-js/library/modules/_object-sap.js":[function(require,module,exports) {
-// most Object methods by ES6 should accept primitives
-var $export = require('./_export');
-var core = require('./_core');
-var fails = require('./_fails');
-module.exports = function (KEY, exec) {
-  var fn = (core.Object || {})[KEY] || Object[KEY];
-  var exp = {};
-  exp[KEY] = exec(fn);
-  $export($export.S + $export.F * fails(function () { fn(1); }), 'Object', exp);
-};
-
-},{"./_export":"../../../../../node_modules/core-js/library/modules/_export.js","./_core":"../../../../../node_modules/core-js/library/modules/_core.js","./_fails":"../../../../../node_modules/core-js/library/modules/_fails.js"}],"../../../../../node_modules/core-js/library/modules/es6.object.keys.js":[function(require,module,exports) {
-// 19.1.2.14 Object.keys(O)
-var toObject = require('./_to-object');
-var $keys = require('./_object-keys');
-
-require('./_object-sap')('keys', function () {
-  return function keys(it) {
-    return $keys(toObject(it));
-  };
-});
-
-},{"./_to-object":"../../../../../node_modules/core-js/library/modules/_to-object.js","./_object-keys":"../../../../../node_modules/core-js/library/modules/_object-keys.js","./_object-sap":"../../../../../node_modules/core-js/library/modules/_object-sap.js"}],"../../../../../node_modules/core-js/library/fn/object/keys.js":[function(require,module,exports) {
-require('../../modules/es6.object.keys');
-module.exports = require('../../modules/_core').Object.keys;
-
-},{"../../modules/es6.object.keys":"../../../../../node_modules/core-js/library/modules/es6.object.keys.js","../../modules/_core":"../../../../../node_modules/core-js/library/modules/_core.js"}],"../../../../../node_modules/babel-runtime/core-js/object/keys.js":[function(require,module,exports) {
-module.exports = { "default": require("core-js/library/fn/object/keys"), __esModule: true };
-},{"core-js/library/fn/object/keys":"../../../../../node_modules/core-js/library/fn/object/keys.js"}],"../../../../../node_modules/vuetify-upload-button/dist/vuetify-upload-button.js":[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":"../../../../../node_modules/babel-runtime/helpers/extends.js","vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","./components/component-navigation-drawer.vue":"components/component-navigation-drawer.vue","./components/batches/component-toolbar-batches.vue":"components/batches/component-toolbar-batches.vue","./components/qualifications/component-toolbar-qualifications.vue":"components/qualifications/component-toolbar-qualifications.vue","./components/workers/component_toolbar_workers.vue":"components/workers/component_toolbar_workers.vue","_css_loader":"../../../../../node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"../../../../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../../../../node_modules/vue/dist/vue.common.js"}],"../../../../../node_modules/vuetify-upload-button/dist/vuetify-upload-button.js":[function(require,module,exports) {
 var define;
 !function(e,t){"object"==typeof exports&&"object"==typeof module?module.exports=t():"function"==typeof define&&define.amd?define("vuetify-upload-button",[],t):"object"==typeof exports?exports["vuetify-upload-button"]=t():e["vuetify-upload-button"]=t()}(this,function(){return function(e){function t(o){if(n[o])return n[o].exports;var r=n[o]={exports:{},id:o,loaded:!1};return e[o].call(r.exports,r,r.exports,t),r.loaded=!0,r.exports}var n={};return t.m=e,t.c=n,t.p="",t(0)}([function(e,t,n){n(1);var o=n(6)(n(7),n(8),"data-v-26f644c0",null);e.exports=o.exports},function(e,t,n){var o=n(2);"string"==typeof o&&(o=[[e.id,o,""]]),o.locals&&(e.exports=o.locals);n(4)("9bbb4e68",o,!0)},function(e,t,n){t=e.exports=n(3)(!1),t.push([e.id,".upload-btn[data-v-26f644c0]{padding-left:16px;padding-right:16px}.upload-btn input[type=file][data-v-26f644c0]{position:absolute;height:.1px;width:.1px;overflow:hidden;opacity:0;z-index:-1}.upload-btn-hover[data-v-26f644c0]{cursor:pointer}",""])},function(e,t){function n(e,t){var n=e[1]||"",r=e[3];if(!r)return n;if(t&&"function"==typeof btoa){var a=o(r),i=r.sources.map(function(e){return"/*# sourceURL="+r.sourceRoot+e+" */"});return[n].concat(i).concat([a]).join("\n")}return[n].join("\n")}function o(e){var t=btoa(unescape(encodeURIComponent(JSON.stringify(e)))),n="sourceMappingURL=data:application/json;charset=utf-8;base64,"+t;return"/*# "+n+" */"}e.exports=function(e){var t=[];return t.toString=function(){return this.map(function(t){var o=n(t,e);return t[2]?"@media "+t[2]+"{"+o+"}":o}).join("")},t.i=function(e,n){"string"==typeof e&&(e=[[null,e,""]]);for(var o={},r=0;r<this.length;r++){var a=this[r][0];"number"==typeof a&&(o[a]=!0)}for(r=0;r<e.length;r++){var i=e[r];"number"==typeof i[0]&&o[i[0]]||(n&&!i[2]?i[2]=n:n&&(i[2]="("+i[2]+") and ("+n+")"),t.push(i))}},t}},function(e,t,n){function o(e){for(var t=0;t<e.length;t++){var n=e[t],o=d[n.id];if(o){o.refs++;for(var r=0;r<o.parts.length;r++)o.parts[r](n.parts[r]);for(;r<n.parts.length;r++)o.parts.push(a(n.parts[r]));o.parts.length>n.parts.length&&(o.parts.length=n.parts.length)}else{for(var i=[],r=0;r<n.parts.length;r++)i.push(a(n.parts[r]));d[n.id]={id:n.id,refs:1,parts:i}}}}function r(){var e=document.createElement("style");return e.type="text/css",p.appendChild(e),e}function a(e){var t,n,o=document.querySelector('style[data-vue-ssr-id~="'+e.id+'"]');if(o){if(h)return v;o.parentNode.removeChild(o)}if(b){var a=c++;o=f||(f=r()),t=i.bind(null,o,a,!1),n=i.bind(null,o,a,!0)}else o=r(),t=l.bind(null,o),n=function(){o.parentNode.removeChild(o)};return t(e),function(o){if(o){if(o.css===e.css&&o.media===e.media&&o.sourceMap===e.sourceMap)return;t(e=o)}else n()}}function i(e,t,n,o){var r=n?"":o.css;if(e.styleSheet)e.styleSheet.cssText=g(t,r);else{var a=document.createTextNode(r),i=e.childNodes;i[t]&&e.removeChild(i[t]),i.length?e.insertBefore(a,i[t]):e.appendChild(a)}}function l(e,t){var n=t.css,o=t.media,r=t.sourceMap;if(o&&e.setAttribute("media",o),r&&(n+="\n/*# sourceURL="+r.sources[0]+" */",n+="\n/*# sourceMappingURL=data:application/json;base64,"+btoa(unescape(encodeURIComponent(JSON.stringify(r))))+" */"),e.styleSheet)e.styleSheet.cssText=n;else{for(;e.firstChild;)e.removeChild(e.firstChild);e.appendChild(document.createTextNode(n))}}var s="undefined"!=typeof document,u=n(5),d={},p=s&&(document.head||document.getElementsByTagName("head")[0]),f=null,c=0,h=!1,v=function(){},b="undefined"!=typeof navigator&&/msie [6-9]\b/.test(navigator.userAgent.toLowerCase());e.exports=function(e,t,n){h=n;var r=u(e,t);return o(r),function(t){for(var n=[],a=0;a<r.length;a++){var i=r[a],l=d[i.id];l.refs--,n.push(l)}t?(r=u(e,t),o(r)):r=[];for(var a=0;a<n.length;a++){var l=n[a];if(0===l.refs){for(var s=0;s<l.parts.length;s++)l.parts[s]();delete d[l.id]}}}};var g=function(){var e=[];return function(t,n){return e[t]=n,e.filter(Boolean).join("\n")}}()},function(e,t){e.exports=function(e,t){for(var n=[],o={},r=0;r<t.length;r++){var a=t[r],i=a[0],l=a[1],s=a[2],u=a[3],d={id:e+":"+r,css:l,media:s,sourceMap:u};o[i]?o[i].parts.push(d):n.push(o[i]={id:i,parts:[d]})}return n}},function(e,t){e.exports=function(e,t,n,o){var r,a=e=e||{},i=typeof e["default"];"object"!==i&&"function"!==i||(r=e,a=e["default"]);var l="function"==typeof a?a.options:a;if(t&&(l.render=t.render,l.staticRenderFns=t.staticRenderFns),n&&(l._scopeId=n),o){var s=Object.create(l.computed||null);Object.keys(o).forEach(function(e){var t=o[e];s[e]=function(){return t}}),l.computed=s}return{esModule:r,exports:a,options:l}}},function(e,t){"use strict";Object.defineProperty(t,"__esModule",{value:!0}),t["default"]={name:"upload-btn",props:{block:{"default":!1,type:Boolean},fileChangedCallback:{"default":void 0,type:Function},color:{"default":"primary",type:String},disabled:{"default":!1,type:Boolean},flat:{"default":!1,type:Boolean},hover:{"default":!0,type:Boolean},icon:{"default":!1,type:Boolean},large:{"default":!1,type:Boolean},loading:{"default":!1,type:Boolean},outline:{"default":!1,type:Boolean},ripple:{"default":!0,type:Boolean},round:{"default":!1,type:Boolean},small:{"default":!1,type:Boolean},title:{"default":"Upload",type:String}},computed:{classes:function n(){var n={"btn--block":this.block,"btn--flat":this.flat,"upload-btn-hover":this.hover,"btn--icon":this.icon,"btn--large":this.large,"btn--loading":this.loading,"btn--outline":this.outline,"btn--round":this.round,"btn--small":this.small,"btn--disabled":this.disabled},e="";for(var t in n)n[t]&&(e+=t+" ");return e}},methods:{fileChanged:function(e){e&&this.fileChangedCallback&&(e.target.files[0]?this.fileChangedCallback(e.target.files[0]):this.fileChangedCallback(null))}}}},function(e,t){e.exports={render:function(){var e=this,t=e.$createElement,n=e._self._c||t;return n("div",{staticClass:"upload-btn"},[n("input",{attrs:{id:"uploadFile",type:"file",name:"uploadFile"},on:{change:e.fileChanged}}),e._v(" "),n("label",{directives:[{name:"ripple",rawName:"v-ripple",value:e.ripple,expression:"ripple"}],"class":"btn "+e.classes+e.color+" upload-btn",attrs:{"for":"uploadFile"}},[e._v("\n    "+e._s(e.icon?"":e.title)+"\n    "),e._t("icon")],2)])},staticRenderFns:[]}}])});
-},{}],"components/batches/component_create_batch_navigation.vue":[function(require,module,exports) {
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-// import { mapState, mapActions, mapGetters } from 'vuex';
-
-// import ComponentStepUploadCSV from './component_step_upload_csv.vue';
-// import ComponentShowMoneySpent from './component-show-money-spent.vue';
-// import ComponentShowBatches from './component-show-batches.vue';
-exports.default = {
-    name: 'component-create-batch-navigation',
-    props: {
-        reset: {
-            required: false,
-            type: Function
-        },
-        is_step_completed: {
-            required: false,
-            type: Boolean,
-            default: true
-        },
-        step: {
-            required: true,
-            type: Object
-        }
-        // list_steps: {
-        //     required: true,
-        //     type: Array,
-        // },
-    },
-    data: function data() {
-        return {};
-    },
-
-    computed: {
-        label_submit: function label_submit() {
-            if (this.step.number == 3) {
-                return 'Submit';
-            } else {
-                return 'Continue';
-            }
-        },
-        is_disabled_back: function is_disabled_back() {
-            return this.step.number == 1;
-        }
-    },
-    methods: {
-        cancel: function cancel() {
-            if (this.reset != null) {
-                this.reset();
-            }
-
-            this.$emit('cancel');
-        }
-    },
-    components: {
-        // ComponentCreateBatchNavigation,
-    }
-};
-        var $722762 = exports.default || module.exports;
-      
-      if (typeof $722762 === 'function') {
-        $722762 = $722762.options;
-      }
-    
-        /* template */
-        Object.assign($722762, (function () {
-          var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "span",
-    [
-      _c("v-divider", { staticClass: "my-3" }),
-      _vm._v(" "),
-      _c(
-        "v-btn",
-        {
-          attrs: { disabled: _vm.is_disabled_back, flat: "" },
-          on: {
-            click: function($event) {
-              _vm.$emit("back")
-            }
-          }
-        },
-        [_vm._v("Back")]
-      ),
-      _vm._v(" "),
-      _c(
-        "v-btn",
-        {
-          attrs: { disabled: !_vm.is_step_completed, color: "primary" },
-          on: {
-            click: function($event) {
-              _vm.$emit("next")
-            }
-          }
-        },
-        [_vm._v(_vm._s(_vm.label_submit))]
-      ),
-      _vm._v(" "),
-      _c("v-btn", { attrs: { flat: "" }, on: { click: _vm.cancel } }, [
-        _vm._v("Cancel")
-      ])
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-
-          return {
-            render: render,
-            staticRenderFns: staticRenderFns,
-            _compiled: true,
-            _scopeId: null,
-            functional: undefined
-          };
-        })());
-      
-    /* hot reload */
-    (function () {
-      if (module.hot) {
-        var api = require('vue-hot-reload-api');
-        api.install(require('vue'));
-        if (api.compatible) {
-          module.hot.accept();
-          if (!module.hot.data) {
-            api.createRecord('$722762', $722762);
-          } else {
-            api.reload('$722762', $722762);
-          }
-        }
-
-        
-      }
-    })();
-},{"vue-hot-reload-api":"../../../../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../../../../node_modules/vue/dist/vue.common.js"}],"../../../../../node_modules/events/events.js":[function(require,module,exports) {
+},{}],"../../../../../node_modules/events/events.js":[function(require,module,exports) {
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -43833,16 +43639,12 @@ var global = arguments[3];
 	return Papa;
 }));
 
-},{"stream":"../../../../../node_modules/stream-browserify/index.js"}],"components/batches/component_step_upload_csv.vue":[function(require,module,exports) {
+},{"stream":"../../../../../node_modules/stream-browserify/index.js"}],"components/batches/component_upload_csv.vue":[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-
-var _keys = require('babel-runtime/core-js/object/keys');
-
-var _keys2 = _interopRequireDefault(_keys);
 
 var _extends2 = require('babel-runtime/helpers/extends');
 
@@ -43854,10 +43656,6 @@ var _vuetifyUploadButton = require('vuetify-upload-button');
 
 var _vuetifyUploadButton2 = _interopRequireDefault(_vuetifyUploadButton);
 
-var _component_create_batch_navigation = require('./component_create_batch_navigation.vue');
-
-var _component_create_batch_navigation2 = _interopRequireDefault(_component_create_batch_navigation);
-
 var _papaparse = require('papaparse');
 
 var _papaparse2 = _interopRequireDefault(_papaparse);
@@ -43867,124 +43665,17 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 // import ComponentStepUploadCSV from './component_step_upload_csv.vue';
 // import ComponentShowMoneySpent from './component-show-money-spent.vue';
 // import ComponentShowBatches from './component-show-batches.vue';
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
 exports.default = {
-    name: 'component-step-upload-csv',
-    props: {
-        step: {
-            required: true,
-            type: Object
-        }
-    },
+    name: 'component-upload-csv',
+    props: {},
     data: function data() {
         return {
             file_csv: null,
             is_parsing_csv: false
         };
+    },
+    mounted: function mounted() {
+        this.set_csv_parsed({ "data": [{ "link_1": "http://webislab35.medien.uni-weimar.de:8002/wiki/Margaret_Billingham", "link_2": "http://webislab35.medien.uni-weimar.de:8002/wiki/Benik_Afobe", "link_3": "http://webislab35.medien.uni-weimar.de:8002/wiki/Letter_to_Blanchy" }], "errors": [], "meta": { "delimiter": ",", "linebreak": "\r\n", "aborted": false, "truncated": false, "cursor": 220, "fields": ["link_1", "link_2", "link_3"] } });
     },
 
     methods: (0, _extends3.default)({
@@ -44022,251 +43713,131 @@ exports.default = {
                 return this.file_csv.name;
             }
             return null;
-        },
-        count_hits: function count_hits() {
-            if (this.is_valid_csv) {
-                return this.data_csv.length;
-            }
-            return null;
-        },
-        get_variables: function get_variables() {
-            if (this.is_valid_csv) {
-                return (0, _keys2.default)(this.data_csv[0]);
-            }
-            return null;
-        },
-        data_csv: function data_csv() {
-            if (this.is_valid_csv) {
-                return this.get_object_csv_parsed.data;
-            }
-            return null;
-        },
-        is_valid_csv: function is_valid_csv() {
-            if (this.get_object_csv_parsed == null) {
-                return false;
-            } else {
-                return this.get_object_csv_parsed.errors.length == 0;
-            }
-        },
-        is_step_completed: function is_step_completed() {
-            return this.is_valid_csv;
         }
     }, (0, _vuex.mapGetters)('moduleBatches', {
-        'get_object_csv_parsed': 'get_object_csv_parsed'
+        'get_object_csv_parsed': 'get_object_csv_parsed',
+        'is_valid_csv': 'is_valid_csv'
     })),
     components: {
-        UploadBtn: _vuetifyUploadButton2.default,
-        ComponentCreateBatchNavigation: _component_create_batch_navigation2.default
+        UploadBtn: _vuetifyUploadButton2.default
     }
-};
-        var $8f53f5 = exports.default || module.exports;
+}; //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+        var $73b10b = exports.default || module.exports;
       
-      if (typeof $8f53f5 === 'function') {
-        $8f53f5 = $8f53f5.options;
+      if (typeof $73b10b === 'function') {
+        $73b10b = $73b10b.options;
       }
     
         /* template */
-        Object.assign($8f53f5, (function () {
+        Object.assign($73b10b, (function () {
           var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "span",
+    "v-layout",
     [
       _c(
-        "v-layout",
+        "v-flex",
         [
           _c(
-            "v-flex",
-            { attrs: { xs1: "" } },
+            "v-layout",
             [
-              _c("upload-btn", {
-                attrs: {
-                  fileChangedCallback: _vm.file_changed,
-                  title: "Upload CSV",
-                  loading: true
-                }
-              })
+              _c(
+                "v-flex",
+                { attrs: { xs2: "" } },
+                [
+                  _c("upload-btn", {
+                    staticClass: "pl-0",
+                    attrs: {
+                      fileChangedCallback: _vm.file_changed,
+                      title: "Upload CSV",
+                      loading: _vm.is_parsing_csv
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c("v-flex", [
+                _vm._v(
+                  "\n                 " +
+                    _vm._s(_vm.tmp_name_file) +
+                    "\n            "
+                )
+              ])
             ],
             1
           ),
           _vm._v(" "),
-          _c("v-flex", [
-            _vm._v("\n             " + _vm._s(_vm.tmp_name_file) + "\n        ")
-          ])
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _vm.is_valid_csv
-        ? [
-            _c("v-divider", { staticClass: "my-3" }),
-            _vm._v(" "),
-            _c(
-              "v-list",
-              { attrs: { subheader: "" } },
-              [
-                _c("v-subheader", [_vm._v("Statistics")]),
-                _vm._v(" "),
-                _c(
-                  "v-list-tile",
-                  [
-                    _c(
-                      "v-layout",
-                      [
-                        _c("v-flex", { attrs: { xs1: "" } }, [
-                          _vm._v(
-                            "\n                        Is Valid:  \n                    "
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _c(
-                          "v-flex",
-                          { staticClass: "text-xs-center", attrs: { xs1: "" } },
-                          [
-                            _c("v-icon", { attrs: { color: "success" } }, [
-                              _vm._v("check")
-                            ])
-                          ],
-                          1
-                        )
-                      ],
-                      1
-                    )
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "v-list-tile",
-                  [
-                    _c(
-                      "v-layout",
-                      [
-                        _c("v-flex", { attrs: { xs1: "" } }, [
-                          _vm._v(
-                            "\n                        Number of variables:  \n                    "
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _c(
-                          "v-flex",
-                          { staticClass: "text-xs-center", attrs: { xs1: "" } },
-                          [
-                            _vm._v(
-                              "\n                        " +
-                                _vm._s(_vm.get_variables.length) +
-                                " \n\n                        "
-                            ),
-                            _c(
-                              "v-tooltip",
-                              { attrs: { top: "" } },
-                              [
-                                _c(
-                                  "v-icon",
-                                  {
-                                    attrs: { slot: "activator" },
-                                    slot: "activator"
-                                  },
-                                  [_vm._v("info")]
-                                ),
-                                _vm._v(" "),
-                                _c("span", [
-                                  _vm._v(_vm._s(_vm.get_variables.join(", ")))
-                                ])
-                              ],
-                              1
-                            )
-                          ],
-                          1
-                        )
-                      ],
-                      1
-                    )
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "v-list-tile",
-                  [
-                    _c(
-                      "v-layout",
-                      [
-                        _c("v-flex", { attrs: { xs1: "" } }, [
-                          _vm._v(
-                            "\n                        Number of HITs: \n                    "
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _c(
-                          "v-flex",
-                          { staticClass: "text-xs-center", attrs: { xs1: "" } },
-                          [
-                            _vm._v(
-                              "\n                        " +
-                                _vm._s(_vm.count_hits) +
-                                "   \n                    "
-                            )
-                          ]
-                        )
-                      ],
-                      1
-                    )
-                  ],
-                  1
-                )
-              ],
-              1
-            )
-          ]
-        : _vm._e(),
-      _vm._v(" "),
-      _c("component-create-batch-navigation", {
-        attrs: {
-          step: _vm.step,
-          is_step_completed: _vm.is_step_completed,
-          reset: _vm.reset
-        },
-        on: {
-          cancel: function($event) {
-            _vm.$emit("cancel")
-          },
-          next: function($event) {
-            _vm.$emit("next")
-          },
-          back: function($event) {
-            _vm.$emit("back")
-          }
-        }
-      }),
-      _vm._v(" "),
-      _c(
-        "v-dialog",
-        {
-          attrs: { "hide-overlay": "", persistent: "", width: "300" },
-          model: {
-            value: _vm.is_parsing_csv,
-            callback: function($$v) {
-              _vm.is_parsing_csv = $$v
-            },
-            expression: "is_parsing_csv"
-          }
-        },
-        [
           _c(
-            "v-card",
-            { attrs: { color: "primary", dark: "" } },
+            "v-dialog",
+            {
+              attrs: { "hide-overlay": "", persistent: "", width: "300" },
+              model: {
+                value: _vm.is_parsing_csv,
+                callback: function($$v) {
+                  _vm.is_parsing_csv = $$v
+                },
+                expression: "is_parsing_csv"
+              }
+            },
             [
               _c(
-                "v-card-text",
+                "v-card",
+                { attrs: { color: "primary", dark: "" } },
                 [
-                  _vm._v("\n          Parsing CSV...\n          "),
-                  _c("v-progress-linear", {
-                    staticClass: "mb-0",
-                    attrs: { indeterminate: "", color: "white" }
-                  })
+                  _c(
+                    "v-card-text",
+                    [
+                      _vm._v("\n              Parsing CSV...\n              "),
+                      _c("v-progress-linear", {
+                        staticClass: "mb-0",
+                        attrs: { indeterminate: "", color: "white" }
+                      })
+                    ],
+                    1
+                  )
                 ],
                 1
               )
@@ -44277,7 +43848,7 @@ exports.default = {
         1
       )
     ],
-    2
+    1
   )
 }
 var staticRenderFns = []
@@ -44287,7 +43858,7 @@ render._withStripped = true
             render: render,
             staticRenderFns: staticRenderFns,
             _compiled: true,
-            _scopeId: "data-v-8f53f5",
+            _scopeId: "data-v-73b10b",
             functional: undefined
           };
         })());
@@ -44300,9 +43871,9 @@ render._withStripped = true
         if (api.compatible) {
           module.hot.accept();
           if (!module.hot.data) {
-            api.createRecord('$8f53f5', $8f53f5);
+            api.createRecord('$73b10b', $73b10b);
           } else {
-            api.reload('$8f53f5', $8f53f5);
+            api.reload('$73b10b', $73b10b);
           }
         }
 
@@ -44313,75 +43884,7 @@ render._withStripped = true
       
       }
     })();
-},{"babel-runtime/core-js/object/keys":"../../../../../node_modules/babel-runtime/core-js/object/keys.js","babel-runtime/helpers/extends":"../../../../../node_modules/babel-runtime/helpers/extends.js","vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","vuetify-upload-button":"../../../../../node_modules/vuetify-upload-button/dist/vuetify-upload-button.js","./component_create_batch_navigation.vue":"components/batches/component_create_batch_navigation.vue","papaparse":"../../../../../node_modules/papaparse/papaparse.js","_css_loader":"../../../../../node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"../../../../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../../../../node_modules/vue/dist/vue.common.js"}],"components/component-display-money.vue":[function(require,module,exports) {
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-//
-//
-//
-//
-
-exports.default = {
-    name: 'component-display-money',
-    props: {
-        amount: {
-            required: true,
-            type: Number
-        }
-    },
-    computed: {
-        amount_formatted: function amount_formatted() {
-            return this.amount.toFixed(2) + ' $';
-        }
-    }
-};
-        var $d13bb8 = exports.default || module.exports;
-      
-      if (typeof $d13bb8 === 'function') {
-        $d13bb8 = $d13bb8.options;
-      }
-    
-        /* template */
-        Object.assign($d13bb8, (function () {
-          var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("span", [_vm._v(_vm._s(_vm.amount_formatted))])
-}
-var staticRenderFns = []
-render._withStripped = true
-
-          return {
-            render: render,
-            staticRenderFns: staticRenderFns,
-            _compiled: true,
-            _scopeId: null,
-            functional: undefined
-          };
-        })());
-      
-    /* hot reload */
-    (function () {
-      if (module.hot) {
-        var api = require('vue-hot-reload-api');
-        api.install(require('vue'));
-        if (api.compatible) {
-          module.hot.accept();
-          if (!module.hot.data) {
-            api.createRecord('$d13bb8', $d13bb8);
-          } else {
-            api.reload('$d13bb8', $d13bb8);
-          }
-        }
-
-        
-      }
-    })();
-},{"vue-hot-reload-api":"../../../../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../../../../node_modules/vue/dist/vue.common.js"}],"../../../../../node_modules/core-js/library/modules/_string-at.js":[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":"../../../../../node_modules/babel-runtime/helpers/extends.js","vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","vuetify-upload-button":"../../../../../node_modules/vuetify-upload-button/dist/vuetify-upload-button.js","papaparse":"../../../../../node_modules/papaparse/papaparse.js","_css_loader":"../../../../../node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"../../../../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../../../../node_modules/vue/dist/vue.common.js"}],"../../../../../node_modules/core-js/library/modules/_string-at.js":[function(require,module,exports) {
 var toInteger = require('./_to-integer');
 var defined = require('./_defined');
 // true  -> String#at
@@ -46075,6 +45578,8 @@ var Project = function () {
 		this.qualification_hits_approved = data.qualification_hits_approved;
 		this.qualification_locale = data.qualification_locale;
 		this.block_workers = data.block_workers;
+		this.templates = data.templates;
+		this.template = data.fk_template_main;
 	}
 
 	(0, _createClass3.default)(Project, [{
@@ -46183,10 +45688,20 @@ exports.default = {
             // keywords: [],
             rules_keywords: [],
 
-            DESCRIPTIONS: _enums.DESCRIPTIONS
+            DESCRIPTIONS: _enums.DESCRIPTIONS,
+
+            list_keywords: []
         };
     },
 
+    watch: {
+        project: {
+            handler: function handler() {
+                this.$emit('update:project', this.project);
+            },
+            deep: true
+        }
+    },
     methods: {
         format_duration: function format_duration(label, duration) {
             return label + ' (' + (0, _humanizeDuration2.default)(duration * 1000) + ')';
@@ -46209,32 +45724,23 @@ exports.default = {
         // 	value: 1,
         // },];
         this.project.keywords = this.project_current.keywords;
+        this.project.templates = this.project_current.templates;
+        this.project.template = this.project_current.template;
+        this.project.block_workers = this.project_current.block_workers;
     },
 
     computed: (0, _extends3.default)({}, (0, _vuex.mapGetters)('moduleProjects', {
         'project_current': 'get_project_current'
     }))
 };
-},{"babel-runtime/helpers/extends":"../../../../../node_modules/babel-runtime/helpers/extends.js","babel-runtime/helpers/toConsumableArray":"../../../../../node_modules/babel-runtime/helpers/toConsumableArray.js","humanize-duration":"../../../../../node_modules/humanize-duration/humanize-duration.js","../classes/enums":"classes/enums.js","vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","../classes/project":"classes/project.js"}],"components/batches/component_step_settings.vue":[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":"../../../../../node_modules/babel-runtime/helpers/extends.js","babel-runtime/helpers/toConsumableArray":"../../../../../node_modules/babel-runtime/helpers/toConsumableArray.js","humanize-duration":"../../../../../node_modules/humanize-duration/humanize-duration.js","../classes/enums":"classes/enums.js","vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","../classes/project":"classes/project.js"}],"components/batches/component_settings_batch.vue":[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _extends2 = require('babel-runtime/helpers/extends');
-
-var _extends3 = _interopRequireDefault(_extends2);
-
 var _vuex = require('vuex');
-
-var _componentDisplayMoney = require('..//component-display-money.vue');
-
-var _componentDisplayMoney2 = _interopRequireDefault(_componentDisplayMoney);
-
-var _component_create_batch_navigation = require('./component_create_batch_navigation.vue');
-
-var _component_create_batch_navigation2 = _interopRequireDefault(_component_create_batch_navigation);
 
 var _settings_batch = require('../../mixins/settings_batch');
 
@@ -46352,86 +45858,31 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
-//
-//
-//
-//
-//
-//
 
 exports.default = {
     mixins: [_settings_batch2.default],
-    name: 'component-step-settings',
+    name: 'component-settings-batch',
     props: {
-        step: {
-            required: true,
-            type: Object
-        }
-        // list_steps: {
+        // project: {
         //     required: true,
-        //     type: Array,
         // },
     },
     data: function data() {
-        return {
-            current_time_ms: Date.now()
-        };
+        return {};
     },
 
-    methods: {
-        reset: function reset() {}
-    },
-    computed: (0, _extends3.default)({
-        costs_total_without_fee: function costs_total_without_fee() {
-            console.log(this.object_csv_parsed);
-            var reward = parseFloat(this.project.reward);
-            if (this.object_csv_parsed != undefined) {
-                return reward * this.project.assignments_max * this.object_csv_parsed.data.length;
-            } else {
-                return reward * this.project.assignments_max;
-            }
-        },
-        costs_total_with_fee: function costs_total_with_fee() {
-            var costs_with_fee = undefined;
-
-            if (this.assignments_max < 10) {
-                costs_with_fee = this.costs_total_without_fee * 1.2;
-            } else {
-                costs_with_fee = this.costs_total_without_fee * 1.4;
-            }
-
-            return costs_with_fee;
-        },
-        format_lifetime_absolute: function format_lifetime_absolute() {
-            var lifetime_absolute = this.current_time_ms + this.project.lifetime * 1000.0;
-            return new Date(lifetime_absolute).toLocaleString();
-        }
-    }, (0, _vuex.mapGetters)('moduleProjects', {
-        'project_current': 'get_project_current'
-    }), (0, _vuex.mapGetters)('moduleBatches', {
-        'object_csv_parsed': 'get_object_csv_parsed'
-    })),
-    created: function created() {
-        var _this = this;
-
-        setInterval(function () {
-            _this.current_time_ms = Date.now();
-        }, 1000);
-    },
-
-    components: {
-        ComponentCreateBatchNavigation: _component_create_batch_navigation2.default,
-        ComponentDisplayMoney: _componentDisplayMoney2.default
-    }
+    methods: {},
+    computed: {},
+    components: {}
 };
-        var $42cdca = exports.default || module.exports;
+        var $c930ab = exports.default || module.exports;
       
-      if (typeof $42cdca === 'function') {
-        $42cdca = $42cdca.options;
+      if (typeof $c930ab === 'function') {
+        $c930ab = $c930ab.options;
       }
     
         /* template */
-        Object.assign($42cdca, (function () {
+        Object.assign($c930ab, (function () {
           var render = function() {
   var _vm = this
   var _h = _vm.$createElement
@@ -46444,249 +45895,210 @@ exports.default = {
         "v-flex",
         [
           _c(
-            "v-layout",
-            { attrs: { wrap: "" } },
+            "v-form",
+            {
+              attrs: { "lazy-validation": "" },
+              model: {
+                value: _vm.valid,
+                callback: function($$v) {
+                  _vm.valid = $$v
+                },
+                expression: "valid"
+              }
+            },
             [
-              _c(
-                "v-flex",
-                { attrs: { xs6: "", "pr-3": "" } },
-                [
-                  _c(
-                    "v-form",
-                    {
-                      attrs: { "lazy-validation": "" },
-                      model: {
-                        value: _vm.valid,
-                        callback: function($$v) {
-                          _vm.valid = $$v
-                        },
-                        expression: "valid"
-                      }
-                    },
-                    [
-                      _c("v-text-field", {
-                        attrs: {
-                          required: "",
-                          label: "Title",
-                          rules: _vm.rules_title,
-                          hint: _vm.DESCRIPTIONS.TITLE_HIT
-                        },
-                        model: {
-                          value: _vm.project.title,
-                          callback: function($$v) {
-                            _vm.$set(_vm.project, "title", $$v)
-                          },
-                          expression: "project.title"
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("v-text-field", {
-                        attrs: {
-                          required: "",
-                          label: "Description",
-                          rules: _vm.rules_description,
-                          hint: _vm.DESCRIPTIONS.DESCRIPTION_HIT
-                        },
-                        model: {
-                          value: _vm.project.description,
-                          callback: function($$v) {
-                            _vm.$set(_vm.project, "description", $$v)
-                          },
-                          expression: "project.description"
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("v-text-field", {
-                        attrs: {
-                          required: "",
-                          type: "number",
-                          step: "0.01",
-                          label: "Reward",
-                          rules: _vm.rules_description,
-                          hint: _vm.DESCRIPTIONS.REWARD_HIT,
-                          "append-icon": "attach_money"
-                        },
-                        model: {
-                          value: _vm.project.reward,
-                          callback: function($$v) {
-                            _vm.$set(_vm.project, "reward", $$v)
-                          },
-                          expression: "project.reward"
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("v-text-field", {
-                        attrs: {
-                          required: "",
-                          type: "number",
-                          label: "Number of Assignments",
-                          rules: _vm.rules_assignments_max,
-                          hint: _vm.DESCRIPTIONS.ASSIGNEMENTS_MAX_HIT,
-                          min: "1"
-                        },
-                        model: {
-                          value: _vm.project.assignments_max,
-                          callback: function($$v) {
-                            _vm.$set(_vm.project, "assignments_max", $$v)
-                          },
-                          expression: "project.assignments_max"
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("v-text-field", {
-                        attrs: {
-                          required: "",
-                          type: "number",
-                          label: _vm.format_duration(
-                            "Lifetime",
-                            _vm.project.lifetime
-                          ),
-                          rules: _vm.rules_lifetime,
-                          hint: _vm.DESCRIPTIONS.LIFETIME_HIT,
-                          min: "1",
-                          suffix: "s"
-                        },
-                        model: {
-                          value: _vm.project.lifetime,
-                          callback: function($$v) {
-                            _vm.$set(_vm.project, "lifetime", $$v)
-                          },
-                          expression: "project.lifetime"
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("v-text-field", {
-                        attrs: {
-                          required: "",
-                          type: "number",
-                          label: _vm.format_duration(
-                            "Duration",
-                            _vm.project.duration
-                          ),
-                          rules: _vm.rules_duration,
-                          hint: _vm.DESCRIPTIONS.DURATION_HIT,
-                          min: "1",
-                          suffix: "s"
-                        },
-                        model: {
-                          value: _vm.project.duration,
-                          callback: function($$v) {
-                            _vm.$set(_vm.project, "duration", $$v)
-                          },
-                          expression: "project.duration"
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("v-combobox", {
-                        attrs: {
-                          rules: _vm.rules_keywords,
-                          label: "Keywords (Separated with TAB)",
-                          chips: "",
-                          clearable: "",
-                          hint: _vm.DESCRIPTIONS.KEYWORDS_HIT,
-                          multiple: "",
-                          counter: "",
-                          "append-icon": ""
-                        },
-                        scopedSlots: _vm._u([
-                          {
-                            key: "selection",
-                            fn: function(data) {
-                              return [
-                                _c(
-                                  "v-chip",
-                                  {
-                                    attrs: {
-                                      selected: data.selected,
-                                      close: ""
-                                    },
-                                    on: {
-                                      input: function($event) {
-                                        _vm.remove(data.item)
-                                      }
-                                    }
-                                  },
-                                  [
-                                    _c("strong", [_vm._v(_vm._s(data.item))]),
-                                    _vm._v(" \n                            ")
-                                  ]
-                                )
-                              ]
-                            }
-                          }
-                        ]),
-                        model: {
-                          value: _vm.project.keywords,
-                          callback: function($$v) {
-                            _vm.$set(_vm.project, "keywords", $$v)
-                          },
-                          expression: "project.keywords"
-                        }
-                      })
-                    ],
-                    1
-                  )
-                ],
-                1
-              ),
+              _c("v-text-field", {
+                attrs: {
+                  required: "",
+                  label: "Title",
+                  rules: _vm.rules_title,
+                  hint: _vm.DESCRIPTIONS.TITLE_HIT
+                },
+                model: {
+                  value: _vm.project.title,
+                  callback: function($$v) {
+                    _vm.$set(_vm.project, "title", $$v)
+                  },
+                  expression: "project.title"
+                }
+              }),
               _vm._v(" "),
-              _c("v-flex", { attrs: { xs6: "", "pl-3": "" } }, [
-                _c("h2", [_vm._v("Summary")]),
-                _vm._v(" "),
-                _c("p", [
-                  _vm._v("\n                    The HITs will be "),
-                  _c("b", [_vm._v("approximately")]),
-                  _vm._v(
-                    " available until " +
-                      _vm._s(_vm.format_lifetime_absolute) +
-                      ".\n                "
-                  )
-                ]),
-                _vm._v(" "),
-                _c(
-                  "p",
-                  [
-                    _vm._v("\n                    This batch will cost "),
-                    _c("component-display-money", {
-                      attrs: { amount: _vm.costs_total_with_fee }
-                    }),
-                    _vm._v(" (without Amazon's fees: "),
-                    _c("component-display-money", {
-                      attrs: { amount: _vm.costs_total_without_fee }
-                    }),
-                    _vm._v(").\n                ")
-                  ],
-                  1
-                )
-              ])
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "v-layout",
-            { attrs: { wrap: "" } },
-            [
-              _c(
-                "v-flex",
-                [
-                  _c("component-create-batch-navigation", {
-                    attrs: { step: _vm.step },
-                    on: {
-                      cancel: function($event) {
-                        _vm.$emit("cancel")
-                      },
-                      next: function($event) {
-                        _vm.$emit("next")
-                      },
-                      back: function($event) {
-                        _vm.$emit("back")
-                      }
+              _c("v-text-field", {
+                attrs: {
+                  required: "",
+                  label: "Description",
+                  rules: _vm.rules_description,
+                  hint: _vm.DESCRIPTIONS.DESCRIPTION_HIT
+                },
+                model: {
+                  value: _vm.project.description,
+                  callback: function($$v) {
+                    _vm.$set(_vm.project, "description", $$v)
+                  },
+                  expression: "project.description"
+                }
+              }),
+              _vm._v(" "),
+              _c("v-text-field", {
+                attrs: {
+                  required: "",
+                  type: "number",
+                  step: "0.01",
+                  label: "Reward",
+                  rules: _vm.rules_description,
+                  hint: _vm.DESCRIPTIONS.REWARD_HIT,
+                  "append-icon": "attach_money"
+                },
+                model: {
+                  value: _vm.project.reward,
+                  callback: function($$v) {
+                    _vm.$set(_vm.project, "reward", $$v)
+                  },
+                  expression: "project.reward"
+                }
+              }),
+              _vm._v(" "),
+              _c("v-text-field", {
+                attrs: {
+                  required: "",
+                  type: "number",
+                  label: "Number of Assignments",
+                  rules: _vm.rules_assignments_max,
+                  hint: _vm.DESCRIPTIONS.ASSIGNEMENTS_MAX_HIT,
+                  min: "1"
+                },
+                model: {
+                  value: _vm.project.assignments_max,
+                  callback: function($$v) {
+                    _vm.$set(_vm.project, "assignments_max", $$v)
+                  },
+                  expression: "project.assignments_max"
+                }
+              }),
+              _vm._v(" "),
+              _c("v-text-field", {
+                attrs: {
+                  required: "",
+                  type: "number",
+                  label: _vm.format_duration("Lifetime", _vm.project.lifetime),
+                  rules: _vm.rules_lifetime,
+                  hint: _vm.DESCRIPTIONS.LIFETIME_HIT,
+                  min: "1",
+                  suffix: "s"
+                },
+                model: {
+                  value: _vm.project.lifetime,
+                  callback: function($$v) {
+                    _vm.$set(_vm.project, "lifetime", $$v)
+                  },
+                  expression: "project.lifetime"
+                }
+              }),
+              _vm._v(" "),
+              _c("v-text-field", {
+                attrs: {
+                  required: "",
+                  type: "number",
+                  label: _vm.format_duration("Duration", _vm.project.duration),
+                  rules: _vm.rules_duration,
+                  hint: _vm.DESCRIPTIONS.DURATION_HIT,
+                  min: "1",
+                  suffix: "s"
+                },
+                model: {
+                  value: _vm.project.duration,
+                  callback: function($$v) {
+                    _vm.$set(_vm.project, "duration", $$v)
+                  },
+                  expression: "project.duration"
+                }
+              }),
+              _vm._v(" "),
+              _c("v-select", {
+                attrs: {
+                  items: _vm.project.templates,
+                  label: "Worker Template",
+                  "item-text": "name",
+                  "item-value": "id"
+                },
+                model: {
+                  value: _vm.project.template,
+                  callback: function($$v) {
+                    _vm.$set(_vm.project, "template", $$v)
+                  },
+                  expression: "project.template"
+                }
+              }),
+              _vm._v(" "),
+              _c("v-switch", {
+                attrs: {
+                  label:
+                    "Soft Block Workers (" +
+                    (_vm.project.block_workers ? "enabled" : "disabled") +
+                    ")"
+                },
+                model: {
+                  value: _vm.project.block_workers,
+                  callback: function($$v) {
+                    _vm.$set(_vm.project, "block_workers", $$v)
+                  },
+                  expression: "project.block_workers"
+                }
+              }),
+              _vm._v(" "),
+              _c("v-combobox", {
+                attrs: {
+                  rules: _vm.rules_keywords,
+                  label: "Keywords (Separated with TAB)",
+                  hint: _vm.DESCRIPTIONS.KEYWORDS_HIT,
+                  items: _vm.list_keywords,
+                  "hide-selected": "",
+                  chips: "",
+                  clearable: "",
+                  multiple: "",
+                  counter: "",
+                  "append-icon": ""
+                },
+                scopedSlots: _vm._u([
+                  {
+                    key: "selection",
+                    fn: function(data) {
+                      return [
+                        _c(
+                          "v-chip",
+                          {
+                            attrs: { selected: data.selected, close: "" },
+                            on: {
+                              input: function($event) {
+                                _vm.remove(data.item)
+                              }
+                            }
+                          },
+                          [
+                            _c("strong", [
+                              _vm._v(
+                                _vm._s(
+                                  data.item.text != undefined
+                                    ? data.item.text
+                                    : data.item
+                                )
+                              )
+                            ]),
+                            _vm._v(" \n                    ")
+                          ]
+                        )
+                      ]
                     }
-                  })
-                ],
-                1
-              )
+                  }
+                ]),
+                model: {
+                  value: _vm.project.keywords,
+                  callback: function($$v) {
+                    _vm.$set(_vm.project, "keywords", $$v)
+                  },
+                  expression: "project.keywords"
+                }
+              })
             ],
             1
           )
@@ -46717,16 +46129,113 @@ render._withStripped = true
         if (api.compatible) {
           module.hot.accept();
           if (!module.hot.data) {
-            api.createRecord('$42cdca', $42cdca);
+            api.createRecord('$c930ab', $c930ab);
           } else {
-            api.reload('$42cdca', $42cdca);
+            api.reload('$c930ab', $c930ab);
           }
         }
 
         
       }
     })();
-},{"babel-runtime/helpers/extends":"../../../../../node_modules/babel-runtime/helpers/extends.js","vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","..//component-display-money.vue":"components/component-display-money.vue","./component_create_batch_navigation.vue":"components/batches/component_create_batch_navigation.vue","../../mixins/settings_batch":"mixins/settings_batch.js","vue-hot-reload-api":"../../../../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../../../../node_modules/vue/dist/vue.common.js"}],"components/batches/component_step_overview.vue":[function(require,module,exports) {
+},{"vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","../../mixins/settings_batch":"mixins/settings_batch.js","vue-hot-reload-api":"../../../../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../../../../node_modules/vue/dist/vue.common.js"}],"../../../../../node_modules/core-js/library/modules/_object-sap.js":[function(require,module,exports) {
+// most Object methods by ES6 should accept primitives
+var $export = require('./_export');
+var core = require('./_core');
+var fails = require('./_fails');
+module.exports = function (KEY, exec) {
+  var fn = (core.Object || {})[KEY] || Object[KEY];
+  var exp = {};
+  exp[KEY] = exec(fn);
+  $export($export.S + $export.F * fails(function () { fn(1); }), 'Object', exp);
+};
+
+},{"./_export":"../../../../../node_modules/core-js/library/modules/_export.js","./_core":"../../../../../node_modules/core-js/library/modules/_core.js","./_fails":"../../../../../node_modules/core-js/library/modules/_fails.js"}],"../../../../../node_modules/core-js/library/modules/es6.object.keys.js":[function(require,module,exports) {
+// 19.1.2.14 Object.keys(O)
+var toObject = require('./_to-object');
+var $keys = require('./_object-keys');
+
+require('./_object-sap')('keys', function () {
+  return function keys(it) {
+    return $keys(toObject(it));
+  };
+});
+
+},{"./_to-object":"../../../../../node_modules/core-js/library/modules/_to-object.js","./_object-keys":"../../../../../node_modules/core-js/library/modules/_object-keys.js","./_object-sap":"../../../../../node_modules/core-js/library/modules/_object-sap.js"}],"../../../../../node_modules/core-js/library/fn/object/keys.js":[function(require,module,exports) {
+require('../../modules/es6.object.keys');
+module.exports = require('../../modules/_core').Object.keys;
+
+},{"../../modules/es6.object.keys":"../../../../../node_modules/core-js/library/modules/es6.object.keys.js","../../modules/_core":"../../../../../node_modules/core-js/library/modules/_core.js"}],"../../../../../node_modules/babel-runtime/core-js/object/keys.js":[function(require,module,exports) {
+module.exports = { "default": require("core-js/library/fn/object/keys"), __esModule: true };
+},{"core-js/library/fn/object/keys":"../../../../../node_modules/core-js/library/fn/object/keys.js"}],"components/component-display-money.vue":[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+//
+//
+//
+//
+
+exports.default = {
+    name: 'component-display-money',
+    props: {
+        amount: {
+            required: true,
+            type: Number
+        }
+    },
+    computed: {
+        amount_formatted: function amount_formatted() {
+            return this.amount.toFixed(2) + ' $';
+        }
+    }
+};
+        var $d13bb8 = exports.default || module.exports;
+      
+      if (typeof $d13bb8 === 'function') {
+        $d13bb8 = $d13bb8.options;
+      }
+    
+        /* template */
+        Object.assign($d13bb8, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("span", [_vm._v(_vm._s(_vm.amount_formatted))])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: null,
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$d13bb8', $d13bb8);
+          } else {
+            api.reload('$d13bb8', $d13bb8);
+          }
+        }
+
+        
+      }
+    })();
+},{"vue-hot-reload-api":"../../../../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../../../../node_modules/vue/dist/vue.common.js"}],"components/batches/component_overview.vue":[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -46737,19 +46246,23 @@ var _keys = require('babel-runtime/core-js/object/keys');
 
 var _keys2 = _interopRequireDefault(_keys);
 
+var _extends2 = require('babel-runtime/helpers/extends');
+
+var _extends3 = _interopRequireDefault(_extends2);
+
 var _vuex = require('vuex');
 
-var _vuetifyUploadButton = require('vuetify-upload-button');
+var _project = require('../../classes/project');
 
-var _vuetifyUploadButton2 = _interopRequireDefault(_vuetifyUploadButton);
+var _project2 = _interopRequireDefault(_project);
 
-var _component_create_batch_navigation = require('./component_create_batch_navigation.vue');
+var _componentDisplayMoney = require('../component-display-money.vue');
 
-var _component_create_batch_navigation2 = _interopRequireDefault(_component_create_batch_navigation);
+var _componentDisplayMoney2 = _interopRequireDefault(_componentDisplayMoney);
 
-var _papaparse = require('papaparse');
+var _humanizeDuration = require('humanize-duration');
 
-var _papaparse2 = _interopRequireDefault(_papaparse);
+var _humanizeDuration2 = _interopRequireDefault(_humanizeDuration);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -46780,61 +46293,98 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 exports.default = {
-    name: 'component-step-overview',
+    name: 'component-overview',
     props: {
-        step: {
+        project: {
             required: true,
-            type: Object
+            type: _project2.default | undefined
         }
-        // list_steps: {
-        //     required: true,
-        //     type: Array,
-        // },
     },
     data: function data() {
         return {
-            file_csv: null,
-            parsed_csv: null,
-            is_parsing_csv: false
+            current_time_ms: Date.now()
         };
     },
 
-    methods: {
-        file_changed: function file_changed(file) {
-            var _this = this;
-
-            this.file_csv = file;
-
-            if (file == null) {
-                this.reset();
-                return;
-            };
-
-            this.is_parsing_csv = true;
-            _papaparse2.default.parse(file, {
-                header: true,
-                skipEmptyLines: true,
-                complete: function complete(results, file) {
-                    _this.parsed_csv = results;
-                    console.log(_this.parsed_csv);
-                    _this.is_parsing_csv = false;
-                }
-            });
+    methods: {},
+    computed: (0, _extends3.default)({
+        lifetime_formatted: function lifetime_formatted() {
+            return (0, _humanizeDuration2.default)(this.project.lifetime * 1000);
         },
-        reset: function reset() {
-            this.file_csv = null;
-            this.parsed_csv = null;
-            this.is_parsing_csv = false;
-        }
-    },
-    computed: {
-        tmp_name_file: function tmp_name_file() {
-            if (this.file_csv != null) {
-                return this.file_csv.name;
+        costs_total_without_fee: function costs_total_without_fee() {
+            console.log(this.object_csv_parsed);
+            var reward = parseFloat(this.project.reward);
+            if (this.object_csv_parsed != undefined) {
+                return reward * this.project.assignments_max * this.object_csv_parsed.data.length;
+            } else {
+                return reward * this.project.assignments_max;
             }
-            return null;
+        },
+        costs_total_with_fee: function costs_total_with_fee() {
+            var costs_with_fee = undefined;
+
+            if (this.assignments_max < 10) {
+                costs_with_fee = this.costs_total_without_fee * 1.2;
+            } else {
+                costs_with_fee = this.costs_total_without_fee * 1.4;
+            }
+
+            return costs_with_fee;
+        },
+        format_lifetime_absolute: function format_lifetime_absolute() {
+            var lifetime_absolute = this.current_time_ms + this.project.lifetime * 1000.0;
+            return new Date(lifetime_absolute).toLocaleString();
         },
         count_hits: function count_hits() {
             if (this.is_valid_csv) {
@@ -46846,62 +46396,234 @@ exports.default = {
             if (this.is_valid_csv) {
                 return (0, _keys2.default)(this.data_csv[0]);
             }
-            return null;
+
+            return [];
         },
         data_csv: function data_csv() {
             if (this.is_valid_csv) {
-                return this.parsed_csv.data;
+                return this.object_csv_parsed.data;
             }
             return null;
-        },
-        is_valid_csv: function is_valid_csv() {
-            if (this.parsed_csv == null) {
-                return false;
-            } else {
-                return this.parsed_csv.errors.length == 0;
-            }
-        },
-        is_step_completed: function is_step_completed() {
-            return this.is_valid_csv;
         }
+    }, (0, _vuex.mapGetters)('moduleProjects', {
+        'project_current': 'get_project_current'
+    }), (0, _vuex.mapGetters)('moduleBatches', {
+        'object_csv_parsed': 'get_object_csv_parsed',
+        'is_valid_csv': 'is_valid_csv'
+    })),
+    created: function created() {
+        var _this = this;
+
+        setInterval(function () {
+            _this.current_time_ms = Date.now();
+        }, 1000);
     },
+
     components: {
-        UploadBtn: _vuetifyUploadButton2.default,
-        ComponentCreateBatchNavigation: _component_create_batch_navigation2.default
+        ComponentDisplayMoney: _componentDisplayMoney2.default
     }
 };
-        var $0fc50e = exports.default || module.exports;
+        var $f33c55 = exports.default || module.exports;
       
-      if (typeof $0fc50e === 'function') {
-        $0fc50e = $0fc50e.options;
+      if (typeof $f33c55 === 'function') {
+        $f33c55 = $f33c55.options;
       }
     
         /* template */
-        Object.assign($0fc50e, (function () {
+        Object.assign($f33c55, (function () {
           var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "span",
-    [
-      _c("component-create-batch-navigation", {
-        attrs: { step: _vm.step, reset: _vm.reset },
-        on: {
-          cancel: function($event) {
-            _vm.$emit("cancel")
-          },
-          next: function($event) {
-            _vm.$emit("next")
-          },
-          back: function($event) {
-            _vm.$emit("back")
-          }
-        }
-      })
-    ],
-    1
-  )
+  return _vm.is_valid_csv
+    ? _c(
+        "v-layout",
+        { attrs: { wrap: "" } },
+        [
+          _c(
+            "v-flex",
+            [
+              _c(
+                "v-list",
+                { attrs: { subheader: "" } },
+                [
+                  _c("v-subheader", [_c("h2", [_vm._v("Summary")])]),
+                  _vm._v(" "),
+                  _c(
+                    "v-list-tile",
+                    [
+                      _c(
+                        "v-layout",
+                        [
+                          _c("v-flex", { attrs: { xs3: "" } }, [
+                            _vm._v(
+                              "\n                        Valid CSV:  \n                    "
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "v-flex",
+                            [
+                              _c("v-icon", { attrs: { color: "success" } }, [
+                                _vm._v("check")
+                              ])
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-list-tile",
+                    [
+                      _c(
+                        "v-layout",
+                        [
+                          _c("v-flex", { attrs: { xs3: "" } }, [
+                            _vm._v(
+                              "\n                        Number of variables:  \n                    "
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "v-flex",
+                            [
+                              _vm._v(
+                                "\n                        " +
+                                  _vm._s(_vm.get_variables.length) +
+                                  " \n\n                        "
+                              ),
+                              _c(
+                                "v-tooltip",
+                                { attrs: { top: "" } },
+                                [
+                                  _c(
+                                    "v-icon",
+                                    {
+                                      attrs: { slot: "activator" },
+                                      slot: "activator"
+                                    },
+                                    [_vm._v("info")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c("span", [
+                                    _vm._v(_vm._s(_vm.get_variables.join(", ")))
+                                  ])
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-list-tile",
+                    [
+                      _c(
+                        "v-layout",
+                        [
+                          _c("v-flex", { attrs: { xs3: "" } }, [
+                            _vm._v(
+                              "\n                        Number of HITs: \n                    "
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("v-flex", [
+                            _vm._v(
+                              "\n                        " +
+                                _vm._s(_vm.count_hits) +
+                                "   \n                    "
+                            )
+                          ])
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-list-tile",
+                    [
+                      _c(
+                        "v-layout",
+                        [
+                          _c("v-flex", { attrs: { xs3: "" } }, [
+                            _vm._v(
+                              "\n                        Available until: \n                    "
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("v-flex", [
+                            _vm._v(
+                              "\n                        " +
+                                _vm._s(_vm.format_lifetime_absolute) +
+                                " (" +
+                                _vm._s(_vm.lifetime_formatted) +
+                                ") \n                    "
+                            )
+                          ])
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-list-tile",
+                    [
+                      _c(
+                        "v-layout",
+                        [
+                          _c("v-flex", { attrs: { xs3: "" } }, [
+                            _vm._v(
+                              "\n                        Costs: \n                    "
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "v-flex",
+                            [
+                              _c("component-display-money", {
+                                attrs: { amount: _vm.costs_total_with_fee }
+                              }),
+                              _vm._v(
+                                " \n                        (without Amazon's fees: "
+                              ),
+                              _c("component-display-money", {
+                                attrs: { amount: _vm.costs_total_without_fee }
+                              }),
+                              _vm._v(") \n                    ")
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      )
+    : _vm._e()
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -46910,7 +46632,7 @@ render._withStripped = true
             render: render,
             staticRenderFns: staticRenderFns,
             _compiled: true,
-            _scopeId: "data-v-0fc50e",
+            _scopeId: "data-v-f33c55",
             functional: undefined
           };
         })());
@@ -46923,9 +46645,9 @@ render._withStripped = true
         if (api.compatible) {
           module.hot.accept();
           if (!module.hot.data) {
-            api.createRecord('$0fc50e', $0fc50e);
+            api.createRecord('$f33c55', $f33c55);
           } else {
-            api.reload('$0fc50e', $0fc50e);
+            api.reload('$f33c55', $f33c55);
           }
         }
 
@@ -46936,82 +46658,25 @@ render._withStripped = true
       
       }
     })();
-},{"babel-runtime/core-js/object/keys":"../../../../../node_modules/babel-runtime/core-js/object/keys.js","vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","vuetify-upload-button":"../../../../../node_modules/vuetify-upload-button/dist/vuetify-upload-button.js","./component_create_batch_navigation.vue":"components/batches/component_create_batch_navigation.vue","papaparse":"../../../../../node_modules/papaparse/papaparse.js","_css_loader":"../../../../../node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"../../../../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../../../../node_modules/vue/dist/vue.common.js"}],"components/batches/component_create_batch.vue":[function(require,module,exports) {
+},{"babel-runtime/core-js/object/keys":"../../../../../node_modules/babel-runtime/core-js/object/keys.js","babel-runtime/helpers/extends":"../../../../../node_modules/babel-runtime/helpers/extends.js","vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","../../classes/project":"classes/project.js","../component-display-money.vue":"components/component-display-money.vue","humanize-duration":"../../../../../node_modules/humanize-duration/humanize-duration.js","_css_loader":"../../../../../node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"../../../../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../../../../node_modules/vue/dist/vue.common.js"}],"components/batches/component_submit_batch.vue":[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+	value: true
 });
+
+var _extends2 = require('babel-runtime/helpers/extends');
+
+var _extends3 = _interopRequireDefault(_extends2);
 
 var _vuex = require('vuex');
 
-var _component_step_upload_csv = require('./component_step_upload_csv.vue');
+var _project = require('../../classes/project');
 
-var _component_step_upload_csv2 = _interopRequireDefault(_component_step_upload_csv);
-
-var _component_step_settings = require('./component_step_settings.vue');
-
-var _component_step_settings2 = _interopRequireDefault(_component_step_settings);
-
-var _component_step_overview = require('./component_step_overview.vue');
-
-var _component_step_overview2 = _interopRequireDefault(_component_step_overview);
+var _project2 = _interopRequireDefault(_project);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// import ComponentShowMoneySpent from './component-show-money-spent.vue';
-// import ComponentShowBatches from './component-show-batches.vue';
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -47022,61 +46687,264 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 
 exports.default = {
+	name: 'component-submit-batch',
+	props: {
+		project: {
+			required: true,
+			type: _project2.default | undefined
+		}
+	},
+	data: function data() {
+		return {
+			is_uploading_batch: false
+		};
+	},
+
+	computed: (0, _extends3.default)({}, (0, _vuex.mapGetters)('moduleProjects', {
+		// 'project_current': 'get_project_current',
+	}), (0, _vuex.mapGetters)('moduleBatches', {
+		'object_csv_parsed': 'get_object_csv_parsed',
+		'is_valid_csv': 'is_valid_csv'
+	})),
+	methods: (0, _extends3.default)({
+		submit: function submit() {
+			var _this = this;
+
+			this.is_uploading_batch = true;
+			console.log('adding batch');
+			this.add_batch({
+				settings: this.project,
+				data_csv: this.object_csv_parsed.data
+			}).then(function () {
+				_this.is_uploading_batch = false;
+				console.log('done');
+			});
+		}
+	}, (0, _vuex.mapActions)('moduleBatches', {
+		'add_batch': 'add_batch'
+	}))
+};
+        var $86449b = exports.default || module.exports;
+      
+      if (typeof $86449b === 'function') {
+        $86449b = $86449b.options;
+      }
+    
+        /* template */
+        Object.assign($86449b, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm.is_valid_csv
+    ? _c(
+        "v-layout",
+        { attrs: { wrap: "" } },
+        [
+          _c(
+            "v-flex",
+            [
+              _c(
+                "v-btn",
+                {
+                  staticClass: "mx-3",
+                  attrs: {
+                    loading: _vm.is_uploading_batch,
+                    large: "",
+                    color: "success"
+                  },
+                  on: { click: _vm.submit }
+                },
+                [_vm._v("Submit Batch")]
+              )
+            ],
+            1
+          )
+        ],
+        1
+      )
+    : _vm._e()
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: "data-v-86449b",
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$86449b', $86449b);
+          } else {
+            api.reload('$86449b', $86449b);
+          }
+        }
+
+        
+        var reloadCSS = require('_css_loader');
+        module.hot.dispose(reloadCSS);
+        module.hot.accept(reloadCSS);
+      
+      }
+    })();
+},{"babel-runtime/helpers/extends":"../../../../../node_modules/babel-runtime/helpers/extends.js","vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","../../classes/project":"classes/project.js","_css_loader":"../../../../../node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"../../../../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../../../../node_modules/vue/dist/vue.common.js"}],"components/batches/component_create_batch.vue":[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends2 = require('babel-runtime/helpers/extends');
+
+var _extends3 = _interopRequireDefault(_extends2);
+
+var _vuex = require('vuex');
+
+var _component_upload_csv = require('./component_upload_csv.vue');
+
+var _component_upload_csv2 = _interopRequireDefault(_component_upload_csv);
+
+var _component_settings_batch = require('./component_settings_batch.vue');
+
+var _component_settings_batch2 = _interopRequireDefault(_component_settings_batch);
+
+var _component_overview = require('./component_overview.vue');
+
+var _component_overview2 = _interopRequireDefault(_component_overview);
+
+var _component_submit_batch = require('./component_submit_batch.vue');
+
+var _component_submit_batch2 = _interopRequireDefault(_component_submit_batch);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// import ComponentStepSettings from './component_step_settings.vue';
+// import ComponentStepOverview from './component_step_overview.vue';
+// import ComponentShowMoneySpent from './component-show-money-spent.vue';
+// import ComponentShowBatches from './component-show-batches.vue';
+exports.default = {
     name: 'component-create-batch',
     data: function data() {
         return {
-            is_creating_batch: true,
-            number_step_current: 2,
-            list_steps: [{
-                number: 1,
-                label: 'Upload CSV',
-                component: _component_step_upload_csv2.default
-
-            }, {
-                number: 2,
-                label: 'Settings',
-                component: _component_step_settings2.default
-
-            }, {
-                number: 3,
-                label: 'Done',
-                component: _component_step_overview2.default
-
-            }],
-
-            data_csv: undefined
+            project: undefined,
+            is_creating_batch: true
         };
     },
 
     methods: {
-        cancel: function cancel() {
-            this.is_creating_batch = false;
-            this.number_step_current = 1;
-            this.data_csv = undefined;
-            this.$refs[1][0].reset();
-        },
-        next: function next() {
-            this.number_step_current += 1;
-        },
-        back: function back() {
-            this.number_step_current -= 1;
-        }
+        // cancel() {
+        //     this.is_creating_batch = false;
+        //     this.number_step_current = 1;
+        //     this.data_csv = undefined;
+        //     this.$refs[1][0].reset()
+        // },
+        // next() {
+        //     this.number_step_current += 1;
+        // },
+        // back() {
+        //     this.number_step_current -= 1;
+        // },
+        //     refresh_data() {
+        //         this.set_show_progress_indicator(true);
+        //         this.set_show_progress_indicator(true);
+
+        //         this.sync_database().then(() => {
+        //             this.set_show_progress_indicator(false);
+        //         });
+
+        //         this.update_balance().then(() => {
+        //             this.set_show_progress_indicator(false);
+        //         });
+        //     },
+        //     ...mapActions(['set_show_progress_indicator']),
+        //     ...mapActions('moduleBatches', {
+        //         'sync_database': 'sync_database', 
+        //     }),
+        //     ...mapActions('moduleMoney', {
+        //         'update_balance': 'update_balance'
+        //     }),
+        // },
+        // watch: {
+        //     use_sandbox: function() {
+        //         this.refresh_data();
+        //     },
     },
-    computed: {
-        step_current: function step_current() {
-            return this.list_steps[this.number_step_current - 1];
-        }
-        //     ...mapState(['use_sandbox']),
-    },
+    computed: (0, _extends3.default)({}, (0, _vuex.mapGetters)('moduleBatches', {
+        // 'get_object_csv_parsed': 'get_object_csv_parsed',
+        // 'is_valid_csv': 'is_valid_csv',
+    })),
     // created: function() {
     //     this.refresh_data();
     // },
 
     components: {
-        // ComponentShowMoneySpent,
-        // ComponentShowBatches,
+        ComponentUploadCsv: _component_upload_csv2.default,
+        ComponentSettingsBatch: _component_settings_batch2.default,
+        ComponentOverview: _component_overview2.default,
+        ComponentSubmitBatch: _component_submit_batch2.default
     }
-};
+}; //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
         var $32af7f = exports.default || module.exports;
       
       if (typeof $32af7f === 'function') {
@@ -47139,85 +47007,65 @@ exports.default = {
       ),
       _vm._v(" "),
       _c(
-        "v-stepper",
-        {
-          directives: [
-            {
-              name: "show",
-              rawName: "v-show",
-              value: _vm.is_creating_batch,
-              expression: "is_creating_batch"
-            }
-          ],
-          model: {
-            value: _vm.number_step_current,
-            callback: function($$v) {
-              _vm.number_step_current = $$v
-            },
-            expression: "number_step_current"
-          }
-        },
+        "v-card",
         [
-          _c(
-            "v-stepper-header",
-            [
-              _vm._l(_vm.list_steps, function(step, index) {
-                return [
-                  _c(
-                    "v-stepper-step",
-                    {
-                      key: index + "_step",
-                      attrs: {
-                        complete: _vm.number_step_current > step.number,
-                        step: step.number
-                      }
-                    },
-                    [
-                      _vm._v(
-                        "\n                    " +
-                          _vm._s(step.label) +
-                          "\n                "
-                      )
-                    ]
-                  ),
-                  _vm._v(" "),
-                  index != _vm.list_steps.length - 1
-                    ? _c("v-divider", { key: index })
-                    : _vm._e()
-                ]
-              })
-            ],
-            2
-          ),
+          _c("v-card-title", [
+            _c("span", { staticClass: "headline" }, [_vm._v("Create Batch")])
+          ]),
           _vm._v(" "),
           _c(
-            "v-stepper-items",
-            _vm._l(_vm.list_steps, function(step) {
-              return _c(
-                "v-stepper-content",
-                { attrs: { step: step.number } },
+            "v-card-text",
+            [
+              _c(
+                "v-container",
+                { staticClass: "mx-0" },
                 [
-                  _c(step.component, {
-                    ref: step.number,
-                    refInFor: true,
-                    tag: "component",
-                    attrs: { step: _vm.step_current },
-                    on: {
-                      cancel: function($event) {
-                        _vm.cancel()
-                      },
-                      next: function($event) {
-                        _vm.next()
-                      },
-                      back: function($event) {
-                        _vm.back()
-                      }
-                    }
-                  })
+                  _c(
+                    "v-layout",
+                    { attrs: { row: "", wrap: "" } },
+                    [
+                      _c(
+                        "v-flex",
+                        { attrs: { xs6: "" } },
+                        [
+                          _c("component-upload-csv"),
+                          _vm._v(" "),
+                          _c("v-divider", { staticClass: "my-3" }),
+                          _vm._v(" "),
+                          _c("component-settings-batch", {
+                            attrs: { project: _vm.project },
+                            on: {
+                              "update:project": function($event) {
+                                _vm.project = $event
+                              }
+                            }
+                          })
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-flex",
+                        { attrs: { xs6: "" } },
+                        [
+                          _c("component-overview", {
+                            attrs: { project: _vm.project }
+                          }),
+                          _vm._v(" "),
+                          _c("component-submit-batch", {
+                            attrs: { project: _vm.project }
+                          })
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
                 ],
                 1
               )
-            })
+            ],
+            1
           )
         ],
         1
@@ -47259,7 +47107,7 @@ render._withStripped = true
       
       }
     })();
-},{"vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","./component_step_upload_csv.vue":"components/batches/component_step_upload_csv.vue","./component_step_settings.vue":"components/batches/component_step_settings.vue","./component_step_overview.vue":"components/batches/component_step_overview.vue","_css_loader":"../../../../../node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"../../../../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../../../../node_modules/vue/dist/vue.common.js"}],"components/batches/app_batches.vue":[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":"../../../../../node_modules/babel-runtime/helpers/extends.js","vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","./component_upload_csv.vue":"components/batches/component_upload_csv.vue","./component_settings_batch.vue":"components/batches/component_settings_batch.vue","./component_overview.vue":"components/batches/component_overview.vue","./component_submit_batch.vue":"components/batches/component_submit_batch.vue","_css_loader":"../../../../../node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"../../../../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../../../../node_modules/vue/dist/vue.common.js"}],"components/batches/app_batches.vue":[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -47290,14 +47138,7 @@ exports.default = {
     name: 'app-batches',
 
     data: function data() {
-        return {
-            dialog: false,
-
-            drawer: false,
-            is_refreshing: true,
-            show_snackbar: false,
-            text_snackbar: 'Finished refreshing the data'
-        };
+        return {};
     },
 
     methods: (0, _extends3.default)({
@@ -69813,7 +69654,7 @@ exports.default = {
     computed: (0, _extends3.default)({}, (0, _vuex.mapGetters)('moduleWorkers', {
         'list_workers': 'list_workers'
     })),
-    methods: {
+    methods: (0, _extends3.default)({
         custom_filter: function custom_filter(items, search, filter) {
             if (!this.show_workers_blocked_none) {
                 items = items.filter(function (e) {
@@ -69841,8 +69682,17 @@ exports.default = {
             // console.log(filter)
             return items;
         }
+    }, (0, _vuex.mapActions)('moduleWorkers', {
+        'update_status_block': 'update_status_block'
+    })),
+    created: function created() {
+
+        this.update_status_block({
+            worker: { name: 'A7W013PM199BS' },
+            status_block_new: 1,
+            status_block_old: 2
+        });
     },
-    created: function created() {},
 
     components: {
         ComponentItemWorker: _component_item_worker2.default
@@ -70334,6 +70184,20 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 exports.default = {
 	mixins: [_settings_batch2.default],
@@ -70341,13 +70205,6 @@ exports.default = {
 	data: function data() {
 		return {
 			// search: undefined,
-			list_keywords: [{
-				text: 'foo',
-				id: 1
-			}, {
-				text: 'bar',
-				id: 2
-			}]
 		};
 	},
 
@@ -70500,6 +70357,33 @@ exports.default = {
                 _vm.$set(_vm.project, "duration", $$v)
               },
               expression: "project.duration"
+            }
+          }),
+          _vm._v(" "),
+          _c("v-select", {
+            attrs: {
+              items: _vm.project.templates,
+              label: "Worker Template",
+              "item-text": "name",
+              "item-value": "id"
+            },
+            model: {
+              value: _vm.project.template,
+              callback: function($$v) {
+                _vm.$set(_vm.project, "template", $$v)
+              },
+              expression: "project.template"
+            }
+          }),
+          _vm._v(" "),
+          _c("v-switch", {
+            attrs: { label: "Soft Block Workers" },
+            model: {
+              value: _vm.project.block_workers,
+              callback: function($$v) {
+                _vm.$set(_vm.project, "block_workers", $$v)
+              },
+              expression: "project.block_workers"
             }
           }),
           _vm._v(" "),
@@ -72660,7 +72544,10 @@ var moduleQualifications = exports.moduleQualifications = {
 								}).join('&');
 								_context4.next = 4;
 								return _axios2.default.delete(rootGetters.get_url_api(state.url_api_qualifications) + string_parameter, {
-									headers: { "X-CSRFToken": rootState.token_csrf }
+									headers: {
+										"X-CSRFToken": rootState.token_csrf
+									}
+
 								}).then(function (response) {
 									if (rootState.use_sandbox) {
 										commit('delete_qualifications_sandbox', list_ids);
@@ -72806,6 +72693,8 @@ var _lodash2 = _interopRequireDefault(_lodash);
 
 var _workers = require('../../classes/workers.js');
 
+var _workers2 = _interopRequireDefault(_workers);
+
 var _enums = require('../../classes/enums.js');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -72864,7 +72753,7 @@ var moduleWorkers = exports.moduleWorkers = {
 				object_workers = state.object_workers;
 			}
 
-			var obj_worker = new _workers.Worker(data_worker);
+			var obj_worker = new _workers2.default(data_worker);
 			_vue2.default.set(object_workers, obj_worker.name, obj_worker);
 		},
 		update_worker_status_block: function update_worker_status_block(state, _ref2) {
@@ -72900,7 +72789,7 @@ var moduleWorkers = exports.moduleWorkers = {
 			}
 
 			_lodash2.default.forEach(data_workers, function (data_worker) {
-				var obj_worker = new _workers.Worker(data_worker);
+				var obj_worker = new _workers2.default(data_worker);
 				_vue2.default.set(object_workers, obj_worker.name, obj_worker);
 			});
 		},
@@ -73033,6 +72922,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.moduleBatches = undefined;
 
+var _stringify = require('babel-runtime/core-js/json/stringify');
+
+var _stringify2 = _interopRequireDefault(_stringify);
+
 var _regenerator = require('babel-runtime/regenerator');
 
 var _regenerator2 = _interopRequireDefault(_regenerator);
@@ -73080,9 +72973,18 @@ var moduleBatches = exports.moduleBatches = {
         object_batches_sandbox: null,
         url_api_assignments_real_approved: undefined,
 
+        url_api_batches: undefined,
+
         object_csv_parsed: undefined
     },
     getters: {
+        is_valid_csv: function is_valid_csv(state) {
+            if (state.object_csv_parsed == undefined) {
+                return false;
+            } else {
+                return state.object_csv_parsed.errors.length == 0;
+            }
+        },
         get_object_csv_parsed: function get_object_csv_parsed(state) {
             return state.object_csv_parsed;
         },
@@ -73158,7 +73060,7 @@ var moduleBatches = exports.moduleBatches = {
                 }
             });
 
-            console.log(state.object_batches_sandbox);
+            // console.log(state.object_batches_sandbox)
 
             state.object_batches_sandbox = dict_batches;
         },
@@ -73222,6 +73124,9 @@ var moduleBatches = exports.moduleBatches = {
             };
             state.object_batches = dict_batches;
         },
+        set_url_api_batches: function set_url_api_batches(state, url_new) {
+            state.url_api_batches = url_new;
+        },
         set_url_api_assignments_real_approved: function set_url_api_assignments_real_approved(state, url_new) {
             state.url_api_assignments_real_approved = url_new;
         },
@@ -73269,10 +73174,56 @@ var moduleBatches = exports.moduleBatches = {
             }
 
             return sync_database;
+        }(),
+        add_batch: function () {
+            var _ref6 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(_ref5, data) {
+                var state = _ref5.state,
+                    commit = _ref5.commit,
+                    getters = _ref5.getters,
+                    rootState = _ref5.rootState,
+                    rootGetters = _ref5.rootGetters,
+                    dispatch = _ref5.dispatch;
+                var use_sandbox;
+                return _regenerator2.default.wrap(function _callee2$(_context2) {
+                    while (1) {
+                        switch (_context2.prev = _context2.next) {
+                            case 0:
+                                use_sandbox = rootState.use_sandbox;
+
+                                console.log(use_sandbox);
+                                console.log(data);
+
+                                _context2.next = 5;
+                                return _axios2.default.post(rootGetters.get_url_api(state.url_api_batches, use_sandbox), (0, _stringify2.default)(data), {
+                                    headers: {
+                                        "X-CSRFToken": rootState.token_csrf,
+                                        "Content-Type": 'application/json'
+                                    }
+                                }).then(function (response) {
+                                    // if(rootState.use_sandbox) {
+                                    //           commit('update_worker_sandbox', response.data);
+                                    // } else {
+                                    // commit('update_worker_status_block', {worker, status_block_new, use_sandbox});
+                                    // }
+                                });
+
+                            case 5:
+                            case 'end':
+                                return _context2.stop();
+                        }
+                    }
+                }, _callee2, this);
+            }));
+
+            function add_batch(_x3, _x4) {
+                return _ref6.apply(this, arguments);
+            }
+
+            return add_batch;
         }()
     }
 };
-},{"babel-runtime/regenerator":"../../../../../node_modules/babel-runtime/regenerator/index.js","babel-runtime/helpers/asyncToGenerator":"../../../../../node_modules/babel-runtime/helpers/asyncToGenerator.js","vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","vue":"../../../../../node_modules/vue/dist/vue.common.js","axios":"../../../../../node_modules/axios/index.js","vue-axios":"../../../../../node_modules/vue-axios/dist/vue-axios.min.js","lodash":"../../../../../node_modules/lodash/lodash.js","vue-cookies":"../../../../../node_modules/vue-cookies/vue-cookies.js"}],"store/index.js":[function(require,module,exports) {
+},{"babel-runtime/core-js/json/stringify":"../../../../../node_modules/babel-runtime/core-js/json/stringify.js","babel-runtime/regenerator":"../../../../../node_modules/babel-runtime/regenerator/index.js","babel-runtime/helpers/asyncToGenerator":"../../../../../node_modules/babel-runtime/helpers/asyncToGenerator.js","vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","vue":"../../../../../node_modules/vue/dist/vue.common.js","axios":"../../../../../node_modules/axios/index.js","vue-axios":"../../../../../node_modules/vue-axios/dist/vue-axios.min.js","lodash":"../../../../../node_modules/lodash/lodash.js","vue-cookies":"../../../../../node_modules/vue-cookies/vue-cookies.js"}],"store/index.js":[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -73417,13 +73368,15 @@ var store = exports.store = new _vuex2.default.Store({
                                 commit('moduleProjects/set_url_api_projects', config.url_api_projects);
                                 commit('moduleProjects/set_slug_project_current', config.slug_project_current);
 
-                                _context.next = 14;
+                                commit('moduleBatches/set_url_api_batches', config.url_api_batches);
+
+                                _context.next = 15;
                                 return dispatch('moduleProjects/load_projects');
 
-                            case 14:
+                            case 15:
                                 state.has_loaded_projects = true;
 
-                            case 15:
+                            case 16:
                             case 'end':
                                 return _context.stop();
                         }
@@ -73647,7 +73600,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = '' || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + '39607' + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '39823' + '/');
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
 

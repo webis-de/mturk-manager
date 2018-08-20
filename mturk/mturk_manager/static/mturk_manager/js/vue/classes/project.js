@@ -18,6 +18,8 @@ export default class Project
         this.qualification_hits_approved = data.qualification_hits_approved;
         this.qualification_locale = data.qualification_locale;
         this.block_workers = data.block_workers;
+        this.templates = data.templates;
+        this.template = data.fk_template_main;
 	}
 
 	get_changes(project) {

@@ -17,9 +17,19 @@ export const moduleBatches= {
 		object_batches_sandbox: null,
         url_api_assignments_real_approved: undefined,
 
+        url_api_batches: undefined,
+
         object_csv_parsed: undefined,
 	},
     getters: {
+        is_valid_csv: (state) => {
+            if(state.object_csv_parsed == undefined) 
+            {
+                return false;
+            } else {
+                return state.object_csv_parsed.errors.length == 0;
+            }
+        },
         get_object_csv_parsed: (state) => {
             return state.object_csv_parsed;
         },
@@ -103,7 +113,7 @@ export const moduleBatches= {
                 }
             });
 
-            console.log(state.object_batches_sandbox)
+            // console.log(state.object_batches_sandbox)
 
             state.object_batches_sandbox = dict_batches;
         },
@@ -170,6 +180,9 @@ export const moduleBatches= {
             };
             state.object_batches = dict_batches;
         },
+        set_url_api_batches(state, url_new) {
+            state.url_api_batches = url_new;
+        },
         set_url_api_assignments_real_approved(state, url_new) {
             state.url_api_assignments_real_approved = url_new;
         },
@@ -189,6 +202,29 @@ export const moduleBatches= {
                     }
                 })
             }
+        },
+        async add_batch({state, commit, getters, rootState, rootGetters, dispatch}, data) {
+            const use_sandbox = rootState.use_sandbox;
+            console.log(use_sandbox);
+            console.log(data);
+
+            await axios.post(
+                rootGetters.get_url_api(state.url_api_batches, use_sandbox),
+                JSON.stringify(data),
+                {
+                    headers: {
+                        "X-CSRFToken": rootState.token_csrf,
+                        "Content-Type": 'application/json',
+                    }
+                },
+            )
+            .then(response => {
+                // if(rootState.use_sandbox) {
+       //           commit('update_worker_sandbox', response.data);
+                // } else {
+                // commit('update_worker_status_block', {worker, status_block_new, use_sandbox});
+                // }
+            })
         },
 	},
 }

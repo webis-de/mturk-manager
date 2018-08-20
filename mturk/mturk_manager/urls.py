@@ -28,6 +28,12 @@ urlpatterns = format_suffix_patterns([
     path('api/projects/<str:slug_project>/qualifications/', views.Qualifications.as_view(), name='qualifications_for_project'),
     path('api/projects/<str:slug_project>/qualifications/import', views.import_qualifications, name='import_qualifications_for_project'),
     path('api/projects/<str:slug_project>/qualifications/<str:id_mturk>', views.Qualification.as_view(), name='qualification_for_project'),
+    
+    path('api/projects/<str:slug_project>/batches/', views.Batches.as_view(), name='batches_for_project'),
+    # path('api/projects/<str:slug_project>/batches/', views.Batch.as_view(), name='batch_for_project'),
+
+
+
 
     path('view/<str:name>', views.view, name='view'),
     path('documentation', views.documentation, name='documentation'),

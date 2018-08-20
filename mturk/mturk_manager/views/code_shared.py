@@ -72,7 +72,7 @@ def glob_create_batch(db_obj_project, data=None, dictionary=None):
         fk_project=db_obj_project,
         title=title,
         description=description,
-        keywords=keywords,
+        # keywords=keywords,
         count_assignments=count_assignments,
         use_sandbox=use_sandbox,
         reward=reward,

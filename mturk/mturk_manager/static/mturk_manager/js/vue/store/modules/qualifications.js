@@ -113,7 +113,10 @@ export const moduleQualifications = {
 			await axios.delete(
 				rootGetters.get_url_api(state.url_api_qualifications) + string_parameter, 
 				{
-					headers: {"X-CSRFToken": rootState.token_csrf}
+					headers: {
+						"X-CSRFToken": rootState.token_csrf,
+					}
+						
 				},
 			).then(response => {
 		    	if(rootState.use_sandbox) {

@@ -38,8 +38,19 @@ export default {
             ],
 
             DESCRIPTIONS: DESCRIPTIONS,
+            
+			list_keywords: [
+			],
 		}
 	},
+    watch: {
+        project: { 
+            handler: function() {
+                this.$emit('update:project', this.project);
+            },
+            deep: true,
+        },
+    },
 	methods: {
     	format_duration(label, duration) {
     		return `${label} (${humanizeDuration(duration * 1000)})`;
@@ -62,6 +73,9 @@ export default {
 				// 	value: 1,
 				// },];
         this.project.keywords = this.project_current.keywords;
+        this.project.templates = this.project_current.templates;
+        this.project.template = this.project_current.template;
+        this.project.block_workers = this.project_current.block_workers;
     },
     computed: {
         ...mapGetters('moduleProjects', {

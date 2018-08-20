@@ -24,11 +24,11 @@ class Form_Update_Project(forms.ModelForm):
     fk_template_hit_main = forms.ModelChoiceField(required=False, queryset=None, label='Hit template', empty_label='Please select a template', widget=Bootstrap_Select(small=True))
     fk_template_global_main = forms.ModelChoiceField(required=False, queryset=None, label='Global template', empty_label='Please select a template', widget=Bootstrap_Select(small=True))
     fk_message_reject_default = forms.ModelChoiceField(required=False, queryset=None, label='Reject message', empty_label='Please select a reject message', widget=Bootstrap_Select(small=True))
-    block_workers = forms.ChoiceField(choices=[
-        ('disabled', 'disabled'),
-        # ('enabled_inject', 'enabled (inject workers into worker template)'),
-        ('enabled_request', 'enabled'),
-    ], label='Soft Block', widget=Bootstrap_Select(small=True))
+    # block_workers = forms.ChoiceField(choices=[
+    #     ('disabled', 'disabled'),
+    #     # ('enabled_inject', 'enabled (inject workers into worker template)'),
+    #     ('enabled_request', 'enabled'),
+    # ], label='Soft Block', widget=Bootstrap_Select(small=True))
     fk_message_block_default = forms.ModelChoiceField(required=False, queryset=None, label='Block message', empty_label='Please select a block message', widget=Bootstrap_Select(small=True))
 
     qualification_assignments_approved = forms.IntegerField(required=False, widget=Bootstrap_NumberInput())

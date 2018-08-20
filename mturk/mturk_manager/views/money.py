@@ -5,6 +5,7 @@ import urllib.parse, json, csv
 from django.urls import reverse
 from mturk_manager.forms import *
 from django.middleware.csrf import get_token
+
 def money(request, name):
     name_quoted = name
     slug_project = urllib.parse.unquote(name_quoted)
@@ -28,6 +29,8 @@ def money(request, name):
         'url_api_status_block': reverse('mturk_manager:workers_for_project_status_block', args=[slug_project]),
         
         'url_api_projects': reverse('mturk_manager:projects'),
+
+        'url_api_batches': reverse('mturk_manager:batches_for_project', args=[slug_project]),
         # 'url_api_project': reverse('mturk_manager:project_api_tmp'),
     }
 

@@ -88,6 +88,8 @@ export const store = new Vuex.Store({
             commit('moduleProjects/set_url_api_projects', config.url_api_projects);
             commit('moduleProjects/set_slug_project_current', config.slug_project_current);
 
+            commit('moduleBatches/set_url_api_batches', config.url_api_batches);
+
             await dispatch('moduleProjects/load_projects');
             state.has_loaded_projects = true;
         },
