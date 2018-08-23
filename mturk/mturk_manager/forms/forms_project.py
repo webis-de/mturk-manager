@@ -58,16 +58,19 @@ class Form_Update_Project(forms.ModelForm):
             'fk_message_reject_default',
             'fk_message_block_default',
             'block_workers',
+            'assignments_max_per_worker',
         ]
         widgets = {
             'reward': Bootstrap_NumberInput(attrs={'step': '0.01'}),
             'count_assignments': Bootstrap_NumberInput(),
             'lifetime': Bootstrap_NumberInput(),
             'duration': Bootstrap_NumberInput(),
+            'assignments_max_per_worker': Bootstrap_NumberInput(),
         }
         labels = {
             'count_assignments': '#Assignements',
             'has_content_adult': 'Has adult content',
+            'assignments_max_per_worker': 'Max Assignments Per Worker',
         }
 
 class Form_Create_Batch(Form_Update_Project):

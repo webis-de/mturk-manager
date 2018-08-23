@@ -21,3 +21,6 @@ class Worker_Block_Project(models.Model):
     is_sandbox = models.BooleanField()
     fk_project = models.ForeignKey('Project', on_delete=models.CASCADE, related_name='worker_blocks_project')
     fk_worker = models.ForeignKey('Worker', on_delete=models.CASCADE, related_name='worker_blocks_project')
+
+class Count_Assignments_Worker_Project(models.Model):
+    count_assignments = models.IntegerField()

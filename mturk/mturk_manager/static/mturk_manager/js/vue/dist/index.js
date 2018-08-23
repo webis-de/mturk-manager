@@ -69687,11 +69687,11 @@ exports.default = {
     })),
     created: function created() {
 
-        this.update_status_block({
-            worker: { name: 'A7W013PM199BS' },
-            status_block_new: 1,
-            status_block_old: 2
-        });
+        // this.update_status_block({
+        //     worker: {name: 'A7W013PM199BS'},
+        //     status_block_new: 1,
+        //     status_block_old: 2,
+        // });
     },
 
     components: {
