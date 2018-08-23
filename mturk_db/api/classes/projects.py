@@ -1,4 +1,4 @@
-from api.models import Account_Mturk
+from api.models import Account_Mturk, Project
 from mturk_db.settings import URL_MTURK_SANDBOX
 import boto3
 
@@ -25,3 +25,21 @@ class Manager_Projects(object):
             )
 
 
+
+    @classmethod
+    def get_count_assignments_max_per_worker(cls, database_object_project):
+        project = Project.objects.get(slug=database_object_project.slug)
+
+        return {
+            'count_assignments_max_per_worker': project.count_assignments_max_per_worker,
+        }
+
+    @classmethod
+    def set_count_assignments_max_per_worker(cls, database_object_project, value):
+        project = Project.objects.filter(slug=database_object_project.slug).update(
+            count_assignments_max_per_worker=value
+        )
+
+        return {
+            'count_assignments_max_per_worker': value,
+        }

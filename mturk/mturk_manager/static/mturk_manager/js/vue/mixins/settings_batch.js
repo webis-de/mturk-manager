@@ -23,6 +23,9 @@ export default {
                 VALIDATIONS.REQUIRED,
                 VALIDATIONS.POSITIVE,
             ],
+            rules_count_assignments_max_per_worker: [
+                VALIDATIONS.REQUIRED,
+            ],
             // lifetime: 1,
             rules_lifetime: [
                 VALIDATIONS.REQUIRED,
@@ -65,6 +68,7 @@ export default {
         this.project.description = this.project_current.description;
         this.project.reward = this.project_current.reward;
         this.project.assignments_max = this.project_current.assignments_max;
+        this.project.count_assignments_max_per_worker = this.project_current.count_assignments_max_per_worker;
         this.project.lifetime = this.project_current.lifetime;
         this.project.duration = this.project_current.duration;
     //     this.project.keywords = [

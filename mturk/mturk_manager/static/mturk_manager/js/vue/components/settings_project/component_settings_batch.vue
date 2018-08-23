@@ -42,6 +42,16 @@
         <v-text-field
             required
             type="number"
+            v-model="project.count_assignments_max_per_worker"
+            label="Number of Maximal Assignments Per Worker"
+            v-bind:rules="rules_count_assignments_max_per_worker"
+            min="-1"
+        ></v-text-field>
+            <!-- v-bind:hint="DESCRIPTIONS.ASSIGNEMENTS_MAX_HIT" -->
+
+        <v-text-field
+            required
+            type="number"
             v-model="project.lifetime"
             v-bind:label="format_duration('Lifetime', project.lifetime)"
             v-bind:rules="rules_lifetime"

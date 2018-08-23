@@ -34,7 +34,7 @@ class m_Project(models.Model):
     use_sandbox = models.BooleanField(default=True)
     has_content_adult = models.BooleanField(default=False)
 
-    assignments_max_per_worker = models.IntegerField(default=-1)
+    # assignments_max_per_worker = models.IntegerField(default=-1)
 
     qualification_assignments_approved = models.IntegerField(null=True)
     qualification_hits_approved = models.IntegerField(null=True)

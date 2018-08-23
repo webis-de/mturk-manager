@@ -16,6 +16,8 @@ class Worker(models.Model):
 
 class Project(models.Model):
     slug = models.SlugField(null=False, max_length=200, unique=True)
+    count_assignments_max_per_worker = models.IntegerField(default=-1)
+    
 
 class Worker_Block_Project(models.Model):
     is_sandbox = models.BooleanField()
@@ -24,3 +26,6 @@ class Worker_Block_Project(models.Model):
 
 class Count_Assignments_Worker_Project(models.Model):
     count_assignments = models.IntegerField()
+    fk_project = models.ForeignKey('Project', on_delete=models.CASCADE, related_name='count_assignments')
+    fk_worker = models.ForeignKey('Worker', on_delete=models.CASCADE, related_name='count_assignments')
+

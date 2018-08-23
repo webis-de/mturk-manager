@@ -1,12 +1,14 @@
 {% load mturk_manager_templatetags %}
 
-<h2>Batch settings {% render_info info_texts.batch_settings %}</h2>
+<!-- <h2>Batch settings {% render_info info_texts.batch_settings %}</h2> -->
 <form method="post">
 	{% csrf_token %}
+	<div class="alert alert-info">
+		Looking for the project settings? Click <a class="alert-link" href="/project/{{db_obj_project.slug}}/tmp#/settings_project">here</a>!
+	</div>
+	<!-- {% include 'mturk_manager/form_settings_project.html' with form=form_update_project only %} -->
 
-	{% include 'mturk_manager/form_settings_project.html' with form=form_update_project only %}
-
-	<button type="submit" name="task" value="update_settings" class="btn btn-primary btn-sm"><i class="fas fa-sync-alt"></i> Save changes</button>
+	<!-- <button type="submit" name="task" value="update_settings" class="btn btn-primary btn-sm"><i class="fas fa-sync-alt"></i> Save changes</button> -->
 	<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal_create_batch"><i class="fas fa-plus"></i> Create batch</button>
 </form>
 <!--  -->

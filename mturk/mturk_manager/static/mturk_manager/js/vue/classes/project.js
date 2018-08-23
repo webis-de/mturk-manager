@@ -20,6 +20,7 @@ export default class Project
         this.block_workers = data.block_workers;
         this.templates = data.templates;
         this.template = data.fk_template_main;
+        this.count_assignments_max_per_worker = data.count_assignments_max_per_worker;
 	}
 
 	get_changes(project) {
@@ -49,7 +50,11 @@ export default class Project
 						{
 							object[key] = project[key];
 						} else {
-							object[key] = project[key];
+							if(key == 'assignments_max') {
+								object['count_assignments'] = project[key];
+							} else {
+								object[key] = project[key];
+							}
 						}
 					}
 				}

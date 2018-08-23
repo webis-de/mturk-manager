@@ -4231,9 +4231,9 @@ vue@^2.5.16:
   version "2.5.16"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.5.16.tgz#07edb75e8412aaeed871ebafa99f4672584a0085"
 
-vuetify-upload-button@^0.1.2:
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/vuetify-upload-button/-/vuetify-upload-button-0.1.2.tgz#7d570b74ee0e834e4e02c5ac13eb5243e9243401"
+vuetify-upload-button@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/vuetify-upload-button/-/vuetify-upload-button-1.1.0.tgz#fdc8e19ea93bf1e8aa4833edc6f974782aa0f4a1"
 
 vuetify@1.2.0-beta.0:
   version "1.2.0-beta.0"
