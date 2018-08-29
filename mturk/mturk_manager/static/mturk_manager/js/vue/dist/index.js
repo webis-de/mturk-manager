@@ -43884,7 +43884,16 @@ render._withStripped = true
       
       }
     })();
-},{"babel-runtime/helpers/extends":"../../../../../node_modules/babel-runtime/helpers/extends.js","vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","vuetify-upload-button":"../../../../../node_modules/vuetify-upload-button/dist/vuetify-upload-button.js","papaparse":"../../../../../node_modules/papaparse/papaparse.js","_css_loader":"../../../../../node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"../../../../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../../../../node_modules/vue/dist/vue.common.js"}],"../../../../../node_modules/core-js/library/modules/_string-at.js":[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":"../../../../../node_modules/babel-runtime/helpers/extends.js","vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","vuetify-upload-button":"../../../../../node_modules/vuetify-upload-button/dist/vuetify-upload-button.js","papaparse":"../../../../../node_modules/papaparse/papaparse.js","_css_loader":"../../../../../node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"../../../../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../../../../node_modules/vue/dist/vue.common.js"}],"../../../../../node_modules/core-js/library/fn/json/stringify.js":[function(require,module,exports) {
+var core = require('../../modules/_core');
+var $JSON = core.JSON || (core.JSON = { stringify: JSON.stringify });
+module.exports = function stringify(it) { // eslint-disable-line no-unused-vars
+  return $JSON.stringify.apply($JSON, arguments);
+};
+
+},{"../../modules/_core":"../../../../../node_modules/core-js/library/modules/_core.js"}],"../../../../../node_modules/babel-runtime/core-js/json/stringify.js":[function(require,module,exports) {
+module.exports = { "default": require("core-js/library/fn/json/stringify"), __esModule: true };
+},{"core-js/library/fn/json/stringify":"../../../../../node_modules/core-js/library/fn/json/stringify.js"}],"../../../../../node_modules/core-js/library/modules/_string-at.js":[function(require,module,exports) {
 var toInteger = require('./_to-integer');
 var defined = require('./_defined');
 // true  -> String#at
@@ -45656,6 +45665,10 @@ var _extends2 = require('babel-runtime/helpers/extends');
 
 var _extends3 = _interopRequireDefault(_extends2);
 
+var _stringify = require('babel-runtime/core-js/json/stringify');
+
+var _stringify2 = _interopRequireDefault(_stringify);
+
 var _toConsumableArray2 = require('babel-runtime/helpers/toConsumableArray');
 
 var _toConsumableArray3 = _interopRequireDefault(_toConsumableArray2);
@@ -45715,32 +45728,35 @@ exports.default = {
         remove: function remove(item) {
             this.project.keywords.splice(this.project.keywords.indexOf(item), 1);
             this.project.keywords = [].concat((0, _toConsumableArray3.default)(this.project.keywords));
+        },
+        update_fields: function update_fields() {
+            this.project.title = this.project_current.title;
+            this.project.description = this.project_current.description;
+            this.project.reward = this.project_current.reward;
+            this.project.assignments_max = this.project_current.assignments_max;
+            this.project.count_assignments_max_per_worker = this.project_current.count_assignments_max_per_worker;
+            this.project.lifetime = this.project_current.lifetime;
+            this.project.duration = this.project_current.duration;
+            //     this.project.keywords = [
+            // {
+            //  text: 'foo',
+            //  value: 1,
+            // },];
+            this.project.keywords = JSON.parse((0, _stringify2.default)(this.project_current.keywords));
+            this.project.templates = this.project_current.templates;
+            this.project.template = this.project_current.template;
+            this.project.block_workers = this.project_current.block_workers;
         }
     },
     created: function created() {
-        this.project.title = this.project_current.title;
-        this.project.description = this.project_current.description;
-        this.project.reward = this.project_current.reward;
-        this.project.assignments_max = this.project_current.assignments_max;
-        this.project.count_assignments_max_per_worker = this.project_current.count_assignments_max_per_worker;
-        this.project.lifetime = this.project_current.lifetime;
-        this.project.duration = this.project_current.duration;
-        //     this.project.keywords = [
-        // {
-        // 	text: 'foo',
-        // 	value: 1,
-        // },];
-        this.project.keywords = this.project_current.keywords;
-        this.project.templates = this.project_current.templates;
-        this.project.template = this.project_current.template;
-        this.project.block_workers = this.project_current.block_workers;
+        this.update_fields();
     },
 
     computed: (0, _extends3.default)({}, (0, _vuex.mapGetters)('moduleProjects', {
         'project_current': 'get_project_current'
     }))
 };
-},{"babel-runtime/helpers/extends":"../../../../../node_modules/babel-runtime/helpers/extends.js","babel-runtime/helpers/toConsumableArray":"../../../../../node_modules/babel-runtime/helpers/toConsumableArray.js","humanize-duration":"../../../../../node_modules/humanize-duration/humanize-duration.js","../classes/enums":"classes/enums.js","vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","../classes/project":"classes/project.js"}],"components/batches/component_settings_batch.vue":[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":"../../../../../node_modules/babel-runtime/helpers/extends.js","babel-runtime/core-js/json/stringify":"../../../../../node_modules/babel-runtime/core-js/json/stringify.js","babel-runtime/helpers/toConsumableArray":"../../../../../node_modules/babel-runtime/helpers/toConsumableArray.js","humanize-duration":"../../../../../node_modules/humanize-duration/humanize-duration.js","../classes/enums":"classes/enums.js","vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","../classes/project":"classes/project.js"}],"components/batches/component_settings_batch.vue":[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -67229,16 +67245,7 @@ render._withStripped = true
         
       }
     })();
-},{"babel-runtime/helpers/extends":"../../../../../node_modules/babel-runtime/helpers/extends.js","vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","./component-show-balance.vue":"components/finances/component-show-balance.vue","./component-show-money-spent.vue":"components/finances/component-show-money-spent.vue","./component-show-batches.vue":"components/finances/component-show-batches.vue","vue-hot-reload-api":"../../../../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../../../../node_modules/vue/dist/vue.common.js"}],"../../../../../node_modules/core-js/library/fn/json/stringify.js":[function(require,module,exports) {
-var core = require('../../modules/_core');
-var $JSON = core.JSON || (core.JSON = { stringify: JSON.stringify });
-module.exports = function stringify(it) { // eslint-disable-line no-unused-vars
-  return $JSON.stringify.apply($JSON, arguments);
-};
-
-},{"../../modules/_core":"../../../../../node_modules/core-js/library/modules/_core.js"}],"../../../../../node_modules/babel-runtime/core-js/json/stringify.js":[function(require,module,exports) {
-module.exports = { "default": require("core-js/library/fn/json/stringify"), __esModule: true };
-},{"core-js/library/fn/json/stringify":"../../../../../node_modules/core-js/library/fn/json/stringify.js"}],"classes/qualifications.js":[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":"../../../../../node_modules/babel-runtime/helpers/extends.js","vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","./component-show-balance.vue":"components/finances/component-show-balance.vue","./component-show-money-spent.vue":"components/finances/component-show-money-spent.vue","./component-show-batches.vue":"components/finances/component-show-batches.vue","vue-hot-reload-api":"../../../../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../../../../node_modules/vue/dist/vue.common.js"}],"classes/qualifications.js":[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -70214,7 +70221,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
-//
 
 exports.default = {
 	mixins: [_settings_batch2.default],
@@ -70227,11 +70233,14 @@ exports.default = {
 
 	methods: (0, _extends3.default)({
 		update: function update() {
+			var _this = this;
+
 			this.edit_project({
 				project: this.project_current,
 				project_new: this.project
 			}).then(function () {
 				console.log('done');
+				_this.update_fields();
 			});
 			// console.log(this.project_current);
 		}
@@ -72174,7 +72183,7 @@ var moduleProjects = exports.moduleProjects = {
 	mutations: {
 		edit_project: function edit_project(state, data) {
 			var project = new _project2.default(data);
-			_vue2.default.set(state.object_projects, project.id, project);
+			_vue2.default.set(state.object_projects, project.slug, project);
 		},
 		set_slug_project_current: function set_slug_project_current(state, slug_project_current) {
 			state.slug_project_current = slug_project_current;
@@ -73634,7 +73643,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = '' || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + '37029' + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '43639' + '/');
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
 

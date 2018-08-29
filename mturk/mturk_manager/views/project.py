@@ -1102,18 +1102,20 @@ def preprocess_template_inject(request, db_obj_project, html_template):
     return html_template
 
 def preprocess_template_request(request, db_obj_project, html_template):
-    host = code_shared.get_url_block_worker(db_obj_project) 
+    url_status_block = code_shared.get_url_block_worker(db_obj_project) 
+    url_add_counter = code_shared.get_url_add_counter(db_obj_project) 
     # path = reverse('mturk_manager:api_status_worker', kwargs={'name':db_obj_project.name, 'id_worker':'a'})[:-1]
     # url = urllib.parse.urljoin(host, path)
-    url = host
     injected = ''
     injected += '''
         <script>
-            var rkreu = '{url}';
+            var rkreu = '{url_status_block}';
+            var foo = '{url_add_counter}';
             {code_block}
         </script>
     '''.format(
-        url=url,
+        url_status_block=url_status_block,
+        url_add_counter=url_add_counter,
         code_block=code_shared.get_code_block_request(),
     )
 

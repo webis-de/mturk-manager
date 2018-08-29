@@ -10,8 +10,11 @@ class Serializer_Keyword(serializers.ModelSerializer):
             'text', 
         )
         extra_kwargs = {
-            "id": {
-                "read_only": False,
-                # "required": False,
+            'id': {
+                'read_only': False,
+                # 'required': False,
+            },
+            'text': {
+                'validators': [],
             },
         }

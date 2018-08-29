@@ -62,24 +62,27 @@ export default {
             this.project.keywords.splice(this.project.keywords.indexOf(item), 1)
             this.project.keywords = [...this.project.keywords]
         },
+        update_fields() {
+            this.project.title = this.project_current.title;
+            this.project.description = this.project_current.description;
+            this.project.reward = this.project_current.reward;
+            this.project.assignments_max = this.project_current.assignments_max;
+            this.project.count_assignments_max_per_worker = this.project_current.count_assignments_max_per_worker;
+            this.project.lifetime = this.project_current.lifetime;
+            this.project.duration = this.project_current.duration;
+        //     this.project.keywords = [
+                    // {
+                    //  text: 'foo',
+                    //  value: 1,
+                    // },];
+            this.project.keywords = JSON.parse(JSON.stringify(this.project_current.keywords));
+            this.project.templates = this.project_current.templates;
+            this.project.template = this.project_current.template;
+            this.project.block_workers = this.project_current.block_workers;
+        },
 	},
     created() {
-        this.project.title = this.project_current.title;
-        this.project.description = this.project_current.description;
-        this.project.reward = this.project_current.reward;
-        this.project.assignments_max = this.project_current.assignments_max;
-        this.project.count_assignments_max_per_worker = this.project_current.count_assignments_max_per_worker;
-        this.project.lifetime = this.project_current.lifetime;
-        this.project.duration = this.project_current.duration;
-    //     this.project.keywords = [
-				// {
-				// 	text: 'foo',
-				// 	value: 1,
-				// },];
-        this.project.keywords = this.project_current.keywords;
-        this.project.templates = this.project_current.templates;
-        this.project.template = this.project_current.template;
-        this.project.block_workers = this.project_current.block_workers;
+        this.update_fields();
     },
     computed: {
         ...mapGetters('moduleProjects', {

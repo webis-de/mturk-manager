@@ -4,6 +4,14 @@
 		"selected_items":
 		[
 			[
+				"assign",
+				"assignment_worker"
+			],
+			[
+				"rkreu",
+				"rkreuUrl"
+			],
+			[
 				"show_",
 				"show_workers_blocked_none"
 			],
@@ -506,14 +514,6 @@
 			[
 				"refer",
 				"reference_interaction"
-			],
-			[
-				"rgb",
-				"rgba()"
-			],
-			[
-				"background",
-				"background-color"
 			]
 		]
 	},
@@ -523,7 +523,7 @@
 			"file": "mturk/mturk_manager/models.py",
 			"settings":
 			{
-				"buffer_size": 7381,
+				"buffer_size": 7982,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -541,7 +541,16 @@
 			"file": "mturk/mturk/settings.py",
 			"settings":
 			{
-				"buffer_size": 5219,
+				"buffer_size": 5592,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "mturk_db/api/classes/workers.py",
+			"settings":
+			{
+				"buffer_size": 10611,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -550,7 +559,7 @@
 			"file": "mturk/mturk_manager/static/mturk_manager/js/vue/components/component-navigation-drawer.vue",
 			"settings":
 			{
-				"buffer_size": 2246,
+				"buffer_size": 2644,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -559,7 +568,7 @@
 			"file": "mturk/mturk_manager/static/mturk_manager/js/vue/App.vue",
 			"settings":
 			{
-				"buffer_size": 5756,
+				"buffer_size": 6219,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -568,7 +577,7 @@
 			"file": "mturk/mturk_manager/static/mturk_manager/js/vue/components/workers/component_toolbar_workers.vue",
 			"settings":
 			{
-				"buffer_size": 954,
+				"buffer_size": 928,
 				"encoding": "UTF-8",
 				"line_ending": "Unix",
 				"name": "component_toolbar_workers.vue"
@@ -588,7 +597,7 @@
 			"file": "mturk/mturk_manager/static/mturk_manager/js/vue/store/index.js",
 			"settings":
 			{
-				"buffer_size": 3276,
+				"buffer_size": 3652,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -597,7 +606,7 @@
 			"file": "mturk/mturk_manager/static/mturk_manager/js/vue/store/modules/qualifications.js",
 			"settings":
 			{
-				"buffer_size": 4585,
+				"buffer_size": 4606,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -624,7 +633,7 @@
 			"file": "mturk/mturk_manager/static/mturk_manager/js/vue/components/workers/AppWorkers.vue",
 			"settings":
 			{
-				"buffer_size": 3258,
+				"buffer_size": 3257,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -652,7 +661,7 @@
 			"file": "mturk/mturk_manager/static/mturk_manager/js/vue/store/modules/batches.js",
 			"settings":
 			{
-				"buffer_size": 7448,
+				"buffer_size": 8986,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -670,7 +679,7 @@
 			"file": "mturk/mturk_manager/static/mturk_manager/js/vue/components/workers/component_list_workers.vue",
 			"settings":
 			{
-				"buffer_size": 6428,
+				"buffer_size": 6724,
 				"encoding": "UTF-8",
 				"line_ending": "Unix",
 				"name": "component_list_workers.vue"
@@ -680,7 +689,7 @@
 			"file": "mturk/mturk_manager/static/mturk_manager/js/vue/components/workers/component_item_worker.vue",
 			"settings":
 			{
-				"buffer_size": 3062,
+				"buffer_size": 3340,
 				"encoding": "UTF-8",
 				"line_ending": "Unix",
 				"name": "component_item_worker.vue"
@@ -699,7 +708,25 @@
 			"file": "mturk/mturk_manager/static/mturk_manager/js/vue/components/workers/component_block_worker.vue",
 			"settings":
 			{
-				"buffer_size": 1928,
+				"buffer_size": 2505,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "mturk_db/api/models.py",
+			"settings":
+			{
+				"buffer_size": 1500,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/home/kritten/Downloads/test.html",
+			"settings":
+			{
+				"buffer_size": 3279,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -708,7 +735,7 @@
 			"file": "mturk/mturk_manager/static/mturk_manager/js/vue/store/modules/workers.js",
 			"settings":
 			{
-				"buffer_size": 2984,
+				"buffer_size": 5027,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -717,7 +744,7 @@
 			"file": "mturk/mturk_manager/static/mturk_manager/js/vue/classes/enums.js",
 			"settings":
 			{
-				"buffer_size": 70,
+				"buffer_size": 1831,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -745,7 +772,7 @@
 			"file": "mturk/mturk_manager/static/mturk_manager/js/vue/components/qualifications/component-toolbar-qualifications.vue",
 			"settings":
 			{
-				"buffer_size": 960,
+				"buffer_size": 958,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -754,7 +781,7 @@
 			"file": "mturk/mturk_manager/static/mturk_manager/js/vue/classes/qualifications.js",
 			"settings":
 			{
-				"buffer_size": 1808,
+				"buffer_size": 1816,
 				"encoding": "UTF-8",
 				"line_ending": "Unix",
 				"name": "qualifications.js"
@@ -773,7 +800,7 @@
 			"file": "mturk/mturk_manager/views/workers.py",
 			"settings":
 			{
-				"buffer_size": 3138,
+				"buffer_size": 3412,
 				"encoding": "UTF-8",
 				"line_ending": "Unix",
 				"name": "workers.py"
@@ -783,7 +810,7 @@
 			"file": "mturk/mturk_manager/serializers/serializer_worker.py",
 			"settings":
 			{
-				"buffer_size": 927,
+				"buffer_size": 1295,
 				"encoding": "UTF-8",
 				"line_ending": "Unix",
 				"name": "serializer_worker.py"
@@ -793,7 +820,53 @@
 			"file": "mturk/mturk_manager/classes/workers.py",
 			"settings":
 			{
-				"buffer_size": 3761,
+				"buffer_size": 7207,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "mturk/mturk_manager/classes/global_db.py",
+			"settings":
+			{
+				"buffer_size": 2640,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "mturk_db/api/urls.py",
+			"settings":
+			{
+				"buffer_size": 1191,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "mturk_db/api/views/projects.py",
+			"settings":
+			{
+				"buffer_size": 1289,
+				"encoding": "UTF-8",
+				"line_ending": "Unix",
+				"name": "projects.py"
+			}
+		},
+		{
+			"file": "mturk_db/api/views/workers.py",
+			"settings":
+			{
+				"buffer_size": 2708,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "mturk_db/api/classes/projects.py",
+			"settings":
+			{
+				"buffer_size": 1542,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -802,17 +875,62 @@
 			"file": "mturk/mturk_manager/serializers/serializer_project.py",
 			"settings":
 			{
-				"buffer_size": 660,
+				"buffer_size": 3234,
 				"encoding": "UTF-8",
 				"line_ending": "Unix",
 				"name": "serializer_project.py"
 			}
 		},
 		{
+			"file": "mturk/mturk_manager/static/mturk_manager/js/vue/store/modules/projects.js",
+			"settings":
+			{
+				"buffer_size": 2617,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "mturk/mturk_manager/static/mturk_manager/js/vue/classes/project.js",
+			"settings":
+			{
+				"buffer_size": 1788,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "mturk/mturk_manager/static/mturk_manager/js/vue/components/settings_project/component_settings_batch.vue",
+			"settings":
+			{
+				"buffer_size": 4254,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "mturk/mturk_manager/static/mturk_manager/js/vue/mixins/settings_batch.js",
+			"settings":
+			{
+				"buffer_size": 2847,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "mturk/mturk_manager/classes/projects.py",
+			"settings":
+			{
+				"buffer_size": 892,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
 			"file": "mturk/mturk_manager/views/projects.py",
 			"settings":
 			{
-				"buffer_size": 1957,
+				"buffer_size": 2023,
 				"encoding": "UTF-8",
 				"line_ending": "Unix",
 				"name": "projects.py"
@@ -822,7 +940,7 @@
 			"file": "mturk/mturk_manager/serializers/__init__.py",
 			"settings":
 			{
-				"buffer_size": 166,
+				"buffer_size": 330,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -841,15 +959,6 @@
 			"settings":
 			{
 				"buffer_size": 1861,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/home/kritten/Documents/examples.csv",
-			"settings":
-			{
-				"buffer_size": 56,
-				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
@@ -903,7 +1012,7 @@
 			"file": "mturk/mturk_manager/views/project.py",
 			"settings":
 			{
-				"buffer_size": 50309,
+				"buffer_size": 50944,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -938,7 +1047,7 @@
 			"file": "mturk/mturk_manager/forms/forms_project.py",
 			"settings":
 			{
-				"buffer_size": 4672,
+				"buffer_size": 4834,
 				"encoding": "UTF-8",
 				"line_ending": "Unix",
 				"name": "forms_project.py"
@@ -957,7 +1066,7 @@
 			"file": "mturk/mturk_manager/views/code_shared.py",
 			"settings":
 			{
-				"buffer_size": 18831,
+				"buffer_size": 21508,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -969,15 +1078,6 @@
 				"buffer_size": 3199,
 				"line_ending": "Unix",
 				"name": "averageDeltaDwellTime (Average of difference betwe"
-			}
-		},
-		{
-			"file": "mturk/mturk_manager/classes/projects.py",
-			"settings":
-			{
-				"buffer_size": 892,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
 			}
 		},
 		{
@@ -995,7 +1095,7 @@
 			"file": "mturk/mturk_manager/urls.py",
 			"settings":
 			{
-				"buffer_size": 3444,
+				"buffer_size": 3639,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -1034,7 +1134,7 @@
 			"file": "mturk/mturk_manager/templates/mturk_manager/project_batch.html",
 			"settings":
 			{
-				"buffer_size": 2534,
+				"buffer_size": 2790,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -1052,26 +1152,16 @@
 			"file": "mturk/mturk_manager/views/money.py",
 			"settings":
 			{
-				"buffer_size": 1530,
+				"buffer_size": 1894,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "mturk/mturk_manager/serializers/serializers_qualification.py",
-			"settings":
-			{
-				"buffer_size": 3203,
-				"encoding": "UTF-8",
-				"line_ending": "Unix",
-				"name": "serializers_qualification.py"
 			}
 		},
 		{
 			"file": "mturk/mturk_manager/classes/qualifications.py",
 			"settings":
 			{
-				"buffer_size": 6566,
+				"buffer_size": 10200,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -1206,15 +1296,24 @@
 		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/static/mturk_manager/js/vue/components/batches",
 		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/static/mturk_manager/js/vue/components/finances",
 		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/static/mturk_manager/js/vue/components/qualifications",
+		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/static/mturk_manager/js/vue/components/settings_project",
 		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/static/mturk_manager/js/vue/components/workers",
+		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/static/mturk_manager/js/vue/mixins",
 		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/static/mturk_manager/js/vue/store",
 		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/static/mturk_manager/js/vue/store/modules",
-		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/templates",
-		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/templates/mturk_manager",
-		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/views"
+		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/views",
+		"/home/kritten/Documents/mturk-manager/mturk_db",
+		"/home/kritten/Documents/mturk-manager/mturk_db/api",
+		"/home/kritten/Documents/mturk-manager/mturk_db/api/classes",
+		"/home/kritten/Documents/mturk-manager/mturk_db/api/views",
+		"/home/kritten/Documents/mturk-manager/mturk_db/mturk_db"
 	],
 	"file_history":
 	[
+		"/home/kritten/Documents/mturk-manager/mturk_db/api/views/__init__.py",
+		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/classes/projects.py",
+		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/serializers/serializers_qualification.py",
+		"/home/kritten/Documents/examples.csv",
 		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/static/mturk_manager/js/vue/classes/workers.js",
 		"/home/kritten/Documents/mturk-manager/requirements.txt",
 		"/home/kritten/Documents/mturk-manager/mturk/mturk_manager/enums/__init__.py",
@@ -1338,15 +1437,11 @@
 		"/home/yiro4618/Documents/hiwi/wstud-viewer-framework-django/viewer-framework/settings_viewer/settings_viewer_tripadvisor.py",
 		"/home/yiro4618/Documents/hiwi/wstud-viewer-framework-django/viewer-framework/settings_viewer/settings_viewer_test.py",
 		"/home/yiro4618/Documents/hiwi/wstud-viewer-framework-django/viewer-framework/settings_viewer/settings_viewer_arg.py",
-		"/home/yiro4618/Documents/hiwi/wstud-viewer-framework-django/viewer-framework/settings_viewer/settings_viewer_wikipedia_talk_labels.py",
-		"/home/yiro4618/Documents/hiwi/wstud-viewer-framework-django/viewer-framework/settings_viewer/settings_viewer_cbc.py",
-		"/home/yiro4618/Documents/hiwi/wstud-viewer-framework-django/install.sh",
-		"/run/user/1001/gvfs/sftp:host=webis26,user=webis/home/kipu5728/Documents/Release/GitHub/SIGIR-17/data/corpora/webis-query-speller-corpus/webis-query-speller-corpus.csv",
-		"/home/yiro4618/Documents/hiwi/wstud-viewer-framework-django/viewer-framework/viewer/classes/index/Handle_Index_Dictionary.py"
+		"/home/yiro4618/Documents/hiwi/wstud-viewer-framework-django/viewer-framework/settings_viewer/settings_viewer_wikipedia_talk_labels.py"
 	],
 	"find":
 	{
-		"height": 39.0
+		"height": 40.0
 	},
 	"find_in_files":
 	{
@@ -1368,6 +1463,20 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"was_created",
+			"Count_Assignments_Worker_Project",
+			"id_worker",
+			"url_status_block",
+			"host_status_block",
+			"preprocess_template_request",
+			"fk_worker__id_worker=id_worker",
+			"count_assignments",
+			"assignments_max",
+			"resposne",
+			"PERMISSIONS_INSTANCE_ONLY",
+			"Manager_Projects",
+			"assignments_max_per_worker",
+			"boto3",
 			"span",
 			":lab",
 			"Switch ",
@@ -1481,21 +1590,7 @@
 			"use_sandbox",
 			"qualifications_without_database_entry",
 			"qualifications_selected",
-			"qualifications_selected_without_database_entry",
-			"count",
-			"id_mturk",
-			"Things",
-			"var",
-			"policy_to_be_edited",
-			"is_creating",
-			"v-d",
-			"qualifications_selected",
-			"delete",
-			"has_database_entry",
-			"name",
-			"mturk",
-			"name_mturk",
-			"database"
+			"qualifications_selected_without_database_entry"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -1514,7 +1609,7 @@
 	"groups":
 	[
 		{
-			"selected": 19,
+			"selected": 2,
 			"sheets":
 			[
 				{
@@ -1523,15 +1618,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 7381,
+						"buffer_size": 7982,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								579,
-								579
+								5668,
+								5603
 							]
 						],
 						"settings":
@@ -1541,10 +1636,10 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 2052.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 14,
+					"stack_index": 8,
 					"type": "text"
 				},
 				{
@@ -1574,7 +1669,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 33,
+					"stack_index": 52,
 					"type": "text"
 				},
 				{
@@ -1583,15 +1678,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 5219,
+						"buffer_size": 5592,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1117,
-								1117
+								5121,
+								5121
 							]
 						],
 						"settings":
@@ -1601,27 +1696,57 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 270.0,
+						"translation.y": 3150.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 12,
+					"stack_index": 0,
 					"type": "text"
 				},
 				{
 					"buffer": 3,
-					"file": "mturk/mturk_manager/static/mturk_manager/js/vue/components/component-navigation-drawer.vue",
+					"file": "mturk_db/api/classes/workers.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2246,
+						"buffer_size": 10611,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2095,
-								2095
+								7484,
+								7484
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 3068.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "mturk/mturk_manager/static/mturk_manager/js/vue/components/component-navigation-drawer.vue",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2644,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
 							]
 						],
 						"settings":
@@ -1631,27 +1756,27 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 324.0,
+						"translation.y": 344.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 40,
+					"stack_index": 55,
 					"type": "text"
 				},
 				{
-					"buffer": 4,
+					"buffer": 5,
 					"file": "mturk/mturk_manager/static/mturk_manager/js/vue/App.vue",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 5756,
+						"buffer_size": 6219,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1050,
-								1050
+								0,
+								0
 							]
 						],
 						"settings":
@@ -1664,24 +1789,24 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 27,
+					"stack_index": 47,
 					"type": "text"
 				},
 				{
-					"buffer": 5,
+					"buffer": 6,
 					"file": "mturk/mturk_manager/static/mturk_manager/js/vue/components/workers/component_toolbar_workers.vue",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 954,
+						"buffer_size": 928,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								645,
-								645
+								0,
+								0
 							]
 						],
 						"settings":
@@ -1693,11 +1818,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 26,
+					"stack_index": 46,
 					"type": "text"
 				},
 				{
-					"buffer": 6,
+					"buffer": 7,
 					"file": "mturk/mturk_manager/static/mturk_manager/js/vue/components/qualifications/component-update-qualification.vue",
 					"semi_transient": false,
 					"settings":
@@ -1724,24 +1849,24 @@
 						"translation.y": 162.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 24,
+					"stack_index": 44,
 					"type": "text"
 				},
 				{
-					"buffer": 7,
+					"buffer": 8,
 					"file": "mturk/mturk_manager/static/mturk_manager/js/vue/store/index.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3276,
+						"buffer_size": 3652,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								829,
-								829
+								0,
+								0
 							]
 						],
 						"settings":
@@ -1754,24 +1879,24 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 25,
+					"stack_index": 45,
 					"type": "text"
 				},
 				{
-					"buffer": 8,
+					"buffer": 9,
 					"file": "mturk/mturk_manager/static/mturk_manager/js/vue/store/modules/qualifications.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 4585,
+						"buffer_size": 4606,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3447,
-								3500
+								0,
+								0
 							]
 						],
 						"settings":
@@ -1779,14 +1904,14 @@
 							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
 						},
 						"translation.x": 0.0,
-						"translation.y": 1512.0,
+						"translation.y": 1688.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 30,
+					"stack_index": 50,
 					"type": "text"
 				},
 				{
-					"buffer": 9,
+					"buffer": 10,
 					"file": "mturk/mturk_manager/static/mturk_manager/js/vue/components/qualifications/AppQualifications.vue",
 					"semi_transient": false,
 					"settings":
@@ -1809,14 +1934,14 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 2088.0,
+						"translation.y": 2300.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 23,
+					"stack_index": 43,
 					"type": "text"
 				},
 				{
-					"buffer": 10,
+					"buffer": 11,
 					"file": "mturk/mturk_manager/static/mturk_manager/js/vue/store/modules/money.js",
 					"semi_transient": false,
 					"settings":
@@ -1837,27 +1962,27 @@
 							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
 						},
 						"translation.x": 0.0,
-						"translation.y": 54.0,
+						"translation.y": 60.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 29,
+					"stack_index": 49,
 					"type": "text"
 				},
 				{
-					"buffer": 11,
+					"buffer": 12,
 					"file": "mturk/mturk_manager/static/mturk_manager/js/vue/components/workers/AppWorkers.vue",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3258,
+						"buffer_size": 3257,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								346,
-								346
+								0,
+								0
 							]
 						],
 						"settings":
@@ -1870,11 +1995,11 @@
 						"translation.y": 108.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 7,
+					"stack_index": 33,
 					"type": "text"
 				},
 				{
-					"buffer": 12,
+					"buffer": 13,
 					"file": "mturk/mturk_manager/static/mturk_manager/js/vue/components/finances/AppFinances.vue",
 					"semi_transient": false,
 					"settings":
@@ -1897,14 +2022,14 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 432.0,
+						"translation.y": 462.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 17,
+					"stack_index": 39,
 					"type": "text"
 				},
 				{
-					"buffer": 13,
+					"buffer": 14,
 					"semi_transient": false,
 					"settings":
 					{
@@ -2891,27 +3016,27 @@
 							"syntax": "Packages/Default/Find Results.hidden-tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 15966.0,
+						"translation.y": 17826.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 19,
+					"stack_index": 40,
 					"type": "text"
 				},
 				{
-					"buffer": 14,
+					"buffer": 15,
 					"file": "mturk/mturk_manager/static/mturk_manager/js/vue/store/modules/batches.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 7448,
+						"buffer_size": 8986,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2157,
-								2157
+								0,
+								0
 							]
 						],
 						"settings":
@@ -2921,14 +3046,14 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 558.0,
+						"translation.y": 622.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 22,
+					"stack_index": 42,
 					"type": "text"
 				},
 				{
-					"buffer": 15,
+					"buffer": 16,
 					"file": "mturk/mturk_manager/static/mturk_manager/js/vue/components/finances/component-show-balance.vue",
 					"semi_transient": false,
 					"settings":
@@ -2954,24 +3079,24 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 31,
+					"stack_index": 51,
 					"type": "text"
 				},
 				{
-					"buffer": 16,
+					"buffer": 17,
 					"file": "mturk/mturk_manager/static/mturk_manager/js/vue/components/workers/component_list_workers.vue",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 6428,
+						"buffer_size": 6724,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								77,
-								77
+								0,
+								0
 							]
 						],
 						"settings":
@@ -2985,24 +3110,24 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 28,
 					"type": "text"
 				},
 				{
-					"buffer": 17,
+					"buffer": 18,
 					"file": "mturk/mturk_manager/static/mturk_manager/js/vue/components/workers/component_item_worker.vue",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3062,
+						"buffer_size": 3340,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								530,
-								530
+								0,
+								0
 							]
 						],
 						"settings":
@@ -3016,11 +3141,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 29,
 					"type": "text"
 				},
 				{
-					"buffer": 18,
+					"buffer": 19,
 					"file": "mturk/mturk_manager/views/index.py",
 					"semi_transient": false,
 					"settings":
@@ -3044,24 +3169,24 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 6,
+					"stack_index": 32,
 					"type": "text"
 				},
 				{
-					"buffer": 19,
+					"buffer": 20,
 					"file": "mturk/mturk_manager/static/mturk_manager/js/vue/components/workers/component_block_worker.vue",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1928,
+						"buffer_size": 2505,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								64,
-								64
+								0,
+								0
 							]
 						],
 						"settings":
@@ -3071,54 +3196,86 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 5.0,
+						"translation.y": 176.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 27,
 					"type": "text"
 				},
 				{
-					"buffer": 20,
-					"file": "mturk/mturk_manager/static/mturk_manager/js/vue/store/modules/workers.js",
+					"buffer": 21,
+					"file": "mturk_db/api/models.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2984,
+						"buffer_size": 1500,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								805,
-								805
+								1031,
+								1048
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 8,
+					"stack_index": 7,
 					"type": "text"
 				},
 				{
-					"buffer": 21,
-					"file": "mturk/mturk_manager/static/mturk_manager/js/vue/classes/enums.js",
+					"buffer": 22,
+					"file": "/home/kritten/Downloads/test.html",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 70,
+						"buffer_size": 3279,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								70,
+								1045,
+								1045
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 23,
+					"file": "mturk/mturk_manager/static/mturk_manager/js/vue/store/modules/workers.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5027,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
 								0
 							]
 						],
@@ -3130,11 +3287,39 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 45,
+					"stack_index": 34,
 					"type": "text"
 				},
 				{
-					"buffer": 22,
+					"buffer": 24,
+					"file": "mturk/mturk_manager/static/mturk_manager/js/vue/classes/enums.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1831,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 59,
+					"type": "text"
+				},
+				{
+					"buffer": 25,
 					"file": "mturk/mturk_manager/static/mturk_manager/js/vue/components/qualifications/component-download-qualifications.vue",
 					"semi_transient": false,
 					"settings":
@@ -3158,14 +3343,14 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 324.0,
+						"translation.y": 344.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 58,
+					"stack_index": 70,
 					"type": "text"
 				},
 				{
-					"buffer": 23,
+					"buffer": 26,
 					"file": "mturk/mturk_manager/static/mturk_manager/js/vue/components/qualifications/component-add-qualification.vue",
 					"semi_transient": false,
 					"settings":
@@ -3188,27 +3373,27 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 972.0,
+						"translation.y": 992.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 57,
+					"stack_index": 69,
 					"type": "text"
 				},
 				{
-					"buffer": 24,
+					"buffer": 27,
 					"file": "mturk/mturk_manager/static/mturk_manager/js/vue/components/qualifications/component-toolbar-qualifications.vue",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 960,
+						"buffer_size": 958,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								120,
-								137
+								0,
+								0
 							]
 						],
 						"settings":
@@ -3221,24 +3406,24 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 41,
+					"stack_index": 56,
 					"type": "text"
 				},
 				{
-					"buffer": 25,
+					"buffer": 28,
 					"file": "mturk/mturk_manager/static/mturk_manager/js/vue/classes/qualifications.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1808,
+						"buffer_size": 1816,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1507,
-								1507
+								0,
+								0
 							]
 						],
 						"settings":
@@ -3248,14 +3433,14 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 162.0,
+						"translation.y": 180.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 43,
+					"stack_index": 57,
 					"type": "text"
 				},
 				{
-					"buffer": 26,
+					"buffer": 29,
 					"file": "mturk/mturk_manager/migrations/0013_m_project_slug.py",
 					"semi_transient": false,
 					"settings":
@@ -3281,24 +3466,24 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 13,
+					"stack_index": 37,
 					"type": "text"
 				},
 				{
-					"buffer": 27,
+					"buffer": 30,
 					"file": "mturk/mturk_manager/views/workers.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3138,
+						"buffer_size": 3412,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2423,
-								2423
+								0,
+								0
 							]
 						],
 						"settings":
@@ -3309,27 +3494,27 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 432.0,
+						"translation.y": 482.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 30,
 					"type": "text"
 				},
 				{
-					"buffer": 28,
+					"buffer": 31,
 					"file": "mturk/mturk_manager/serializers/serializer_worker.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 927,
+						"buffer_size": 1295,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								635,
-								635
+								357,
+								357
 							]
 						],
 						"settings":
@@ -3343,24 +3528,24 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 38,
+					"stack_index": 22,
 					"type": "text"
 				},
 				{
-					"buffer": 29,
+					"buffer": 32,
 					"file": "mturk/mturk_manager/classes/workers.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3761,
+						"buffer_size": 7207,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								102,
-								102
+								0,
+								0
 							]
 						],
 						"settings":
@@ -3368,27 +3553,174 @@
 							"syntax": "Packages/Python/Python.sublime-syntax"
 						},
 						"translation.x": 0.0,
-						"translation.y": 54.0,
+						"translation.y": 1428.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 9,
+					"stack_index": 20,
 					"type": "text"
 				},
 				{
-					"buffer": 30,
-					"file": "mturk/mturk_manager/serializers/serializer_project.py",
+					"buffer": 33,
+					"file": "mturk/mturk_manager/classes/global_db.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 660,
+						"buffer_size": 2640,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								660,
-								660
+								2544,
+								2544
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 513.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 14,
+					"type": "text"
+				},
+				{
+					"buffer": 34,
+					"file": "mturk_db/api/urls.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1191,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								811,
+								828
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 12,
+					"type": "text"
+				},
+				{
+					"buffer": 35,
+					"file": "mturk_db/api/views/projects.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1289,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								890,
+								890
+							]
+						],
+						"settings":
+						{
+							"auto_name": "projects.py",
+							"syntax": "Packages/Python/Python.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 11,
+					"type": "text"
+				},
+				{
+					"buffer": 36,
+					"file": "mturk_db/api/views/workers.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2708,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2666,
+								2666
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 570.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 37,
+					"file": "mturk_db/api/classes/projects.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1542,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1540,
+								1540
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 13,
+					"type": "text"
+				},
+				{
+					"buffer": 38,
+					"file": "mturk/mturk_manager/serializers/serializer_project.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3234,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2945,
+								2945
 							]
 						],
 						"settings":
@@ -3399,27 +3731,173 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 972.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 42,
+					"stack_index": 15,
 					"type": "text"
 				},
 				{
-					"buffer": 31,
-					"file": "mturk/mturk_manager/views/projects.py",
+					"buffer": 39,
+					"file": "mturk/mturk_manager/static/mturk_manager/js/vue/store/modules/projects.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1957,
+						"buffer_size": 2617,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1438,
-								1438
+								2283,
+								2283
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 684.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 16,
+					"type": "text"
+				},
+				{
+					"buffer": 40,
+					"file": "mturk/mturk_manager/static/mturk_manager/js/vue/classes/project.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1788,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1656,
+								1656
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 171.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 17,
+					"type": "text"
+				},
+				{
+					"buffer": 41,
+					"file": "mturk/mturk_manager/static/mturk_manager/js/vue/components/settings_project/component_settings_batch.vue",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4254,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1432,
+								1394
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 285.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 19,
+					"type": "text"
+				},
+				{
+					"buffer": 42,
+					"file": "mturk/mturk_manager/static/mturk_manager/js/vue/mixins/settings_batch.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2847,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								843,
+								843
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 18,
+					"type": "text"
+				},
+				{
+					"buffer": 43,
+					"file": "mturk/mturk_manager/classes/projects.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 892,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								892,
+								892
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 21,
+					"type": "text"
+				},
+				{
+					"buffer": 44,
+					"file": "mturk/mturk_manager/views/projects.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2023,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1625,
+								1637
 							]
 						],
 						"settings":
@@ -3430,27 +3908,27 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 342.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 37,
+					"stack_index": 9,
 					"type": "text"
 				},
 				{
-					"buffer": 32,
+					"buffer": 45,
 					"file": "mturk/mturk_manager/serializers/__init__.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 166,
+						"buffer_size": 330,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								166,
-								166
+								0,
+								0
 							]
 						],
 						"settings":
@@ -3461,11 +3939,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 47,
+					"stack_index": 61,
 					"type": "text"
 				},
 				{
-					"buffer": 33,
+					"buffer": 46,
 					"file": "mturk/mturk_manager/views/create.py",
 					"semi_transient": false,
 					"settings":
@@ -3488,14 +3966,14 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 4705.0,
+						"translation.y": 5257.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 10,
+					"stack_index": 35,
 					"type": "text"
 				},
 				{
-					"buffer": 34,
+					"buffer": 47,
 					"file": "README.md",
 					"semi_transient": false,
 					"settings":
@@ -3519,39 +3997,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 59,
+					"stack_index": 71,
 					"type": "text"
 				},
 				{
-					"buffer": 35,
-					"file": "/home/kritten/Documents/examples.csv",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 56,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								56,
-								56
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 63,
-					"type": "text"
-				},
-				{
-					"buffer": 36,
+					"buffer": 48,
 					"file": "mturk/mturk_manager/views/settings.py",
 					"semi_transient": false,
 					"settings":
@@ -3577,11 +4027,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 52,
+					"stack_index": 65,
 					"type": "text"
 				},
 				{
-					"buffer": 37,
+					"buffer": 49,
 					"file": "mturk/mturk_manager/views/view.py",
 					"semi_transient": false,
 					"settings":
@@ -3607,11 +4057,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 49,
+					"stack_index": 63,
 					"type": "text"
 				},
 				{
-					"buffer": 38,
+					"buffer": 50,
 					"file": "mturk/mturk_manager/templates/mturk_manager/view.html",
 					"semi_transient": false,
 					"settings":
@@ -3637,14 +4087,14 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 3593.0,
+						"translation.y": 3871.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 48,
+					"stack_index": 62,
 					"type": "text"
 				},
 				{
-					"buffer": 39,
+					"buffer": 51,
 					"file": "mturk/mturk_manager/views/documentation.py",
 					"semi_transient": false,
 					"settings":
@@ -3670,11 +4120,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 65,
+					"stack_index": 76,
 					"type": "text"
 				},
 				{
-					"buffer": 40,
+					"buffer": 52,
 					"file": "mturk/mturk_manager/templates/mturk_manager/documentation.html",
 					"semi_transient": false,
 					"settings":
@@ -3698,27 +4148,27 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 746.0,
+						"translation.y": 824.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 64,
+					"stack_index": 75,
 					"type": "text"
 				},
 				{
-					"buffer": 41,
+					"buffer": 53,
 					"file": "mturk/mturk_manager/views/project.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 50309,
+						"buffer_size": 50944,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								687,
-								687
+								44078,
+								44097
 							]
 						],
 						"settings":
@@ -3728,14 +4178,14 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 20624.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 32,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
-					"buffer": 42,
+					"buffer": 54,
 					"semi_transient": false,
 					"settings":
 					{
@@ -3759,11 +4209,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 61,
+					"stack_index": 73,
 					"type": "text"
 				},
 				{
-					"buffer": 43,
+					"buffer": 55,
 					"file": "/home/kritten/Downloads/4_articles/3A1COHJ8NJV99YZVPSPDAM4DLOE8HY__Ford_Global_Anthem/3A1COHJ8NJV99YZVPSPDAM4DLOE8HY__Ford_Global_Anthem.json",
 					"semi_transient": false,
 					"settings":
@@ -3789,11 +4239,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 60,
+					"stack_index": 72,
 					"type": "text"
 				},
 				{
-					"buffer": 44,
+					"buffer": 56,
 					"file": "mturk/mturk_manager/forms/forms_dashboard.py",
 					"semi_transient": false,
 					"settings":
@@ -3817,28 +4267,32 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 11,
+					"stack_index": 36,
 					"type": "text"
 				},
 				{
-					"buffer": 45,
+					"buffer": 57,
 					"file": "mturk/mturk_manager/forms/forms_project.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 4672,
+						"buffer_size": 4834,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2639,
-								2673
+								3610,
+								3610
 							],
 							[
-								3244,
-								3278
+								3909,
+								3909
+							],
+							[
+								4111,
+								4111
 							]
 						],
 						"settings":
@@ -3849,14 +4303,14 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 162.0,
+						"translation.y": 866.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 36,
+					"stack_index": 25,
 					"type": "text"
 				},
 				{
-					"buffer": 46,
+					"buffer": 58,
 					"file": "mturk/mturk_manager/forms/widgets_bootstrap.py",
 					"semi_transient": false,
 					"settings":
@@ -3882,24 +4336,24 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 54,
+					"stack_index": 67,
 					"type": "text"
 				},
 				{
-					"buffer": 47,
+					"buffer": 59,
 					"file": "mturk/mturk_manager/views/code_shared.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 18831,
+						"buffer_size": 21508,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								207,
-								207
+								801,
+								801
 							]
 						],
 						"settings":
@@ -3912,11 +4366,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 18,
+					"stack_index": 1,
 					"type": "text"
 				},
 				{
-					"buffer": 48,
+					"buffer": 60,
 					"semi_transient": false,
 					"settings":
 					{
@@ -4060,41 +4514,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 55,
+					"stack_index": 26,
 					"type": "text"
 				},
 				{
-					"buffer": 49,
-					"file": "mturk/mturk_manager/classes/projects.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 892,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								892,
-								892
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Python/Python.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 20,
-					"type": "text"
-				},
-				{
-					"buffer": 50,
+					"buffer": 61,
 					"file": "Batch_2636686_batch_results.csv",
 					"semi_transient": false,
 					"settings":
@@ -4118,24 +4542,24 @@
 						"translation.y": 3078.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 53,
+					"stack_index": 66,
 					"type": "text"
 				},
 				{
-					"buffer": 51,
+					"buffer": 62,
 					"file": "mturk/mturk_manager/urls.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3444,
+						"buffer_size": 3639,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3341,
-								3350
+								0,
+								0
 							]
 						],
 						"settings":
@@ -4145,14 +4569,14 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 324.0,
+						"translation.y": 362.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 5,
+					"stack_index": 31,
 					"type": "text"
 				},
 				{
-					"buffer": 52,
+					"buffer": 63,
 					"file": "mturk/mturk_manager/views/do_vandalism.html",
 					"semi_transient": false,
 					"settings":
@@ -4178,11 +4602,11 @@
 						"translation.y": 38.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 46,
+					"stack_index": 60,
 					"type": "text"
 				},
 				{
-					"buffer": 53,
+					"buffer": 64,
 					"file": "mturk/mturk_manager/templates/mturk_manager/project.html",
 					"semi_transient": false,
 					"settings":
@@ -4194,8 +4618,8 @@
 						"selection":
 						[
 							[
-								457,
-								457
+								2636,
+								2682
 							]
 						],
 						"settings":
@@ -4204,14 +4628,14 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 36.0,
+						"translation.y": 952.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 24,
 					"type": "text"
 				},
 				{
-					"buffer": 54,
+					"buffer": 65,
 					"file": "mturk/mturk_manager/templates/mturk_manager/dashboard.html",
 					"semi_transient": false,
 					"settings":
@@ -4236,24 +4660,24 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 35,
+					"stack_index": 53,
 					"type": "text"
 				},
 				{
-					"buffer": 55,
+					"buffer": 66,
 					"file": "mturk/mturk_manager/templates/mturk_manager/project_batch.html",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2534,
+						"buffer_size": 2790,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1830,
-								1830
+								208,
+								208
 							]
 						],
 						"settings":
@@ -4262,14 +4686,14 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 324.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 51,
+					"stack_index": 23,
 					"type": "text"
 				},
 				{
-					"buffer": 56,
+					"buffer": 67,
 					"file": "mturk/mturk_manager/views/api.py",
 					"semi_transient": false,
 					"settings":
@@ -4292,27 +4716,27 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 2153.0,
+						"translation.y": 2405.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 21,
+					"stack_index": 41,
 					"type": "text"
 				},
 				{
-					"buffer": 57,
+					"buffer": 68,
 					"file": "mturk/mturk_manager/views/money.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1530,
+						"buffer_size": 1894,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								740,
-								740
+								0,
+								0
 							]
 						],
 						"settings":
@@ -4325,55 +4749,24 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 34,
+					"stack_index": 10,
 					"type": "text"
 				},
 				{
-					"buffer": 58,
-					"file": "mturk/mturk_manager/serializers/serializers_qualification.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 3203,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								139,
-								139
-							]
-						],
-						"settings":
-						{
-							"auto_name": "serializers_qualification.py",
-							"syntax": "Packages/Python/Python.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 16,
-					"type": "text"
-				},
-				{
-					"buffer": 59,
+					"buffer": 69,
 					"file": "mturk/mturk_manager/classes/qualifications.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 6566,
+						"buffer_size": 10200,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								113,
-								113
+								0,
+								0
 							]
 						],
 						"settings":
@@ -4386,11 +4779,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 15,
+					"stack_index": 38,
 					"type": "text"
 				},
 				{
-					"buffer": 60,
+					"buffer": 70,
 					"file": "mturk/mturk_manager/static/mturk_manager/js/vue/components/qualifications/component-delete-qualification.vue",
 					"semi_transient": false,
 					"settings":
@@ -4414,14 +4807,14 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 324.0,
+						"translation.y": 344.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 56,
+					"stack_index": 68,
 					"type": "text"
 				},
 				{
-					"buffer": 61,
+					"buffer": 71,
 					"file": "mturk/mturk_manager/views/qualifications.py",
 					"semi_transient": false,
 					"settings":
@@ -4448,11 +4841,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 39,
+					"stack_index": 54,
 					"type": "text"
 				},
 				{
-					"buffer": 62,
+					"buffer": 72,
 					"file": "mturk/mturk_manager/helpers.py",
 					"semi_transient": false,
 					"settings":
@@ -4479,11 +4872,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 28,
+					"stack_index": 48,
 					"type": "text"
 				},
 				{
-					"buffer": 63,
+					"buffer": 73,
 					"file": ".gitignore",
 					"semi_transient": false,
 					"settings":
@@ -4507,11 +4900,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 62,
+					"stack_index": 74,
 					"type": "text"
 				},
 				{
-					"buffer": 64,
+					"buffer": 74,
 					"file": "mturk/mturk_manager/templates/mturk_manager/project_templates.html",
 					"semi_transient": false,
 					"settings":
@@ -4534,14 +4927,14 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 9175.0,
+						"translation.y": 10167.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 50,
+					"stack_index": 64,
 					"type": "text"
 				},
 				{
-					"buffer": 65,
+					"buffer": 75,
 					"file": "mturk/mturk_manager/static/mturk_manager/js/main.js",
 					"semi_transient": false,
 					"settings":
@@ -4566,11 +4959,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 66,
+					"stack_index": 6,
 					"type": "text"
 				},
 				{
-					"buffer": 66,
+					"buffer": 76,
 					"file": "mturk/mturk_manager/static/mturk_manager/js/project.js",
 					"semi_transient": false,
 					"settings":
@@ -4592,10 +4985,10 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 171.0,
+						"translation.y": 191.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 44,
+					"stack_index": 58,
 					"type": "text"
 				}
 			]
@@ -4603,7 +4996,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 26.0
+		"height": 27.0
 	},
 	"input":
 	{
@@ -4640,7 +5033,7 @@
 	"project": "mturk.sublime-project",
 	"replace":
 	{
-		"height": 48.0
+		"height": 50.0
 	},
 	"save_all_on_build": true,
 	"select_file":

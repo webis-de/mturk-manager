@@ -79,7 +79,7 @@ class Serializer_Project(serializers.ModelSerializer):
                     try:
                         instance.keywords.add(keyword['id'])
                     except KeyError:
-                        keyword_new = Keyword.objects.create(text=keyword['text'])
+                        keyword_new = Keyword.objects.get_or_create(text=keyword['text'])[0]
                         instance.keywords.add(keyword_new)
             elif key == 'count_assignments_max_per_worker':
                 response = Manager_Global_DB.set_count_assignments_max_per_worker(instance.slug, value)

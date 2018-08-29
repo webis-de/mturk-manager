@@ -25,7 +25,7 @@ export const moduleProjects = {
 	mutations: {
         edit_project(state, data) {
         	const project = new Project(data);
-        	Vue.set(state.object_projects, project.id, project);
+        	Vue.set(state.object_projects, project.slug, project);
         },
         set_slug_project_current(state, slug_project_current) {
             state.slug_project_current = slug_project_current;

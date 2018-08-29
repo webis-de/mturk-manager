@@ -84,7 +84,6 @@
             label="Soft Block Workers"
             v-model="project.block_workers"
         ></v-switch>
-            
         <v-combobox
             v-model="project.keywords"
             v-bind:rules="rules_keywords"
@@ -140,6 +139,7 @@ export default {
 				project_new: this.project,
 			}).then(() => {
 				console.log('done')
+                this.update_fields();
             });
 			// console.log(this.project_current);
 		},	
