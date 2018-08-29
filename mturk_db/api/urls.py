@@ -15,6 +15,7 @@ urlpatterns = format_suffix_patterns([
     path('projects/<str:slug_project>/count_assignments_max_per_worker/<int:value>', views.set_count_assignments_max_per_worker),
 
     path('projects/<str:slug_project>/workers/status_block/<str:id_worker>', views.status_block_for_worker),
+    path('projects/<str:slug_project>/workers/increment_counter', views.increment_counter_for_worker),
 
     path('projects/<str:slug_project>/workers/status_block', views.Workers.as_view()),
     path('projects/<str:slug_project>/workers/<str:id_worker>/add_block_soft', views.add_block_soft_for_worker),

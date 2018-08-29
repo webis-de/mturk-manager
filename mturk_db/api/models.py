@@ -25,7 +25,17 @@ class Worker_Block_Project(models.Model):
     fk_worker = models.ForeignKey('Worker', on_delete=models.CASCADE, related_name='worker_blocks_project')
 
 class Count_Assignments_Worker_Project(models.Model):
+    class Meta:
+        unique_together = ("fk_project", "fk_worker")
+        
     count_assignments = models.IntegerField()
     fk_project = models.ForeignKey('Project', on_delete=models.CASCADE, related_name='count_assignments')
     fk_worker = models.ForeignKey('Worker', on_delete=models.CASCADE, related_name='count_assignments')
+
+class Assignment_Worker(models.Model):
+    class Meta:
+        unique_together = ("id_worker", "id_assignment")
+
+    id_worker = models.CharField(max_length=200)
+    id_assignment = models.CharField(max_length=200)
 

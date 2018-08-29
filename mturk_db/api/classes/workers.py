@@ -1,4 +1,4 @@
-from api.models import Worker, Worker_Block_Project, Count_Assignments_Worker_Project
+from api.models import Worker, Worker_Block_Project, Count_Assignments_Worker_Project, Assignment_Worker
 from api.classes.projects import Manager_Projects
 from api.enums import STATUS_BLOCK
 import botocore
@@ -183,13 +183,14 @@ class Manager_Workers(object):
             )
 
             count_assignments = 0
-            
+
             if len(queryset) == 1:
                 count_assignments = queryset[0].count_assignments
 
             is_blocked = count_assignments > database_object_project.count_assignments_max_per_worker
 
         return {
+            # 'is_blocked': True,
             'is_blocked': is_blocked,
         }
 
@@ -199,6 +200,33 @@ class Manager_Workers(object):
         #         fk_worker__id_worker=id_worker,
         #     ).exists()
         # }
+
+    @classmethod
+    def increment_counter_for_worker(cls, database_object_project, data):
+        id_worker = data['id_worker']
+        id_assignment = data['id_assignment']
+
+        assignment_worker, was_created_assignment_worker = Assignment_Worker.objects.get_or_create(
+            id_worker=id_worker,
+            id_assignment=id_assignment,
+        )
+
+        if was_created_assignment_worker:
+            count_assignments_worker_project, was_created = Count_Assignments_Worker_Project.objects.get_or_create(
+                fk_project=database_object_project,
+                fk_worker__id=id_worker,
+                defaults={
+                    'count_assignments': 1, 
+                }
+            )
+
+            if not was_created:
+                count_assignments_worker_project.count_assignments += 1
+                count_assignments_worker_project.save()
+
+        return {
+            'incremented': was_created_assignment_worker,
+        }
 
     # @classmethod
     # def get_status_block(cls, database_object_project, use_sandbox):
