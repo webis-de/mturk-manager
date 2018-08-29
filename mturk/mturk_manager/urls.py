@@ -32,6 +32,7 @@ urlpatterns = format_suffix_patterns([
     path('api/projects/<str:slug_project>/batches/', views.Batches.as_view(), name='batches_for_project'),
     # path('api/projects/<str:slug_project>/batches/', views.Batch.as_view(), name='batch_for_project'),
 
+    path('api/keywords/', views.Keywords.as_view(), name='keywords'),
 
 
 

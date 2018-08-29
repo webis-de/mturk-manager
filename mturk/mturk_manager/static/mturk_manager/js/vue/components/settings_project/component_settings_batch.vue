@@ -70,7 +70,7 @@
             min="1"
             suffix="s"
         ></v-text-field>
-    		<!-- v-bind:search-input.sync="search" -->
+            <!-- v-bind:search-input.sync="search" -->
 
         <v-select
             v-model="project.template"
@@ -91,7 +91,7 @@
             v-bind:hint="DESCRIPTIONS.KEYWORDS_HIT"
             v-bind:items="list_keywords"
 
-    		hide-selected
+            hide-selected
             chips
             clearable
             multiple
@@ -110,12 +110,28 @@
         </v-combobox>
     </v-form>
         <!-- {{search}} -->
-        {{project.keywords}}
+        <!-- {{project.keywords}} -->
 
     <v-btn
+        class="ml-0"
         color="primary"
         v-on:click="update()"
     >Update</v-btn>
+
+    <v-snackbar
+        v-model="show_snackbar"
+        v-bind:timeout="1500"
+        bottom
+        color="success"
+    >
+        Saved!
+        <v-btn
+            flat
+            v-on:click="show_snackbar = false"
+        >
+            Close
+        </v-btn>
+    </v-snackbar>
 </div>
 </template>
 
@@ -129,10 +145,14 @@ export default {
 	name: 'component_settings_batch',
 	data () {
 		return {
+            show_snackbar: false,
 			// search: undefined,
 		}
 	},
 	methods: {
+        update1() {
+            console.log('tesssst')
+        },
 		update() {
 			this.edit_project({
 				project: this.project_current,
@@ -140,6 +160,7 @@ export default {
 			}).then(() => {
 				console.log('done')
                 this.update_fields();
+                this.show_snackbar = true;
             });
 			// console.log(this.project_current);
 		},	

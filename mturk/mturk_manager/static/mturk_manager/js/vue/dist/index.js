@@ -45661,10 +45661,6 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _extends2 = require('babel-runtime/helpers/extends');
-
-var _extends3 = _interopRequireDefault(_extends2);
-
 var _stringify = require('babel-runtime/core-js/json/stringify');
 
 var _stringify2 = _interopRequireDefault(_stringify);
@@ -45672,6 +45668,10 @@ var _stringify2 = _interopRequireDefault(_stringify);
 var _toConsumableArray2 = require('babel-runtime/helpers/toConsumableArray');
 
 var _toConsumableArray3 = _interopRequireDefault(_toConsumableArray2);
+
+var _extends2 = require('babel-runtime/helpers/extends');
+
+var _extends3 = _interopRequireDefault(_extends2);
 
 var _humanizeDuration = require('humanize-duration');
 
@@ -45709,7 +45709,7 @@ exports.default = {
 
             DESCRIPTIONS: _enums.DESCRIPTIONS,
 
-            list_keywords: []
+            list_keywords: [{ text: '1', id: 1 }, { text: '3', id: 3 }]
         };
     },
 
@@ -45721,7 +45721,7 @@ exports.default = {
             deep: true
         }
     },
-    methods: {
+    methods: (0, _extends3.default)({
         format_duration: function format_duration(label, duration) {
             return label + ' (' + (0, _humanizeDuration2.default)(duration * 1000) + ')';
         },
@@ -45747,16 +45747,23 @@ exports.default = {
             this.project.template = this.project_current.template;
             this.project.block_workers = this.project_current.block_workers;
         }
-    },
+    }, (0, _vuex.mapActions)('moduleKeywords', {
+        'load_keywords': 'load_keywords'
+    })),
     created: function created() {
+        console.log('s'.charCodeAt(0));
+        console.log('S'.charCodeAt(0));
         this.update_fields();
+        this.load_keywords();
     },
 
     computed: (0, _extends3.default)({}, (0, _vuex.mapGetters)('moduleProjects', {
         'project_current': 'get_project_current'
+    }), (0, _vuex.mapGetters)('moduleKeywords', {
+        'object_keywords': 'get_object_keywords'
     }))
 };
-},{"babel-runtime/helpers/extends":"../../../../../node_modules/babel-runtime/helpers/extends.js","babel-runtime/core-js/json/stringify":"../../../../../node_modules/babel-runtime/core-js/json/stringify.js","babel-runtime/helpers/toConsumableArray":"../../../../../node_modules/babel-runtime/helpers/toConsumableArray.js","humanize-duration":"../../../../../node_modules/humanize-duration/humanize-duration.js","../classes/enums":"classes/enums.js","vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","../classes/project":"classes/project.js"}],"components/batches/component_settings_batch.vue":[function(require,module,exports) {
+},{"babel-runtime/core-js/json/stringify":"../../../../../node_modules/babel-runtime/core-js/json/stringify.js","babel-runtime/helpers/toConsumableArray":"../../../../../node_modules/babel-runtime/helpers/toConsumableArray.js","babel-runtime/helpers/extends":"../../../../../node_modules/babel-runtime/helpers/extends.js","humanize-duration":"../../../../../node_modules/humanize-duration/humanize-duration.js","../classes/enums":"classes/enums.js","vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","../classes/project":"classes/project.js"}],"components/batches/component_settings_batch.vue":[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -70221,17 +70228,37 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 exports.default = {
 	mixins: [_settings_batch2.default],
 	name: 'component_settings_batch',
 	data: function data() {
 		return {
+			show_snackbar: false
 			// search: undefined,
 		};
 	},
 
 	methods: (0, _extends3.default)({
+		update1: function update1() {
+			console.log('tesssst');
+		},
 		update: function update() {
 			var _this = this;
 
@@ -70241,6 +70268,7 @@ exports.default = {
 			}).then(function () {
 				console.log('done');
 				_this.update_fields();
+				_this.show_snackbar = true;
 			});
 			// console.log(this.project_current);
 		}
@@ -70487,10 +70515,10 @@ exports.default = {
         1
       ),
       _vm._v(" "),
-      _vm._v("\n        " + _vm._s(_vm.project.keywords) + "\n\n    "),
       _c(
         "v-btn",
         {
+          staticClass: "ml-0",
           attrs: { color: "primary" },
           on: {
             click: function($event) {
@@ -70499,6 +70527,36 @@ exports.default = {
           }
         },
         [_vm._v("Update")]
+      ),
+      _vm._v(" "),
+      _c(
+        "v-snackbar",
+        {
+          attrs: { timeout: 1500, bottom: "", color: "success" },
+          model: {
+            value: _vm.show_snackbar,
+            callback: function($$v) {
+              _vm.show_snackbar = $$v
+            },
+            expression: "show_snackbar"
+          }
+        },
+        [
+          _vm._v("\n        Saved!\n        "),
+          _c(
+            "v-btn",
+            {
+              attrs: { flat: "" },
+              on: {
+                click: function($event) {
+                  _vm.show_snackbar = false
+                }
+              }
+            },
+            [_vm._v("\n            Close\n        ")]
+          )
+        ],
+        1
       )
     ],
     1
@@ -73266,7 +73324,100 @@ var moduleBatches = exports.moduleBatches = {
         }()
     }
 };
-},{"babel-runtime/core-js/json/stringify":"../../../../../node_modules/babel-runtime/core-js/json/stringify.js","babel-runtime/regenerator":"../../../../../node_modules/babel-runtime/regenerator/index.js","babel-runtime/helpers/asyncToGenerator":"../../../../../node_modules/babel-runtime/helpers/asyncToGenerator.js","vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","vue":"../../../../../node_modules/vue/dist/vue.common.js","axios":"../../../../../node_modules/axios/index.js","vue-axios":"../../../../../node_modules/vue-axios/dist/vue-axios.min.js","lodash":"../../../../../node_modules/lodash/lodash.js","vue-cookies":"../../../../../node_modules/vue-cookies/vue-cookies.js"}],"store/index.js":[function(require,module,exports) {
+},{"babel-runtime/core-js/json/stringify":"../../../../../node_modules/babel-runtime/core-js/json/stringify.js","babel-runtime/regenerator":"../../../../../node_modules/babel-runtime/regenerator/index.js","babel-runtime/helpers/asyncToGenerator":"../../../../../node_modules/babel-runtime/helpers/asyncToGenerator.js","vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","vue":"../../../../../node_modules/vue/dist/vue.common.js","axios":"../../../../../node_modules/axios/index.js","vue-axios":"../../../../../node_modules/vue-axios/dist/vue-axios.min.js","lodash":"../../../../../node_modules/lodash/lodash.js","vue-cookies":"../../../../../node_modules/vue-cookies/vue-cookies.js"}],"store/modules/keywords.js":[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.moduleKeywords = undefined;
+
+var _regenerator = require('babel-runtime/regenerator');
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
+
+var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
+
+var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
+
+var _axios = require('axios');
+
+var _axios2 = _interopRequireDefault(_axios);
+
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _vue = require('vue');
+
+var _vue2 = _interopRequireDefault(_vue);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var moduleKeywords = exports.moduleKeywords = {
+	namespaced: true,
+	state: {
+		object_keywords: null,
+		url_api_keywords: undefined
+	},
+	getters: {
+		get_object_keywords: function get_object_keywords(state) {
+			return state.object_keywords;
+		}
+	},
+	mutations: {
+		set_keywords: function set_keywords(state, data) {
+			state.object_keywords = {};
+
+			_lodash2.default.forEach(data, function (keyword) {
+				// const object_project = new Project(keyword);
+				_vue2.default.set(state.object_keywords, keyword.text, keyword);
+			});
+		},
+		set_url_api_keywords: function set_url_api_keywords(state, url_new) {
+			state.url_api_keywords = url_new;
+		}
+	},
+	actions: {
+		load_keywords: function () {
+			var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(_ref) {
+				var state = _ref.state,
+				    commit = _ref.commit,
+				    getters = _ref.getters,
+				    rootGetters = _ref.rootGetters,
+				    dispatch = _ref.dispatch;
+				return _regenerator2.default.wrap(function _callee$(_context) {
+					while (1) {
+						switch (_context.prev = _context.next) {
+							case 0:
+								if (!(getters.get_object_keywords == null)) {
+									_context.next = 3;
+									break;
+								}
+
+								_context.next = 3;
+								return _axios2.default.get(rootGetters.get_url_api(state.url_api_keywords, false)).then(function (response) {
+									console.log(response.data);
+									commit('set_keywords', response.data);
+								});
+
+							case 3:
+							case 'end':
+								return _context.stop();
+						}
+					}
+				}, _callee, this);
+			}));
+
+			function load_keywords(_x) {
+				return _ref2.apply(this, arguments);
+			}
+
+			return load_keywords;
+		}()
+	}
+};
+},{"babel-runtime/regenerator":"../../../../../node_modules/babel-runtime/regenerator/index.js","babel-runtime/helpers/asyncToGenerator":"../../../../../node_modules/babel-runtime/helpers/asyncToGenerator.js","axios":"../../../../../node_modules/axios/index.js","lodash":"../../../../../node_modules/lodash/lodash.js","vue":"../../../../../node_modules/vue/dist/vue.common.js"}],"store/index.js":[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -73316,6 +73467,8 @@ var _workers = require('./modules/workers.js');
 
 var _batches = require('./modules/batches.js');
 
+var _keywords = require('./modules/keywords.js');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 _vue2.default.use(_vuex2.default);
@@ -73330,7 +73483,8 @@ var store = exports.store = new _vuex2.default.Store({
         moduleMoney: _money.moduleMoney,
         moduleQualifications: _qualifications.moduleQualifications,
         moduleWorkers: _workers.moduleWorkers,
-        moduleBatches: _batches.moduleBatches
+        moduleBatches: _batches.moduleBatches,
+        moduleKeywords: _keywords.moduleKeywords
     },
     state: {
         has_loaded_projects: false,
@@ -73413,13 +73567,15 @@ var store = exports.store = new _vuex2.default.Store({
 
                                 commit('moduleBatches/set_url_api_batches', config.url_api_batches);
 
-                                _context.next = 15;
+                                commit('moduleKeywords/set_url_api_keywords', config.url_api_keywords);
+
+                                _context.next = 16;
                                 return dispatch('moduleProjects/load_projects');
 
-                            case 15:
+                            case 16:
                                 state.has_loaded_projects = true;
 
-                            case 16:
+                            case 17:
                             case 'end':
                                 return _context.stop();
                         }
@@ -73507,7 +73663,7 @@ var store = exports.store = new _vuex2.default.Store({
         }()
     }
 });
-},{"babel-runtime/regenerator":"../../../../../node_modules/babel-runtime/regenerator/index.js","babel-runtime/helpers/asyncToGenerator":"../../../../../node_modules/babel-runtime/helpers/asyncToGenerator.js","vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","vue":"../../../../../node_modules/vue/dist/vue.common.js","axios":"../../../../../node_modules/axios/index.js","vue-axios":"../../../../../node_modules/vue-axios/dist/vue-axios.min.js","lodash":"../../../../../node_modules/lodash/lodash.js","vue-cookies":"../../../../../node_modules/vue-cookies/vue-cookies.js","./modules/projects.js":"store/modules/projects.js","./modules/money.js":"store/modules/money.js","./modules/qualifications.js":"store/modules/qualifications.js","./modules/workers.js":"store/modules/workers.js","./modules/batches.js":"store/modules/batches.js"}],"../../../../../node_modules/material-design-icons-iconfont/dist/material-design-icons.css":[function(require,module,exports) {
+},{"babel-runtime/regenerator":"../../../../../node_modules/babel-runtime/regenerator/index.js","babel-runtime/helpers/asyncToGenerator":"../../../../../node_modules/babel-runtime/helpers/asyncToGenerator.js","vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","vue":"../../../../../node_modules/vue/dist/vue.common.js","axios":"../../../../../node_modules/axios/index.js","vue-axios":"../../../../../node_modules/vue-axios/dist/vue-axios.min.js","lodash":"../../../../../node_modules/lodash/lodash.js","vue-cookies":"../../../../../node_modules/vue-cookies/vue-cookies.js","./modules/projects.js":"store/modules/projects.js","./modules/money.js":"store/modules/money.js","./modules/qualifications.js":"store/modules/qualifications.js","./modules/workers.js":"store/modules/workers.js","./modules/batches.js":"store/modules/batches.js","./modules/keywords.js":"store/modules/keywords.js"}],"../../../../../node_modules/material-design-icons-iconfont/dist/material-design-icons.css":[function(require,module,exports) {
 
         var reloadCSS = require('_css_loader');
         module.hot.dispose(reloadCSS);
@@ -73643,7 +73799,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = '' || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + '43639' + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '46067' + '/');
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
 

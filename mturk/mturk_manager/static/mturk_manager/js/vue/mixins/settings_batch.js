@@ -43,6 +43,8 @@ export default {
             DESCRIPTIONS: DESCRIPTIONS,
             
 			list_keywords: [
+            {text: '1', id: 1},
+            {text: '3', id: 3},
 			],
 		}
 	},
@@ -79,14 +81,23 @@ export default {
             this.project.templates = this.project_current.templates;
             this.project.template = this.project_current.template;
             this.project.block_workers = this.project_current.block_workers;
-        },
+        },  
+        ...mapActions('moduleKeywords', {
+            'load_keywords': 'load_keywords',
+        }),
 	},
     created() {
+        console.log('s'.charCodeAt(0))
+        console.log('S'.charCodeAt(0))
         this.update_fields();
+        this.load_keywords();
     },
     computed: {
         ...mapGetters('moduleProjects', {
             'project_current': 'get_project_current',
+        }),
+        ...mapGetters('moduleKeywords', {
+            'object_keywords': 'get_object_keywords',
         }),
     },
 }

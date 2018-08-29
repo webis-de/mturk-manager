@@ -15,6 +15,7 @@ import { moduleMoney } from './modules/money.js';
 import { moduleQualifications } from './modules/qualifications.js';
 import { moduleWorkers } from './modules/workers.js';
 import { moduleBatches } from './modules/batches.js';
+import { moduleKeywords } from './modules/keywords.js';
 
 export const store = new Vuex.Store({
     modules: {
@@ -23,6 +24,7 @@ export const store = new Vuex.Store({
         moduleQualifications,
         moduleWorkers,
         moduleBatches,
+        moduleKeywords,
     },
     state: {
         has_loaded_projects: false,
@@ -89,6 +91,8 @@ export const store = new Vuex.Store({
             commit('moduleProjects/set_slug_project_current', config.slug_project_current);
 
             commit('moduleBatches/set_url_api_batches', config.url_api_batches);
+            
+            commit('moduleKeywords/set_url_api_keywords', config.url_api_keywords);
 
             await dispatch('moduleProjects/load_projects');
             state.has_loaded_projects = true;

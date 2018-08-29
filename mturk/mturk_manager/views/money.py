@@ -31,6 +31,8 @@ def money(request, name):
         'url_api_projects': reverse('mturk_manager:projects'),
 
         'url_api_batches': reverse('mturk_manager:batches_for_project', args=[slug_project]),
+        
+        'url_api_keywords': reverse('mturk_manager:keywords'),
         # 'url_api_project': reverse('mturk_manager:project_api_tmp'),
     }
 
