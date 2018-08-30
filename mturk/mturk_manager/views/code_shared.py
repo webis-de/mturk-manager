@@ -27,7 +27,7 @@ def get_url_block_worker(db_obj_project):
 
 def get_url_add_counter(db_obj_project):
     # try:
-    url = settings_django.URL_GLOBAL_DB + '/projects/{}/workers/increment_counter/'.format(db_obj_project.slug)
+    url = settings_django.URL_GLOBAL_DB + '/projects/{}/workers/increment_counter'.format(db_obj_project.slug)
         # url = settings_django.URL_BLOCK_WORKERS
     # except AttributeError:
     #     url = request.get_host()

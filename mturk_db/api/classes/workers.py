@@ -212,9 +212,10 @@ class Manager_Workers(object):
         )
 
         if was_created_assignment_worker:
+            worker = Worker.objects.get_or_create(id_worker=id_worker)[0]
             count_assignments_worker_project, was_created = Count_Assignments_Worker_Project.objects.get_or_create(
                 fk_project=database_object_project,
-                fk_worker__id=id_worker,
+                fk_worker=worker,
                 defaults={
                     'count_assignments': 1, 
                 }
