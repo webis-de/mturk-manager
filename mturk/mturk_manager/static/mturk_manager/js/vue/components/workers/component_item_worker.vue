@@ -52,10 +52,11 @@
                 <v-list-tile-content class="align-end">
                     <v-text-field
                         type="number"
+                        v-bind:loading="get_show_progress_indicator"
                         single-line
-                        reverse
                         v-bind:value="worker.counter_assignments"
                         v-on:change="changed_counter_assignments($event)"
+                        v-bind:suffix="`of ${project_current.count_assignments_max_per_worker}`"
                     ></v-text-field>
                 </v-list-tile-content>
             </v-list-tile>
@@ -133,6 +134,10 @@ export default {
                     };
             }
         },
+        ...mapGetters('moduleProjects', {
+            'project_current': 'get_project_current',
+        }),
+        ...mapGetters(['get_show_progress_indicator']),
     },
     methods: {
         changed_counter_assignments(value) {

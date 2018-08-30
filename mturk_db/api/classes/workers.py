@@ -187,7 +187,7 @@ class Manager_Workers(object):
             if len(queryset) == 1:
                 count_assignments = queryset[0].count_assignments
 
-            is_blocked = count_assignments > database_object_project.count_assignments_max_per_worker
+            is_blocked = count_assignments >= database_object_project.count_assignments_max_per_worker
 
         return {
             # 'is_blocked': True,
@@ -259,6 +259,8 @@ class Manager_Workers(object):
                 fk_worker=worker,
                 count_assignments=value, 
             )
+
+        Assignment_Worker.objects.filter(id_worker=id_worker).delete()
 
         return {'count': value}
         # print(database_object_project)

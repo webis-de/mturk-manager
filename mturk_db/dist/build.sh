@@ -1,3 +1,3 @@
 #!/bin/bash
  
-sudo docker build -t mturk-manager-global-db .
+sudo docker build --no-cache -t mturk-manager-global-db .
