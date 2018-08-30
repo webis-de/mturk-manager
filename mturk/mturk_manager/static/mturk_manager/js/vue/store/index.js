@@ -85,7 +85,7 @@ export const store = new Vuex.Store({
             // commit('moduleQualifications/set_url_api_qualification', config.url_api_qualification);
 
             commit('moduleWorkers/set_url_api_workers', config.url_api_workers);
-            commit('moduleWorkers/set_url_api_status_block', config.url_api_status_block);
+            commit('moduleWorkers/set_url_api_global_db', config.url_api_global_db);
 
             commit('moduleProjects/set_url_api_projects', config.url_api_projects);
             commit('moduleProjects/set_slug_project_current', config.slug_project_current);

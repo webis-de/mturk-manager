@@ -56,12 +56,24 @@ class Manager_Workers(object):
                     database_object_project=database_object_project, 
                     use_sandbox=use_sandbox
                 )
+            elif key == 'counter_assignments':
+                object_worker.counter_assignments = cls.update_count_assignments(
+                    value=value, 
+                    object_worker=object_worker, 
+                    database_object_project=database_object_project, 
+                    use_sandbox=use_sandbox
+                )
             elif hasattr(object_worker, key):
                 setattr(object_worker, key, value)
 
         # object_worker.is_blocked = validated_data.get('is_blocked')
         object_worker.save()
         return object_worker
+
+    @classmethod
+    def update_count_assignments(cls, value, object_worker, database_object_project, use_sandbox):
+        return Manager_Global_DB.update_count_assignments(object_worker.name, value, database_object_project, use_sandbox)
+
 
     @classmethod
     def update_status_block(cls, value_new, value_old, object_worker, database_object_project, use_sandbox):
@@ -130,10 +142,10 @@ class Manager_Workers(object):
         return list_workers
 
     @classmethod
-    def get_status_block(cls, database_object_project, use_sandbox):
+    def get_data_global_db(cls, database_object_project, use_sandbox):
         # client = Manager_Projects.get_mturk_api(database_object_project, use_sandbox)
 
-        return Manager_Global_DB.get_status_block(database_object_project, use_sandbox)
+        return Manager_Global_DB.get_data(database_object_project, use_sandbox)
 
         id_qualification_block_soft = Manager_Qualifications.get_id_qualification_block_soft(database_object_project, use_sandbox)
         list_qualifications = Manager_Qualifications.get_workers_for_qualification(id_qualification_block_soft, database_object_project, use_sandbox)

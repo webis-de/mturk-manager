@@ -26,7 +26,7 @@ def money(request, name):
         'url_api_qualifications': reverse('mturk_manager:qualifications_for_project', args=[slug_project]),
         # 'url_api_qualification': reverse('mturk_manager:qualification_for_project', args=[slug_project, 'da']),
         'url_api_workers': reverse('mturk_manager:workers_for_project', args=[slug_project]),
-        'url_api_status_block': reverse('mturk_manager:workers_for_project_status_block', args=[slug_project]),
+        'url_api_global_db': reverse('mturk_manager:workers_for_project_global_db', args=[slug_project]),
         
         'url_api_projects': reverse('mturk_manager:projects'),
 

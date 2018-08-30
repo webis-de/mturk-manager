@@ -36324,7 +36324,7 @@ render._withStripped = true
     })();
 },{"babel-runtime/helpers/extends":"../../../../../node_modules/babel-runtime/helpers/extends.js","vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","./components/component-navigation-drawer.vue":"components/component-navigation-drawer.vue","./components/batches/component-toolbar-batches.vue":"components/batches/component-toolbar-batches.vue","./components/qualifications/component-toolbar-qualifications.vue":"components/qualifications/component-toolbar-qualifications.vue","./components/workers/component_toolbar_workers.vue":"components/workers/component_toolbar_workers.vue","_css_loader":"../../../../../node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"../../../../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../../../../node_modules/vue/dist/vue.common.js"}],"../../../../../node_modules/vuetify-upload-button/dist/vuetify-upload-button.js":[function(require,module,exports) {
 var define;
-!function(e,t){"object"==typeof exports&&"object"==typeof module?module.exports=t():"function"==typeof define&&define.amd?define("vuetify-upload-button",[],t):"object"==typeof exports?exports["vuetify-upload-button"]=t():e["vuetify-upload-button"]=t()}(this,function(){return function(e){function t(o){if(n[o])return n[o].exports;var r=n[o]={exports:{},id:o,loaded:!1};return e[o].call(r.exports,r,r.exports,t),r.loaded=!0,r.exports}var n={};return t.m=e,t.c=n,t.p="",t(0)}([function(e,t,n){n(1);var o=n(6)(n(7),n(8),"data-v-26f644c0",null);e.exports=o.exports},function(e,t,n){var o=n(2);"string"==typeof o&&(o=[[e.id,o,""]]),o.locals&&(e.exports=o.locals);n(4)("9bbb4e68",o,!0)},function(e,t,n){t=e.exports=n(3)(!1),t.push([e.id,".upload-btn[data-v-26f644c0]{padding-left:16px;padding-right:16px}.upload-btn input[type=file][data-v-26f644c0]{position:absolute;height:.1px;width:.1px;overflow:hidden;opacity:0;z-index:-1}.upload-btn-hover[data-v-26f644c0]{cursor:pointer}",""])},function(e,t){function n(e,t){var n=e[1]||"",r=e[3];if(!r)return n;if(t&&"function"==typeof btoa){var a=o(r),i=r.sources.map(function(e){return"/*# sourceURL="+r.sourceRoot+e+" */"});return[n].concat(i).concat([a]).join("\n")}return[n].join("\n")}function o(e){var t=btoa(unescape(encodeURIComponent(JSON.stringify(e)))),n="sourceMappingURL=data:application/json;charset=utf-8;base64,"+t;return"/*# "+n+" */"}e.exports=function(e){var t=[];return t.toString=function(){return this.map(function(t){var o=n(t,e);return t[2]?"@media "+t[2]+"{"+o+"}":o}).join("")},t.i=function(e,n){"string"==typeof e&&(e=[[null,e,""]]);for(var o={},r=0;r<this.length;r++){var a=this[r][0];"number"==typeof a&&(o[a]=!0)}for(r=0;r<e.length;r++){var i=e[r];"number"==typeof i[0]&&o[i[0]]||(n&&!i[2]?i[2]=n:n&&(i[2]="("+i[2]+") and ("+n+")"),t.push(i))}},t}},function(e,t,n){function o(e){for(var t=0;t<e.length;t++){var n=e[t],o=d[n.id];if(o){o.refs++;for(var r=0;r<o.parts.length;r++)o.parts[r](n.parts[r]);for(;r<n.parts.length;r++)o.parts.push(a(n.parts[r]));o.parts.length>n.parts.length&&(o.parts.length=n.parts.length)}else{for(var i=[],r=0;r<n.parts.length;r++)i.push(a(n.parts[r]));d[n.id]={id:n.id,refs:1,parts:i}}}}function r(){var e=document.createElement("style");return e.type="text/css",p.appendChild(e),e}function a(e){var t,n,o=document.querySelector('style[data-vue-ssr-id~="'+e.id+'"]');if(o){if(v)return h;o.parentNode.removeChild(o)}if(b){var a=c++;o=f||(f=r()),t=i.bind(null,o,a,!1),n=i.bind(null,o,a,!0)}else o=r(),t=l.bind(null,o),n=function(){o.parentNode.removeChild(o)};return t(e),function(o){if(o){if(o.css===e.css&&o.media===e.media&&o.sourceMap===e.sourceMap)return;t(e=o)}else n()}}function i(e,t,n,o){var r=n?"":o.css;if(e.styleSheet)e.styleSheet.cssText=g(t,r);else{var a=document.createTextNode(r),i=e.childNodes;i[t]&&e.removeChild(i[t]),i.length?e.insertBefore(a,i[t]):e.appendChild(a)}}function l(e,t){var n=t.css,o=t.media,r=t.sourceMap;if(o&&e.setAttribute("media",o),r&&(n+="\n/*# sourceURL="+r.sources[0]+" */",n+="\n/*# sourceMappingURL=data:application/json;base64,"+btoa(unescape(encodeURIComponent(JSON.stringify(r))))+" */"),e.styleSheet)e.styleSheet.cssText=n;else{for(;e.firstChild;)e.removeChild(e.firstChild);e.appendChild(document.createTextNode(n))}}var s="undefined"!=typeof document,u=n(5),d={},p=s&&(document.head||document.getElementsByTagName("head")[0]),f=null,c=0,v=!1,h=function(){},b="undefined"!=typeof navigator&&/msie [6-9]\b/.test(navigator.userAgent.toLowerCase());e.exports=function(e,t,n){v=n;var r=u(e,t);return o(r),function(t){for(var n=[],a=0;a<r.length;a++){var i=r[a],l=d[i.id];l.refs--,n.push(l)}t?(r=u(e,t),o(r)):r=[];for(var a=0;a<n.length;a++){var l=n[a];if(0===l.refs){for(var s=0;s<l.parts.length;s++)l.parts[s]();delete d[l.id]}}}};var g=function(){var e=[];return function(t,n){return e[t]=n,e.filter(Boolean).join("\n")}}()},function(e,t){e.exports=function(e,t){for(var n=[],o={},r=0;r<t.length;r++){var a=t[r],i=a[0],l=a[1],s=a[2],u=a[3],d={id:e+":"+r,css:l,media:s,sourceMap:u};o[i]?o[i].parts.push(d):n.push(o[i]={id:i,parts:[d]})}return n}},function(e,t){e.exports=function(e,t,n,o){var r,a=e=e||{},i=typeof e["default"];"object"!==i&&"function"!==i||(r=e,a=e["default"]);var l="function"==typeof a?a.options:a;if(t&&(l.render=t.render,l.staticRenderFns=t.staticRenderFns),n&&(l._scopeId=n),o){var s=Object.create(l.computed||null);Object.keys(o).forEach(function(e){var t=o[e];s[e]=function(){return t}}),l.computed=s}return{esModule:r,exports:a,options:l}}},function(e,t){"use strict";Object.defineProperty(t,"__esModule",{value:!0}),t["default"]={name:"upload-btn",props:{accept:{"default":"*",type:String},block:{"default":!1,type:Boolean},fileChangedCallback:{"default":void 0,type:Function},color:{"default":"primary",type:String},disabled:{"default":!1,type:Boolean},flat:{"default":!1,type:Boolean},hover:{"default":!0,type:Boolean},icon:{"default":!1,type:Boolean},large:{"default":!1,type:Boolean},loading:{"default":!1,type:Boolean},name:{"default":"uploadFile",type:String},outline:{"default":!1,type:Boolean},ripple:{"default":!0,type:Boolean},round:{"default":!1,type:Boolean},small:{"default":!1,type:Boolean},title:{"default":"Upload",type:String}},computed:{classes:function n(){var n={"v-btn--block":this.block,"v-btn--flat":this.flat,"upload-btn-hover":this.hover,"v-btn--icon":this.icon,"v-btn--large":this.large,"v-btn--loading":this.loading,"v-btn--outline":this.outline,"v-btn--round":this.round,"v-btn--small":this.small,"v-btn--disabled":this.disabled},e="";for(var t in n)n[t]&&(e+=t+" ");return e}},methods:{fileChanged:function(e){e&&this.fileChangedCallback&&(e.target.files[0]?this.fileChangedCallback(e.target.files[0]):this.fileChangedCallback(null))}}}},function(e,t){e.exports={render:function(){var e=this,t=e.$createElement,n=e._self._c||t;return n("div",{staticClass:"upload-btn"},[n("input",{attrs:{id:"uploadFile",type:"file",name:e.name,accept:e.accept},on:{change:e.fileChanged}}),e._v(" "),n("label",{directives:[{name:"ripple",rawName:"v-ripple",value:e.ripple,expression:"ripple"}],"class":"v-btn "+e.classes+e.color+" upload-btn",attrs:{"for":"uploadFile"}},[e._v("\n    "+e._s(e.icon?"":e.title)+"\n    "),e._t("icon")],2)])},staticRenderFns:[]}}])});
+!function(e,t){"object"==typeof exports&&"object"==typeof module?module.exports=t():"function"==typeof define&&define.amd?define("vuetify-upload-button",[],t):"object"==typeof exports?exports["vuetify-upload-button"]=t():e["vuetify-upload-button"]=t()}(this,function(){return function(e){function t(o){if(n[o])return n[o].exports;var r=n[o]={exports:{},id:o,loaded:!1};return e[o].call(r.exports,r,r.exports,t),r.loaded=!0,r.exports}var n={};return t.m=e,t.c=n,t.p="",t(0)}([function(e,t,n){n(1);var o=n(6)(n(7),n(8),"data-v-26f644c0",null);e.exports=o.exports},function(e,t,n){var o=n(2);"string"==typeof o&&(o=[[e.id,o,""]]),o.locals&&(e.exports=o.locals);n(4)("9bbb4e68",o,!0)},function(e,t,n){t=e.exports=n(3)(!1),t.push([e.id,".upload-btn[data-v-26f644c0]{padding-left:16px;padding-right:16px}.upload-btn input[type=file][data-v-26f644c0]{position:absolute;height:.1px;width:.1px;overflow:hidden;opacity:0;z-index:-1}.upload-btn-hover[data-v-26f644c0]{cursor:pointer}",""])},function(e,t){function n(e,t){var n=e[1]||"",r=e[3];if(!r)return n;if(t&&"function"==typeof btoa){var a=o(r),i=r.sources.map(function(e){return"/*# sourceURL="+r.sourceRoot+e+" */"});return[n].concat(i).concat([a]).join("\n")}return[n].join("\n")}function o(e){var t=btoa(unescape(encodeURIComponent(JSON.stringify(e)))),n="sourceMappingURL=data:application/json;charset=utf-8;base64,"+t;return"/*# "+n+" */"}e.exports=function(e){var t=[];return t.toString=function(){return this.map(function(t){var o=n(t,e);return t[2]?"@media "+t[2]+"{"+o+"}":o}).join("")},t.i=function(e,n){"string"==typeof e&&(e=[[null,e,""]]);for(var o={},r=0;r<this.length;r++){var a=this[r][0];"number"==typeof a&&(o[a]=!0)}for(r=0;r<e.length;r++){var i=e[r];"number"==typeof i[0]&&o[i[0]]||(n&&!i[2]?i[2]=n:n&&(i[2]="("+i[2]+") and ("+n+")"),t.push(i))}},t}},function(e,t,n){function o(e){for(var t=0;t<e.length;t++){var n=e[t],o=d[n.id];if(o){o.refs++;for(var r=0;r<o.parts.length;r++)o.parts[r](n.parts[r]);for(;r<n.parts.length;r++)o.parts.push(a(n.parts[r]));o.parts.length>n.parts.length&&(o.parts.length=n.parts.length)}else{for(var i=[],r=0;r<n.parts.length;r++)i.push(a(n.parts[r]));d[n.id]={id:n.id,refs:1,parts:i}}}}function r(){var e=document.createElement("style");return e.type="text/css",p.appendChild(e),e}function a(e){var t,n,o=document.querySelector('style[data-vue-ssr-id~="'+e.id+'"]');if(o){if(h)return v;o.parentNode.removeChild(o)}if(b){var a=c++;o=f||(f=r()),t=i.bind(null,o,a,!1),n=i.bind(null,o,a,!0)}else o=r(),t=l.bind(null,o),n=function(){o.parentNode.removeChild(o)};return t(e),function(o){if(o){if(o.css===e.css&&o.media===e.media&&o.sourceMap===e.sourceMap)return;t(e=o)}else n()}}function i(e,t,n,o){var r=n?"":o.css;if(e.styleSheet)e.styleSheet.cssText=g(t,r);else{var a=document.createTextNode(r),i=e.childNodes;i[t]&&e.removeChild(i[t]),i.length?e.insertBefore(a,i[t]):e.appendChild(a)}}function l(e,t){var n=t.css,o=t.media,r=t.sourceMap;if(o&&e.setAttribute("media",o),r&&(n+="\n/*# sourceURL="+r.sources[0]+" */",n+="\n/*# sourceMappingURL=data:application/json;base64,"+btoa(unescape(encodeURIComponent(JSON.stringify(r))))+" */"),e.styleSheet)e.styleSheet.cssText=n;else{for(;e.firstChild;)e.removeChild(e.firstChild);e.appendChild(document.createTextNode(n))}}var s="undefined"!=typeof document,u=n(5),d={},p=s&&(document.head||document.getElementsByTagName("head")[0]),f=null,c=0,h=!1,v=function(){},b="undefined"!=typeof navigator&&/msie [6-9]\b/.test(navigator.userAgent.toLowerCase());e.exports=function(e,t,n){h=n;var r=u(e,t);return o(r),function(t){for(var n=[],a=0;a<r.length;a++){var i=r[a],l=d[i.id];l.refs--,n.push(l)}t?(r=u(e,t),o(r)):r=[];for(var a=0;a<n.length;a++){var l=n[a];if(0===l.refs){for(var s=0;s<l.parts.length;s++)l.parts[s]();delete d[l.id]}}}};var g=function(){var e=[];return function(t,n){return e[t]=n,e.filter(Boolean).join("\n")}}()},function(e,t){e.exports=function(e,t){for(var n=[],o={},r=0;r<t.length;r++){var a=t[r],i=a[0],l=a[1],s=a[2],u=a[3],d={id:e+":"+r,css:l,media:s,sourceMap:u};o[i]?o[i].parts.push(d):n.push(o[i]={id:i,parts:[d]})}return n}},function(e,t){e.exports=function(e,t,n,o){var r,a=e=e||{},i=typeof e["default"];"object"!==i&&"function"!==i||(r=e,a=e["default"]);var l="function"==typeof a?a.options:a;if(t&&(l.render=t.render,l.staticRenderFns=t.staticRenderFns),n&&(l._scopeId=n),o){var s=Object.create(l.computed||null);Object.keys(o).forEach(function(e){var t=o[e];s[e]=function(){return t}}),l.computed=s}return{esModule:r,exports:a,options:l}}},function(e,t){"use strict";Object.defineProperty(t,"__esModule",{value:!0}),t["default"]={name:"upload-btn",props:{block:{"default":!1,type:Boolean},fileChangedCallback:{"default":void 0,type:Function},color:{"default":"primary",type:String},disabled:{"default":!1,type:Boolean},flat:{"default":!1,type:Boolean},hover:{"default":!0,type:Boolean},icon:{"default":!1,type:Boolean},large:{"default":!1,type:Boolean},loading:{"default":!1,type:Boolean},outline:{"default":!1,type:Boolean},ripple:{"default":!0,type:Boolean},round:{"default":!1,type:Boolean},small:{"default":!1,type:Boolean},title:{"default":"Upload",type:String}},computed:{classes:function n(){var n={"btn--block":this.block,"btn--flat":this.flat,"upload-btn-hover":this.hover,"btn--icon":this.icon,"btn--large":this.large,"btn--loading":this.loading,"btn--outline":this.outline,"btn--round":this.round,"btn--small":this.small,"btn--disabled":this.disabled},e="";for(var t in n)n[t]&&(e+=t+" ");return e}},methods:{fileChanged:function(e){e&&this.fileChangedCallback&&(e.target.files[0]?this.fileChangedCallback(e.target.files[0]):this.fileChangedCallback(null))}}}},function(e,t){e.exports={render:function(){var e=this,t=e.$createElement,n=e._self._c||t;return n("div",{staticClass:"upload-btn"},[n("input",{attrs:{id:"uploadFile",type:"file",name:"uploadFile"},on:{change:e.fileChanged}}),e._v(" "),n("label",{directives:[{name:"ripple",rawName:"v-ripple",value:e.ripple,expression:"ripple"}],"class":"btn "+e.classes+e.color+" upload-btn",attrs:{"for":"uploadFile"}},[e._v("\n    "+e._s(e.icon?"":e.title)+"\n    "),e._t("icon")],2)])},staticRenderFns:[]}}])});
 },{}],"../../../../../node_modules/events/events.js":[function(require,module,exports) {
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -69360,6 +69360,10 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _extends2 = require('babel-runtime/helpers/extends');
+
+var _extends3 = _interopRequireDefault(_extends2);
+
 var _vuex = require('vuex');
 
 var _enums = require('../../classes/enums.js');
@@ -69379,7 +69383,9 @@ exports.default = {
         }
     },
     data: function data() {
-        return {};
+        return {
+            show_snackbar: false
+        };
     },
 
     // watch: {
@@ -69419,12 +69425,55 @@ exports.default = {
             }
         }
     },
-    methods: {},
+    methods: (0, _extends3.default)({
+        changed_counter_assignments: function changed_counter_assignments(value) {
+            var _this = this;
+
+            this.set_show_progress_indicator(true);
+            this.update_counter_assignments({
+                worker: this.worker,
+                value: value
+            }).then(function () {
+                _this.show_snackbar = true;
+                _this.set_show_progress_indicator(false);
+            });
+        }
+    }, (0, _vuex.mapActions)('moduleWorkers', {
+        'update_counter_assignments': 'update_counter_assignments'
+    }), (0, _vuex.mapActions)(['set_show_progress_indicator'])),
     created: function created() {},
     components: {
         ComponentBlockWorker: _component_block_worker2.default
     }
 }; //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -69508,6 +69557,7 @@ exports.default = {
               _c(
                 "v-btn",
                 {
+                  staticClass: "ma-0",
                   attrs: { slot: "activator", dark: "", icon: "" },
                   slot: "activator"
                 },
@@ -69560,6 +69610,7 @@ exports.default = {
                       _c(
                         "v-btn",
                         {
+                          staticClass: "ma-0",
                           attrs: {
                             slot: "activator",
                             icon: "",
@@ -69586,6 +69637,65 @@ exports.default = {
               )
             ],
             1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-list-tile",
+            [
+              _c("v-list-tile-content", [_vm._v("#Assignments:")]),
+              _vm._v(" "),
+              _c(
+                "v-list-tile-content",
+                { staticClass: "align-end" },
+                [
+                  _c("v-text-field", {
+                    attrs: {
+                      type: "number",
+                      "single-line": "",
+                      reverse: "",
+                      value: _vm.worker.counter_assignments
+                    },
+                    on: {
+                      change: function($event) {
+                        _vm.changed_counter_assignments($event)
+                      }
+                    }
+                  })
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-snackbar",
+        {
+          attrs: { timeout: 1500, bottom: "" },
+          model: {
+            value: _vm.show_snackbar,
+            callback: function($$v) {
+              _vm.show_snackbar = $$v
+            },
+            expression: "show_snackbar"
+          }
+        },
+        [
+          _vm._v("\n        Saved!\n        "),
+          _c(
+            "v-btn",
+            {
+              attrs: { flat: "" },
+              on: {
+                click: function($event) {
+                  _vm.show_snackbar = false
+                }
+              }
+            },
+            [_vm._v("\n            Close\n        ")]
           )
         ],
         1
@@ -69623,7 +69733,7 @@ render._withStripped = true
         
       }
     })();
-},{"vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","../../classes/enums.js":"classes/enums.js","./component_block_worker.vue":"components/workers/component_block_worker.vue","vue-hot-reload-api":"../../../../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../../../../node_modules/vue/dist/vue.common.js"}],"components/workers/component_list_workers.vue":[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":"../../../../../node_modules/babel-runtime/helpers/extends.js","vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","../../classes/enums.js":"classes/enums.js","./component_block_worker.vue":"components/workers/component_block_worker.vue","vue-hot-reload-api":"../../../../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../../../../node_modules/vue/dist/vue.common.js"}],"components/workers/component_list_workers.vue":[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -72702,6 +72812,7 @@ var Worker = function () {
 		// this.m_description = data.Description;
 		// this.m_is_requestable = data.IsRequestable;
 		this.name = data.name;
+		this.counter_assignments = 0;
 		// this.is_blocked = data.is_blocked;
 		// this.m_status = data.QualificationTypeStatus;
 	}
@@ -72807,7 +72918,7 @@ var moduleWorkers = exports.moduleWorkers = {
 		object_workers: null,
 		object_workers_sandbox: null,
 
-		url_api_status_block: undefined
+		url_api_global_db: undefined
 		// loaded_status_block: false,
 		// loaded_status_block_sandbox: false,
 	},
@@ -72840,8 +72951,8 @@ var moduleWorkers = exports.moduleWorkers = {
 		set_url_api_workers: function set_url_api_workers(state, url_new) {
 			state.url_api_workers = url_new;
 		},
-		set_url_api_status_block: function set_url_api_status_block(state, url_new) {
-			state.url_api_status_block = url_new;
+		set_url_api_global_db: function set_url_api_global_db(state, url_new) {
+			state.url_api_global_db = url_new;
 		},
 		update_worker: function update_worker(state, _ref) {
 			var data_worker = _ref.data_worker,
@@ -72857,10 +72968,24 @@ var moduleWorkers = exports.moduleWorkers = {
 			var obj_worker = new _workers2.default(data_worker);
 			_vue2.default.set(object_workers, obj_worker.name, obj_worker);
 		},
-		update_worker_status_block: function update_worker_status_block(state, _ref2) {
+		update_worker_counter_assignments: function update_worker_counter_assignments(state, _ref2) {
 			var worker = _ref2.worker,
-			    status_block_new = _ref2.status_block_new,
+			    value = _ref2.value,
 			    use_sandbox = _ref2.use_sandbox;
+
+			var object_workers = null;
+			if (use_sandbox) {
+				object_workers = state.object_workers_sandbox;
+			} else {
+				object_workers = state.object_workers;
+			}
+
+			_vue2.default.set(object_workers[worker.name], 'counter_assignments', value);
+		},
+		update_worker_status_block: function update_worker_status_block(state, _ref3) {
+			var worker = _ref3.worker,
+			    status_block_new = _ref3.status_block_new,
+			    use_sandbox = _ref3.use_sandbox;
 
 			var object_workers = null;
 			if (use_sandbox) {
@@ -72876,9 +73001,9 @@ var moduleWorkers = exports.moduleWorkers = {
 		// 	const obj_worker = new Worker(data_worker);
 		// 	Vue.set(state.object_workers_sandbox, obj_worker.name, obj_worker);
 		// },
-		set_workers: function set_workers(state, _ref3) {
-			var data_workers = _ref3.data_workers,
-			    use_sandbox = _ref3.use_sandbox;
+		set_workers: function set_workers(state, _ref4) {
+			var data_workers = _ref4.data_workers,
+			    use_sandbox = _ref4.use_sandbox;
 
 			var object_workers = null;
 			if (use_sandbox) {
@@ -72894,9 +73019,12 @@ var moduleWorkers = exports.moduleWorkers = {
 				_vue2.default.set(object_workers, obj_worker.name, obj_worker);
 			});
 		},
-		set_status_block: function set_status_block(state, _ref4) {
-			var data_status_block = _ref4.data_status_block,
-			    use_sandbox = _ref4.use_sandbox;
+		set_data_global_db: function set_data_global_db(state, _ref5) {
+			var data = _ref5.data,
+			    use_sandbox = _ref5.use_sandbox;
+
+			var data_status_block = data.blocks;
+			var object_counters = data.counters;
 
 			var set_blocked_soft = new _set2.default(data_status_block.soft);
 			var set_blocked_hard = new _set2.default(data_status_block.hard);
@@ -72916,17 +73044,21 @@ var moduleWorkers = exports.moduleWorkers = {
 				} else {
 					_vue2.default.set(worker, 'is_blocked', _enums.STATUS_BLOCK.NONE);
 				}
+
+				if (object_counters.hasOwnProperty(worker.name)) {
+					_vue2.default.set(worker, 'counter_assignments', object_counters[worker.name]);
+				}
 			});
 		}
 	},
 	actions: {
 		sync_workers: function () {
-			var _ref6 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(_ref5) {
-				var commit = _ref5.commit,
-				    state = _ref5.state,
-				    getters = _ref5.getters,
-				    rootState = _ref5.rootState,
-				    rootGetters = _ref5.rootGetters;
+			var _ref7 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(_ref6) {
+				var commit = _ref6.commit,
+				    state = _ref6.state,
+				    getters = _ref6.getters,
+				    rootState = _ref6.rootState,
+				    rootGetters = _ref6.rootGetters;
 				var force = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 				var use_sandbox;
 				return _regenerator2.default.wrap(function _callee$(_context) {
@@ -72947,8 +73079,8 @@ var moduleWorkers = exports.moduleWorkers = {
 
 							case 4:
 								_context.next = 6;
-								return _axios2.default.get(rootGetters.get_url_api(state.url_api_status_block, use_sandbox)).then(function (response) {
-									commit('set_status_block', { 'data_status_block': response.data, use_sandbox: use_sandbox });
+								return _axios2.default.get(rootGetters.get_url_api(state.url_api_global_db, use_sandbox)).then(function (response) {
+									commit('set_data_global_db', { 'data': response.data, use_sandbox: use_sandbox });
 								});
 
 							case 6:
@@ -72960,21 +73092,21 @@ var moduleWorkers = exports.moduleWorkers = {
 			}));
 
 			function sync_workers(_x3) {
-				return _ref6.apply(this, arguments);
+				return _ref7.apply(this, arguments);
 			}
 
 			return sync_workers;
 		}(),
 		update_status_block: function () {
-			var _ref9 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(_ref7, _ref8) {
-				var commit = _ref7.commit,
-				    state = _ref7.state,
-				    getters = _ref7.getters,
-				    rootState = _ref7.rootState,
-				    rootGetters = _ref7.rootGetters;
-				var worker = _ref8.worker,
-				    status_block_new = _ref8.status_block_new,
-				    status_block_old = _ref8.status_block_old;
+			var _ref10 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(_ref8, _ref9) {
+				var commit = _ref8.commit,
+				    state = _ref8.state,
+				    getters = _ref8.getters,
+				    rootState = _ref8.rootState,
+				    rootGetters = _ref8.rootGetters;
+				var worker = _ref9.worker,
+				    status_block_new = _ref9.status_block_new,
+				    status_block_old = _ref9.status_block_old;
 				var use_sandbox, form_data;
 				return _regenerator2.default.wrap(function _callee2$(_context2) {
 					while (1) {
@@ -73008,10 +73140,53 @@ var moduleWorkers = exports.moduleWorkers = {
 			}));
 
 			function update_status_block(_x4, _x5) {
-				return _ref9.apply(this, arguments);
+				return _ref10.apply(this, arguments);
 			}
 
 			return update_status_block;
+		}(),
+		update_counter_assignments: function () {
+			var _ref13 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3(_ref11, _ref12) {
+				var commit = _ref11.commit,
+				    state = _ref11.state,
+				    getters = _ref11.getters,
+				    rootState = _ref11.rootState,
+				    rootGetters = _ref11.rootGetters;
+				var worker = _ref12.worker,
+				    value = _ref12.value;
+				var use_sandbox;
+				return _regenerator2.default.wrap(function _callee3$(_context3) {
+					while (1) {
+						switch (_context3.prev = _context3.next) {
+							case 0:
+								use_sandbox = rootState.use_sandbox;
+								_context3.next = 3;
+								return _axios2.default.put(rootGetters.get_url_api(state.url_api_workers, use_sandbox, worker.name), (0, _stringify2.default)({ counter_assignments: value }), {
+									headers: {
+										"X-CSRFToken": rootState.token_csrf,
+										"Content-Type": 'application/json'
+									}
+								}).then(function (response) {
+									// if(rootState.use_sandbox) {
+									//      		commit('update_worker_sandbox', response.data);
+									// } else {
+									commit('update_worker_counter_assignments', { worker: worker, 'value': response.data.counter_assignments, use_sandbox: use_sandbox });
+									// }
+								});
+
+							case 3:
+							case 'end':
+								return _context3.stop();
+						}
+					}
+				}, _callee3, this);
+			}));
+
+			function update_counter_assignments(_x6, _x7) {
+				return _ref13.apply(this, arguments);
+			}
+
+			return update_counter_assignments;
 		}()
 	}
 };
@@ -73560,7 +73735,7 @@ var store = exports.store = new _vuex2.default.Store({
                                 // commit('moduleQualifications/set_url_api_qualification', config.url_api_qualification);
 
                                 commit('moduleWorkers/set_url_api_workers', config.url_api_workers);
-                                commit('moduleWorkers/set_url_api_status_block', config.url_api_status_block);
+                                commit('moduleWorkers/set_url_api_global_db', config.url_api_global_db);
 
                                 commit('moduleProjects/set_url_api_projects', config.url_api_projects);
                                 commit('moduleProjects/set_slug_project_current', config.slug_project_current);
@@ -73799,7 +73974,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = '' || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + '46067' + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '40185' + '/');
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
 

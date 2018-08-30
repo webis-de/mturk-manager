@@ -16,6 +16,7 @@
                     slot="activator"
                     dark
                     icon
+                     class="ma-0"
                 >
                     <v-icon>more_vert</v-icon>
                 </v-btn>
@@ -39,14 +40,41 @@
                 <v-list-tile-content class="align-end">
 
                     <v-tooltip left>
-                        <v-btn icon v-bind:loading="status_block.icon == ''" slot="activator">
+                        <v-btn icon v-bind:loading="status_block.icon == ''" slot="activator" class="ma-0">
                             <v-icon v-bind:color="status_block.color">{{ status_block.icon }}</v-icon>
                         </v-btn>
                         <span>{{ status_block.description }}</span>
                     </v-tooltip>
                 </v-list-tile-content>
             </v-list-tile>
+            <v-list-tile>
+                <v-list-tile-content>#Assignments:</v-list-tile-content>
+                <v-list-tile-content class="align-end">
+                    <v-text-field
+                        type="number"
+                        single-line
+                        reverse
+                        v-bind:value="worker.counter_assignments"
+                        v-on:change="changed_counter_assignments($event)"
+                    ></v-text-field>
+                </v-list-tile-content>
+            </v-list-tile>
         </v-list>
+
+        <v-snackbar
+            v-model="show_snackbar"
+            v-bind:timeout="1500"
+            bottom
+        >
+            <!-- color="success" -->
+            Saved!
+            <v-btn
+                flat
+                v-on:click="show_snackbar = false"
+            >
+                Close
+            </v-btn>
+        </v-snackbar>
     </v-card>
 </template>
 <script>
@@ -64,6 +92,7 @@ export default {
     },
     data () {
         return {
+            show_snackbar: false,
         }
     },
     // watch: {
@@ -106,6 +135,20 @@ export default {
         },
     },
     methods: {
+        changed_counter_assignments(value) {
+            this.set_show_progress_indicator(true);
+            this.update_counter_assignments({
+                worker: this.worker, 
+                value
+            }).then(() => {
+                this.show_snackbar = true;
+                this.set_show_progress_indicator(false);
+            });
+        },
+        ...mapActions('moduleWorkers', {
+            'update_counter_assignments': 'update_counter_assignments',
+        }),
+        ...mapActions(['set_show_progress_indicator']),
     },
     created: function() {
     },

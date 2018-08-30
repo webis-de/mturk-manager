@@ -9,6 +9,7 @@ export default class Worker
 		// this.m_description = data.Description;
 		// this.m_is_requestable = data.IsRequestable;
 		this.name = data.name;
+		this.counter_assignments = 0;
 		// this.is_blocked = data.is_blocked;
 		// this.m_status = data.QualificationTypeStatus;
 	}

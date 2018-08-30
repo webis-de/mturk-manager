@@ -11,7 +11,7 @@ export const moduleWorkers = {
         object_workers: null,
         object_workers_sandbox: null,
         
-        url_api_status_block: undefined,
+        url_api_global_db: undefined,
         // loaded_status_block: false,
         // loaded_status_block_sandbox: false,
 	},  
@@ -42,8 +42,8 @@ export const moduleWorkers = {
         set_url_api_workers(state, url_new) {
             state.url_api_workers = url_new;
         },
-        set_url_api_status_block(state, url_new) {
-            state.url_api_status_block = url_new;
+        set_url_api_global_db(state, url_new) {
+            state.url_api_global_db = url_new;
         },
 		update_worker(state, {data_worker, use_sandbox}) {
 			let object_workers = null;
@@ -56,6 +56,17 @@ export const moduleWorkers = {
 
 			const obj_worker = new Worker(data_worker);
 			Vue.set(object_workers, obj_worker.name, obj_worker);
+		},
+		update_worker_counter_assignments(state, {worker, value, use_sandbox}) {
+			let object_workers = null;
+			if(use_sandbox)
+			{
+				object_workers = state.object_workers_sandbox;
+			} else {
+				object_workers = state.object_workers;
+			}
+
+			Vue.set(object_workers[worker.name], 'counter_assignments', value);
 		},
 		update_worker_status_block(state, {worker, status_block_new, use_sandbox}) {
 			let object_workers = null;
@@ -88,7 +99,10 @@ export const moduleWorkers = {
     			Vue.set(object_workers, obj_worker.name, obj_worker);
         	});
 		},
-		set_status_block(state, {data_status_block, use_sandbox}) {
+		set_data_global_db(state, {data, use_sandbox}) {
+			const data_status_block = data.blocks;
+			const object_counters = data.counters;
+
 			const set_blocked_soft = new Set(data_status_block.soft);
 			const set_blocked_hard = new Set(data_status_block.hard);
 
@@ -109,6 +123,11 @@ export const moduleWorkers = {
 				} else {
 					Vue.set(worker, 'is_blocked', STATUS_BLOCK.NONE);
 				}
+
+				if(object_counters.hasOwnProperty(worker.name))
+				{
+					Vue.set(worker, 'counter_assignments', object_counters[worker.name]);
+				}
 			});
 		},
 	},
@@ -122,9 +141,9 @@ export const moduleWorkers = {
                 	commit('set_workers', {'data_workers': response.data, use_sandbox});
 			    })
 
-				await axios.get(rootGetters.get_url_api(state.url_api_status_block, use_sandbox))
+				await axios.get(rootGetters.get_url_api(state.url_api_global_db, use_sandbox))
 			    .then(response => {
-                	commit('set_status_block', {'data_status_block': response.data, use_sandbox});
+                	commit('set_data_global_db', {'data': response.data, use_sandbox});
 			    })
 			}
 
@@ -151,6 +170,27 @@ export const moduleWorkers = {
        //      		commit('update_worker_sandbox', response.data);
 		    	// } else {
             	commit('update_worker_status_block', {worker, status_block_new, use_sandbox});
+		    	// }
+		    })
+		},
+		async update_counter_assignments({commit, state, getters, rootState, rootGetters}, {worker, value}) {
+			const use_sandbox = rootState.use_sandbox;
+
+			await axios.put(
+				rootGetters.get_url_api(state.url_api_workers, use_sandbox, worker.name),
+				JSON.stringify({counter_assignments: value}),
+				{
+					headers: {
+						"X-CSRFToken": rootState.token_csrf,
+						"Content-Type": 'application/json',
+					}
+				},
+			)
+		    .then(response => {
+		    	// if(rootState.use_sandbox) {
+       //      		commit('update_worker_sandbox', response.data);
+		    	// } else {
+            	commit('update_worker_counter_assignments', {worker, 'value': response.data.counter_assignments, use_sandbox});
 		    	// }
 		    })
 		},

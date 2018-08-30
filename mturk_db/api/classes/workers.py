@@ -201,6 +201,21 @@ class Manager_Workers(object):
         #     ).exists()
         # }
 
+
+    @classmethod
+    def get_counters(cls, database_object_project, use_sandbox):
+        queryset = Count_Assignments_Worker_Project.objects.filter(
+            fk_project=database_object_project,
+        ).select_related('fk_worker')
+
+        return {count_assignments_worker_project.fk_worker.id_worker:count_assignments_worker_project.count_assignments for count_assignments_worker_project in queryset}
+
+    @classmethod
+    def get_counter(cls, database_object_project, use_sandbox):
+        dictionary_counters = cls.get_counters(database_object_project, use_sandbox)
+
+        return dictionary_counters
+
     @classmethod
     def increment_counter_for_worker(cls, database_object_project, data):
         id_worker = data['id_worker']
@@ -228,6 +243,27 @@ class Manager_Workers(object):
         return {
             'incremented': was_created_assignment_worker,
         }
+
+    @classmethod
+    def set_count_assignments(cls, database_object_project, id_worker, value):
+        worker = Worker.objects.get_or_create(id_worker=id_worker)[0]
+
+        count_rows = Count_Assignments_Worker_Project.objects.filter(
+            fk_project=database_object_project,
+            fk_worker=worker,
+        ).update(count_assignments=value)
+
+        if count_rows == 0:
+            Count_Assignments_Worker_Project.objects.create(
+                fk_project=database_object_project,
+                fk_worker=worker,
+                count_assignments=value, 
+            )
+
+        return {'count': value}
+        # print(database_object_project)
+        # print(id_worker)
+        # print(value)
 
     # @classmethod
     # def get_status_block(cls, database_object_project, use_sandbox):

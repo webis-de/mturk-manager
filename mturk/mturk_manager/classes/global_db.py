@@ -30,8 +30,8 @@ class Manager_Global_DB(object):
         return url
 
     @classmethod
-    def get_status_block(cls, database_object_project, use_sandbox):
-        url = Manager_Global_DB.get_url_absolute('projects/{}/workers/status_block'.format(database_object_project.slug), use_sandbox)
+    def get_data(cls, database_object_project, use_sandbox):
+        url = Manager_Global_DB.get_url_absolute('projects/{}/workers'.format(database_object_project.slug), use_sandbox)
 
         return requests.get(url, headers=cls.headers).json()
 
@@ -69,3 +69,12 @@ class Manager_Global_DB(object):
         ))
 
         return requests.put(url, headers=cls.headers).json()['count_assignments_max_per_worker']
+
+    @classmethod
+    def update_count_assignments(cls, id_worker, value, database_object_project, use_sandbox):
+        url = Manager_Global_DB.get_url_absolute('projects/{}/workers/{}/count_assignments'.format(
+            database_object_project.slug,
+            id_worker,
+        ))
+
+        return requests.put(url, data={'count': value}, headers=cls.headers).json()['count']

@@ -8,6 +8,8 @@ from mturk_manager.classes import Manager_Workers
 class Serializer_Worker(serializers.ModelSerializer):
     # is_blocked = serializers.SerializerMethodField()
     is_blocked = serializers.JSONField(required=False)
+    counter_assignments = serializers.IntegerField(required=False)
+    # counter_assignments = serializers.JSONField(required=False)
     # is_blocked = serializers.DictField(child=serializers.IntegerField(), required=False)
     # is_blocked = serializers.IntegerField(required=False)
 
@@ -17,6 +19,7 @@ class Serializer_Worker(serializers.ModelSerializer):
             'id', 
             'name', 
             'is_blocked', 
+            'counter_assignments', 
         )
         extra_kwargs = {'name': {'required': False}}
 
