@@ -23,6 +23,9 @@ export default {
                 VALIDATIONS.REQUIRED,
                 VALIDATIONS.POSITIVE,
             ],
+            rules_count_assignments_max_per_worker: [
+                VALIDATIONS.REQUIRED,
+            ],
             // lifetime: 1,
             rules_lifetime: [
                 VALIDATIONS.REQUIRED,
@@ -40,6 +43,8 @@ export default {
             DESCRIPTIONS: DESCRIPTIONS,
             
 			list_keywords: [
+            {text: '1', id: 1},
+            {text: '3', id: 3},
 			],
 		}
 	},
@@ -59,27 +64,40 @@ export default {
             this.project.keywords.splice(this.project.keywords.indexOf(item), 1)
             this.project.keywords = [...this.project.keywords]
         },
+        update_fields() {
+            this.project.title = this.project_current.title;
+            this.project.description = this.project_current.description;
+            this.project.reward = this.project_current.reward;
+            this.project.assignments_max = this.project_current.assignments_max;
+            this.project.count_assignments_max_per_worker = this.project_current.count_assignments_max_per_worker;
+            this.project.lifetime = this.project_current.lifetime;
+            this.project.duration = this.project_current.duration;
+        //     this.project.keywords = [
+                    // {
+                    //  text: 'foo',
+                    //  value: 1,
+                    // },];
+            this.project.keywords = JSON.parse(JSON.stringify(this.project_current.keywords));
+            this.project.templates = this.project_current.templates;
+            this.project.template = this.project_current.template;
+            this.project.block_workers = this.project_current.block_workers;
+        },  
+        ...mapActions('moduleKeywords', {
+            'load_keywords': 'load_keywords',
+        }),
 	},
     created() {
-        this.project.title = this.project_current.title;
-        this.project.description = this.project_current.description;
-        this.project.reward = this.project_current.reward;
-        this.project.assignments_max = this.project_current.assignments_max;
-        this.project.lifetime = this.project_current.lifetime;
-        this.project.duration = this.project_current.duration;
-    //     this.project.keywords = [
-				// {
-				// 	text: 'foo',
-				// 	value: 1,
-				// },];
-        this.project.keywords = this.project_current.keywords;
-        this.project.templates = this.project_current.templates;
-        this.project.template = this.project_current.template;
-        this.project.block_workers = this.project_current.block_workers;
+        console.log('s'.charCodeAt(0))
+        console.log('S'.charCodeAt(0))
+        this.update_fields();
+        this.load_keywords();
     },
     computed: {
         ...mapGetters('moduleProjects', {
             'project_current': 'get_project_current',
+        }),
+        ...mapGetters('moduleKeywords', {
+            'object_keywords': 'get_object_keywords',
         }),
     },
 }

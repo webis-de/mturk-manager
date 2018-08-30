@@ -42,6 +42,16 @@
         <v-text-field
             required
             type="number"
+            v-model="project.count_assignments_max_per_worker"
+            label="Number of Maximal Assignments Per Worker"
+            v-bind:rules="rules_count_assignments_max_per_worker"
+            min="-1"
+        ></v-text-field>
+            <!-- v-bind:hint="DESCRIPTIONS.ASSIGNEMENTS_MAX_HIT" -->
+
+        <v-text-field
+            required
+            type="number"
             v-model="project.lifetime"
             v-bind:label="format_duration('Lifetime', project.lifetime)"
             v-bind:rules="rules_lifetime"
@@ -60,7 +70,7 @@
             min="1"
             suffix="s"
         ></v-text-field>
-    		<!-- v-bind:search-input.sync="search" -->
+            <!-- v-bind:search-input.sync="search" -->
 
         <v-select
             v-model="project.template"
@@ -74,7 +84,6 @@
             label="Soft Block Workers"
             v-model="project.block_workers"
         ></v-switch>
-            
         <v-combobox
             v-model="project.keywords"
             v-bind:rules="rules_keywords"
@@ -82,7 +91,7 @@
             v-bind:hint="DESCRIPTIONS.KEYWORDS_HIT"
             v-bind:items="list_keywords"
 
-    		hide-selected
+            hide-selected
             chips
             clearable
             multiple
@@ -101,12 +110,28 @@
         </v-combobox>
     </v-form>
         <!-- {{search}} -->
-        {{project.keywords}}
+        <!-- {{project.keywords}} -->
 
     <v-btn
+        class="ml-0"
         color="primary"
         v-on:click="update()"
     >Update</v-btn>
+
+    <v-snackbar
+        v-model="show_snackbar"
+        v-bind:timeout="1500"
+        bottom
+        color="success"
+    >
+        Saved!
+        <v-btn
+            flat
+            v-on:click="show_snackbar = false"
+        >
+            Close
+        </v-btn>
+    </v-snackbar>
 </div>
 </template>
 
@@ -120,16 +145,22 @@ export default {
 	name: 'component_settings_batch',
 	data () {
 		return {
+            show_snackbar: false,
 			// search: undefined,
 		}
 	},
 	methods: {
+        update1() {
+            console.log('tesssst')
+        },
 		update() {
 			this.edit_project({
 				project: this.project_current,
 				project_new: this.project,
 			}).then(() => {
 				console.log('done')
+                this.update_fields();
+                this.show_snackbar = true;
             });
 			// console.log(this.project_current);
 		},	

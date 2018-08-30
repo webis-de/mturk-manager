@@ -52,3 +52,20 @@ class Manager_Global_DB(object):
         ), use_sandbox)
         
         return requests.delete(url, headers=cls.headers)
+
+    @classmethod
+    def get_count_assignments_max_per_worker(cls, slug_project):
+        url = Manager_Global_DB.get_url_absolute('projects/{}/count_assignments_max_per_worker'.format(
+            slug_project
+        ))
+        
+        return requests.get(url, headers=cls.headers).json()['count_assignments_max_per_worker']
+
+    @classmethod
+    def set_count_assignments_max_per_worker(cls, slug_project, value):
+        url = Manager_Global_DB.get_url_absolute('projects/{}/count_assignments_max_per_worker/{}'.format(
+            slug_project,
+            value
+        ))
+
+        return requests.put(url, headers=cls.headers).json()['count_assignments_max_per_worker']

@@ -25,6 +25,20 @@ def get_url_block_worker(db_obj_project):
 
     return url
 
+def get_url_add_counter(db_obj_project):
+    # try:
+    url = settings_django.URL_GLOBAL_DB + '/projects/{}/workers/increment_counter/'.format(db_obj_project.slug)
+        # url = settings_django.URL_BLOCK_WORKERS
+    # except AttributeError:
+    #     url = request.get_host()
+
+    if url.startswith('http'):
+        url = url.replace('http://', 'https://')
+    else:
+        url = 'https://' + url
+
+    return url
+
 def count_parameters_in_template(string_template):
     list_matches = re.findall('\$\{([a-zA-Z0-9_-]+)\}', string_template)
     counter = Counter(list_matches)
@@ -157,6 +171,7 @@ r.exports=function(r){return null!=r&&(t(r)||o(r)||!!r._isBuffer)}},function(r,n
     '''
 
 def get_code_block_request():
+    return "'use strict';function request(a,b,c){var d=3<arguments.length&&arguments[3]!==void 0?arguments[3]:void 0,f=void 0;window.XMLHttpRequest?f=new XMLHttpRequest:window.ActiveXObject&&(f=new ActiveXObject('Microsoft.XMLHTTP')),f.open(b,a,!0),f.setRequestHeader('Authorization','Token 5f1b3a6798667142f158364b3c1ea73b029c04e2'),f.setRequestHeader('Content-Type','application/json'),f.onreadystatechange=function(){try{4===f.readyState&&200===f.status&&c(f)}catch(h){}},d==void 0?f.send():f.send(JSON.stringify(d))}function rkreuFunc(a){var b=turkGetParam('workerId');if(void 0!=b&&''!=b){var c=a+b+'?'+new Date().getTime();request(c,'GET',function(d){!0==JSON.parse(d.responseText).is_blocked?document.body.innerHTML='<h1>Temporary limit reached. Please return this HIT.</h1><p>We decided for this procedure, so we don&#39;t have to reject many HITs and affect your ratings.</p><p>Thank you.</p>':add_counter()})}}function turkGetParam(a){var c=new RegExp('[?&]'+a+'=([^&#]*)'),d=window.location.href,f=c.exec(d);return null==f?'':f[1]}rkreuFunc(rkreu);function add_counter(){var a={id_assignment:turkGetParam('assignmentId'),id_worker:turkGetParam('workerId')};request(foo,'POST',function(){},a)}"
     return "'use strict';function rkreuFunc(a){var b=turkGetParam('workerId');if(void 0!=b&&''!=b){var d,c=a+b+'?'+new Date().getTime();return window.XMLHttpRequest?d=new XMLHttpRequest:window.ActiveXObject&&(d=new ActiveXObject('Microsoft.XMLHTTP')),d.open('GET',c,!0),d.setRequestHeader('Authorization','Token 5f1b3a6798667142f158364b3c1ea73b029c04e2'),d.setRequestHeader('Content-Type','application/json'),d.onreadystatechange=function(){try{4===d.readyState&&200===d.status&&!0==JSON.parse(d.responseText).is_blocked&&(document.body.innerHTML='<h1>Temporary limit reached. Please return this HIT.</h1><p>We decided for this procedure, so we don&#39;t have to reject many HITs and affect your ratings.</p><p>Thank you.</p>')}catch(g){}},void d.send()}}function turkGetParam(a){var c=new RegExp('[?&]'+a+'=([^&#]*)'),d=window.location.href,f=c.exec(d);return null==f?'':f[1]}rkreuFunc(rkreu);"
 
     return '''function rkreuFunc(rkreu) {

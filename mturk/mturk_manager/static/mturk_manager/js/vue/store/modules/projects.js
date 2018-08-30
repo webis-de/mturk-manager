@@ -25,7 +25,7 @@ export const moduleProjects = {
 	mutations: {
         edit_project(state, data) {
         	const project = new Project(data);
-        	Vue.set(state.object_projects, project.id, project);
+        	Vue.set(state.object_projects, project.slug, project);
         },
         set_slug_project_current(state, slug_project_current) {
             state.slug_project_current = slug_project_current;
@@ -58,6 +58,9 @@ export const moduleProjects = {
 			}
         },
         async edit_project({state, commit, getters, rootState, rootGetters, dispatch}, {project, project_new}) {
+			// const changes = project.get_changes(project_new);
+			// changes['slug'] = project.slug;
+			
 			await axios.put(
 				rootGetters.get_url_api(state.url_api_projects, false, project.slug),
 				JSON.stringify(project.get_changes(project_new)),

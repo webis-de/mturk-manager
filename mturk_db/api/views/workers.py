@@ -50,7 +50,12 @@ def remove_block_soft_for_worker(request, slug_project, database_object_project,
 @add_database_object_project
 def status_block_for_worker(request, slug_project, database_object_project, id_worker, use_sandbox, format=None):
     dictionary_data = Manager_Workers.get_status_block_for_worker(database_object_project, id_worker)
-    # dictionary_data = {}
-    # return Response(True)
     return Response(dictionary_data)
-    # return Response({'is_blocked': False})
+
+@api_view(['POST'])
+@permission_classes(PERMISSIONS_WORKER_ONLY)
+@add_database_object_project
+def increment_counter_for_worker(request, slug_project, database_object_project, use_sandbox, format=None):
+    dictionary_data = Manager_Workers.increment_counter_for_worker(database_object_project, request.data)
+    return Response({})
+    # return Response(dictionary_data)

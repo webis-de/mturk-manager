@@ -1,6 +1,7 @@
-from api.models import Worker, Worker_Block_Project
+from api.models import Worker, Worker_Block_Project, Count_Assignments_Worker_Project, Assignment_Worker
 from api.classes.projects import Manager_Projects
 from api.enums import STATUS_BLOCK
+import botocore
 # from django.db.models import F, Value, Count, Q, Sum, IntegerField, ExpressionWrapper
 # from mturk_manager.classes import Manager_Qualifications
 
@@ -136,7 +137,11 @@ class Manager_Workers(object):
 
     @classmethod
     def get_status_block(cls, database_object_project, use_sandbox):
-        set_workers_blocked_hard = cls.get_workers_blocked_hard(use_sandbox)
+        try:
+            set_workers_blocked_hard = cls.get_workers_blocked_hard(use_sandbox)
+        except botocore.exceptions.EndpointConnectionError:
+            set_workers_blocked_hard = None
+
         set_workers_blocked_soft = cls.get_workers_blocked_soft(database_object_project, use_sandbox)
 
         return {
@@ -168,11 +173,59 @@ class Manager_Workers(object):
 
     @classmethod
     def get_status_block_for_worker(cls, database_object_project, id_worker):
-        return {
-            'is_blocked': Worker_Block_Project.objects.filter(
+        is_blocked = False
+
+        if database_object_project.count_assignments_max_per_worker > -1:
+
+            queryset = Count_Assignments_Worker_Project.objects.filter(
                 fk_project=database_object_project,
                 fk_worker__id_worker=id_worker,
-            ).exists()
+            )
+
+            count_assignments = 0
+
+            if len(queryset) == 1:
+                count_assignments = queryset[0].count_assignments
+
+            is_blocked = count_assignments > database_object_project.count_assignments_max_per_worker
+
+        return {
+            # 'is_blocked': True,
+            'is_blocked': is_blocked,
+        }
+
+        # return {
+        #     'is_blocked': Worker_Block_Project.objects.filter(
+        #         fk_project=database_object_project,
+        #         fk_worker__id_worker=id_worker,
+        #     ).exists()
+        # }
+
+    @classmethod
+    def increment_counter_for_worker(cls, database_object_project, data):
+        id_worker = data['id_worker']
+        id_assignment = data['id_assignment']
+
+        assignment_worker, was_created_assignment_worker = Assignment_Worker.objects.get_or_create(
+            id_worker=id_worker,
+            id_assignment=id_assignment,
+        )
+
+        if was_created_assignment_worker:
+            count_assignments_worker_project, was_created = Count_Assignments_Worker_Project.objects.get_or_create(
+                fk_project=database_object_project,
+                fk_worker__id=id_worker,
+                defaults={
+                    'count_assignments': 1, 
+                }
+            )
+
+            if not was_created:
+                count_assignments_worker_project.count_assignments += 1
+                count_assignments_worker_project.save()
+
+        return {
+            'incremented': was_created_assignment_worker,
         }
 
     # @classmethod
