@@ -175,19 +175,26 @@ class Manager_Workers(object):
     def get_status_block_for_worker(cls, database_object_project, id_worker):
         is_blocked = False
 
-        if database_object_project.count_assignments_max_per_worker > -1:
-
-            queryset = Count_Assignments_Worker_Project.objects.filter(
+        if Worker_Block_Project.objects.filter(
                 fk_project=database_object_project,
                 fk_worker__id_worker=id_worker,
-            )
+            ).exists():
 
-            count_assignments = 0
+            is_blocked = True
+        else:
+            if database_object_project.count_assignments_max_per_worker > -1:
 
-            if len(queryset) == 1:
-                count_assignments = queryset[0].count_assignments
+                queryset = Count_Assignments_Worker_Project.objects.filter(
+                    fk_project=database_object_project,
+                    fk_worker__id_worker=id_worker,
+                )
 
-            is_blocked = count_assignments >= database_object_project.count_assignments_max_per_worker
+                count_assignments = 0
+
+                if len(queryset) == 1:
+                    count_assignments = queryset[0].count_assignments
+
+                is_blocked = count_assignments >= database_object_project.count_assignments_max_per_worker
 
         return {
             # 'is_blocked': True,

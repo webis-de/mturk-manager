@@ -1,6 +1,28 @@
 <template>
     <!-- <div>wda</div> -->
-    <v-card class="ma-1">
+    <tr>
+        <td>
+            {{ props.item.name }}
+        </td>
+        <td 
+            v-bind:class="{ 'warning--text' : has_reached_limit_assignments}"
+        >
+            {{ props.item.count_assignments_limit }} of {{ project_current.count_assignments_max_per_worker }}
+        </td>
+        <td class="text-xs-center">
+            <component-block-soft-worker
+                v-bind:key="`component_block_soft_worker_${props.item.name}`"
+                v-bind:worker="props.item"
+            ></component-block-soft-worker>
+        </td>
+        <td class="text-xs-center">
+            <component-block-hard-worker
+                v-bind:key="`component_block_hard_worker_${props.item.name}`"
+                v-bind:worker="props.item"
+            ></component-block-hard-worker>
+        </td>
+    </tr>
+    <!-- <v-card class="ma-1">
         <v-card-title
             class="py-0"
         >
@@ -67,7 +89,6 @@
             v-bind:timeout="1500"
             bottom
         >
-            <!-- color="success" -->
             Saved!
             <v-btn
                 flat
@@ -76,17 +97,20 @@
                 Close
             </v-btn>
         </v-snackbar>
-    </v-card>
+    </v-card> -->
 </template>
 <script>
     import { mapState, mapActions, mapGetters } from 'vuex';
     import { STATUS_BLOCK } from '../../classes/enums.js';
 
     import ComponentBlockWorker from './component_block_worker.vue';
+    // import ComponentBlockSoftWorker from './component_block_worker.vue';
+    import ComponentBlockSoftWorker from './component_block_soft_worker.vue';
+    import ComponentBlockHardWorker from './component_block_hard_worker.vue';
 export default {
     name: 'component-item-worker',
     props: {
-        worker: {
+        props: {
             type: Object,
             required: true,
         }
@@ -102,6 +126,10 @@ export default {
     //     },
     // },
     computed: {
+        has_reached_limit_assignments() {
+            return this.props.item.count_assignments_limit >= this.project_current.count_assignments_max_per_worker;
+        },
+
         status_block() {
             if(this.worker.is_blocked == undefined)
             {
@@ -158,7 +186,8 @@ export default {
     created: function() {
     },
     components: {
-        ComponentBlockWorker,
+        ComponentBlockSoftWorker,
+        ComponentBlockHardWorker,
     },
 }
 </script>

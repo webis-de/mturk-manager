@@ -22,34 +22,28 @@
                 </v-flex>
 
             </v-layout>
-        <!-- <v-divider></v-divider> -->
 
-            <!-- <v-container grid-list-md fluid> -->
-            <v-data-iterator
+                <!-- select-all -->
+            <v-data-table
+                v-bind:headers="list_headers"
                 v-bind:items="list_workers"
                 v-bind:rows-per-page-items="items_per_page"
-                content-tag="v-layout"
-                row
-                wrap
                 v-bind:search="search"
                 v-bind:custom-filter="custom_filter"
-                select-all
             >
                 <!-- v-bind:filter="custom" -->
                 <!-- item-key="is_blocked" -->
-                <v-flex
-                    slot="item"
+                <template
+                    slot="items"
                     slot-scope="props"
-                    xs3
                 >
                     <component-item-worker
-                        v-bind:worker="props.item"
+                        v-bind:props="props"
                     >
-                        <!-- content-tag="v-flex" -->
                     </component-item-worker>
-                </v-flex>
-            </v-data-iterator>
-        <!-- </v-container> -->
+                </template>
+            </v-data-table>
+            <!-- {{list_workers}} -->
     </span>
     <!-- </v-layout> -->
 
@@ -113,6 +107,27 @@ export default {
             // policy_new: new Policy({
             //     QualificationTypeStatus: 'Active',
             // }),
+
+            list_headers: [
+                {
+                    text: 'Name',
+                    value: 'name',
+                },
+                {
+                    text: 'Limit Assignments',
+                    value: 'counter_assignments',
+                },
+                {
+                    text: 'Project Block',
+                    value: 'block_soft',
+                    align: 'center',
+                },
+                {
+                    text: 'Global Block',
+                    value: 'block_hard',
+                    align: 'center',
+                },
+            ],
         }
     },
     computed: {

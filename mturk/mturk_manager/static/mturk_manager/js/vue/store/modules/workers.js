@@ -57,7 +57,7 @@ export const moduleWorkers = {
 			const obj_worker = new Worker(data_worker);
 			Vue.set(object_workers, obj_worker.name, obj_worker);
 		},
-		update_worker_counter_assignments(state, {worker, value, use_sandbox}) {
+		update_worker_count_assignments_limit(state, {worker, value, use_sandbox}) {
 			let object_workers = null;
 			if(use_sandbox)
 			{
@@ -66,9 +66,9 @@ export const moduleWorkers = {
 				object_workers = state.object_workers;
 			}
 
-			Vue.set(object_workers[worker.name], 'counter_assignments', value);
+			Vue.set(object_workers[worker.name], 'count_assignments_limit', value);
 		},
-		update_worker_status_block(state, {worker, status_block_new, use_sandbox}) {
+		update_status_block_soft(state, {worker, data, use_sandbox}) {
 			let object_workers = null;
 			if(use_sandbox)
 			{
@@ -77,7 +77,18 @@ export const moduleWorkers = {
 				object_workers = state.object_workers;
 			}
 
-			Vue.set(object_workers[worker.name], 'is_blocked', status_block_new);
+			Vue.set(object_workers[worker.name], 'is_blocked_soft', data.is_blocked_soft);
+		},
+		update_status_block_hard(state, {worker, data, use_sandbox}) {
+			let object_workers = null;
+			if(use_sandbox)
+			{
+				object_workers = state.object_workers_sandbox;
+			} else {
+				object_workers = state.object_workers;
+			}
+
+			Vue.set(object_workers[worker.name], 'is_blocked_hard', data.is_blocked_hard);
 		},
 		// update_worker_sandbox(state, data_worker) {
 		// 	const obj_worker = new Worker(data_worker);
@@ -117,16 +128,20 @@ export const moduleWorkers = {
 			_.forEach(object_workers, (worker) => {
 				if(set_blocked_soft.has(worker.name))
 				{
-					Vue.set(worker, 'is_blocked', STATUS_BLOCK.SOFT);
-				} else if(set_blocked_hard.has(worker.name)) {
-					Vue.set(worker, 'is_blocked', STATUS_BLOCK.HARD);
+					Vue.set(worker, 'is_blocked_soft', true);
 				} else {
-					Vue.set(worker, 'is_blocked', STATUS_BLOCK.NONE);
+					Vue.set(worker, 'is_blocked_soft', false);
+				}
+
+				if(set_blocked_hard.has(worker.name)) {
+					Vue.set(worker, 'is_blocked_hard', true);
+				} else {
+					Vue.set(worker, 'is_blocked_hard', false);
 				}
 
 				if(object_counters.hasOwnProperty(worker.name))
 				{
-					Vue.set(worker, 'counter_assignments', object_counters[worker.name]);
+					Vue.set(worker, 'count_assignments_limit', object_counters[worker.name]);
 				}
 			});
 		},
@@ -173,7 +188,41 @@ export const moduleWorkers = {
 		    	// }
 		    })
 		},
-		async update_counter_assignments({commit, state, getters, rootState, rootGetters}, {worker, value}) {
+		async update_status_block_soft({commit, state, getters, rootState, rootGetters}, {worker, is_blocked}) {
+			const use_sandbox = rootState.use_sandbox;
+			
+			await axios.put(
+				rootGetters.get_url_api(state.url_api_workers, use_sandbox, worker.name),
+				JSON.stringify({is_blocked_soft: is_blocked}),
+				{
+					headers: {
+						"X-CSRFToken": rootState.token_csrf,
+						"Content-Type": 'application/json',
+					}
+				},
+			)
+		    .then(response => {
+            	commit('update_status_block_soft', {worker, data: response.data, use_sandbox});
+		    })
+		},
+		async update_status_block_hard({commit, state, getters, rootState, rootGetters}, {worker, is_blocked}) {
+			const use_sandbox = rootState.use_sandbox;
+			
+			await axios.put(
+				rootGetters.get_url_api(state.url_api_workers, use_sandbox, worker.name),
+				JSON.stringify({is_blocked_hard: is_blocked}),
+				{
+					headers: {
+						"X-CSRFToken": rootState.token_csrf,
+						"Content-Type": 'application/json',
+					}
+				},
+			)
+		    .then(response => {
+            	commit('update_status_block_hard', {worker, data: response.data, use_sandbox});
+		    })
+		},
+		async update_count_assignments_limit({commit, state, getters, rootState, rootGetters}, {worker, value}) {
 			const use_sandbox = rootState.use_sandbox;
 
 			await axios.put(
@@ -190,7 +239,7 @@ export const moduleWorkers = {
 		    	// if(rootState.use_sandbox) {
        //      		commit('update_worker_sandbox', response.data);
 		    	// } else {
-            	commit('update_worker_counter_assignments', {worker, 'value': response.data.counter_assignments, use_sandbox});
+            	commit('update_worker_count_assignments_limit', {worker, 'value': response.data.counter_assignments, use_sandbox});
 		    	// }
 		    })
 		},

@@ -9,23 +9,11 @@ export default class Worker
 		// this.m_description = data.Description;
 		// this.m_is_requestable = data.IsRequestable;
 		this.name = data.name;
-		this.counter_assignments = 0;
+		this.count_assignments_limit = 0;
+		this.is_blocked_soft = undefined;
+		this.is_blocked_hard = undefined;
 		// this.is_blocked = data.is_blocked;
 		// this.m_status = data.QualificationTypeStatus;
-	}
-
-	get_block_status() 
-	{
-		switch(this.is_blocked)
-		{
-			case STATUS_BLOCK.NONE:
-				return 'Not Blocked';
-			case STATUS_BLOCK.SOFT:
-				return 'Soft Blocked';
-			case STATUS_BLOCK.HARD:
-				return 'Hard Blocked';
-		}
-		return this.is_blocked
 	}
 
 	get_as_formdata() 

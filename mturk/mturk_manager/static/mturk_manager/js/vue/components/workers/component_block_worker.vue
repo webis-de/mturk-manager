@@ -1,16 +1,19 @@
 <template>
-    <!-- <v-slider
-        v-model="status_block_new"
-        label="Block status"
-        always-dirty
-        min="1"
-        max="3"
-        v-bind:tick-labels="labels_ticks"
-        step="1"
-        ticks="always"
-        tick-size="1"
-    ></v-slider> -->
-<v-layout align-center>
+    <span>
+        <v-tooltip left>
+            <v-btn icon slot="activator" class="ma-0 warning--text text--lighten-1">
+                <v-icon>block</v-icon>
+            </v-btn>
+            <span>Soft Blocked</span>
+        </v-tooltip>
+        <v-tooltip left>
+            <v-btn icon slot="activator" class="ma-0 error--text text--lighten-4">
+                <v-icon>block</v-icon>
+            </v-btn>
+            <span>Hard Blocked</span>
+        </v-tooltip>
+    </span>
+<!-- <v-layout align-center>
     <v-flex mr-3>
         Block:
     </v-flex>
@@ -30,7 +33,7 @@
             ></v-radio>
         </v-radio-group>
     </v-flex>
-</v-layout>
+</v-layout> -->
 </template>
 <script>
     import { mapState, mapActions, mapGetters } from 'vuex';
