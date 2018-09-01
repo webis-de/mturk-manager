@@ -13,10 +13,10 @@ def dashboard(request):
     else:
         form = Form_Open()
 
-    client = code_shared.get_client(m_Project.objects.first(), use_sandbox=False)
-    response = client.list_hits(
-        MaxResults=100
-    )
+    # client = code_shared.get_client(m_Project.objects.first(), use_sandbox=False)
+    # response = client.list_hits(
+    #     MaxResults=100
+    # )
 
     # for x in range(2):
     #     response = client.list_hits(
@@ -24,8 +24,20 @@ def dashboard(request):
     #         NextToken=response['NextToken'],
     #     )
 
-    for index, hit in enumerate(response['HITs']):
-        print(index, hit['CreationTime'])
+    # for index, hit in enumerate(response['HITs']):
+    #     if index < 88:
+    #         continue
+    #     print(index, hit)
+        # print(index, hit['CreationTime'])
+        # response = client.list_assignments_for_hit(
+        #     HITId=hit['HITId'],
+        #     # AssignmentStatuses=[
+        #     #     'Submitted'|'Approved'|'Rejected',
+        #     # ]
+        # )
+        # break
+        # print(len(response['Assignments']))
+
         # print(hit['QualificationRequirements'])
 
     return render(request, 'mturk_manager/dashboard.html', {'form': form})

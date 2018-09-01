@@ -4,11 +4,10 @@
         <td>
             {{ props.item.name }}
         </td>
-        <td 
-            v-bind:class="{ 'warning--text' : has_reached_limit_assignments}"
-        >
-            {{ props.item.count_assignments_limit }} of {{ project_current.count_assignments_max_per_worker }}
-        </td>
+        <component-limit-assignments
+            v-bind:key="`component_limit_assignments_${props.item.name}`"
+            v-bind:worker="props.item"
+        ></component-limit-assignments>
         <td class="text-xs-center">
             <component-block-soft-worker
                 v-bind:key="`component_block_soft_worker_${props.item.name}`"
@@ -107,6 +106,7 @@
     // import ComponentBlockSoftWorker from './component_block_worker.vue';
     import ComponentBlockSoftWorker from './component_block_soft_worker.vue';
     import ComponentBlockHardWorker from './component_block_hard_worker.vue';
+    import ComponentLimitAssignments from './component_limit_assignments.vue';
 export default {
     name: 'component-item-worker',
     props: {
@@ -126,68 +126,47 @@ export default {
     //     },
     // },
     computed: {
-        has_reached_limit_assignments() {
-            return this.props.item.count_assignments_limit >= this.project_current.count_assignments_max_per_worker;
-        },
 
-        status_block() {
-            if(this.worker.is_blocked == undefined)
-            {
-                return {
-                    description: 'Loading',
-                    color: 'success',
-                    icon: '',
-                };
-            }
+        // status_block() {
+        //     if(this.worker.is_blocked == undefined)
+        //     {
+        //         return {
+        //             description: 'Loading',
+        //             color: 'success',
+        //             icon: '',
+        //         };
+        //     }
 
-            switch(this.worker.is_blocked)
-            {
-                case STATUS_BLOCK.NONE:
-                    return {
-                        description: 'Not Blocked',
-                        color: 'success',
-                        icon: 'check',
-                    };
-                case STATUS_BLOCK.SOFT:
-                    return {
-                        description: 'Soft Blocked',
-                        color: 'warning',
-                        icon: 'block',
-                    };
-                case STATUS_BLOCK.HARD:
-                    return {
-                        description: 'Hard Blocked',
-                        color: 'error',
-                        icon: 'block',
-                    };
-            }
-        },
-        ...mapGetters('moduleProjects', {
-            'project_current': 'get_project_current',
-        }),
+        //     switch(this.worker.is_blocked)
+        //     {
+        //         case STATUS_BLOCK.NONE:
+        //             return {
+        //                 description: 'Not Blocked',
+        //                 color: 'success',
+        //                 icon: 'check',
+        //             };
+        //         case STATUS_BLOCK.SOFT:
+        //             return {
+        //                 description: 'Soft Blocked',
+        //                 color: 'warning',
+        //                 icon: 'block',
+        //             };
+        //         case STATUS_BLOCK.HARD:
+        //             return {
+        //                 description: 'Hard Blocked',
+        //                 color: 'error',
+        //                 icon: 'block',
+        //             };
+        //     }
+        // },
         ...mapGetters(['get_show_progress_indicator']),
     },
     methods: {
-        changed_counter_assignments(value) {
-            this.set_show_progress_indicator(true);
-            this.update_counter_assignments({
-                worker: this.worker, 
-                value
-            }).then(() => {
-                this.show_snackbar = true;
-                this.set_show_progress_indicator(false);
-            });
-        },
-        ...mapActions('moduleWorkers', {
-            'update_counter_assignments': 'update_counter_assignments',
-        }),
-        ...mapActions(['set_show_progress_indicator']),
-    },
-    created: function() {
     },
     components: {
         ComponentBlockSoftWorker,
         ComponentBlockHardWorker,
+        ComponentLimitAssignments,
     },
 }
 </script>

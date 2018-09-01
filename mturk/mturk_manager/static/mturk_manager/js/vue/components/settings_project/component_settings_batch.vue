@@ -1,7 +1,7 @@
 <template>
 <div>
 	<h1>Batch Settings</h1>
-	<v-form v-model="valid" lazy-validation>
+	<v-form ref="form" v-model="valid" lazy-validation>
         <v-text-field
             required
             v-model="project.title"
@@ -46,8 +46,10 @@
             label="Number of Maximal Assignments Per Worker"
             v-bind:rules="rules_count_assignments_max_per_worker"
             min="-1"
+            append-icon="clear"
+            v-on:click:append="project.count_assignments_max_per_worker = -1"
         ></v-text-field>
-            <!-- v-bind:hint="DESCRIPTIONS.ASSIGNEMENTS_MAX_HIT" -->
+            <!-- v-on:click:clear="project.count_assignments_max_per_worker = -1" -->
 
         <v-text-field
             required
@@ -151,17 +153,22 @@ export default {
 	},
 	methods: {
         update1() {
-            console.log('tesssst')
+            console.log(this.project.count_assignments_max_per_worker )
+            this.project.count_assignments_max_per_worker = 2
+            console.log(this.project.count_assignments_max_per_worker )
         },
 		update() {
-			this.edit_project({
-				project: this.project_current,
-				project_new: this.project,
-			}).then(() => {
-				console.log('done')
-                this.update_fields();
-                this.show_snackbar = true;
-            });
+            if(this.$refs.form.validate()) 
+            {
+    			this.edit_project({
+    				project: this.project_current,
+    				project_new: this.project,
+    			}).then(() => {
+    				console.log('done')
+                    this.update_fields();
+                    this.show_snackbar = true;
+                });
+            }
 			// console.log(this.project_current);
 		},	
 		...mapActions('moduleProjects', {

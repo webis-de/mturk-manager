@@ -67,7 +67,7 @@ class Manager_Global_DB(object):
             slug_project,
             value
         ))
-
+        
         return requests.put(url, headers=cls.headers).json()['count_assignments_max_per_worker']
 
     @classmethod

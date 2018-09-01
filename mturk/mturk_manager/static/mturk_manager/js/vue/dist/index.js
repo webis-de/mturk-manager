@@ -12604,18 +12604,9 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                             }
                         }
                     },
-                    data: function data() {
-                        return {
-                            defaultColor: 'error'
-                        };
-                    },
                     computed: {
-                        classes: function classes() {
-                            var color = this.type && !this.color ? this.type : this.computedColor;
-                            var classes = {
-                                'v-alert--outline': this.outline
-                            };
-                            return this.outline ? this.addTextColorClassChecks(classes, color) : this.addBackgroundColorClassChecks(classes, color);
+                        computedColor: function computedColor() {
+                            return this.type && !this.color ? this.type : this.color || 'error';
                         },
                         computedIcon: function computedIcon() {
                             if (this.icon || !this.type) return this.icon;
@@ -12631,36 +12622,42 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                             }
                         }
                     },
-                    render: function render(h) {
-                        var _this = this;
-                        var children = [h('div', this.$slots.default)];
-                        if (this.computedIcon) {
-                            children.unshift(h(_VIcon__WEBPACK_IMPORTED_MODULE_1__["default"], {
+                    methods: {
+                        genIcon: function genIcon() {
+                            if (!this.computedIcon) return null;
+                            return this.$createElement(_VIcon__WEBPACK_IMPORTED_MODULE_1__["default"], {
                                 'class': 'v-alert__icon'
-                            }, this.computedIcon));
-                        }
-                        if (this.dismissible) {
-                            var close = h('a', {
+                            }, this.computedIcon);
+                        },
+                        genDismissible: function genDismissible() {
+                            var _this = this;
+                            if (!this.dismissible) return null;
+                            return this.$createElement('a', {
                                 'class': 'v-alert__dismissible',
                                 on: { click: function click() {
                                         _this.isActive = false;
                                     } }
-                            }, [h(_VIcon__WEBPACK_IMPORTED_MODULE_1__["default"], {
+                            }, [this.$createElement(_VIcon__WEBPACK_IMPORTED_MODULE_1__["default"], {
                                 props: {
                                     right: true
                                 }
                             }, '$vuetify.icons.cancel')]);
-                            children.push(close);
                         }
-                        var alert = h('div', {
+                    },
+                    render: function render(h) {
+                        var children = [this.genIcon(), h('div', this.$slots.default), this.genDismissible()];
+                        var setColor = this.outline ? this.setTextColor : this.setBackgroundColor;
+                        var alert = h('div', setColor(this.computedColor, {
                             staticClass: 'v-alert',
-                            'class': this.classes,
+                            'class': {
+                                'v-alert--outline': this.outline
+                            },
                             directives: [{
                                 name: 'show',
                                 value: this.isActive
                             }],
                             on: this.$listeners
-                        }, children);
+                        }), children);
                         if (!this.transition) return alert;
                         return h('transition', {
                             props: {
@@ -12710,14 +12707,17 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 /* harmony import */var _mixins_app_theme__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__( /*! ./mixins/app-theme */"./src/components/VApp/mixins/app-theme.js");
                 /* harmony import */var _mixins_themeable__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__( /*! ../../mixins/themeable */"./src/mixins/themeable.ts");
                 /* harmony import */var _directives_resize__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__( /*! ../../directives/resize */"./src/directives/resize.ts");
-                var __assign = undefined && undefined.__assign || Object.assign || function (t) {
-                    for (var s, i = 1, n = arguments.length; i < n; i++) {
-                        s = arguments[i];
-                        for (var p in s) {
-                            if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                var __assign = undefined && undefined.__assign || function () {
+                    __assign = Object.assign || function (t) {
+                        for (var s, i = 1, n = arguments.length; i < n; i++) {
+                            s = arguments[i];
+                            for (var p in s) {
+                                if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                            }
                         }
-                    }
-                    return t;
+                        return t;
+                    };
+                    return __assign.apply(this, arguments);
                 };
 
                 // Component level mixins
@@ -12817,7 +12817,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                                 css = this.$vuetify.options.themeCache.get(theme);
                                 if (css != null) return css;
                             }
-                            css = _util_theme__WEBPACK_IMPORTED_MODULE_0__["genStyles"](theme);
+                            css = _util_theme__WEBPACK_IMPORTED_MODULE_0__["genStyles"](theme, this.$vuetify.options.customProperties);
                             if (this.$vuetify.options.minifyTheme != null) {
                                 css = this.$vuetify.options.minifyTheme(css);
                             }
@@ -12827,7 +12827,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                             return css;
                         },
                         vueMeta: function vueMeta() {
-                            if (this.$vuetify.theme === false) return;
+                            if (this.$vuetify.theme === false) return {};
                             var options = {
                                 cssText: this.generatedStyles,
                                 id: 'vuetify-theme-stylesheet',
@@ -12908,6 +12908,18 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 /* harmony import */var _VSelect_VSelect__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__( /*! ../VSelect/VSelect */"./src/components/VSelect/VSelect.js");
                 /* harmony import */var _VTextField_VTextField__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__( /*! ../VTextField/VTextField */"./src/components/VTextField/VTextField.js");
                 /* harmony import */var _util_helpers__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__( /*! ../../util/helpers */"./src/util/helpers.ts");
+                var __assign = undefined && undefined.__assign || function () {
+                    __assign = Object.assign || function (t) {
+                        for (var s, i = 1, n = arguments.length; i < n; i++) {
+                            s = arguments[i];
+                            for (var p in s) {
+                                if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                            }
+                        }
+                        return t;
+                    };
+                    return __assign.apply(this, arguments);
+                };
                 // Styles
 
                 // Extensions
@@ -12915,6 +12927,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
 
                 // Utils
 
+                var defaultMenuProps = __assign({}, _VSelect_VSelect__WEBPACK_IMPORTED_MODULE_1__["defaultMenuProps"], { offsetY: true, offsetOverflow: true, transition: false });
                 /* @vue/component */
                 /* harmony default export */__webpack_exports__["default"] = {
                     name: 'v-autocomplete',
@@ -12941,20 +12954,14 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                         },
                         hideNoData: Boolean,
                         noFilter: Boolean,
-                        offsetY: {
-                            type: Boolean,
-                            default: true
-                        },
-                        offsetOverflow: {
-                            type: Boolean,
-                            default: true
-                        },
                         searchInput: {
                             default: undefined
                         },
-                        transition: {
-                            type: [Boolean, String],
-                            default: false
+                        menuProps: {
+                            type: _VSelect_VSelect__WEBPACK_IMPORTED_MODULE_1__["default"].props.menuProps.type,
+                            default: function _default() {
+                                return defaultMenuProps;
+                            }
                         }
                     },
                     data: function data(vm) {
@@ -13015,11 +13022,10 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                             if (!this.isFocused) return false;
                             return this.displayedItemsCount > 0 || !this.hideNoData;
                         },
-                        menuProps: function menuProps() {
-                            return Object.assign(_VSelect_VSelect__WEBPACK_IMPORTED_MODULE_1__["default"].computed.menuProps.call(this), {
-                                contentClass: ("v-autocomplete__content " + (this.contentClass || '')).trim(),
-                                value: this.menuCanShow && this.isMenuActive
-                            });
+                        $_menuProps: function $_menuProps() {
+                            var props = _VSelect_VSelect__WEBPACK_IMPORTED_MODULE_1__["default"].computed.$_menuProps.call(this);
+                            props.contentClass = ("v-autocomplete__content " + (props.contentClass || '')).trim();
+                            return __assign({}, defaultMenuProps, props);
                         },
                         searchIsDirty: function searchIsDirty() {
                             return this.internalSearch != null && this.internalSearch !== '';
@@ -13086,11 +13092,6 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                         },
                         onInternalSearchChanged: function onInternalSearchChanged(val) {
                             this.updateMenuDimensions();
-                        },
-                        activateMenu: function activateMenu() {
-                            if (this.menuCanShow) {
-                                this.isMenuActive = true;
-                            }
                         },
                         updateMenuDimensions: function updateMenuDimensions() {
                             if (this.isMenuActive && this.$refs.menu) {
@@ -13241,14 +13242,17 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 /* harmony import */var _mixins_colorable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__( /*! ../../mixins/colorable */"./src/mixins/colorable.ts");
                 /* harmony import */var _util_helpers__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__( /*! ../../util/helpers */"./src/util/helpers.ts");
                 /* harmony import */var _util_mixins__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__( /*! ../../util/mixins */"./src/util/mixins.ts");
-                var __assign = undefined && undefined.__assign || Object.assign || function (t) {
-                    for (var s, i = 1, n = arguments.length; i < n; i++) {
-                        s = arguments[i];
-                        for (var p in s) {
-                            if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                var __assign = undefined && undefined.__assign || function () {
+                    __assign = Object.assign || function (t) {
+                        for (var s, i = 1, n = arguments.length; i < n; i++) {
+                            s = arguments[i];
+                            for (var p in s) {
+                                if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                            }
                         }
-                    }
-                    return t;
+                        return t;
+                    };
+                    return __assign.apply(this, arguments);
                 };
 
                 // Mixins
@@ -13275,8 +13279,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                         if (props.tile) data.staticClass += ' v-avatar--tile';
                         var size = Object(_util_helpers__WEBPACK_IMPORTED_MODULE_2__["convertToUnit"])(props.size);
                         data.style = __assign({ height: size, width: size }, data.style);
-                        data.class = [data.class, _mixins_colorable__WEBPACK_IMPORTED_MODULE_1__["default"].options.methods.addBackgroundColorClassChecks.call(props, {}, props.color)];
-                        return h('div', data, children);
+                        return h('div', _mixins_colorable__WEBPACK_IMPORTED_MODULE_1__["default"].options.methods.setBackgroundColor(props.color, data), children);
                     }
                 });
 
@@ -13353,15 +13356,14 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                         }
                     },
                     render: function render(h) {
-                        var badge = this.$slots.badge ? [h('span', {
+                        var badge = this.$slots.badge ? [h('span', this.setBackgroundColor(this.color, {
                             staticClass: 'v-badge__badge',
-                            'class': this.addBackgroundColorClassChecks(),
                             attrs: this.$attrs,
                             directives: [{
                                 name: 'show',
                                 value: this.isActive
                             }]
-                        }, this.$slots.badge)] : undefined;
+                        }), this.$slots.badge)] : null;
                         return h('span', {
                             staticClass: 'v-badge',
                             'class': this.classes
@@ -13469,14 +13471,14 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                         }
                     },
                     render: function render(h) {
-                        return h('div', {
+                        return h('div', this.setBackgroundColor(this.color, {
                             staticClass: 'v-bottom-nav',
-                            class: this.addBackgroundColorClassChecks(this.classes),
+                            'class': this.classes,
                             style: {
                                 height: parseInt(this.computedHeight) + "px"
                             },
                             ref: 'content'
-                        }, this.$slots.default);
+                        }), this.$slots.default);
                     }
                 });
 
@@ -13516,14 +13518,17 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 /* harmony import */var _stylus_components_bottom_sheets_styl__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__( /*! ../../stylus/components/_bottom-sheets.styl */"./src/stylus/components/_bottom-sheets.styl");
                 /* harmony import */var _stylus_components_bottom_sheets_styl__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_stylus_components_bottom_sheets_styl__WEBPACK_IMPORTED_MODULE_0__);
                 /* harmony import */var _VDialog_VDialog__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__( /*! ../VDialog/VDialog */"./src/components/VDialog/VDialog.js");
-                var __assign = undefined && undefined.__assign || Object.assign || function (t) {
-                    for (var s, i = 1, n = arguments.length; i < n; i++) {
-                        s = arguments[i];
-                        for (var p in s) {
-                            if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                var __assign = undefined && undefined.__assign || function () {
+                    __assign = Object.assign || function (t) {
+                        for (var s, i = 1, n = arguments.length; i < n; i++) {
+                            s = arguments[i];
+                            for (var p in s) {
+                                if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                            }
                         }
-                    }
-                    return t;
+                        return t;
+                    };
+                    return __assign.apply(this, arguments);
                 };
 
                 /* @vue/component */
@@ -13697,7 +13702,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                         }
                     },
                     render: function render(h) {
-                        var _a = this.generateRouteLink(),
+                        var _a = this.generateRouteLink(this.classes),
                             tag = _a.tag,
                             data = _a.data;
                         return h('li', [h(tag, data, this.$slots.default)]);
@@ -13763,14 +13768,17 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                     return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj === 'undefined' ? 'undefined' : _typeof2(obj);
                 };
 
-                var __assign = undefined && undefined.__assign || Object.assign || function (t) {
-                    for (var s, i = 1, n = arguments.length; i < n; i++) {
-                        s = arguments[i];
-                        for (var p in s) {
-                            if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                var __assign = undefined && undefined.__assign || function () {
+                    __assign = Object.assign || function (t) {
+                        for (var s, i = 1, n = arguments.length; i < n; i++) {
+                            s = arguments[i];
+                            for (var p in s) {
+                                if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                            }
                         }
-                    }
-                    return t;
+                        return t;
+                    };
+                    return __assign.apply(this, arguments);
                 };
                 // Styles
 
@@ -13816,8 +13824,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                     computed: {
                         classes: function classes() {
                             var _a;
-                            var classes = __assign((_a = { 'v-btn': true }, _a[this.activeClass] = this.isActive, _a['v-btn--absolute'] = this.absolute, _a['v-btn--block'] = this.block, _a['v-btn--bottom'] = this.bottom, _a['v-btn--disabled'] = this.disabled, _a['v-btn--flat'] = this.flat, _a['v-btn--floating'] = this.fab, _a['v-btn--fixed'] = this.fixed, _a['v-btn--icon'] = this.icon, _a['v-btn--large'] = this.large, _a['v-btn--left'] = this.left, _a['v-btn--loader'] = this.loading, _a['v-btn--outline'] = this.outline, _a['v-btn--depressed'] = this.depressed && !this.flat || this.outline, _a['v-btn--right'] = this.right, _a['v-btn--round'] = this.round, _a['v-btn--router'] = this.to, _a['v-btn--small'] = this.small, _a['v-btn--top'] = this.top, _a), this.themeClasses);
-                            return !this.outline && !this.flat ? this.addBackgroundColorClassChecks(classes) : this.addTextColorClassChecks(classes);
+                            return __assign((_a = { 'v-btn': true }, _a[this.activeClass] = this.isActive, _a['v-btn--absolute'] = this.absolute, _a['v-btn--block'] = this.block, _a['v-btn--bottom'] = this.bottom, _a['v-btn--disabled'] = this.disabled, _a['v-btn--flat'] = this.flat, _a['v-btn--floating'] = this.fab, _a['v-btn--fixed'] = this.fixed, _a['v-btn--icon'] = this.icon, _a['v-btn--large'] = this.large, _a['v-btn--left'] = this.left, _a['v-btn--loader'] = this.loading, _a['v-btn--outline'] = this.outline, _a['v-btn--depressed'] = this.depressed && !this.flat || this.outline, _a['v-btn--right'] = this.right, _a['v-btn--round'] = this.round, _a['v-btn--router'] = this.to, _a['v-btn--small'] = this.small, _a['v-btn--top'] = this.top, _a), this.themeClasses);
                         }
                     },
                     mounted: function mounted() {
@@ -13856,14 +13863,15 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                         }
                     },
                     render: function render(h) {
-                        var _a = this.generateRouteLink(),
+                        var setColor = !this.outline && !this.flat ? this.setBackgroundColor : this.setTextColor;
+                        var _a = this.generateRouteLink(this.classes),
                             tag = _a.tag,
                             data = _a.data;
                         var children = [this.genContent()];
                         tag === 'button' && (data.attrs.type = this.type);
                         this.loading && children.push(this.genLoader());
                         data.attrs.value = ['string', 'number'].includes(_typeof(this.value)) ? this.value : JSON.stringify(this.value);
-                        return h(tag, data, children);
+                        return h(tag, setColor(this.color, data), children);
                     }
                 });
 
@@ -13906,14 +13914,17 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 /* harmony import */var _mixins_button_group__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__( /*! ../../mixins/button-group */"./src/mixins/button-group.ts");
                 /* harmony import */var _mixins_themeable__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__( /*! ../../mixins/themeable */"./src/mixins/themeable.ts");
                 /* harmony import */var _util_console__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__( /*! ../../util/console */"./src/util/console.ts");
-                var __assign = undefined && undefined.__assign || Object.assign || function (t) {
-                    for (var s, i = 1, n = arguments.length; i < n; i++) {
-                        s = arguments[i];
-                        for (var p in s) {
-                            if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                var __assign = undefined && undefined.__assign || function () {
+                    __assign = Object.assign || function (t) {
+                        for (var s, i = 1, n = arguments.length; i < n; i++) {
+                            s = arguments[i];
+                            for (var p in s) {
+                                if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                            }
                         }
-                    }
-                    return t;
+                        return t;
+                    };
+                    return __assign.apply(this, arguments);
                 };
 
                 // Mixins
@@ -14035,19 +14046,24 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 /* harmony import */var _stylus_components_cards_styl__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__( /*! ../../stylus/components/_cards.styl */"./src/stylus/components/_cards.styl");
                 /* harmony import */var _stylus_components_cards_styl__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_stylus_components_cards_styl__WEBPACK_IMPORTED_MODULE_0__);
                 /* harmony import */var _mixins_colorable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__( /*! ../../mixins/colorable */"./src/mixins/colorable.ts");
-                /* harmony import */var _mixins_routable__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__( /*! ../../mixins/routable */"./src/mixins/routable.ts");
-                /* harmony import */var _mixins_themeable__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__( /*! ../../mixins/themeable */"./src/mixins/themeable.ts");
-                /* harmony import */var _util_helpers__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__( /*! ../../util/helpers */"./src/util/helpers.ts");
-                /* harmony import */var _util_mixins__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__( /*! ../../util/mixins */"./src/util/mixins.ts");
-                var __assign = undefined && undefined.__assign || Object.assign || function (t) {
-                    for (var s, i = 1, n = arguments.length; i < n; i++) {
-                        s = arguments[i];
-                        for (var p in s) {
-                            if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                /* harmony import */var _mixins_measurable__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__( /*! ../../mixins/measurable */"./src/mixins/measurable.ts");
+                /* harmony import */var _mixins_routable__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__( /*! ../../mixins/routable */"./src/mixins/routable.ts");
+                /* harmony import */var _mixins_themeable__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__( /*! ../../mixins/themeable */"./src/mixins/themeable.ts");
+                /* harmony import */var _util_helpers__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__( /*! ../../util/helpers */"./src/util/helpers.ts");
+                /* harmony import */var _util_mixins__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__( /*! ../../util/mixins */"./src/util/mixins.ts");
+                var __assign = undefined && undefined.__assign || function () {
+                    __assign = Object.assign || function (t) {
+                        for (var s, i = 1, n = arguments.length; i < n; i++) {
+                            s = arguments[i];
+                            for (var p in s) {
+                                if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                            }
                         }
-                    }
-                    return t;
+                        return t;
+                    };
+                    return __assign.apply(this, arguments);
                 };
+                // Styles
 
                 // Mixins
 
@@ -14056,11 +14072,10 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
 
 
                 /* @vue/component */
-                /* harmony default export */__webpack_exports__["default"] = Object(_util_mixins__WEBPACK_IMPORTED_MODULE_5__["default"])(_mixins_colorable__WEBPACK_IMPORTED_MODULE_1__["default"], _mixins_routable__WEBPACK_IMPORTED_MODULE_2__["default"], _mixins_themeable__WEBPACK_IMPORTED_MODULE_3__["default"]).extend({
+                /* harmony default export */__webpack_exports__["default"] = Object(_util_mixins__WEBPACK_IMPORTED_MODULE_6__["default"])(_mixins_colorable__WEBPACK_IMPORTED_MODULE_1__["default"], _mixins_measurable__WEBPACK_IMPORTED_MODULE_2__["default"], _mixins_routable__WEBPACK_IMPORTED_MODULE_3__["default"], _mixins_themeable__WEBPACK_IMPORTED_MODULE_4__["default"]).extend({
                     name: 'v-card',
                     props: {
                         flat: Boolean,
-                        height: [Number, String],
                         hover: Boolean,
                         img: String,
                         raised: Boolean,
@@ -14068,32 +14083,32 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                             type: String,
                             default: 'div'
                         },
-                        tile: Boolean,
-                        width: [String, Number]
+                        tile: Boolean
                     },
                     computed: {
                         classes: function classes() {
-                            return this.addBackgroundColorClassChecks(__assign({ 'v-card': true, 'v-card--flat': this.flat, 'v-card--hover': this.hover, 'v-card--raised': this.raised, 'v-card--tile': this.tile }, this.themeClasses));
+                            return __assign({ 'v-card': true, 'v-card--flat': this.flat, 'v-card--hover': this.hover, 'v-card--raised': this.raised, 'v-card--tile': this.tile }, this.themeClasses);
                         },
                         styles: function styles() {
                             var style = {
-                                height: Object(_util_helpers__WEBPACK_IMPORTED_MODULE_4__["convertToUnit"])(this.height)
+                                height: Object(_util_helpers__WEBPACK_IMPORTED_MODULE_5__["convertToUnit"])(this.height)
                             };
                             if (this.img) {
                                 style.background = "url(\"" + this.img + "\") center center / cover no-repeat";
                             }
-                            if (this.width) {
-                                style.width = Object(_util_helpers__WEBPACK_IMPORTED_MODULE_4__["convertToUnit"])(this.width);
-                            }
+                            if (this.height) style.height = Object(_util_helpers__WEBPACK_IMPORTED_MODULE_5__["convertToUnit"])(this.height);
+                            if (this.maxHeight) style.maxHeight = Object(_util_helpers__WEBPACK_IMPORTED_MODULE_5__["convertToUnit"])(this.maxHeight);
+                            if (this.maxWidth) style.maxWidth = Object(_util_helpers__WEBPACK_IMPORTED_MODULE_5__["convertToUnit"])(this.maxWidth);
+                            if (this.width) style.width = Object(_util_helpers__WEBPACK_IMPORTED_MODULE_5__["convertToUnit"])(this.width);
                             return style;
                         }
                     },
                     render: function render(h) {
-                        var _a = this.generateRouteLink(),
+                        var _a = this.generateRouteLink(this.classes),
                             tag = _a.tag,
                             data = _a.data;
                         data.style = this.styles;
-                        return h(tag, data, this.$slots.default);
+                        return h(tag, this.setBackgroundColor(this.color, data), this.$slots.default);
                     }
                 });
 
@@ -14227,16 +14242,15 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 /* harmony import */var _stylus_components_carousel_styl__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_stylus_components_carousel_styl__WEBPACK_IMPORTED_MODULE_0__);
                 /* harmony import */var _VBtn__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__( /*! ../VBtn */"./src/components/VBtn/index.ts");
                 /* harmony import */var _VIcon__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__( /*! ../VIcon */"./src/components/VIcon/index.ts");
-                /* harmony import */var _mixins_bootable__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__( /*! ../../mixins/bootable */"./src/mixins/bootable.ts");
-                /* harmony import */var _mixins_themeable__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__( /*! ../../mixins/themeable */"./src/mixins/themeable.ts");
-                /* harmony import */var _mixins_registrable__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__( /*! ../../mixins/registrable */"./src/mixins/registrable.ts");
-                /* harmony import */var _directives_touch__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__( /*! ../../directives/touch */"./src/directives/touch.ts");
+                /* harmony import */var _mixins_themeable__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__( /*! ../../mixins/themeable */"./src/mixins/themeable.ts");
+                /* harmony import */var _mixins_registrable__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__( /*! ../../mixins/registrable */"./src/mixins/registrable.ts");
+                /* harmony import */var _directives_touch__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__( /*! ../../directives/touch */"./src/directives/touch.ts");
 
                 /* @vue/component */
                 /* harmony default export */__webpack_exports__["default"] = {
                     name: 'v-carousel',
-                    directives: { Touch: _directives_touch__WEBPACK_IMPORTED_MODULE_6__["default"] },
-                    mixins: [_mixins_bootable__WEBPACK_IMPORTED_MODULE_3__["default"], _mixins_themeable__WEBPACK_IMPORTED_MODULE_4__["default"], Object(_mixins_registrable__WEBPACK_IMPORTED_MODULE_5__["provide"])('carousel')],
+                    directives: { Touch: _directives_touch__WEBPACK_IMPORTED_MODULE_5__["default"] },
+                    mixins: [_mixins_themeable__WEBPACK_IMPORTED_MODULE_3__["default"], Object(_mixins_registrable__WEBPACK_IMPORTED_MODULE_4__["provide"])('carousel')],
                     props: {
                         cycle: {
                             type: Boolean,
@@ -14416,14 +14430,17 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 __webpack_require__.r(__webpack_exports__);
                 /* harmony import */var _VImg__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__( /*! ../VImg */"./src/components/VImg/index.ts");
                 /* harmony import */var _mixins_registrable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__( /*! ../../mixins/registrable */"./src/mixins/registrable.ts");
-                var __assign = undefined && undefined.__assign || Object.assign || function (t) {
-                    for (var s, i = 1, n = arguments.length; i < n; i++) {
-                        s = arguments[i];
-                        for (var p in s) {
-                            if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                var __assign = undefined && undefined.__assign || function () {
+                    __assign = Object.assign || function (t) {
+                        for (var s, i = 1, n = arguments.length; i < n; i++) {
+                            s = arguments[i];
+                            for (var p in s) {
+                                if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                            }
                         }
-                    }
-                    return t;
+                        return t;
+                    };
+                    return __assign.apply(this, arguments);
                 };
                 // Components
 
@@ -14528,14 +14545,17 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 /* harmony import */var _stylus_components_selection_controls_styl__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_stylus_components_selection_controls_styl__WEBPACK_IMPORTED_MODULE_0__);
                 /* harmony import */var _VIcon__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__( /*! ../VIcon */"./src/components/VIcon/index.ts");
                 /* harmony import */var _mixins_selectable__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__( /*! ../../mixins/selectable */"./src/mixins/selectable.js");
-                var __assign = undefined && undefined.__assign || Object.assign || function (t) {
-                    for (var s, i = 1, n = arguments.length; i < n; i++) {
-                        s = arguments[i];
-                        for (var p in s) {
-                            if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                var __assign = undefined && undefined.__assign || function () {
+                    __assign = Object.assign || function (t) {
+                        for (var s, i = 1, n = arguments.length; i < n; i++) {
+                            s = arguments[i];
+                            for (var p in s) {
+                                if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                            }
                         }
-                    }
-                    return t;
+                        return t;
+                    };
+                    return __assign.apply(this, arguments);
                 };
                 // Styles
 
@@ -14594,15 +14614,12 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                         genCheckbox: function genCheckbox() {
                             return this.$createElement('div', {
                                 staticClass: 'v-input--selection-controls__input'
-                            }, [this.genInput('checkbox', __assign({}, this.$attrs, { 'aria-checked': this.inputIndeterminate ? 'mixed' : this.isActive.toString() })), !this.disabled && this.genRipple({
-                                'class': this.classesSelectable
-                            }), this.$createElement(_VIcon__WEBPACK_IMPORTED_MODULE_1__["default"], {
-                                'class': this.classesSelectable,
+                            }, [this.genInput('checkbox', __assign({}, this.$attrs, { 'aria-checked': this.inputIndeterminate ? 'mixed' : this.isActive.toString() })), !this.disabled && this.genRipple(this.setTextColor(this.computedColor)), this.$createElement(_VIcon__WEBPACK_IMPORTED_MODULE_1__["default"], this.setTextColor(this.computedColor, {
                                 props: {
                                     dark: this.dark,
                                     light: this.light
                                 }
-                            }, this.computedIcon)]);
+                            }), this.computedIcon)]);
                         },
                         genDefaultSlot: function genDefaultSlot() {
                             return [this.genCheckbox(), this.genLabel()];
@@ -14650,14 +14667,17 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 /* harmony import */var _mixins_colorable__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__( /*! ../../mixins/colorable */"./src/mixins/colorable.ts");
                 /* harmony import */var _mixins_themeable__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__( /*! ../../mixins/themeable */"./src/mixins/themeable.ts");
                 /* harmony import */var _mixins_toggleable__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__( /*! ../../mixins/toggleable */"./src/mixins/toggleable.ts");
-                var __assign = undefined && undefined.__assign || Object.assign || function (t) {
-                    for (var s, i = 1, n = arguments.length; i < n; i++) {
-                        s = arguments[i];
-                        for (var p in s) {
-                            if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                var __assign = undefined && undefined.__assign || function () {
+                    __assign = Object.assign || function (t) {
+                        for (var s, i = 1, n = arguments.length; i < n; i++) {
+                            s = arguments[i];
+                            for (var p in s) {
+                                if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                            }
                         }
-                    }
-                    return t;
+                        return t;
+                    };
+                    return __assign.apply(this, arguments);
                 };
 
                 // Components
@@ -14684,8 +14704,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                     },
                     computed: {
                         classes: function classes() {
-                            var classes = this.addBackgroundColorClassChecks(__assign({ 'v-chip--disabled': this.disabled, 'v-chip--selected': this.selected && !this.disabled, 'v-chip--label': this.label, 'v-chip--outline': this.outline, 'v-chip--small': this.small, 'v-chip--removable': this.close }, this.themeClasses));
-                            return this.textColor || this.outline ? this.addTextColorClassChecks(classes, this.textColor || this.color) : classes;
+                            return __assign({ 'v-chip--disabled': this.disabled, 'v-chip--selected': this.selected && !this.disabled, 'v-chip--label': this.label, 'v-chip--outline': this.outline, 'v-chip--small': this.small, 'v-chip--removable': this.close }, this.themeClasses);
                         }
                     },
                     methods: {
@@ -14711,7 +14730,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                         }
                     },
                     render: function render(h) {
-                        var data = {
+                        var data = this.setBackgroundColor(this.color, {
                             staticClass: 'v-chip',
                             'class': this.classes,
                             attrs: { tabindex: this.disabled ? -1 : 0 },
@@ -14720,8 +14739,9 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                                 value: this.isActive
                             }],
                             on: this.$listeners
-                        };
-                        return h('span', data, [this.genContent(h)]);
+                        });
+                        var color = this.textColor || this.outline && this.color;
+                        return h('span', this.setTextColor(color, data), [this.genContent(h)]);
                     }
                 });
 
@@ -14968,14 +14988,17 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 /* harmony import */var _stylus_components_counters_styl__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__( /*! ../../stylus/components/_counters.styl */"./src/stylus/components/_counters.styl");
                 /* harmony import */var _stylus_components_counters_styl__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_stylus_components_counters_styl__WEBPACK_IMPORTED_MODULE_0__);
                 /* harmony import */var _mixins_themeable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__( /*! ../../mixins/themeable */"./src/mixins/themeable.ts");
-                var __assign = undefined && undefined.__assign || Object.assign || function (t) {
-                    for (var s, i = 1, n = arguments.length; i < n; i++) {
-                        s = arguments[i];
-                        for (var p in s) {
-                            if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                var __assign = undefined && undefined.__assign || function () {
+                    __assign = Object.assign || function (t) {
+                        for (var s, i = 1, n = arguments.length; i < n; i++) {
+                            s = arguments[i];
+                            for (var p in s) {
+                                if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                            }
                         }
-                    }
-                    return t;
+                        return t;
+                    };
+                    return __assign.apply(this, arguments);
                 };
                 // Styles
 
@@ -15042,14 +15065,17 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 /* harmony import */var _stylus_components_data_iterator_styl__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__( /*! ../../stylus/components/_data-iterator.styl */"./src/stylus/components/_data-iterator.styl");
                 /* harmony import */var _stylus_components_data_iterator_styl__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_stylus_components_data_iterator_styl__WEBPACK_IMPORTED_MODULE_0__);
                 /* harmony import */var _mixins_data_iterable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__( /*! ../../mixins/data-iterable */"./src/mixins/data-iterable.js");
-                var __assign = undefined && undefined.__assign || Object.assign || function (t) {
-                    for (var s, i = 1, n = arguments.length; i < n; i++) {
-                        s = arguments[i];
-                        for (var p in s) {
-                            if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                var __assign = undefined && undefined.__assign || function () {
+                    __assign = Object.assign || function (t) {
+                        for (var s, i = 1, n = arguments.length; i < n; i++) {
+                            s = arguments[i];
+                            for (var p in s) {
+                                if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                            }
                         }
-                    }
-                    return t;
+                        return t;
+                    };
+                    return __assign.apply(this, arguments);
                 };
 
                 /* @vue/component */
@@ -15178,14 +15204,17 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 /* harmony import */var _mixins_foot__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__( /*! ./mixins/foot */"./src/components/VDataTable/mixins/foot.js");
                 /* harmony import */var _mixins_progress__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__( /*! ./mixins/progress */"./src/components/VDataTable/mixins/progress.js");
                 /* harmony import */var _util_helpers__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__( /*! ../../util/helpers */"./src/util/helpers.ts");
-                var __assign = undefined && undefined.__assign || Object.assign || function (t) {
-                    for (var s, i = 1, n = arguments.length; i < n; i++) {
-                        s = arguments[i];
-                        for (var p in s) {
-                            if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                var __assign = undefined && undefined.__assign || function () {
+                    __assign = Object.assign || function (t) {
+                        for (var s, i = 1, n = arguments.length; i < n; i++) {
+                            s = arguments[i];
+                            for (var p in s) {
+                                if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                            }
                         }
-                    }
-                    return t;
+                        return t;
+                    };
+                    return __assign.apply(this, arguments);
                 };
 
                 // Importing does not work properly
@@ -15296,11 +15325,13 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 /* harmony import */var _stylus_components_small_dialog_styl__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__( /*! ../../stylus/components/_small-dialog.styl */"./src/stylus/components/_small-dialog.styl");
                 /* harmony import */var _stylus_components_small_dialog_styl__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_stylus_components_small_dialog_styl__WEBPACK_IMPORTED_MODULE_0__);
                 /* harmony import */var _mixins_returnable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__( /*! ../../mixins/returnable */"./src/mixins/returnable.js");
-                /* harmony import */var _util_helpers__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__( /*! ../../util/helpers */"./src/util/helpers.ts");
-                /* harmony import */var _VBtn__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__( /*! ../VBtn */"./src/components/VBtn/index.ts");
-                /* harmony import */var _VMenu__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__( /*! ../VMenu */"./src/components/VMenu/index.js");
+                /* harmony import */var _mixins_themeable__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__( /*! ../../mixins/themeable */"./src/mixins/themeable.ts");
+                /* harmony import */var _util_helpers__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__( /*! ../../util/helpers */"./src/util/helpers.ts");
+                /* harmony import */var _VBtn__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__( /*! ../VBtn */"./src/components/VBtn/index.ts");
+                /* harmony import */var _VMenu__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__( /*! ../VMenu */"./src/components/VMenu/index.js");
 
                 // Mixins
+
 
                 // Utils
 
@@ -15308,7 +15339,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 /* @vue/component */
                 /* harmony default export */__webpack_exports__["default"] = {
                     name: 'v-edit-dialog',
-                    mixins: [_mixins_returnable__WEBPACK_IMPORTED_MODULE_1__["default"]],
+                    mixins: [_mixins_returnable__WEBPACK_IMPORTED_MODULE_1__["default"], _mixins_themeable__WEBPACK_IMPORTED_MODULE_2__["default"]],
                     props: {
                         cancelText: {
                             default: 'Cancel'
@@ -15349,7 +15380,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                             input && input.focus();
                         },
                         genButton: function genButton(fn, text) {
-                            return this.$createElement(_VBtn__WEBPACK_IMPORTED_MODULE_3__["default"], {
+                            return this.$createElement(_VBtn__WEBPACK_IMPORTED_MODULE_4__["default"], {
                                 props: {
                                     flat: true,
                                     color: 'primary',
@@ -15373,8 +15404,8 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                                 on: {
                                     keydown: function keydown(e) {
                                         var input = _this.$refs.content.querySelector('input');
-                                        e.keyCode === _util_helpers__WEBPACK_IMPORTED_MODULE_2__["keyCodes"].esc && _this.cancel();
-                                        if (e.keyCode === _util_helpers__WEBPACK_IMPORTED_MODULE_2__["keyCodes"].enter && input) {
+                                        e.keyCode === _util_helpers__WEBPACK_IMPORTED_MODULE_3__["keyCodes"].esc && _this.cancel();
+                                        if (e.keyCode === _util_helpers__WEBPACK_IMPORTED_MODULE_3__["keyCodes"].enter && input) {
                                             _this.save(input.value);
                                             _this.$emit('save');
                                         }
@@ -15386,8 +15417,9 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                     },
                     render: function render(h) {
                         var _this = this;
-                        return h(_VMenu__WEBPACK_IMPORTED_MODULE_4__["default"], {
-                            'class': 'v-small-dialog',
+                        return h(_VMenu__WEBPACK_IMPORTED_MODULE_5__["default"], {
+                            staticClass: 'v-small-dialog',
+                            class: this.themeClasses,
                             props: {
                                 contentClass: 'v-small-dialog__content',
                                 transition: this.transition,
@@ -15474,7 +15506,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                                 var expand = this.$createElement('div', {
                                     class: 'v-datatable__expand-content',
                                     key: props.item[this.itemKey]
-                                }, this.$scopedSlots.expand(props));
+                                }, [this.$scopedSlots.expand(props)]);
                                 children.push(expand);
                             }
                             var transition = this.$createElement('transition-group', {
@@ -15888,7 +15920,6 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                         var now = new Date();
                         return {
                             activePicker: this.type.toUpperCase(),
-                            defaultColor: 'accent',
                             inputDay: null,
                             inputMonth: null,
                             inputYear: null,
@@ -16317,10 +16348,9 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                             } else {
                                 eventColor = this.eventColor[date];
                             }
-                            return this.$createElement('div', {
-                                staticClass: 'v-date-picker-table__event',
-                                class: this.addBackgroundColorClassChecks({}, eventColor || this.color)
-                            });
+                            return this.$createElement('div', this.setBackgroundColor(eventColor || this.color || 'accent', {
+                                staticClass: 'v-date-picker-table__event'
+                            }));
                         },
                         // Returns number of the days from the firstDayOfWeek to the first day of the current month
                         weekDaysBeforeFirstDayOfTheMonth: function weekDaysBeforeFirstDayOfTheMonth() {
@@ -16448,8 +16478,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                     },
                     data: function data() {
                         return {
-                            isReversing: false,
-                            defaultColor: 'accent'
+                            isReversing: false
                         };
                     },
                     computed: {
@@ -16501,15 +16530,15 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                         },
                         genHeader: function genHeader() {
                             var _this = this;
-                            var header = this.$createElement('strong', {
-                                'class': this.disabled ? undefined : this.addTextColorClassChecks(),
+                            var color = !this.disabled && (this.color || 'accent');
+                            var header = this.$createElement('strong', this.setTextColor(color, {
                                 key: String(this.value),
                                 on: {
                                     click: function click() {
                                         return _this.$emit('toggle');
                                     }
                                 }
-                            }, [this.$slots.default || this.formatter(String(this.value))]);
+                            }), [this.$slots.default || this.formatter(String(this.value))]);
                             var transition = this.$createElement('transition', {
                                 props: {
                                     name: this.isReversing === !this.$vuetify.rtl ? 'tab-reverse-transition' : 'tab-transition'
@@ -16661,7 +16690,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                             }, this.yearIcon);
                         },
                         getYearBtn: function getYearBtn() {
-                            return this.genPickerButton('selectingYear', true, [this.year, this.yearIcon ? this.genYearIcon() : null], 'v-date-picker-title__year');
+                            return this.genPickerButton('selectingYear', true, [this.year, this.yearIcon ? this.genYearIcon() : null], false, 'v-date-picker-title__year');
                         },
                         genTitleText: function genTitleText() {
                             return this.$createElement('transition', {
@@ -16674,7 +16703,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                             })]);
                         },
                         genTitleDate: function genTitleDate(title) {
-                            return this.genPickerButton('selectingYear', false, this.genTitleText(title), 'v-date-picker-title__date');
+                            return this.genPickerButton('selectingYear', false, this.genTitleText(title), false, 'v-date-picker-title__date');
                         }
                     },
                     render: function render(h) {
@@ -16745,15 +16774,17 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                         genYearItem: function genYearItem(year) {
                             var _this = this;
                             var formatted = this.formatter("" + year);
-                            return this.$createElement('li', {
+                            var active = parseInt(this.value, 10) === year;
+                            var color = active && (this.color || 'primary');
+                            return this.$createElement('li', this.setTextColor(color, {
                                 key: year,
-                                'class': parseInt(this.value, 10) === year ? this.addTextColorClassChecks({ active: true }) : {},
+                                'class': { active: active },
                                 on: {
                                     click: function click() {
                                         return _this.$emit('input', year);
                                     }
                                 }
-                            }, formatted);
+                            }), formatted);
                         },
                         genYearItems: function genYearItems() {
                             var children = [];
@@ -16845,14 +16876,17 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 /* harmony import */var _stylus_components_date_picker_table_styl__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_stylus_components_date_picker_table_styl__WEBPACK_IMPORTED_MODULE_0__);
                 /* harmony import */var _directives_touch__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__( /*! ../../../directives/touch */"./src/directives/touch.ts");
                 /* harmony import */var _util_isDateAllowed__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__( /*! .././util/isDateAllowed */"./src/components/VDatePicker/util/isDateAllowed.js");
-                var __assign = undefined && undefined.__assign || Object.assign || function (t) {
-                    for (var s, i = 1, n = arguments.length; i < n; i++) {
-                        s = arguments[i];
-                        for (var p in s) {
-                            if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                var __assign = undefined && undefined.__assign || function () {
+                    __assign = Object.assign || function (t) {
+                        for (var s, i = 1, n = arguments.length; i < n; i++) {
+                            s = arguments[i];
+                            for (var p in s) {
+                                if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                            }
                         }
-                    }
-                    return t;
+                        return t;
+                    };
+                    return __assign.apply(this, arguments);
                 };
 
                 // Directives
@@ -16885,7 +16919,6 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                     },
                     data: function data() {
                         return {
-                            defaultColor: 'accent',
                             isReversing: false
                         };
                     },
@@ -16906,20 +16939,19 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                         }
                     },
                     methods: {
-                        genButtonClasses: function genButtonClasses(value, isAllowed, isFloating) {
-                            var isSelected = value === this.value || Array.isArray(this.value) && this.value.indexOf(value) !== -1;
-                            var isCurrent = value === this.current;
-                            var classes = __assign({ 'v-btn--active': isSelected, 'v-btn--flat': !isSelected, 'v-btn--icon': isSelected && isAllowed && isFloating, 'v-btn--floating': isFloating, 'v-btn--depressed': !isFloating && isSelected, 'v-btn--disabled': !isAllowed || this.disabled && isSelected, 'v-btn--outline': isCurrent && !isSelected }, this.themeClasses);
-                            if (isSelected) return this.addBackgroundColorClassChecks(classes);
-                            if (isCurrent) return this.addTextColorClassChecks(classes);
-                            return classes;
+                        genButtonClasses: function genButtonClasses(isAllowed, isFloating, isSelected, isCurrent) {
+                            return __assign({ 'v-btn--active': isSelected, 'v-btn--flat': !isSelected, 'v-btn--icon': isSelected && isAllowed && isFloating, 'v-btn--floating': isFloating, 'v-btn--depressed': !isFloating && isSelected, 'v-btn--disabled': !isAllowed || this.disabled && isSelected, 'v-btn--outline': isCurrent && !isSelected }, this.themeClasses);
                         },
                         genButton: function genButton(value, isFloating) {
                             var _this = this;
                             var isAllowed = Object(_util_isDateAllowed__WEBPACK_IMPORTED_MODULE_2__["default"])(value, this.min, this.max, this.allowedDates);
-                            return this.$createElement('button', {
+                            var isSelected = value === this.value || Array.isArray(this.value) && this.value.indexOf(value) !== -1;
+                            var isCurrent = value === this.current;
+                            var setColor = isSelected ? this.setBackgroundColor : this.setTextColor;
+                            var color = (isSelected || isCurrent) && (this.color || 'accent');
+                            return this.$createElement('button', setColor(color, {
                                 staticClass: 'v-btn',
-                                'class': this.genButtonClasses(value, isAllowed, isFloating),
+                                'class': this.genButtonClasses(isAllowed, isFloating, isSelected, isCurrent),
                                 attrs: {
                                     type: 'button'
                                 },
@@ -16932,7 +16964,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                                         return _this.$emit('input', value);
                                     }
                                 }
-                            });
+                            }));
                         },
                         wheel: function wheel(e) {
                             e.preventDefault();
@@ -17187,14 +17219,18 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 /* harmony import */var _mixins_toggleable__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__( /*! ../../mixins/toggleable */"./src/mixins/toggleable.ts");
                 /* harmony import */var _directives_click_outside__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__( /*! ../../directives/click-outside */"./src/directives/click-outside.ts");
                 /* harmony import */var _util_helpers__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__( /*! ../../util/helpers */"./src/util/helpers.ts");
-                var __assign = undefined && undefined.__assign || Object.assign || function (t) {
-                    for (var s, i = 1, n = arguments.length; i < n; i++) {
-                        s = arguments[i];
-                        for (var p in s) {
-                            if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                /* harmony import */var _util_SlotProvider__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__( /*! ../../util/SlotProvider */"./src/util/SlotProvider.ts");
+                var __assign = undefined && undefined.__assign || function () {
+                    __assign = Object.assign || function (t) {
+                        for (var s, i = 1, n = arguments.length; i < n; i++) {
+                            s = arguments[i];
+                            for (var p in s) {
+                                if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                            }
                         }
-                    }
-                    return t;
+                        return t;
+                    };
+                    return __assign.apply(this, arguments);
                 };
 
                 // Mixins
@@ -17203,6 +17239,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 // Directives
 
                 // Helpers
+
 
                 /* @vue/component */
                 /* harmony default export */__webpack_exports__["default"] = {
@@ -17374,7 +17411,13 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                             attrs: __assign({ tabIndex: '-1' }, this.getScopeIdAttrs()),
                             style: { zIndex: this.activeZIndex },
                             ref: 'content'
-                        }, [dialog]));
+                        }, [this.$createElement(_util_SlotProvider__WEBPACK_IMPORTED_MODULE_9__["default"], {
+                            props: {
+                                provide: {
+                                    theme: { isDark: this.$vuetify.dark || this.dark }
+                                }
+                            }
+                        }, [dialog])]));
                         return h('div', {
                             staticClass: 'v-dialog__container',
                             style: {
@@ -17420,14 +17463,17 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 /* harmony import */var _stylus_components_dividers_styl__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__( /*! ../../stylus/components/_dividers.styl */"./src/stylus/components/_dividers.styl");
                 /* harmony import */var _stylus_components_dividers_styl__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_stylus_components_dividers_styl__WEBPACK_IMPORTED_MODULE_0__);
                 /* harmony import */var _mixins_themeable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__( /*! ../../mixins/themeable */"./src/mixins/themeable.ts");
-                var __assign = undefined && undefined.__assign || Object.assign || function (t) {
-                    for (var s, i = 1, n = arguments.length; i < n; i++) {
-                        s = arguments[i];
-                        for (var p in s) {
-                            if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                var __assign = undefined && undefined.__assign || function () {
+                    __assign = Object.assign || function (t) {
+                        for (var s, i = 1, n = arguments.length; i < n; i++) {
+                            s = arguments[i];
+                            for (var p in s) {
+                                if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                            }
                         }
-                    }
-                    return t;
+                        return t;
+                    };
+                    return __assign.apply(this, arguments);
                 };
                 // Styles
 
@@ -17486,14 +17532,17 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 /* harmony import */var _mixins_themeable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__( /*! ../../mixins/themeable */"./src/mixins/themeable.ts");
                 /* harmony import */var _mixins_registrable__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__( /*! ../../mixins/registrable */"./src/mixins/registrable.ts");
                 /* harmony import */var _util_mixins__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__( /*! ../../util/mixins */"./src/util/mixins.ts");
-                var __assign = undefined && undefined.__assign || Object.assign || function (t) {
-                    for (var s, i = 1, n = arguments.length; i < n; i++) {
-                        s = arguments[i];
-                        for (var p in s) {
-                            if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                var __assign = undefined && undefined.__assign || function () {
+                    __assign = Object.assign || function (t) {
+                        for (var s, i = 1, n = arguments.length; i < n; i++) {
+                            s = arguments[i];
+                            for (var p in s) {
+                                if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                            }
                         }
-                    }
-                    return t;
+                        return t;
+                    };
+                    return __assign.apply(this, arguments);
                 };
 
                 /* @vue/component */
@@ -17816,14 +17865,17 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 /* harmony import */var _mixins_applicationable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__( /*! ../../mixins/applicationable */"./src/mixins/applicationable.ts");
                 /* harmony import */var _mixins_colorable__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__( /*! ../../mixins/colorable */"./src/mixins/colorable.ts");
                 /* harmony import */var _mixins_themeable__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__( /*! ../../mixins/themeable */"./src/mixins/themeable.ts");
-                var __assign = undefined && undefined.__assign || Object.assign || function (t) {
-                    for (var s, i = 1, n = arguments.length; i < n; i++) {
-                        s = arguments[i];
-                        for (var p in s) {
-                            if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                var __assign = undefined && undefined.__assign || function () {
+                    __assign = Object.assign || function (t) {
+                        for (var s, i = 1, n = arguments.length; i < n; i++) {
+                            s = arguments[i];
+                            for (var p in s) {
+                                if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                            }
                         }
-                    }
-                    return t;
+                        return t;
+                    };
+                    return __assign.apply(this, arguments);
                 };
                 // Styles
 
@@ -17880,12 +17932,12 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                         }
                     },
                     render: function render(h) {
-                        var data = {
+                        var data = this.setBackgroundColor(this.color, {
                             staticClass: 'v-footer',
-                            'class': this.addBackgroundColorClassChecks(__assign({ 'v-footer--absolute': this.absolute, 'v-footer--fixed': !this.absolute && (this.app || this.fixed), 'v-footer--inset': this.inset }, this.themeClasses)),
+                            'class': __assign({ 'v-footer--absolute': this.absolute, 'v-footer--fixed': !this.absolute && (this.app || this.fixed), 'v-footer--inset': this.inset }, this.themeClasses),
                             style: this.styles,
                             ref: 'content'
-                        };
+                        });
                         return h('footer', data, this.$slots.default);
                     }
                 };
@@ -18293,6 +18345,102 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 /***/
             },
 
+            /***/"./src/components/VHover/VHover.ts":
+            /*!*****************************************!*\
+              !*** ./src/components/VHover/VHover.ts ***!
+              \*****************************************/
+            /*! exports provided: default */
+            /***/function (module, __webpack_exports__, __webpack_require__) {
+
+                "use strict";
+
+                __webpack_require__.r(__webpack_exports__);
+                /* harmony import */var _mixins_delayable__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__( /*! ../../mixins/delayable */"./src/mixins/delayable.ts");
+                /* harmony import */var _mixins_toggleable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__( /*! ../../mixins/toggleable */"./src/mixins/toggleable.ts");
+                /* harmony import */var _util_mixins__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__( /*! ../../util/mixins */"./src/util/mixins.ts");
+                /* harmony import */var _util_console__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__( /*! ../../util/console */"./src/util/console.ts");
+                // Mixins
+
+
+                // Utilities
+
+
+                /* harmony default export */__webpack_exports__["default"] = Object(_util_mixins__WEBPACK_IMPORTED_MODULE_2__["default"])(_mixins_delayable__WEBPACK_IMPORTED_MODULE_0__["default"], _mixins_toggleable__WEBPACK_IMPORTED_MODULE_1__["default"]
+                /* @vue/component */
+                ).extend({
+                    name: 'v-hover',
+                    props: {
+                        disabled: {
+                            type: Boolean,
+                            default: false
+                        },
+                        value: {
+                            type: Boolean,
+                            default: undefined
+                        }
+                    },
+                    methods: {
+                        onMouseEnter: function onMouseEnter() {
+                            var _this = this;
+                            this.runDelay('open', function () {
+                                _this.isActive = true;
+                            });
+                        },
+                        onMouseLeave: function onMouseLeave() {
+                            var _this = this;
+                            this.runDelay('close', function () {
+                                _this.isActive = false;
+                            });
+                        }
+                    },
+                    render: function render() {
+                        if (!this.$scopedSlots.default && this.value === undefined) {
+                            Object(_util_console__WEBPACK_IMPORTED_MODULE_3__["consoleWarn"])('v-hover is missing a default scopedSlot or bound value', this);
+                            return null;
+                        }
+                        var element;
+                        if (this.$scopedSlots.default) {
+                            element = this.$scopedSlots.default({ hover: this.isActive });
+                        } else if (this.$slots.default.length === 1) {
+                            element = this.$slots.default[0];
+                        }
+                        if (!element || typeof element === 'string' || Array.isArray(element)) {
+                            Object(_util_console__WEBPACK_IMPORTED_MODULE_3__["consoleWarn"])('v-hover should only contain a single element', this);
+                            return element;
+                        }
+                        if (!this.disabled) {
+                            this._g(element.data, {
+                                mouseenter: this.onMouseEnter,
+                                mouseleave: this.onMouseLeave
+                            });
+                        }
+                        return element;
+                    }
+                });
+
+                /***/
+            },
+
+            /***/"./src/components/VHover/index.ts":
+            /*!****************************************!*\
+              !*** ./src/components/VHover/index.ts ***!
+              \****************************************/
+            /*! exports provided: VHover, default */
+            /***/function (module, __webpack_exports__, __webpack_require__) {
+
+                "use strict";
+
+                __webpack_require__.r(__webpack_exports__);
+                /* harmony import */var _VHover__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__( /*! ./VHover */"./src/components/VHover/VHover.ts");
+                /* harmony reexport (safe) */__webpack_require__.d(__webpack_exports__, "VHover", function () {
+                    return _VHover__WEBPACK_IMPORTED_MODULE_0__["default"];
+                });
+
+                /* harmony default export */__webpack_exports__["default"] = _VHover__WEBPACK_IMPORTED_MODULE_0__["default"];
+
+                /***/
+            },
+
             /***/"./src/components/VIcon/VIcon.ts":
             /*!***************************************!*\
               !*** ./src/components/VIcon/VIcon.ts ***!
@@ -18312,14 +18460,17 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 /* harmony import */var vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__( /*! vue */"vue");
                 /* harmony import */var vue__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_5__);
                 /* harmony import */var _util_mixins__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__( /*! ../../util/mixins */"./src/util/mixins.ts");
-                var __assign = undefined && undefined.__assign || Object.assign || function (t) {
-                    for (var s, i = 1, n = arguments.length; i < n; i++) {
-                        s = arguments[i];
-                        for (var p in s) {
-                            if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                var __assign = undefined && undefined.__assign || function () {
+                    __assign = Object.assign || function (t) {
+                        for (var s, i = 1, n = arguments.length; i < n; i++) {
+                            s = arguments[i];
+                            for (var p in s) {
+                                if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                            }
                         }
-                    }
-                    return t;
+                        return t;
+                    };
+                    return __assign.apply(this, arguments);
                 };
 
                 // Mixins
@@ -18353,6 +18504,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                         right: Boolean
                     },
                     render: function render(h) {
+                        var _a;
                         var sizes = {
                             small: this.small,
                             medium: this.medium,
@@ -18385,13 +18537,8 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                             // Assume if not a custom icon
                             // is Material Icon font
                         } else newChildren.push(iconName);
-                        data.class = [this.addTextColorClassChecks({
-                            'v-icon--disabled': this.disabled,
-                            'v-icon--left': this.left,
-                            'v-icon--link': this.$listeners.click || this.$listeners['!click'],
-                            'v-icon--right': this.right
-                        }), iconType, isCustomIcon ? iconName : undefined, this.themeClasses];
-                        return h('i', data, newChildren);
+                        data.class = __assign((_a = { 'v-icon--disabled': this.disabled, 'v-icon--left': this.left, 'v-icon--link': this.$listeners.click || this.$listeners['!click'], 'v-icon--right': this.right }, _a[iconType] = true, _a[iconName] = isCustomIcon, _a), this.themeClasses);
+                        return h('i', this.setTextColor(this.color, data), newChildren);
                     }
                 });
                 /* harmony default export */__webpack_exports__["default"] = vue__WEBPACK_IMPORTED_MODULE_5___default.a.extend({
@@ -18466,6 +18613,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                             type: [String, Object],
                             default: ''
                         },
+                        gradient: String,
                         lazySrc: String,
                         srcset: String,
                         sizes: String,
@@ -18505,7 +18653,10 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                         },
                         __cachedImage: function __cachedImage() {
                             if (!(this.normalisedSrc.src || this.normalisedSrc.lazySrc)) return [];
+                            var backgroundImage = [];
                             var src = this.isLoading ? this.normalisedSrc.lazySrc : this.currentSrc;
+                            if (this.gradient) backgroundImage.push("linear-gradient(" + this.gradient + ")");
+                            if (src) backgroundImage.push("url(\"" + src + "\")");
                             return this.$createElement('transition', {
                                 attrs: {
                                     name: this.transition,
@@ -18519,7 +18670,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                                     'v-image__image--cover': !this.contain
                                 },
                                 style: {
-                                    backgroundImage: src ? "url(\"" + src + "\")" : undefined,
+                                    backgroundImage: backgroundImage.join(', '),
                                     backgroundPosition: this.position
                                 },
                                 key: +this.isLoading
@@ -18550,13 +18701,13 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                             this.isLoading = false;
                             this.$emit('load', this.src);
                         },
-                        onError: function onError() {
-                            Object(_util_console__WEBPACK_IMPORTED_MODULE_2__["consoleError"])('Image load failed\n\nsrc: ' + this.normalisedSrc.src, this);
+                        onError: function onError(err) {
+                            Object(_util_console__WEBPACK_IMPORTED_MODULE_2__["consoleError"])("Image load failed\n\n" + ("src: " + this.normalisedSrc.src) + (err.message ? "\nOriginal error: " + err.message : ''), this);
                             this.$emit('error', this.src);
                         },
                         getSrc: function getSrc() {
                             /* istanbul ignore else */
-                            if (this.image) this.currentSrc = this.image.currentSrc;
+                            if (this.image) this.currentSrc = this.image.currentSrc || this.image.src;
                         },
                         loadImage: function loadImage() {
                             var _this = this;
@@ -18565,7 +18716,9 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                             image.onload = function () {
                                 /* istanbul ignore if */
                                 if (image.decode) {
-                                    image.decode().then(_this.onLoad);
+                                    image.decode().catch(function (err) {
+                                        Object(_util_console__WEBPACK_IMPORTED_MODULE_2__["consoleWarn"])("Failed to decode image, trying to render anyway\n\n" + ("src: " + _this.normalisedSrc.src) + (err.message ? "\nOriginal error: " + err.message : ''), _this);
+                                    }).then(_this.onLoad);
                                 } else {
                                     _this.onLoad();
                                 }
@@ -18575,7 +18728,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                             this.sizes && (image.sizes = this.sizes);
                             this.normalisedSrc.srcset && (image.srcset = this.normalisedSrc.srcset);
                             this.aspectRatio || this.pollForSize(image);
-                            this.currentSrc = image.currentSrc;
+                            this.getSrc();
                         },
                         pollForSize: function pollForSize(img, timeout) {
                             var _this = this;
@@ -18660,14 +18813,17 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 /* harmony import */var _mixins_validatable__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__( /*! ../../mixins/validatable */"./src/mixins/validatable.js");
                 /* harmony import */var _util_helpers__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__( /*! ../../util/helpers */"./src/util/helpers.ts");
                 /* harmony import */var _util_console__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__( /*! ../../util/console */"./src/util/console.ts");
-                var __assign = undefined && undefined.__assign || Object.assign || function (t) {
-                    for (var s, i = 1, n = arguments.length; i < n; i++) {
-                        s = arguments[i];
-                        for (var p in s) {
-                            if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                var __assign = undefined && undefined.__assign || function () {
+                    __assign = Object.assign || function (t) {
+                        for (var s, i = 1, n = arguments.length; i < n; i++) {
+                            s = arguments[i];
+                            for (var p in s) {
+                                if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                            }
                         }
-                    }
-                    return t;
+                        return t;
+                    };
+                    return __assign.apply(this, arguments);
                 };
                 // Styles
 
@@ -18712,7 +18868,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                     },
                     computed: {
                         classesInput: function classesInput() {
-                            return __assign({}, this.classes, { 'v-input--has-state': this.hasState, 'v-input--hide-details': this.hideDetails, 'v-input--is-label-active': this.isLabelActive, 'v-input--is-dirty': this.isDirty, 'v-input--is-disabled': this.disabled, 'v-input--is-focused': this.isFocused, 'v-input--is-loading': this.loading !== false, 'v-input--is-readonly': this.readonly }, this.addTextColorClassChecks({}, this.validationState), this.themeClasses);
+                            return __assign({}, this.classes, { 'v-input--has-state': this.hasState, 'v-input--hide-details': this.hideDetails, 'v-input--is-label-active': this.isLabelActive, 'v-input--is-dirty': this.isDirty, 'v-input--is-disabled': this.disabled, 'v-input--is-focused': this.isFocused, 'v-input--is-loading': this.loading !== false, 'v-input--is-readonly': this.readonly }, this.themeClasses);
                         },
                         directivesInput: function directivesInput() {
                             return [];
@@ -18733,7 +18889,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                             },
                             set: function set(val) {
                                 this.lazyValue = val;
-                                this.$emit('input', val);
+                                this.$emit(this.$_modelEvent, val);
                             }
                         },
                         isDirty: function isDirty() {
@@ -18750,6 +18906,11 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                         value: function value(val) {
                             this.lazyValue = val;
                         }
+                    },
+                    beforeCreate: function beforeCreate() {
+                        // v-radio-group needs to emit a different event
+                        // https://github.com/vuetifyjs/vuetify/issues/4752
+                        this.$_modelEvent = this.$options.model && this.$options.model.event || 'input';
                     },
                     methods: {
                         genContent: function genContent() {
@@ -18803,9 +18964,8 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                             }, [this.$createElement(_VIcon__WEBPACK_IMPORTED_MODULE_1__["default"], data, icon)]);
                         },
                         genInputSlot: function genInputSlot() {
-                            return this.$createElement('div', {
+                            return this.$createElement('div', this.setBackgroundColor(this.backgroundColor, {
                                 staticClass: 'v-input__slot',
-                                class: this.addBackgroundColorClassChecks({}, this.backgroundColor),
                                 style: { height: Object(_util_helpers__WEBPACK_IMPORTED_MODULE_8__["convertToUnit"])(this.height) },
                                 directives: this.directivesInput,
                                 on: {
@@ -18814,7 +18974,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                                     mouseup: this.onMouseUp
                                 },
                                 ref: 'input-slot'
-                            }, [this.genDefaultSlot(), this.genProgress()]);
+                            }), [this.genDefaultSlot(), this.genProgress()]);
                         },
                         genLabel: function genLabel() {
                             if (!this.hasLabel) return null;
@@ -18881,11 +19041,11 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                         }
                     },
                     render: function render(h) {
-                        return h('div', {
+                        return h('div', this.setTextColor(this.validationState, {
                             staticClass: 'v-input',
                             attrs: this.attrsInput,
                             'class': this.classesInput
-                        }, this.genContent());
+                        }), this.genContent());
                     }
                 };
 
@@ -18972,11 +19132,10 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                     },
                     methods: {
                         genBackground: function genBackground() {
-                            return this.$createElement('div', {
+                            return this.$createElement('div', this.setBackgroundColor(this.color, {
                                 staticClass: 'v-jumbotron__background',
-                                'class': this.addBackgroundColorClassChecks(),
                                 style: this.backgroundStyles
-                            });
+                            }));
                         },
                         genContent: function genContent() {
                             return this.$createElement('div', {
@@ -18998,7 +19157,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                         }
                     },
                     render: function render(h) {
-                        var _a = this.generateRouteLink(),
+                        var _a = this.generateRouteLink(this.classes),
                             tag = _a.tag,
                             data = _a.data;
                         data.staticClass = 'v-jumbotron';
@@ -19045,14 +19204,17 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 /* harmony import */var _mixins_colorable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__( /*! ../../mixins/colorable */"./src/mixins/colorable.ts");
                 /* harmony import */var _mixins_themeable__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__( /*! ../../mixins/themeable */"./src/mixins/themeable.ts");
                 /* harmony import */var _util_helpers__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__( /*! ../../util/helpers */"./src/util/helpers.ts");
-                var __assign = undefined && undefined.__assign || Object.assign || function (t) {
-                    for (var s, i = 1, n = arguments.length; i < n; i++) {
-                        s = arguments[i];
-                        for (var p in s) {
-                            if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                var __assign = undefined && undefined.__assign || function () {
+                    __assign = Object.assign || function (t) {
+                        for (var s, i = 1, n = arguments.length; i < n; i++) {
+                            s = arguments[i];
+                            for (var p in s) {
+                                if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                            }
                         }
-                    }
-                    return t;
+                        return t;
+                    };
+                    return __assign.apply(this, arguments);
                 };
                 // Styles
 
@@ -19103,10 +19265,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                                 position: props.absolute ? 'absolute' : 'relative'
                             }
                         };
-                        if (props.focused) {
-                            data.class = _mixins_colorable__WEBPACK_IMPORTED_MODULE_1__["default"].options.methods.addTextColorClassChecks(data.class, props.color);
-                        }
-                        return h('label', data, children);
+                        return h('label', _mixins_colorable__WEBPACK_IMPORTED_MODULE_1__["default"].options.methods.setTextColor(props.focused && props.color, data), children);
                     }
                 };
 
@@ -19147,14 +19306,17 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 /* harmony import */var _stylus_components_lists_styl__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_stylus_components_lists_styl__WEBPACK_IMPORTED_MODULE_0__);
                 /* harmony import */var _mixins_themeable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__( /*! ../../mixins/themeable */"./src/mixins/themeable.ts");
                 /* harmony import */var _mixins_registrable__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__( /*! ../../mixins/registrable */"./src/mixins/registrable.ts");
-                var __assign = undefined && undefined.__assign || Object.assign || function (t) {
-                    for (var s, i = 1, n = arguments.length; i < n; i++) {
-                        s = arguments[i];
-                        for (var p in s) {
-                            if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                var __assign = undefined && undefined.__assign || function () {
+                    __assign = Object.assign || function (t) {
+                        for (var s, i = 1, n = arguments.length; i < n; i++) {
+                            s = arguments[i];
+                            for (var p in s) {
+                                if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                            }
                         }
-                    }
-                    return t;
+                        return t;
+                    };
+                    return __assign.apply(this, arguments);
                 };
                 // Styles
 
@@ -19386,15 +19548,19 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 /* harmony import */var _mixins_colorable__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__( /*! ../../mixins/colorable */"./src/mixins/colorable.ts");
                 /* harmony import */var _mixins_routable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__( /*! ../../mixins/routable */"./src/mixins/routable.ts");
                 /* harmony import */var _mixins_toggleable__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__( /*! ../../mixins/toggleable */"./src/mixins/toggleable.ts");
-                /* harmony import */var _directives_ripple__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__( /*! ../../directives/ripple */"./src/directives/ripple.ts");
-                var __assign = undefined && undefined.__assign || Object.assign || function (t) {
-                    for (var s, i = 1, n = arguments.length; i < n; i++) {
-                        s = arguments[i];
-                        for (var p in s) {
-                            if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                /* harmony import */var _mixins_themeable__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__( /*! ../../mixins/themeable */"./src/mixins/themeable.ts");
+                /* harmony import */var _directives_ripple__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__( /*! ../../directives/ripple */"./src/directives/ripple.ts");
+                var __assign = undefined && undefined.__assign || function () {
+                    __assign = Object.assign || function (t) {
+                        for (var s, i = 1, n = arguments.length; i < n; i++) {
+                            s = arguments[i];
+                            for (var p in s) {
+                                if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                            }
                         }
-                    }
-                    return t;
+                        return t;
+                    };
+                    return __assign.apply(this, arguments);
                 };
                 // Mixins
 
@@ -19405,9 +19571,9 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 /* harmony default export */__webpack_exports__["default"] = {
                     name: 'v-list-tile',
                     directives: {
-                        Ripple: _directives_ripple__WEBPACK_IMPORTED_MODULE_3__["default"]
+                        Ripple: _directives_ripple__WEBPACK_IMPORTED_MODULE_4__["default"]
                     },
-                    mixins: [_mixins_colorable__WEBPACK_IMPORTED_MODULE_0__["default"], _mixins_routable__WEBPACK_IMPORTED_MODULE_1__["default"], _mixins_toggleable__WEBPACK_IMPORTED_MODULE_2__["default"]],
+                    mixins: [_mixins_colorable__WEBPACK_IMPORTED_MODULE_0__["default"], _mixins_routable__WEBPACK_IMPORTED_MODULE_1__["default"], _mixins_toggleable__WEBPACK_IMPORTED_MODULE_2__["default"], _mixins_themeable__WEBPACK_IMPORTED_MODULE_3__["default"]],
                     inheritAttrs: false,
                     props: {
                         activeClass: {
@@ -19425,17 +19591,11 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                     },
                     computed: {
                         listClasses: function listClasses() {
-                            return this.disabled ? 'v-list--disabled' : this.color ? this.addTextColorClassChecks() : this.defaultColor;
+                            return this.disabled ? { 'v-list--disabled': true } : undefined;
                         },
                         classes: function classes() {
                             var _a;
-                            return _a = {
-                                'v-list__tile': true,
-                                'v-list__tile--link': this.isLink && !this.inactive,
-                                'v-list__tile--avatar': this.avatar,
-                                'v-list__tile--disabled': this.disabled,
-                                'v-list__tile--active': !this.to && this.isActive
-                            }, _a[this.activeClass] = this.isActive, _a;
+                            return __assign({ 'v-list__tile': true, 'v-list__tile--link': this.isLink && !this.inactive, 'v-list__tile--avatar': this.avatar, 'v-list__tile--disabled': this.disabled, 'v-list__tile--active': !this.to && this.isActive }, this.themeClasses, (_a = {}, _a[this.activeClass] = this.isActive, _a));
                         },
                         isLink: function isLink() {
                             return this.href || this.to || this.$listeners && (this.$listeners.click || this.$listeners['!click']);
@@ -19443,7 +19603,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                     },
                     render: function render(h) {
                         var isRouteLink = !this.inactive && this.isLink;
-                        var _a = isRouteLink ? this.generateRouteLink() : {
+                        var _a = isRouteLink ? this.generateRouteLink(this.classes) : {
                             tag: this.tag || 'div',
                             data: {
                                 class: this.classes
@@ -19452,13 +19612,13 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                             tag = _a.tag,
                             data = _a.data;
                         data.attrs = Object.assign({}, data.attrs, this.$attrs);
-                        return h('div', {
-                            'class': this.listClasses,
+                        return h('div', this.setTextColor(!this.disabled && this.color, {
+                            class: this.listClasses,
                             attrs: {
                                 disabled: this.disabled
                             },
                             on: __assign({}, this.$listeners)
-                        }, [h(tag, data, this.$slots.default)]);
+                        }), [h(tag, data, this.$slots.default)]);
                     }
                 };
 
@@ -19616,19 +19776,22 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 __webpack_require__.r(__webpack_exports__);
                 /* harmony import */var _stylus_components_menus_styl__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__( /*! ../../stylus/components/_menus.styl */"./src/stylus/components/_menus.styl");
                 /* harmony import */var _stylus_components_menus_styl__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_stylus_components_menus_styl__WEBPACK_IMPORTED_MODULE_0__);
-                /* harmony import */var _mixins_delayable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__( /*! ../../mixins/delayable */"./src/mixins/delayable.ts");
-                /* harmony import */var _mixins_dependent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__( /*! ../../mixins/dependent */"./src/mixins/dependent.js");
-                /* harmony import */var _mixins_detachable__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__( /*! ../../mixins/detachable */"./src/mixins/detachable.js");
-                /* harmony import */var _mixins_menuable_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__( /*! ../../mixins/menuable.js */"./src/mixins/menuable.js");
-                /* harmony import */var _mixins_returnable__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__( /*! ../../mixins/returnable */"./src/mixins/returnable.js");
-                /* harmony import */var _mixins_toggleable__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__( /*! ../../mixins/toggleable */"./src/mixins/toggleable.ts");
-                /* harmony import */var _mixins_menu_activator__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__( /*! ./mixins/menu-activator */"./src/components/VMenu/mixins/menu-activator.js");
-                /* harmony import */var _mixins_menu_generators__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__( /*! ./mixins/menu-generators */"./src/components/VMenu/mixins/menu-generators.js");
-                /* harmony import */var _mixins_menu_keyable__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__( /*! ./mixins/menu-keyable */"./src/components/VMenu/mixins/menu-keyable.js");
-                /* harmony import */var _mixins_menu_position__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__( /*! ./mixins/menu-position */"./src/components/VMenu/mixins/menu-position.js");
-                /* harmony import */var _directives_click_outside__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__( /*! ../../directives/click-outside */"./src/directives/click-outside.ts");
-                /* harmony import */var _directives_resize__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__( /*! ../../directives/resize */"./src/directives/resize.ts");
-                /* harmony import */var _util_helpers__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__( /*! ../../util/helpers */"./src/util/helpers.ts");
+                /* harmony import */var vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__( /*! vue */"vue");
+                /* harmony import */var vue__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_1__);
+                /* harmony import */var _mixins_delayable__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__( /*! ../../mixins/delayable */"./src/mixins/delayable.ts");
+                /* harmony import */var _mixins_dependent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__( /*! ../../mixins/dependent */"./src/mixins/dependent.js");
+                /* harmony import */var _mixins_detachable__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__( /*! ../../mixins/detachable */"./src/mixins/detachable.js");
+                /* harmony import */var _mixins_menuable_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__( /*! ../../mixins/menuable.js */"./src/mixins/menuable.js");
+                /* harmony import */var _mixins_returnable__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__( /*! ../../mixins/returnable */"./src/mixins/returnable.js");
+                /* harmony import */var _mixins_toggleable__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__( /*! ../../mixins/toggleable */"./src/mixins/toggleable.ts");
+                /* harmony import */var _mixins_menu_activator__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__( /*! ./mixins/menu-activator */"./src/components/VMenu/mixins/menu-activator.js");
+                /* harmony import */var _mixins_menu_generators__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__( /*! ./mixins/menu-generators */"./src/components/VMenu/mixins/menu-generators.js");
+                /* harmony import */var _mixins_menu_keyable__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__( /*! ./mixins/menu-keyable */"./src/components/VMenu/mixins/menu-keyable.js");
+                /* harmony import */var _mixins_menu_position__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__( /*! ./mixins/menu-position */"./src/components/VMenu/mixins/menu-position.js");
+                /* harmony import */var _directives_click_outside__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__( /*! ../../directives/click-outside */"./src/directives/click-outside.ts");
+                /* harmony import */var _directives_resize__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__( /*! ../../directives/resize */"./src/directives/resize.ts");
+                /* harmony import */var _util_helpers__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__( /*! ../../util/helpers */"./src/util/helpers.ts");
+                /* harmony import */var _util_SlotProvider__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__( /*! ../../util/SlotProvider */"./src/util/SlotProvider.ts");
 
                 // Mixins
 
@@ -19641,14 +19804,15 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
 
                 // Helpers
 
+
                 /* @vue/component */
-                /* harmony default export */__webpack_exports__["default"] = {
+                /* harmony default export */__webpack_exports__["default"] = vue__WEBPACK_IMPORTED_MODULE_1___default.a.extend({
                     name: 'v-menu',
                     directives: {
-                        ClickOutside: _directives_click_outside__WEBPACK_IMPORTED_MODULE_11__["default"],
-                        Resize: _directives_resize__WEBPACK_IMPORTED_MODULE_12__["default"]
+                        ClickOutside: _directives_click_outside__WEBPACK_IMPORTED_MODULE_12__["default"],
+                        Resize: _directives_resize__WEBPACK_IMPORTED_MODULE_13__["default"]
                     },
-                    mixins: [_mixins_menu_activator__WEBPACK_IMPORTED_MODULE_7__["default"], _mixins_dependent__WEBPACK_IMPORTED_MODULE_2__["default"], _mixins_delayable__WEBPACK_IMPORTED_MODULE_1__["default"], _mixins_detachable__WEBPACK_IMPORTED_MODULE_3__["default"], _mixins_menu_generators__WEBPACK_IMPORTED_MODULE_8__["default"], _mixins_menu_keyable__WEBPACK_IMPORTED_MODULE_9__["default"], _mixins_menuable_js__WEBPACK_IMPORTED_MODULE_4__["default"], _mixins_menu_position__WEBPACK_IMPORTED_MODULE_10__["default"], _mixins_returnable__WEBPACK_IMPORTED_MODULE_5__["default"], _mixins_toggleable__WEBPACK_IMPORTED_MODULE_6__["default"]],
+                    mixins: [_mixins_menu_activator__WEBPACK_IMPORTED_MODULE_8__["default"], _mixins_dependent__WEBPACK_IMPORTED_MODULE_3__["default"], _mixins_delayable__WEBPACK_IMPORTED_MODULE_2__["default"], _mixins_detachable__WEBPACK_IMPORTED_MODULE_4__["default"], _mixins_menu_generators__WEBPACK_IMPORTED_MODULE_9__["default"], _mixins_menu_keyable__WEBPACK_IMPORTED_MODULE_10__["default"], _mixins_menuable_js__WEBPACK_IMPORTED_MODULE_5__["default"], _mixins_menu_position__WEBPACK_IMPORTED_MODULE_11__["default"], _mixins_returnable__WEBPACK_IMPORTED_MODULE_6__["default"], _mixins_toggleable__WEBPACK_IMPORTED_MODULE_7__["default"]],
                     props: {
                         auto: Boolean,
                         closeOnClick: {
@@ -19694,7 +19858,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                             return this.calcXOverflow(this.calcLeftAuto()) + "px";
                         },
                         calculatedMaxHeight: function calculatedMaxHeight() {
-                            return this.auto ? '200px' : Object(_util_helpers__WEBPACK_IMPORTED_MODULE_13__["convertToUnit"])(this.maxHeight);
+                            return this.auto ? '200px' : Object(_util_helpers__WEBPACK_IMPORTED_MODULE_14__["convertToUnit"])(this.maxHeight);
                         },
                         calculatedMaxWidth: function calculatedMaxWidth() {
                             return isNaN(this.maxWidth) ? this.maxWidth : this.maxWidth + "px";
@@ -19777,12 +19941,18 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                                 value: this.onResize
                             }],
                             on: {
-                                keydown: this.changeListIndex
+                                keydown: this.onKeyDown
                             }
                         };
-                        return h('div', data, [this.genActivator(), this.genTransition()]);
+                        return h('div', data, [this.genActivator(), this.$createElement(_util_SlotProvider__WEBPACK_IMPORTED_MODULE_15__["default"], {
+                            props: {
+                                provide: {
+                                    theme: { isDark: this.$vuetify.dark || this.dark }
+                                }
+                            }
+                        }, [this.genTransition()])]);
                     }
-                };
+                });
 
                 /***/
             },
@@ -19889,14 +20059,17 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 "use strict";
 
                 __webpack_require__.r(__webpack_exports__);
-                var __assign = undefined && undefined.__assign || Object.assign || function (t) {
-                    for (var s, i = 1, n = arguments.length; i < n; i++) {
-                        s = arguments[i];
-                        for (var p in s) {
-                            if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                var __assign = undefined && undefined.__assign || function () {
+                    __assign = Object.assign || function (t) {
+                        for (var s, i = 1, n = arguments.length; i < n; i++) {
+                            s = arguments[i];
+                            for (var p in s) {
+                                if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                            }
                         }
-                    }
-                    return t;
+                        return t;
+                    };
+                    return __assign.apply(this, arguments);
                 };
                 var __read = undefined && undefined.__read || function (o, n) {
                     var m = typeof Symbol === "function" && o[Symbol.iterator];
@@ -19925,13 +20098,6 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                         ar = ar.concat(__read(arguments[i]));
                     }return ar;
                 };
-                /**
-                 * Menu generators
-                 *
-                 * @mixin
-                 *
-                 * Used for creating the DOM elements for VMenu
-                 */
                 /* @vue/component */
                 /* harmony default export */__webpack_exports__["default"] = {
                     methods: {
@@ -20055,11 +20221,14 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                         }
                     },
                     methods: {
-                        changeListIndex: function changeListIndex(e) {
+                        onKeyDown: function onKeyDown(e) {
                             if ([_util_helpers__WEBPACK_IMPORTED_MODULE_0__["keyCodes"].down, _util_helpers__WEBPACK_IMPORTED_MODULE_0__["keyCodes"].up, _util_helpers__WEBPACK_IMPORTED_MODULE_0__["keyCodes"].enter].includes(e.keyCode)) e.preventDefault();
                             if ([_util_helpers__WEBPACK_IMPORTED_MODULE_0__["keyCodes"].esc, _util_helpers__WEBPACK_IMPORTED_MODULE_0__["keyCodes"].tab].includes(e.keyCode)) {
                                 return this.isActive = false;
                             }
+                            this.changeListIndex(e);
+                        },
+                        changeListIndex: function changeListIndex(e) {
                             // For infinite scroll and autocomplete, re-evaluate children
                             this.getTiles();
                             if (e.keyCode === _util_helpers__WEBPACK_IMPORTED_MODULE_0__["keyCodes"].down && this.listIndex < this.tiles.length - 1) {
@@ -20192,11 +20361,6 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                             }
                         }
                     },
-                    computed: {
-                        classes: function classes() {
-                            return this.addTextColorClassChecks(this.themeClasses);
-                        }
-                    },
                     methods: {
                         genChildren: function genChildren() {
                             var _this = this;
@@ -20221,10 +20385,10 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                         }
                     },
                     render: function render(h) {
-                        return h('div', {
+                        return h('div', this.setTextColor(this.color, {
                             staticClass: 'v-messages',
-                            class: this.classes
-                        }, [this.genChildren()]);
+                            class: this.themeClasses
+                        }), [this.genChildren()]);
                     }
                 };
 
@@ -20271,14 +20435,17 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 /* harmony import */var _directives_resize__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__( /*! ../../directives/resize */"./src/directives/resize.ts");
                 /* harmony import */var _directives_touch__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__( /*! ../../directives/touch */"./src/directives/touch.ts");
                 /* harmony import */var _util_helpers__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__( /*! ../../util/helpers */"./src/util/helpers.ts");
-                var __assign = undefined && undefined.__assign || Object.assign || function (t) {
-                    for (var s, i = 1, n = arguments.length; i < n; i++) {
-                        s = arguments[i];
-                        for (var p in s) {
-                            if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                var __assign = undefined && undefined.__assign || function () {
+                    __assign = Object.assign || function (t) {
+                        for (var s, i = 1, n = arguments.length; i < n; i++) {
+                            s = arguments[i];
+                            for (var p in s) {
+                                if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                            }
                         }
-                    }
-                    return t;
+                        return t;
+                    };
+                    return __assign.apply(this, arguments);
                 };
 
                 // Mixins
@@ -20442,6 +20609,9 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                             if (this.permanent) return;
                             if (val == null) return this.init();
                             if (val !== this.isActive) this.isActive = val;
+                        },
+                        applicationProperty: function applicationProperty(newVal, oldVal) {
+                            this.$vuetify.application.unbind(this._uid, oldVal);
                         }
                     },
                     beforeMount: function beforeMount() {
@@ -20611,6 +20781,11 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                         },
                         computedItems: function computedItems() {
                             return this.segmented ? this.allItems : this.filteredItems;
+                        },
+                        $_menuProps: function $_menuProps() {
+                            var props = _VAutocomplete__WEBPACK_IMPORTED_MODULE_2__["default"].computed.$_menuProps.call(this);
+                            props.transition = props.transition || 'v-menu-transition';
+                            return props;
                         }
                     },
                     methods: {
@@ -20687,9 +20862,9 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 /***/
             },
 
-            /***/"./src/components/VPagination/VPagination.js":
+            /***/"./src/components/VPagination/VPagination.ts":
             /*!***************************************************!*\
-              !*** ./src/components/VPagination/VPagination.js ***!
+              !*** ./src/components/VPagination/VPagination.ts ***!
               \***************************************************/
             /*! exports provided: default */
             /***/function (module, __webpack_exports__, __webpack_require__) {
@@ -20701,7 +20876,21 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 /* harmony import */var _stylus_components_pagination_styl__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_stylus_components_pagination_styl__WEBPACK_IMPORTED_MODULE_0__);
                 /* harmony import */var _VIcon__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__( /*! ../VIcon */"./src/components/VIcon/index.ts");
                 /* harmony import */var _directives_resize__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__( /*! ../../directives/resize */"./src/directives/resize.ts");
-                /* harmony import */var _mixins_colorable__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__( /*! ../../mixins/colorable */"./src/mixins/colorable.ts");
+                /* harmony import */var _util_mixins__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__( /*! ../../util/mixins */"./src/util/mixins.ts");
+                /* harmony import */var _mixins_colorable__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__( /*! ../../mixins/colorable */"./src/mixins/colorable.ts");
+                /* harmony import */var _mixins_themeable__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__( /*! ../../mixins/themeable */"./src/mixins/themeable.ts");
+                var __assign = undefined && undefined.__assign || function () {
+                    __assign = Object.assign || function (t) {
+                        for (var s, i = 1, n = arguments.length; i < n; i++) {
+                            s = arguments[i];
+                            for (var p in s) {
+                                if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                            }
+                        }
+                        return t;
+                    };
+                    return __assign.apply(this, arguments);
+                };
                 var __read = undefined && undefined.__read || function (o, n) {
                     var m = typeof Symbol === "function" && o[Symbol.iterator];
                     if (!m) return o;
@@ -20730,11 +20919,15 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                     }return ar;
                 };
 
+                // Directives
+
+                // Mixins
+
+
                 /* @vue/component */
-                /* harmony default export */__webpack_exports__["default"] = {
+                /* harmony default export */__webpack_exports__["default"] = Object(_util_mixins__WEBPACK_IMPORTED_MODULE_3__["default"])(_mixins_colorable__WEBPACK_IMPORTED_MODULE_4__["default"], _mixins_themeable__WEBPACK_IMPORTED_MODULE_5__["default"]).extend({
                     name: 'v-pagination',
                     directives: { Resize: _directives_resize__WEBPACK_IMPORTED_MODULE_2__["default"] },
-                    mixins: [_mixins_colorable__WEBPACK_IMPORTED_MODULE_3__["default"]],
                     props: {
                         circle: Boolean,
                         disabled: Boolean,
@@ -20762,19 +20955,15 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                     data: function data() {
                         return {
                             maxButtons: 0,
-                            defaultColor: 'primary'
+                            selected: null
                         };
                     },
                     computed: {
                         classes: function classes() {
-                            return {
-                                'v-pagination': true,
-                                'v-pagination--circle': this.circle,
-                                'v-pagination--disabled': this.disabled
-                            };
+                            return __assign({ 'v-pagination': true, 'v-pagination--circle': this.circle, 'v-pagination--disabled': this.disabled }, this.themeClasses);
                         },
                         items: function items() {
-                            var maxLength = this.totalVisible || this.maxButtons;
+                            var maxLength = parseInt(this.totalVisible, 10) || this.maxButtons;
                             if (this.length <= maxLength) {
                                 return this.range(1, this.length);
                             }
@@ -20809,7 +20998,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                             }, 100);
                         },
                         onResize: function onResize() {
-                            var width = this.$el && this.$el.parentNode ? this.$el.parentNode.clientWidth : window.innerWidth;
+                            var width = this.$el && this.$el.parentElement ? this.$el.parentElement.clientWidth : window.innerWidth;
                             this.maxButtons = Math.floor((width - 96) / 42);
                         },
                         next: function next(e) {
@@ -20841,22 +21030,23 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                         },
                         genItem: function genItem(h, i) {
                             var _this = this;
-                            return h('button', {
+                            var color = i === this.value && (this.color || 'primary');
+                            return h('button', this.setBackgroundColor(color, {
                                 staticClass: 'v-pagination__item',
-                                class: i === this.value ? this.addBackgroundColorClassChecks({
-                                    'v-pagination__item--active': true
-                                }) : {},
+                                class: {
+                                    'v-pagination__item--active': i === this.value
+                                },
                                 on: {
                                     click: function click() {
                                         return _this.$emit('input', i);
                                     }
                                 }
-                            }, [i]);
+                            }), [i.toString()]);
                         },
                         genItems: function genItems(h) {
                             var _this = this;
                             return this.items.map(function (i, index) {
-                                return h('li', { key: index }, [isNaN(i) ? h('span', { class: 'v-pagination__more' }, [i]) : _this.genItem(h, i)]);
+                                return h('li', { key: index }, [isNaN(Number(i)) ? h('span', { class: 'v-pagination__more' }, [i.toString()]) : _this.genItem(h, i)]);
                             });
                         }
                     },
@@ -20871,14 +21061,14 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                             class: this.classes
                         }, children);
                     }
-                };
+                });
 
                 /***/
             },
 
-            /***/"./src/components/VPagination/index.js":
+            /***/"./src/components/VPagination/index.ts":
             /*!*********************************************!*\
-              !*** ./src/components/VPagination/index.js ***!
+              !*** ./src/components/VPagination/index.ts ***!
               \*********************************************/
             /*! exports provided: VPagination, default */
             /***/function (module, __webpack_exports__, __webpack_require__) {
@@ -20886,7 +21076,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 "use strict";
 
                 __webpack_require__.r(__webpack_exports__);
-                /* harmony import */var _VPagination__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__( /*! ./VPagination */"./src/components/VPagination/VPagination.js");
+                /* harmony import */var _VPagination__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__( /*! ./VPagination */"./src/components/VPagination/VPagination.ts");
                 /* harmony reexport (safe) */__webpack_require__.d(__webpack_exports__, "VPagination", function () {
                     return _VPagination__WEBPACK_IMPORTED_MODULE_0__["default"];
                 });
@@ -21032,14 +21222,17 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 /* harmony import */var _stylus_components_cards_styl__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_stylus_components_cards_styl__WEBPACK_IMPORTED_MODULE_1__);
                 /* harmony import */var _mixins_colorable__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__( /*! ../../mixins/colorable */"./src/mixins/colorable.ts");
                 /* harmony import */var _mixins_themeable__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__( /*! ../../mixins/themeable */"./src/mixins/themeable.ts");
-                var __assign = undefined && undefined.__assign || Object.assign || function (t) {
-                    for (var s, i = 1, n = arguments.length; i < n; i++) {
-                        s = arguments[i];
-                        for (var p in s) {
-                            if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                var __assign = undefined && undefined.__assign || function () {
+                    __assign = Object.assign || function (t) {
+                        for (var s, i = 1, n = arguments.length; i < n; i++) {
+                            s = arguments[i];
+                            for (var p in s) {
+                                if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                            }
                         }
-                    }
-                    return t;
+                        return t;
+                    };
+                    return __assign.apply(this, arguments);
                 };
 
                 // Mixins
@@ -21064,25 +21257,20 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                             }
                         }
                     },
-                    data: function data() {
-                        return {
-                            defaultColor: 'primary'
-                        };
-                    },
                     computed: {
                         computedTitleColor: function computedTitleColor() {
-                            var defaultTitleColor = this.isDark ? null : this.computedColor;
+                            var defaultTitleColor = this.isDark ? null : this.color || 'primary';
                             return this.color || defaultTitleColor;
                         }
                     },
                     methods: {
                         genTitle: function genTitle() {
-                            return this.$createElement('div', {
+                            return this.$createElement('div', this.setBackgroundColor(this.computedTitleColor, {
                                 staticClass: 'v-picker__title',
-                                'class': this.addBackgroundColorClassChecks({
+                                'class': {
                                     'v-picker__title--landscape': this.landscape
-                                }, this.computedTitleColor)
-                            }, this.$slots.title);
+                                }
+                            }), this.$slots.title);
                         },
                         genBodyTransition: function genBodyTransition() {
                             return this.$createElement('transition', {
@@ -21186,11 +21374,10 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                             return 2 * Math.PI * this.radius;
                         },
                         classes: function classes() {
-                            return this.addTextColorClassChecks({
-                                'v-progress-circular': true,
+                            return {
                                 'v-progress-circular--indeterminate': this.indeterminate,
                                 'v-progress-circular--button': this.button
-                            });
+                            };
                         },
                         normalizedValue: function normalizedValue() {
                             if (this.value < 0) {
@@ -21255,13 +21442,14 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                         }
                     },
                     render: function render(h) {
-                        var info = h('div', { class: 'v-progress-circular__info' }, [this.$slots.default]);
+                        var info = h('div', { staticClass: 'v-progress-circular__info' }, [this.$slots.default]);
                         var svg = this.genSvg(h);
-                        return h('div', {
+                        return h('div', this.setTextColor(this.color, {
+                            staticClass: 'v-progress-circular',
                             class: this.classes,
                             style: this.styles,
                             on: this.$listeners
-                        }, [svg, info]);
+                        }), [svg, info]);
                     }
                 });
 
@@ -21373,21 +21561,20 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                     },
                     methods: {
                         genDeterminate: function genDeterminate(h) {
-                            return h('div', {
+                            return h('div', this.setBackgroundColor(this.color, {
                                 ref: 'front',
                                 staticClass: "v-progress-linear__bar__determinate",
-                                class: this.addBackgroundColorClassChecks(),
                                 style: {
                                     width: this.effectiveWidth + "%"
                                 }
-                            });
+                            }));
                         },
                         genBar: function genBar(h, name) {
                             var _a;
-                            return h('div', {
+                            return h('div', this.setBackgroundColor(this.color, {
                                 staticClass: 'v-progress-linear__bar__indeterminate',
-                                class: this.addBackgroundColorClassChecks((_a = {}, _a[name] = true, _a))
-                            });
+                                class: (_a = {}, _a[name] = true, _a)
+                            }));
                         },
                         genIndeterminate: function genIndeterminate(h) {
                             return h('div', {
@@ -21464,16 +21651,46 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 /* harmony import */var _mixins_colorable__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__( /*! ../../mixins/colorable */"./src/mixins/colorable.ts");
                 /* harmony import */var _mixins_rippleable__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__( /*! ../../mixins/rippleable */"./src/mixins/rippleable.ts");
                 /* harmony import */var _mixins_themeable__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__( /*! ../../mixins/themeable */"./src/mixins/themeable.ts");
-                /* harmony import */var _mixins_registrable__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__( /*! ../../mixins/registrable */"./src/mixins/registrable.ts");
-                /* harmony import */var _util_helpers__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__( /*! ../../util/helpers */"./src/util/helpers.ts");
-                var __assign = undefined && undefined.__assign || Object.assign || function (t) {
-                    for (var s, i = 1, n = arguments.length; i < n; i++) {
-                        s = arguments[i];
-                        for (var p in s) {
-                            if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                /* harmony import */var _mixins_selectable__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__( /*! ../../mixins/selectable */"./src/mixins/selectable.js");
+                /* harmony import */var _mixins_registrable__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__( /*! ../../mixins/registrable */"./src/mixins/registrable.ts");
+                var __assign = undefined && undefined.__assign || function () {
+                    __assign = Object.assign || function (t) {
+                        for (var s, i = 1, n = arguments.length; i < n; i++) {
+                            s = arguments[i];
+                            for (var p in s) {
+                                if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                            }
+                        }
+                        return t;
+                    };
+                    return __assign.apply(this, arguments);
+                };
+                var __read = undefined && undefined.__read || function (o, n) {
+                    var m = typeof Symbol === "function" && o[Symbol.iterator];
+                    if (!m) return o;
+                    var i = m.call(o),
+                        r,
+                        ar = [],
+                        e;
+                    try {
+                        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) {
+                            ar.push(r.value);
+                        }
+                    } catch (error) {
+                        e = { error: error };
+                    } finally {
+                        try {
+                            if (r && !r.done && (m = i["return"])) m.call(i);
+                        } finally {
+                            if (e) throw e.error;
                         }
                     }
-                    return t;
+                    return ar;
+                };
+                var __spread = undefined && undefined.__spread || function () {
+                    for (var ar = [], i = 0; i < arguments.length; i++) {
+                        ar = ar.concat(__read(arguments[i]));
+                    }return ar;
                 };
                 // Styles
 
@@ -21483,16 +21700,14 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 // Mixins
 
 
-                // Utils
-
                 /* @vue/component */
                 /* harmony default export */__webpack_exports__["default"] = {
                     name: 'v-radio',
-                    mixins: [_mixins_colorable__WEBPACK_IMPORTED_MODULE_3__["default"], _mixins_rippleable__WEBPACK_IMPORTED_MODULE_4__["default"], Object(_mixins_registrable__WEBPACK_IMPORTED_MODULE_6__["inject"])('radio', 'v-radio', 'v-radio-group'), _mixins_themeable__WEBPACK_IMPORTED_MODULE_5__["default"]],
+                    mixins: [_mixins_colorable__WEBPACK_IMPORTED_MODULE_3__["default"], _mixins_rippleable__WEBPACK_IMPORTED_MODULE_4__["default"], Object(_mixins_registrable__WEBPACK_IMPORTED_MODULE_7__["inject"])('radio', 'v-radio', 'v-radio-group'), _mixins_themeable__WEBPACK_IMPORTED_MODULE_5__["default"]],
                     inheritAttrs: false,
                     props: {
                         color: {
-                            type: [Boolean, String],
+                            type: String,
                             default: 'accent'
                         },
                         disabled: Boolean,
@@ -21516,15 +21731,14 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                         };
                     },
                     computed: {
-                        classes: function classes() {
-                            var classes = __assign({ 'v-radio--is-disabled': this.isDisabled, 'v-radio--is-focused': this.isFocused }, this.themeClasses);
-                            if (!this.parentError && this.isActive) {
-                                return this.addTextColorClassChecks(classes);
-                            }
-                            return classes;
+                        computedData: function computedData() {
+                            return this.setTextColor(!this.parentError && this.isActive && this.color, {
+                                staticClass: 'v-radio',
+                                'class': __assign({ 'v-radio--is-disabled': this.isDisabled, 'v-radio--is-focused': this.isFocused }, this.themeClasses)
+                            });
                         },
-                        classesSelectable: function classesSelectable() {
-                            return this.addTextColorClassChecks({}, this.isActive ? this.color : this.radio.validationState || false);
+                        computedColor: function computedColor() {
+                            return this.isActive ? this.color : this.radio.validationState || false;
                         },
                         computedIcon: function computedIcon() {
                             return this.isActive ? this.onIcon : this.offIcon;
@@ -21546,32 +21760,16 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                         this.radio.unregister(this);
                     },
                     methods: {
-                        genInput: function genInput(type, attrs) {
-                            var _this = this;
-                            return this.$createElement('input', {
-                                attrs: Object.assign({}, attrs, {
-                                    'aria-label': this.label,
-                                    name: this.radio.name || (this.radio._uid ? 'v-radio-' + this.radio._uid : false),
-                                    value: this.value,
-                                    role: type,
-                                    type: type
-                                }),
-                                domProps: {
-                                    checked: this.isActive
-                                },
-                                on: {
-                                    blur: this.onBlur,
-                                    change: this.onChange,
-                                    focus: this.onFocus,
-                                    keydown: function keydown(e) {
-                                        if ([_util_helpers__WEBPACK_IMPORTED_MODULE_7__["keyCodes"].enter, _util_helpers__WEBPACK_IMPORTED_MODULE_7__["keyCodes"].space].includes(e.keyCode)) {
-                                            e.preventDefault();
-                                            _this.onChange();
-                                        }
-                                    }
-                                },
-                                ref: 'input'
-                            });
+                        genInput: function genInput() {
+                            var args = [];
+                            for (var _i = 0; _i < arguments.length; _i++) {
+                                args[_i] = arguments[_i];
+                            }
+                            var _a;
+                            // We can't actually use the mixin directly because
+                            // it's made for standalone components, but its
+                            // genInput method is exactly what we need
+                            return (_a = _mixins_selectable__WEBPACK_IMPORTED_MODULE_6__["default"].methods.genInput).call.apply(_a, __spread([this], args));
                         },
                         genLabel: function genLabel() {
                             return this.$createElement(_VLabel__WEBPACK_IMPORTED_MODULE_2__["default"], {
@@ -21590,15 +21788,12 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                         genRadio: function genRadio() {
                             return this.$createElement('div', {
                                 staticClass: 'v-input--selection-controls__input'
-                            }, [this.genInput('radio', __assign({ 'aria-checked': this.isActive.toString() }, this.$attrs)), !this.isDisabled && this.genRipple({
-                                'class': this.classesSelectable
-                            }), this.$createElement(_VIcon__WEBPACK_IMPORTED_MODULE_1__["default"], {
-                                'class': this.classesSelectable,
+                            }, [this.genInput('radio', __assign({ name: this.radio.name || (this.radio._uid ? 'v-radio-' + this.radio._uid : false), value: this.value }, this.$attrs)), !this.isDisabled && this.genRipple(this.setTextColor(this.computedColor)), this.$createElement(_VIcon__WEBPACK_IMPORTED_MODULE_1__["default"], this.setTextColor(this.computedColor, {
                                 props: {
                                     dark: this.dark,
                                     light: this.light
                                 }
-                            }, this.computedIcon)]);
+                            }), this.computedIcon)]);
                         },
                         onFocus: function onFocus() {
                             this.isFocused = true;
@@ -21612,13 +21807,11 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                             if (!this.isDisabled && (!this.isActive || !this.radio.mandatory)) {
                                 this.$emit('change', this.value);
                             }
-                        }
+                        },
+                        onKeydown: function onKeydown() {}
                     },
                     render: function render(h) {
-                        return h('div', {
-                            staticClass: 'v-radio',
-                            class: this.classes
-                        }, [this.genRadio(), this.genLabel()]);
+                        return h('div', this.computedData, [this.genRadio(), this.genLabel()]);
                     }
                 };
 
@@ -21722,7 +21915,6 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                             if (this.disabled) return;
                             this.hasInput = true;
                             this.internalValue = value;
-                            this.$emit('change', value);
                             this.setActiveRadio();
                             this.$nextTick(this.validate);
                         },
@@ -22014,6 +22206,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                             type: String,
                             default: 'primary'
                         },
+                        dense: Boolean,
                         emptyIcon: {
                             type: String,
                             default: '$vuetify.icons.ratingEmpty'
@@ -22031,6 +22224,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                             type: [Number, String],
                             default: 5
                         },
+                        clearable: Boolean,
                         readonly: Boolean,
                         hover: Boolean,
                         value: {
@@ -22088,7 +22282,12 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                             var _this = this;
                             return function (e) {
                                 if (_this.readonly) return;
-                                _this.internalValue = _this.genHoverIndex(e, i);
+                                var newValue = _this.genHoverIndex(e, i);
+                                if (_this.clearable && _this.internalValue === newValue) {
+                                    _this.internalValue = 0;
+                                } else {
+                                    _this.internalValue = newValue;
+                                }
                             };
                         },
                         createProps: function createProps(i) {
@@ -22158,12 +22357,11 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                                     };
                                 }
                             }
-                            return this.$createElement(_VIcon__WEBPACK_IMPORTED_MODULE_1__["default"], {
+                            return this.$createElement(_VIcon__WEBPACK_IMPORTED_MODULE_1__["default"], this.setTextColor(this.getColor(props), {
                                 directives: this.directives,
                                 props: this.iconProps,
-                                class: this.addTextColorClassChecks({}, this.getColor(props)),
                                 on: listeners
-                            }, [this.getIconName(props)]);
+                            }), [this.getIconName(props)]);
                         }
                     },
                     render: function render(h) {
@@ -22174,7 +22372,8 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                         return h('div', {
                             staticClass: 'v-rating',
                             class: {
-                                'v-rating--readonly': this.readonly
+                                'v-rating--readonly': this.readonly,
+                                'v-rating--dense': this.dense
                             }
                         }, children);
                     }
@@ -22215,20 +22414,20 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 __webpack_require__.r(__webpack_exports__);
                 /* harmony import */var _stylus_components_responsive_styl__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__( /*! ../../stylus/components/_responsive.styl */"./src/stylus/components/_responsive.styl");
                 /* harmony import */var _stylus_components_responsive_styl__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_stylus_components_responsive_styl__WEBPACK_IMPORTED_MODULE_0__);
-                /* harmony import */var vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__( /*! vue */"vue");
-                /* harmony import */var vue__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_1__);
-                /* harmony import */var _util_helpers__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__( /*! ../../util/helpers */"./src/util/helpers.ts");
+                /* harmony import */var _mixins_measurable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__( /*! ../../mixins/measurable */"./src/mixins/measurable.ts");
+                /* harmony import */var _util_mixins__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__( /*! ../../util/mixins */"./src/util/mixins.ts");
+                /* harmony import */var _util_helpers__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__( /*! ../../util/helpers */"./src/util/helpers.ts");
 
-                // Types
+                // Mixins
 
                 // Utils
 
-                /* harmony default export */__webpack_exports__["default"] = vue__WEBPACK_IMPORTED_MODULE_1___default.a.extend({
+
+                /* @vue/component */
+                /* harmony default export */__webpack_exports__["default"] = Object(_util_mixins__WEBPACK_IMPORTED_MODULE_2__["default"])(_mixins_measurable__WEBPACK_IMPORTED_MODULE_1__["default"]).extend({
                     name: 'v-responsive',
                     props: {
-                        aspectRatio: [String, Number],
-                        height: [String, Number],
-                        maxHeight: [String, Number]
+                        aspectRatio: [String, Number]
                     },
                     computed: {
                         computedAspectRatio: function computedAspectRatio() {
@@ -22256,9 +22455,12 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                         return h('div', {
                             staticClass: 'v-responsive',
                             style: {
-                                height: Object(_util_helpers__WEBPACK_IMPORTED_MODULE_2__["convertToUnit"])(this.height),
-                                maxHeight: Object(_util_helpers__WEBPACK_IMPORTED_MODULE_2__["convertToUnit"])(this.maxHeight)
-                            }
+                                height: Object(_util_helpers__WEBPACK_IMPORTED_MODULE_3__["convertToUnit"])(this.height),
+                                maxHeight: Object(_util_helpers__WEBPACK_IMPORTED_MODULE_3__["convertToUnit"])(this.maxHeight),
+                                maxWidth: Object(_util_helpers__WEBPACK_IMPORTED_MODULE_3__["convertToUnit"])(this.maxWidth),
+                                width: Object(_util_helpers__WEBPACK_IMPORTED_MODULE_3__["convertToUnit"])(this.width)
+                            },
+                            on: this.$listeners
                         }, [this.__cachedSizer, this.genContent()]);
                     }
                 });
@@ -22290,12 +22492,15 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
             /*!*******************************************!*\
               !*** ./src/components/VSelect/VSelect.js ***!
               \*******************************************/
-            /*! exports provided: default */
+            /*! exports provided: defaultMenuProps, default */
             /***/function (module, __webpack_exports__, __webpack_require__) {
 
                 "use strict";
 
                 __webpack_require__.r(__webpack_exports__);
+                /* harmony export (binding) */__webpack_require__.d(__webpack_exports__, "defaultMenuProps", function () {
+                    return defaultMenuProps;
+                });
                 /* harmony import */var _stylus_components_text_fields_styl__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__( /*! ../../stylus/components/_text-fields.styl */"./src/stylus/components/_text-fields.styl");
                 /* harmony import */var _stylus_components_text_fields_styl__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_stylus_components_text_fields_styl__WEBPACK_IMPORTED_MODULE_0__);
                 /* harmony import */var _stylus_components_select_styl__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__( /*! ../../stylus/components/_select.styl */"./src/stylus/components/_select.styl");
@@ -22306,18 +22511,20 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 /* harmony import */var _VTextField_VTextField__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__( /*! ../VTextField/VTextField */"./src/components/VTextField/VTextField.js");
                 /* harmony import */var _mixins_comparable__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__( /*! ../../mixins/comparable */"./src/mixins/comparable.ts");
                 /* harmony import */var _mixins_filterable__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__( /*! ../../mixins/filterable */"./src/mixins/filterable.js");
-                /* harmony import */var _mixins_menuable__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__( /*! ../../mixins/menuable */"./src/mixins/menuable.js");
-                /* harmony import */var _directives_click_outside__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__( /*! ../../directives/click-outside */"./src/directives/click-outside.ts");
-                /* harmony import */var _util_helpers__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__( /*! ../../util/helpers */"./src/util/helpers.ts");
-                /* harmony import */var _util_console__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__( /*! ../../util/console */"./src/util/console.ts");
-                var __assign = undefined && undefined.__assign || Object.assign || function (t) {
-                    for (var s, i = 1, n = arguments.length; i < n; i++) {
-                        s = arguments[i];
-                        for (var p in s) {
-                            if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                /* harmony import */var _directives_click_outside__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__( /*! ../../directives/click-outside */"./src/directives/click-outside.ts");
+                /* harmony import */var _util_helpers__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__( /*! ../../util/helpers */"./src/util/helpers.ts");
+                /* harmony import */var _util_console__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__( /*! ../../util/console */"./src/util/console.ts");
+                var __assign = undefined && undefined.__assign || function () {
+                    __assign = Object.assign || function (t) {
+                        for (var s, i = 1, n = arguments.length; i < n; i++) {
+                            s = arguments[i];
+                            for (var p in s) {
+                                if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                            }
                         }
-                    }
-                    return t;
+                        return t;
+                    };
+                    return __assign.apply(this, arguments);
                 };
                 var __values = undefined && undefined.__values || function (o) {
                     var m = typeof Symbol === "function" && o[Symbol.iterator],
@@ -22346,23 +22553,20 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 // Helpers
 
 
-                // For api-generator
-                var fakeVMenu = {
-                    name: 'v-menu',
-                    props: _VMenu__WEBPACK_IMPORTED_MODULE_3__["default"].props // TODO: remove some, just for testing
-                };
-                var fakeMenuable = {
-                    name: 'menuable',
-                    props: _mixins_menuable__WEBPACK_IMPORTED_MODULE_8__["default"].props
+                var defaultMenuProps = {
+                    closeOnClick: false,
+                    closeOnContentClick: false,
+                    openOnClick: false,
+                    maxHeight: 300
                 };
                 /* @vue/component */
                 /* harmony default export */__webpack_exports__["default"] = {
                     name: 'v-select',
                     directives: {
-                        ClickOutside: _directives_click_outside__WEBPACK_IMPORTED_MODULE_9__["default"]
+                        ClickOutside: _directives_click_outside__WEBPACK_IMPORTED_MODULE_8__["default"]
                     },
                     extends: _VTextField_VTextField__WEBPACK_IMPORTED_MODULE_5__["default"],
-                    mixins: [fakeVMenu, fakeMenuable, _mixins_comparable__WEBPACK_IMPORTED_MODULE_6__["default"], _mixins_filterable__WEBPACK_IMPORTED_MODULE_7__["default"]],
+                    mixins: [_mixins_comparable__WEBPACK_IMPORTED_MODULE_6__["default"], _mixins_filterable__WEBPACK_IMPORTED_MODULE_7__["default"]],
                     props: {
                         appendIcon: {
                             type: String,
@@ -22373,7 +22577,6 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                             type: null,
                             default: false
                         },
-                        auto: Boolean,
                         browserAutocomplete: {
                             type: String,
                             default: 'on'
@@ -22381,7 +22584,6 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                         cacheItems: Boolean,
                         chips: Boolean,
                         clearable: Boolean,
-                        contentClass: String,
                         deletableChips: Boolean,
                         dense: Boolean,
                         hideSelected: Boolean,
@@ -22407,23 +22609,19 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                             type: [String, Array, Function],
                             default: 'value'
                         },
-                        maxHeight: {
-                            type: [Number, String],
-                            default: 300
-                        },
-                        minWidth: {
-                            type: [Boolean, Number, String],
-                            default: 0
+                        menuProps: {
+                            type: [String, Array, Object],
+                            default: function _default() {
+                                return defaultMenuProps;
+                            }
                         },
                         multiple: Boolean,
-                        multiLine: Boolean,
                         openOnClear: Boolean,
                         returnObject: Boolean,
                         searchInput: {
                             default: null
                         },
-                        smallChips: Boolean,
-                        singleLine: Boolean
+                        smallChips: Boolean
                     },
                     data: function data(vm) {
                         return {
@@ -22482,16 +22680,6 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                         isDirty: function isDirty() {
                             return this.selectedItems.length > 0;
                         },
-                        menuProps: function menuProps() {
-                            return {
-                                closeOnClick: false,
-                                closeOnContentClick: false,
-                                openOnClick: false,
-                                value: this.isMenuActive,
-                                offsetY: this.offsetY,
-                                nudgeBottom: this.nudgeBottom ? this.nudgeBottom : this.offsetY ? 1 : 0 // convert to int
-                            };
-                        },
                         listData: function listData() {
                             return {
                                 props: {
@@ -22517,12 +22705,26 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                         },
                         staticList: function staticList() {
                             if (this.$slots['no-data'] || this.$slots['prepend-item'] || this.$slots['append-item']) {
-                                Object(_util_console__WEBPACK_IMPORTED_MODULE_11__["consoleError"])('assert: staticList should not be called if slots are used');
+                                Object(_util_console__WEBPACK_IMPORTED_MODULE_10__["consoleError"])('assert: staticList should not be called if slots are used');
                             }
                             return this.$createElement(_VSelectList__WEBPACK_IMPORTED_MODULE_4__["default"], this.listData);
                         },
                         virtualizedItems: function virtualizedItems() {
-                            return !this.auto ? this.computedItems.slice(0, this.lastItem) : this.computedItems;
+                            return this.$_menuProps.auto ? this.computedItems : this.computedItems.slice(0, this.lastItem);
+                        },
+                        menuCanShow: function menuCanShow() {
+                            return true;
+                        },
+                        $_menuProps: function $_menuProps() {
+                            var normalisedProps;
+                            normalisedProps = typeof this.menuProps === 'string' ? this.menuProps.split(',') : this.menuProps;
+                            if (Array.isArray(normalisedProps)) {
+                                normalisedProps = normalisedProps.reduce(function (acc, p) {
+                                    acc[p.trim()] = true;
+                                    return acc;
+                                }, {});
+                            }
+                            return __assign({}, defaultMenuProps, { value: this.menuCanShow && this.isMenuActive, nudgeBottom: this.nudgeBottom ? this.nudgeBottom : normalisedProps.offsetY ? 1 : 0 }, normalisedProps);
                         }
                     },
                     watch: {
@@ -22636,14 +22838,15 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                             // Item may be an object
                             // TODO: Remove JSON.stringify
                             var key = JSON.stringify(this.getValue(item));
+                            var color = index === this.selectedIndex && this.color;
                             var isDisabled = this.disabled || this.readonly || this.getDisabled(item);
-                            var classes = index === this.selectedIndex ? this.addTextColorClassChecks() : {};
-                            classes['v-select__selection--disabled'] = isDisabled;
-                            return this.$createElement('div', {
+                            return this.$createElement('div', this.setTextColor(color, {
                                 staticClass: 'v-select__selection v-select__selection--comma',
-                                'class': classes,
+                                'class': {
+                                    'v-select__selection--disabled': isDisabled
+                                },
                                 key: key
-                            }, "" + this.getText(item) + (last ? '' : ', '));
+                            }), "" + this.getText(item) + (last ? '' : ', '));
                         },
                         genDefaultSlot: function genDefaultSlot() {
                             var selections = this.genSelections();
@@ -22657,8 +22860,10 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                                 selections.children = selections.children || [];
                                 selections.children.push(input);
                             }
-                            var activator = this.genSelectSlot([this.genLabel(), this.prefix ? this.genAffix('prefix') : null, selections, this.suffix ? this.genAffix('suffix') : null, this.genClearIcon(), this.genIconSlot()]);
-                            return [this.genMenu(activator)];
+                            return [this.$createElement('div', {
+                                staticClass: 'v-select__slot',
+                                directives: this.directives
+                            }, [this.genLabel(), this.prefix ? this.genAffix('prefix') : null, selections, this.suffix ? this.genAffix('suffix') : null, this.genClearIcon(), this.genIconSlot()]), this.genMenu()];
                         },
                         genInput: function genInput() {
                             var input = _VTextField_VTextField__WEBPACK_IMPORTED_MODULE_5__["default"].methods.genInput.call(this);
@@ -22689,30 +22894,56 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                             // as a referenced object
                             return this.$createElement(_VSelectList__WEBPACK_IMPORTED_MODULE_4__["default"], __assign({}, this.listData), slots);
                         },
-                        genMenu: function genMenu(activator) {
+                        genMenu: function genMenu() {
                             var _this = this;
                             var e_1, _a;
-                            var props = {
-                                contentClass: this.contentClass
-                            };
-                            var inheritedProps = Object.keys(_VMenu__WEBPACK_IMPORTED_MODULE_3__["default"].props).concat(Object.keys(_mixins_menuable__WEBPACK_IMPORTED_MODULE_8__["default"].props));
+                            var props = this.$_menuProps;
+                            props.activator = this.$refs['input-slot'];
+                            // Deprecate using menu props directly
+                            // TODO: remove (2.0)
+                            var inheritedProps = Object.keys(_VMenu__WEBPACK_IMPORTED_MODULE_3__["default"].options.props);
+                            var deprecatedProps = Object.keys(this.$attrs).reduce(function (acc, attr) {
+                                if (inheritedProps.includes(Object(_util_helpers__WEBPACK_IMPORTED_MODULE_9__["camelize"])(attr))) acc.push(attr);
+                                return acc;
+                            }, []);
                             try {
-                                // Later this might be filtered
-                                for (var inheritedProps_1 = __values(inheritedProps), inheritedProps_1_1 = inheritedProps_1.next(); !inheritedProps_1_1.done; inheritedProps_1_1 = inheritedProps_1.next()) {
-                                    var prop = inheritedProps_1_1.value;
-                                    props[prop] = this[prop];
+                                for (var deprecatedProps_1 = __values(deprecatedProps), deprecatedProps_1_1 = deprecatedProps_1.next(); !deprecatedProps_1_1.done; deprecatedProps_1_1 = deprecatedProps_1.next()) {
+                                    var prop = deprecatedProps_1_1.value;
+                                    props[Object(_util_helpers__WEBPACK_IMPORTED_MODULE_9__["camelize"])(prop)] = this.$attrs[prop];
                                 }
                             } catch (e_1_1) {
                                 e_1 = { error: e_1_1 };
                             } finally {
                                 try {
-                                    if (inheritedProps_1_1 && !inheritedProps_1_1.done && (_a = inheritedProps_1.return)) _a.call(inheritedProps_1);
+                                    if (deprecatedProps_1_1 && !deprecatedProps_1_1.done && (_a = deprecatedProps_1.return)) _a.call(deprecatedProps_1);
                                 } finally {
                                     if (e_1) throw e_1.error;
                                 }
                             }
-                            props.activator = this.$refs['input-slot'];
-                            Object.assign(props, this.menuProps);
+                            if (true) {
+                                if (deprecatedProps.length) {
+                                    var multiple = deprecatedProps.length > 1;
+                                    var replacement_1 = deprecatedProps.reduce(function (acc, p) {
+                                        acc[Object(_util_helpers__WEBPACK_IMPORTED_MODULE_9__["camelize"])(p)] = _this.$attrs[p];
+                                        return acc;
+                                    }, {});
+                                    var props_1 = deprecatedProps.map(function (p) {
+                                        return "'" + p + "'";
+                                    }).join(', ');
+                                    var separator = multiple ? '\n' : '\'';
+                                    var onlyBools = Object.keys(replacement_1).every(function (prop) {
+                                        var propType = _VMenu__WEBPACK_IMPORTED_MODULE_3__["default"].options.props[prop];
+                                        var value = replacement_1[prop];
+                                        return value === true || (propType.type || propType) === Boolean && value === '';
+                                    });
+                                    if (onlyBools) {
+                                        replacement_1 = Object.keys(replacement_1).join(', ');
+                                    } else {
+                                        replacement_1 = JSON.stringify(replacement_1, null, multiple ? 2 : 0).replace(/"([^(")"]+)":/g, '$1:').replace(/"/g, '\'');
+                                    }
+                                    Object(_util_console__WEBPACK_IMPORTED_MODULE_10__["consoleWarn"])(props_1 + " " + (multiple ? 'are' : 'is') + " deprecated, use " + separator + ":menu-props=\"" + replacement_1 + "\"" + separator + " instead", this);
+                                }
+                            }
                             // Attach to root el so that
                             // menu covers prepend/append icons
                             if (
@@ -22734,7 +22965,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                                     }
                                 },
                                 ref: 'menu'
-                            }, [activator, this.genList()]);
+                            }, [this.genList()]);
                         },
                         genSelections: function genSelections() {
                             var length = this.selectedItems.length;
@@ -22754,13 +22985,6 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                                 staticClass: 'v-select__selections'
                             }, children);
                         },
-                        genSelectSlot: function genSelectSlot(children) {
-                            return this.$createElement('div', {
-                                staticClass: 'v-select__slot',
-                                directives: this.directives,
-                                slot: 'activator'
-                            }, children);
-                        },
                         genSlotSelection: function genSlotSelection(item, index) {
                             return this.$scopedSlots.selection({
                                 parent: this,
@@ -22774,13 +22998,13 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                             return this.$refs.menu ? this.$refs.menu.listIndex : -1;
                         },
                         getDisabled: function getDisabled(item) {
-                            return Object(_util_helpers__WEBPACK_IMPORTED_MODULE_10__["getPropertyFromItem"])(item, this.itemDisabled, false);
+                            return Object(_util_helpers__WEBPACK_IMPORTED_MODULE_9__["getPropertyFromItem"])(item, this.itemDisabled, false);
                         },
                         getText: function getText(item) {
-                            return Object(_util_helpers__WEBPACK_IMPORTED_MODULE_10__["getPropertyFromItem"])(item, this.itemText, item);
+                            return Object(_util_helpers__WEBPACK_IMPORTED_MODULE_9__["getPropertyFromItem"])(item, this.itemText, item);
                         },
                         getValue: function getValue(item) {
-                            return Object(_util_helpers__WEBPACK_IMPORTED_MODULE_10__["getPropertyFromItem"])(item, this.itemValue, this.getText(item));
+                            return Object(_util_helpers__WEBPACK_IMPORTED_MODULE_9__["getPropertyFromItem"])(item, this.itemValue, this.getText(item));
                         },
                         onBlur: function onBlur(e) {
                             this.$emit('blur', e);
@@ -22809,17 +23033,17 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                             e.preventDefault();
                             this.isMenuActive = false;
                         },
-                        // Detect tab and call original onBlur method
                         onKeyDown: function onKeyDown(e) {
                             var keyCode = e.keyCode;
                             // If enter, space, up, or down is pressed, open menu
-                            if (!this.isMenuActive && [_util_helpers__WEBPACK_IMPORTED_MODULE_10__["keyCodes"].enter, _util_helpers__WEBPACK_IMPORTED_MODULE_10__["keyCodes"].space, _util_helpers__WEBPACK_IMPORTED_MODULE_10__["keyCodes"].up, _util_helpers__WEBPACK_IMPORTED_MODULE_10__["keyCodes"].down].includes(keyCode)) this.activateMenu();
+                            if (!this.isMenuActive && [_util_helpers__WEBPACK_IMPORTED_MODULE_9__["keyCodes"].enter, _util_helpers__WEBPACK_IMPORTED_MODULE_9__["keyCodes"].space, _util_helpers__WEBPACK_IMPORTED_MODULE_9__["keyCodes"].up, _util_helpers__WEBPACK_IMPORTED_MODULE_9__["keyCodes"].down].includes(keyCode)) this.activateMenu();
+                            if (this.isMenuActive && this.$refs.menu) this.$refs.menu.changeListIndex(e);
                             // This should do something different
-                            if (keyCode === _util_helpers__WEBPACK_IMPORTED_MODULE_10__["keyCodes"].enter) return this.onEnterDown();
+                            if (keyCode === _util_helpers__WEBPACK_IMPORTED_MODULE_9__["keyCodes"].enter) return this.onEnterDown();
                             // If escape deactivate the menu
-                            if (keyCode === _util_helpers__WEBPACK_IMPORTED_MODULE_10__["keyCodes"].esc) return this.onEscDown(e);
+                            if (keyCode === _util_helpers__WEBPACK_IMPORTED_MODULE_9__["keyCodes"].esc) return this.onEscDown(e);
                             // If tab - select item or close menu
-                            if (keyCode === _util_helpers__WEBPACK_IMPORTED_MODULE_10__["keyCodes"].tab) return this.onTabDown(e);
+                            if (keyCode === _util_helpers__WEBPACK_IMPORTED_MODULE_9__["keyCodes"].tab) return this.onTabDown(e);
                         },
                         onMouseUp: function onMouseUp(e) {
                             var _this = this;
@@ -22833,7 +23057,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                                 });
                                 // If user is clicking in the container
                                 // and field is enclosed, activate it
-                            } else if (this.isEnclosed) {
+                            } else if (this.isEnclosed && !this.isDisabled) {
                                 this.isMenuActive = true;
                             }
                             _VTextField_VTextField__WEBPACK_IMPORTED_MODULE_5__["default"].methods.onMouseUp.call(this, e);
@@ -23016,7 +23240,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                             });
                         },
                         tileActiveClass: function tileActiveClass() {
-                            return Object.keys(this.addTextColorClassChecks()).join(' ');
+                            return Object.keys(this.setTextColor(this.color).class || {}).join(' ');
                         },
                         staticNoDataTile: function staticNoDataTile() {
                             var tile = {
@@ -23042,7 +23266,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                             };
                             return this.$createElement(_VList__WEBPACK_IMPORTED_MODULE_4__["VListTileAction"], data, [this.$createElement(_VCheckbox__WEBPACK_IMPORTED_MODULE_1__["default"], {
                                 props: {
-                                    color: this.computedColor,
+                                    color: this.color,
                                     inputValue: inputValue
                                 }
                             })]);
@@ -23192,7 +23416,8 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 /* harmony import */var _VAutocomplete__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__( /*! ../VAutocomplete */"./src/components/VAutocomplete/index.js");
                 /* harmony import */var _VCombobox__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__( /*! ../VCombobox */"./src/components/VCombobox/index.js");
                 /* harmony import */var _util_rebuildFunctionalSlots__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__( /*! ../../util/rebuildFunctionalSlots */"./src/util/rebuildFunctionalSlots.js");
-                /* harmony import */var _util_console__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__( /*! ../../util/console */"./src/util/console.ts");
+                /* harmony import */var _util_dedupeModelListeners__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__( /*! ../../util/dedupeModelListeners */"./src/util/dedupeModelListeners.ts");
+                /* harmony import */var _util_console__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__( /*! ../../util/console */"./src/util/console.ts");
 
                 /* @vue/component */
                 var wrapper = {
@@ -23220,25 +23445,25 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                             data = _a.data,
                             slots = _a.slots,
                             parent = _a.parent;
-                        delete data.model;
+                        Object(_util_dedupeModelListeners__WEBPACK_IMPORTED_MODULE_5__["default"])(data);
                         var children = Object(_util_rebuildFunctionalSlots__WEBPACK_IMPORTED_MODULE_4__["default"])(slots(), h);
                         if (props.autocomplete) {
-                            Object(_util_console__WEBPACK_IMPORTED_MODULE_5__["deprecate"])('<v-select autocomplete>', '<v-autocomplete>', wrapper, parent);
+                            Object(_util_console__WEBPACK_IMPORTED_MODULE_6__["deprecate"])('<v-select autocomplete>', '<v-autocomplete>', wrapper, parent);
                         }
                         if (props.combobox) {
-                            Object(_util_console__WEBPACK_IMPORTED_MODULE_5__["deprecate"])('<v-select combobox>', '<v-combobox>', wrapper, parent);
+                            Object(_util_console__WEBPACK_IMPORTED_MODULE_6__["deprecate"])('<v-select combobox>', '<v-combobox>', wrapper, parent);
                         }
                         if (props.tags) {
-                            Object(_util_console__WEBPACK_IMPORTED_MODULE_5__["deprecate"])('<v-select tags>', '<v-combobox multiple>', wrapper, parent);
+                            Object(_util_console__WEBPACK_IMPORTED_MODULE_6__["deprecate"])('<v-select tags>', '<v-combobox multiple>', wrapper, parent);
                         }
                         if (props.overflow) {
-                            Object(_util_console__WEBPACK_IMPORTED_MODULE_5__["deprecate"])('<v-select overflow>', '<v-overflow-btn>', wrapper, parent);
+                            Object(_util_console__WEBPACK_IMPORTED_MODULE_6__["deprecate"])('<v-select overflow>', '<v-overflow-btn>', wrapper, parent);
                         }
                         if (props.segmented) {
-                            Object(_util_console__WEBPACK_IMPORTED_MODULE_5__["deprecate"])('<v-select segmented>', '<v-overflow-btn segmented>', wrapper, parent);
+                            Object(_util_console__WEBPACK_IMPORTED_MODULE_6__["deprecate"])('<v-select segmented>', '<v-overflow-btn segmented>', wrapper, parent);
                         }
                         if (props.editable) {
-                            Object(_util_console__WEBPACK_IMPORTED_MODULE_5__["deprecate"])('<v-select editable>', '<v-overflow-btn editable>', wrapper, parent);
+                            Object(_util_console__WEBPACK_IMPORTED_MODULE_6__["deprecate"])('<v-select editable>', '<v-overflow-btn editable>', wrapper, parent);
                         }
                         if (props.combobox || props.tags) {
                             data.attrs.multiple = props.tags;
@@ -23279,14 +23504,17 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 /* harmony import */var _directives_click_outside__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__( /*! ../../directives/click-outside */"./src/directives/click-outside.ts");
                 /* harmony import */var _util_helpers__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__( /*! ../../util/helpers */"./src/util/helpers.ts");
                 /* harmony import */var _util_console__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__( /*! ../../util/console */"./src/util/console.ts");
-                var __assign = undefined && undefined.__assign || Object.assign || function (t) {
-                    for (var s, i = 1, n = arguments.length; i < n; i++) {
-                        s = arguments[i];
-                        for (var p in s) {
-                            if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                var __assign = undefined && undefined.__assign || function () {
+                    __assign = Object.assign || function (t) {
+                        for (var s, i = 1, n = arguments.length; i < n; i++) {
+                            s = arguments[i];
+                            for (var p in s) {
+                                if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                            }
                         }
-                    }
-                    return t;
+                        return t;
+                    };
+                    return __assign.apply(this, arguments);
                 };
                 // Styles
 
@@ -23362,7 +23590,6 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                     data: function data(vm) {
                         return {
                             app: {},
-                            defaultColor: 'primary',
                             isActive: false,
                             keyPressed: 0,
                             lazyValue: typeof vm.value !== 'undefined' ? vm.value : Number(vm.min),
@@ -23387,14 +23614,14 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                         },
                         computedColor: function computedColor() {
                             if (this.disabled) return null;
-                            return this.validationState || this.color || this.defaultColor;
+                            return this.validationState || this.color || 'primary';
                         },
                         computedTrackColor: function computedTrackColor() {
                             return this.disabled ? null : this.trackColor || null;
                         },
                         computedThumbColor: function computedThumbColor() {
                             if (this.disabled || !this.isDirty) return null;
-                            return this.validationState || this.thumbColor || this.color || this.defaultColor;
+                            return this.validationState || this.thumbColor || this.color || 'primary';
                         },
                         internalValue: {
                             get: function get() {
@@ -23548,21 +23775,20 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                             }, ticks);
                         },
                         genThumb: function genThumb() {
-                            return this.$createElement('div', {
-                                staticClass: 'v-slider__thumb',
-                                'class': this.addBackgroundColorClassChecks({}, this.computedThumbColor)
-                            });
+                            return this.$createElement('div', this.setBackgroundColor(this.computedThumbColor, {
+                                staticClass: 'v-slider__thumb'
+                            }));
                         },
                         genThumbContainer: function genThumbContainer(value, valueWidth, isActive, onDrag) {
                             var children = [this.genThumb()];
                             var thumbLabelContent = this.getLabel(value);
                             this.showThumbLabel && children.push(this.genThumbLabel(thumbLabelContent));
-                            return this.$createElement('div', {
+                            return this.$createElement('div', this.setTextColor(this.computedThumbColor, {
                                 staticClass: 'v-slider__thumb-container',
-                                'class': this.addTextColorClassChecks({
+                                'class': {
                                     'v-slider__thumb-container--is-active': isActive,
                                     'v-slider__thumb-container--show-label': this.showThumbLabel
-                                }, this.computedThumbColor),
+                                },
                                 style: {
                                     transition: this.trackTransition,
                                     left: (this.$vuetify.rtl ? 100 - valueWidth : valueWidth) + "%"
@@ -23571,7 +23797,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                                     touchstart: onDrag,
                                     mousedown: onDrag
                                 }
-                            }, children);
+                            }), children);
                         },
                         genThumbLabel: function genThumbLabel(content) {
                             var size = Object(_util_helpers__WEBPACK_IMPORTED_MODULE_4__["convertToUnit"])(this.thumbSize);
@@ -23583,25 +23809,22 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                                     name: 'show',
                                     value: this.isFocused || this.isActive || this.thumbLabel === 'always'
                                 }]
-                            }, [this.$createElement('div', {
+                            }, [this.$createElement('div', this.setBackgroundColor(this.computedThumbColor, {
                                 staticClass: 'v-slider__thumb-label',
-                                'class': this.addBackgroundColorClassChecks({}, this.computedThumbColor),
                                 style: {
                                     height: size,
                                     width: size
                                 }
-                            }, [content])])]);
+                            }), [content])])]);
                         },
                         genTrackContainer: function genTrackContainer() {
-                            var children = [this.$createElement('div', {
+                            var children = [this.$createElement('div', this.setBackgroundColor(this.computedTrackColor, {
                                 staticClass: 'v-slider__track',
-                                'class': this.addBackgroundColorClassChecks({}, this.computedTrackColor),
                                 style: this.trackStyles
-                            }), this.$createElement('div', {
+                            })), this.$createElement('div', this.setBackgroundColor(this.computedColor, {
                                 staticClass: 'v-slider__track-fill',
-                                'class': this.addBackgroundColorClassChecks(),
                                 style: this.trackFillStyles
-                            })];
+                            }))];
                             return this.$createElement('div', {
                                 staticClass: 'v-slider__track__container',
                                 ref: 'track'
@@ -23832,10 +24055,9 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                                 staticClass: 'v-snack',
                                 class: this.classes,
                                 on: this.$listeners
-                            }, [h('div', {
-                                staticClass: 'v-snack__wrapper',
-                                class: this.addBackgroundColorClassChecks()
-                            }, [h('div', {
+                            }, [h('div', this.setBackgroundColor(this.color, {
+                                staticClass: 'v-snack__wrapper'
+                            }), [h('div', {
                                 staticClass: 'v-snack__content'
                             }, this.$slots.default)])]));
                         }
@@ -23998,14 +24220,17 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 /* harmony import */var _stylus_components_steppers_styl__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__( /*! ../../stylus/components/_steppers.styl */"./src/stylus/components/_steppers.styl");
                 /* harmony import */var _stylus_components_steppers_styl__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_stylus_components_steppers_styl__WEBPACK_IMPORTED_MODULE_0__);
                 /* harmony import */var _mixins_themeable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__( /*! ../../mixins/themeable */"./src/mixins/themeable.ts");
-                var __assign = undefined && undefined.__assign || Object.assign || function (t) {
-                    for (var s, i = 1, n = arguments.length; i < n; i++) {
-                        s = arguments[i];
-                        for (var p in s) {
-                            if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                var __assign = undefined && undefined.__assign || function () {
+                    __assign = Object.assign || function (t) {
+                        for (var s, i = 1, n = arguments.length; i < n; i++) {
+                            s = arguments[i];
+                            for (var p in s) {
+                                if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                            }
                         }
-                    }
-                    return t;
+                        return t;
+                    };
+                    return __assign.apply(this, arguments);
                 };
 
                 /* @vue/component */
@@ -24180,7 +24405,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                             this.height = 0;
                             // Give the collapsing element time to collapse
                             setTimeout(function () {
-                                return _this.height = scrollHeight || 'auto';
+                                return _this.isActive && (_this.height = scrollHeight || 'auto');
                             }, 450);
                         },
                         leave: function leave() {
@@ -24402,14 +24627,17 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 /* harmony import */var _stylus_components_subheaders_styl__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__( /*! ../../stylus/components/_subheaders.styl */"./src/stylus/components/_subheaders.styl");
                 /* harmony import */var _stylus_components_subheaders_styl__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_stylus_components_subheaders_styl__WEBPACK_IMPORTED_MODULE_0__);
                 /* harmony import */var _mixins_themeable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__( /*! ../../mixins/themeable */"./src/mixins/themeable.ts");
-                var __assign = undefined && undefined.__assign || Object.assign || function (t) {
-                    for (var s, i = 1, n = arguments.length; i < n; i++) {
-                        s = arguments[i];
-                        for (var p in s) {
-                            if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                var __assign = undefined && undefined.__assign || function () {
+                    __assign = Object.assign || function (t) {
+                        for (var s, i = 1, n = arguments.length; i < n; i++) {
+                            s = arguments[i];
+                            for (var p in s) {
+                                if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                            }
                         }
-                    }
-                    return t;
+                        return t;
+                    };
+                    return __assign.apply(this, arguments);
                 };
 
                 /* @vue/component */
@@ -24468,19 +24696,13 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 /* harmony import */var _stylus_components_switch_styl__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_stylus_components_switch_styl__WEBPACK_IMPORTED_MODULE_1__);
                 /* harmony import */var _mixins_selectable__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__( /*! ../../mixins/selectable */"./src/mixins/selectable.js");
                 /* harmony import */var _directives_touch__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__( /*! ../../directives/touch */"./src/directives/touch.ts");
-                var __assign = undefined && undefined.__assign || Object.assign || function (t) {
-                    for (var s, i = 1, n = arguments.length; i < n; i++) {
-                        s = arguments[i];
-                        for (var p in s) {
-                            if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
-                        }
-                    }
-                    return t;
-                };
+                /* harmony import */var _util_helpers__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__( /*! ../../util/helpers */"./src/util/helpers.ts");
 
                 // Mixins
 
                 // Directives
+
+                // Helpers
 
                 /* @vue/component */
                 /* harmony default export */__webpack_exports__["default"] = {
@@ -24501,8 +24723,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                         genSwitch: function genSwitch() {
                             return this.$createElement('div', {
                                 staticClass: 'v-input--selection-controls__input'
-                            }, [this.genInput('checkbox', this.$attrs), !this.disabled && this.genRipple({
-                                'class': this.classesSelectable,
+                            }, [this.genInput('checkbox', this.$attrs), !this.disabled && this.genRipple(this.setTextColor(this.computedColor, {
                                 directives: [{
                                     name: 'touch',
                                     value: {
@@ -24510,25 +24731,28 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                                         right: this.onSwipeRight
                                     }
                                 }]
-                            }), this.genSwitchPart('track'), this.genSwitchPart('thumb')]);
+                            })), this.genSwitchPart('track'), this.genSwitchPart('thumb')]);
                         },
                         // Switches have default colors for thumb/track
                         // that do not tie into theme colors
                         // this avoids a visual issue where
                         // the color takes too long to transition
                         genSwitchPart: function genSwitchPart(target) {
-                            return this.$createElement('div', {
+                            return this.$createElement('div', this.setTextColor(this.computedColor, {
                                 staticClass: "v-input--switch__" + target,
-                                'class': __assign({}, this.classesSelectable, this.themeClasses),
+                                'class': this.themeClasses,
                                 // Avoid cache collision
                                 key: target
-                            });
+                            }));
                         },
                         onSwipeLeft: function onSwipeLeft() {
                             if (this.isActive) this.onChange();
                         },
                         onSwipeRight: function onSwipeRight() {
                             if (!this.isActive) this.onChange();
+                        },
+                        onKeydown: function onKeydown(e) {
+                            if (e.keyCode === _util_helpers__WEBPACK_IMPORTED_MODULE_4__["keyCodes"].left && this.isActive || e.keyCode === _util_helpers__WEBPACK_IMPORTED_MODULE_4__["keyCodes"].right && !this.isActive) this.onChange();
                         }
                     }
                 };
@@ -24571,14 +24795,17 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 /* harmony import */var _mixins_applicationable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__( /*! ../../mixins/applicationable */"./src/mixins/applicationable.ts");
                 /* harmony import */var _mixins_colorable__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__( /*! ../../mixins/colorable */"./src/mixins/colorable.ts");
                 /* harmony import */var _mixins_themeable__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__( /*! ../../mixins/themeable */"./src/mixins/themeable.ts");
-                var __assign = undefined && undefined.__assign || Object.assign || function (t) {
-                    for (var s, i = 1, n = arguments.length; i < n; i++) {
-                        s = arguments[i];
-                        for (var p in s) {
-                            if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                var __assign = undefined && undefined.__assign || function () {
+                    __assign = Object.assign || function (t) {
+                        for (var s, i = 1, n = arguments.length; i < n; i++) {
+                            s = arguments[i];
+                            for (var p in s) {
+                                if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                            }
                         }
-                    }
-                    return t;
+                        return t;
+                    };
+                    return __assign.apply(this, arguments);
                 };
 
                 /* @vue/component */
@@ -24598,7 +24825,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                     },
                     computed: {
                         classes: function classes() {
-                            return this.addBackgroundColorClassChecks(__assign({ 'v-system-bar--lights-out': this.lightsOut, 'v-system-bar--absolute': this.absolute, 'v-system-bar--fixed': !this.absolute && (this.app || this.fixed), 'v-system-bar--status': this.status, 'v-system-bar--window': this.window }, this.themeClasses));
+                            return __assign({ 'v-system-bar--lights-out': this.lightsOut, 'v-system-bar--absolute': this.absolute, 'v-system-bar--fixed': !this.absolute && (this.app || this.fixed), 'v-system-bar--status': this.status, 'v-system-bar--window': this.window }, this.themeClasses);
                         },
                         computedHeight: function computedHeight() {
                             if (this.height) return parseInt(this.height);
@@ -24623,7 +24850,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                                 height: this.computedHeight + "px"
                             }
                         };
-                        return h('div', data, this.$slots.default);
+                        return h('div', this.setBackgroundColor(this.color, data), this.$slots.default);
                     }
                 };
 
@@ -24661,8 +24888,9 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
 
                 __webpack_require__.r(__webpack_exports__);
                 /* harmony import */var _mixins_routable__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__( /*! ../../mixins/routable */"./src/mixins/routable.ts");
-                /* harmony import */var _mixins_registrable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__( /*! ../../mixins/registrable */"./src/mixins/registrable.ts");
-                /* harmony import */var _util_helpers__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__( /*! ../../util/helpers */"./src/util/helpers.ts");
+                /* harmony import */var _mixins_themeable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__( /*! ../../mixins/themeable */"./src/mixins/themeable.ts");
+                /* harmony import */var _mixins_registrable__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__( /*! ../../mixins/registrable */"./src/mixins/registrable.ts");
+                /* harmony import */var _util_helpers__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__( /*! ../../util/helpers */"./src/util/helpers.ts");
                 // Mixins
 
 
@@ -24671,7 +24899,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 /* @vue/component */
                 /* harmony default export */__webpack_exports__["default"] = {
                     name: 'v-tab',
-                    mixins: [Object(_mixins_registrable__WEBPACK_IMPORTED_MODULE_1__["inject"])('tabs', 'v-tab', 'v-tabs'), _mixins_routable__WEBPACK_IMPORTED_MODULE_0__["default"]],
+                    mixins: [Object(_mixins_registrable__WEBPACK_IMPORTED_MODULE_2__["inject"])('tabs', 'v-tab', 'v-tabs'), _mixins_routable__WEBPACK_IMPORTED_MODULE_0__["default"], _mixins_themeable__WEBPACK_IMPORTED_MODULE_1__["default"]],
                     inject: ['tabClick'],
                     props: {
                         activeClass: {
@@ -24689,6 +24917,9 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                         };
                     },
                     computed: {
+                        isDark: function isDark() {
+                            return this.tabs.selfIsDark;
+                        },
                         classes: function classes() {
                             var _a;
                             return _a = {
@@ -24729,7 +24960,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                             if (!this.to || !this.$refs.link) return;
                             var path = "_vnode.data.class." + this.activeClass;
                             this.$nextTick(function () {
-                                if (Object(_util_helpers__WEBPACK_IMPORTED_MODULE_2__["getObjectValueByPath"])(_this.$refs.link, path)) {
+                                if (Object(_util_helpers__WEBPACK_IMPORTED_MODULE_3__["getObjectValueByPath"])(_this.$refs.link, path)) {
                                     _this.tabClick(_this);
                                 }
                             });
@@ -24739,7 +24970,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                         }
                     },
                     render: function render(h) {
-                        var link = this.generateRouteLink();
+                        var link = this.generateRouteLink(this.classes);
                         var data = link.data;
                         // If disabled, use div as anchor tags do not support
                         // being disabled
@@ -24880,6 +25111,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                     mixins: [Object(_mixins_registrable__WEBPACK_IMPORTED_MODULE_9__["provide"])('tabs'), _mixins_colorable__WEBPACK_IMPORTED_MODULE_6__["default"], _mixins_ssr_bootable__WEBPACK_IMPORTED_MODULE_7__["default"], _mixins_tabs_computed__WEBPACK_IMPORTED_MODULE_1__["default"], _mixins_tabs_props__WEBPACK_IMPORTED_MODULE_3__["default"], _mixins_tabs_generators__WEBPACK_IMPORTED_MODULE_2__["default"], _mixins_tabs_touch__WEBPACK_IMPORTED_MODULE_4__["default"], _mixins_tabs_watchers__WEBPACK_IMPORTED_MODULE_5__["default"], _mixins_themeable__WEBPACK_IMPORTED_MODULE_8__["default"]],
                     provide: function provide() {
                         return {
+                            tabs: this,
                             tabClick: this.tabClick,
                             tabProxy: this.tabProxy,
                             registerItems: this.registerItems,
@@ -24911,6 +25143,21 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                                 wrapper: 0
                             }
                         };
+                    },
+                    computed: {
+                        isDark: function isDark() {
+                            // Always inherit from parent
+                            return this.theme.isDark;
+                        },
+                        selfIsDark: function selfIsDark() {
+                            return _mixins_themeable__WEBPACK_IMPORTED_MODULE_8__["default"].options.computed.isDark.call(this);
+                        },
+                        themeClasses: function themeClasses() {
+                            return {
+                                'theme--dark': this.selfIsDark,
+                                'theme--light': !this.selfIsDark
+                            };
+                        }
                     },
                     watch: {
                         tabs: 'onResize'
@@ -25244,16 +25491,10 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 /* harmony default export */__webpack_exports__["default"] = {
                     name: 'v-tabs-slider',
                     mixins: [_mixins_colorable__WEBPACK_IMPORTED_MODULE_0__["default"]],
-                    data: function data() {
-                        return {
-                            defaultColor: 'accent'
-                        };
-                    },
                     render: function render(h) {
-                        return h('div', {
-                            staticClass: 'v-tabs__slider',
-                            class: this.addBackgroundColorClassChecks()
-                        });
+                        return h('div', this.setBackgroundColor(this.color || 'accent', {
+                            staticClass: 'v-tabs__slider'
+                        }));
                     }
                 };
 
@@ -25397,11 +25638,11 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 /* harmony default export */__webpack_exports__["default"] = {
                     methods: {
                         genBar: function genBar(items) {
-                            return this.$createElement('div', {
+                            return this.$createElement('div', this.setBackgroundColor(this.color, {
                                 staticClass: 'v-tabs__bar',
-                                'class': this.addBackgroundColorClassChecks(this.themeClasses),
+                                'class': this.themeClasses,
                                 ref: 'bar'
-                            }, [this.genTransition('prev'), this.genWrapper(this.genContainer(items)), this.genTransition('next')]);
+                            }), [this.genTransition('prev'), this.genWrapper(this.genContainer(items)), this.genTransition('next')]);
                         },
                         genContainer: function genContainer(items) {
                             return this.$createElement('div', {
@@ -25668,14 +25909,17 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 /* harmony import */var _directives_ripple__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__( /*! ../../directives/ripple */"./src/directives/ripple.ts");
                 /* harmony import */var _util_helpers__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__( /*! ../../util/helpers */"./src/util/helpers.ts");
                 /* harmony import */var _util_console__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__( /*! ../../util/console */"./src/util/console.ts");
-                var __assign = undefined && undefined.__assign || Object.assign || function (t) {
-                    for (var s, i = 1, n = arguments.length; i < n; i++) {
-                        s = arguments[i];
-                        for (var p in s) {
-                            if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                var __assign = undefined && undefined.__assign || function () {
+                    __assign = Object.assign || function (t) {
+                        for (var s, i = 1, n = arguments.length; i < n; i++) {
+                            s = arguments[i];
+                            for (var p in s) {
+                                if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                            }
                         }
-                    }
-                    return t;
+                        return t;
+                    };
+                    return __assign.apply(this, arguments);
                 };
                 // Styles
 
@@ -25850,7 +26094,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                         },
                         /** @public */
                         blur: function blur() {
-                            this.onBlur();
+                            this.$refs.input ? this.$refs.input.blur() : this.onBlur();
                         },
                         clearableCallback: function clearableCallback() {
                             var _this = this;
@@ -26012,12 +26256,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                             _VInput__WEBPACK_IMPORTED_MODULE_1__["default"].methods.onMouseDown.call(this, e);
                         },
                         onMouseUp: function onMouseUp(e) {
-                            // Default click handler is on slot,
-                            // Mouse events are to enable specific
-                            // input types when clicked
-                            if ((this.isSolo || this.hasOutline) && document.activeElement !== this.$refs.input) {
-                                this.$refs.input.focus();
-                            }
+                            this.focus();
                             _VInput__WEBPACK_IMPORTED_MODULE_1__["default"].methods.onMouseUp.call(this, e);
                         }
                     }
@@ -26042,7 +26281,8 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 /* harmony import */var _VTextField__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__( /*! ./VTextField */"./src/components/VTextField/VTextField.js");
                 /* harmony import */var _VTextarea_VTextarea__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__( /*! ../VTextarea/VTextarea */"./src/components/VTextarea/VTextarea.js");
                 /* harmony import */var _util_rebuildFunctionalSlots__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__( /*! ../../util/rebuildFunctionalSlots */"./src/util/rebuildFunctionalSlots.js");
-                /* harmony import */var _util_console__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__( /*! ../../util/console */"./src/util/console.ts");
+                /* harmony import */var _util_dedupeModelListeners__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__( /*! ../../util/dedupeModelListeners */"./src/util/dedupeModelListeners.ts");
+                /* harmony import */var _util_console__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__( /*! ../../util/console */"./src/util/console.ts");
 
                 // TODO: remove this in v2.0
                 /* @vue/component */
@@ -26058,13 +26298,13 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                             data = _a.data,
                             slots = _a.slots,
                             parent = _a.parent;
-                        delete data.model;
+                        Object(_util_dedupeModelListeners__WEBPACK_IMPORTED_MODULE_3__["default"])(data);
                         var children = Object(_util_rebuildFunctionalSlots__WEBPACK_IMPORTED_MODULE_2__["default"])(slots(), h);
                         if (props.textarea) {
-                            Object(_util_console__WEBPACK_IMPORTED_MODULE_3__["deprecate"])('<v-text-field textarea>', '<v-textarea outline>', wrapper, parent);
+                            Object(_util_console__WEBPACK_IMPORTED_MODULE_4__["deprecate"])('<v-text-field textarea>', '<v-textarea outline>', wrapper, parent);
                         }
                         if (props.multiLine) {
-                            Object(_util_console__WEBPACK_IMPORTED_MODULE_3__["deprecate"])('<v-text-field multi-line>', '<v-textarea>', wrapper, parent);
+                            Object(_util_console__WEBPACK_IMPORTED_MODULE_4__["deprecate"])('<v-text-field multi-line>', '<v-textarea>', wrapper, parent);
                         }
                         if (props.textarea || props.multiLine) {
                             data.attrs.outline = props.textarea;
@@ -26094,14 +26334,17 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 /* harmony import */var _stylus_components_textarea_styl__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_stylus_components_textarea_styl__WEBPACK_IMPORTED_MODULE_0__);
                 /* harmony import */var _VTextField_VTextField__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__( /*! ../VTextField/VTextField */"./src/components/VTextField/VTextField.js");
                 /* harmony import */var _util_console__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__( /*! ../../util/console */"./src/util/console.ts");
-                var __assign = undefined && undefined.__assign || Object.assign || function (t) {
-                    for (var s, i = 1, n = arguments.length; i < n; i++) {
-                        s = arguments[i];
-                        for (var p in s) {
-                            if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                var __assign = undefined && undefined.__assign || function () {
+                    __assign = Object.assign || function (t) {
+                        for (var s, i = 1, n = arguments.length; i < n; i++) {
+                            s = arguments[i];
+                            for (var p in s) {
+                                if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                            }
                         }
-                    }
-                    return t;
+                        return t;
+                    };
+                    return __assign.apply(this, arguments);
                 };
                 // Styles
 
@@ -26286,6 +26529,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                         },
                         min: String,
                         max: String,
+                        readonly: Boolean,
                         scrollable: Boolean,
                         value: null
                     },
@@ -26417,6 +26661,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                                     light: this.light,
                                     max: this.selectingHour ? this.isAmPm && this.period === 'am' ? 11 : 23 : 59,
                                     min: this.selectingHour && this.isAmPm && this.period === 'pm' ? 12 : 0,
+                                    readonly: this.readonly,
                                     scrollable: this.scrollable,
                                     size: this.width - (!this.fullWidth && this.landscape ? 80 : 20),
                                     step: this.selectingHour ? 1 : 5,
@@ -26447,6 +26692,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                                     hour: this.inputHour,
                                     minute: this.inputMinute,
                                     period: this.period,
+                                    readonly: this.readonly,
                                     selectingHour: this.selectingHour
                                 },
                                 on: {
@@ -26482,14 +26728,17 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 /* harmony import */var _stylus_components_time_picker_clock_styl__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_stylus_components_time_picker_clock_styl__WEBPACK_IMPORTED_MODULE_0__);
                 /* harmony import */var _mixins_colorable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__( /*! ../../mixins/colorable */"./src/mixins/colorable.ts");
                 /* harmony import */var _mixins_themeable__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__( /*! ../../mixins/themeable */"./src/mixins/themeable.ts");
-                var __assign = undefined && undefined.__assign || Object.assign || function (t) {
-                    for (var s, i = 1, n = arguments.length; i < n; i++) {
-                        s = arguments[i];
-                        for (var p in s) {
-                            if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                var __assign = undefined && undefined.__assign || function () {
+                    __assign = Object.assign || function (t) {
+                        for (var s, i = 1, n = arguments.length; i < n; i++) {
+                            s = arguments[i];
+                            for (var p in s) {
+                                if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                            }
                         }
-                    }
-                    return t;
+                        return t;
+                    };
+                    return __assign.apply(this, arguments);
                 };
 
                 // Mixins
@@ -26517,6 +26766,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                             required: true
                         },
                         scrollable: Boolean,
+                        readonly: Boolean,
                         rotate: {
                             type: Number,
                             default: 0
@@ -26533,7 +26783,6 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                     },
                     data: function data() {
                         return {
-                            defaultColor: 'accent',
                             inputValue: this.value,
                             isDragging: false,
                             valueOnMouseDown: null,
@@ -26593,28 +26842,28 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                         genValues: function genValues() {
                             var children = [];
                             for (var value = this.min; value <= this.max; value = value + this.step) {
-                                var classes = {
-                                    active: value === this.displayedValue,
-                                    disabled: !this.isAllowed(value)
-                                };
-                                children.push(this.$createElement('span', {
-                                    'class': this.addBackgroundColorClassChecks(classes, value === this.value ? this.computedColor : null),
+                                var color = value === this.value && (this.color || 'accent');
+                                children.push(this.$createElement('span', this.setBackgroundColor(color, {
+                                    'class': {
+                                        active: value === this.displayedValue,
+                                        disabled: !this.isAllowed(value)
+                                    },
                                     style: this.getTransform(value),
                                     domProps: { innerHTML: "<span>" + this.format(value) + "</span>" }
-                                }));
+                                })));
                             }
                             return children;
                         },
                         genHand: function genHand() {
                             var scale = "scaleY(" + this.handScale(this.displayedValue) + ")";
                             var angle = this.rotate + this.degreesPerUnit * (this.displayedValue - this.min);
-                            return this.$createElement('div', {
+                            var color = this.value != null && (this.color || 'accent');
+                            return this.$createElement('div', this.setBackgroundColor(color, {
                                 staticClass: 'v-time-picker-clock__hand',
-                                'class': this.value == null ? {} : this.addBackgroundColorClassChecks(),
                                 style: {
                                     transform: "rotate(" + angle + "deg) " + scale
                                 }
-                            });
+                            }));
                         },
                         getTransform: function getTransform(i) {
                             var _a = this.getPosition(i),
@@ -26694,7 +26943,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                         var data = {
                             staticClass: 'v-time-picker-clock',
                             class: __assign({ 'v-time-picker-clock--indeterminate': this.value == null }, this.themeClasses),
-                            on: {
+                            on: this.readonly ? undefined : {
                                 mousedown: this.onMouseDown,
                                 mouseup: this.onMouseUp,
                                 mouseleave: function mouseleave() {
@@ -26711,7 +26960,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                             },
                             ref: 'clock'
                         };
-                        this.scrollable && (data.on.wheel = this.wheel);
+                        !this.readonly && this.scrollable && (data.on.wheel = this.wheel);
                         return this.$createElement('div', data, [this.genHand(), this.genValues()]);
                     }
                 };
@@ -26752,6 +27001,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                                 return period === 'am' || period === 'pm';
                             }
                         },
+                        readonly: Boolean,
                         selectingHour: Boolean
                     },
                     methods: {
@@ -26769,7 +27019,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                         genAmPm: function genAmPm() {
                             return this.$createElement('div', {
                                 staticClass: 'v-time-picker-title__ampm'
-                            }, [this.genPickerButton('period', 'am', 'am'), this.genPickerButton('period', 'pm', 'pm')]);
+                            }, [this.genPickerButton('period', 'am', 'am', this.readonly), this.genPickerButton('period', 'pm', 'pm', this.readonly)]);
                         }
                     },
                     render: function render(h) {
@@ -26836,14 +27086,17 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 /* harmony import */var _mixins_ssr_bootable__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__( /*! ../../mixins/ssr-bootable */"./src/mixins/ssr-bootable.ts");
                 /* harmony import */var _directives_scroll__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__( /*! ../../directives/scroll */"./src/directives/scroll.ts");
                 /* harmony import */var _util_console__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__( /*! ../../util/console */"./src/util/console.ts");
-                var __assign = undefined && undefined.__assign || Object.assign || function (t) {
-                    for (var s, i = 1, n = arguments.length; i < n; i++) {
-                        s = arguments[i];
-                        for (var p in s) {
-                            if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                var __assign = undefined && undefined.__assign || function () {
+                    __assign = Object.assign || function (t) {
+                        for (var s, i = 1, n = arguments.length; i < n; i++) {
+                            s = arguments[i];
+                            for (var p in s) {
+                                if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                            }
                         }
-                    }
-                    return t;
+                        return t;
+                    };
+                    return __assign.apply(this, arguments);
                 };
                 // Styles
 
@@ -26923,7 +27176,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                             if (this.height) return parseInt(this.height);
                             if (this.dense) return this.heights.dense;
                             if (this.prominent || this.$vuetify.breakpoint.mdAndUp) return this.heights.desktop;
-                            if (this.$vuetify.breakpoint.width > this.$vuetify.breakpoint.height) return this.heights.mobileLandscape;
+                            if (this.$vuetify.breakpoint.smAndDown && this.$vuetify.breakpoint.width > this.$vuetify.breakpoint.height) return this.heights.mobileLandscape;
                             return this.heights.mobile;
                         },
                         computedExtensionHeight: function computedExtensionHeight() {
@@ -26940,7 +27193,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                             return this.$vuetify.application.bar;
                         },
                         classes: function classes() {
-                            return this.addBackgroundColorClassChecks(__assign({ 'v-toolbar': true, 'elevation-0': this.flat || !this.isActive && !this.tabs && this.canScroll, 'v-toolbar--absolute': this.absolute, 'v-toolbar--card': this.card, 'v-toolbar--clipped': this.clippedLeft || this.clippedRight, 'v-toolbar--dense': this.dense, 'v-toolbar--extended': this.isExtended, 'v-toolbar--fixed': !this.absolute && (this.app || this.fixed), 'v-toolbar--floating': this.floating, 'v-toolbar--prominent': this.prominent }, this.themeClasses));
+                            return __assign({ 'v-toolbar': true, 'elevation-0': this.flat || !this.isActive && !this.tabs && this.canScroll, 'v-toolbar--absolute': this.absolute, 'v-toolbar--card': this.card, 'v-toolbar--clipped': this.clippedLeft || this.clippedRight, 'v-toolbar--dense': this.dense, 'v-toolbar--extended': this.isExtended, 'v-toolbar--fixed': !this.absolute && (this.app || this.fixed), 'v-toolbar--floating': this.floating, 'v-toolbar--prominent': this.prominent }, this.themeClasses);
                         },
                         computedPaddingLeft: function computedPaddingLeft() {
                             if (!this.app || this.clippedLeft) return 0;
@@ -27015,11 +27268,11 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                     render: function render(h) {
                         this.isExtended = this.extended || !!this.$slots.extension;
                         var children = [];
-                        var data = {
+                        var data = this.setBackgroundColor(this.color, {
                             'class': this.classes,
                             style: this.styles,
                             on: this.$listeners
-                        };
+                        });
                         data.directives = [{
                             arg: this.scrollTarget,
                             name: 'scroll',
@@ -27257,9 +27510,9 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                     render: function render(h) {
                         var _this = this;
                         var _a;
-                        var tooltip = h('div', {
+                        var tooltip = h('div', this.setBackgroundColor(this.color, {
                             staticClass: 'v-tooltip__content',
-                            'class': this.addBackgroundColorClassChecks((_a = {}, _a[this.contentClass] = true, _a['menuable__content__active'] = this.isActive, _a)),
+                            'class': (_a = {}, _a[this.contentClass] = true, _a['menuable__content__active'] = this.isActive, _a),
                             style: this.styles,
                             attrs: this.getScopeIdAttrs(),
                             directives: [{
@@ -27267,7 +27520,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                                 value: this.isContentActive
                             }],
                             ref: 'content'
-                        }, this.showLazyContent(this.$slots.default));
+                        }), this.showLazyContent(this.$slots.default));
                         return h(this.tag, {
                             staticClass: 'v-tooltip',
                             'class': this.classes
@@ -27329,14 +27582,18 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 /* harmony export (binding) */__webpack_require__.d(__webpack_exports__, "checkVueVersion", function () {
                     return checkVueVersion;
                 });
-                /* harmony import */var _mixins_application__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__( /*! ./mixins/application */"./src/components/Vuetify/mixins/application.ts");
-                /* harmony import */var _mixins_breakpoint__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__( /*! ./mixins/breakpoint */"./src/components/Vuetify/mixins/breakpoint.ts");
-                /* harmony import */var _mixins_theme__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__( /*! ./mixins/theme */"./src/components/Vuetify/mixins/theme.ts");
-                /* harmony import */var _mixins_icons__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__( /*! ./mixins/icons */"./src/components/Vuetify/mixins/icons.js");
-                /* harmony import */var _mixins_options__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__( /*! ./mixins/options */"./src/components/Vuetify/mixins/options.js");
-                /* harmony import */var _mixins_lang__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__( /*! ./mixins/lang */"./src/components/Vuetify/mixins/lang.ts");
-                /* harmony import */var _util_console__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__( /*! ../../util/console */"./src/util/console.ts");
+                /* harmony import */var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__( /*! vue */"vue");
+                /* harmony import */var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
+                /* harmony import */var _mixins_application__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__( /*! ./mixins/application */"./src/components/Vuetify/mixins/application.ts");
+                /* harmony import */var _mixins_breakpoint__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__( /*! ./mixins/breakpoint */"./src/components/Vuetify/mixins/breakpoint.ts");
+                /* harmony import */var _mixins_theme__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__( /*! ./mixins/theme */"./src/components/Vuetify/mixins/theme.ts");
+                /* harmony import */var _mixins_icons__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__( /*! ./mixins/icons */"./src/components/Vuetify/mixins/icons.js");
+                /* harmony import */var _mixins_options__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__( /*! ./mixins/options */"./src/components/Vuetify/mixins/options.js");
+                /* harmony import */var _mixins_lang__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__( /*! ./mixins/lang */"./src/components/Vuetify/mixins/lang.ts");
                 /* harmony import */var _util_goTo__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__( /*! ./util/goTo */"./src/components/Vuetify/util/goTo.js");
+                /* harmony import */var _util_console__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__( /*! ../../util/console */"./src/util/console.ts");
+
+                // Utils
 
                 var Vuetify = {
                     install: function install(Vue, opts) {
@@ -27345,18 +27602,21 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                         }
                         if (this.installed) return;
                         this.installed = true;
+                        if (vue__WEBPACK_IMPORTED_MODULE_0___default.a !== Vue) {
+                            Object(_util_console__WEBPACK_IMPORTED_MODULE_8__["consoleError"])('Multiple instances of Vue detected\nSee https://github.com/vuetifyjs/vuetify/issues/4068\n\nIf you\'re seeing "$attrs is readonly", it\'s caused by this');
+                        }
                         checkVueVersion(Vue);
-                        var lang = Object(_mixins_lang__WEBPACK_IMPORTED_MODULE_5__["default"])(opts.lang);
+                        var lang = Object(_mixins_lang__WEBPACK_IMPORTED_MODULE_6__["default"])(opts.lang);
                         Vue.prototype.$vuetify = new Vue({
-                            mixins: [_mixins_breakpoint__WEBPACK_IMPORTED_MODULE_1__["default"]],
+                            mixins: [_mixins_breakpoint__WEBPACK_IMPORTED_MODULE_2__["default"]],
                             data: {
-                                application: _mixins_application__WEBPACK_IMPORTED_MODULE_0__["default"],
+                                application: _mixins_application__WEBPACK_IMPORTED_MODULE_1__["default"],
                                 dark: false,
-                                icons: Object(_mixins_icons__WEBPACK_IMPORTED_MODULE_3__["default"])(opts.iconfont, opts.icons),
+                                icons: Object(_mixins_icons__WEBPACK_IMPORTED_MODULE_4__["default"])(opts.iconfont, opts.icons),
                                 lang: lang,
-                                options: Object(_mixins_options__WEBPACK_IMPORTED_MODULE_4__["default"])(opts.options),
+                                options: Object(_mixins_options__WEBPACK_IMPORTED_MODULE_5__["default"])(opts.options),
                                 rtl: opts.rtl,
-                                theme: Object(_mixins_theme__WEBPACK_IMPORTED_MODULE_2__["default"])(opts.theme)
+                                theme: Object(_mixins_theme__WEBPACK_IMPORTED_MODULE_3__["default"])(opts.theme)
                             },
                             methods: {
                                 goTo: _util_goTo__WEBPACK_IMPORTED_MODULE_7__["default"],
@@ -27364,9 +27624,9 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                             }
                         });
                         if (opts.directives) {
-                            Object.values(opts.directives).forEach(function (directive) {
-                                Vue.directive(directive.name, directive);
-                            });
+                            for (var name in opts.directives) {
+                                Vue.directive(name, opts.directives[name]);
+                            }
                         }
                         (function registerComponents(components) {
                             if (components) {
@@ -27381,7 +27641,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                             return false;
                         })(opts.components);
                     },
-                    version: '1.2.0-beta.0'
+                    version: '1.2.1'
                 };
                 function checkVueVersion(Vue, requiredVue) {
                     var vueDep = requiredVue || '^2.5.10';
@@ -27397,7 +27657,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                     actual[1] === required[1] && actual[2] >= required[2] // or minor is eq and patch is >=
                     );
                     if (!passes) {
-                        Object(_util_console__WEBPACK_IMPORTED_MODULE_6__["consoleWarn"])("Vuetify requires Vue version " + vueDep);
+                        Object(_util_console__WEBPACK_IMPORTED_MODULE_8__["consoleWarn"])("Vuetify requires Vue version " + vueDep);
                     }
                 }
                 /* harmony default export */__webpack_exports__["default"] = Vuetify;
@@ -27742,7 +28002,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 /* harmony export (binding) */__webpack_require__.d(__webpack_exports__, "default", function () {
                     return lang;
                 });
-                /* harmony import */var _locale_en__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__( /*! ../../../locale/en */"./src/locale/en.js");
+                /* harmony import */var _locale_en__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__( /*! ../../../locale/en */"./src/locale/en.ts");
                 /* harmony import */var _util_helpers__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__( /*! ../../../util/helpers */"./src/util/helpers.ts");
                 /* harmony import */var _util_console__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__( /*! ../../../util/console */"./src/util/console.ts");
                 var __read = undefined && undefined.__read || function (o, n) {
@@ -27833,6 +28093,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 var OPTIONS_DEFAULTS = {
                     minifyTheme: null,
                     themeCache: null,
+                    customProperties: false,
                     cspNonce: null
                 };
                 function options(options) {
@@ -27858,14 +28119,17 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 /* harmony export (binding) */__webpack_require__.d(__webpack_exports__, "default", function () {
                     return theme;
                 });
-                var __assign = undefined && undefined.__assign || Object.assign || function (t) {
-                    for (var s, i = 1, n = arguments.length; i < n; i++) {
-                        s = arguments[i];
-                        for (var p in s) {
-                            if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                var __assign = undefined && undefined.__assign || function () {
+                    __assign = Object.assign || function (t) {
+                        for (var s, i = 1, n = arguments.length; i < n; i++) {
+                            s = arguments[i];
+                            for (var p in s) {
+                                if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                            }
                         }
-                    }
-                    return t;
+                        return t;
+                    };
+                    return __assign.apply(this, arguments);
                 };
                 /* eslint-disable no-multi-spaces */
                 var THEME_DEFAULTS = {
@@ -27966,7 +28230,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
             /*!*********************************!*\
               !*** ./src/components/index.js ***!
               \*********************************/
-            /*! exports provided: VApp, VAlert, VAutocomplete, VAvatar, VBadge, VBottomNav, VBottomSheet, VBreadcrumbs, VBtn, VBtnToggle, VCard, VCarousel, VCheckbox, VChip, VCombobox, VCounter, VDataIterator, VDataTable, VDatePicker, VDialog, VDivider, VExpansionPanel, VFooter, VForm, VGrid, VIcon, VImg, VInput, VJumbotron, VLabel, VList, VMenu, VMessages, VNavigationDrawer, VOverflowBtn, VPagination, VParallax, VPicker, VProgressCircular, VProgressLinear, VRadioGroup, VRangeSlider, VRating, VResponsive, VSelect, VSlider, VSnackbar, VSpeedDial, VStepper, VSubheader, VSwitch, VSystemBar, VTabs, VTextarea, VTextField, VTimePicker, VToolbar, VTooltip, Transitions */
+            /*! exports provided: VApp, VAlert, VAutocomplete, VAvatar, VBadge, VBottomNav, VBottomSheet, VBreadcrumbs, VBtn, VBtnToggle, VCard, VCarousel, VCheckbox, VChip, VCombobox, VCounter, VDataIterator, VDataTable, VDatePicker, VDialog, VDivider, VExpansionPanel, VFooter, VForm, VGrid, VHover, VIcon, VImg, VInput, VJumbotron, VLabel, VList, VMenu, VMessages, VNavigationDrawer, VOverflowBtn, VPagination, VParallax, VPicker, VProgressCircular, VProgressLinear, VRadioGroup, VRangeSlider, VRating, VResponsive, VSelect, VSlider, VSnackbar, VSpeedDial, VStepper, VSubheader, VSwitch, VSystemBar, VTabs, VTextarea, VTextField, VTimePicker, VToolbar, VTooltip, Transitions */
             /***/function (module, __webpack_exports__, __webpack_require__) {
 
                 "use strict";
@@ -28097,174 +28361,179 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                     return _VGrid__WEBPACK_IMPORTED_MODULE_24__["default"];
                 });
 
-                /* harmony import */var _VIcon__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__( /*! ./VIcon */"./src/components/VIcon/index.ts");
+                /* harmony import */var _VHover__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__( /*! ./VHover */"./src/components/VHover/index.ts");
+                /* harmony reexport (safe) */__webpack_require__.d(__webpack_exports__, "VHover", function () {
+                    return _VHover__WEBPACK_IMPORTED_MODULE_25__["default"];
+                });
+
+                /* harmony import */var _VIcon__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__( /*! ./VIcon */"./src/components/VIcon/index.ts");
                 /* harmony reexport (safe) */__webpack_require__.d(__webpack_exports__, "VIcon", function () {
-                    return _VIcon__WEBPACK_IMPORTED_MODULE_25__["default"];
+                    return _VIcon__WEBPACK_IMPORTED_MODULE_26__["default"];
                 });
 
-                /* harmony import */var _VImg__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__( /*! ./VImg */"./src/components/VImg/index.ts");
+                /* harmony import */var _VImg__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__( /*! ./VImg */"./src/components/VImg/index.ts");
                 /* harmony reexport (safe) */__webpack_require__.d(__webpack_exports__, "VImg", function () {
-                    return _VImg__WEBPACK_IMPORTED_MODULE_26__["default"];
+                    return _VImg__WEBPACK_IMPORTED_MODULE_27__["default"];
                 });
 
-                /* harmony import */var _VInput__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__( /*! ./VInput */"./src/components/VInput/index.js");
+                /* harmony import */var _VInput__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__( /*! ./VInput */"./src/components/VInput/index.js");
                 /* harmony reexport (safe) */__webpack_require__.d(__webpack_exports__, "VInput", function () {
-                    return _VInput__WEBPACK_IMPORTED_MODULE_27__["default"];
+                    return _VInput__WEBPACK_IMPORTED_MODULE_28__["default"];
                 });
 
-                /* harmony import */var _VJumbotron__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__( /*! ./VJumbotron */"./src/components/VJumbotron/index.js");
+                /* harmony import */var _VJumbotron__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__( /*! ./VJumbotron */"./src/components/VJumbotron/index.js");
                 /* harmony reexport (safe) */__webpack_require__.d(__webpack_exports__, "VJumbotron", function () {
-                    return _VJumbotron__WEBPACK_IMPORTED_MODULE_28__["default"];
+                    return _VJumbotron__WEBPACK_IMPORTED_MODULE_29__["default"];
                 });
 
-                /* harmony import */var _VLabel__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__( /*! ./VLabel */"./src/components/VLabel/index.js");
+                /* harmony import */var _VLabel__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__( /*! ./VLabel */"./src/components/VLabel/index.js");
                 /* harmony reexport (safe) */__webpack_require__.d(__webpack_exports__, "VLabel", function () {
-                    return _VLabel__WEBPACK_IMPORTED_MODULE_29__["default"];
+                    return _VLabel__WEBPACK_IMPORTED_MODULE_30__["default"];
                 });
 
-                /* harmony import */var _VList__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__( /*! ./VList */"./src/components/VList/index.js");
+                /* harmony import */var _VList__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__( /*! ./VList */"./src/components/VList/index.js");
                 /* harmony reexport (safe) */__webpack_require__.d(__webpack_exports__, "VList", function () {
-                    return _VList__WEBPACK_IMPORTED_MODULE_30__["default"];
+                    return _VList__WEBPACK_IMPORTED_MODULE_31__["default"];
                 });
 
-                /* harmony import */var _VMenu__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__( /*! ./VMenu */"./src/components/VMenu/index.js");
+                /* harmony import */var _VMenu__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__( /*! ./VMenu */"./src/components/VMenu/index.js");
                 /* harmony reexport (safe) */__webpack_require__.d(__webpack_exports__, "VMenu", function () {
-                    return _VMenu__WEBPACK_IMPORTED_MODULE_31__["default"];
+                    return _VMenu__WEBPACK_IMPORTED_MODULE_32__["default"];
                 });
 
-                /* harmony import */var _VMessages__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__( /*! ./VMessages */"./src/components/VMessages/index.js");
+                /* harmony import */var _VMessages__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__( /*! ./VMessages */"./src/components/VMessages/index.js");
                 /* harmony reexport (safe) */__webpack_require__.d(__webpack_exports__, "VMessages", function () {
-                    return _VMessages__WEBPACK_IMPORTED_MODULE_32__["default"];
+                    return _VMessages__WEBPACK_IMPORTED_MODULE_33__["default"];
                 });
 
-                /* harmony import */var _VNavigationDrawer__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__( /*! ./VNavigationDrawer */"./src/components/VNavigationDrawer/index.js");
+                /* harmony import */var _VNavigationDrawer__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__( /*! ./VNavigationDrawer */"./src/components/VNavigationDrawer/index.js");
                 /* harmony reexport (safe) */__webpack_require__.d(__webpack_exports__, "VNavigationDrawer", function () {
-                    return _VNavigationDrawer__WEBPACK_IMPORTED_MODULE_33__["default"];
+                    return _VNavigationDrawer__WEBPACK_IMPORTED_MODULE_34__["default"];
                 });
 
-                /* harmony import */var _VOverflowBtn__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__( /*! ./VOverflowBtn */"./src/components/VOverflowBtn/index.js");
+                /* harmony import */var _VOverflowBtn__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__( /*! ./VOverflowBtn */"./src/components/VOverflowBtn/index.js");
                 /* harmony reexport (safe) */__webpack_require__.d(__webpack_exports__, "VOverflowBtn", function () {
-                    return _VOverflowBtn__WEBPACK_IMPORTED_MODULE_34__["default"];
+                    return _VOverflowBtn__WEBPACK_IMPORTED_MODULE_35__["default"];
                 });
 
-                /* harmony import */var _VPagination__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__( /*! ./VPagination */"./src/components/VPagination/index.js");
+                /* harmony import */var _VPagination__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__( /*! ./VPagination */"./src/components/VPagination/index.ts");
                 /* harmony reexport (safe) */__webpack_require__.d(__webpack_exports__, "VPagination", function () {
-                    return _VPagination__WEBPACK_IMPORTED_MODULE_35__["default"];
+                    return _VPagination__WEBPACK_IMPORTED_MODULE_36__["default"];
                 });
 
-                /* harmony import */var _VParallax__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__( /*! ./VParallax */"./src/components/VParallax/index.ts");
+                /* harmony import */var _VParallax__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__( /*! ./VParallax */"./src/components/VParallax/index.ts");
                 /* harmony reexport (safe) */__webpack_require__.d(__webpack_exports__, "VParallax", function () {
-                    return _VParallax__WEBPACK_IMPORTED_MODULE_36__["default"];
+                    return _VParallax__WEBPACK_IMPORTED_MODULE_37__["default"];
                 });
 
-                /* harmony import */var _VPicker__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__( /*! ./VPicker */"./src/components/VPicker/index.js");
+                /* harmony import */var _VPicker__WEBPACK_IMPORTED_MODULE_38__ = __webpack_require__( /*! ./VPicker */"./src/components/VPicker/index.js");
                 /* harmony reexport (safe) */__webpack_require__.d(__webpack_exports__, "VPicker", function () {
-                    return _VPicker__WEBPACK_IMPORTED_MODULE_37__["default"];
+                    return _VPicker__WEBPACK_IMPORTED_MODULE_38__["default"];
                 });
 
-                /* harmony import */var _VProgressCircular__WEBPACK_IMPORTED_MODULE_38__ = __webpack_require__( /*! ./VProgressCircular */"./src/components/VProgressCircular/index.ts");
+                /* harmony import */var _VProgressCircular__WEBPACK_IMPORTED_MODULE_39__ = __webpack_require__( /*! ./VProgressCircular */"./src/components/VProgressCircular/index.ts");
                 /* harmony reexport (safe) */__webpack_require__.d(__webpack_exports__, "VProgressCircular", function () {
-                    return _VProgressCircular__WEBPACK_IMPORTED_MODULE_38__["default"];
+                    return _VProgressCircular__WEBPACK_IMPORTED_MODULE_39__["default"];
                 });
 
-                /* harmony import */var _VProgressLinear__WEBPACK_IMPORTED_MODULE_39__ = __webpack_require__( /*! ./VProgressLinear */"./src/components/VProgressLinear/index.ts");
+                /* harmony import */var _VProgressLinear__WEBPACK_IMPORTED_MODULE_40__ = __webpack_require__( /*! ./VProgressLinear */"./src/components/VProgressLinear/index.ts");
                 /* harmony reexport (safe) */__webpack_require__.d(__webpack_exports__, "VProgressLinear", function () {
-                    return _VProgressLinear__WEBPACK_IMPORTED_MODULE_39__["default"];
+                    return _VProgressLinear__WEBPACK_IMPORTED_MODULE_40__["default"];
                 });
 
-                /* harmony import */var _VRadioGroup__WEBPACK_IMPORTED_MODULE_40__ = __webpack_require__( /*! ./VRadioGroup */"./src/components/VRadioGroup/index.js");
+                /* harmony import */var _VRadioGroup__WEBPACK_IMPORTED_MODULE_41__ = __webpack_require__( /*! ./VRadioGroup */"./src/components/VRadioGroup/index.js");
                 /* harmony reexport (safe) */__webpack_require__.d(__webpack_exports__, "VRadioGroup", function () {
-                    return _VRadioGroup__WEBPACK_IMPORTED_MODULE_40__["default"];
+                    return _VRadioGroup__WEBPACK_IMPORTED_MODULE_41__["default"];
                 });
 
-                /* harmony import */var _VRangeSlider__WEBPACK_IMPORTED_MODULE_41__ = __webpack_require__( /*! ./VRangeSlider */"./src/components/VRangeSlider/index.js");
+                /* harmony import */var _VRangeSlider__WEBPACK_IMPORTED_MODULE_42__ = __webpack_require__( /*! ./VRangeSlider */"./src/components/VRangeSlider/index.js");
                 /* harmony reexport (safe) */__webpack_require__.d(__webpack_exports__, "VRangeSlider", function () {
-                    return _VRangeSlider__WEBPACK_IMPORTED_MODULE_41__["default"];
+                    return _VRangeSlider__WEBPACK_IMPORTED_MODULE_42__["default"];
                 });
 
-                /* harmony import */var _VRating__WEBPACK_IMPORTED_MODULE_42__ = __webpack_require__( /*! ./VRating */"./src/components/VRating/index.ts");
+                /* harmony import */var _VRating__WEBPACK_IMPORTED_MODULE_43__ = __webpack_require__( /*! ./VRating */"./src/components/VRating/index.ts");
                 /* harmony reexport (safe) */__webpack_require__.d(__webpack_exports__, "VRating", function () {
-                    return _VRating__WEBPACK_IMPORTED_MODULE_42__["default"];
+                    return _VRating__WEBPACK_IMPORTED_MODULE_43__["default"];
                 });
 
-                /* harmony import */var _VResponsive__WEBPACK_IMPORTED_MODULE_43__ = __webpack_require__( /*! ./VResponsive */"./src/components/VResponsive/index.ts");
+                /* harmony import */var _VResponsive__WEBPACK_IMPORTED_MODULE_44__ = __webpack_require__( /*! ./VResponsive */"./src/components/VResponsive/index.ts");
                 /* harmony reexport (safe) */__webpack_require__.d(__webpack_exports__, "VResponsive", function () {
-                    return _VResponsive__WEBPACK_IMPORTED_MODULE_43__["default"];
+                    return _VResponsive__WEBPACK_IMPORTED_MODULE_44__["default"];
                 });
 
-                /* harmony import */var _VSelect__WEBPACK_IMPORTED_MODULE_44__ = __webpack_require__( /*! ./VSelect */"./src/components/VSelect/index.js");
+                /* harmony import */var _VSelect__WEBPACK_IMPORTED_MODULE_45__ = __webpack_require__( /*! ./VSelect */"./src/components/VSelect/index.js");
                 /* harmony reexport (safe) */__webpack_require__.d(__webpack_exports__, "VSelect", function () {
-                    return _VSelect__WEBPACK_IMPORTED_MODULE_44__["default"];
+                    return _VSelect__WEBPACK_IMPORTED_MODULE_45__["default"];
                 });
 
-                /* harmony import */var _VSlider__WEBPACK_IMPORTED_MODULE_45__ = __webpack_require__( /*! ./VSlider */"./src/components/VSlider/index.js");
+                /* harmony import */var _VSlider__WEBPACK_IMPORTED_MODULE_46__ = __webpack_require__( /*! ./VSlider */"./src/components/VSlider/index.js");
                 /* harmony reexport (safe) */__webpack_require__.d(__webpack_exports__, "VSlider", function () {
-                    return _VSlider__WEBPACK_IMPORTED_MODULE_45__["default"];
+                    return _VSlider__WEBPACK_IMPORTED_MODULE_46__["default"];
                 });
 
-                /* harmony import */var _VSnackbar__WEBPACK_IMPORTED_MODULE_46__ = __webpack_require__( /*! ./VSnackbar */"./src/components/VSnackbar/index.ts");
+                /* harmony import */var _VSnackbar__WEBPACK_IMPORTED_MODULE_47__ = __webpack_require__( /*! ./VSnackbar */"./src/components/VSnackbar/index.ts");
                 /* harmony reexport (safe) */__webpack_require__.d(__webpack_exports__, "VSnackbar", function () {
-                    return _VSnackbar__WEBPACK_IMPORTED_MODULE_46__["default"];
+                    return _VSnackbar__WEBPACK_IMPORTED_MODULE_47__["default"];
                 });
 
-                /* harmony import */var _VSpeedDial__WEBPACK_IMPORTED_MODULE_47__ = __webpack_require__( /*! ./VSpeedDial */"./src/components/VSpeedDial/index.js");
+                /* harmony import */var _VSpeedDial__WEBPACK_IMPORTED_MODULE_48__ = __webpack_require__( /*! ./VSpeedDial */"./src/components/VSpeedDial/index.js");
                 /* harmony reexport (safe) */__webpack_require__.d(__webpack_exports__, "VSpeedDial", function () {
-                    return _VSpeedDial__WEBPACK_IMPORTED_MODULE_47__["default"];
+                    return _VSpeedDial__WEBPACK_IMPORTED_MODULE_48__["default"];
                 });
 
-                /* harmony import */var _VStepper__WEBPACK_IMPORTED_MODULE_48__ = __webpack_require__( /*! ./VStepper */"./src/components/VStepper/index.js");
+                /* harmony import */var _VStepper__WEBPACK_IMPORTED_MODULE_49__ = __webpack_require__( /*! ./VStepper */"./src/components/VStepper/index.js");
                 /* harmony reexport (safe) */__webpack_require__.d(__webpack_exports__, "VStepper", function () {
-                    return _VStepper__WEBPACK_IMPORTED_MODULE_48__["default"];
+                    return _VStepper__WEBPACK_IMPORTED_MODULE_49__["default"];
                 });
 
-                /* harmony import */var _VSubheader__WEBPACK_IMPORTED_MODULE_49__ = __webpack_require__( /*! ./VSubheader */"./src/components/VSubheader/index.js");
+                /* harmony import */var _VSubheader__WEBPACK_IMPORTED_MODULE_50__ = __webpack_require__( /*! ./VSubheader */"./src/components/VSubheader/index.js");
                 /* harmony reexport (safe) */__webpack_require__.d(__webpack_exports__, "VSubheader", function () {
-                    return _VSubheader__WEBPACK_IMPORTED_MODULE_49__["default"];
+                    return _VSubheader__WEBPACK_IMPORTED_MODULE_50__["default"];
                 });
 
-                /* harmony import */var _VSwitch__WEBPACK_IMPORTED_MODULE_50__ = __webpack_require__( /*! ./VSwitch */"./src/components/VSwitch/index.js");
+                /* harmony import */var _VSwitch__WEBPACK_IMPORTED_MODULE_51__ = __webpack_require__( /*! ./VSwitch */"./src/components/VSwitch/index.js");
                 /* harmony reexport (safe) */__webpack_require__.d(__webpack_exports__, "VSwitch", function () {
-                    return _VSwitch__WEBPACK_IMPORTED_MODULE_50__["default"];
+                    return _VSwitch__WEBPACK_IMPORTED_MODULE_51__["default"];
                 });
 
-                /* harmony import */var _VSystemBar__WEBPACK_IMPORTED_MODULE_51__ = __webpack_require__( /*! ./VSystemBar */"./src/components/VSystemBar/index.js");
+                /* harmony import */var _VSystemBar__WEBPACK_IMPORTED_MODULE_52__ = __webpack_require__( /*! ./VSystemBar */"./src/components/VSystemBar/index.js");
                 /* harmony reexport (safe) */__webpack_require__.d(__webpack_exports__, "VSystemBar", function () {
-                    return _VSystemBar__WEBPACK_IMPORTED_MODULE_51__["default"];
+                    return _VSystemBar__WEBPACK_IMPORTED_MODULE_52__["default"];
                 });
 
-                /* harmony import */var _VTabs__WEBPACK_IMPORTED_MODULE_52__ = __webpack_require__( /*! ./VTabs */"./src/components/VTabs/index.js");
+                /* harmony import */var _VTabs__WEBPACK_IMPORTED_MODULE_53__ = __webpack_require__( /*! ./VTabs */"./src/components/VTabs/index.js");
                 /* harmony reexport (safe) */__webpack_require__.d(__webpack_exports__, "VTabs", function () {
-                    return _VTabs__WEBPACK_IMPORTED_MODULE_52__["default"];
+                    return _VTabs__WEBPACK_IMPORTED_MODULE_53__["default"];
                 });
 
-                /* harmony import */var _VTextarea__WEBPACK_IMPORTED_MODULE_53__ = __webpack_require__( /*! ./VTextarea */"./src/components/VTextarea/index.js");
+                /* harmony import */var _VTextarea__WEBPACK_IMPORTED_MODULE_54__ = __webpack_require__( /*! ./VTextarea */"./src/components/VTextarea/index.js");
                 /* harmony reexport (safe) */__webpack_require__.d(__webpack_exports__, "VTextarea", function () {
-                    return _VTextarea__WEBPACK_IMPORTED_MODULE_53__["default"];
+                    return _VTextarea__WEBPACK_IMPORTED_MODULE_54__["default"];
                 });
 
-                /* harmony import */var _VTextField__WEBPACK_IMPORTED_MODULE_54__ = __webpack_require__( /*! ./VTextField */"./src/components/VTextField/index.js");
+                /* harmony import */var _VTextField__WEBPACK_IMPORTED_MODULE_55__ = __webpack_require__( /*! ./VTextField */"./src/components/VTextField/index.js");
                 /* harmony reexport (safe) */__webpack_require__.d(__webpack_exports__, "VTextField", function () {
-                    return _VTextField__WEBPACK_IMPORTED_MODULE_54__["default"];
+                    return _VTextField__WEBPACK_IMPORTED_MODULE_55__["default"];
                 });
 
-                /* harmony import */var _VTimePicker__WEBPACK_IMPORTED_MODULE_55__ = __webpack_require__( /*! ./VTimePicker */"./src/components/VTimePicker/index.js");
+                /* harmony import */var _VTimePicker__WEBPACK_IMPORTED_MODULE_56__ = __webpack_require__( /*! ./VTimePicker */"./src/components/VTimePicker/index.js");
                 /* harmony reexport (safe) */__webpack_require__.d(__webpack_exports__, "VTimePicker", function () {
-                    return _VTimePicker__WEBPACK_IMPORTED_MODULE_55__["default"];
+                    return _VTimePicker__WEBPACK_IMPORTED_MODULE_56__["default"];
                 });
 
-                /* harmony import */var _VToolbar__WEBPACK_IMPORTED_MODULE_56__ = __webpack_require__( /*! ./VToolbar */"./src/components/VToolbar/index.js");
+                /* harmony import */var _VToolbar__WEBPACK_IMPORTED_MODULE_57__ = __webpack_require__( /*! ./VToolbar */"./src/components/VToolbar/index.js");
                 /* harmony reexport (safe) */__webpack_require__.d(__webpack_exports__, "VToolbar", function () {
-                    return _VToolbar__WEBPACK_IMPORTED_MODULE_56__["default"];
+                    return _VToolbar__WEBPACK_IMPORTED_MODULE_57__["default"];
                 });
 
-                /* harmony import */var _VTooltip__WEBPACK_IMPORTED_MODULE_57__ = __webpack_require__( /*! ./VTooltip */"./src/components/VTooltip/index.js");
+                /* harmony import */var _VTooltip__WEBPACK_IMPORTED_MODULE_58__ = __webpack_require__( /*! ./VTooltip */"./src/components/VTooltip/index.js");
                 /* harmony reexport (safe) */__webpack_require__.d(__webpack_exports__, "VTooltip", function () {
-                    return _VTooltip__WEBPACK_IMPORTED_MODULE_57__["default"];
+                    return _VTooltip__WEBPACK_IMPORTED_MODULE_58__["default"];
                 });
 
-                /* harmony import */var _transitions__WEBPACK_IMPORTED_MODULE_58__ = __webpack_require__( /*! ./transitions */"./src/components/transitions/index.js");
+                /* harmony import */var _transitions__WEBPACK_IMPORTED_MODULE_59__ = __webpack_require__( /*! ./transitions */"./src/components/transitions/index.js");
                 /* harmony reexport (safe) */__webpack_require__.d(__webpack_exports__, "Transitions", function () {
-                    return _transitions__WEBPACK_IMPORTED_MODULE_58__["default"];
+                    return _transitions__WEBPACK_IMPORTED_MODULE_59__["default"];
                 });
 
                 /***/
@@ -28289,6 +28558,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                     return {
                         enter: function enter(el, done) {
                             el._parent = el.parentNode;
+                            el._height = el._height != null ? el._height : el.style.height;
                             Object(_util_helpers__WEBPACK_IMPORTED_MODULE_0__["addOnceEventListener"])(el, 'transitionend', done);
                             // Get height that is to be scrolled
                             el.style.overflow = 'hidden';
@@ -28296,11 +28566,14 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                             el.style.display = 'block';
                             expandedParentClass && el._parent.classList.add(expandedParentClass);
                             setTimeout(function () {
-                                el.style.height = !el.scrollHeight ? 'auto' : el.scrollHeight + "px";
+                                el.style.height = el._height || (!el.scrollHeight ? 'auto' : el.scrollHeight + "px");
                             }, 100);
                         },
                         afterEnter: function afterEnter(el) {
                             el.style.overflow = null;
+                            // If user supplied height
+                            // leave it
+                            if (el._height) return;
                             el.style.height = null;
                         },
                         leave: function leave(el, done) {
@@ -28308,13 +28581,21 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                             Object(_util_helpers__WEBPACK_IMPORTED_MODULE_0__["addOnceEventListener"])(el, 'transitionend', done);
                             // Set height before we transition to 0
                             el.style.overflow = 'hidden';
-                            el.style.height = el.scrollHeight + "px";
+                            // If no user supplied height
+                            // pass in the scrollHeight
+                            if (!el._height) {
+                                el.style.height = el.scrollHeight + "px";
+                            }
                             setTimeout(function () {
                                 return el.style.height = 0;
                             }, 100);
                         },
                         afterLeave: function afterLeave(el) {
                             expandedParentClass && el._parent && el._parent.classList.remove(expandedParentClass);
+                            // If user supplied height
+                            // leave it
+                            if (el._height) return;
+                            el.style.height = null;
                         }
                     };
                 };
@@ -28326,7 +28607,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
             /*!*********************************************!*\
               !*** ./src/components/transitions/index.js ***!
               \*********************************************/
-            /*! exports provided: VBottomSheetTransition, VCarouselTransition, VCarouselReverseTransition, VTabTransition, VTabReverseTransition, VMenuTransition, VFabTransition, VDialogTransition, VDialogBottomTransition, VFadeTransition, VScaleTransition, VSlideXTransition, VSlideXReverseTransition, VSlideYTransition, VSlideYReverseTransition, VExpandTransition, VRowExpandTransition, default */
+            /*! exports provided: VBottomSheetTransition, VCarouselTransition, VCarouselReverseTransition, VTabTransition, VTabReverseTransition, VMenuTransition, VFabTransition, VDialogTransition, VDialogBottomTransition, VFadeTransition, VScaleTransition, VScrollXTransition, VScrollXReverseTransition, VScrollYTransition, VScrollYReverseTransition, VSlideXTransition, VSlideXReverseTransition, VSlideYTransition, VSlideYReverseTransition, VExpandTransition, VRowExpandTransition, default */
             /***/function (module, __webpack_exports__, __webpack_require__) {
 
                 "use strict";
@@ -28365,6 +28646,18 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 /* harmony export (binding) */__webpack_require__.d(__webpack_exports__, "VScaleTransition", function () {
                     return VScaleTransition;
                 });
+                /* harmony export (binding) */__webpack_require__.d(__webpack_exports__, "VScrollXTransition", function () {
+                    return VScrollXTransition;
+                });
+                /* harmony export (binding) */__webpack_require__.d(__webpack_exports__, "VScrollXReverseTransition", function () {
+                    return VScrollXReverseTransition;
+                });
+                /* harmony export (binding) */__webpack_require__.d(__webpack_exports__, "VScrollYTransition", function () {
+                    return VScrollYTransition;
+                });
+                /* harmony export (binding) */__webpack_require__.d(__webpack_exports__, "VScrollYReverseTransition", function () {
+                    return VScrollYReverseTransition;
+                });
                 /* harmony export (binding) */__webpack_require__.d(__webpack_exports__, "VSlideXTransition", function () {
                     return VSlideXTransition;
                 });
@@ -28399,6 +28692,10 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 var VDialogBottomTransition = Object(_util_helpers__WEBPACK_IMPORTED_MODULE_0__["createSimpleTransition"])('dialog-bottom-transition');
                 var VFadeTransition = Object(_util_helpers__WEBPACK_IMPORTED_MODULE_0__["createSimpleTransition"])('fade-transition');
                 var VScaleTransition = Object(_util_helpers__WEBPACK_IMPORTED_MODULE_0__["createSimpleTransition"])('scale-transition');
+                var VScrollXTransition = Object(_util_helpers__WEBPACK_IMPORTED_MODULE_0__["createSimpleTransition"])('scroll-x-transition');
+                var VScrollXReverseTransition = Object(_util_helpers__WEBPACK_IMPORTED_MODULE_0__["createSimpleTransition"])('scroll-x-reverse-transition');
+                var VScrollYTransition = Object(_util_helpers__WEBPACK_IMPORTED_MODULE_0__["createSimpleTransition"])('scroll-y-transition');
+                var VScrollYReverseTransition = Object(_util_helpers__WEBPACK_IMPORTED_MODULE_0__["createSimpleTransition"])('scroll-y-reverse-transition');
                 var VSlideXTransition = Object(_util_helpers__WEBPACK_IMPORTED_MODULE_0__["createSimpleTransition"])('slide-x-transition');
                 var VSlideXReverseTransition = Object(_util_helpers__WEBPACK_IMPORTED_MODULE_0__["createSimpleTransition"])('slide-x-reverse-transition');
                 var VSlideYTransition = Object(_util_helpers__WEBPACK_IMPORTED_MODULE_0__["createSimpleTransition"])('slide-y-transition');
@@ -28417,6 +28714,10 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                         VFadeTransition: VFadeTransition,
                         VMenuTransition: VMenuTransition,
                         VScaleTransition: VScaleTransition,
+                        VScrollXTransition: VScrollXTransition,
+                        VScrollXReverseTransition: VScrollXReverseTransition,
+                        VScrollYTransition: VScrollYTransition,
+                        VScrollYReverseTransition: VScrollYReverseTransition,
                         VSlideXTransition: VSlideXTransition,
                         VSlideXReverseTransition: VSlideXReverseTransition,
                         VSlideYTransition: VSlideYTransition,
@@ -28518,7 +28819,6 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                     return x >= b.left && x <= b.right && y >= b.top && y <= b.bottom;
                 }
                 /* harmony default export */__webpack_exports__["default"] = {
-                    name: 'click-outside',
                     // [data-app] may not be found
                     // if using bind, inserted makes
                     // sure that the root element is
@@ -28536,6 +28836,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                         el._clickOutside = onClick;
                     },
                     unbind: function unbind(el) {
+                        if (!el._clickOutside) return;
                         var app = document.querySelector('[data-app]') || document.body; // This is only for unit tests
                         app && app.removeEventListener('click', el._clickOutside, true);
                         delete el._clickOutside;
@@ -28545,19 +28846,16 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 /***/
             },
 
-            /***/"./src/directives/index.js":
+            /***/"./src/directives/index.ts":
             /*!*********************************!*\
-              !*** ./src/directives/index.js ***!
+              !*** ./src/directives/index.ts ***!
               \*********************************/
-            /*! exports provided: ClickOutside, Ripple, Resize, Scroll, Touch, default */
+            /*! exports provided: ClickOutside, Ripple, Resize, Scroll, Touch */
             /***/function (module, __webpack_exports__, __webpack_require__) {
 
                 "use strict";
 
                 __webpack_require__.r(__webpack_exports__);
-                /* harmony export (binding) */__webpack_require__.d(__webpack_exports__, "default", function () {
-                    return install;
-                });
                 /* harmony import */var _click_outside__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__( /*! ./click-outside */"./src/directives/click-outside.ts");
                 /* harmony reexport (safe) */__webpack_require__.d(__webpack_exports__, "ClickOutside", function () {
                     return _click_outside__WEBPACK_IMPORTED_MODULE_0__["default"];
@@ -28582,14 +28880,6 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 /* harmony reexport (safe) */__webpack_require__.d(__webpack_exports__, "Touch", function () {
                     return _touch__WEBPACK_IMPORTED_MODULE_4__["default"];
                 });
-
-                function install(Vue) {
-                    Vue.directive('click-outside', _click_outside__WEBPACK_IMPORTED_MODULE_0__["default"]);
-                    Vue.directive('ripple', _ripple__WEBPACK_IMPORTED_MODULE_2__["default"]);
-                    Vue.directive('resize', _resize__WEBPACK_IMPORTED_MODULE_1__["default"]);
-                    Vue.directive('scroll', _scroll__WEBPACK_IMPORTED_MODULE_3__["default"]);
-                    Vue.directive('touch', _touch__WEBPACK_IMPORTED_MODULE_4__["default"]);
-                }
 
                 /***/
             },
@@ -28617,6 +28907,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                     }
                 }
                 function unbind(el) {
+                    if (!el._onResize) return;
                     var _a = el._onResize,
                         callback = _a.callback,
                         options = _a.options;
@@ -28624,7 +28915,6 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                     delete el._onResize;
                 }
                 /* harmony default export */__webpack_exports__["default"] = {
-                    name: 'resize',
                     inserted: inserted,
                     unbind: unbind
                 };
@@ -28661,7 +28951,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                         if (value.class) {
                             container.className += " " + value.class;
                         }
-                        var size = Math.max(el.clientWidth, el.clientHeight) * (value.center ? 1 : 2);
+                        var size = Math.min(el.clientWidth, el.clientHeight) * (value.center ? 1 : el.clientWidth / el.clientHeight * 1.6);
                         var halfSize = size / 2;
                         animation.className = 'v-ripple__animation';
                         animation.style.width = size + "px";
@@ -28674,7 +28964,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                         var y = value.center ? 0 : e.clientY - offset.top - halfSize;
                         animation.classList.add('v-ripple__animation--enter');
                         animation.classList.add('v-ripple__animation--visible');
-                        style(animation, "translate(" + x + "px, " + y + "px) scale3d(0, 0, 0)");
+                        style(animation, "translate(" + x + "px, " + y + "px) scale3d(0.5, 0.5, 0.5)");
                         animation.dataset.activated = String(performance.now());
                         setTimeout(function () {
                             animation.classList.remove('v-ripple__animation--enter');
@@ -28766,7 +29056,6 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                     updateRipple(el, binding, wasEnabled);
                 }
                 /* harmony default export */__webpack_exports__["default"] = {
-                    name: 'ripple',
                     bind: directive,
                     unbind: unbind,
                     update: update
@@ -28807,7 +29096,6 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                     delete el._onScroll;
                 }
                 /* harmony default export */__webpack_exports__["default"] = {
-                    name: 'scroll',
                     inserted: inserted,
                     unbind: unbind
                 };
@@ -28896,7 +29184,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 }
                 function inserted(el, binding, vnode) {
                     var value = binding.value;
-                    var target = value.parent ? el.parentNode : el;
+                    var target = value.parent ? el.parentElement : el;
                     var options = value.options || { passive: true };
                     // Needed to pass unit tests
                     if (!target) return;
@@ -28908,8 +29196,8 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                     });
                 }
                 function unbind(el, binding, vnode) {
-                    var target = binding.value.parent ? el.parentNode : el;
-                    if (!target) return;
+                    var target = binding.value.parent ? el.parentElement : el;
+                    if (!target || !target._touchHandlers) return;
                     var handlers = target._touchHandlers[vnode.context._uid];
                     Object(_util_helpers__WEBPACK_IMPORTED_MODULE_0__["keys"])(handlers).forEach(function (eventName) {
                         target.removeEventListener(eventName, handlers[eventName]);
@@ -28917,7 +29205,6 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                     delete target._touchHandlers[vnode.context._uid];
                 }
                 /* harmony default export */__webpack_exports__["default"] = {
-                    name: 'touch',
                     inserted: inserted,
                     unbind: unbind
                 };
@@ -28939,15 +29226,18 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 /* harmony import */var _stylus_app_styl__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_stylus_app_styl__WEBPACK_IMPORTED_MODULE_0__);
                 /* harmony import */var _components_Vuetify__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__( /*! ./components/Vuetify */"./src/components/Vuetify/index.ts");
                 /* harmony import */var _components__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__( /*! ./components */"./src/components/index.js");
-                /* harmony import */var _directives__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__( /*! ./directives */"./src/directives/index.js");
-                var __assign = undefined && undefined.__assign || Object.assign || function (t) {
-                    for (var s, i = 1, n = arguments.length; i < n; i++) {
-                        s = arguments[i];
-                        for (var p in s) {
-                            if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                /* harmony import */var _directives__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__( /*! ./directives */"./src/directives/index.ts");
+                var __assign = undefined && undefined.__assign || function () {
+                    __assign = Object.assign || function (t) {
+                        for (var s, i = 1, n = arguments.length; i < n; i++) {
+                            s = arguments[i];
+                            for (var p in s) {
+                                if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                            }
                         }
-                    }
-                    return t;
+                        return t;
+                    };
+                    return __assign.apply(this, arguments);
                 };
 
                 var Vuetify = {
@@ -28955,7 +29245,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                         Vue.use(_components_Vuetify__WEBPACK_IMPORTED_MODULE_1__["default"], __assign({ components: _components__WEBPACK_IMPORTED_MODULE_2__,
                             directives: _directives__WEBPACK_IMPORTED_MODULE_3__ }, args));
                     },
-                    version: '1.2.0-beta.0'
+                    version: '1.2.1'
                 };
                 if (typeof window !== 'undefined' && window.Vue) {
                     window.Vue.use(Vuetify);
@@ -28965,9 +29255,9 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 /***/
             },
 
-            /***/"./src/locale/en.js":
+            /***/"./src/locale/en.ts":
             /*!**************************!*\
-              !*** ./src/locale/en.js ***!
+              !*** ./src/locale/en.ts ***!
               \**************************/
             /*! exports provided: default */
             /***/function (module, __webpack_exports__, __webpack_require__) {
@@ -29261,6 +29551,18 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 __webpack_require__.r(__webpack_exports__);
                 /* harmony import */var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__( /*! vue */"vue");
                 /* harmony import */var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
+                var __assign = undefined && undefined.__assign || function () {
+                    __assign = Object.assign || function (t) {
+                        for (var s, i = 1, n = arguments.length; i < n; i++) {
+                            s = arguments[i];
+                            for (var p in s) {
+                                if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                            }
+                        }
+                        return t;
+                    };
+                    return __assign.apply(this, arguments);
+                };
                 var __read = undefined && undefined.__read || function (o, n) {
                     var m = typeof Symbol === "function" && o[Symbol.iterator];
                     if (!m) return o;
@@ -29284,41 +29586,44 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                     return ar;
                 };
 
+                function isCssColor(color) {
+                    return !!color && !!color.match(/^(#|(rgb|hsl)a?\()/);
+                }
                 /* harmony default export */__webpack_exports__["default"] = vue__WEBPACK_IMPORTED_MODULE_0___default.a.extend({
                     name: 'colorable',
                     props: {
                         color: String
                     },
-                    data: function data() {
-                        return {
-                            defaultColor: undefined
-                        };
-                    },
-                    computed: {
-                        computedColor: function computedColor() {
-                            return this.color || this.defaultColor;
-                        }
-                    },
                     methods: {
-                        addBackgroundColorClassChecks: function addBackgroundColorClassChecks(obj, color) {
-                            var classes = Object.assign({}, obj);
-                            var selectedColor = color === undefined ? this.computedColor : color;
-                            if (selectedColor) {
-                                classes[selectedColor] = true;
+                        setBackgroundColor: function setBackgroundColor(color, data) {
+                            if (data === void 0) {
+                                data = {};
                             }
-                            return classes;
+                            var _a;
+                            if (isCssColor(color)) {
+                                data.style = __assign({}, data.style, { 'background-color': "" + color, 'border-color': "" + color });
+                            } else if (color) {
+                                data.class = __assign({}, data.class, (_a = {}, _a[color] = true, _a));
+                            }
+                            return data;
                         },
-                        addTextColorClassChecks: function addTextColorClassChecks(obj, color) {
-                            var classes = Object.assign({}, obj);
-                            if (color === undefined) color = this.computedColor;
-                            if (color) {
-                                var _a = __read(color.toString().trim().split(' '), 2),
-                                    colorName = _a[0],
-                                    colorModifier = _a[1];
-                                classes[colorName + '--text'] = true;
-                                colorModifier && (classes['text--' + colorModifier] = true);
+                        setTextColor: function setTextColor(color, data) {
+                            if (data === void 0) {
+                                data = {};
                             }
-                            return classes;
+                            var _a;
+                            if (isCssColor(color)) {
+                                data.style = __assign({}, data.style, { 'color': "" + color, 'caret-color': "" + color });
+                            } else if (color) {
+                                var _b = __read(color.toString().trim().split(' ', 2), 2),
+                                    colorName = _b[0],
+                                    colorModifier = _b[1];
+                                data.class = __assign({}, data.class, (_a = {}, _a[colorName + '--text'] = true, _a));
+                                if (colorModifier) {
+                                    data.class['text--' + colorModifier] = true;
+                                }
+                            }
+                            return data;
                         }
                     }
                 });
@@ -29778,8 +30083,10 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                                     items: this.computedRowsPerPageItems,
                                     value: this.computedPagination.rowsPerPage,
                                     hideDetails: true,
-                                    auto: true,
-                                    minWidth: '75px'
+                                    menuProps: {
+                                        auto: true,
+                                        minWidth: '75px'
+                                    }
                                 },
                                 on: {
                                     input: function input(val) {
@@ -29811,7 +30118,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                             }, [this.genPagination(), this.genPrevIcon(), this.genNextIcon()]);
                             return [this.$createElement('div', {
                                 'class': this.actionsClasses
-                            }, [this.rowsPerPageItems.length > 1 ? this.genSelect() : null, rangeControls])];
+                            }, [this.$slots['actions-prepend'] ? this.$createElement('div', {}, this.$slots['actions-prepend']) : null, this.rowsPerPageItems.length > 1 ? this.genSelect() : null, rangeControls, this.$slots['actions-append'] ? this.$createElement('div', {}, this.$slots['actions-append']) : null])];
                         }
                     }
                 };
@@ -30288,6 +30595,32 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 /***/
             },
 
+            /***/"./src/mixins/measurable.ts":
+            /*!**********************************!*\
+              !*** ./src/mixins/measurable.ts ***!
+              \**********************************/
+            /*! exports provided: default */
+            /***/function (module, __webpack_exports__, __webpack_require__) {
+
+                "use strict";
+
+                __webpack_require__.r(__webpack_exports__);
+                /* harmony import */var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__( /*! vue */"vue");
+                /* harmony import */var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
+
+                /* harmony default export */__webpack_exports__["default"] = vue__WEBPACK_IMPORTED_MODULE_0___default.a.extend({
+                    name: 'measurable',
+                    props: {
+                        height: [Number, String],
+                        maxHeight: [Number, String],
+                        maxWidth: [Number, String],
+                        width: [Number, String]
+                    }
+                });
+
+                /***/
+            },
+
             /***/"./src/mixins/menuable.js":
             /*!********************************!*\
               !*** ./src/mixins/menuable.js ***!
@@ -30298,9 +30631,11 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 "use strict";
 
                 __webpack_require__.r(__webpack_exports__);
-                /* harmony import */var _positionable__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__( /*! ./positionable */"./src/mixins/positionable.ts");
-                /* harmony import */var _stackable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__( /*! ./stackable */"./src/mixins/stackable.js");
-                /* harmony import */var _themeable__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__( /*! ./themeable */"./src/mixins/themeable.ts");
+                /* harmony import */var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__( /*! vue */"vue");
+                /* harmony import */var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
+                /* harmony import */var _positionable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__( /*! ./positionable */"./src/mixins/positionable.ts");
+                /* harmony import */var _stackable__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__( /*! ./stackable */"./src/mixins/stackable.js");
+                /* harmony import */var _themeable__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__( /*! ./themeable */"./src/mixins/themeable.ts");
                 var _typeof = typeof Symbol === "function" && _typeof2(Symbol.iterator) === "symbol" ? function (obj) {
                     return typeof obj === 'undefined' ? 'undefined' : _typeof2(obj);
                 } : function (obj) {
@@ -30335,9 +30670,9 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                  * As well as be manually positioned
                  */
                 /* @vue/component */
-                /* harmony default export */__webpack_exports__["default"] = {
+                /* harmony default export */__webpack_exports__["default"] = vue__WEBPACK_IMPORTED_MODULE_0___default.a.extend({
                     name: 'menuable',
-                    mixins: [_positionable__WEBPACK_IMPORTED_MODULE_0__["default"], _stackable__WEBPACK_IMPORTED_MODULE_1__["default"], _themeable__WEBPACK_IMPORTED_MODULE_2__["default"]],
+                    mixins: [_positionable__WEBPACK_IMPORTED_MODULE_1__["default"], _stackable__WEBPACK_IMPORTED_MODULE_2__["default"], _themeable__WEBPACK_IMPORTED_MODULE_3__["default"]],
                     props: {
                         activator: {
                             default: null,
@@ -30590,7 +30925,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                             });
                         }
                     }
-                };
+                });
 
                 /***/
             },
@@ -30791,8 +31126,11 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 /* @vue/component */
                 /* harmony default export */__webpack_exports__["default"] = {
                     methods: {
-                        genPickerButton: function genPickerButton(prop, value, content, staticClass) {
+                        genPickerButton: function genPickerButton(prop, value, content, readonly, staticClass) {
                             var _this = this;
+                            if (readonly === void 0) {
+                                readonly = false;
+                            }
                             if (staticClass === void 0) {
                                 staticClass = '';
                             }
@@ -30803,8 +31141,11 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                             };
                             return this.$createElement('div', {
                                 staticClass: ("v-picker__title__btn " + staticClass).trim(),
-                                'class': { active: active },
-                                on: active ? undefined : { click: click }
+                                'class': {
+                                    'v-picker__title__btn--active': active,
+                                    'v-picker__title__btn--readonly': readonly
+                                },
+                                on: active || readonly ? undefined : { click: click }
                             }, Array.isArray(content) ? content : [content]);
                         }
                     }
@@ -31105,14 +31446,17 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 /* harmony import */var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__( /*! vue */"vue");
                 /* harmony import */var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
                 /* harmony import */var _directives_ripple__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__( /*! ../directives/ripple */"./src/directives/ripple.ts");
-                var __assign = undefined && undefined.__assign || Object.assign || function (t) {
-                    for (var s, i = 1, n = arguments.length; i < n; i++) {
-                        s = arguments[i];
-                        for (var p in s) {
-                            if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                var __assign = undefined && undefined.__assign || function () {
+                    __assign = Object.assign || function (t) {
+                        for (var s, i = 1, n = arguments.length; i < n; i++) {
+                            s = arguments[i];
+                            for (var p in s) {
+                                if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                            }
                         }
-                    }
-                    return t;
+                        return t;
+                    };
+                    return __assign.apply(this, arguments);
                 };
 
                 /* harmony default export */__webpack_exports__["default"] = vue__WEBPACK_IMPORTED_MODULE_0___default.a.extend({
@@ -31140,13 +31484,13 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                     methods: {
                         /* eslint-disable-next-line no-unused-vars */
                         click: function click(e) {},
-                        generateRouteLink: function generateRouteLink() {
+                        generateRouteLink: function generateRouteLink(classes) {
                             var _a;
                             var exact = this.exact;
                             var tag;
                             var data = (_a = {
                                 attrs: { disabled: this.disabled },
-                                class: this.classes,
+                                class: classes,
                                 props: {},
                                 directives: [{
                                     name: 'ripple',
@@ -31201,13 +31545,10 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 /* harmony import */var _components_VInput__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__( /*! ../components/VInput */"./src/components/VInput/index.js");
                 /* harmony import */var _rippleable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__( /*! ./rippleable */"./src/mixins/rippleable.ts");
                 /* harmony import */var _comparable__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__( /*! ./comparable */"./src/mixins/comparable.ts");
-                /* harmony import */var _util_helpers__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__( /*! ../util/helpers */"./src/util/helpers.ts");
                 // Components
 
                 // Mixins
 
-
-                // Utils
 
                 /* @vue/component */
                 /* harmony default export */__webpack_exports__["default"] = {
@@ -31231,13 +31572,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                             type: Boolean,
                             default: null
                         },
-                        label: String,
-                        toggleKeys: {
-                            type: Array,
-                            default: function _default() {
-                                return [_util_helpers__WEBPACK_IMPORTED_MODULE_3__["keyCodes"].enter, _util_helpers__WEBPACK_IMPORTED_MODULE_3__["keyCodes"].space];
-                            }
-                        }
+                        label: String
                     },
                     data: function data(vm) {
                         return {
@@ -31245,8 +31580,8 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                         };
                     },
                     computed: {
-                        classesSelectable: function classesSelectable() {
-                            return this.addTextColorClassChecks({}, this.isDirty ? this.color : this.validationState);
+                        computedColor: function computedColor() {
+                            return this.isActive ? this.color : this.validationState;
                         },
                         isMultiple: function isMultiple() {
                             return this.multiple === true || this.multiple === null && Array.isArray(this.internalValue);
@@ -31272,7 +31607,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                     },
                     watch: {
                         inputValue: function inputValue(val) {
-                            this.internalValue = val;
+                            this.lazyValue = val;
                         }
                     },
                     methods: {
@@ -31284,20 +31619,25 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                         },
                         genInput: function genInput(type, attrs) {
                             return this.$createElement('input', {
-                                attrs: Object.assign({}, {
+                                attrs: Object.assign({
                                     'aria-label': this.label,
                                     'aria-checked': this.isActive.toString(),
+                                    disabled: this.isDisabled,
                                     id: this.id,
                                     role: type,
                                     type: type,
                                     value: this.inputValue
                                 }, attrs),
+                                domProps: {
+                                    checked: this.isActive
+                                },
                                 on: {
                                     blur: this.onBlur,
                                     change: this.onChange,
                                     focus: this.onFocus,
                                     keydown: this.onKeydown
-                                }
+                                },
+                                ref: 'input'
                             });
                         },
                         onBlur: function onBlur() {
@@ -31327,20 +31667,13 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                                 input = !input;
                             }
                             this.validate(true, input);
-                            this.lazyValue = input;
-                            this.$emit('change', input);
+                            this.internalValue = input;
                         },
                         onFocus: function onFocus() {
                             this.isFocused = true;
                         },
-                        onKeydown: function onKeydown(e) {
-                            // Overwrite default behavior to only allow
-                            // the specified keyCodes
-                            if (this.toggleKeys.indexOf(e.keyCode) > -1) {
-                                e.preventDefault();
-                                this.onChange();
-                            }
-                        }
+                        /** @abstract */
+                        onKeydown: function onKeydown(e) {}
                     }
                 };
 
@@ -31529,14 +31862,17 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 });
                 /* harmony import */var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__( /*! vue */"vue");
                 /* harmony import */var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
-                var __assign = undefined && undefined.__assign || Object.assign || function (t) {
-                    for (var s, i = 1, n = arguments.length; i < n; i++) {
-                        s = arguments[i];
-                        for (var p in s) {
-                            if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                var __assign = undefined && undefined.__assign || function () {
+                    __assign = Object.assign || function (t) {
+                        for (var s, i = 1, n = arguments.length; i < n; i++) {
+                            s = arguments[i];
+                            for (var p in s) {
+                                if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                            }
                         }
-                    }
-                    return t;
+                        return t;
+                    };
+                    return __assign.apply(this, arguments);
                 };
 
                 function functionalThemeClasses(context) {
@@ -31830,7 +32166,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                             return this.validations.length > 0;
                         },
                         hasState: function hasState() {
-                            return this.shouldValidate && (this.hasError || this.hasSuccess);
+                            return this.hasSuccess || this.shouldValidate && this.hasError;
                         },
                         internalErrorMessages: function internalErrorMessages() {
                             return this.errorMessages || '';
@@ -31843,7 +32179,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                         },
                         validationState: function validationState() {
                             if (this.hasError && this.shouldValidate) return 'error';
-                            if (this.hasSuccess && this.shouldValidate) return 'success';
+                            if (this.hasSuccess) return 'success';
                             if (this.hasColor) return this.color;
                             return null;
                         },
@@ -32682,6 +33018,37 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
 
                 /***/},
 
+            /***/"./src/util/SlotProvider.ts":
+            /*!**********************************!*\
+              !*** ./src/util/SlotProvider.ts ***!
+              \**********************************/
+            /*! exports provided: default */
+            /***/function (module, __webpack_exports__, __webpack_require__) {
+
+                "use strict";
+
+                __webpack_require__.r(__webpack_exports__);
+                /* harmony import */var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__( /*! vue */"vue");
+                /* harmony import */var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
+
+                /* harmony default export */__webpack_exports__["default"] = vue__WEBPACK_IMPORTED_MODULE_0___default.a.extend({
+                    name: 'slot-provider',
+                    provide: function provide() {
+                        return this.provide;
+                    },
+                    props: {
+                        provide: Object
+                    },
+                    render: function render() {
+                        return this.$slots.default && this.$slots.default.find(function (node) {
+                            return !node.isComment && node.text !== ' ';
+                        });
+                    }
+                });
+
+                /***/
+            },
+
             /***/"./src/util/color/transformCIELAB.ts":
             /*!*******************************************!*\
               !*** ./src/util/color/transformCIELAB.ts ***!
@@ -32944,6 +33311,39 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 /***/
             },
 
+            /***/"./src/util/dedupeModelListeners.ts":
+            /*!******************************************!*\
+              !*** ./src/util/dedupeModelListeners.ts ***!
+              \******************************************/
+            /*! exports provided: default */
+            /***/function (module, __webpack_exports__, __webpack_require__) {
+
+                "use strict";
+
+                __webpack_require__.r(__webpack_exports__);
+                /* harmony export (binding) */__webpack_require__.d(__webpack_exports__, "default", function () {
+                    return dedupeModelListeners;
+                });
+                /**
+                 * Removes duplicate `@input` listeners when
+                 * using v-model with functional components
+                 *
+                 * @see https://github.com/vuetifyjs/vuetify/issues/4460
+                 */
+                function dedupeModelListeners(data) {
+                    if (data.model && data.on && data.on.input) {
+                        if (Array.isArray(data.on.input)) {
+                            var i = data.on.input.indexOf(data.model.callback);
+                            if (i > -1) data.on.input.splice(i, 1);
+                        } else {
+                            delete data.on.input;
+                        }
+                    }
+                }
+
+                /***/
+            },
+
             /***/"./src/util/easing-patterns.js":
             /*!*************************************!*\
               !*** ./src/util/easing-patterns.js ***!
@@ -33053,7 +33453,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
             /*!*****************************!*\
               !*** ./src/util/helpers.ts ***!
               \*****************************/
-            /*! exports provided: createSimpleFunctional, createSimpleTransition, createJavaScriptTransition, directiveConfig, addOnceEventListener, getNestedValue, deepEqual, getObjectValueByPath, getPropertyFromItem, createRange, getZIndex, escapeHTML, filterObjectOnKeys, filterChildren, convertToUnit, kebabCase, isObject, keyCodes, remapInternalIcon, keys */
+            /*! exports provided: createSimpleFunctional, createSimpleTransition, createJavaScriptTransition, directiveConfig, addOnceEventListener, getNestedValue, deepEqual, getObjectValueByPath, getPropertyFromItem, createRange, getZIndex, escapeHTML, filterObjectOnKeys, filterChildren, convertToUnit, kebabCase, isObject, keyCodes, remapInternalIcon, keys, camelize */
             /***/function (module, __webpack_exports__, __webpack_require__) {
 
                 "use strict";
@@ -33119,20 +33519,26 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 /* harmony export (binding) */__webpack_require__.d(__webpack_exports__, "keys", function () {
                     return keys;
                 });
+                /* harmony export (binding) */__webpack_require__.d(__webpack_exports__, "camelize", function () {
+                    return camelize;
+                });
                 var _typeof = typeof Symbol === "function" && _typeof2(Symbol.iterator) === "symbol" ? function (obj) {
                     return typeof obj === 'undefined' ? 'undefined' : _typeof2(obj);
                 } : function (obj) {
                     return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj === 'undefined' ? 'undefined' : _typeof2(obj);
                 };
 
-                var __assign = undefined && undefined.__assign || Object.assign || function (t) {
-                    for (var s, i = 1, n = arguments.length; i < n; i++) {
-                        s = arguments[i];
-                        for (var p in s) {
-                            if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                var __assign = undefined && undefined.__assign || function () {
+                    __assign = Object.assign || function (t) {
+                        for (var s, i = 1, n = arguments.length; i < n; i++) {
+                            s = arguments[i];
+                            for (var p in s) {
+                                if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                            }
                         }
-                    }
-                    return t;
+                        return t;
+                    };
+                    return __assign.apply(this, arguments);
                 };
                 function createSimpleFunctional(c, el, name) {
                     if (el === void 0) {
@@ -33149,6 +33555,11 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                         }
                     };
                 }
+                function mergeTransitions(transitions, array) {
+                    if (Array.isArray(transitions)) return transitions.concat(array);
+                    if (transitions) array.push(transitions);
+                    return array;
+                }
                 function createSimpleTransition(name, origin, mode) {
                     if (origin === void 0) {
                         origin = 'top center 0';
@@ -33157,31 +33568,67 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                         name: name,
                         functional: true,
                         props: {
+                            group: {
+                                type: Boolean,
+                                default: false
+                            },
+                            hideOnLeave: {
+                                type: Boolean,
+                                default: false
+                            },
+                            leaveAbsolute: {
+                                type: Boolean,
+                                default: false
+                            },
+                            mode: {
+                                type: String,
+                                default: mode
+                            },
                             origin: {
                                 type: String,
                                 default: origin
                             }
                         },
                         render: function render(h, context) {
+                            var tag = "transition" + (context.props.group ? '-group' : '');
                             context.data = context.data || {};
-                            context.data.props = { name: name };
+                            context.data.props = {
+                                name: name,
+                                mode: context.props.mode
+                            };
                             context.data.on = context.data.on || {};
                             if (!Object.isExtensible(context.data.on)) {
                                 context.data.on = __assign({}, context.data.on);
                             }
-                            if (mode) context.data.props.mode = mode;
-                            context.data.on.beforeEnter = function (el) {
+                            var ourBeforeEnter = [];
+                            var ourLeave = [];
+                            var absolute = function absolute(el) {
+                                return el.style.position = 'absolute';
+                            };
+                            ourBeforeEnter.push(function (el) {
                                 el.style.transformOrigin = context.props.origin;
                                 el.style.webkitTransformOrigin = context.props.origin;
+                            });
+                            if (context.props.leaveAbsolute) ourLeave.push(absolute);
+                            if (context.props.hideOnLeave) {
+                                ourLeave.push(function (el) {
+                                    return el.style.display = 'none';
+                                });
+                            }
+                            var _a = context.data.on,
+                                beforeEnter = _a.beforeEnter,
+                                leave = _a.leave;
+                            // Type says Function | Function[] but
+                            // will only work if provided a function
+                            context.data.on.beforeEnter = function () {
+                                return mergeTransitions(beforeEnter, ourBeforeEnter);
                             };
-                            return h('transition', context.data, context.children);
+                            context.data.on.leave = mergeTransitions(leave, ourLeave);
+                            return h(tag, context.data, context.children);
                         }
                     };
                 }
-                function createJavaScriptTransition(name, functions, css, mode) {
-                    if (css === void 0) {
-                        css = false;
-                    }
+                function createJavaScriptTransition(name, functions, mode) {
                     if (mode === void 0) {
                         mode = 'in-out';
                     }
@@ -33189,10 +33636,6 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                         name: name,
                         functional: true,
                         props: {
-                            css: {
-                                type: Boolean,
-                                default: css
-                            },
                             mode: {
                                 type: String,
                                 default: mode
@@ -33356,6 +33799,15 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 function keys(o) {
                     return Object.keys(o);
                 }
+                /**
+                 * Camelize a hyphen-delimited string.
+                 */
+                var camelizeRE = /-(\w)/g;
+                var camelize = function camelize(str) {
+                    return str.replace(camelizeRE, function (_, c) {
+                        return c ? c.toUpperCase() : '';
+                    });
+                };
 
                 /***/
             },
@@ -33670,7 +34122,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                  * Generate the CSS for a base color (.primary)
                  */
                 var genBaseColor = function genBaseColor(name, value) {
-                    return "\n." + name + " {\n  background-color: " + value + " !important;\n  border-color: " + value + " !important;\n}\n." + name + "--text {\n  color: " + value + " !important;\n}\n." + name + "--text input,\n." + name + "--text textarea {\n  caret-color: " + value + " !important;\n}";
+                    return "\n." + name + " {\n  background-color: " + value + " !important;\n  border-color: " + value + " !important;\n}\n." + name + "--text {\n  color: " + value + " !important;\n  caret-color: " + value + " !important;\n}";
                 };
                 /**
                  * Generate the CSS for a variant color (.primary.darken-2)
@@ -33679,35 +34131,56 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                     var _a = __read(variant.split(/(\d)/, 2), 2),
                         type = _a[0],
                         n = _a[1];
-                    return "\n." + name + "." + type + "-" + n + " {\n  background-color: " + value + " !important;\n  border-color: " + value + " !important;\n}\n." + name + "--text.text--" + type + "-" + n + " {\n  color: " + value + " !important;\n}\n." + name + "--text.text--" + type + "-" + n + " input,\n." + name + "--text.text--" + type + "-" + n + " textarea {\n  caret-color: " + value + " !important;\n}";
+                    return "\n." + name + "." + type + "-" + n + " {\n  background-color: " + value + " !important;\n  border-color: " + value + " !important;\n}\n." + name + "--text.text--" + type + "-" + n + " {\n  color: " + value + " !important;\n  caret-color: " + value + " !important;\n}";
                 };
-                function genStyles(theme) {
+                var genColorVariableName = function genColorVariableName(name, variant) {
+                    if (variant === void 0) {
+                        variant = 'base';
+                    }
+                    return "--v-" + name + "-" + variant;
+                };
+                var genColorVariable = function genColorVariable(name, variant) {
+                    if (variant === void 0) {
+                        variant = 'base';
+                    }
+                    return "var(" + genColorVariableName(name, variant) + ")";
+                };
+                function genStyles(theme, cssVar) {
+                    if (cssVar === void 0) {
+                        cssVar = false;
+                    }
                     var colors = Object.keys(theme);
                     if (!colors.length) return '';
-                    var css = "a { color: " + theme.primary.base + "; }";
+                    var variablesCss = '';
+                    var css = '';
+                    var aColor = cssVar ? genColorVariable('primary') : theme.primary.base;
+                    css += "a { color: " + aColor + "; }";
                     for (var i = 0; i < colors.length; ++i) {
                         var name = colors[i];
                         var value = theme[name];
-                        if ((typeof value === "undefined" ? "undefined" : _typeof(value)) === 'object') {
-                            css += genBaseColor(name, value.base);
-                            var variants = Object.keys(value);
-                            for (var i_1 = 0; i_1 < variants.length; ++i_1) {
-                                var variant = variants[i_1];
-                                var variantValue = value[variant];
-                                if (variant !== 'base') {
-                                    css += genVariantColor(name, variant, variantValue);
-                                }
-                            }
+                        if ((typeof value === "undefined" ? "undefined" : _typeof(value)) !== 'object') continue;
+                        css += genBaseColor(name, cssVar ? genColorVariable(name) : value.base);
+                        cssVar && (variablesCss += "  " + genColorVariableName(name) + ": " + value.base + ";\n");
+                        var variants = Object.keys(value);
+                        for (var i_1 = 0; i_1 < variants.length; ++i_1) {
+                            var variant = variants[i_1];
+                            var variantValue = value[variant];
+                            if (variant === 'base') continue;
+                            css += genVariantColor(name, variant, cssVar ? genColorVariable(name, variant) : variantValue);
+                            cssVar && (variablesCss += "  " + genColorVariableName(name, variant) + ": " + variantValue + ";\n");
                         }
                     }
-                    return css;
+                    if (cssVar) {
+                        variablesCss = ":root {\n" + variablesCss + "}\n\n";
+                    }
+                    return variablesCss + css;
                 }
                 function genVariations(name, value) {
                     var values = {
                         base: Object(_colorUtils__WEBPACK_IMPORTED_MODULE_0__["intToHex"])(value)
                     };
-                    for (var i = 1, n = 5; i <= 5; ++i, --n) {
-                        values["lighten" + i] = Object(_colorUtils__WEBPACK_IMPORTED_MODULE_0__["intToHex"])(lighten(value, n));
+                    for (var i = 5; i > 0; --i) {
+                        values["lighten" + i] = Object(_colorUtils__WEBPACK_IMPORTED_MODULE_0__["intToHex"])(lighten(value, i));
                     }
                     for (var i = 1; i <= 4; ++i) {
                         values["darken" + i] = Object(_colorUtils__WEBPACK_IMPORTED_MODULE_0__["intToHex"])(darken(value, i));
@@ -36324,7 +36797,7 @@ render._withStripped = true
     })();
 },{"babel-runtime/helpers/extends":"../../../../../node_modules/babel-runtime/helpers/extends.js","vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","./components/component-navigation-drawer.vue":"components/component-navigation-drawer.vue","./components/batches/component-toolbar-batches.vue":"components/batches/component-toolbar-batches.vue","./components/qualifications/component-toolbar-qualifications.vue":"components/qualifications/component-toolbar-qualifications.vue","./components/workers/component_toolbar_workers.vue":"components/workers/component_toolbar_workers.vue","_css_loader":"../../../../../node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"../../../../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../../../../node_modules/vue/dist/vue.common.js"}],"../../../../../node_modules/vuetify-upload-button/dist/vuetify-upload-button.js":[function(require,module,exports) {
 var define;
-!function(e,t){"object"==typeof exports&&"object"==typeof module?module.exports=t():"function"==typeof define&&define.amd?define("vuetify-upload-button",[],t):"object"==typeof exports?exports["vuetify-upload-button"]=t():e["vuetify-upload-button"]=t()}(this,function(){return function(e){function t(o){if(n[o])return n[o].exports;var r=n[o]={exports:{},id:o,loaded:!1};return e[o].call(r.exports,r,r.exports,t),r.loaded=!0,r.exports}var n={};return t.m=e,t.c=n,t.p="",t(0)}([function(e,t,n){n(1);var o=n(6)(n(7),n(8),"data-v-26f644c0",null);e.exports=o.exports},function(e,t,n){var o=n(2);"string"==typeof o&&(o=[[e.id,o,""]]),o.locals&&(e.exports=o.locals);n(4)("9bbb4e68",o,!0)},function(e,t,n){t=e.exports=n(3)(!1),t.push([e.id,".upload-btn[data-v-26f644c0]{padding-left:16px;padding-right:16px}.upload-btn input[type=file][data-v-26f644c0]{position:absolute;height:.1px;width:.1px;overflow:hidden;opacity:0;z-index:-1}.upload-btn-hover[data-v-26f644c0]{cursor:pointer}",""])},function(e,t){function n(e,t){var n=e[1]||"",r=e[3];if(!r)return n;if(t&&"function"==typeof btoa){var a=o(r),i=r.sources.map(function(e){return"/*# sourceURL="+r.sourceRoot+e+" */"});return[n].concat(i).concat([a]).join("\n")}return[n].join("\n")}function o(e){var t=btoa(unescape(encodeURIComponent(JSON.stringify(e)))),n="sourceMappingURL=data:application/json;charset=utf-8;base64,"+t;return"/*# "+n+" */"}e.exports=function(e){var t=[];return t.toString=function(){return this.map(function(t){var o=n(t,e);return t[2]?"@media "+t[2]+"{"+o+"}":o}).join("")},t.i=function(e,n){"string"==typeof e&&(e=[[null,e,""]]);for(var o={},r=0;r<this.length;r++){var a=this[r][0];"number"==typeof a&&(o[a]=!0)}for(r=0;r<e.length;r++){var i=e[r];"number"==typeof i[0]&&o[i[0]]||(n&&!i[2]?i[2]=n:n&&(i[2]="("+i[2]+") and ("+n+")"),t.push(i))}},t}},function(e,t,n){function o(e){for(var t=0;t<e.length;t++){var n=e[t],o=d[n.id];if(o){o.refs++;for(var r=0;r<o.parts.length;r++)o.parts[r](n.parts[r]);for(;r<n.parts.length;r++)o.parts.push(a(n.parts[r]));o.parts.length>n.parts.length&&(o.parts.length=n.parts.length)}else{for(var i=[],r=0;r<n.parts.length;r++)i.push(a(n.parts[r]));d[n.id]={id:n.id,refs:1,parts:i}}}}function r(){var e=document.createElement("style");return e.type="text/css",p.appendChild(e),e}function a(e){var t,n,o=document.querySelector('style[data-vue-ssr-id~="'+e.id+'"]');if(o){if(h)return v;o.parentNode.removeChild(o)}if(b){var a=c++;o=f||(f=r()),t=i.bind(null,o,a,!1),n=i.bind(null,o,a,!0)}else o=r(),t=l.bind(null,o),n=function(){o.parentNode.removeChild(o)};return t(e),function(o){if(o){if(o.css===e.css&&o.media===e.media&&o.sourceMap===e.sourceMap)return;t(e=o)}else n()}}function i(e,t,n,o){var r=n?"":o.css;if(e.styleSheet)e.styleSheet.cssText=g(t,r);else{var a=document.createTextNode(r),i=e.childNodes;i[t]&&e.removeChild(i[t]),i.length?e.insertBefore(a,i[t]):e.appendChild(a)}}function l(e,t){var n=t.css,o=t.media,r=t.sourceMap;if(o&&e.setAttribute("media",o),r&&(n+="\n/*# sourceURL="+r.sources[0]+" */",n+="\n/*# sourceMappingURL=data:application/json;base64,"+btoa(unescape(encodeURIComponent(JSON.stringify(r))))+" */"),e.styleSheet)e.styleSheet.cssText=n;else{for(;e.firstChild;)e.removeChild(e.firstChild);e.appendChild(document.createTextNode(n))}}var s="undefined"!=typeof document,u=n(5),d={},p=s&&(document.head||document.getElementsByTagName("head")[0]),f=null,c=0,h=!1,v=function(){},b="undefined"!=typeof navigator&&/msie [6-9]\b/.test(navigator.userAgent.toLowerCase());e.exports=function(e,t,n){h=n;var r=u(e,t);return o(r),function(t){for(var n=[],a=0;a<r.length;a++){var i=r[a],l=d[i.id];l.refs--,n.push(l)}t?(r=u(e,t),o(r)):r=[];for(var a=0;a<n.length;a++){var l=n[a];if(0===l.refs){for(var s=0;s<l.parts.length;s++)l.parts[s]();delete d[l.id]}}}};var g=function(){var e=[];return function(t,n){return e[t]=n,e.filter(Boolean).join("\n")}}()},function(e,t){e.exports=function(e,t){for(var n=[],o={},r=0;r<t.length;r++){var a=t[r],i=a[0],l=a[1],s=a[2],u=a[3],d={id:e+":"+r,css:l,media:s,sourceMap:u};o[i]?o[i].parts.push(d):n.push(o[i]={id:i,parts:[d]})}return n}},function(e,t){e.exports=function(e,t,n,o){var r,a=e=e||{},i=typeof e["default"];"object"!==i&&"function"!==i||(r=e,a=e["default"]);var l="function"==typeof a?a.options:a;if(t&&(l.render=t.render,l.staticRenderFns=t.staticRenderFns),n&&(l._scopeId=n),o){var s=Object.create(l.computed||null);Object.keys(o).forEach(function(e){var t=o[e];s[e]=function(){return t}}),l.computed=s}return{esModule:r,exports:a,options:l}}},function(e,t){"use strict";Object.defineProperty(t,"__esModule",{value:!0}),t["default"]={name:"upload-btn",props:{block:{"default":!1,type:Boolean},fileChangedCallback:{"default":void 0,type:Function},color:{"default":"primary",type:String},disabled:{"default":!1,type:Boolean},flat:{"default":!1,type:Boolean},hover:{"default":!0,type:Boolean},icon:{"default":!1,type:Boolean},large:{"default":!1,type:Boolean},loading:{"default":!1,type:Boolean},outline:{"default":!1,type:Boolean},ripple:{"default":!0,type:Boolean},round:{"default":!1,type:Boolean},small:{"default":!1,type:Boolean},title:{"default":"Upload",type:String}},computed:{classes:function n(){var n={"btn--block":this.block,"btn--flat":this.flat,"upload-btn-hover":this.hover,"btn--icon":this.icon,"btn--large":this.large,"btn--loading":this.loading,"btn--outline":this.outline,"btn--round":this.round,"btn--small":this.small,"btn--disabled":this.disabled},e="";for(var t in n)n[t]&&(e+=t+" ");return e}},methods:{fileChanged:function(e){e&&this.fileChangedCallback&&(e.target.files[0]?this.fileChangedCallback(e.target.files[0]):this.fileChangedCallback(null))}}}},function(e,t){e.exports={render:function(){var e=this,t=e.$createElement,n=e._self._c||t;return n("div",{staticClass:"upload-btn"},[n("input",{attrs:{id:"uploadFile",type:"file",name:"uploadFile"},on:{change:e.fileChanged}}),e._v(" "),n("label",{directives:[{name:"ripple",rawName:"v-ripple",value:e.ripple,expression:"ripple"}],"class":"btn "+e.classes+e.color+" upload-btn",attrs:{"for":"uploadFile"}},[e._v("\n    "+e._s(e.icon?"":e.title)+"\n    "),e._t("icon")],2)])},staticRenderFns:[]}}])});
+!function(e,t){"object"==typeof exports&&"object"==typeof module?module.exports=t():"function"==typeof define&&define.amd?define("vuetify-upload-button",[],t):"object"==typeof exports?exports["vuetify-upload-button"]=t():e["vuetify-upload-button"]=t()}(this,function(){return function(e){function t(o){if(n[o])return n[o].exports;var r=n[o]={exports:{},id:o,loaded:!1};return e[o].call(r.exports,r,r.exports,t),r.loaded=!0,r.exports}var n={};return t.m=e,t.c=n,t.p="",t(0)}([function(e,t,n){n(1);var o=n(6)(n(7),n(8),"data-v-26f644c0",null);e.exports=o.exports},function(e,t,n){var o=n(2);"string"==typeof o&&(o=[[e.id,o,""]]),o.locals&&(e.exports=o.locals);n(4)("9bbb4e68",o,!0)},function(e,t,n){t=e.exports=n(3)(!1),t.push([e.id,".upload-btn[data-v-26f644c0]{padding-left:16px;padding-right:16px}.upload-btn input[type=file][data-v-26f644c0]{position:absolute;height:.1px;width:.1px;overflow:hidden;opacity:0;z-index:-1}.upload-btn-hover[data-v-26f644c0]{cursor:pointer}",""])},function(e,t){function n(e,t){var n=e[1]||"",r=e[3];if(!r)return n;if(t&&"function"==typeof btoa){var a=o(r),i=r.sources.map(function(e){return"/*# sourceURL="+r.sourceRoot+e+" */"});return[n].concat(i).concat([a]).join("\n")}return[n].join("\n")}function o(e){var t=btoa(unescape(encodeURIComponent(JSON.stringify(e)))),n="sourceMappingURL=data:application/json;charset=utf-8;base64,"+t;return"/*# "+n+" */"}e.exports=function(e){var t=[];return t.toString=function(){return this.map(function(t){var o=n(t,e);return t[2]?"@media "+t[2]+"{"+o+"}":o}).join("")},t.i=function(e,n){"string"==typeof e&&(e=[[null,e,""]]);for(var o={},r=0;r<this.length;r++){var a=this[r][0];"number"==typeof a&&(o[a]=!0)}for(r=0;r<e.length;r++){var i=e[r];"number"==typeof i[0]&&o[i[0]]||(n&&!i[2]?i[2]=n:n&&(i[2]="("+i[2]+") and ("+n+")"),t.push(i))}},t}},function(e,t,n){function o(e){for(var t=0;t<e.length;t++){var n=e[t],o=d[n.id];if(o){o.refs++;for(var r=0;r<o.parts.length;r++)o.parts[r](n.parts[r]);for(;r<n.parts.length;r++)o.parts.push(a(n.parts[r]));o.parts.length>n.parts.length&&(o.parts.length=n.parts.length)}else{for(var i=[],r=0;r<n.parts.length;r++)i.push(a(n.parts[r]));d[n.id]={id:n.id,refs:1,parts:i}}}}function r(){var e=document.createElement("style");return e.type="text/css",p.appendChild(e),e}function a(e){var t,n,o=document.querySelector('style[data-vue-ssr-id~="'+e.id+'"]');if(o){if(v)return h;o.parentNode.removeChild(o)}if(b){var a=c++;o=f||(f=r()),t=i.bind(null,o,a,!1),n=i.bind(null,o,a,!0)}else o=r(),t=l.bind(null,o),n=function(){o.parentNode.removeChild(o)};return t(e),function(o){if(o){if(o.css===e.css&&o.media===e.media&&o.sourceMap===e.sourceMap)return;t(e=o)}else n()}}function i(e,t,n,o){var r=n?"":o.css;if(e.styleSheet)e.styleSheet.cssText=g(t,r);else{var a=document.createTextNode(r),i=e.childNodes;i[t]&&e.removeChild(i[t]),i.length?e.insertBefore(a,i[t]):e.appendChild(a)}}function l(e,t){var n=t.css,o=t.media,r=t.sourceMap;if(o&&e.setAttribute("media",o),r&&(n+="\n/*# sourceURL="+r.sources[0]+" */",n+="\n/*# sourceMappingURL=data:application/json;base64,"+btoa(unescape(encodeURIComponent(JSON.stringify(r))))+" */"),e.styleSheet)e.styleSheet.cssText=n;else{for(;e.firstChild;)e.removeChild(e.firstChild);e.appendChild(document.createTextNode(n))}}var s="undefined"!=typeof document,u=n(5),d={},p=s&&(document.head||document.getElementsByTagName("head")[0]),f=null,c=0,v=!1,h=function(){},b="undefined"!=typeof navigator&&/msie [6-9]\b/.test(navigator.userAgent.toLowerCase());e.exports=function(e,t,n){v=n;var r=u(e,t);return o(r),function(t){for(var n=[],a=0;a<r.length;a++){var i=r[a],l=d[i.id];l.refs--,n.push(l)}t?(r=u(e,t),o(r)):r=[];for(var a=0;a<n.length;a++){var l=n[a];if(0===l.refs){for(var s=0;s<l.parts.length;s++)l.parts[s]();delete d[l.id]}}}};var g=function(){var e=[];return function(t,n){return e[t]=n,e.filter(Boolean).join("\n")}}()},function(e,t){e.exports=function(e,t){for(var n=[],o={},r=0;r<t.length;r++){var a=t[r],i=a[0],l=a[1],s=a[2],u=a[3],d={id:e+":"+r,css:l,media:s,sourceMap:u};o[i]?o[i].parts.push(d):n.push(o[i]={id:i,parts:[d]})}return n}},function(e,t){e.exports=function(e,t,n,o){var r,a=e=e||{},i=typeof e["default"];"object"!==i&&"function"!==i||(r=e,a=e["default"]);var l="function"==typeof a?a.options:a;if(t&&(l.render=t.render,l.staticRenderFns=t.staticRenderFns),n&&(l._scopeId=n),o){var s=Object.create(l.computed||null);Object.keys(o).forEach(function(e){var t=o[e];s[e]=function(){return t}}),l.computed=s}return{esModule:r,exports:a,options:l}}},function(e,t){"use strict";Object.defineProperty(t,"__esModule",{value:!0}),t["default"]={name:"upload-btn",props:{accept:{"default":"*",type:String},block:{"default":!1,type:Boolean},fileChangedCallback:{"default":void 0,type:Function},color:{"default":"primary",type:String},disabled:{"default":!1,type:Boolean},flat:{"default":!1,type:Boolean},hover:{"default":!0,type:Boolean},icon:{"default":!1,type:Boolean},large:{"default":!1,type:Boolean},loading:{"default":!1,type:Boolean},name:{"default":"uploadFile",type:String},outline:{"default":!1,type:Boolean},ripple:{"default":!0,type:Boolean},round:{"default":!1,type:Boolean},small:{"default":!1,type:Boolean},title:{"default":"Upload",type:String}},computed:{classes:function n(){var n={"v-btn--block":this.block,"v-btn--flat":this.flat,"upload-btn-hover":this.hover,"v-btn--icon":this.icon,"v-btn--large":this.large,"v-btn--loading":this.loading,"v-btn--outline":this.outline,"v-btn--round":this.round,"v-btn--small":this.small,"v-btn--disabled":this.disabled},e="";for(var t in n)n[t]&&(e+=t+" ");return e}},methods:{fileChanged:function(e){e&&this.fileChangedCallback&&(e.target.files[0]?this.fileChangedCallback(e.target.files[0]):this.fileChangedCallback(null))}}}},function(e,t){e.exports={render:function(){var e=this,t=e.$createElement,n=e._self._c||t;return n("div",{staticClass:"upload-btn"},[n("input",{attrs:{id:"uploadFile",type:"file",name:e.name,accept:e.accept},on:{change:e.fileChanged}}),e._v(" "),n("label",{directives:[{name:"ripple",rawName:"v-ripple",value:e.ripple,expression:"ripple"}],"class":"v-btn "+e.classes+e.color+" upload-btn",attrs:{"for":"uploadFile"}},[e._v("\n    "+e._s(e.icon?"":e.title)+"\n    "),e._t("icon")],2)])},staticRenderFns:[]}}])});
 },{}],"../../../../../node_modules/events/events.js":[function(require,module,exports) {
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -69846,7 +70319,7 @@ render._withStripped = true
         
       }
     })();
-},{"babel-runtime/helpers/extends":"../../../../../node_modules/babel-runtime/helpers/extends.js","vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","vue-hot-reload-api":"../../../../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../../../../node_modules/vue/dist/vue.common.js"}],"components/workers/component_item_worker.vue":[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":"../../../../../node_modules/babel-runtime/helpers/extends.js","vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","vue-hot-reload-api":"../../../../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../../../../node_modules/vue/dist/vue.common.js"}],"components/workers/component_limit_assignments.vue":[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -69859,100 +70332,54 @@ var _extends3 = _interopRequireDefault(_extends2);
 
 var _vuex = require('vuex');
 
-var _enums = require('../../classes/enums.js');
-
-var _component_block_worker = require('./component_block_worker.vue');
-
-var _component_block_worker2 = _interopRequireDefault(_component_block_worker);
-
-var _component_block_soft_worker = require('./component_block_soft_worker.vue');
-
-var _component_block_soft_worker2 = _interopRequireDefault(_component_block_soft_worker);
-
-var _component_block_hard_worker = require('./component_block_hard_worker.vue');
-
-var _component_block_hard_worker2 = _interopRequireDefault(_component_block_hard_worker);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// import ComponentBlockSoftWorker from './component_block_worker.vue';
 exports.default = {
-    name: 'component-item-worker',
+    name: 'component-limit-assignments',
     props: {
-        props: {
+        worker: {
             type: Object,
             required: true
         }
     },
     data: function data() {
         return {
+            limit: this.worker.count_assignments_limit,
             show_snackbar: false
         };
     },
 
-    // watch: {
-    //     'worker.is_blocked': function() {
-    //         console.log(this.worker.is_blocked)
-    //     },
-    // },
+    watch: {
+        'worker.count_assignments_limit': function workerCount_assignments_limit() {
+            this.limit = this.worker.count_assignments_limit;
+        }
+    },
     computed: (0, _extends3.default)({
-        has_reached_limit_assignments: function has_reached_limit_assignments() {
-            return this.props.item.count_assignments_limit >= this.project_current.count_assignments_max_per_worker;
+        content: function content() {
+            return this.worker.count_assignments_limit + ' of ' + this.project_current.count_assignments_max_per_worker;
         },
-        status_block: function status_block() {
-            if (this.worker.is_blocked == undefined) {
-                return {
-                    description: 'Loading',
-                    color: 'success',
-                    icon: ''
-                };
-            }
-
-            switch (this.worker.is_blocked) {
-                case _enums.STATUS_BLOCK.NONE:
-                    return {
-                        description: 'Not Blocked',
-                        color: 'success',
-                        icon: 'check'
-                    };
-                case _enums.STATUS_BLOCK.SOFT:
-                    return {
-                        description: 'Soft Blocked',
-                        color: 'warning',
-                        icon: 'block'
-                    };
-                case _enums.STATUS_BLOCK.HARD:
-                    return {
-                        description: 'Hard Blocked',
-                        color: 'error',
-                        icon: 'block'
-                    };
-            }
+        has_reached_limit_assignments: function has_reached_limit_assignments() {
+            return this.worker.count_assignments_limit >= this.project_current.count_assignments_max_per_worker;
         }
     }, (0, _vuex.mapGetters)('moduleProjects', {
         'project_current': 'get_project_current'
-    }), (0, _vuex.mapGetters)(['get_show_progress_indicator'])),
+    })),
     methods: (0, _extends3.default)({
-        changed_counter_assignments: function changed_counter_assignments(value) {
+        save: function save() {
             var _this = this;
 
             this.set_show_progress_indicator(true);
-            this.update_counter_assignments({
+            this.update_count_assignments_limit({
                 worker: this.worker,
-                value: value
+                value: this.limit
             }).then(function () {
                 _this.show_snackbar = true;
                 _this.set_show_progress_indicator(false);
             });
         }
     }, (0, _vuex.mapActions)('moduleWorkers', {
-        'update_counter_assignments': 'update_counter_assignments'
-    }), (0, _vuex.mapActions)(['set_show_progress_indicator'])),
-    created: function created() {},
-    components: {
-        ComponentBlockSoftWorker: _component_block_soft_worker2.default,
-        ComponentBlockHardWorker: _component_block_hard_worker2.default
-    }
+        'update_count_assignments_limit': 'update_count_assignments_limit'
+    }), (0, _vuex.mapActions)(['set_show_progress_indicator']))
 }; //
 //
 //
@@ -70007,6 +70434,171 @@ exports.default = {
 //
 //
 //
+        var $cf1078 = exports.default || module.exports;
+      
+      if (typeof $cf1078 === 'function') {
+        $cf1078 = $cf1078.options;
+      }
+    
+        /* template */
+        Object.assign($cf1078, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "td",
+    [
+      _vm.project_current.count_assignments_max_per_worker > -1 &&
+      _vm.worker.count_assignments_limit != undefined
+        ? _c(
+            "v-edit-dialog",
+            {
+              attrs: { lazy: "", persistent: "", large: "" },
+              on: { save: _vm.save }
+            },
+            [
+              _c(
+                "div",
+                {
+                  class: { "warning--text": _vm.has_reached_limit_assignments }
+                },
+                [_vm._v(_vm._s(_vm.content))]
+              ),
+              _vm._v(" "),
+              _c("v-text-field", {
+                attrs: {
+                  slot: "input",
+                  type: "number",
+                  label: "Edit",
+                  "single-line": "",
+                  autofocus: "",
+                  "append-icon": "clear"
+                },
+                on: {
+                  "click:append": function($event) {
+                    _vm.limit = 0
+                  }
+                },
+                slot: "input",
+                model: {
+                  value: _vm.limit,
+                  callback: function($$v) {
+                    _vm.limit = $$v
+                  },
+                  expression: "limit"
+                }
+              })
+            ],
+            1
+          )
+        : _vm.project_current.count_assignments_max_per_worker > -1
+          ? [
+              _c("v-progress-circular", {
+                attrs: { indeterminate: "", width: 2, size: 24 }
+              })
+            ]
+          : [_vm._v("No limit")],
+      _vm._v(" "),
+      _c(
+        "v-snackbar",
+        {
+          attrs: { timeout: 1000, color: "info", bottom: "" },
+          model: {
+            value: _vm.show_snackbar,
+            callback: function($$v) {
+              _vm.show_snackbar = $$v
+            },
+            expression: "show_snackbar"
+          }
+        },
+        [
+          _vm._v("\n        Updated\n        "),
+          _c(
+            "v-btn",
+            {
+              attrs: { flat: "" },
+              on: {
+                click: function($event) {
+                  _vm.show_snackbar = false
+                }
+              }
+            },
+            [_vm._v("\n            Close\n        ")]
+          )
+        ],
+        1
+      )
+    ],
+    2
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: "data-v-cf1078",
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$cf1078', $cf1078);
+          } else {
+            api.reload('$cf1078', $cf1078);
+          }
+        }
+
+        
+        var reloadCSS = require('_css_loader');
+        module.hot.dispose(reloadCSS);
+        module.hot.accept(reloadCSS);
+      
+      }
+    })();
+},{"babel-runtime/helpers/extends":"../../../../../node_modules/babel-runtime/helpers/extends.js","vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","_css_loader":"../../../../../node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"../../../../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../../../../node_modules/vue/dist/vue.common.js"}],"components/workers/component_item_worker.vue":[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends2 = require('babel-runtime/helpers/extends');
+
+var _extends3 = _interopRequireDefault(_extends2);
+
+var _vuex = require('vuex');
+
+var _enums = require('../../classes/enums.js');
+
+var _component_block_worker = require('./component_block_worker.vue');
+
+var _component_block_worker2 = _interopRequireDefault(_component_block_worker);
+
+var _component_block_soft_worker = require('./component_block_soft_worker.vue');
+
+var _component_block_soft_worker2 = _interopRequireDefault(_component_block_soft_worker);
+
+var _component_block_hard_worker = require('./component_block_hard_worker.vue');
+
+var _component_block_hard_worker2 = _interopRequireDefault(_component_block_hard_worker);
+
+var _component_limit_assignments = require('./component_limit_assignments.vue');
+
+var _component_limit_assignments2 = _interopRequireDefault(_component_limit_assignments);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 //
 //
 //
@@ -70054,6 +70646,88 @@ exports.default = {
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+exports.default = {
+    name: 'component-item-worker',
+    props: {
+        props: {
+            type: Object,
+            required: true
+        }
+    },
+    data: function data() {
+        return {
+            show_snackbar: false
+        };
+    },
+
+    // watch: {
+    //     'worker.is_blocked': function() {
+    //         console.log(this.worker.is_blocked)
+    //     },
+    // },
+    computed: (0, _extends3.default)({}, (0, _vuex.mapGetters)(['get_show_progress_indicator'])),
+    methods: {},
+    components: {
+        ComponentBlockSoftWorker: _component_block_soft_worker2.default,
+        ComponentBlockHardWorker: _component_block_hard_worker2.default,
+        ComponentLimitAssignments: _component_limit_assignments2.default
+    }
+};
+// import ComponentBlockSoftWorker from './component_block_worker.vue';
         var $21822d = exports.default || module.exports;
       
       if (typeof $21822d === 'function') {
@@ -70066,47 +70740,42 @@ exports.default = {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("tr", [
-    _c("td", [_vm._v("\n        " + _vm._s(_vm.props.item.name) + "\n    ")]),
-    _vm._v(" "),
-    _c(
-      "td",
-      { class: { "warning--text": _vm.has_reached_limit_assignments } },
-      [
-        _vm._v(
-          "\n        " +
-            _vm._s(_vm.props.item.count_assignments_limit) +
-            " of " +
-            _vm._s(_vm.project_current.count_assignments_max_per_worker) +
-            "\n    "
-        )
-      ]
-    ),
-    _vm._v(" "),
-    _c(
-      "td",
-      { staticClass: "text-xs-center" },
-      [
-        _c("component-block-soft-worker", {
-          key: "component_block_soft_worker_" + _vm.props.item.name,
-          attrs: { worker: _vm.props.item }
-        })
-      ],
-      1
-    ),
-    _vm._v(" "),
-    _c(
-      "td",
-      { staticClass: "text-xs-center" },
-      [
-        _c("component-block-hard-worker", {
-          key: "component_block_hard_worker_" + _vm.props.item.name,
-          attrs: { worker: _vm.props.item }
-        })
-      ],
-      1
-    )
-  ])
+  return _c(
+    "tr",
+    [
+      _c("td", [_vm._v("\n        " + _vm._s(_vm.props.item.name) + "\n    ")]),
+      _vm._v(" "),
+      _c("component-limit-assignments", {
+        key: "component_limit_assignments_" + _vm.props.item.name,
+        attrs: { worker: _vm.props.item }
+      }),
+      _vm._v(" "),
+      _c(
+        "td",
+        { staticClass: "text-xs-center" },
+        [
+          _c("component-block-soft-worker", {
+            key: "component_block_soft_worker_" + _vm.props.item.name,
+            attrs: { worker: _vm.props.item }
+          })
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "td",
+        { staticClass: "text-xs-center" },
+        [
+          _c("component-block-hard-worker", {
+            key: "component_block_hard_worker_" + _vm.props.item.name,
+            attrs: { worker: _vm.props.item }
+          })
+        ],
+        1
+      )
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -70137,7 +70806,7 @@ render._withStripped = true
         
       }
     })();
-},{"babel-runtime/helpers/extends":"../../../../../node_modules/babel-runtime/helpers/extends.js","vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","../../classes/enums.js":"classes/enums.js","./component_block_worker.vue":"components/workers/component_block_worker.vue","./component_block_soft_worker.vue":"components/workers/component_block_soft_worker.vue","./component_block_hard_worker.vue":"components/workers/component_block_hard_worker.vue","vue-hot-reload-api":"../../../../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../../../../node_modules/vue/dist/vue.common.js"}],"components/workers/component_list_workers.vue":[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":"../../../../../node_modules/babel-runtime/helpers/extends.js","vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","../../classes/enums.js":"classes/enums.js","./component_block_worker.vue":"components/workers/component_block_worker.vue","./component_block_soft_worker.vue":"components/workers/component_block_soft_worker.vue","./component_block_hard_worker.vue":"components/workers/component_block_hard_worker.vue","./component_limit_assignments.vue":"components/workers/component_limit_assignments.vue","vue-hot-reload-api":"../../../../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../../../../node_modules/vue/dist/vue.common.js"}],"components/workers/component_list_workers.vue":[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -70606,7 +71275,7 @@ render._withStripped = true
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-	value: true
+    value: true
 });
 
 var _extends2 = require('babel-runtime/helpers/extends');
@@ -70758,38 +71427,44 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+//
+//
 
 exports.default = {
-	mixins: [_settings_batch2.default],
-	name: 'component_settings_batch',
-	data: function data() {
-		return {
-			show_snackbar: false
-			// search: undefined,
-		};
-	},
+    mixins: [_settings_batch2.default],
+    name: 'component_settings_batch',
+    data: function data() {
+        return {
+            show_snackbar: false
+            // search: undefined,
+        };
+    },
 
-	methods: (0, _extends3.default)({
-		update1: function update1() {
-			console.log('tesssst');
-		},
-		update: function update() {
-			var _this = this;
+    methods: (0, _extends3.default)({
+        update1: function update1() {
+            console.log(this.project.count_assignments_max_per_worker);
+            this.project.count_assignments_max_per_worker = 2;
+            console.log(this.project.count_assignments_max_per_worker);
+        },
+        update: function update() {
+            var _this = this;
 
-			this.edit_project({
-				project: this.project_current,
-				project_new: this.project
-			}).then(function () {
-				console.log('done');
-				_this.update_fields();
-				_this.show_snackbar = true;
-			});
-			// console.log(this.project_current);
-		}
-	}, (0, _vuex.mapActions)('moduleProjects', {
-		'edit_project': 'edit_project'
-	})),
-	computed: {}
+            if (this.$refs.form.validate()) {
+                this.edit_project({
+                    project: this.project_current,
+                    project_new: this.project
+                }).then(function () {
+                    console.log('done');
+                    _this.update_fields();
+                    _this.show_snackbar = true;
+                });
+            }
+            // console.log(this.project_current);
+        }
+    }, (0, _vuex.mapActions)('moduleProjects', {
+        'edit_project': 'edit_project'
+    })),
+    computed: {}
 };
         var $a6dba8 = exports.default || module.exports;
       
@@ -70811,6 +71486,7 @@ exports.default = {
       _c(
         "v-form",
         {
+          ref: "form",
           attrs: { "lazy-validation": "" },
           model: {
             value: _vm.valid,
@@ -70896,7 +71572,13 @@ exports.default = {
               type: "number",
               label: "Number of Maximal Assignments Per Worker",
               rules: _vm.rules_count_assignments_max_per_worker,
-              min: "-1"
+              min: "-1",
+              "append-icon": "clear"
+            },
+            on: {
+              "click:append": function($event) {
+                _vm.project.count_assignments_max_per_worker = -1
+              }
             },
             model: {
               value: _vm.project.count_assignments_max_per_worker,
@@ -73216,7 +73898,7 @@ var Worker = function () {
 		// this.m_description = data.Description;
 		// this.m_is_requestable = data.IsRequestable;
 		this.name = data.name;
-		this.count_assignments_limit = 0;
+		this.count_assignments_limit = undefined;
 		this.is_blocked_soft = undefined;
 		this.is_blocked_hard = undefined;
 		// this.is_blocked = data.is_blocked;
@@ -73458,6 +74140,8 @@ var moduleWorkers = exports.moduleWorkers = {
 
 				if (object_counters.hasOwnProperty(worker.name)) {
 					_vue2.default.set(worker, 'count_assignments_limit', object_counters[worker.name]);
+				} else {
+					_vue2.default.set(worker, 'count_assignments_limit', 0);
 				}
 			});
 		}
@@ -74463,7 +75147,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = '' || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + '45327' + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '38517' + '/');
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
 

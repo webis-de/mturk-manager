@@ -179,7 +179,6 @@ class Manager_Workers(object):
                 fk_project=database_object_project,
                 fk_worker__id_worker=id_worker,
             ).exists():
-
             is_blocked = True
         else:
             if database_object_project.count_assignments_max_per_worker > -1:

@@ -142,6 +142,8 @@ export const moduleWorkers = {
 				if(object_counters.hasOwnProperty(worker.name))
 				{
 					Vue.set(worker, 'count_assignments_limit', object_counters[worker.name]);
+				} else {
+					Vue.set(worker, 'count_assignments_limit', 0);
 				}
 			});
 		},

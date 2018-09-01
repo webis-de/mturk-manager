@@ -9,7 +9,7 @@ export default class Worker
 		// this.m_description = data.Description;
 		// this.m_is_requestable = data.IsRequestable;
 		this.name = data.name;
-		this.count_assignments_limit = 0;
+		this.count_assignments_limit = undefined;
 		this.is_blocked_soft = undefined;
 		this.is_blocked_hard = undefined;
 		// this.is_blocked = data.is_blocked;
