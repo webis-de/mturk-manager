@@ -5,10 +5,13 @@
                     <v-switch label="Not Blocked" v-model="show_workers_blocked_none"></v-switch>
                 </v-flex>
                 <v-flex xs1>
-                    <v-switch label="Soft Blocked" v-model="show_workers_blocked_soft"></v-switch>
+                    <v-switch label="Limit Blocked" v-model="show_workers_blocked_limit"></v-switch>
+                </v-flex>
+                <v-flex xs2>
+                    <v-switch label="Project Blocked" v-model="show_workers_blocked_soft"></v-switch>
                 </v-flex>
                 <v-flex xs1>
-                    <v-switch label="Hard Blocked" v-model="show_workers_blocked_hard"></v-switch>
+                    <v-switch label="Global Blocked" v-model="show_workers_blocked_hard"></v-switch>
                 </v-flex>
             
                 <v-flex>
@@ -100,6 +103,7 @@ export default {
             search: '',
 
             show_workers_blocked_none: true,
+            show_workers_blocked_limit: true,
             show_workers_blocked_soft: true,
             show_workers_blocked_hard: true,
 
@@ -140,22 +144,28 @@ export default {
         ...mapGetters('moduleWorkers', {
             'list_workers': 'list_workers',
         }),
+        ...mapGetters('moduleProjects', {
+            'project_current': 'get_project_current',
+        }),
     },
     methods: {
         custom_filter(items, search, filter) {
             if(!this.show_workers_blocked_none)
             {
-                items = items.filter(e => e.is_blocked != STATUS_BLOCK.NONE);
+                items = items.filter(e => !e.is_blocked_soft && !e.is_blocked_hard);
+            }
+            if(!this.show_workers_blocked_limit)
+            {
+                items = items.filter(e => e.count_assignments_limit >= this.project_current.count_assignments_max_per_worker);
             }
             if(!this.show_workers_blocked_soft)
             {
-                items = items.filter(e => e.is_blocked != STATUS_BLOCK.SOFT);
+                items = items.filter(e => e.is_blocked_soft);
             }
             if(!this.show_workers_blocked_hard)
             {
-                items = items.filter(e => e.is_blocked != STATUS_BLOCK.HARD);
+                items = items.filter(e => e.is_blocked_hard);
             }
-
 
             // console.log(items)
             search = search.trim()

@@ -243,8 +243,9 @@ class Manager_Workers(object):
             )
 
             if not was_created:
-                count_assignments_worker_project.count_assignments += 1
-                count_assignments_worker_project.save()
+                if count_assignments_worker_project.count_assignments > -1:
+                    count_assignments_worker_project.count_assignments += 1
+                    count_assignments_worker_project.save()
 
         return {
             'incremented': was_created_assignment_worker,
