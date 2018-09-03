@@ -21,7 +21,7 @@ def download(request, name):
     writer = None
     list_ids = json.loads(request.GET['list_ids'])
 
-    for index, assignment in enumerate(m_Assignment.objects.filter(id__in=list_ids).select_related('fk_hit', 'fk_worker')):
+    for index, assignment in enumerate(m_Assignment.objects.filter(id__in=list_ids).select_related('fk_hit__fk_batch', 'fk_worker')):
         dict_question = json.loads(assignment.fk_hit.parameters)
         # print(dict_question.keys())
 
@@ -32,6 +32,9 @@ def download(request, name):
         dict_result['id_assignment'] = assignment.id_assignment
         dict_result['id_hit'] = assignment.fk_hit.id_hit
         dict_result['id_worker'] = assignment.fk_worker.name
+        dict_result['sandbox'] = assignment.fk_hit.fk_batch.use_sandbox
+        dict_result['creation'] = assignment.fk_hit.datetime_creation
+        dict_result['expiration'] = assignment.fk_hit.datetime_expiration
         dict_result.update(dict_question)
         dict_result.update(dict_answer)
 
