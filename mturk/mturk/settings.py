@@ -183,9 +183,9 @@ STATIC_URL = '/static/'
 # STATIC_ROOT = 'static/'
 
 
-# URL_GLOBAL_DB = 'https://webis18.medien.uni-weimar.de/mturk-manager'
+URL_GLOBAL_DB = 'https://webis18.medien.uni-weimar.de/mturk-manager'
 # URL_GLOBAL_DB = 'http://webis19.medien.uni-weimar.de:8005'
-URL_GLOBAL_DB = 'http://localhost:8002'
+# URL_GLOBAL_DB = 'http://localhost:8002'
 URL_MTURK_SANDBOX = 'https://mturk-requester-sandbox.us-east-1.amazonaws.com'
 # URL_BLOCK_WORKERS = 'https://webis16.medien.uni-weimar.de'
 PREEFIX_QUALIFICATION_BLOCK_SOFT = 'fbqeqihngl-'
