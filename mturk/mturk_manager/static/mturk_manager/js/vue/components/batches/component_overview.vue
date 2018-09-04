@@ -1,5 +1,5 @@
 <template>
-<v-layout wrap v-if="is_valid_csv">
+<v-layout wrap>
     <v-flex>
         <v-list subheader>
             <v-subheader><h2>Summary</h2></v-subheader>

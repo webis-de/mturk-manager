@@ -2,7 +2,7 @@
 <v-layout>
     <v-flex>
         <v-layout>
-            <v-flex xs2>
+            <v-flex xs3>
                 <upload-btn
                     class="pl-0"
                     :fileChangedCallback="file_changed"
@@ -58,7 +58,7 @@ export default {
         }
     },
     mounted() {
-        this.set_csv_parsed({ "data": [ { "link_1": "http://webislab35.medien.uni-weimar.de:8002/wiki/Margaret_Billingham", "link_2": "http://webislab35.medien.uni-weimar.de:8002/wiki/Benik_Afobe", "link_3": "http://webislab35.medien.uni-weimar.de:8002/wiki/Letter_to_Blanchy" } ], "errors": [], "meta": { "delimiter": ",", "linebreak": "\r\n", "aborted": false, "truncated": false, "cursor": 220, "fields": [ "link_1", "link_2", "link_3" ] } });
+        // this.set_csv_parsed({ "data": [ { "link_1": "http://webislab35.medien.uni-weimar.de:8002/wiki/Margaret_Billingham", "link_2": "http://webislab35.medien.uni-weimar.de:8002/wiki/Benik_Afobe", "link_3": "http://webislab35.medien.uni-weimar.de:8002/wiki/Letter_to_Blanchy" } ], "errors": [], "meta": { "delimiter": ",", "linebreak": "\r\n", "aborted": false, "truncated": false, "cursor": 220, "fields": [ "link_1", "link_2", "link_3" ] } });
     },
     methods: {
         file_changed(file) {

@@ -56,6 +56,7 @@
 		Download CSV for {{ count_hits_to_download }} HITs
       	<v-icon right>cloud_download</v-icon>
     </v-btn>
+    {{batches_selected}}
 </div>
 </template>
 
@@ -158,7 +159,7 @@ export default {
 
     		// filter the selected hits
     		const hits_selected = _.filter(this.list_hits_for_csv, hit => this.set_batches_selected.has(hit[2]));
-
+    		console.log(hits_selected)
             const csv_string = Papa.unparse(
             {
                 fields: ['id_hit', 'costs', 'id_batch'],

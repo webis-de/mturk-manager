@@ -27,10 +27,10 @@
             </v-layout>
 
                 <!-- select-all -->
+                <!-- v-bind:rows-per-page-items="items_per_page" -->
             <v-data-table
                 v-bind:headers="list_headers"
                 v-bind:items="list_workers"
-                v-bind:rows-per-page-items="items_per_page"
                 v-bind:search="search"
                 v-bind:custom-filter="custom_filter"
             >
@@ -98,7 +98,7 @@ export default {
             show_dialog_policy: false,
             policy_to_be_edited: null,
 
-            items_per_page: [12, 24],
+            // items_per_page: [12, 24],
 
             search: '',
 

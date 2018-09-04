@@ -1155,7 +1155,6 @@ def create_batch(db_obj_project, form, request):
     if form.cleaned_data['block_workers']:
         db_obj_template.template = preprocess_template_request(request, db_obj_project, db_obj_template.template)
 
-
     title = form.cleaned_data['title']
 
     if form.cleaned_data['qualification_locale']:
@@ -1200,7 +1199,6 @@ def create_batch(db_obj_project, form, request):
         title = 'Contains adult content! {}'.format(title)
 
     print(list_requirements)
-    # return
 
     db_obj_batch = code_shared.glob_create_batch(db_obj_project, data=form.cleaned_data)
     client = code_shared.get_client(db_obj_project, form.cleaned_data['use_sandbox'])

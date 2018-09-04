@@ -1,5 +1,5 @@
 <template>
-<v-layout wrap v-if="is_valid_csv">
+<v-layout wrap>
     <v-flex>
     	<v-btn class="mx-3" v-bind:loading="is_uploading_batch" large color="success" v-on:click="submit">Submit Batch</v-btn>
     </v-flex>
@@ -28,7 +28,6 @@ export default {
         }),
         ...mapGetters('moduleBatches', {
             'object_csv_parsed': 'get_object_csv_parsed',
-            'is_valid_csv': 'is_valid_csv',
         }),
 	},
 	methods: {

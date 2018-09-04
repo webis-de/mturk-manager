@@ -1,9 +1,9 @@
 <template>
 <v-dialog
     v-model="is_creating_batch"
-    persistent
     transition="slide-y-transition"
 >
+    <!-- persistent -->
     <v-fab-transition slot="activator">
         <v-btn
             v-show="!is_creating_batch"
@@ -22,25 +22,36 @@
     <v-card>
         <v-card-title>
             <span class="headline">Create Batch</span>
+            <v-spacer></v-spacer>
+            <v-btn icon v-on:click="is_creating_batch = false">
+                <v-icon>close</v-icon>
+            </v-btn>
         </v-card-title>
         <v-card-text>
             <v-container class="mx-0">
                 <v-layout row wrap>
                     <v-flex xs6>
-                        <component-upload-csv></component-upload-csv>
+                        <component-upload-csv
+                            ref="component_upload_csv"
+                        ></component-upload-csv>
                         <v-divider class="my-3"></v-divider>
                         <component-settings-batch
+                            ref="component_settings_batch"
                             v-bind:project.sync="project"
                         ></component-settings-batch>
                     </v-flex>
 
-                    <v-flex xs6>
-                        <component-overview
-                            v-bind:project="project"
-                        ></component-overview>
-                        <component-submit-batch
-                            v-bind:project="project"
-                        ></component-submit-batch>
+                    <v-flex xs6> 
+                        <template
+                            v-if="is_valid_csv"
+                        >
+                            <component-overview
+                                v-bind:project="project"
+                            ></component-overview>
+                            <component-submit-batch
+                                v-bind:project="project"
+                            ></component-submit-batch>
+                        </template>
                     </v-flex>
                 </v-layout>
             </v-container>
@@ -67,6 +78,15 @@ export default {
             project: undefined,
             is_creating_batch: true,
         }
+    },
+    watch: {
+        is_creating_batch: function() {
+            if(this.is_creating_batch == false)
+            {
+                this.$refs.component_settings_batch.update_fields();
+                this.$refs.component_upload_csv.reset();
+            } 
+        },
     },
     methods: {
         // cancel() {
@@ -150,7 +170,7 @@ export default {
     //     ...mapState(['use_sandbox']),
         ...mapGetters('moduleBatches', {
             // 'get_object_csv_parsed': 'get_object_csv_parsed',
-            // 'is_valid_csv': 'is_valid_csv',
+            'is_valid_csv': 'is_valid_csv',
         }),
     },
     // created: function() {
