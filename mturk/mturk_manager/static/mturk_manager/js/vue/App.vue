@@ -1,6 +1,6 @@
 <template>
 <v-app dark>
-    <template v-if="has_loaded_projects">
+    <template v-if="has_loaded_projects && project_current != undefined">
         <component-navigation-drawer
             v-bind:show_drawer.sync="show_drawer"
         ></component-navigation-drawer>
@@ -49,6 +49,15 @@
             </v-container>
         </v-content>
     </template>
+
+    <template v-else-if="has_loaded_projects">
+        <v-content>
+            <v-container fluid>
+                <router-view></router-view>
+            </v-container>
+        </v-content>
+    </template>
+
     <template v-else>
         <v-spacer></v-spacer>
             <div class="text-xs-center">
@@ -145,6 +154,8 @@ export default {
         ...mapState(['show_with_fee', 'use_sandbox', 'has_loaded_projects']),
         ...mapGetters('moduleProjects', {
             'project_current': 'get_project_current',
+            'slug_project_current': 'get_slug_project_current',
+            'object_projects': 'get_object_projects',
         }),
         ...mapGetters(['get_show_progress_indicator']),
     },

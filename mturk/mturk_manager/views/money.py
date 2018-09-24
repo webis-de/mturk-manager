@@ -17,6 +17,7 @@ def money(request, name):
         #     return redirect('mturk_manager:project', name=urllib.parse.quote(form.cleaned_data['name_project'].name, safe=''))
     # else:
         # form = Form_Open()
+
     dict_config = {
         'slug_project_current': slug_project,
     	'token_csrf': get_token(request),

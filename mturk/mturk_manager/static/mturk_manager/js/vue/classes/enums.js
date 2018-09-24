@@ -7,7 +7,7 @@
 export const VALIDATIONS = {
     REQUIRED: v => !!v || 'Required!',
     POSITIVE: v => v > 0 || 'Must be positive!',
-}
+};
 
 export const DESCRIPTIONS = {
     TITLE_HIT: 'The title of the HIT. A title should be short and descriptive about the kind of task the HIT contains. On the Amazon Mechanical Turk web site, the HIT title appears in search results, and everywhere the HIT is mentioned.',
@@ -21,4 +21,4 @@ export const DESCRIPTIONS = {
 
 
 
-}
+};

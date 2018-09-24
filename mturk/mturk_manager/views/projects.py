@@ -38,6 +38,7 @@ class Project(APIView):
         print(request.data)
         project = self.get_object(slug_project)
         serializer = Serializer_Project(project, data=request.data, partial=True)
+        print(serializer)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)

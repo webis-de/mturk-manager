@@ -3,7 +3,9 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Vuetify from 'vuetify';
 import Vuex from 'vuex';
+import Vuelidate from 'vuelidate'
 import App from './App.vue';
+import app_dashboard from './components/dashboard/app_dashboard.vue';
 import app_batches from './components/batches/app_batches.vue';
 import AppFinances from './components/finances/AppFinances.vue';
 import AppQualifications from './components/qualifications/AppQualifications.vue';
@@ -18,16 +20,26 @@ import 'vuetify/dist/vuetify.min.css';
 Vue.use(Vuetify)
 Vue.use(VueRouter)
 Vue.use(UploadButton);
+Vue.use(Vuelidate);
 
 const routes = [
 	{ 
-		path: '/batches', 
-		name: 'Batches',
+		path: '/', 
+		name: 'dashboard',
+		component: app_dashboard,
+	},
+	{ 
+		path: '/projects', 
+		redirect: {name: 'dashboard'},
+	},
+	{ 
+		path: '/projects/:slug_project/batches',
+		name: 'batches',
 		component: app_batches,
 	},
 	{ 
-		path: '/finances', 
-		name: 'Finances',
+		path: '/projects/:slug_project/finances', 
+		name: 'finances',
 		component: AppFinances,
 	},
 	// { 
@@ -36,13 +48,13 @@ const routes = [
 	// 	component: AppQualifications,
 	// },
 	{ 
-		path: '/workers', 
-		name: 'Workers',
+		path: '/projects/:slug_project/workers', 
+		name: 'workers',
 		component: AppWorkers,
 	},
 	{ 
-		path: '/settings_project', 
-		name: 'Project Settings',
+		path: '/projects/:slug_project/settings_project', 
+		name: 'settings_project',
 		component: AppSettingsProject,
 	},
 ]
@@ -50,6 +62,22 @@ const routes = [
 const router = new VueRouter({
   routes // short for `routes: routes`
 })
+
+router.beforeEach((to, from, next) => {
+	console.log(to)
+	console.log(from)
+	if(to.name == 'dashboard')
+	{
+		store.dispatch('moduleProjects/set_slug_project_current', null);
+	} else {
+		// if(store.getters['moduleProjects/get_slug_project_current'] == null)
+		// {
+		// 	console.log('redirected');
+		// 	next({name: 'dashboard'});
+		// }
+	}
+	next();
+});
 
 new Vue({
 	router,

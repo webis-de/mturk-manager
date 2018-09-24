@@ -39,19 +39,25 @@
                             ref="component_settings_batch"
                             v-bind:project.sync="project"
                         ></component-settings-batch>
+                        <v-divider class="my-3"></v-divider>
                     </v-flex>
 
                     <v-flex xs6> 
-                        <template
-                            v-if="is_valid_csv"
-                        >
-                            <component-overview
-                                v-bind:project="project"
-                            ></component-overview>
+                            <!-- v-if="is_valid_csv" -->
+                        <component-overview
+                            v-bind:project="project"
+                        ></component-overview>
+
+                        <v-layout wrap>
+                                <!-- v-if="is_valid_csv" -->
                             <component-submit-batch
+                                class="shrink"
                                 v-bind:project="project"
                             ></component-submit-batch>
-                        </template>
+                            <v-flex>
+                                <v-btn class="mx-3" flat large v-on:click="is_creating_batch = false">Cancel</v-btn>
+                            </v-flex>
+                        </v-layout>
                     </v-flex>
                 </v-layout>
             </v-container>
@@ -76,7 +82,7 @@ export default {
     data () {
         return {
             project: undefined,
-            is_creating_batch: true,
+            is_creating_batch: false,
         }
     },
     watch: {

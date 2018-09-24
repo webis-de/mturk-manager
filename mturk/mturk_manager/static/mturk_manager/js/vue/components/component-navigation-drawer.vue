@@ -4,27 +4,21 @@
       @input="$emit('update:show_drawer', $event)"
       clipped
       fixed
-      temporary
       app
     >
+      <!-- temporary -->
         <v-list>
-            <v-list-tile v-bind:href="url_project">
-                <v-list-tile-action>
-                    <v-icon>dashboard</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-content>
-                    <v-list-tile-title>Dashboard</v-list-tile-title>
-                </v-list-tile-content>
-            </v-list-tile>
             <v-list-tile 
                 v-for="item_menu in list_items_menu"
-                v-bind:key="item_menu.path"
-                v-bind:to="item_menu.path">
+                v-bind:key="item_menu.name"
+                v-bind:to="{ name: item_menu.name }"
+                exact
+            >
                 <v-list-tile-action>
                     <v-icon>{{ item_menu.icon }}</v-icon>
                 </v-list-tile-action>
                 <v-list-tile-content>
-                    <v-list-tile-title>{{ item_menu.name }}</v-list-tile-title>
+                    <v-list-tile-title>{{ item_menu.label }}</v-list-tile-title>
                 </v-list-tile-content>
             </v-list-tile>
             <v-divider></v-divider>
@@ -54,24 +48,30 @@ export default {
         return {
             list_items_menu: [
                 {
-                    name: 'Batches',
-                    path: '/batches',
+                    label: 'Dashboard',
+                    name: 'dashboard',
+                    icon: 'dashboard',
+                    // icon: 'ballot',
+                },
+                {
+                    label: 'Batches',
+                    name: 'batches',
                     icon: 'notes',
                     // icon: 'ballot',
                 },
                 {
-                    name: 'Finances',
-                    path: '/finances',
+                    label: 'Finances',
+                    name: 'finances',
                     icon: 'attach_money',
                 },
                 {
-                    name: 'Workers',
-                    path: '/workers',
+                    label: 'Workers',
+                    name: 'workers',
                     icon: 'person',
                 },
                 {
-                    name: 'Project Settings',
-                    path: '/settings_project',
+                    label: 'Project Settings',
+                    name: 'settings_project',
                     icon: 'settings_applications',
                 },
 	            // {

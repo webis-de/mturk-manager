@@ -323,7 +323,7 @@ def create_project(form, request):
     db_obj_project = m_Project.objects.create(
         version=settings.VERSION_PROJECT,
         name=name_project,
-        fk_account_mturk = db_obj_account_mturk,
+        fk_account_mturk=db_obj_account_mturk,
     )
 
     add_corpus_assignments(name_project)

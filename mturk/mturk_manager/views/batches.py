@@ -10,8 +10,10 @@ from mturk_manager.classes import Manager_Batches
 class Batches(APIView):
     @add_database_object_project
     def get(self, request, slug_project, database_object_project, use_sandbox, format=None):
+        querset_batches = Manager_Batches.get_all(database_object_project, use_sandbox)
         # queryset_projects = m_Project.objects.all()
         # serializer = Serializer_Project(queryset_projects, many=True, context={'request': request})
+        serializer = Serializer_Batch(querset_batches, many=True)
         return Response(serializer.data)
 
     @add_database_object_project

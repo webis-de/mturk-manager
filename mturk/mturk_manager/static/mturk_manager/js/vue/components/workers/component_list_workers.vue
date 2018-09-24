@@ -1,27 +1,35 @@
 <template>
         <span>
             <v-layout>
-                <v-flex xs1>
-                    <v-switch label="Not Blocked" v-model="show_workers_blocked_none"></v-switch>
-                </v-flex>
-                <v-flex xs1>
-                    <v-switch label="Limit Blocked" v-model="show_workers_blocked_limit"></v-switch>
-                </v-flex>
-                <v-flex xs2>
-                    <v-switch label="Project Blocked" v-model="show_workers_blocked_soft"></v-switch>
-                </v-flex>
-                <v-flex xs1>
-                    <v-switch label="Global Blocked" v-model="show_workers_blocked_hard"></v-switch>
-                </v-flex>
-            
                 <v-flex>
-                    <v-text-field
-                        v-model="search"
-                        append-icon="search"
-                        label="Search for name"
-                        hide-details
-                        class="mb-2"
-                    ></v-text-field>
+                    <v-layout>
+                        <v-flex class="shrink" mr-3>
+                            <v-switch label="Not Blocked" v-model="show_workers_blocked_none"></v-switch>
+                        </v-flex>
+                        <v-flex class="shrink" mr-3>
+                            <v-switch label="Limit Blocked" v-model="show_workers_blocked_limit"></v-switch>
+                        </v-flex>
+                        <v-flex class="shrink" mr-3>
+                            <v-switch label="Project Blocked" v-model="show_workers_blocked_soft"></v-switch>
+                        </v-flex>
+                        <v-flex class="shrink" mr-3>
+                            <v-switch label="Global Blocked" v-model="show_workers_blocked_hard"></v-switch>
+                        </v-flex>
+                    </v-layout>
+                </v-flex>
+                
+                <v-flex>
+                    <v-layout>
+                        <v-flex>
+                            <v-text-field
+                                v-model="search"
+                                append-icon="search"
+                                label="Search for name"
+                                hide-details
+                                class="mb-2"
+                            ></v-text-field>
+                        </v-flex>
+                    </v-layout>
                 </v-flex>
 
             </v-layout>
@@ -29,13 +37,42 @@
                 <!-- select-all -->
                 <!-- v-bind:rows-per-page-items="items_per_page" -->
             <v-data-table
+                select-all
+                v-bind:pagination.sync="pagination"
                 v-bind:headers="list_headers"
                 v-bind:items="list_workers"
                 v-bind:search="search"
                 v-bind:custom-filter="custom_filter"
+                v-model="workers_selected"
             >
-                <!-- v-bind:filter="custom" -->
-                <!-- item-key="is_blocked" -->
+                <template slot="headers" slot-scope="props">
+                    <tr class="row_header">
+                        <th>
+                            <v-checkbox
+                                v-bind::input-value="props.all"
+                                v-bind::indeterminate="props.indeterminate"
+                                primary
+                                hide-details
+                                v-on:click.native="toggleAll"
+                            ></v-checkbox>
+                        </th>
+                        <th
+                            v-for="header in props.headers"
+                            v-bind:key="header.value"
+                            v-bind:width="header.width"
+                            v-bind:class="[
+                                'column sortable', 
+                                pagination.descending ? 'desc' : 'asc', 
+                                header.value === pagination.sortBy ? 'active' : ''
+                            ]"
+                            v-on:click="changeSort(header.value)"
+                        >
+                            <v-icon small>arrow_upward</v-icon>
+                            {{ header.text }}
+                        </th>
+                    </tr>
+                </template>
+
                 <template
                     slot="items"
                     slot-scope="props"
@@ -94,7 +131,7 @@ export default {
     data () {
         return {
             workers_selected: [],
-
+            pagination: { rowsPerPage:25 },
             show_dialog_policy: false,
             policy_to_be_edited: null,
 
@@ -117,19 +154,40 @@ export default {
                     text: 'Name',
                     value: 'name',
                 },
+                
                 {
-                    text: 'Limit Assignments',
+                    text: 'Approved (%)',
+                    value: 'percentage_approved_assignments',
+                    align: 'center',
+                    width: '1px'
+                },
+                {
+                    text: 'Rejected (%)',
+                    value: 'percentage_rejected_assignments',
+                    align: 'center',
+                    width: '1px'
+                },
+                
+                {
+                    text: 'Assignment Limit',
                     value: 'counter_assignments',
+                    align: 'center',
+                    width: '1px'
                 },
                 {
                     text: 'Project Block',
                     value: 'block_soft',
-                    align: 'center',
+                    width: '1px'
                 },
                 {
-                    text: 'Global Block',
+                    text: 'Soft MTurk Block',
+                    value: 'block_soft_hard',
+                    width: '1px'
+                },
+                {
+                    text: 'Hard MTurk Block',
                     value: 'block_hard',
-                    align: 'center',
+                    width: '1px'
                 },
             ],
         }
@@ -149,6 +207,19 @@ export default {
         }),
     },
     methods: {
+        // toggleAll () {
+        //     if (this.workers_selected.length) this.workers_selected = []
+        //     else this.workers_selected = this.list_workers.slice()
+        // },
+        // changeSort (column) {
+        //     if (this.pagination.sortBy === column) 
+        //     {
+        //         this.pagination.descending = !this.pagination.descending;
+        //     } else {
+        //         this.pagination.sortBy = column;
+        //         this.pagination.descending = false;
+        //     }
+        // },
         custom_filter(items, search, filter) {
             if(!this.show_workers_blocked_none)
             {
@@ -231,3 +302,10 @@ export default {
     },
 }
 </script>
+
+<style lang="scss" scoped>
+    .row_header {
+        height: 48px;
+        // height: unset !important;
+    }
+</style>

@@ -9,7 +9,12 @@
                         Valid CSV:  
                     </v-flex>
                     <v-flex>
-                        <v-icon color="success">check</v-icon>
+                        <template v-if="is_valid_csv">
+                            <v-icon color="success">check</v-icon>
+                        </template>
+                        <template v-else>
+                            None
+                        </template>
                     </v-flex>
                 </v-layout>       
             </v-list-tile>
@@ -20,15 +25,19 @@
                         Number of variables:  
                     </v-flex>
                     <v-flex>
-                        {{ get_variables.length }} 
+                        <template v-if="is_valid_csv">
+                            {{ get_variables.length }} 
 
-                        <v-tooltip top>
-                            <v-icon
-                                slot="activator"
-                            >info</v-icon>
-                            <span>{{ get_variables.join(', ') }}</span>
-                        </v-tooltip>  
-
+                            <v-tooltip top>
+                                <v-icon
+                                    slot="activator"
+                                >info</v-icon>
+                                <span>{{ get_variables.join(', ') }}</span>
+                            </v-tooltip> 
+                        </template>
+                        <template v-else>
+                            None
+                        </template> 
                     </v-flex>
                 </v-layout>       
             </v-list-tile>
@@ -39,7 +48,12 @@
                         Number of HITs: 
                     </v-flex>
                     <v-flex>
-                        {{ count_hits }}   
+                        <template v-if="is_valid_csv">
+                            {{ count_hits }}   
+                        </template>
+                        <template v-else>
+                            None
+                        </template> 
                     </v-flex>
                 </v-layout>     
             </v-list-tile>
@@ -61,8 +75,13 @@
                         Costs: 
                     </v-flex>
                     <v-flex>
-                        <component-display-money v-bind:amount="costs_total_with_fee"></component-display-money> 
-                        (without Amazon's fees: <component-display-money v-bind:amount="costs_total_without_fee"></component-display-money>) 
+                        <template v-if="is_valid_csv">
+                            <component-display-money v-bind:amount="costs_total_with_fee"></component-display-money> 
+                            (without Amazon's fees: <component-display-money v-bind:amount="costs_total_without_fee"></component-display-money>) 
+                        </template>
+                        <template v-else>
+                            None
+                        </template> 
                     </v-flex>
                 </v-layout>     
             </v-list-tile>
@@ -73,8 +92,8 @@
 </template>
 <script>
     import { mapState, mapActions, mapGetters } from 'vuex';
-    import Project from '../../classes/project';
-    import ComponentDisplayMoney from '../component-display-money.vue';
+    import Project from '../../../classes/project';
+    import ComponentDisplayMoney from '../../component-display-money.vue';
     import humanizeDuration from 'humanize-duration';
 
     // import ComponentStepUploadCSV from './component_step_upload_csv.vue';
@@ -97,9 +116,13 @@ export default {
     },
     computed: {
         lifetime_formatted() {
+            if(this.project == undefined) return undefined;
+
             return humanizeDuration(this.project.lifetime * 1000)
         },
         costs_total_without_fee() {
+            if(this.project == undefined) return 0;
+
             console.log(this.object_csv_parsed)
             const reward = parseFloat(this.project.reward);
             if(this.object_csv_parsed != undefined)
@@ -122,6 +145,8 @@ export default {
             return costs_with_fee;
         },
         format_lifetime_absolute() {
+            if(this.project == undefined) return undefined;
+
             const lifetime_absolute = this.current_time_ms + this.project.lifetime * 1000.0;
             return new Date(lifetime_absolute).toLocaleString();
         },

@@ -3,6 +3,7 @@
     <v-tooltip left>
         <v-btn 
         	icon 
+            small
         	slot="activator" 
         	class="ma-0"
         	v-on:click="toggle()"

@@ -163,8 +163,6 @@ export const moduleWorkers = {
                 	commit('set_data_global_db', {'data': response.data, use_sandbox});
 			    })
 			}
-
-
 		},
 		async update_status_block({commit, state, getters, rootState, rootGetters}, {worker, status_block_new, status_block_old}) {
 			const use_sandbox = rootState.use_sandbox;

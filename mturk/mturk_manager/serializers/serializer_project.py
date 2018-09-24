@@ -85,6 +85,9 @@ class Serializer_Project(serializers.ModelSerializer):
                 response = Manager_Global_DB.set_count_assignments_max_per_worker(instance.slug, value)
 
             else:
+                print('key')
+                print(key)
+                print(value)
                 setattr(instance, key, value)
 
         instance.save()

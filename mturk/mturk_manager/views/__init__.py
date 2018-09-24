@@ -1,3 +1,4 @@
+from .app import *
 from .code_shared import *
 from .index import *
 from .documentation import *

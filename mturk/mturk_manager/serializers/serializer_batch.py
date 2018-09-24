@@ -1,6 +1,7 @@
 from rest_framework import serializers
-# from mturk_manager.models import Model_Qualification
+from mturk_manager.models import m_Batch
 from mturk_manager.classes import Manager_Batches
+from mturk_manager.serializers import Serializer_HIT
 
 # class IsActiveField(serializers.Field):
 #     def to_representation(self, obj):
@@ -10,7 +11,8 @@ from mturk_manager.classes import Manager_Batches
 #         data = True if data == 'true' else False
 #         return 'Active' if data == True else 'Inactive'
 
-class Serializer_Batch(serializers.Serializer):
+class Serializer_Batch(serializers.ModelSerializer):
+# class Serializer_Batch(serializers.Serializer):
     # workers = serializers.HyperlinkedRelatedField(
     #     many=True,
     #     read_only=True,
@@ -20,7 +22,7 @@ class Serializer_Batch(serializers.Serializer):
     settings = serializers.DictField(required=False)
     data_csv = serializers.ListField(required=False)
     # url = serializers.HyperlinkedIdentityField(view_name='mturk_manager:project_api_tmp', lookup_field='name')
-    # workers = Serializer_Worker(many=True, read_only=True)
+    hits = Serializer_HIT(many=True, read_only=True)
 
     # name_database = serializers.CharField(max_length=255, required=False)
     # description_database = serializers.CharField(required=False)
@@ -34,33 +36,52 @@ class Serializer_Batch(serializers.Serializer):
     # is_requestable = serializers.NullBooleanField(source='IsRequestable', required=False)
     # is_auto_granted = serializers.NullBooleanField(source='AutoGranted', required=False)
 
-    # class Meta:
-    #     model = Model_Qualification
-    #     fields = (
-    #         'id_mturk',
-    #         'created_at',
-    #         'name_mturk',
-    #         'description_mturk',
-    #         'name_database',
-    #         'description_database',
-    #         'keywords',
-    #         'is_active',
-    #         'is_requestable',
-    #         'is_auto_granted',
-    #     )
+    class Meta:
+        model = m_Batch
+        fields = (
+            'id',
+            'name',
+            'title',
+            'description',
+            'keywords',
+            'count_assignments',
+            'use_sandbox',
+            'reward',
+            'lifetime',
+            'duration',
+            'fk_template',
+            'hits',
+
+            'data_csv',
+            'settings',
+        )
+        extra_kwargs = {
+            'name': {'required': False},
+            'title': {'required': False},
+            'description': {'required': False},
+            'keywords': {'required': False},
+            'count_assignments': {'required': False},
+            # 'use_sandbox': {'required': False},
+            'reward': {'required': False},
+            'lifetime': {'required': False},
+            'duration': {'required': False},
+            # 'fk_template': {'required': False},
+        }
+
 
     def create(self, validated_data):
         print('validated_data')
         print(validated_data)
         print('validated_data')
 
-        Manager_Batches.create(
+        batch = Manager_Batches.create(
             database_object_project=validated_data.get('database_object_project'), 
             use_sandbox=validated_data.get('use_sandbox'), 
             data=validated_data
         )
 
-        return {'data_csv': []}
+        return batch
+        # return {'data_csv': []}
 
     def update(self, instance, validated_data):
         print('validated_data')

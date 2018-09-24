@@ -1,5 +1,5 @@
 <template>
-<td> 
+<td class="text-xs-center"> 
 		<!-- v-bind:return-value.sync="worker.count_assignments_limit" -->
 	<v-edit-dialog
 		v-if="project_current.count_assignments_max_per_worker > -1 && worker.count_assignments_limit != undefined"
@@ -25,9 +25,9 @@
 		v-else-if="project_current.count_assignments_max_per_worker > -1"
 	>
 	    <v-progress-circular
-	      indeterminate
-	      v-bind:width="2"
-	      v-bind:size="24"
+			indeterminate
+			v-bind:width="2"
+			v-bind:size="24"
 	    ></v-progress-circular>
 	</template>
 
@@ -103,5 +103,8 @@ export default {
 }
 </script>
 
-<style lang="css" scoped>
+<style lang="css">
+	.v-menu__activator {
+		justify-content: center;
+	}
 </style>

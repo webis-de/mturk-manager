@@ -4,6 +4,7 @@ import Vue from 'vue';
 import axios from 'axios';
 import VueAxios from 'vue-axios';
 import _ from 'lodash';
+import Batch from '../../classes/batch.js';
 
 import VueCookies from 'vue-cookies'
 Vue.use(Vuex)
@@ -20,8 +21,20 @@ export const moduleBatches= {
         url_api_batches: undefined,
 
         object_csv_parsed: undefined,
+        component_form: undefined,
 	},
     getters: {
+        get_object_batches: (state, getters, rootState) => (use_sandbox=undefined) => {
+            if(use_sandbox == undefined)
+            {
+                return rootState.use_sandbox ? state.object_batches_sandbox : state.object_batches;
+            } else {
+                return use_sandbox ? state.object_batches_sandbox : state.object_batches;
+            }
+        },
+        get_component_form: (state) => {
+            return state.component_form;
+        },
         is_valid_csv: (state) => {
             if(state.object_csv_parsed == undefined) 
             {
@@ -33,18 +46,18 @@ export const moduleBatches= {
         get_object_csv_parsed: (state) => {
             return state.object_csv_parsed;
         },
-        get_object_batches: (state, getters, rootState) => {
-            return rootState.use_sandbox ? state.object_batches_sandbox : state.object_batches;
-        },
+        // get_object_batches: (state, getters, rootState) => {
+        //     return rootState.use_sandbox ? state.object_batches_sandbox : state.object_batches;
+        // },
+
         list_batches: (state, getters) => {
-            if(getters.get_object_batches == null)
+            if(getters.get_object_batches() == null)
             {
                 return [];
-                // return {};
             }
-
-            return _.orderBy(getters.get_object_batches, ['datetime_creation'], ['desc']);
+            return _.orderBy(getters.get_object_batches(), ['datetime_creation'], ['desc']);
         },
+
         list_hits_for_csv: state => {
             const list_hits = [];
             _.forIn(state.object_batches, function(batch, id_batch) {
@@ -174,11 +187,46 @@ export const moduleBatches= {
 
             state.object_batches = dict_batches;
         },
-        setObjectBatches(state, dict_batches) {
-            for(let id_batch in dict_batches) {
-                state.object_batches[id_batch] = dict_batches[id_batch];
-            };
-            state.object_batches = dict_batches;
+        // setObjectBatches(state, dict_batches) {
+        //     for(let id_batch in dict_batches) {
+        //         state.object_batches[id_batch] = dict_batches[id_batch];
+        //     };
+        //     state.object_batches = dict_batches;
+        // },
+        set_batches(state, {data_batches, use_sandbox}) {
+            let object_batches = null;
+            if(use_sandbox)
+            {
+                state.object_batches_sandbox = {};
+                object_batches = state.object_batches_sandbox;
+            } else {
+                state.object_batches = {};
+                object_batches = state.object_batches;
+            }
+
+            console.log(object_batches);
+            console.log(data_batches);
+
+
+            _.forEach(data_batches, function(data_batch){
+                const obj_batch = new Batch(data_batch);
+                Vue.set(object_batches, obj_batch.name, obj_batch);
+            });
+        },
+        add_batch(state, {data_batch, use_sandbox}) {
+            let object_batches = null;
+            if(use_sandbox)
+            {
+                object_batches = state.object_batches_sandbox;
+            } else {
+                object_batches = state.object_batches;
+            }
+
+            const obj_batch = new Batch(data_batch);
+            Vue.set(object_batches, obj_batch.name, obj_batch);
+        },
+        set_component_form(state, form) {
+            state.component_form = form;
         },
         set_url_api_batches(state, url_new) {
             state.url_api_batches = url_new;
@@ -203,6 +251,22 @@ export const moduleBatches= {
                 })
             }
         },
+
+        async sync_batches({commit, state, getters, rootState, rootGetters}, force=false) {
+            const use_sandbox = rootState.use_sandbox;
+
+            if(getters.get_object_batches(use_sandbox) == null || force) {
+                await axios.get(rootGetters.get_url_api(state.url_api_batches, use_sandbox))
+                .then(response => {
+                    commit('set_batches', {'data_batches': response.data, use_sandbox});
+                })
+
+                // await axios.get(rootGetters.get_url_api(state.url_api_global_db, use_sandbox))
+                // .then(response => {
+                //     commit('set_data_global_db', {'data': response.data, use_sandbox});
+                // })
+            }
+        },
         async add_batch({state, commit, getters, rootState, rootGetters, dispatch}, data) {
             const use_sandbox = rootState.use_sandbox;
             console.log(use_sandbox);
@@ -219,11 +283,7 @@ export const moduleBatches= {
                 },
             )
             .then(response => {
-                // if(rootState.use_sandbox) {
-       //           commit('update_worker_sandbox', response.data);
-                // } else {
-                // commit('update_worker_status_block', {worker, status_block_new, use_sandbox});
-                // }
+                commit('add_batch', {'data_batch': response.data, use_sandbox});
             })
         },
 	},

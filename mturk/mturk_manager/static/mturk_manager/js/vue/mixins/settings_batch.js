@@ -1,11 +1,11 @@
-import humanizeDuration from 'humanize-duration';
 import { VALIDATIONS, DESCRIPTIONS } from '../classes/enums';
 import { mapState, mapMutations, mapActions, mapGetters } from 'vuex';
-import Project from '../classes/project';
+import Settings_Batch from '../classes/settings_batch';
 export default {
 	data() {
 		return {
-			project: new Project(),
+			settings_batch: new Settings_Batch(),
+            
 			valid: false,
             rules_title: [
                 VALIDATIONS.REQUIRED,
@@ -40,57 +40,49 @@ export default {
             rules_keywords: [
             ],
 
+            rules_template_worker: [
+                VALIDATIONS.REQUIRED,
+            ],
+
             DESCRIPTIONS: DESCRIPTIONS,
-            
-			list_keywords: [
-            {text: '1', id: 1},
-            {text: '3', id: 3},
-			],
 		}
 	},
     watch: {
-        project: { 
-            handler: function() {
-                this.$emit('update:project', this.project);
-            },
-            deep: true,
-        },
+        // project: { 
+        //     handler: function() {
+        //         this.$emit('update:project', this.settings_batch);
+        //     },
+        //     deep: true,
+        // },
     },
 	methods: {
-    	format_duration(label, duration) {
-    		return `${label} (${humanizeDuration(duration * 1000)})`;
-    	},
-        remove(item) {
-            this.project.keywords.splice(this.project.keywords.indexOf(item), 1)
-            this.project.keywords = [...this.project.keywords]
-        },
         update_fields() {
-            this.project.title = this.project_current.title;
-            this.project.description = this.project_current.description;
-            this.project.reward = this.project_current.reward;
-            this.project.assignments_max = this.project_current.assignments_max;
-            this.project.count_assignments_max_per_worker = this.project_current.count_assignments_max_per_worker;
-            this.project.lifetime = this.project_current.lifetime;
-            this.project.duration = this.project_current.duration;
-        //     this.project.keywords = [
-                    // {
-                    //  text: 'foo',
-                    //  value: 1,
-                    // },];
-            this.project.keywords = JSON.parse(JSON.stringify(this.project_current.keywords));
-            this.project.templates = this.project_current.templates;
-            this.project.template = this.project_current.template;
-            this.project.block_workers = this.project_current.block_workers;
+            // this.settings_batch.title="teeest"
+            // this.settings_batch.title = this.settings_batch_current.title;
+            // this.settings_batch.description = this.settings_batch_current.description;
+            // this.settings_batch.reward = this.settings_batch_current.reward;
+            // this.settings_batch.assignments_max = this.settings_batch_current.assignments_max;
+            // this.settings_batch.count_assignments_max_per_worker = this.settings_batch_current.count_assignments_max_per_worker;
+            // this.settings_batch.lifetime = this.settings_batch_current.lifetime;
+            // this.settings_batch.duration = this.settings_batch_current.duration;
+            // this.settings_batch.keywords = JSON.parse(JSON.stringify(this.settings_batch_current.keywords));
+            // this.settings_batch.templates = this.settings_batch_current.templates;
+            // this.settings_batch.template = this.settings_batch_current.template;
+            // this.settings_batch.block_workers = this.settings_batch_current.block_workers;
+            // this.settings_batch.has_content_adult = this.settings_batch_current.has_content_adult;
+
+
+            // this.settings_batch.qualification_assignments_approved = this.settings_batch_current.qualification_assignments_approved;
+            // this.settings_batch.qualification_hits_approved = this.settings_batch_current.qualification_hits_approved;
+            // this.settings_batch.qualification_locale = JSON.parse(this.settings_batch_current.qualification_locale);
         },  
         ...mapActions('moduleKeywords', {
             'load_keywords': 'load_keywords',
         }),
 	},
     created() {
-        console.log('s'.charCodeAt(0))
-        console.log('S'.charCodeAt(0))
         this.update_fields();
-        this.load_keywords();
+        // this.load_keywords();
     },
     computed: {
         ...mapGetters('moduleProjects', {

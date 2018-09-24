@@ -2,7 +2,8 @@
 <v-layout wrap>
     <v-flex>
         <!-- {{valid}} -->
-        <v-form v-model="valid" lazy-validation>
+        <v-form ref="form" v-model="valid" lazy-validation>
+            <h2>General Settings</h2>
             <!-- {{project_current}} -->
             <v-text-field
                 required
@@ -66,13 +67,14 @@
             <v-select
                 v-model="project.template"
                 v-bind:items="project.templates"
+                v-bind:rules="rules_template_worker"
                 label="Worker Template"
                 item-text="name"
                 item-value="id"
             ></v-select>
 
             <v-switch
-                v-bind:label="`Soft Block Workers (${project.block_workers ? 'enabled': 'disabled'})`"
+                v-bind:label="`Limit Block and Project Block for Workers (${project.block_workers ? 'enabled': 'disabled'})`"
                 v-model="project.block_workers"
             ></v-switch>
 
@@ -81,7 +83,6 @@
                 v-bind:rules="rules_keywords"
                 label="Keywords (Separated with TAB)"
                 v-bind:hint="DESCRIPTIONS.KEYWORDS_HIT"
-                v-bind:items="list_keywords"
 
                 hide-selected
                 chips
@@ -100,6 +101,54 @@
                     </v-chip>
                 </template>
             </v-combobox>
+            
+            <v-divider class="my-3"></v-divider>
+            <h2>Qualifications</h2>
+            <v-switch
+                v-bind:label="`Contains Adult Content`"
+                v-model="project.has_content_adult"
+            ></v-switch>
+
+            <v-text-field
+                required
+                type="number"
+                v-model.number="project.qualification_assignments_approved"
+                step="1"
+                max="100"
+                min="0"
+                label="Approved Assignments"
+                append-icon="%"
+            ></v-text-field>
+
+            <v-text-field
+                required
+                type="number"
+                v-model.number="project.qualification_hits_approved"
+                step="1"
+                min="0"
+                label="Approved HITs"
+            ></v-text-field>
+
+            <v-combobox
+                v-model="project.qualification_locale"
+                label="Locale (Separated with TAB)"
+                hide-selected
+                chips
+                clearable
+                multiple
+                counter
+                append-icon
+            >
+                <template slot="selection" slot-scope="data">
+                    <v-chip
+                        v-bind:selected="data.selected"
+                        close
+                        @input="remove_qualification_locale(data.item)"
+                    >
+                        <strong>{{ data.item.text != undefined ? data.item.text : data.item }}</strong>&nbsp;
+                    </v-chip>
+                </template>
+            </v-combobox>
         </v-form>
     </v-flex>
 </v-layout>
@@ -107,7 +156,7 @@
 
 <script>
     import { mapState, mapMutations, mapActions, mapGetters } from 'vuex';
-    import settings_batch from '../../mixins/settings_batch';
+    import settings_batch from '../../../mixins/settings_batch';
     
     // import ComponentStepUploadCSV from './component_step_upload_csv.vue';
     // import ComponentShowMoneySpent from './component-show-money-spent.vue';
@@ -127,8 +176,14 @@ export default {
         }
     },
     methods: {
+        ...mapMutations('moduleBatches', {
+            'set_component_form': 'set_component_form',
+        }),
     },
     computed: {
+    },
+    mounted() {
+        this.set_component_form(this.$refs.form)
     },
     components: {
     }

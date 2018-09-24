@@ -58,7 +58,8 @@ urlpatterns = format_suffix_patterns([
 
     path('project/<str:name>/tmp', views.money, name='money'),
 
-    path('', views.dashboard, name='index'),
+    # path('', views.dashboard, name='index'),
+    path('', views.app, name='app'),
 
     path('project/<str:slug_project>', views.project, name='project'),
 

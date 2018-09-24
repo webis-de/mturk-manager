@@ -2,7 +2,18 @@
     <!-- <div>wda</div> -->
     <tr>
         <td>
+            <v-checkbox
+                v-model="props.selected"
+                primary
+                hide-details
+            ></v-checkbox>
+        </td>
+        <td class="text-xs-left">
             {{ props.item.name }}
+        </td>
+        <td>
+        </td>
+        <td>
         </td>
         <component-limit-assignments
             v-bind:key="`component_limit_assignments_${props.item.name}`"
@@ -13,6 +24,12 @@
                 v-bind:key="`component_block_soft_worker_${props.item.name}`"
                 v-bind:worker="props.item"
             ></component-block-soft-worker>
+        </td>
+        <td class="text-xs-center">
+            <component-block-soft-hard-worker
+                v-bind:key="`component_block_hard_soft_worker_${props.item.name}`"
+                v-bind:worker="props.item"
+            ></component-block-soft-hard-worker>
         </td>
         <td class="text-xs-center">
             <component-block-hard-worker
@@ -105,6 +122,7 @@
     import ComponentBlockWorker from './component_block_worker.vue';
     // import ComponentBlockSoftWorker from './component_block_worker.vue';
     import ComponentBlockSoftWorker from './component_block_soft_worker.vue';
+    import ComponentBlockSoftHardWorker from './component_block_soft_hard_worker.vue';
     import ComponentBlockHardWorker from './component_block_hard_worker.vue';
     import ComponentLimitAssignments from './component_limit_assignments.vue';
 export default {
@@ -165,8 +183,18 @@ export default {
     },
     components: {
         ComponentBlockSoftWorker,
+        ComponentBlockSoftHardWorker,
         ComponentBlockHardWorker,
         ComponentLimitAssignments,
     },
 }
 </script>
+
+<style lang="scss" scoped>
+    td {
+        height: unset !important;
+    }
+    td .v-input--selection-controls {
+        padding: unset;
+    }
+</style>

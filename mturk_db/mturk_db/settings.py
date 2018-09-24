@@ -137,3 +137,5 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_METADATA_CLASS': 'rest_framework.metadata.SimpleMetadata',
 }
+
+VERSION_PROJECT = 15

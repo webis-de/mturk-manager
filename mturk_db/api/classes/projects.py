@@ -1,12 +1,18 @@
 from api.models import Account_Mturk, Project
 from mturk_db.settings import URL_MTURK_SANDBOX
 import boto3
+from django.utils.text import slugify
+from django.conf import settings
 
 class Manager_Projects(object):
     try:
         object_account_mturk = Account_Mturk.objects.get(name='webis')
     except:
         print('No credentials for the MTurk account are set')
+
+    @classmethod
+    def get_all(cls):
+        return Project.objects.all()
 
     @classmethod
     def get_mturk_api(cls, use_sandbox=True):
@@ -24,7 +30,20 @@ class Manager_Projects(object):
                 region_name='us-east-1'
             )
 
+    @classmethod
+    def check_uniqueness(cls, name):
+        return not Project.objects.filter(name=name).exists()
 
+    @classmethod
+    def create(cls, data):
+        project = Project.objects.create(
+            name=data['name'],
+            slug=slugify(data['name']),
+            fk_account_mturk=cls.object_account_mturk,
+            version=settings.VERSION_PROJECT,
+        )
+
+        return project
 
     @classmethod
     def get_count_assignments_max_per_worker(cls, database_object_project):

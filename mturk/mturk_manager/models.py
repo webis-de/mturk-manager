@@ -1,5 +1,4 @@
 from django.db import models
-from django.utils.text import slugify
 # import mturk_manager.classes.workers
 from mturk_manager.enums import workers
 

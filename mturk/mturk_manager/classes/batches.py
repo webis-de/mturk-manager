@@ -7,6 +7,10 @@ import uuid, json
 from botocore.exceptions import ClientError
 
 class Manager_Batches(object):
+    @classmethod
+    def get_all(cls, database_object_project, use_sandbox=True):
+        queryset_batch = m_Batch.objects.filter(fk_project=database_object_project, use_sandbox=use_sandbox)
+        return queryset_batch
 
     @classmethod
     def create(cls, database_object_project, data, use_sandbox=True):
@@ -53,7 +57,11 @@ class Manager_Batches(object):
         print(dictionary_settings_batch['keywords'])
         database_object_batch.keywords.set([keyword['id'] for keyword in dictionary_settings_batch['keywords']])
         database_object_batch.save()
+        title = dictionary_settings_batch['title']
+        if dictionary_settings_batch['has_content_adult'] == True:
+            title = 'Contains adult content! {}'.format(title)
 
+        # return
         for dictionary_hit in data['data_csv']:
             try:
                 mturk_obj_hit = client.create_hit(
@@ -63,10 +71,10 @@ class Manager_Batches(object):
                     AssignmentDurationInSeconds=dictionary_settings_batch['duration'],
                     AutoApprovalDelayInSeconds=1209600,
                     Reward=dictionary_settings_batch['reward'],
-                    Title=dictionary_settings_batch['title'],
+                    Title=title,
                     Description=dictionary_settings_batch['description'],
                     Question=code_shared.create_question(database_object_template_worker.template, database_object_template_worker.height_frame, dictionary_hit),
-                    QualificationRequirements=[]
+                    QualificationRequirements=cls.get_qualifications(dictionary_settings_batch)
                 )
             except ClientError as e:
                 # messages.error(request, '''
@@ -108,7 +116,7 @@ class Manager_Batches(object):
     #     try:
     #         mturk_obj_hit = client.create_hit(
     #             Keywords='',
-    #             # Keywords=form.cleaned_data['keywords'],
+    #             # Keywords=dictionary_settings_batch['keywords'],
     #             MaxAssignments=form.cleaned_data['count_assignments'],
     #             LifetimeInSeconds=form.cleaned_data['lifetime'],
     #             AssignmentDurationInSeconds=form.cleaned_data['duration'],
@@ -159,8 +167,10 @@ class Manager_Batches(object):
     #     name=glob_prefix_name_tag_batch+db_obj_batch.name,
     #     key_corpus=db_obj_project.name
     # )[0]
-
-        return {}
+        print(database_object_batch)
+        print(database_object_batch.keywords)
+        print(database_object_batch)
+        return database_object_batch
 
     @classmethod
     def preprocess_template_request(cls, db_obj_project, html_template):
@@ -181,3 +191,48 @@ class Manager_Batches(object):
 
         html_template = html_template.replace('</head>', '{}</head>'.format(injected))
         return html_template
+
+    @classmethod
+    def get_qualifications(cls, dictionary_settings_batch):
+        list_requirements = []
+
+        if dictionary_settings_batch['qualification_locale'] and len(dictionary_settings_batch) > 0:
+            list_requirements.append({
+                'QualificationTypeId': '00000000000000000071',
+                'Comparator': 'In',
+                'LocaleValues': [{'Country': locale.strip().upper()} for locale in dictionary_settings_batch['qualification_locale']],
+                'RequiredToPreview': True
+                # 'ActionsGuarded': 'PreviewAndAccept'
+            })
+        if dictionary_settings_batch['qualification_assignments_approved']:
+            list_requirements.append({
+                'QualificationTypeId': '000000000000000000L0',
+                'Comparator': 'GreaterThanOrEqualTo',
+                'IntegerValues': [
+                    dictionary_settings_batch['qualification_assignments_approved'],
+                ],
+                'RequiredToPreview': True
+                # 'ActionsGuarded': 'PreviewAndAccept'
+            })
+        if dictionary_settings_batch['qualification_hits_approved']:
+            list_requirements.append({
+                'QualificationTypeId': '00000000000000000040',
+                'Comparator': 'GreaterThanOrEqualTo',
+                'IntegerValues': [
+                    dictionary_settings_batch['qualification_hits_approved'],
+                ],
+                'RequiredToPreview': True
+                # 'ActionsGuarded': 'PreviewAndAccept'
+            })
+        if dictionary_settings_batch['has_content_adult']:
+            list_requirements.append({
+                'QualificationTypeId': '00000000000000000060',
+                'Comparator': 'EqualTo',
+                'IntegerValues': [
+                    1,
+                ],
+                'RequiredToPreview': True
+                # 'ActionsGuarded': 'PreviewAndAccept'
+            })
+
+        return list_requirements
