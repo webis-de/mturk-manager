@@ -1,5 +1,4 @@
 <template>
-<div>
     <v-dialog 
         v-model="dialog"
         max-width="500"
@@ -22,7 +21,7 @@
                 </v-btn>
             </v-card-title> -->
             <v-card-text>
-                Do you really want to delete the worker template '{{ settings_batch.name }}'? 
+                Do you really want to delete the batch profile '{{ settings_batch_current.name }}'? 
             </v-card-text>
 
             <v-card-actions>
@@ -35,12 +34,15 @@
             </v-card-actions>
         </v-card>
     </v-dialog>
-</div>
 </template>
 
 <script>
     import { mapState, mapMutations, mapActions, mapGetters } from 'vuex';
 export default {
+    props: {
+        settings_batch_current: {
+        }
+    },
     data() {
         return {
             dialog: false,
@@ -50,7 +52,7 @@ export default {
         remove() {
             this.delete_settings_batch({
                 project: this.project_current,
-                settings_batch: this.settings_batch,
+                settings_batch: this.settings_batch_current,
                 callback: () => {
                     this.$emit('deleted');
                     this.dialog = false;

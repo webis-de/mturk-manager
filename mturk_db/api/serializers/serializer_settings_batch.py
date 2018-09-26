@@ -35,7 +35,8 @@ class Serializer_Settings_Batch(serializers.ModelSerializer):
     # workers = Serializer_Worker(many=True, read_only=True)
     keywords = Serializer_Keyword(many=True)
     # templates = Serializer_Template_Worker(many=True)
-    qualification_locale = serializers.ListField()
+    qualification_locale = serializers.JSONField()
+    # qualification_locale = serializers.ListField()
     # count_assignments_max_per_worker = CustomField()
     # count_assignments_max_per_worker = serializers.SerializerMethodField()
 
@@ -69,6 +70,14 @@ class Serializer_Settings_Batch(serializers.ModelSerializer):
             # 'version': {'required': False},
         }
 
+
+    def to_representation(self, instance):
+        data = super(Serializer_Settings_Batch, self).to_representation(instance)
+        import json
+        data['qualification_locale'] = json.loads(data['qualification_locale'])
+
+        return data
+
     def create(self, validated_data):
         print('validated_data')
         print(validated_data)
@@ -80,33 +89,17 @@ class Serializer_Settings_Batch(serializers.ModelSerializer):
 
         return project
 
-    # def update(self, instance, validated_data):
-    #     print('validated_data')
-    #     print(validated_data)
-    #     print('validated_data')
+    def update(self, instance, validated_data):
+        print('validated_data')
+        print(validated_data)
+        print('validated_data')
 
-    #     for key, value in validated_data.items():
-    #         if key == 'keywords':
-    #             print(value)
-    #             instance.keywords.clear()
-    #             for keyword in value:
-    #                 try:
-    #                     instance.keywords.add(keyword['id'])
-    #                 except KeyError:
-    #                     keyword_new = Keyword.objects.get_or_create(text=keyword['text'])[0]
-    #                     instance.keywords.add(keyword_new)
-    #         elif key == 'count_assignments_max_per_worker':
-    #             response = Manager_Global_DB.set_count_assignments_max_per_worker(instance.slug, value)
+        instance = Manager_Settings_Batch.update(
+            instance=instance,
+            data=validated_data,
+        )
 
-    #         else:
-    #             print('key')
-    #             print(key)
-    #             print(value)
-    #             setattr(instance, key, value)
-
-    #     instance.save()
-
-    #     return instance
+        return instance
 
 
     # def get_count_assignments_max_per_worker(self, obj):

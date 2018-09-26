@@ -46,7 +46,7 @@
             label="Number of Maximal Assignments Per Worker"
             min="-1"
             append-icon="clear"
-            v-on:click:append="count_assignments_max_per_worker = -1"
+            v-on:click:append="$emit('update:count_assignments_max_per_worker', undefined); v.settings_batch.count_assignments_max_per_worker.$touch()"
             v-bind:error-messages="validation_errors.settings_batch.count_assignments_max_per_worker"
         ></v-text-field>
 
@@ -88,11 +88,12 @@
             v-on:change="$emit('update:block_workers', $event); v.settings_batch.block_workers.$touch()"
             v-bind:error-messages="validation_errors.settings_batch.block_workers"
         ></v-switch>
-        {{keywords}}
+        <!-- {{keywords}} -->
         <v-combobox
             v-bind:value="keywords"
             v-on:input="$emit('update:keywords', $event); v.settings_batch.keywords.$touch()"
             label="Keywords (Separated with TAB)"
+            v-bind:items="list_keywords"
 
             hide-selected
             chips
@@ -101,7 +102,7 @@
             counter
             append-icon
             v-bind:error-messages="validation_errors.settings_batch.keywords"
-            v-on:change="foo($event)"
+            v-on:change="handle_change_combobox($event)"
         >
             <template slot="selection" slot-scope="data">
                 <v-chip
@@ -118,7 +119,7 @@
         <h2>Qualifications</h2>
         <v-switch
             v-bind:label="`Contains Adult Content`"
-  			v-bind:input-value="has_content_adult"
+            v-bind:input-value="has_content_adult"
             v-on:change="$emit('update:has_content_adult', $event); v.settings_batch.has_content_adult.$touch()"
             v-bind:error-messages="validation_errors.settings_batch.has_content_adult"
         ></v-switch>
@@ -126,7 +127,7 @@
         <v-text-field
             required
             type="number"
-  			v-bind:value="qualification_assignments_approved"
+            v-bind:value="qualification_assignments_approved"
             v-on:input="$emit('update:qualification_assignments_approved', try_number($event)); v.settings_batch.qualification_assignments_approved.$touch()"
             step="1"
             max="100"
@@ -139,18 +140,18 @@
         <v-text-field
             required
             type="number"
-  			v-bind:value="qualification_hits_approved"
+            v-bind:value="qualification_hits_approved"
             v-on:input="$emit('update:qualification_hits_approved', try_number($event)); v.settings_batch.qualification_hits_approved.$touch()"
             step="1"
             min="0"
             label="Approved HITs"
             v-bind:error-messages="validation_errors.settings_batch.qualification_hits_approved"
         ></v-text-field>
-
         <v-combobox
-  			v-bind:value="qualification_locale"
+            v-bind:value="qualification_locale"
             v-on:input="$emit('update:qualification_locale', $event); v.settings_batch.qualification_locale.$touch()"
             label="Locale (Separated with TAB)"
+
             hide-selected
             chips
             clearable
@@ -158,6 +159,7 @@
             counter
             append-icon
             v-bind:error-messages="validation_errors.settings_batch.qualification_locale"
+            v-on:change="handle_change_combobox($event)"
         >
             <template slot="selection" slot-scope="data">
                 <v-chip
@@ -221,16 +223,13 @@ export default {
 		}
 	},
 	methods: {
-        foo(f) {
-            console.log('fff')
+        handle_change_combobox(f) {
             f.forEach((element, index) => {
                 if(typeof element == 'string')
                 {
                     this.$set(f, index, {text: element});
                 }
-            });
-            console.log(this.keywords)
-            console.log('fff')
+            }); 
         },
     	format_duration(label, duration) {
     		return `${label} (${humanizeDuration(duration * 1000)})`;
@@ -248,8 +247,18 @@ export default {
 		list_templates() {
             return _.orderBy(this.project_current.templates_worker, (template) => template.name);
 		},
+        list_keywords() {
+            if(this.object_keywords == null) {
+                return [];
+            } else {
+                return Object.values(this.object_keywords);
+            }
+        },
         ...mapGetters('moduleProjects', {
             'project_current': 'get_project_current',
+        }),
+        ...mapGetters('moduleKeywords', {
+            'object_keywords': 'get_object_keywords',
         }),
     }
 }

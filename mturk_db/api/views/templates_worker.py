@@ -56,6 +56,4 @@ class Template_Worker(APIView):
     @add_database_object_project
     def delete(self, request, slug_project, database_object_project, use_sandbox, id_template, format=None):
         Manager_Templates_Worker.delete(id_template)
-        # project = self.get_object(name)
-        # project.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)

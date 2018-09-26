@@ -13,9 +13,14 @@
                     {{ props.item.name }}
                 </td>
                 <td>
+                    <component-edit-settings-batch
+                        v-bind:key="`component-edit-settings-batch-${props.item.id}`"
+                        v-bind:settings_batch_current="props.item"
+                        v-on:edited="snackbar_edited = true"
+                    ></component-edit-settings-batch>
                     <component-delete-settings-batch
                         v-bind:key="`component-delete-settings-batch-${props.item.id}`"
-                        v-bind:settings_batch="props.item"
+                        v-bind:settings_batch_current="props.item"
                         v-on:deleted="snackbar_deleted = true"
                     ></component-delete-settings-batch>
                 </td>
@@ -28,7 +33,9 @@
         </template>
         <template slot="footer">
         <td colspan="100%">
-        	<component-add-settings-batch></component-add-settings-batch>
+        	<component-add-settings-batch
+                v-on:created="snackbar_created = true"
+            ></component-add-settings-batch>
         </td>
     </template>
     </v-data-table>
@@ -53,11 +60,24 @@
         Saved!
         <v-spacer></v-spacer>
     </v-snackbar>
+
+    <v-snackbar
+        v-model="snackbar_edited"
+        v-bind:timeout="1500"
+        bottom
+        color="success"
+    >
+        <v-spacer></v-spacer>
+        Updated!
+        <v-spacer></v-spacer>
+    </v-snackbar>
 </div>
 </template>
 
 <script>
     import ComponentAddSettingsBatch from './component_add_settings_batch.vue';
+    import ComponentEditSettingsBatch from './component_edit_settings_batch.vue';
+    import ComponentDeleteSettingsBatch from './component_delete_settings_batch.vue';
     import { mapState, mapActions, mapGetters } from 'vuex';
     import _ from 'lodash';
     import table from '../../../mixins/table';
@@ -82,6 +102,7 @@ export default {
 
             snackbar_deleted: false,
             snackbar_created: false,
+            snackbar_edited: false,
         }
     },
     computed: {
@@ -100,7 +121,9 @@ export default {
     created: function() {
     },
     components: {
-    	ComponentAddSettingsBatch,
+        ComponentAddSettingsBatch,
+        ComponentEditSettingsBatch,
+    	ComponentDeleteSettingsBatch,
     },
 }
 </script>

@@ -1,22 +1,24 @@
 <template>
 <div>
-	<v-dialog v-model="dialog">
+	<v-dialog 
+		v-model="dialog"
+        max-width="80%"
+	>
 		<v-btn 
 			slot="activator" 
 			color="primary"
 			small
 		><v-icon>add</v-icon> Add Profile</v-btn>
       	<v-card>
-      		{{settings_batch}}
 	        <v-card-title>
-	            <span class="headline">Add Profile</span>
+	            <span class="headline">Add Batch Profile</span>
 	            <v-spacer></v-spacer>
 	            <v-btn icon v-on:click="dialog = false">
 	                <v-icon>close</v-icon>
 	            </v-btn>
 	        </v-card-title>
 	        <v-card-text>
-	      		<v-form ref="form" v-model="valid" lazy-validation>
+	      		<v-form ref="form">
 					<v-text-field
 			            required
 			  			v-bind:value="settings_batch.name"
@@ -39,22 +41,7 @@
 			    >Create</v-btn>
 			</v-card-text>
     	</v-card>
-</v-dialog>
-
-	<v-snackbar
-	    v-model="show_snackbar"
-	    v-bind:timeout="1500"
-	    bottom
-	    color="success"
-	>
-	    Saved!
-	    <v-btn
-	        flat
-	        v-on:click="show_snackbar = false"
-	    >
-	        Close
-	    </v-btn>
-	</v-snackbar>
+	</v-dialog>
 </div>
 </template>
 <script>
@@ -63,27 +50,17 @@
     import _ from 'lodash';
 	import settings_batch from '../../../mixins/settings_batch';
 	import validations from '../../../mixins/validations';
-    import { required, minValue } from 'vuelidate/lib/validators'
-export default {
+ export default {
     mixins: [
-        settings_batch,
         validations,
+        settings_batch,
     ],
     data() {
     	return {
-			dialog: true,
-            show_snackbar: false,
-
-            valid: false,
-            // foo: 'settings_batch',
+			dialog: false,
     	}
     },
     methods: {
-        update1() {
-            console.log(this.project.count_assignments_max_per_worker )
-            this.project.count_assignments_max_per_worker = 2
-            console.log(this.project.count_assignments_max_per_worker )
-        },
 		create() {
             if(this.$refs.form.validate()) 
             {
@@ -91,17 +68,15 @@ export default {
     				settings_batch: this.settings_batch,
     				project: this.project_current,
     			}).then(() => {
-    				console.log('done')
-                    // this.update_fields();
-                    this.show_snackbar = true;
+                    this.dialog = false;
+    				this.$emit('created');
+                    this.reset();
                 });
             }
 			// console.log(this.project_current);
 		},	
     	reset() {
-    		// this.name = undefined;
-    		// this.height_frame = 800;
-    		// this.template = undefined;
+    		this.update_fields();
     		this.$v.$reset();
     	},
 		...mapActions('moduleProjects', {
@@ -109,49 +84,6 @@ export default {
 		}),
     },
     computed: {
-    },
-    validations: {
-    	settings_batch: {
-    		name: {
-    			required,
-    		},
-    		title: {
-    			required,
-    		},
-			description: {
-    			required,
-			},
-			reward: {
-    			required,
-			},
-			count_assignments: {
-    			required,
-			},
-			count_assignments_max_per_worker: {
-			},
-			lifetime: {
-    			required,
-			},
-			duration: {
-    			required,
-			},
-			template: {
-    			required,
-			},
-			block_workers: {
-    			required,
-			},
-			keywords: {
-			},
-			has_content_adult: {
-			},
-			qualification_assignments_approved: {
-			},
-			qualification_hits_approved: {
-			},
-			qualification_locale: {
-			},
-    	},
     },
     watch: {
     	dialog() {

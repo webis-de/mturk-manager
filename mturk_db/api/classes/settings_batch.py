@@ -1,15 +1,10 @@
 from api.models import Account_Mturk, Settings_Batch, Keyword
 from mturk_db.settings import URL_MTURK_SANDBOX
-import boto3
+import boto3, json
 from django.utils.text import slugify
 from django.conf import settings
 
 class Manager_Settings_Batch(object):
-    try:
-        object_account_mturk = Account_Mturk.objects.get(name='webis')
-    except:
-        print('No credentials for the MTurk account are set')
-
     @classmethod
     def get_all_for_project(cls, id_project):
         return Settings_Batch.objects.filter(project=id_project)
@@ -26,7 +21,7 @@ class Manager_Settings_Batch(object):
         except KeyError:
             pass
         try:
-            dictionary_qualifications['qualification_locale'] = data['qualification_locale']
+            dictionary_qualifications['qualification_locale'] = json.dumps(data['qualification_locale'])
         except KeyError:
             pass
 
@@ -61,3 +56,33 @@ class Manager_Settings_Batch(object):
         settings_batch.keywords.add(*list_keywords)
 
         return settings_batch
+
+    @classmethod
+    def update(cls, instance, data):
+        for key, value in data.items():
+            if key == 'keywords':
+                instance.keywords.clear()
+                list_keywords = []
+                for keyword in data['keywords']:
+                    try:
+                        id_keyword = keyword['id']
+                    except KeyError:
+                        keyword = Keyword.objects.get_or_create(text=keyword['text'])[0]
+                        list_keywords.append(keyword)
+                    else:
+                        list_keywords.append(id_keyword)
+
+                instance.keywords.add(*list_keywords)
+            elif key == 'qualification_locale':
+                setattr(instance, key, json.dumps(value))
+                
+            else:
+                setattr(instance, key, value)
+
+        instance.save()
+
+        return instance
+
+    @staticmethod
+    def delete(id_settings_batch):
+        Settings_Batch.objects.filter(id=id_settings_batch).delete()

@@ -104,7 +104,7 @@ export const store = new Vuex.Store({
 
             commit('moduleBatches/set_url_api_batches', config.url_api_batches);
             
-            commit('moduleKeywords/set_url_api_keywords', config.url_api_keywords);
+            commit('moduleKeywords/set_urls', config);
 
             await dispatch('moduleProjects/load_projects');
             state.has_loaded_projects = true;

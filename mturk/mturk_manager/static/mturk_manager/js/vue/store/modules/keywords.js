@@ -22,18 +22,23 @@ export const moduleKeywords = {
     			Vue.set(state.object_keywords, keyword.text, keyword);
         	});
 		},
-        set_url_api_keywords(state, url_new) {
-            state.url_api_keywords = url_new;
-        },
+        set_urls(state, config) {
+            state.url_api_keywords = config.url_api_keywords;
+		},
 	},
 	actions: {
         async load_keywords({state, commit, getters, rootGetters, dispatch}) {
             if(getters.get_object_keywords == null) {
-				await axios.get(rootGetters.get_url_api(state.url_api_keywords, false))
-			    .then(response => {
-			    	console.log(response.data)
+
+            	await dispatch('make_request', {
+            		method: 'get',
+            		url: rootGetters.get_url_api({
+            			url: state.url_api_keywords, 
+            		}),
+            	}, { root: true }).then(response => {
+			    	// console.log(response.data)
                 	commit('set_keywords', response.data);
-			    })
+            	});
 
 				// await axios.get(rootGetters.get_url_api(state.url_api_status_block, use_sandbox))
 			 //    .then(response => {

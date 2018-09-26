@@ -6,11 +6,6 @@ from collections import Counter
 from django.conf import settings
 
 class Manager_Templates_Worker(object):
-    try:
-        object_account_mturk = Account_Mturk.objects.get(name='webis')
-    except:
-        print('No credentials for the MTurk account are set')
-
     @classmethod
     def get_all_for_project(cls, id_project):
         return Template_Worker.objects.filter(project=id_project)

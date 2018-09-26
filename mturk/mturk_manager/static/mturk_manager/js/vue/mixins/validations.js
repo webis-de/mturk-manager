@@ -46,7 +46,6 @@ export default {
 					}
 				}
 			}
-			console.log(errors)
 			if(foo.length == 1)
 			{
 				this.validation_errors[foo[0]] = errors
@@ -61,22 +60,22 @@ export default {
 		},
 	},
 	created() {
-		console.log('äääääääääääääääääääääääääääääääääääääääääääää')
+		// console.log('äääääääääääääääääääääääääääääääääääääääääääää')
 		for(let name_field in this.$v.$params)
 		{
-			console.log(name_field)
-			console.log(this.$v[name_field])
+			// console.log(name_field)
+			// console.log(this.$v[name_field])
 			if(this.v_has_children(this.$v[name_field].$params))
 			{
-				console.log('has_children')
+				// console.log('has_children')
 				for(let foo in this.$v[name_field].$params)
 				{
 					this.$set(this.validation_errors, name_field, {});
 					this.$set(this.validation_errors[name_field], foo, []);
-					console.log(this.validation_errors)
+					// console.log(this.validation_errors)
 					// this.$set(this.validation_errors, `${name_field}.${foo}`, []);
 					this.$watch(`${name_field}.${foo}`, () => this.validate(`${name_field}.${foo}`))
-					console.log(foo)
+					// console.log(foo)
 				}
 			} else {
 				this.$set(this.validation_errors, name_field, []);
@@ -92,7 +91,8 @@ export default {
 			// console.log(this.foo)
 			// console.log(bar)
 		}
-		console.log(this.validation_errors)
-		console.log('äääääääääääääääääääääääääääääääääääääääääääää')
+		// console.log(this.validation_errors)
+		// console.log('äääääääääääääääääääääääääääääääääääääääääääää')
 	},
+	validations: {},
 }

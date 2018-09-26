@@ -55,7 +55,7 @@ class Settings_Batch(models.Model):
     description = models.TextField(null=True)
     reward = models.CharField(default='0.0', max_length=10)
     count_assignments = models.IntegerField(default=1)
-    count_assignments_max_per_worker = models.IntegerField(default=-1)
+    count_assignments_max_per_worker = models.IntegerField(null=True)
     lifetime = models.IntegerField(default=604800)
     duration = models.IntegerField(default=3600)
     template_worker = models.ForeignKey('Template_Worker', on_delete=models.SET_NULL, null=True, related_name='settings_batch')
