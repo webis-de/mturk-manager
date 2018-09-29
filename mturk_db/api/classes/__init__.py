@@ -1,3 +1,4 @@
+from .batches import Manager_Batches
 from .keywords import Manager_Keywords
 from .workers import Manager_Workers
 from .projects import Manager_Projects

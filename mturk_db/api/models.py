@@ -48,7 +48,6 @@ class Settings_Batch(models.Model):
         unique_together = ('project', 'name')
 
     project = models.ForeignKey('Project', on_delete=models.CASCADE, related_name='settings_batch')
-
     name = models.CharField(max_length=200)
 
     title = models.TextField(null=True)
@@ -61,7 +60,7 @@ class Settings_Batch(models.Model):
     template_worker = models.ForeignKey('Template_Worker', on_delete=models.SET_NULL, null=True, related_name='settings_batch')
     block_workers = models.BooleanField(default=False)
     
-    keywords = models.ManyToManyField('Keyword', related_name='projects')
+    keywords = models.ManyToManyField('Keyword', related_name='projects')   
 
     has_content_adult = models.BooleanField(default=False)
     qualification_assignments_approved = models.IntegerField(null=True)
@@ -74,15 +73,21 @@ class Keyword(models.Model):
     def __str__(self):
         return self.text
 
-class Template_Worker(models.Model):
+class Template(models.Model):
+    name = models.CharField(max_length=200)
+    project = models.ForeignKey('Project', on_delete=models.CASCADE, related_name='%(app_label)s_%(class)s_related')
+    template = models.TextField()
+    is_active = models.BooleanField(default=True)
+    
     class Meta:
         unique_together = ('project', 'name')
+        abstract = True
 
-    project = models.ForeignKey('Project', on_delete=models.CASCADE, related_name='templates_worker')
-    name = models.CharField(max_length=200)
-    template = models.TextField()
+    def __str__(self):
+        return self.name
+
+class Template_Worker(Template):
     height_frame = models.IntegerField()
-    is_active = models.BooleanField(default=True)
     template_assignment = models.ForeignKey('Template_Assignment', null=True, on_delete=models.SET_NULL, related_name='templates_used')
     template_hit = models.ForeignKey('Template_Hit', null=True, on_delete=models.SET_NULL, related_name='templates_used')
     json_dict_parameters = models.TextField()
@@ -90,30 +95,29 @@ class Template_Worker(models.Model):
     def __str__(self):
         return self.name
 
-class Template_Assignment(models.Model):
-    class Meta:
-        unique_together = ('project', 'name')
+class Template_Assignment(Template):
+    pass
 
+class Template_Hit(Template):
+    pass
+
+# class Batch(Settings_Batch):
+class Batch(models.Model):
+    project = models.ForeignKey('Project', on_delete=models.CASCADE, null=True, related_name='batch')
     name = models.CharField(max_length=200)
-    project = models.ForeignKey('Project', on_delete=models.CASCADE, related_name='templates_assignment')
-    template = models.TextField()
-    is_active = models.BooleanField(default=True)
+    settings_batch = models.OneToOneField('Settings_Batch', on_delete=models.CASCADE, null=True, related_name='batch')
+    use_sandbox = models.BooleanField()
 
     def __str__(self):
         return self.name
 
-class Template_Hit(models.Model):
-    class Meta:
-        unique_together = ('project', 'name')
-
-    name = models.CharField(max_length=200)
-    project = models.ForeignKey('Project', on_delete=models.CASCADE, related_name='templates_hit')
-    template = models.TextField()
-    is_active = models.BooleanField(default=True)
-
-    def __str__(self):
-        return self.name
-
+class HIT(models.Model):
+    id_hit = models.CharField(max_length=200, unique=True)
+    batch = models.ForeignKey('Batch', on_delete=models.CASCADE, null=True, related_name='hits')
+    datetime_creation = models.DateTimeField()
+    datetime_expiration = models.DateTimeField()
+    parameters = models.TextField()
+    count_assignments_additional = models.IntegerField(default=0)
 
 
 

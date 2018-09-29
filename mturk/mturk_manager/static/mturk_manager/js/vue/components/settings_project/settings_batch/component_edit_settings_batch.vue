@@ -103,6 +103,7 @@ export default {
     	reset() {
     		this.update_fields();
     		this.$v.$reset();
+			this.$v.$touch();
     	},
 		...mapActions('moduleProjects', {
 			'edit_settings_batch': 'edit_settings_batch',
@@ -113,6 +114,9 @@ export default {
     		this.reset();
     	},
     },
+    created() {
+		this.$v.$touch();
+	},
     components: {
     	ComponentFormSettingsBatch,
     },	

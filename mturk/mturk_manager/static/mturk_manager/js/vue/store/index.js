@@ -39,7 +39,7 @@ export const store = new Vuex.Store({
         get_show_progress_indicator(state, getters, rootState) {
             return state.show_progress_indicator > 0 ? true : false;
         },
-        get_url_api: (state, getters) => ({url, use_sandbox, value, project}) => {
+        get_url_api: (state, getters) => ({url, use_sandbox, value}) => {
             if(value != undefined)
             {
                 url += `/${value}`;
@@ -51,10 +51,7 @@ export const store = new Vuex.Store({
                 url += '?';
             }
 
-            if(project != undefined)
-            {
-                url = url.replace('PLACEHOLDER_SLUG_PROJECT', project.slug);
-            }
+            url = url.replace('PLACEHOLDER_SLUG_PROJECT', getters['moduleProjects/get_project_current'].slug);
 
             return url;
         },
@@ -87,8 +84,6 @@ export const store = new Vuex.Store({
 
             // commit('setUrlProject', config.url_project);
 
-            commit('moduleBatches/set_url_api_assignments_real_approved', config.url_api_assignments_real_approved);
-
             commit('moduleMoney/setUrlApiGetBalance', config.url_api_get_balance);
             
             commit('moduleQualifications/set_url_api_qualifications', config.url_api_qualifications);
@@ -102,7 +97,7 @@ export const store = new Vuex.Store({
             // commit('moduleProjects/set_url_api_projects', config.url_api_projects);
             // commit('moduleProjects/set_slug_project_current', config.slug_project_current);
 
-            commit('moduleBatches/set_url_api_batches', config.url_api_batches);
+            commit('moduleBatches/set_urls', config);
             
             commit('moduleKeywords/set_urls', config);
 

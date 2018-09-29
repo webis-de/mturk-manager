@@ -1,6 +1,7 @@
 <template>
 <span>
-    <!-- <component-create-batch></component-create-batch> -->
+    <component-create-batch></component-create-batch>
+    
     <component-list-batches></component-list-batches>
 </span>
 </template>
@@ -25,19 +26,19 @@ export default {
     methods: {
         refresh_data() {
             this.set_show_progress_indicator(true);
-            this.set_show_progress_indicator(true);
+            // this.set_show_progress_indicator(true);
 
-            this.sync_database().then(() => {
-                this.set_show_progress_indicator(false);
-            });
+            // this.sync_database().then(() => {
+            //     this.set_show_progress_indicator(false);
+            // });
 
             this.sync_batches().then(() => {
                 this.set_show_progress_indicator(false);
             });
             
-            this.update_balance().then(() => {
-                this.set_show_progress_indicator(false);
-            });
+            // this.update_balance().then(() => {
+            //     this.set_show_progress_indicator(false);
+            // });
         },
         ...mapActions(['set_show_progress_indicator']),
         ...mapActions('moduleBatches', {
@@ -57,7 +58,7 @@ export default {
         ...mapState(['use_sandbox']),
     },
     created: function() {
-        // this.refresh_data();
+        this.refresh_data();
     },
 
     components: {

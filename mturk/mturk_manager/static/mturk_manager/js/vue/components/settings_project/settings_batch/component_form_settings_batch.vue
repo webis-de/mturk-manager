@@ -58,7 +58,7 @@
             v-bind:label="format_duration('Lifetime', lifetime)"
             min="1"
             suffix="s"
-            v-bind:error-messages="validation_errors.settings_batch.title"
+            v-bind:error-messages="validation_errors.settings_batch.lifetime"
         ></v-text-field>
 
         <v-text-field
@@ -214,7 +214,7 @@ export default {
 		qualification_assignments_approved: {
 		},
 		qualification_hits_approved: {
-		},
+		}, 
 		qualification_locale: {
 		},
 	},

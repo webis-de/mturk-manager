@@ -1,4 +1,3 @@
-import { required, minValue } from 'vuelidate/lib/validators';
 
 const MESSAGES_DEFAULT= {
 	required: 'Required!',

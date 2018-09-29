@@ -18,7 +18,6 @@
                     </v-flex>
                 </v-layout>       
             </v-list-tile>
-
             <v-list-tile>
                 <v-layout>
                     <v-flex xs3>
@@ -41,7 +40,6 @@
                     </v-flex>
                 </v-layout>       
             </v-list-tile>
-
             <v-list-tile>
                 <v-layout>
                     <v-flex xs3>
@@ -64,7 +62,12 @@
                         Available until: 
                     </v-flex>
                     <v-flex>
-                        {{ format_lifetime_absolute }} ({{ lifetime_formatted }}) 
+                        <template v-if="is_valid">
+                            {{ format_lifetime_absolute }} ({{ lifetime_formatted }}) 
+                        </template>
+                        <template v-else>
+                            None
+                        </template> 
                     </v-flex>
                 </v-layout>     
             </v-list-tile>
@@ -75,7 +78,7 @@
                         Costs: 
                     </v-flex>
                     <v-flex>
-                        <template v-if="is_valid_csv">
+                        <template v-if="is_valid">
                             <component-display-money v-bind:amount="costs_total_with_fee"></component-display-money> 
                             (without Amazon's fees: <component-display-money v-bind:amount="costs_total_without_fee"></component-display-money>) 
                         </template>
@@ -92,7 +95,7 @@
 </template>
 <script>
     import { mapState, mapActions, mapGetters } from 'vuex';
-    import Project from '../../../classes/project';
+    import Settings_Batch from '../../../classes/settings_batch';
     import ComponentDisplayMoney from '../../component-display-money.vue';
     import humanizeDuration from 'humanize-duration';
 
@@ -102,10 +105,14 @@
 export default {
     name: 'component-overview',
     props: {
-        project: {
+        settings_batch_current: {
             required: true,
-            type: Project|undefined,
+            type: Settings_Batch|undefined,
         },
+        is_invalid_settings_batch: {
+            required: true,
+            type: Boolean,
+        }
     },
     data () {
         return {
@@ -116,26 +123,26 @@ export default {
     },
     computed: {
         lifetime_formatted() {
-            if(this.project == undefined) return undefined;
+            if(this.settings_batch_current == undefined) return undefined;
 
-            return humanizeDuration(this.project.lifetime * 1000)
+            return humanizeDuration(this.settings_batch_current.lifetime * 1000)
         },
         costs_total_without_fee() {
-            if(this.project == undefined) return 0;
+            if(this.settings_batch_current == undefined) return 0;
 
             console.log(this.object_csv_parsed)
-            const reward = parseFloat(this.project.reward);
+            const reward = parseFloat(this.settings_batch_current.reward);
             if(this.object_csv_parsed != undefined)
             {
-                return reward * this.project.assignments_max * this.object_csv_parsed.data.length;
+                return reward * this.settings_batch_current.count_assignments * this.object_csv_parsed.data.length;
             } else {
-                return reward * this.project.assignments_max
+                return reward * this.settings_batch_current.count_assignments
             }
         },
         costs_total_with_fee() {
             let costs_with_fee = undefined;
 
-            if(this.assignments_max < 10)
+            if(this.settings_batch_current.count_assignments < 10)
             {
                 costs_with_fee = this.costs_total_without_fee * 1.2;
             } else {
@@ -145,9 +152,9 @@ export default {
             return costs_with_fee;
         },
         format_lifetime_absolute() {
-            if(this.project == undefined) return undefined;
+            if(this.settings_batch_current == undefined) return undefined;
 
-            const lifetime_absolute = this.current_time_ms + this.project.lifetime * 1000.0;
+            const lifetime_absolute = this.current_time_ms + this.settings_batch_current.lifetime * 1000.0;
             return new Date(lifetime_absolute).toLocaleString();
         },
         count_hits() {
@@ -171,6 +178,9 @@ export default {
                 return this.object_csv_parsed.data;
             }
             return null;
+        },
+        is_valid() {
+            return this.is_valid_csv && !this.is_invalid_settings_batch;
         },
         ...mapGetters('moduleProjects', {
             'project_current': 'get_project_current',

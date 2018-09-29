@@ -25,6 +25,7 @@ def app(request):
         'url_api_projects_check_uniqueness': Manager_Global_DB.get_url_absolute('info_projects/uniqueness'),
         'url_api_projects_settings_batch': Manager_Global_DB.get_url_absolute('projects/{}/settings_batch'.format(placeholder_slug_project)),
         'url_api_projects_templates_worker': Manager_Global_DB.get_url_absolute('projects/{}/templates_worker'.format(placeholder_slug_project)),
+        'url_api_projects_batches': Manager_Global_DB.get_url_absolute('projects/{}/batches'.format(placeholder_slug_project)),
         
         'url_api_keywords': Manager_Global_DB.get_url_absolute('api/keywords'.format(placeholder_slug_project)),
 

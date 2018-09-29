@@ -58,55 +58,65 @@ export default {
             'project_current': 'get_project_current',
         }),
     },
-    validations: {
-        settings_batch: {
-            name: {
-                required,
+    validations() {
+        const validations = {
+            settings_batch: {
+                name: {
+                    required,
+                },
+                title: {
+                    required,
+                },
+                description: {
+                    required,
+                },
+                reward: {
+                    required,
+                    minValue: minValue(0),
+                },
+                count_assignments: {
+                    required,
+                    minValue: minValue(0),
+                },
+                count_assignments_max_per_worker: {
+                    minValue: minValue(0),
+                },
+                lifetime: {
+                    required,
+                    minValue: minValue(0),
+                },
+                duration: {
+                    required,
+                    minValue: minValue(30),
+                    maxValue: maxValue(31536000),
+                },
+                template: {
+                    required,
+                },
+                block_workers: {
+                    required,
+                },
+                keywords: {
+                },
+                has_content_adult: {
+                },
+                qualification_assignments_approved: {
+                    minValue: minValue(0),
+                    maxValue: maxValue(100),
+                },
+                qualification_hits_approved: {
+                    minValue: minValue(0),
+                },
+                qualification_locale: {
+                },
             },
-            title: {
-                required,
-            },
-            description: {
-                required,
-            },
-            reward: {
-                required,
-                minValue: minValue(0),
-            },
-            count_assignments: {
-                required,
-                minValue: minValue(0),
-            },
-            count_assignments_max_per_worker: {
-                minValue: minValue(0),
-            },
-            lifetime: {
-                required,
-                minValue: minValue(0),
-            },
-            duration: {
-                required,
-                minValue: minValue(0),
-            },
-            template: {
-                required,
-            },
-            block_workers: {
-                required,
-            },
-            keywords: {
-            },
-            has_content_adult: {
-            },
-            qualification_assignments_approved: {
-                minValue: minValue(0),
-                maxValue: maxValue(100),
-            },
-            qualification_hits_approved: {
-                minValue: minValue(0),
-            },
-            qualification_locale: {
-            },
-        },
+        }
+
+        if(this.name_not_required)
+        {
+            validations.settings_batch.name = {};
+        }
+
+        return validations;
     },
 }

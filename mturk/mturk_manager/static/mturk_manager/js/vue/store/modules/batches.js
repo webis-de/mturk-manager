@@ -18,10 +18,9 @@ export const moduleBatches= {
 		object_batches_sandbox: null,
         url_api_assignments_real_approved: undefined,
 
-        url_api_batches: undefined,
+        url_api_projects_batches: undefined,
 
         object_csv_parsed: undefined,
-        component_form: undefined,
 	},
     getters: {
         get_object_batches: (state, getters, rootState) => (use_sandbox=undefined) => {
@@ -31,9 +30,6 @@ export const moduleBatches= {
             } else {
                 return use_sandbox ? state.object_batches_sandbox : state.object_batches;
             }
-        },
-        get_component_form: (state) => {
-            return state.component_form;
         },
         is_valid_csv: (state) => {
             if(state.object_csv_parsed == undefined) 
@@ -210,7 +206,8 @@ export const moduleBatches= {
 
             _.forEach(data_batches, function(data_batch){
                 const obj_batch = new Batch(data_batch);
-                Vue.set(object_batches, obj_batch.name, obj_batch);
+                console.log(obj_batch)
+                Vue.set(object_batches, obj_batch.id, obj_batch);
             });
         },
         add_batch(state, {data_batch, use_sandbox}) {
@@ -223,16 +220,10 @@ export const moduleBatches= {
             }
 
             const obj_batch = new Batch(data_batch);
-            Vue.set(object_batches, obj_batch.name, obj_batch);
+            Vue.set(object_batches, obj_batch.id, obj_batch);
         },
-        set_component_form(state, form) {
-            state.component_form = form;
-        },
-        set_url_api_batches(state, url_new) {
-            state.url_api_batches = url_new;
-        },
-        set_url_api_assignments_real_approved(state, url_new) {
-            state.url_api_assignments_real_approved = url_new;
+        set_urls(state, config) {
+            state.url_api_projects_batches = config.url_api_projects_batches;
         },
         set_csv_parsed(state, csv_parsed) {
             state.object_csv_parsed = csv_parsed;
@@ -252,14 +243,29 @@ export const moduleBatches= {
             }
         },
 
-        async sync_batches({commit, state, getters, rootState, rootGetters}, force=false) {
+        async sync_batches({commit, state, getters, rootState, rootGetters, dispatch}, force=false) {
             const use_sandbox = rootState.use_sandbox;
 
             if(getters.get_object_batches(use_sandbox) == null || force) {
-                await axios.get(rootGetters.get_url_api(state.url_api_batches, use_sandbox))
-                .then(response => {
+                await dispatch('make_request', {
+                    method: 'get',
+                    url: rootGetters.get_url_api({
+                        url: state.url_api_projects_batches, 
+                    }),
+                }, { root: true }).then(response => {
+                    console.log(response)
                     commit('set_batches', {'data_batches': response.data, use_sandbox});
-                })
+
+                    // commit('add_settings_batch', {
+                    //     data: response.data,
+                    //     project: data.project,
+                    // });
+                });
+
+                // await axios.get(rootGetters.get_url_api(state.url_api_projects_batches, use_sandbox))
+                // .then(response => {
+                //     commit('set_batches', {'data_batches': response.data, use_sandbox});
+                // })
 
                 // await axios.get(rootGetters.get_url_api(state.url_api_global_db, use_sandbox))
                 // .then(response => {
@@ -271,9 +277,24 @@ export const moduleBatches= {
             const use_sandbox = rootState.use_sandbox;
             console.log(use_sandbox);
             console.log(data);
+            console.log(state.url_api_projects_batches)
+            await dispatch('make_request', {
+                method: 'post',
+                url: rootGetters.get_url_api({
+                    url: state.url_api_projects_batches, 
+                }),
+                data: data,
+            }, { root: true }).then(response => {
+                console.log(response)
+                commit('add_batch', {
+                    data_batch: response.data,
+                    use_sandbox,
+                });
+            });
 
+            return 
             await axios.post(
-                rootGetters.get_url_api(state.url_api_batches, use_sandbox),
+                rootGetters.get_url_api(state.url_api_projects_batches, use_sandbox),
                 JSON.stringify(data),
                 {
                     headers: {

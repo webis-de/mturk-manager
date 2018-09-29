@@ -10,6 +10,13 @@ td .v-input--selection-controls[data-v-944dad] {
   padding: unset;
 }
 
+td[data-v-35bd6c] {
+  height: unset !important;
+}
+td .v-input--selection-controls[data-v-35bd6c] {
+  padding: unset;
+}
+
 #row_header[data-v-a67972] {
   height: 48px;
 }

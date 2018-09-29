@@ -34,7 +34,6 @@ export default {
     },
     data () {
         return {
-            show_snackbar: false,
         }
     },
     // watch: {

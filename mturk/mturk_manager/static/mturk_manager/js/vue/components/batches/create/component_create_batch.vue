@@ -35,9 +35,19 @@
                             ref="component_upload_csv"
                         ></component-upload-csv>
                         <v-divider class="my-3"></v-divider>
+
+                        <v-text-field
+                            required
+                            v-bind:value="name"
+                            v-on:input="name = $event; $v.name.$touch()"
+                            label="Name"
+                        ></v-text-field>
+                            <!-- v-bind:error-messages="validation_errors.name" -->
+
                         <component-settings-batch
                             ref="component_settings_batch"
-                            v-bind:project.sync="project"
+                            v-on:updated_settings_batch="settings_batch_current = $event"
+                            v-on:updated_is_invalid_settings_batch="is_invalid_settings_batch = $event"
                         ></component-settings-batch>
                         <v-divider class="my-3"></v-divider>
                     </v-flex>
@@ -45,14 +55,15 @@
                     <v-flex xs6> 
                             <!-- v-if="is_valid_csv" -->
                         <component-overview
-                            v-bind:project="project"
+                            v-bind:settings_batch_current="settings_batch_current"
+                            v-bind:is_invalid_settings_batch="is_invalid_settings_batch"
                         ></component-overview>
-
                         <v-layout wrap>
                                 <!-- v-if="is_valid_csv" -->
                             <component-submit-batch
                                 class="shrink"
-                                v-bind:project="project"
+                                v-bind:settings_batch_current="settings_batch_current"
+                                v-bind:is_invalid_settings_batch="is_invalid_settings_batch"
                             ></component-submit-batch>
                             <v-flex>
                                 <v-btn class="mx-3" flat large v-on:click="is_creating_batch = false">Cancel</v-btn>
@@ -68,6 +79,8 @@
 
 <script>
     import { mapState, mapActions, mapGetters } from 'vuex';
+    import validations from '../../../mixins/validations';
+    import { required } from 'vuelidate/lib/validators'
     
     import ComponentUploadCsv from './component_upload_csv.vue';
     import ComponentSettingsBatch from './component_settings_batch.vue';
@@ -78,11 +91,17 @@
     // import ComponentShowMoneySpent from './component-show-money-spent.vue';
     // import ComponentShowBatches from './component-show-batches.vue';
 export default {
+    mixins: [
+        validations,
+    ],
     name: 'component-create-batch',
     data () {
         return {
-            project: undefined,
-            is_creating_batch: false,
+            is_creating_batch: true,
+
+            name: undefined,
+            settings_batch_current: undefined,
+            is_invalid_settings_batch: true,
         }
     },
     watch: {
@@ -178,6 +197,11 @@ export default {
             // 'get_object_csv_parsed': 'get_object_csv_parsed',
             'is_valid_csv': 'is_valid_csv',
         }),
+    },
+    validations: {
+        name: {
+            required
+        },
     },
     // created: function() {
     //     this.refresh_data();

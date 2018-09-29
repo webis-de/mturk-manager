@@ -53,6 +53,10 @@
                     slot-scope="props"
                 >
                     <v-card flat>
+                        <component-item-batch-details
+                            v-bind:props="props"
+                        >
+                        </component-item-batch-details>
                     </v-card>
                 </template>
             </v-data-table>
@@ -63,14 +67,19 @@
     import { mapState, mapActions, mapGetters } from 'vuex';
     // import { Policy } from '../../store/modules/policies.js';
     import ComponentItemBatch from './component_item_batch.vue';
+    import ComponentItemBatchDetails from './component_item_batch_details.vue';
     // import ComponentShowMoneySpent from './component-show-money-spent.vue';
     // import ComponentShowBatches from './component-show-batches.vue';
+    import table from '../../../mixins/table';
 export default {
+    mixins: [
+        table,
+    ],
     name: 'component-list-batches',
     data () {
         return {
             batches_selected: [],
-            pagination: { rowsPerPage:25 },
+            pagination: { rowsPerPage: 25 },
 
             search: '',
 
@@ -106,19 +115,6 @@ export default {
         // }),
     },
     methods: {
-        toggleAll () {
-            if (this.batches_selected.length) this.batches_selected = []
-            else this.batches_selected = this.list_batches.slice()
-        },
-        changeSort (column) {
-            if (this.pagination.sortBy === column) 
-            {
-                this.pagination.descending = !this.pagination.descending;
-            } else {
-                this.pagination.sortBy = column;
-                this.pagination.descending = false;
-            }
-        },
         // ...mapActions('moduleWorkers', {
             // 'update_status_block': 'update_status_block',
         // }),
@@ -134,6 +130,7 @@ export default {
 
     components: {
         ComponentItemBatch,
+        ComponentItemBatchDetails,
     },
 }
 </script>

@@ -7,7 +7,8 @@ from django.conf import settings
 class Manager_Settings_Batch(object):
     @classmethod
     def get_all_for_project(cls, id_project):
-        return Settings_Batch.objects.filter(project=id_project)
+        # return Settings_Batch.objects.filter(project=id_project)
+        return Settings_Batch.objects.filter(project=id_project, batch=None)
 
     @classmethod
     def create(cls, data):

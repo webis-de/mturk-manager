@@ -1,10 +1,11 @@
-export default class Batch 
+export default class Batch
 {
 	constructor(data={}) 
 	{
 		this.id = data.id;
-		this.name = data.name;
-		this.count_assignments = data.count_assignments;
-		this.hits = data.hits;
+		this.id_project = data.id_project;
+		this.use_sandbox = data.use_sandbox;
+		this.hits = JSON.parse(JSON.stringify(data.hits));
+		this.settings_batch = data.settings_batch;
 	}
 }

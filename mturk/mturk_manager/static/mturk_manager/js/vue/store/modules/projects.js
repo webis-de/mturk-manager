@@ -18,6 +18,7 @@ export const moduleProjects = {
 	},
 	getters: {
 		get_project_current(state) {
+            if(state.slug_project_current == undefined) return {};
 			return state.object_projects[state.slug_project_current];
 		},
    //  	get_object_project: (state, getters, rootState) => {
@@ -129,7 +130,6 @@ export const moduleProjects = {
         		method: 'get',
         		url: rootGetters.get_url_api({
         			url: state.url_api_projects_settings_batch, 
-        			project: project,
         		}),
         	}, { root: true }).then(response => {
             	commit('set_settings_batch', {
@@ -143,7 +143,6 @@ export const moduleProjects = {
         		method: 'get',
         		url: rootGetters.get_url_api({
         			url: state.url_api_projects_templates_worker, 
-        			project: project,
         		}),
         	}, { root: true }).then(response => {
             	commit('set_templates_worker', {
@@ -159,7 +158,6 @@ export const moduleProjects = {
         		method: 'post',
         		url: rootGetters.get_url_api({
         			url: state.url_api_projects_settings_batch, 
-        			project: data.project,
         		}),
     			data: data.settings_batch,
         	}, { root: true }).then(response => {
@@ -174,7 +172,6 @@ export const moduleProjects = {
                 method: 'post',
                 url: rootGetters.get_url_api({
                     url: state.url_api_projects_templates_worker, 
-                    project: data.project,
                 }),
                 data: data.template_worker,
             }, { root: true }).then(response => {
@@ -190,7 +187,6 @@ export const moduleProjects = {
                 method: 'delete',
                 url: rootGetters.get_url_api({
                     url: state.url_api_projects_settings_batch, 
-                    project: data.project,
                     value: data.settings_batch.id
                 }),
             }, { root: true }).then(response => {
@@ -206,7 +202,6 @@ export const moduleProjects = {
                 method: 'delete',
                 url: rootGetters.get_url_api({
                     url: state.url_api_projects_templates_worker, 
-                    project: data.project,
                     value: data.template_worker.id
                 }),
             }, { root: true }).then(response => {
@@ -230,7 +225,6 @@ export const moduleProjects = {
                 method: 'put',
                 url: rootGetters.get_url_api({
                     url: state.url_api_projects_settings_batch, 
-                    project: data.project,
                     value: data.settings_batch_current.id
                 }),
                 data: data_changed
