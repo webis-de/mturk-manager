@@ -3,7 +3,7 @@ from api.models import Batch, Template_Worker, HIT, Settings_Batch
 # from viewer.models import m_Tag
 # from api.views import code_shared, project
 # from api.views.project import glob_prefix_name_tag_batch, glob_prefix_name_tag_worker, glob_prefix_name_tag_hit
-import uuid, json
+import uuid, json, datetime
 from botocore.exceptions import ClientError
 
 class Manager_Batches(object):
@@ -39,10 +39,11 @@ class Manager_Batches(object):
             dictionary_settings_batch['template_worker'].template = cls.preprocess_template_request(database_object_project, dictionary_settings_batch['template_worker'].template)
 
         # print(data['template_worker'].template)
+        name_batch = uuid.uuid4().hex
 
         settings_batch = Settings_Batch.objects.create(
             project=database_object_project,
-            name='',
+            name='{}__{}__{}'.format(database_object_project.id, name_batch, uuid.uuid4().hex),
 
             title=dictionary_settings_batch['title'],
             reward=dictionary_settings_batch['reward'],
@@ -63,7 +64,7 @@ class Manager_Batches(object):
         settings_batch.save()
 
         database_object_batch = Batch.objects.create(
-            name=uuid.uuid4().hex,
+            name=name_batch,
             project=database_object_project,
             use_sandbox=use_sandbox,
             settings_batch=settings_batch,
@@ -78,19 +79,20 @@ class Manager_Batches(object):
         # return database_object_batch
         for index, dictionary_hit in enumerate(data['data_csv']):
             try:
-                mturk_obj_hit = client.create_hit(
-                    Keywords=','.join([keyword['text'] for keyword in dictionary_settings_batch['keywords']]),
-                    MaxAssignments=dictionary_settings_batch['count_assignments'],
-                    LifetimeInSeconds=dictionary_settings_batch['lifetime'],
-                    AssignmentDurationInSeconds=dictionary_settings_batch['duration'],
-                    AutoApprovalDelayInSeconds=1209600,
-                    Reward=dictionary_settings_batch['reward'],
-                    Title=title,
-                    Description=dictionary_settings_batch['description'],
-                    Question=cls.create_question(dictionary_settings_batch['template_worker'].template, dictionary_settings_batch['template_worker'].height_frame, dictionary_hit),
-                    QualificationRequirements=[]
-                    # QualificationRequirements=cls.get_qualifications(data)
-                )
+                # mturk_obj_hit = client.create_hit(
+                #     Keywords=','.join([keyword['text'] for keyword in dictionary_settings_batch['keywords']]),
+                #     MaxAssignments=dictionary_settings_batch['count_assignments'],
+                #     LifetimeInSeconds=dictionary_settings_batch['lifetime'],
+                #     AssignmentDurationInSeconds=dictionary_settings_batch['duration'],
+                #     AutoApprovalDelayInSeconds=1209600,
+                #     Reward=dictionary_settings_batch['reward'],
+                #     Title=title,
+                #     Description=dictionary_settings_batch['description'],
+                #     Question=cls.create_question(dictionary_settings_batch['template_worker'].template, dictionary_settings_batch['template_worker'].height_frame, dictionary_hit),
+                #     QualificationRequirements=[]
+                #     # QualificationRequirements=cls.get_qualifications(data)
+                # )
+                pass
             except ClientError as e:
                 print(e)
                 # messages.error(request, '''
@@ -112,13 +114,21 @@ class Manager_Batches(object):
             # )
 
             # print(mturk_obj_hit)
+            # db_obj_hit = HIT.objects.create(
+            #     # id_hit=str(random.randint(0, 9999999)),
+            #     id_hit=mturk_obj_hit['HIT']['HITId'],
+            #     batch=database_object_batch,
+            #     parameters=json.dumps(dictionary_hit),
+            #     datetime_expiration=mturk_obj_hit['HIT']['Expiration'],
+            #     datetime_creation=mturk_obj_hit['HIT']['CreationTime'],
+            # )
             db_obj_hit = HIT.objects.create(
                 # id_hit=str(random.randint(0, 9999999)),
-                id_hit=mturk_obj_hit['HIT']['HITId'],
+                id_hit=uuid.uuid4().hex,
                 batch=database_object_batch,
                 parameters=json.dumps(dictionary_hit),
-                datetime_expiration=mturk_obj_hit['HIT']['Expiration'],
-                datetime_creation=mturk_obj_hit['HIT']['CreationTime'],
+                datetime_expiration=datetime.datetime.now(),
+                datetime_creation=datetime.datetime.now(),
             )
 
         # db_obj_tag = m_Tag.objects.get_or_create(
@@ -263,3 +273,7 @@ class Manager_Batches(object):
     #         })
 
     #     return list_requirements
+
+    @staticmethod
+    def sync_mturk(database_object_project):
+        print(database_object_project)

@@ -1,14 +1,13 @@
 <template>
         <span>
-            <h1 class="headline">Batches</h1>
             <!-- {{list_batches}} -->
             <v-data-table
                 select-all
                 v-bind:pagination.sync="pagination"
                 v-bind:headers="list_headers"
-                v-bind:items="list_batches"
+                v-bind:items="list_hits"
                 v-bind:search="search"
-                v-model="batches_selected"
+                v-model="hits_selected"
                 item-key="id"
 
             >
@@ -44,21 +43,10 @@
                     slot="items"
                     slot-scope="props"
                 >
-                    <component-item-batch
+                    <component-item-hit
                         v-bind:props="props"
                     >
-                    </component-item-batch>
-                </template>
-                <template 
-                    slot="expand" 
-                    slot-scope="props"
-                >
-                    <v-card flat>
-                        <component-item-batch-details
-                            v-bind:props="props"
-                        >
-                        </component-item-batch-details>
-                    </v-card>
+                    </component-item-hit>
                 </template>
             </v-data-table>
             <!-- {{list_workers}} -->
@@ -67,8 +55,7 @@
 <script>
     import { mapState, mapActions, mapGetters } from 'vuex';
     // import { Policy } from '../../store/modules/policies.js';
-    import ComponentItemBatch from './component_item_batch.vue';
-    import ComponentItemBatchDetails from './component_item_batch_details.vue';
+    import ComponentItemHit from './component_item_hit.vue';
     // import ComponentShowMoneySpent from './component-show-money-spent.vue';
     // import ComponentShowBatches from './component-show-batches.vue';
     import table from '../../../mixins/table';
@@ -76,10 +63,15 @@ export default {
     mixins: [
         table,
     ],
-    name: 'component-list-batches',
+    name: 'component-list-hits',
+    props: {
+        list_hits: {
+            required: true,
+        }
+    },
     data () {
         return {
-            batches_selected: [],
+            hits_selected: [],
             pagination: { rowsPerPage: 25 },
 
             search: '',
@@ -92,25 +84,22 @@ export default {
             list_headers: [
                 {
                     text: 'Name',
-                    value: 'name',
+                    value: 'id_hit',
                 },
-                {
-                    text: '#HITs',
-                    value: 'count_hits',
-                    align: 'center',
-                },
-                {
-                    text: '#Assignments Per HIT',
-                    value: 'count_assignments',
-                    align: 'center',
-                },
+                // {
+                //     text: '#HITs',
+                //     value: 'count_hits',
+                //     align: 'center',
+                // },
+                // {
+                //     text: '#Assignments Per HIT',
+                //     value: 'count_assignments',
+                //     align: 'center',
+                // },
             ],
         }
     },
     computed: {
-        ...mapGetters('moduleBatches', {
-            'list_batches': 'list_batches',
-        }),
         // ...mapGetters('moduleProjects', {
         //     'project_current': 'get_project_current',
         // }),
@@ -130,8 +119,7 @@ export default {
     },
 
     components: {
-        ComponentItemBatch,
-        ComponentItemBatchDetails,
+        ComponentItemHit,
     },
 }
 </script>

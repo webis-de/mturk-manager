@@ -10,6 +10,17 @@ td .v-input--selection-controls[data-v-944dad] {
   padding: unset;
 }
 
+td[data-v-9c7eaa] {
+  height: unset !important;
+}
+td .v-input--selection-controls[data-v-9c7eaa] {
+  padding: unset;
+}
+
+#row_header[data-v-f9340e] {
+  height: 48px;
+}
+
 td[data-v-35bd6c] {
   height: unset !important;
 }

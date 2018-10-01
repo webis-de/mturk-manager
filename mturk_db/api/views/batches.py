@@ -24,10 +24,26 @@ class Batches(APIView):
     @add_database_object_project
     def post(self, request, slug_project, database_object_project, use_sandbox, format=None):
         serializer = Serializer_Batch(data=request.data)
+        print(serializer)
         if serializer.is_valid():
             serializer.save(database_object_project=database_object_project, use_sandbox=use_sandbox)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    @add_database_object_project
+    def patch(self, request, slug_project, database_object_project, use_sandbox, format=None):
+        Manager_Batches.sync_mturk(database_object_project)
+        # serializer = Serializer_Batch(data=request.data)
+        return Response({})
+
+# @api_view(['PUT'])
+# @permission_classes(PERMISSIONS_INSTANCE_ONLY)
+# @add_database_object_project
+# def sync_mturk(request, slug_project, database_object_project, value, use_sandbox, format=None):
+#     dictionary_data = Manager_Batches.sync_mturk(database_object_project, value)
+#     # dictionary_data = {}
+#     # return Response(True)
+#     return Response(dictionary_data)
 
 # class Batch(APIView):
 #     def get_object(self, slug):

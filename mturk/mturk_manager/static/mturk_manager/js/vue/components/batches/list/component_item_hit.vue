@@ -1,22 +1,31 @@
 <template>
     <!-- <div>wda</div> -->
-
-<v-layout wrap>
-    <v-flex>
-        <h2>HITs</h2>
-        <component-list-hits
-            v-bind:list_hits="props.item.hits"
-        ></component-list-hits>
-	</v-flex>
-</v-layout>
-    
+    <tr 
+        v-on:click="props.expanded = !props.expanded"
+    >
+        <td>
+            <v-checkbox
+                v-model="props.selected"
+                primary
+                hide-details
+            ></v-checkbox>
+        </td>
+        <td class="text-xs-center">
+            {{ props.item.id_hit }}
+        </td>
+        <!-- <td class="text-xs-center">
+            {{ props.item.hits.length }}
+        </td>
+        <td class="text-xs-center">
+            {{ props.item.count_assignments }}
+        </td> -->
+    </tr>
 </template>
 <script>
     import { mapState, mapActions, mapGetters } from 'vuex';
-    import ComponentListHits from './component_list_hits.vue';
 
 export default {
-    name: 'component-item-batch',
+    name: 'component-item-hit',
     props: {
         props: {
             type: Object,
@@ -71,7 +80,6 @@ export default {
     methods: {
     },
     components: {
-        ComponentListHits,
     },
 }
 </script>

@@ -22,13 +22,15 @@ export default {
         refresh_data: function() {
             this.set_show_progress_indicator(true);
 
-            this.sync_database(true).then((result) => {
+            // this.sync_database(true).then((result) => {
+            this.sync_mturk(true).then((result) => {
             	this.set_show_progress_indicator(false);
             });
         },
         ...mapActions(['set_show_progress_indicator']),
         ...mapActions('moduleBatches', {
-        	'sync_database': 'sync_database',
+            'sync_database': 'sync_database',
+        	'sync_mturk': 'sync_mturk',
         }),
     }
 }

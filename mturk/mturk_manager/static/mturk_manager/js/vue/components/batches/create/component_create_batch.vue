@@ -64,6 +64,7 @@
                                 class="shrink"
                                 v-bind:settings_batch_current="settings_batch_current"
                                 v-bind:is_invalid_settings_batch="is_invalid_settings_batch"
+                                v-bind:is_creating_batch.sync="is_creating_batch"
                             ></component-submit-batch>
                             <v-flex>
                                 <v-btn class="mx-3" flat large v-on:click="is_creating_batch = false">Cancel</v-btn>
@@ -97,7 +98,7 @@ export default {
     name: 'component-create-batch',
     data () {
         return {
-            is_creating_batch: true,
+            is_creating_batch: false,
 
             name: undefined,
             settings_batch_current: undefined,

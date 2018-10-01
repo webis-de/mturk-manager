@@ -257,7 +257,10 @@ export const moduleProjects = {
         async validate_name({state, commit, getters, rootState, rootGetters, dispatch}, name) {
         	const response = await dispatch('make_request', {
         		method: 'get',
-        		url: rootGetters.get_url_api(state.url_api_projects_check_uniqueness, false, name),
+        		url: rootGetters.get_url_api({
+        			url: state.url_api_projects_check_uniqueness, 
+        			value: name,
+        		}),
         	}, { root: true });
         	
         	return response
@@ -265,7 +268,9 @@ export const moduleProjects = {
         async create_project({state, commit, getters, rootState, rootGetters, dispatch}, name) {
         	const response = await dispatch('make_request', {
         		method: 'post',
-        		url: rootGetters.get_url_api(state.url_api_projects, false),
+        		url: rootGetters.get_url_api({
+        			url: state.url_api_projects,
+        		}),
         		data: {
         			name: name,
         		}

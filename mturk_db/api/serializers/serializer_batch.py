@@ -44,7 +44,7 @@ class Serializer_Batch(serializers.ModelSerializer):
         model = Batch
         fields = (
             'id', 
-            # 'name', 
+            'name', 
 
             'project',
             'use_sandbox',

@@ -1,10 +1,9 @@
 <template>
 <v-app dark>
-    <template v-if="has_loaded_projects && project_current != undefined">
-        <component-navigation-drawer
+    <template v-if="has_loaded_projects && Object.keys(project_current).length > 0">
+        <component-navigation-drawer    
             v-bind:show_drawer.sync="show_drawer"
         ></component-navigation-drawer>
-
         <v-progress-linear 
             v-bind:active="get_show_progress_indicator" 
             height="4" 
@@ -39,7 +38,6 @@
             <component  
                 v-bind:is="currentTabComponent"
             ></component>
-
         </v-toolbar>
 
 
@@ -105,7 +103,7 @@
 <script>
     import { mapState, mapActions, mapGetters } from 'vuex';
     import ComponentNavigationDrawer from './components/component-navigation-drawer.vue';
-    import ComponentToolbarBatches from './components/batches/component-toolbar-batches.vue';
+    import ComponentToolbarBatches from './components/batches/component_toolbar_batches.vue';
     import ComponentToolbarQualifications from './components/qualifications/component-toolbar-qualifications.vue';
     import ComponentToolbarWorkers from './components/workers/component_toolbar_workers.vue';
 export default {
@@ -131,11 +129,12 @@ export default {
         currentTabComponent: function() {
             switch(this.$route.name) 
             {
-                case 'Finances':
+                case 'finances':
+                case 'batches':
                     return ComponentToolbarBatches;
-                case 'Qualifications':
+                case 'qualifications':
                     return ComponentToolbarQualifications;
-                case 'Workers':
+                case 'workers':
                     return ComponentToolbarWorkers;
             }
         },

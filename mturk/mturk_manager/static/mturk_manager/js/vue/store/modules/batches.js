@@ -11,7 +11,7 @@ Vue.use(Vuex)
 Vue.use(VueCookies)
 Vue.use(VueAxios, axios)
 
-export const moduleBatches= {
+export const moduleBatches = {
 	namespaced: true,
 	state: {
         object_batches: null,
@@ -230,6 +230,22 @@ export const moduleBatches= {
         },
 	},
 	actions: {
+        async sync_mturk({commit, state, getters, rootState, rootGetters, dispatch}) {
+            await dispatch('make_request', {
+                method: 'patch',
+                url: rootGetters.get_url_api({
+                    url: state.url_api_projects_batches, 
+                }),
+             }, { root: true }).then(response => {
+                console.log(response);
+                // commit('set_batches', {'data_batches': response.data, use_sandbox});
+
+                // commit('add_settings_batch', {
+                //     data: response.data,
+                //     project: data.project,
+                // });
+            });
+        },
         async sync_database({commit, state, getters, rootState, rootGetters}, force=false) {
             if(getters.get_object_batches == null || force) {
                 await axios.get(rootGetters.get_url_api(state.url_api_assignments_real_approved))

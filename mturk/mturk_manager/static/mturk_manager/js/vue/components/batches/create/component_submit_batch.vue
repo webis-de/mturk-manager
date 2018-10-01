@@ -20,6 +20,9 @@ export default {
             required: true,
             type: Boolean,
         },
+        is_creating_batch: {
+
+        },
     },
 	data () {
 		return {
@@ -47,7 +50,8 @@ export default {
 				settings_batch: this.settings_batch_current,
 				data_csv: this.object_csv_parsed.data,
 			}).then(() => {
-				this.is_uploading_batch = false;
+                this.is_uploading_batch = false;
+				this.$emit('update:is_creating_batch', false);
 				console.log('done')
             });
 		},
