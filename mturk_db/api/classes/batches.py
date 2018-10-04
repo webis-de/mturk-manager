@@ -276,15 +276,15 @@ class Manager_Batches(object):
     #     return list_requirements
 
     @staticmethod
-    def sync_mturk(database_object_project):
+    def sync_mturk(database_object_project, use_sandbox):
         batches = Batch.objects.filter(project=database_object_project)
 
         for db_obj_hit in HIT.objects.annotate(
             count_assignments_current=Count('assignments')
         ).filter(
             batch__use_sandbox=use_sandbox,
-            batch__fk_project=db_obj_project,
-            count_assignments_current__lt=F('batch__count_assignments')
+            batch__project=database_object_project,
+            count_assignments_current__lt=F('batch__settings_batch__count_assignments')
         ).select_related('batch'):
             print('test')
 

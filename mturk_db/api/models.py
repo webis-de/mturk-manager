@@ -123,7 +123,7 @@ class HIT(models.Model):
 class Assignment(models.Model):
     id_assignment = models.CharField(max_length=200, unique=True)
     hit = models.ForeignKey('HIT', on_delete=models.CASCADE, null=True, related_name='assignments')
-    worker = models.ForeignKey('Worker', on_delete=models.CASCADE, related_name='assignments')
+    worker = models.ForeignKey('Worker', on_delete=models.CASCADE, null=True, related_name='assignments')
 
     status_external = models.IntegerField(choices=[(status.value, status.name) for status in assignments.STATUS_EXTERNAL])
     status_internal = models.IntegerField(null=True, choices=[(status.value, status.name) for status in assignments.STATUS_INTERNAL])
