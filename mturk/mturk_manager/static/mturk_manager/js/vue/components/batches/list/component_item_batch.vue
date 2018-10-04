@@ -1,8 +1,6 @@
 <template>
     <!-- <div>wda</div> -->
-    <tr 
-        v-on:click="props.expanded = !props.expanded"
-    >
+    <tr>
         <td>
             <v-checkbox
                 v-model="props.selected"
@@ -10,13 +8,22 @@
                 hide-details
             ></v-checkbox>
         </td>
-        <td class="text-xs-center">
+        <td 
+            v-on:click="props.expanded = !props.expanded"
+            class="text-xs-center"
+        >
             {{ props.item.name }}
         </td>
-        <td class="text-xs-center">
+        <td 
+            v-on:click="props.expanded = !props.expanded"
+            class="text-xs-center"
+        >
             {{ props.item.hits.length }}
         </td>
-        <td class="text-xs-center">
+        <td 
+            v-on:click="props.expanded = !props.expanded"
+            class="text-xs-center"
+        >
             {{ props.item.count_assignments }}
         </td>
     </tr>

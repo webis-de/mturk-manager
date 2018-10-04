@@ -2,8 +2,8 @@
     <!-- <div>wda</div> -->
 
 <v-layout wrap>
-    <v-flex>
-        <h2>HITs</h2>
+    <v-flex class="pa-3">
+        <h2 class="subheading">HITs</h2>
         <component-list-hits
             v-bind:list_hits="props.item.hits"
         ></component-list-hits>

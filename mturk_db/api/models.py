@@ -114,11 +114,20 @@ class Batch(models.Model):
 class HIT(models.Model):
     id_hit = models.CharField(max_length=200, unique=True)
     batch = models.ForeignKey('Batch', on_delete=models.CASCADE, null=True, related_name='hits')
+
     datetime_creation = models.DateTimeField()
     datetime_expiration = models.DateTimeField()
     parameters = models.TextField()
     count_assignments_additional = models.IntegerField(default=0)
 
+class Assignment(models.Model):
+    id_assignment = models.CharField(max_length=200, unique=True)
+    hit = models.ForeignKey('HIT', on_delete=models.CASCADE, null=True, related_name='assignments')
+    worker = models.ForeignKey('Worker', on_delete=models.CASCADE, related_name='assignments')
+
+    status_external = models.IntegerField(choices=[(status.value, status.name) for status in assignments.STATUS_EXTERNAL])
+    status_internal = models.IntegerField(null=True, choices=[(status.value, status.name) for status in assignments.STATUS_INTERNAL])
+    datetime_update = models.DateTimeField(auto_now=True)
 
 
 
@@ -155,10 +164,5 @@ class Assignment_Worker(models.Model):
     id_worker = models.CharField(max_length=200)
     id_assignment = models.CharField(max_length=200)
 
-class Assignment(models.Model):
-    id_assignment = models.CharField(max_length=200, unique=True)
-    status_external = models.IntegerField(choices=[(status.value, status.name) for status in assignments.STATUS_EXTERNAL])
-    status_internal = models.IntegerField(null=True, choices=[(status.value, status.name) for status in assignments.STATUS_INTERNAL])
-    datetime_update = models.DateTimeField(auto_now=True)
 
     

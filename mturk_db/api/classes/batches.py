@@ -5,6 +5,7 @@ from api.models import Batch, Template_Worker, HIT, Settings_Batch
 # from api.views.project import glob_prefix_name_tag_batch, glob_prefix_name_tag_worker, glob_prefix_name_tag_hit
 import uuid, json, datetime
 from botocore.exceptions import ClientError
+from django.db.models import F, Value, Count, Q, Sum, IntegerField, ExpressionWrapper
 
 class Manager_Batches(object):
     @classmethod
@@ -276,4 +277,17 @@ class Manager_Batches(object):
 
     @staticmethod
     def sync_mturk(database_object_project):
-        print(database_object_project)
+        batches = Batch.objects.filter(project=database_object_project)
+
+        for db_obj_hit in HIT.objects.annotate(
+            count_assignments_current=Count('assignments')
+        ).filter(
+            batch__use_sandbox=use_sandbox,
+            batch__fk_project=db_obj_project,
+            count_assignments_current__lt=F('batch__count_assignments')
+        ).select_related('batch'):
+            print('test')
+
+
+        print(batches)
+        print(batches.count())

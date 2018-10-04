@@ -71060,6 +71060,13 @@ exports.default = {
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
         var $944dad = exports.default || module.exports;
       
       if (typeof $944dad === 'function') {
@@ -71072,48 +71079,67 @@ exports.default = {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "tr",
-    {
-      on: {
-        click: function($event) {
-          _vm.props.expanded = !_vm.props.expanded
+  return _c("tr", [
+    _c(
+      "td",
+      [
+        _c("v-checkbox", {
+          attrs: { primary: "", "hide-details": "" },
+          model: {
+            value: _vm.props.selected,
+            callback: function($$v) {
+              _vm.$set(_vm.props, "selected", $$v)
+            },
+            expression: "props.selected"
+          }
+        })
+      ],
+      1
+    ),
+    _vm._v(" "),
+    _c(
+      "td",
+      {
+        staticClass: "text-xs-center",
+        on: {
+          click: function($event) {
+            _vm.props.expanded = !_vm.props.expanded
+          }
         }
-      }
-    },
-    [
-      _c(
-        "td",
-        [
-          _c("v-checkbox", {
-            attrs: { primary: "", "hide-details": "" },
-            model: {
-              value: _vm.props.selected,
-              callback: function($$v) {
-                _vm.$set(_vm.props, "selected", $$v)
-              },
-              expression: "props.selected"
-            }
-          })
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c("td", { staticClass: "text-xs-center" }, [
-        _vm._v("\n        " + _vm._s(_vm.props.item.name) + "\n    ")
-      ]),
-      _vm._v(" "),
-      _c("td", { staticClass: "text-xs-center" }, [
-        _vm._v("\n        " + _vm._s(_vm.props.item.hits.length) + "\n    ")
-      ]),
-      _vm._v(" "),
-      _c("td", { staticClass: "text-xs-center" }, [
+      },
+      [_vm._v("\n        " + _vm._s(_vm.props.item.name) + "\n    ")]
+    ),
+    _vm._v(" "),
+    _c(
+      "td",
+      {
+        staticClass: "text-xs-center",
+        on: {
+          click: function($event) {
+            _vm.props.expanded = !_vm.props.expanded
+          }
+        }
+      },
+      [_vm._v("\n        " + _vm._s(_vm.props.item.hits.length) + "\n    ")]
+    ),
+    _vm._v(" "),
+    _c(
+      "td",
+      {
+        staticClass: "text-xs-center",
+        on: {
+          click: function($event) {
+            _vm.props.expanded = !_vm.props.expanded
+          }
+        }
+      },
+      [
         _vm._v(
           "\n        " + _vm._s(_vm.props.item.count_assignments) + "\n    "
         )
-      ])
-    ]
-  )
+      ]
+    )
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -71410,6 +71436,8 @@ exports.default = {
 //
 //
 //
+//
+//
         var $f9340e = exports.default || module.exports;
       
       if (typeof $f9340e === 'function') {
@@ -71423,104 +71451,111 @@ exports.default = {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "span",
+    "v-layout",
+    { attrs: { wrap: "" } },
     [
-      _c("v-data-table", {
-        attrs: {
-          "select-all": "",
-          pagination: _vm.pagination,
-          headers: _vm.list_headers,
-          items: _vm.list_hits,
-          search: _vm.search,
-          "item-key": "id"
-        },
-        on: {
-          "update:pagination": function($event) {
-            _vm.pagination = $event
-          }
-        },
-        scopedSlots: _vm._u([
-          {
-            key: "headers",
-            fn: function(props) {
-              return [
-                _c(
-                  "tr",
-                  { attrs: { id: "row_header" } },
-                  [
+      _c(
+        "v-flex",
+        [
+          _c("v-data-table", {
+            attrs: {
+              "select-all": "",
+              pagination: _vm.pagination,
+              headers: _vm.list_headers,
+              items: _vm.list_hits,
+              search: _vm.search,
+              "item-key": "id"
+            },
+            on: {
+              "update:pagination": function($event) {
+                _vm.pagination = $event
+              }
+            },
+            scopedSlots: _vm._u([
+              {
+                key: "headers",
+                fn: function(props) {
+                  return [
                     _c(
-                      "th",
+                      "tr",
+                      { attrs: { id: "row_header" } },
                       [
-                        _c("v-checkbox", {
-                          attrs: {
-                            ":input-value": props.all,
-                            ":indeterminate": props.indeterminate,
-                            primary: "",
-                            "hide-details": ""
-                          },
-                          nativeOn: {
-                            click: function($event) {
-                              return _vm.toggleAll($event)
-                            }
-                          }
+                        _c(
+                          "th",
+                          [
+                            _c("v-checkbox", {
+                              attrs: {
+                                ":input-value": props.all,
+                                ":indeterminate": props.indeterminate,
+                                primary: "",
+                                "hide-details": ""
+                              },
+                              nativeOn: {
+                                click: function($event) {
+                                  return _vm.toggleAll($event)
+                                }
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _vm._l(props.headers, function(header) {
+                          return _c(
+                            "th",
+                            {
+                              key: header.value,
+                              class: [
+                                "column sortable",
+                                _vm.pagination.descending ? "desc" : "asc",
+                                header.value === _vm.pagination.sortBy
+                                  ? "active"
+                                  : ""
+                              ],
+                              attrs: { width: header.width },
+                              on: {
+                                click: function($event) {
+                                  _vm.changeSort(header.value)
+                                }
+                              }
+                            },
+                            [
+                              _c("v-icon", { attrs: { small: "" } }, [
+                                _vm._v("arrow_upward")
+                              ]),
+                              _vm._v(
+                                "\n                        " +
+                                  _vm._s(header.text) +
+                                  "\n                    "
+                              )
+                            ],
+                            1
+                          )
                         })
                       ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _vm._l(props.headers, function(header) {
-                      return _c(
-                        "th",
-                        {
-                          key: header.value,
-                          class: [
-                            "column sortable",
-                            _vm.pagination.descending ? "desc" : "asc",
-                            header.value === _vm.pagination.sortBy
-                              ? "active"
-                              : ""
-                          ],
-                          attrs: { width: header.width },
-                          on: {
-                            click: function($event) {
-                              _vm.changeSort(header.value)
-                            }
-                          }
-                        },
-                        [
-                          _c("v-icon", { attrs: { small: "" } }, [
-                            _vm._v("arrow_upward")
-                          ]),
-                          _vm._v(
-                            "\n                        " +
-                              _vm._s(header.text) +
-                              "\n                    "
-                          )
-                        ],
-                        1
-                      )
-                    })
-                  ],
-                  2
-                )
-              ]
+                      2
+                    )
+                  ]
+                }
+              },
+              {
+                key: "items",
+                fn: function(props) {
+                  return [_c("component-item-hit", { attrs: { props: props } })]
+                }
+              }
+            ]),
+            model: {
+              value: _vm.hits_selected,
+              callback: function($$v) {
+                _vm.hits_selected = $$v
+              },
+              expression: "hits_selected"
             }
-          },
-          {
-            key: "items",
-            fn: function(props) {
-              return [_c("component-item-hit", { attrs: { props: props } })]
-            }
-          }
-        ]),
-        model: {
-          value: _vm.hits_selected,
-          callback: function($$v) {
-            _vm.hits_selected = $$v
-          },
-          expression: "hits_selected"
-        }
-      })
+          })
+        ],
+        1
+      )
     ],
     1
   )
@@ -71632,8 +71667,9 @@ exports.default = {
     [
       _c(
         "v-flex",
+        { staticClass: "pa-3" },
         [
-          _c("h2", [_vm._v("HITs")]),
+          _c("h2", { staticClass: "subheading" }, [_vm._v("HITs")]),
           _vm._v(" "),
           _c("component-list-hits", {
             attrs: { list_hits: _vm.props.item.hits }
@@ -81864,15 +81900,18 @@ var moduleBatches = exports.moduleBatches = {
                     rootState = _ref5.rootState,
                     rootGetters = _ref5.rootGetters,
                     dispatch = _ref5.dispatch;
+                var use_sandbox;
                 return _regenerator2.default.wrap(function _callee$(_context) {
                     while (1) {
                         switch (_context.prev = _context.next) {
                             case 0:
-                                _context.next = 2;
+                                use_sandbox = rootState.use_sandbox;
+                                _context.next = 3;
                                 return dispatch('make_request', {
                                     method: 'patch',
                                     url: rootGetters.get_url_api({
-                                        url: state.url_api_projects_batches
+                                        url: state.url_api_projects_batches,
+                                        use_sandbox: use_sandbox
                                     })
                                 }, { root: true }).then(function (response) {
                                     console.log(response);
@@ -81884,7 +81923,7 @@ var moduleBatches = exports.moduleBatches = {
                                     // });
                                 });
 
-                            case 2:
+                            case 3:
                             case 'end':
                                 return _context.stop();
                         }
@@ -82609,7 +82648,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = '' || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + '45317' + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '38961' + '/');
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
 

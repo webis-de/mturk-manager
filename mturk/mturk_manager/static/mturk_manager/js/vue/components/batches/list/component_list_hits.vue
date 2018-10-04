@@ -1,56 +1,58 @@
 <template>
-        <span>
-            <!-- {{list_batches}} -->
-            <v-data-table
-                select-all
-                v-bind:pagination.sync="pagination"
-                v-bind:headers="list_headers"
-                v-bind:items="list_hits"
-                v-bind:search="search"
-                v-model="hits_selected"
-                item-key="id"
+<v-layout wrap>
+    <v-flex>
+        <!-- {{list_batches}} -->
+        <v-data-table
+            select-all
+            v-bind:pagination.sync="pagination"
+            v-bind:headers="list_headers"
+            v-bind:items="list_hits"
+            v-bind:search="search"
+            v-model="hits_selected"
+            item-key="id"
 
-            >
-                <template slot="headers" slot-scope="props">
-                    <tr id="row_header">
-                        <th>
-                            <v-checkbox
-                                v-bind::input-value="props.all"
-                                v-bind::indeterminate="props.indeterminate"
-                                primary
-                                hide-details
-                                v-on:click.native="toggleAll"
-                            ></v-checkbox>
-                        </th>
-                        <th
-                            v-for="header in props.headers"
-                            v-bind:key="header.value"
-                            v-bind:width="header.width"
-                            v-bind:class="[
-                                'column sortable', 
-                                pagination.descending ? 'desc' : 'asc', 
-                                header.value === pagination.sortBy ? 'active' : ''
-                            ]"
-                            v-on:click="changeSort(header.value)"
-                        >
-                            <v-icon small>arrow_upward</v-icon>
-                            {{ header.text }}
-                        </th>
-                    </tr>
-                </template>
-
-                <template
-                    slot="items"
-                    slot-scope="props"
-                >
-                    <component-item-hit
-                        v-bind:props="props"
+        >
+            <template slot="headers" slot-scope="props">
+                <tr id="row_header">
+                    <th>
+                        <v-checkbox
+                            v-bind::input-value="props.all"
+                            v-bind::indeterminate="props.indeterminate"
+                            primary
+                            hide-details
+                            v-on:click.native="toggleAll"
+                        ></v-checkbox>
+                    </th>
+                    <th
+                        v-for="header in props.headers"
+                        v-bind:key="header.value"
+                        v-bind:width="header.width"
+                        v-bind:class="[
+                            'column sortable', 
+                            pagination.descending ? 'desc' : 'asc', 
+                            header.value === pagination.sortBy ? 'active' : ''
+                        ]"
+                        v-on:click="changeSort(header.value)"
                     >
-                    </component-item-hit>
-                </template>
-            </v-data-table>
-            <!-- {{list_workers}} -->
-    </span>
+                        <v-icon small>arrow_upward</v-icon>
+                        {{ header.text }}
+                    </th>
+                </tr>
+            </template>
+
+            <template
+                slot="items"
+                slot-scope="props"
+            >
+                <component-item-hit
+                    v-bind:props="props"
+                >
+                </component-item-hit>
+            </template>
+        </v-data-table>
+        <!-- {{list_workers}} -->
+    </v-flex>
+</v-layout>
 </template>
 <script>
     import { mapState, mapActions, mapGetters } from 'vuex';

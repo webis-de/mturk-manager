@@ -231,10 +231,13 @@ export const moduleBatches = {
 	},
 	actions: {
         async sync_mturk({commit, state, getters, rootState, rootGetters, dispatch}) {
+            const use_sandbox = rootState.use_sandbox;
+
             await dispatch('make_request', {
                 method: 'patch',
                 url: rootGetters.get_url_api({
-                    url: state.url_api_projects_batches, 
+                    url: state.url_api_projects_batches,
+                    use_sandbox, 
                 }),
              }, { root: true }).then(response => {
                 console.log(response);
