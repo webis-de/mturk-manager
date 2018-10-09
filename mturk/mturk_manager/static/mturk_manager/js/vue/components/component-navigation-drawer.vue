@@ -60,6 +60,12 @@ export default {
                     // icon: 'ballot',
                 },
                 {
+                    label: 'HITs',
+                    name: 'hits',
+                    icon: 'notes',
+                    // icon: 'ballot',
+                },
+                {
                     label: 'Finances',
                     name: 'finances',
                     icon: 'attach_money',

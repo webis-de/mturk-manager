@@ -112,7 +112,7 @@ export default {
         return {
             dialog: false,
 
-            show_drawer: false,
+            show_drawer: true,
             show_snackbar: false,
             text_snackbar: 'Finished refreshing the data',
 

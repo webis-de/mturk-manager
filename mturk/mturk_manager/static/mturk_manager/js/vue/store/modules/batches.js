@@ -5,6 +5,7 @@ import axios from 'axios';
 import VueAxios from 'vue-axios';
 import _ from 'lodash';
 import Batch from '../../classes/batch.js';
+import HIT from '../../classes/hit.js';
 
 import VueCookies from 'vue-cookies'
 Vue.use(Vuex)
@@ -200,14 +201,9 @@ export const moduleBatches = {
                 object_batches = state.object_batches;
             }
 
-            console.log(object_batches);
-            console.log(data_batches);
-
-
             _.forEach(data_batches, function(data_batch){
-                const obj_batch = new Batch(data_batch);
-                console.log(obj_batch)
-                Vue.set(object_batches, obj_batch.id, obj_batch);
+                const batch = new Batch(data_batch);
+                Vue.set(object_batches, batch.id, batch);
             });
         },
         add_batch(state, {data_batch, use_sandbox}) {
@@ -221,6 +217,15 @@ export const moduleBatches = {
 
             const obj_batch = new Batch(data_batch);
             Vue.set(object_batches, obj_batch.id, obj_batch);
+
+            // _.forEach(data_batch.hits, function(data_hit) {
+            //     data_hit.batch = batch;
+            //     const hit = new HIT(data_hit);
+
+            //     Vue.set(object_hits, hit.id, hit);
+
+            //     Vue.set(batch.hits, batch.hits.length, hit);
+            // });
         },
         set_urls(state, config) {
             state.url_api_projects_batches = config.url_api_projects_batches;
@@ -249,18 +254,18 @@ export const moduleBatches = {
                 // });
             });
         },
-        async sync_database({commit, state, getters, rootState, rootGetters}, force=false) {
-            if(getters.get_object_batches == null || force) {
-                await axios.get(rootGetters.get_url_api(state.url_api_assignments_real_approved))
-                .then(response => {
-                    if(rootState.use_sandbox) {
-                        commit('setBatchesAndHits_sandbox', response.data);
-                    } else {
-                        commit('setBatchesAndHits', response.data);
-                    }
-                })
-            }
-        },
+        // async sync_database({commit, state, getters, rootState, rootGetters}, force=false) {
+        //     if(getters.get_object_batches == null || force) {
+        //         await axios.get(rootGetters.get_url_api(state.url_api_assignments_real_approved))
+        //         .then(response => {
+        //             if(rootState.use_sandbox) {
+        //                 commit('setBatchesAndHits_sandbox', response.data);
+        //             } else {
+        //                 commit('setBatchesAndHits', response.data);
+        //             }
+        //         })
+        //     }
+        // },
 
         async sync_batches({commit, state, getters, rootState, rootGetters, dispatch}, force=false) {
             const use_sandbox = rootState.use_sandbox;
@@ -272,8 +277,16 @@ export const moduleBatches = {
                         url: state.url_api_projects_batches, 
                     }),
                 }, { root: true }).then(response => {
-                    console.log(response)
-                    commit('set_batches', {'data_batches': response.data, use_sandbox});
+                    commit('set_batches', {
+                        'data_batches': response.data, 
+                        use_sandbox
+                    });
+
+                    commit('moduleHITs/set_hits', {
+                        'object_batches': getters.get_object_batches(use_sandbox), 
+                        'data_batches': response.data, 
+                        use_sandbox
+                    }, {root: true});
 
                     // commit('add_settings_batch', {
                     //     data: response.data,
@@ -309,22 +322,28 @@ export const moduleBatches = {
                     data_batch: response.data,
                     use_sandbox,
                 });
+
+                commit('moduleHITs/set_hits', {
+                    'object_batches': getters.get_object_batches(use_sandbox), 
+                    'data_batches': [response.data], 
+                    use_sandbox
+                }, {root: true});
             });
 
             return 
-            await axios.post(
-                rootGetters.get_url_api(state.url_api_projects_batches, use_sandbox),
-                JSON.stringify(data),
-                {
-                    headers: {
-                        "X-CSRFToken": rootState.token_csrf,
-                        "Content-Type": 'application/json',
-                    }
-                },
-            )
-            .then(response => {
-                commit('add_batch', {'data_batch': response.data, use_sandbox});
-            })
+            // await axios.post(
+            //     rootGetters.get_url_api(state.url_api_projects_batches, use_sandbox),
+            //     JSON.stringify(data),
+            //     {
+            //         headers: {
+            //             "X-CSRFToken": rootState.token_csrf,
+            //             "Content-Type": 'application/json',
+            //         }
+            //     },
+            // )
+            // .then(response => {
+            //     commit('add_batch', {'data_batch': response.data, use_sandbox});
+            // })
         },
 	},
 }

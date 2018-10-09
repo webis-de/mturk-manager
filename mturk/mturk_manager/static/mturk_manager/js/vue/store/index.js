@@ -15,6 +15,7 @@ import { moduleMoney } from './modules/money.js';
 import { moduleQualifications } from './modules/qualifications.js';
 import { moduleWorkers } from './modules/workers.js';
 import { moduleBatches } from './modules/batches.js';
+import { moduleHITs } from './modules/hits.js';
 import { moduleKeywords } from './modules/keywords.js';
 
 export const store = new Vuex.Store({
@@ -24,6 +25,7 @@ export const store = new Vuex.Store({
         moduleQualifications,
         moduleWorkers,
         moduleBatches,
+        moduleHITs,
         moduleKeywords,
     },
     state: {

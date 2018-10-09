@@ -1,6 +1,5 @@
 from rest_framework import serializers
-from api.models import HIT
-from api.serializers import Serializer_Assignment
+from api.models import Assignment
 
 # from mturk_manager.classes import Manager_HITs
 
@@ -12,7 +11,7 @@ from api.serializers import Serializer_Assignment
 #         data = True if data == 'true' else False
 #         return 'Active' if data == True else 'Inactive'
 
-class Serializer_HIT(serializers.ModelSerializer):
+class Serializer_Assignment(serializers.ModelSerializer):
 # class Serializer_Batch(serializers.Serializer):
     # workers = serializers.HyperlinkedRelatedField(
     #     many=True,
@@ -32,19 +31,29 @@ class Serializer_HIT(serializers.ModelSerializer):
     # # is_active = IsActiveField(source='QualificationTypeStatus', required=False)
     # is_requestable = serializers.NullBooleanField(source='IsRequestable', required=False)
     # is_auto_granted = serializers.NullBooleanField(source='AutoGranted', required=False)
-    assignments = Serializer_Assignment(many=True, read_only=True)
+    answer = serializers.JSONField()
 
     class Meta:
-        model = HIT
+        model = Assignment
         fields = (
             'id',
-            'id_hit',
-            'batch',
-            'datetime_creation',
-            'datetime_expiration',
-            'parameters',
-            'count_assignments_additional',
-            'assignments',
+            'hit',
+            'worker',
+            'answer',
+            # 'id_hit',
+            # 'batch',
+            # 'datetime_creation',
+            # 'datetime_expiration',
+            # 'parameters',
+            # 'count_assignments_additional',
+            # 'assignments',
         )
         extra_kwargs = {
         }
+
+    def to_representation(self, instance):
+        data = super(Serializer_Assignment, self).to_representation(instance)
+        import json
+        data['answer'] = json.loads(data['answer'])
+
+        return data

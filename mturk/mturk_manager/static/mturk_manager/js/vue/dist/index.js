@@ -36951,6 +36951,11 @@ exports.default = {
                 icon: 'notes'
                 // icon: 'ballot',
             }, {
+                label: 'HITs',
+                name: 'hits',
+                icon: 'notes'
+                // icon: 'ballot',
+            }, {
                 label: 'Finances',
                 name: 'finances',
                 icon: 'attach_money'
@@ -37518,7 +37523,7 @@ exports.default = {
         return {
             dialog: false,
 
-            show_drawer: false,
+            show_drawer: true,
             show_snackbar: false,
             text_snackbar: 'Finished refreshing the data'
 
@@ -70408,7 +70413,7 @@ render._withStripped = true
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-	value: true
+  value: true
 });
 
 var _extends2 = require('babel-runtime/helpers/extends');
@@ -70433,53 +70438,58 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 
 exports.default = {
-	name: 'component-submit-batch',
-	props: {
-		settings_batch_current: {
-			required: true,
-			type: _settings_batch2.default | undefined
-		},
-		is_invalid_settings_batch: {
-			required: true,
-			type: Boolean
-		},
-		is_creating_batch: {}
-	},
-	data: function data() {
-		return {
-			is_uploading_batch: false
-		};
-	},
+  name: 'component-submit-batch',
+  props: {
+    settings_batch_current: {
+      required: true,
+      type: _settings_batch2.default | undefined
+    },
+    is_invalid_settings_batch: {
+      required: true,
+      type: Boolean
+    },
+    name_batch: {
+      required: true,
+      type: String | undefined
+    },
+    is_creating_batch: {}
+  },
+  data: function data() {
+    return {
+      is_uploading_batch: false
+    };
+  },
 
-	computed: (0, _extends3.default)({
-		is_valid: function is_valid() {
-			return this.is_valid_csv && !this.is_invalid_settings_batch;
-		}
-	}, (0, _vuex.mapGetters)('moduleProjects', {
-		// 'project_current': 'get_project_current',
-	}), (0, _vuex.mapGetters)('moduleBatches', {
-		'object_csv_parsed': 'get_object_csv_parsed',
-		'is_valid_csv': 'is_valid_csv'
-	})),
-	methods: (0, _extends3.default)({
-		submit: function submit() {
-			var _this = this;
+  computed: (0, _extends3.default)({
+    is_valid: function is_valid() {
+      return this.is_valid_csv && !this.is_invalid_settings_batch;
+    }
+  }, (0, _vuex.mapGetters)('moduleProjects', {
+    // 'project_current': 'get_project_current',
+  }), (0, _vuex.mapGetters)('moduleBatches', {
+    'object_csv_parsed': 'get_object_csv_parsed',
+    'is_valid_csv': 'is_valid_csv'
+  })),
+  methods: (0, _extends3.default)({
+    submit: function submit() {
+      var _this = this;
 
-			this.is_uploading_batch = true;
-			console.log('adding batch');
+      this.is_uploading_batch = true;
+      console.log('adding batch');
 
-			this.add_batch({
-				settings_batch: this.settings_batch_current,
-				data_csv: this.object_csv_parsed.data
-			}).then(function () {
-				_this.is_uploading_batch = false;
-				_this.$emit('update:is_creating_batch', false);
-				console.log('done');
-			});
-		}
-	}, (0, _vuex.mapActions)('moduleBatches', {
-		'add_batch': 'add_batch'
-	}))
+      this.add_batch({
+        name: this.name_batch,
+        settings_batch: this.settings_batch_current,
+        data_csv: this.object_csv_parsed.data
+      }).then(function () {
+        _this.is_uploading_batch = false;
+        _this.$emit('update:is_creating_batch', false);
+        console.log('done');
+      });
+    }
+  }, (0, _vuex.mapActions)('moduleBatches', {
+    'add_batch': 'add_batch'
+  }))
 };
         var $bad4db = exports.default || module.exports;
       
@@ -70660,7 +70670,7 @@ exports.default = {
     })),
     validations: {
         name: {
-            required: _validators.required
+            // required
         }
     },
     // created: function() {
@@ -70674,6 +70684,7 @@ exports.default = {
         ComponentSubmitBatch: _component_submit_batch2.default
     }
 }; //
+//
 //
 //
 //
@@ -70919,6 +70930,7 @@ exports.default = {
                                     _vm.settings_batch_current,
                                   is_invalid_settings_batch:
                                     _vm.is_invalid_settings_batch,
+                                  name_batch: _vm.name,
                                   is_creating_batch: _vm.is_creating_batch
                                 },
                                 on: {
@@ -71174,7 +71186,7 @@ render._withStripped = true
       
       }
     })();
-},{"babel-runtime/helpers/extends":"../../../../../node_modules/babel-runtime/helpers/extends.js","vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","_css_loader":"../../../../../node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"../../../../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../../../../node_modules/vue/dist/vue.common.js"}],"components/batches/list/component_item_hit.vue":[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":"../../../../../node_modules/babel-runtime/helpers/extends.js","vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","_css_loader":"../../../../../node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"../../../../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../../../../node_modules/vue/dist/vue.common.js"}],"components/hits/list/component_item_hit.vue":[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -71195,6 +71207,11 @@ exports.default = {
         props: {
             type: Object,
             required: true
+        },
+        show_links: {
+            required: false,
+            type: Boolean,
+            default: true
         }
     },
     data: function data() {
@@ -71232,14 +71249,33 @@ exports.default = {
 //
 //
 //
-        var $9c7eaa = exports.default || module.exports;
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+        var $9a7577 = exports.default || module.exports;
       
-      if (typeof $9c7eaa === 'function') {
-        $9c7eaa = $9c7eaa.options;
+      if (typeof $9a7577 === 'function') {
+        $9a7577 = $9a7577.options;
       }
     
         /* template */
-        Object.assign($9c7eaa, (function () {
+        Object.assign($9a7577, (function () {
           var render = function() {
   var _vm = this
   var _h = _vm.$createElement
@@ -71273,7 +71309,37 @@ exports.default = {
       _vm._v(" "),
       _c("td", { staticClass: "text-xs-center" }, [
         _vm._v("\n        " + _vm._s(_vm.props.item.id_hit) + "\n    ")
-      ])
+      ]),
+      _vm._v(" "),
+      _vm.show_links == true
+        ? _c(
+            "td",
+            { staticClass: "text-xs-center" },
+            [
+              _c(
+                "v-btn",
+                {
+                  attrs: {
+                    slot: "activator",
+                    icon: "",
+                    small: "",
+                    to: {
+                      name: "hit",
+                      params: {
+                        slug_project: _vm.$route.params.slug_project,
+                        id_hit: "32"
+                      }
+                    }
+                  },
+                  slot: "activator"
+                },
+                [_c("v-icon", [_vm._v("link")])],
+                1
+              )
+            ],
+            1
+          )
+        : _vm._e()
     ]
   )
 }
@@ -71284,7 +71350,7 @@ render._withStripped = true
             render: render,
             staticRenderFns: staticRenderFns,
             _compiled: true,
-            _scopeId: "data-v-9c7eaa",
+            _scopeId: "data-v-9a7577",
             functional: undefined
           };
         })());
@@ -71297,9 +71363,9 @@ render._withStripped = true
         if (api.compatible) {
           module.hot.accept();
           if (!module.hot.data) {
-            api.createRecord('$9c7eaa', $9c7eaa);
+            api.createRecord('$9a7577', $9a7577);
           } else {
-            api.reload('$9c7eaa', $9c7eaa);
+            api.reload('$9a7577', $9a7577);
           }
         }
 
@@ -71310,12 +71376,16 @@ render._withStripped = true
       
       }
     })();
-},{"babel-runtime/helpers/extends":"../../../../../node_modules/babel-runtime/helpers/extends.js","vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","_css_loader":"../../../../../node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"../../../../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../../../../node_modules/vue/dist/vue.common.js"}],"components/batches/list/component_list_hits.vue":[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":"../../../../../node_modules/babel-runtime/helpers/extends.js","vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","_css_loader":"../../../../../node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"../../../../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../../../../node_modules/vue/dist/vue.common.js"}],"components/hits/list/component_list_hits.vue":[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+
+var _extends2 = require('babel-runtime/helpers/extends');
+
+var _extends3 = _interopRequireDefault(_extends2);
 
 var _vuex = require('vuex');
 
@@ -71335,7 +71405,13 @@ exports.default = {
     name: 'component-list-hits',
     props: {
         list_hits: {
-            required: true
+            required: false,
+            type: Array | undefined
+        },
+        show_links: {
+            required: false,
+            type: Boolean,
+            default: true
         }
     },
     data: function data() {
@@ -71343,25 +71419,42 @@ exports.default = {
             hits_selected: [],
             pagination: { rowsPerPage: 25 },
 
-            search: '',
+            search: ''
 
             // search: 'A10BOAO1EONNS7',
             // policy_new: new Policy({
             //     QualificationTypeStatus: 'Active',
             // }),
 
-            list_headers: [{
-                text: 'Name',
-                value: 'id_hit'
-            }]
         };
     },
 
-    computed: {
-        // ...mapGetters('moduleProjects', {
-        //     'project_current': 'get_project_current',
-        // }),
-    },
+    computed: (0, _extends3.default)({
+        list_headers: function list_headers() {
+            var list_headers = [{
+                text: 'Name',
+                value: 'id_hit'
+            }];
+
+            if (this.show_links == true) {
+                list_headers.push({
+                    text: 'Link',
+                    value: ''
+                });
+            }
+
+            return list_headers;
+        },
+        list_hits_processed: function list_hits_processed() {
+            if (this.list_hits != undefined) {
+                return this.list_hits;
+            } else {
+                return this.list_hits_all;
+            }
+        }
+    }, (0, _vuex.mapGetters)('moduleHITs', {
+        'list_hits_all': 'list_hits'
+    })),
     methods: {
         // ...mapActions('moduleWorkers', {
         // 'update_status_block': 'update_status_block',
@@ -71438,14 +71531,15 @@ exports.default = {
 //
 //
 //
-        var $f9340e = exports.default || module.exports;
+//
+        var $d88dfa = exports.default || module.exports;
       
-      if (typeof $f9340e === 'function') {
-        $f9340e = $f9340e.options;
+      if (typeof $d88dfa === 'function') {
+        $d88dfa = $d88dfa.options;
       }
     
         /* template */
-        Object.assign($f9340e, (function () {
+        Object.assign($d88dfa, (function () {
           var render = function() {
   var _vm = this
   var _h = _vm.$createElement
@@ -71462,7 +71556,7 @@ exports.default = {
               "select-all": "",
               pagination: _vm.pagination,
               headers: _vm.list_headers,
-              items: _vm.list_hits,
+              items: _vm.list_hits_processed,
               search: _vm.search,
               "item-key": "id"
             },
@@ -71541,7 +71635,11 @@ exports.default = {
               {
                 key: "items",
                 fn: function(props) {
-                  return [_c("component-item-hit", { attrs: { props: props } })]
+                  return [
+                    _c("component-item-hit", {
+                      attrs: { props: props, show_links: _vm.show_links }
+                    })
+                  ]
                 }
               }
             ]),
@@ -71567,7 +71665,7 @@ render._withStripped = true
             render: render,
             staticRenderFns: staticRenderFns,
             _compiled: true,
-            _scopeId: "data-v-f9340e",
+            _scopeId: "data-v-d88dfa",
             functional: undefined
           };
         })());
@@ -71580,9 +71678,9 @@ render._withStripped = true
         if (api.compatible) {
           module.hot.accept();
           if (!module.hot.data) {
-            api.createRecord('$f9340e', $f9340e);
+            api.createRecord('$d88dfa', $d88dfa);
           } else {
-            api.reload('$f9340e', $f9340e);
+            api.reload('$d88dfa', $d88dfa);
           }
         }
 
@@ -71593,7 +71691,7 @@ render._withStripped = true
       
       }
     })();
-},{"vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","./component_item_hit.vue":"components/batches/list/component_item_hit.vue","../../../mixins/table":"mixins/table.js","_css_loader":"../../../../../node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"../../../../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../../../../node_modules/vue/dist/vue.common.js"}],"components/batches/list/component_item_batch_details.vue":[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":"../../../../../node_modules/babel-runtime/helpers/extends.js","vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","./component_item_hit.vue":"components/hits/list/component_item_hit.vue","../../../mixins/table":"mixins/table.js","_css_loader":"../../../../../node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"../../../../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../../../../node_modules/vue/dist/vue.common.js"}],"components/batches/list/component_item_batch_details.vue":[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -71606,7 +71704,7 @@ var _extends3 = _interopRequireDefault(_extends2);
 
 var _vuex = require('vuex');
 
-var _component_list_hits = require('./component_list_hits.vue');
+var _component_list_hits = require('../../hits/list/component_list_hits.vue');
 
 var _component_list_hits2 = _interopRequireDefault(_component_list_hits);
 
@@ -71714,7 +71812,7 @@ render._withStripped = true
       
       }
     })();
-},{"babel-runtime/helpers/extends":"../../../../../node_modules/babel-runtime/helpers/extends.js","vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","./component_list_hits.vue":"components/batches/list/component_list_hits.vue","_css_loader":"../../../../../node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"../../../../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../../../../node_modules/vue/dist/vue.common.js"}],"components/batches/list/component_list_batches.vue":[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":"../../../../../node_modules/babel-runtime/helpers/extends.js","vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","../../hits/list/component_list_hits.vue":"components/hits/list/component_list_hits.vue","_css_loader":"../../../../../node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"../../../../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../../../../node_modules/vue/dist/vue.common.js"}],"components/batches/list/component_list_batches.vue":[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -72163,7 +72261,238 @@ render._withStripped = true
         
       }
     })();
-},{"babel-runtime/helpers/extends":"../../../../../node_modules/babel-runtime/helpers/extends.js","vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","./create/component_create_batch.vue":"components/batches/create/component_create_batch.vue","./list/component_list_batches.vue":"components/batches/list/component_list_batches.vue","../../mixins/slug_project":"mixins/slug_project.js","vue-hot-reload-api":"../../../../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../../../../node_modules/vue/dist/vue.common.js"}],"components/finances/component-show-balance.vue":[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":"../../../../../node_modules/babel-runtime/helpers/extends.js","vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","./create/component_create_batch.vue":"components/batches/create/component_create_batch.vue","./list/component_list_batches.vue":"components/batches/list/component_list_batches.vue","../../mixins/slug_project":"mixins/slug_project.js","vue-hot-reload-api":"../../../../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../../../../node_modules/vue/dist/vue.common.js"}],"components/hits/component_hit_detail.vue":[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _vuex = require('vuex');
+
+var _slug_project = require('../../mixins/slug_project');
+
+var _slug_project2 = _interopRequireDefault(_slug_project);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//
+//
+//
+//
+//
+//
+
+exports.default = {
+    mixins: [_slug_project2.default],
+    name: 'component-hit-detail',
+    data: function data() {
+        return {};
+    },
+
+    methods: {
+        // ...mapActions('moduleMoney', {
+        //     'update_balance': 'update_balance'
+        // }),
+    },
+    watch: {
+        // use_sandbox: function() {
+        //     this.refresh_data();
+        // },
+    },
+    computed: {},
+
+    components: {}
+};
+
+// import ComponentCreateBatch from './create/component_create_batch.vue';
+// import ComponentShowMoneySpent from './component-show-money-spent.vue';
+// import ComponentShowBatches from './component-show-batches.vue';
+        var $3d8a17 = exports.default || module.exports;
+      
+      if (typeof $3d8a17 === 'function') {
+        $3d8a17 = $3d8a17.options;
+      }
+    
+        /* template */
+        Object.assign($3d8a17, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("span", [_vm._v("\n    hi\n")])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: null,
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$3d8a17', $3d8a17);
+          } else {
+            api.reload('$3d8a17', $3d8a17);
+          }
+        }
+
+        
+      }
+    })();
+},{"vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","../../mixins/slug_project":"mixins/slug_project.js","vue-hot-reload-api":"../../../../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../../../../node_modules/vue/dist/vue.common.js"}],"components/hits/app_hits.vue":[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends2 = require('babel-runtime/helpers/extends');
+
+var _extends3 = _interopRequireDefault(_extends2);
+
+var _vuex = require('vuex');
+
+var _component_list_hits = require('./list/component_list_hits.vue');
+
+var _component_list_hits2 = _interopRequireDefault(_component_list_hits);
+
+var _component_hit_detail = require('./component_hit_detail.vue');
+
+var _component_hit_detail2 = _interopRequireDefault(_component_hit_detail);
+
+var _slug_project = require('../../mixins/slug_project');
+
+var _slug_project2 = _interopRequireDefault(_slug_project);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+exports.default = {
+    mixins: [_slug_project2.default],
+    name: 'app-hits',
+    data: function data() {
+        return {};
+    },
+
+    methods: (0, _extends3.default)({
+        refresh_data: function refresh_data() {
+            var _this = this;
+
+            this.set_show_progress_indicator(true);
+
+            this.sync_batches().then(function () {
+                _this.set_show_progress_indicator(false);
+            });
+        }
+    }, (0, _vuex.mapActions)(['set_show_progress_indicator']), (0, _vuex.mapActions)('moduleBatches', {
+        'sync_batches': 'sync_batches'
+    })),
+    watch: {
+        // use_sandbox: function() {
+        //     this.refresh_data();
+        // },
+    },
+    computed: (0, _extends3.default)({}, (0, _vuex.mapState)(['use_sandbox'])),
+    created: function created() {
+        this.refresh_data();
+        console.log(this.$route);
+    },
+
+    components: {
+        // ComponentCreateBatch,
+        ComponentListHits: _component_list_hits2.default,
+        ComponentHitDetail: _component_hit_detail2.default
+    }
+};
+// import ComponentShowMoneySpent from './component-show-money-spent.vue';
+// import ComponentShowBatches from './component-show-batches.vue';
+
+
+// import ComponentCreateBatch from './create/component_create_batch.vue';
+        var $f50c88 = exports.default || module.exports;
+      
+      if (typeof $f50c88 === 'function') {
+        $f50c88 = $f50c88.options;
+      }
+    
+        /* template */
+        Object.assign($f50c88, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "span",
+    [
+      _vm.$route.name == "hits"
+        ? [_c("component-list-hits", { attrs: { show_links: false } })]
+        : _vm.$route.name == "hit"
+          ? [_c("component-hit-detail")]
+          : _vm._e()
+    ],
+    2
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: null,
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$f50c88', $f50c88);
+          } else {
+            api.reload('$f50c88', $f50c88);
+          }
+        }
+
+        
+      }
+    })();
+},{"babel-runtime/helpers/extends":"../../../../../node_modules/babel-runtime/helpers/extends.js","vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","./list/component_list_hits.vue":"components/hits/list/component_list_hits.vue","./component_hit_detail.vue":"components/hits/component_hit_detail.vue","../../mixins/slug_project":"mixins/slug_project.js","vue-hot-reload-api":"../../../../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../../../../node_modules/vue/dist/vue.common.js"}],"components/finances/component-show-balance.vue":[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -81600,10 +81929,6 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _stringify = require("babel-runtime/core-js/json/stringify");
-
-var _stringify2 = _interopRequireDefault(_stringify);
-
 var _classCallCheck2 = require("babel-runtime/helpers/classCallCheck");
 
 var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
@@ -81618,22 +81943,46 @@ var Batch = function Batch() {
 	this.name = data.name;
 	this.id_project = data.id_project;
 	this.use_sandbox = data.use_sandbox;
-	this.hits = JSON.parse((0, _stringify2.default)(data.hits));
+	this.hits = [];
+	// this.hits = JSON.parse(JSON.stringify(data.hits));
 	this.settings_batch = data.settings_batch;
 };
 
 exports.default = Batch;
-},{"babel-runtime/core-js/json/stringify":"../../../../../node_modules/babel-runtime/core-js/json/stringify.js","babel-runtime/helpers/classCallCheck":"../../../../../node_modules/babel-runtime/helpers/classCallCheck.js"}],"store/modules/batches.js":[function(require,module,exports) {
+},{"babel-runtime/helpers/classCallCheck":"../../../../../node_modules/babel-runtime/helpers/classCallCheck.js"}],"classes/hit.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _classCallCheck2 = require("babel-runtime/helpers/classCallCheck");
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var HIT = function HIT() {
+	var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+	(0, _classCallCheck3.default)(this, HIT);
+
+	this.id = data.id;
+	this.id_hit = data.id_hit;
+	this.batch = data.batch;
+	this.count_assignments_additional = data.count_assignments_additional;
+	this.datetime_creation = data.datetime_creation;
+	this.datetime_expiration = data.datetime_expiration;
+	this.parameters = data.parameters;
+};
+
+exports.default = HIT;
+},{"babel-runtime/helpers/classCallCheck":"../../../../../node_modules/babel-runtime/helpers/classCallCheck.js"}],"store/modules/batches.js":[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
 exports.moduleBatches = undefined;
-
-var _stringify = require('babel-runtime/core-js/json/stringify');
-
-var _stringify2 = _interopRequireDefault(_stringify);
 
 var _regenerator = require('babel-runtime/regenerator');
 
@@ -81667,14 +82016,19 @@ var _batch = require('../../classes/batch.js');
 
 var _batch2 = _interopRequireDefault(_batch);
 
+var _hit = require('../../classes/hit.js');
+
+var _hit2 = _interopRequireDefault(_hit);
+
 var _vueCookies = require('vue-cookies');
 
 var _vueCookies2 = _interopRequireDefault(_vueCookies);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// import Vue from 'vue/dist/vue.common';
 _vue2.default.use(_vuex2.default);
+// import Vue from 'vue/dist/vue.common';
+
 _vue2.default.use(_vueCookies2.default);
 _vue2.default.use(_vueAxios2.default, _axios2.default);
 
@@ -81861,13 +82215,9 @@ var moduleBatches = exports.moduleBatches = {
                 object_batches = state.object_batches;
             }
 
-            console.log(object_batches);
-            console.log(data_batches);
-
             _lodash2.default.forEach(data_batches, function (data_batch) {
-                var obj_batch = new _batch2.default(data_batch);
-                console.log(obj_batch);
-                _vue2.default.set(object_batches, obj_batch.id, obj_batch);
+                var batch = new _batch2.default(data_batch);
+                _vue2.default.set(object_batches, batch.id, batch);
             });
         },
         add_batch: function add_batch(state, _ref4) {
@@ -81883,6 +82233,15 @@ var moduleBatches = exports.moduleBatches = {
 
             var obj_batch = new _batch2.default(data_batch);
             _vue2.default.set(object_batches, obj_batch.id, obj_batch);
+
+            // _.forEach(data_batch.hits, function(data_hit) {
+            //     data_hit.batch = batch;
+            //     const hit = new HIT(data_hit);
+
+            //     Vue.set(object_hits, hit.id, hit);
+
+            //     Vue.set(batch.hits, batch.hits.length, hit);
+            // });
         },
         set_urls: function set_urls(state, config) {
             state.url_api_projects_batches = config.url_api_projects_batches;
@@ -81937,76 +82296,58 @@ var moduleBatches = exports.moduleBatches = {
 
             return sync_mturk;
         }(),
-        sync_database: function () {
+
+        // async sync_database({commit, state, getters, rootState, rootGetters}, force=false) {
+        //     if(getters.get_object_batches == null || force) {
+        //         await axios.get(rootGetters.get_url_api(state.url_api_assignments_real_approved))
+        //         .then(response => {
+        //             if(rootState.use_sandbox) {
+        //                 commit('setBatchesAndHits_sandbox', response.data);
+        //             } else {
+        //                 commit('setBatchesAndHits', response.data);
+        //             }
+        //         })
+        //     }
+        // },
+
+        sync_batches: function () {
             var _ref8 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(_ref7) {
                 var commit = _ref7.commit,
                     state = _ref7.state,
                     getters = _ref7.getters,
                     rootState = _ref7.rootState,
-                    rootGetters = _ref7.rootGetters;
+                    rootGetters = _ref7.rootGetters,
+                    dispatch = _ref7.dispatch;
                 var force = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+                var use_sandbox;
                 return _regenerator2.default.wrap(function _callee2$(_context2) {
                     while (1) {
                         switch (_context2.prev = _context2.next) {
                             case 0:
-                                if (!(getters.get_object_batches == null || force)) {
-                                    _context2.next = 3;
-                                    break;
-                                }
-
-                                _context2.next = 3;
-                                return _axios2.default.get(rootGetters.get_url_api(state.url_api_assignments_real_approved)).then(function (response) {
-                                    if (rootState.use_sandbox) {
-                                        commit('setBatchesAndHits_sandbox', response.data);
-                                    } else {
-                                        commit('setBatchesAndHits', response.data);
-                                    }
-                                });
-
-                            case 3:
-                            case 'end':
-                                return _context2.stop();
-                        }
-                    }
-                }, _callee2, this);
-            }));
-
-            function sync_database(_x4) {
-                return _ref8.apply(this, arguments);
-            }
-
-            return sync_database;
-        }(),
-        sync_batches: function () {
-            var _ref10 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3(_ref9) {
-                var commit = _ref9.commit,
-                    state = _ref9.state,
-                    getters = _ref9.getters,
-                    rootState = _ref9.rootState,
-                    rootGetters = _ref9.rootGetters,
-                    dispatch = _ref9.dispatch;
-                var force = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-                var use_sandbox;
-                return _regenerator2.default.wrap(function _callee3$(_context3) {
-                    while (1) {
-                        switch (_context3.prev = _context3.next) {
-                            case 0:
                                 use_sandbox = rootState.use_sandbox;
 
                                 if (!(getters.get_object_batches(use_sandbox) == null || force)) {
-                                    _context3.next = 4;
+                                    _context2.next = 4;
                                     break;
                                 }
 
-                                _context3.next = 4;
+                                _context2.next = 4;
                                 return dispatch('make_request', {
                                     method: 'get',
                                     url: rootGetters.get_url_api({
                                         url: state.url_api_projects_batches
                                     })
                                 }, { root: true }).then(function (response) {
-                                    console.log(response);
-                                    commit('set_batches', { 'data_batches': response.data, use_sandbox: use_sandbox });
+                                    commit('set_batches', {
+                                        'data_batches': response.data,
+                                        use_sandbox: use_sandbox
+                                    });
+
+                                    commit('moduleHITs/set_hits', {
+                                        'object_batches': getters.get_object_batches(use_sandbox),
+                                        'data_batches': response.data,
+                                        use_sandbox: use_sandbox
+                                    }, { root: true });
 
                                     // commit('add_settings_batch', {
                                     //     data: response.data,
@@ -82016,37 +82357,37 @@ var moduleBatches = exports.moduleBatches = {
 
                             case 4:
                             case 'end':
-                                return _context3.stop();
+                                return _context2.stop();
                         }
                     }
-                }, _callee3, this);
+                }, _callee2, this);
             }));
 
-            function sync_batches(_x6) {
-                return _ref10.apply(this, arguments);
+            function sync_batches(_x4) {
+                return _ref8.apply(this, arguments);
             }
 
             return sync_batches;
         }(),
         add_batch: function () {
-            var _ref12 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee4(_ref11, data) {
-                var state = _ref11.state,
-                    commit = _ref11.commit,
-                    getters = _ref11.getters,
-                    rootState = _ref11.rootState,
-                    rootGetters = _ref11.rootGetters,
-                    dispatch = _ref11.dispatch;
+            var _ref10 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3(_ref9, data) {
+                var state = _ref9.state,
+                    commit = _ref9.commit,
+                    getters = _ref9.getters,
+                    rootState = _ref9.rootState,
+                    rootGetters = _ref9.rootGetters,
+                    dispatch = _ref9.dispatch;
                 var use_sandbox;
-                return _regenerator2.default.wrap(function _callee4$(_context4) {
+                return _regenerator2.default.wrap(function _callee3$(_context3) {
                     while (1) {
-                        switch (_context4.prev = _context4.next) {
+                        switch (_context3.prev = _context3.next) {
                             case 0:
                                 use_sandbox = rootState.use_sandbox;
 
                                 console.log(use_sandbox);
                                 console.log(data);
                                 console.log(state.url_api_projects_batches);
-                                _context4.next = 6;
+                                _context3.next = 6;
                                 return dispatch('make_request', {
                                     method: 'post',
                                     url: rootGetters.get_url_api({
@@ -82059,28 +82400,136 @@ var moduleBatches = exports.moduleBatches = {
                                         data_batch: response.data,
                                         use_sandbox: use_sandbox
                                     });
+
+                                    commit('moduleHITs/set_hits', {
+                                        'object_batches': getters.get_object_batches(use_sandbox),
+                                        'data_batches': [response.data],
+                                        use_sandbox: use_sandbox
+                                    }, { root: true });
                                 });
 
                             case 6:
-                                return _context4.abrupt('return');
+                                return _context3.abrupt('return');
 
-                            case 9:
+                            case 7:
                             case 'end':
-                                return _context4.stop();
+                                return _context3.stop();
                         }
                     }
-                }, _callee4, this);
+                }, _callee3, this);
             }));
 
-            function add_batch(_x7, _x8) {
-                return _ref12.apply(this, arguments);
+            function add_batch(_x5, _x6) {
+                return _ref10.apply(this, arguments);
             }
 
             return add_batch;
         }()
     }
 };
-},{"babel-runtime/core-js/json/stringify":"../../../../../node_modules/babel-runtime/core-js/json/stringify.js","babel-runtime/regenerator":"../../../../../node_modules/babel-runtime/regenerator/index.js","babel-runtime/helpers/asyncToGenerator":"../../../../../node_modules/babel-runtime/helpers/asyncToGenerator.js","vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","vue":"../../../../../node_modules/vue/dist/vue.common.js","axios":"../../../../../node_modules/axios/index.js","vue-axios":"../../../../../node_modules/vue-axios/dist/vue-axios.min.js","lodash":"../../../../../node_modules/lodash/lodash.js","../../classes/batch.js":"classes/batch.js","vue-cookies":"../../../../../node_modules/vue-cookies/vue-cookies.js"}],"store/modules/keywords.js":[function(require,module,exports) {
+},{"babel-runtime/regenerator":"../../../../../node_modules/babel-runtime/regenerator/index.js","babel-runtime/helpers/asyncToGenerator":"../../../../../node_modules/babel-runtime/helpers/asyncToGenerator.js","vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","vue":"../../../../../node_modules/vue/dist/vue.common.js","axios":"../../../../../node_modules/axios/index.js","vue-axios":"../../../../../node_modules/vue-axios/dist/vue-axios.min.js","lodash":"../../../../../node_modules/lodash/lodash.js","../../classes/batch.js":"classes/batch.js","../../classes/hit.js":"classes/hit.js","vue-cookies":"../../../../../node_modules/vue-cookies/vue-cookies.js"}],"store/modules/hits.js":[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.moduleHITs = undefined;
+
+var _keys = require('babel-runtime/core-js/object/keys');
+
+var _keys2 = _interopRequireDefault(_keys);
+
+var _vuex = require('vuex');
+
+var _vuex2 = _interopRequireDefault(_vuex);
+
+var _vue = require('vue');
+
+var _vue2 = _interopRequireDefault(_vue);
+
+var _axios = require('axios');
+
+var _axios2 = _interopRequireDefault(_axios);
+
+var _vueAxios = require('vue-axios');
+
+var _vueAxios2 = _interopRequireDefault(_vueAxios);
+
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _hit = require('../../classes/hit.js');
+
+var _hit2 = _interopRequireDefault(_hit);
+
+var _vueCookies = require('vue-cookies');
+
+var _vueCookies2 = _interopRequireDefault(_vueCookies);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// import Vue from 'vue/dist/vue.common';
+_vue2.default.use(_vuex2.default);
+_vue2.default.use(_vueCookies2.default);
+_vue2.default.use(_vueAxios2.default, _axios2.default);
+
+var moduleHITs = exports.moduleHITs = {
+    namespaced: true,
+    state: {
+        object_hits: {},
+        object_hits_sandbox: {}
+    },
+    getters: {
+        get_object_hits: function get_object_hits(state, getters, rootState) {
+            return function () {
+                var use_sandbox = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
+
+                if (use_sandbox == undefined) {
+                    return rootState.use_sandbox ? state.object_hits_sandbox : state.object_hits;
+                } else {
+                    return use_sandbox ? state.object_hits_sandbox : state.object_hits;
+                }
+            };
+        },
+        list_hits: function list_hits(state, getters) {
+            if ((0, _keys2.default)(getters.get_object_hits()).length == 0) {
+                return [];
+            }
+            return _lodash2.default.orderBy(getters.get_object_hits(), ['datetime_creation'], ['desc']);
+        }
+    },
+    mutations: {
+        set_hits: function set_hits(state, _ref) {
+            var object_batches = _ref.object_batches,
+                data_batches = _ref.data_batches,
+                use_sandbox = _ref.use_sandbox;
+
+            var object_hits = null;
+            if (use_sandbox) {
+                object_hits = state.object_hits_sandbox;
+            } else {
+                object_hits = state.object_hits;
+            }
+
+            _lodash2.default.forEach(data_batches, function (data_batch) {
+                var id_batch = data_batch.id;
+                var batch = object_batches[id_batch];
+
+                _lodash2.default.forEach(data_batch.hits, function (data_hit) {
+                    data_hit.batch = batch;
+                    var hit = new _hit2.default(data_hit);
+
+                    _vue2.default.set(object_hits, hit.id, hit);
+
+                    _vue2.default.set(batch.hits, batch.hits.length, hit);
+                });
+            });
+        }
+    },
+    actions: {}
+};
+},{"babel-runtime/core-js/object/keys":"../../../../../node_modules/babel-runtime/core-js/object/keys.js","vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","vue":"../../../../../node_modules/vue/dist/vue.common.js","axios":"../../../../../node_modules/axios/index.js","vue-axios":"../../../../../node_modules/vue-axios/dist/vue-axios.min.js","lodash":"../../../../../node_modules/lodash/lodash.js","../../classes/hit.js":"classes/hit.js","vue-cookies":"../../../../../node_modules/vue-cookies/vue-cookies.js"}],"store/modules/keywords.js":[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -82232,6 +82681,8 @@ var _workers = require('./modules/workers.js');
 
 var _batches = require('./modules/batches.js');
 
+var _hits = require('./modules/hits.js');
+
 var _keywords = require('./modules/keywords.js');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -82249,6 +82700,7 @@ var store = exports.store = new _vuex2.default.Store({
         moduleQualifications: _qualifications.moduleQualifications,
         moduleWorkers: _workers.moduleWorkers,
         moduleBatches: _batches.moduleBatches,
+        moduleHITs: _hits.moduleHITs,
         moduleKeywords: _keywords.moduleKeywords
     },
     state: {
@@ -82481,7 +82933,7 @@ var store = exports.store = new _vuex2.default.Store({
         }()
     }
 });
-},{"babel-runtime/core-js/json/stringify":"../../../../../node_modules/babel-runtime/core-js/json/stringify.js","babel-runtime/regenerator":"../../../../../node_modules/babel-runtime/regenerator/index.js","babel-runtime/helpers/asyncToGenerator":"../../../../../node_modules/babel-runtime/helpers/asyncToGenerator.js","vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","vue":"../../../../../node_modules/vue/dist/vue.common.js","axios":"../../../../../node_modules/axios/index.js","vue-axios":"../../../../../node_modules/vue-axios/dist/vue-axios.min.js","lodash":"../../../../../node_modules/lodash/lodash.js","vue-cookies":"../../../../../node_modules/vue-cookies/vue-cookies.js","./modules/projects.js":"store/modules/projects.js","./modules/money.js":"store/modules/money.js","./modules/qualifications.js":"store/modules/qualifications.js","./modules/workers.js":"store/modules/workers.js","./modules/batches.js":"store/modules/batches.js","./modules/keywords.js":"store/modules/keywords.js"}],"../../../../../node_modules/material-design-icons-iconfont/dist/material-design-icons.css":[function(require,module,exports) {
+},{"babel-runtime/core-js/json/stringify":"../../../../../node_modules/babel-runtime/core-js/json/stringify.js","babel-runtime/regenerator":"../../../../../node_modules/babel-runtime/regenerator/index.js","babel-runtime/helpers/asyncToGenerator":"../../../../../node_modules/babel-runtime/helpers/asyncToGenerator.js","vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","vue":"../../../../../node_modules/vue/dist/vue.common.js","axios":"../../../../../node_modules/axios/index.js","vue-axios":"../../../../../node_modules/vue-axios/dist/vue-axios.min.js","lodash":"../../../../../node_modules/lodash/lodash.js","vue-cookies":"../../../../../node_modules/vue-cookies/vue-cookies.js","./modules/projects.js":"store/modules/projects.js","./modules/money.js":"store/modules/money.js","./modules/qualifications.js":"store/modules/qualifications.js","./modules/workers.js":"store/modules/workers.js","./modules/batches.js":"store/modules/batches.js","./modules/hits.js":"store/modules/hits.js","./modules/keywords.js":"store/modules/keywords.js"}],"../../../../../node_modules/material-design-icons-iconfont/dist/material-design-icons.css":[function(require,module,exports) {
 
         var reloadCSS = require('_css_loader');
         module.hot.dispose(reloadCSS);
@@ -82527,6 +82979,10 @@ var _app_batches = require('./components/batches/app_batches.vue');
 
 var _app_batches2 = _interopRequireDefault(_app_batches);
 
+var _app_hits = require('./components/hits/app_hits.vue');
+
+var _app_hits2 = _interopRequireDefault(_app_hits);
+
 var _AppFinances = require('./components/finances/AppFinances.vue');
 
 var _AppFinances2 = _interopRequireDefault(_AppFinances);
@@ -82555,8 +83011,8 @@ require('vuetify/dist/vuetify.min.css');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// import Vue from 'vue/dist/vue.common';
-_vue2.default.use(_vuetify2.default);
+_vue2.default.use(_vuetify2.default); // import Vue from 'vue/dist/vue.common';
+
 _vue2.default.use(_vueRouter2.default);
 _vue2.default.use(_vuetifyUploadButton2.default);
 _vue2.default.use(_vuelidate2.default);
@@ -82572,6 +83028,14 @@ var routes = [{
 	path: '/projects/:slug_project/batches',
 	name: 'batches',
 	component: _app_batches2.default
+}, {
+	path: '/projects/:slug_project/hits',
+	name: 'hits',
+	component: _app_hits2.default
+}, {
+	path: '/projects/:slug_project/hits/:id_hit',
+	name: 'hit',
+	component: _app_hits2.default
 }, {
 	path: '/projects/:slug_project/finances',
 	name: 'finances',
@@ -82619,7 +83083,7 @@ new _vue2.default({
 		return h(_App2.default);
 	}
 });
-},{"vue":"../../../../../node_modules/vue/dist/vue.common.js","vue-router":"../../../../../node_modules/vue-router/dist/vue-router.esm.js","vuetify":"../../../../../node_modules/vuetify/dist/vuetify.js","vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","vuelidate":"../../../../../node_modules/vuelidate/lib/index.js","./App.vue":"App.vue","./components/dashboard/app_dashboard.vue":"components/dashboard/app_dashboard.vue","./components/batches/app_batches.vue":"components/batches/app_batches.vue","./components/finances/AppFinances.vue":"components/finances/AppFinances.vue","./components/qualifications/AppQualifications.vue":"components/qualifications/AppQualifications.vue","./components/workers/AppWorkers.vue":"components/workers/AppWorkers.vue","./components/settings_project/app_settings_project.vue":"components/settings_project/app_settings_project.vue","./store/index.js":"store/index.js","vuetify-upload-button":"../../../../../node_modules/vuetify-upload-button/dist/vuetify-upload-button.js","material-design-icons-iconfont/dist/material-design-icons.css":"../../../../../node_modules/material-design-icons-iconfont/dist/material-design-icons.css","vuetify/dist/vuetify.min.css":"../../../../../node_modules/vuetify/dist/vuetify.min.css"}],"../../../../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"vue":"../../../../../node_modules/vue/dist/vue.common.js","vue-router":"../../../../../node_modules/vue-router/dist/vue-router.esm.js","vuetify":"../../../../../node_modules/vuetify/dist/vuetify.js","vuex":"../../../../../node_modules/vuex/dist/vuex.esm.js","vuelidate":"../../../../../node_modules/vuelidate/lib/index.js","./App.vue":"App.vue","./components/dashboard/app_dashboard.vue":"components/dashboard/app_dashboard.vue","./components/batches/app_batches.vue":"components/batches/app_batches.vue","./components/hits/app_hits.vue":"components/hits/app_hits.vue","./components/finances/AppFinances.vue":"components/finances/AppFinances.vue","./components/qualifications/AppQualifications.vue":"components/qualifications/AppQualifications.vue","./components/workers/AppWorkers.vue":"components/workers/AppWorkers.vue","./components/settings_project/app_settings_project.vue":"components/settings_project/app_settings_project.vue","./store/index.js":"store/index.js","vuetify-upload-button":"../../../../../node_modules/vuetify-upload-button/dist/vuetify-upload-button.js","material-design-icons-iconfont/dist/material-design-icons.css":"../../../../../node_modules/material-design-icons-iconfont/dist/material-design-icons.css","vuetify/dist/vuetify.min.css":"../../../../../node_modules/vuetify/dist/vuetify.min.css"}],"../../../../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 
@@ -82648,7 +83112,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = '' || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + '40435' + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '45471' + '/');
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
 

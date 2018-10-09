@@ -56,7 +56,7 @@ class Serializer_Batch(serializers.ModelSerializer):
             # 'template': {
             #     'source': 'template_worker',
             # },
-            # 'data_csv': {'required': False},
+            'name': {'required': False},
             # 'title': {'required': False},
             # 'description': {'required': False},
             # 'keywords': {'required': False},

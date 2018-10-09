@@ -7,6 +7,7 @@ import Vuelidate from 'vuelidate'
 import App from './App.vue';
 import app_dashboard from './components/dashboard/app_dashboard.vue';
 import app_batches from './components/batches/app_batches.vue';
+import app_hits from './components/hits/app_hits.vue';
 import AppFinances from './components/finances/AppFinances.vue';
 import AppQualifications from './components/qualifications/AppQualifications.vue';
 import AppWorkers from './components/workers/AppWorkers.vue';
@@ -36,6 +37,16 @@ const routes = [
 		path: '/projects/:slug_project/batches',
 		name: 'batches',
 		component: app_batches,
+	},
+	{ 
+		path: '/projects/:slug_project/hits',
+		name: 'hits',
+		component: app_hits,
+	},
+	{ 
+		path: '/projects/:slug_project/hits/:id_hit',
+		name: 'hit',
+		component: app_hits,
 	},
 	{ 
 		path: '/projects/:slug_project/finances', 

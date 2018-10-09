@@ -13,7 +13,7 @@
 </template>
 <script>
     import { mapState, mapActions, mapGetters } from 'vuex';
-    import ComponentListHits from './component_list_hits.vue';
+    import ComponentListHits from '../../hits/list/component_list_hits.vue';
 
 export default {
     name: 'component-item-batch',

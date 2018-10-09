@@ -20,6 +20,10 @@ export default {
             required: true,
             type: Boolean,
         },
+        name_batch: {
+            required: true,
+            type: String|undefined,
+        },
         is_creating_batch: {
 
         },
@@ -47,6 +51,7 @@ export default {
 			console.log('adding batch')
 
 			this.add_batch({
+                name: this.name_batch,
 				settings_batch: this.settings_batch_current,
 				data_csv: this.object_csv_parsed.data,
 			}).then(() => {

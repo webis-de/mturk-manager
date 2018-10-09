@@ -64,6 +64,7 @@
                                 class="shrink"
                                 v-bind:settings_batch_current="settings_batch_current"
                                 v-bind:is_invalid_settings_batch="is_invalid_settings_batch"
+                                v-bind:name_batch="name"
                                 v-bind:is_creating_batch.sync="is_creating_batch"
                             ></component-submit-batch>
                             <v-flex>
@@ -201,7 +202,7 @@ export default {
     },
     validations: {
         name: {
-            required
+            // required
         },
     },
     // created: function() {

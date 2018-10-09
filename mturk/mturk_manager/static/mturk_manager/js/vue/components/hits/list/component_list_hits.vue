@@ -6,7 +6,7 @@
             select-all
             v-bind:pagination.sync="pagination"
             v-bind:headers="list_headers"
-            v-bind:items="list_hits"
+            v-bind:items="list_hits_processed"
             v-bind:search="search"
             v-model="hits_selected"
             item-key="id"
@@ -46,6 +46,7 @@
             >
                 <component-item-hit
                     v-bind:props="props"
+                    v-bind:show_links="show_links"
                 >
                 </component-item-hit>
             </template>
@@ -68,8 +69,14 @@ export default {
     name: 'component-list-hits',
     props: {
         list_hits: {
-            required: true,
-        }
+            required: false,
+            type: Array|undefined,
+        },
+        show_links: {
+            required: false,
+            type: Boolean,
+            default: true,
+        },
     },
     data () {
         return {
@@ -83,28 +90,40 @@ export default {
             //     QualificationTypeStatus: 'Active',
             // }),
 
-            list_headers: [
+        }
+    },
+    computed: {
+        list_headers() {
+            const list_headers = [
                 {
                     text: 'Name',
                     value: 'id_hit',
                 },
-                // {
-                //     text: '#HITs',
-                //     value: 'count_hits',
-                //     align: 'center',
-                // },
-                // {
-                //     text: '#Assignments Per HIT',
-                //     value: 'count_assignments',
-                //     align: 'center',
-                // },
-            ],
-        }
-    },
-    computed: {
+            ];
+
+            if(this.show_links == true) {
+                list_headers.push({
+                    text: 'Link',
+                    value: '',
+                });
+            }
+
+            return list_headers;
+        },
+        list_hits_processed() {
+            if(this.list_hits != undefined)
+            {
+                return this.list_hits;
+            } else {
+                return this.list_hits_all;
+            }
+        },
         // ...mapGetters('moduleProjects', {
         //     'project_current': 'get_project_current',
         // }),
+        ...mapGetters('moduleHITs', {
+            'list_hits_all': 'list_hits',
+        }),
     },
     methods: {
         // ...mapActions('moduleWorkers', {

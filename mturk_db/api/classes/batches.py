@@ -1,9 +1,9 @@
 from api.classes.projects import Manager_Projects
-from api.models import Batch, Template_Worker, HIT, Settings_Batch
+from api.models import Batch, Template_Worker, HIT, Assignment, Settings_Batch, Worker
 # from viewer.models import m_Tag
 # from api.views import code_shared, project
 # from api.views.project import glob_prefix_name_tag_batch, glob_prefix_name_tag_worker, glob_prefix_name_tag_hit
-import uuid, json, datetime
+import uuid, json, datetime, xmltodict
 from botocore.exceptions import ClientError
 from django.db.models import F, Value, Count, Q, Sum, IntegerField, ExpressionWrapper
 
@@ -40,7 +40,10 @@ class Manager_Batches(object):
             dictionary_settings_batch['template_worker'].template = cls.preprocess_template_request(database_object_project, dictionary_settings_batch['template_worker'].template)
 
         # print(data['template_worker'].template)
-        name_batch = uuid.uuid4().hex
+        try:
+            name_batch = data['name']
+        except KeyError:
+            name_batch = uuid.uuid4().hex
 
         settings_batch = Settings_Batch.objects.create(
             project=database_object_project,
@@ -80,19 +83,19 @@ class Manager_Batches(object):
         # return database_object_batch
         for index, dictionary_hit in enumerate(data['data_csv']):
             try:
-                # mturk_obj_hit = client.create_hit(
-                #     Keywords=','.join([keyword['text'] for keyword in dictionary_settings_batch['keywords']]),
-                #     MaxAssignments=dictionary_settings_batch['count_assignments'],
-                #     LifetimeInSeconds=dictionary_settings_batch['lifetime'],
-                #     AssignmentDurationInSeconds=dictionary_settings_batch['duration'],
-                #     AutoApprovalDelayInSeconds=1209600,
-                #     Reward=dictionary_settings_batch['reward'],
-                #     Title=title,
-                #     Description=dictionary_settings_batch['description'],
-                #     Question=cls.create_question(dictionary_settings_batch['template_worker'].template, dictionary_settings_batch['template_worker'].height_frame, dictionary_hit),
-                #     QualificationRequirements=[]
-                #     # QualificationRequirements=cls.get_qualifications(data)
-                # )
+                mturk_obj_hit = client.create_hit(
+                    Keywords=','.join([keyword['text'] for keyword in dictionary_settings_batch['keywords']]),
+                    MaxAssignments=dictionary_settings_batch['count_assignments'],
+                    LifetimeInSeconds=dictionary_settings_batch['lifetime'],
+                    AssignmentDurationInSeconds=dictionary_settings_batch['duration'],
+                    AutoApprovalDelayInSeconds=1209600,
+                    Reward=dictionary_settings_batch['reward'],
+                    Title=title,
+                    Description=dictionary_settings_batch['description'],
+                    Question=cls.create_question(dictionary_settings_batch['template_worker'].template, dictionary_settings_batch['template_worker'].height_frame, dictionary_hit),
+                    QualificationRequirements=[]
+                    # QualificationRequirements=cls.get_qualifications(data)
+                )
                 pass
             except ClientError as e:
                 print(e)
@@ -115,22 +118,22 @@ class Manager_Batches(object):
             # )
 
             # print(mturk_obj_hit)
-            # db_obj_hit = HIT.objects.create(
-            #     # id_hit=str(random.randint(0, 9999999)),
-            #     id_hit=mturk_obj_hit['HIT']['HITId'],
-            #     batch=database_object_batch,
-            #     parameters=json.dumps(dictionary_hit),
-            #     datetime_expiration=mturk_obj_hit['HIT']['Expiration'],
-            #     datetime_creation=mturk_obj_hit['HIT']['CreationTime'],
-            # )
             db_obj_hit = HIT.objects.create(
                 # id_hit=str(random.randint(0, 9999999)),
-                id_hit=uuid.uuid4().hex,
+                id_hit=mturk_obj_hit['HIT']['HITId'],
                 batch=database_object_batch,
                 parameters=json.dumps(dictionary_hit),
-                datetime_expiration=datetime.datetime.now(),
-                datetime_creation=datetime.datetime.now(),
+                datetime_expiration=mturk_obj_hit['HIT']['Expiration'],
+                datetime_creation=mturk_obj_hit['HIT']['CreationTime'],
             )
+            # db_obj_hit = HIT.objects.create(
+            #     # id_hit=str(random.randint(0, 9999999)),
+            #     id_hit=uuid.uuid4().hex,
+            #     batch=database_object_batch,
+            #     parameters=json.dumps(dictionary_hit),
+            #     datetime_expiration=datetime.datetime.now(),
+            #     datetime_creation=datetime.datetime.now(),
+            # )
 
         # db_obj_tag = m_Tag.objects.get_or_create(
         #     name=project.glob_prefix_name_tag_batch+database_object_batch.name,
@@ -279,15 +282,56 @@ class Manager_Batches(object):
     def sync_mturk(database_object_project, use_sandbox):
         batches = Batch.objects.filter(project=database_object_project)
 
-        for db_obj_hit in HIT.objects.annotate(
+        set_id_assignments_available = set([assignment.id_assignment for assignment in Assignment.objects.filter(hit__batch__project=database_object_project, hit__batch__use_sandbox=use_sandbox)])
+        print(set_id_assignments_available)
+        dictionary_workers_available = {worker.id_worker: worker for worker in Worker.objects.all()}
+        # dictionary_workers_available = {worker.id_worker: worker for worker in Worker.objects.filter(project=database_object_project)}
+
+        for hit in HIT.objects.annotate(
             count_assignments_current=Count('assignments')
         ).filter(
             batch__use_sandbox=use_sandbox,
             batch__project=database_object_project,
             count_assignments_current__lt=F('batch__settings_batch__count_assignments')
         ).select_related('batch'):
-            print('test')
+            # print(hit.id_hit)
+            # print(hit.count_assignments_current)
+            paginator = Manager_Projects.get_mturk_api(use_sandbox).get_paginator('list_assignments_for_hit')
 
+            response_iterator = paginator.paginate(
+                HITId=hit.id_hit,
+                AssignmentStatuses=[
+                    'Submitted',
+                ],
+                PaginationConfig={
+                    'PageSize': 100,
+                }
+            )
+
+            for iterator in response_iterator:
+                for assignment in iterator['Assignments']:
+                    id_assignment = assignment['AssignmentId']
+                    id_worker = assignment['WorkerId']
+                    print(id_assignment)
+                    # print(id_worker)
+                    # print(iterator)
+
+                    if not id_assignment in set_id_assignments_available:
+                        try:
+                            worker = dictionary_workers_available[id_worker]
+                        except KeyError:
+                            worker = Worker.objects.create(
+                                name=id_worker,
+                                project=db_obj_project,
+                            )
+                            dictionary_workers_available[id_worker] = worker
+
+                        assignment = Assignment.objects.create(
+                            id_assignment=id_assignment,
+                            hit=hit,
+                            worker=worker,
+                            answer=json.dumps(xmltodict.parse(assignment['Answer'])),
+                        )
 
         print(batches)
         print(batches.count())

@@ -13,6 +13,25 @@
         <td class="text-xs-center">
             {{ props.item.id_hit }}
         </td>
+        <td 
+            class="text-xs-center"
+            v-if="show_links == true"
+        >
+            <v-btn
+                slot="activator" 
+                icon
+                small
+                v-bind:to="{
+                    name: 'hit', 
+                    params: { 
+                        slug_project: $route.params.slug_project, 
+                        id_hit: '32', 
+                    } 
+                }"
+            >
+                <v-icon>link</v-icon>
+            </v-btn>
+        </td>
         <!-- <td class="text-xs-center">
             {{ props.item.hits.length }}
         </td>
@@ -30,7 +49,12 @@ export default {
         props: {
             type: Object,
             required: true,
-        }
+        },
+        show_links: {
+            required: false,
+            type: Boolean,
+            default: true,
+        },
     },
     data () {
         return {
