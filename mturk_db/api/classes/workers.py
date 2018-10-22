@@ -2,11 +2,151 @@ from api.models import Worker, Worker_Block_Project, Count_Assignments_Worker_Pr
 from api.classes.projects import Manager_Projects
 from api.enums import STATUS_BLOCK
 import botocore
+from django.db.models import F, Q, When, Case, BooleanField, IntegerField, Count, Value, Subquery, OuterRef
 # from django.db.models import F, Value, Count, Q, Sum, IntegerField, ExpressionWrapper
 # from mturk_manager.classes import Manager_Qualifications
 
 class Manager_Workers(object):
+    @classmethod
+    def sync_workers_by_ids(cls, database_object_project, data, use_sandbox=True):
+        foo = Count_Assignments_Worker_Project.objects.filter(
+            worker=OuterRef('pk'),
+            # project=database_object_project,
+        )
 
+        return Worker.objects.filter(
+            id__in=data
+        ).annotate(
+            count_worker_blocks=Count('worker_blocks_project', filter=Q(worker_blocks_project__project=database_object_project)),
+            is_blocked_soft=Case(
+                When(count_worker_blocks=1, then=Value(True)),
+                default=Value(False),
+                output_field=BooleanField(),
+            ),
+            count_assignments_limit=Subquery(foo.filter(project=database_object_project).values('count_assignments')[:1]),
+            # count_assignments_limit=Q('count_assignments__count_assignments'),
+            # count_assignments_limit=Case(
+            #     When(count_assignments__project=database_object_project, then=Value(1)),
+            #     default=Value(None),
+            #     output_field=IntegerField(),
+            # )
+        )
+
+    @classmethod
+    def update(cls, validated_data, instance):
+        for key, value in validated_data.items():
+            print(key)
+            if key == 'is_blocked_soft':
+                instance.is_blocked_soft = cls.update_status_block_soft(
+                    is_blocked=value, 
+                    instance=instance, 
+                    database_object_project=validated_data['database_object_project'], 
+                    use_sandbox=validated_data['use_sandbox'],
+                )
+            elif key == 'is_blocked_hard':
+                instance.is_blocked_hard = cls.update_status_block_hard(
+                    is_blocked=value, 
+                    instance=instance, 
+                    database_object_project=validated_data['database_object_project'], 
+                    use_sandbox=validated_data['use_sandbox'],
+                )
+            elif key == 'count_assignments_limit':
+                instance.count_assignments_limit = cls.update_count_assignments(
+                    count_assignments_limit=value, 
+                    instance=instance, 
+                    database_object_project=validated_data['database_object_project'], 
+                    use_sandbox=validated_data['use_sandbox'],
+                )
+            elif hasattr(instance, key):
+                setattr(instance, key, value)
+
+        # instance.is_blocked = validated_data.get('is_blocked')
+        instance.save()
+        return instance
+
+    @classmethod
+    def update_count_assignments(cls, count_assignments_limit, instance, database_object_project, use_sandbox):
+        count_assignments_worker_project, was_created = Count_Assignments_Worker_Project.objects.get_or_create(
+            project=database_object_project,
+            worker=instance,
+            defaults={
+                'count_assignments': count_assignments_limit, 
+            }
+        )
+
+        if not was_created:
+            count_assignments_worker_project.count_assignments = count_assignments_limit
+            count_assignments_worker_project.save()
+        
+        return count_assignments_limit
+
+    @classmethod
+    def update_status_block_hard(cls, is_blocked, instance, database_object_project, use_sandbox):
+        client = Manager_Projects.get_mturk_api(use_sandbox)
+
+        if is_blocked:
+            response = client.create_worker_block(
+                WorkerId=instance.id_worker,
+                Reason='unknown',
+            )
+        else:
+            response = client.delete_worker_block(
+                WorkerId=instance.id_worker,
+                Reason='unknown',
+            )
+        return is_blocked
+    
+    @classmethod
+    def get_blocks_hard(cls, database_object_project, data, use_sandbox):
+        client = Manager_Projects.get_mturk_api(use_sandbox)
+
+        paginator = client.get_paginator('list_worker_blocks')
+
+        response_iterator = paginator.paginate(
+            PaginationConfig={
+                'PageSize': 100,
+            }
+        )
+
+        set_workers_blocked_hard = set()
+
+        for iterator in response_iterator:
+            for block in iterator['WorkerBlocks']:
+                set_workers_blocked_hard.add(block['WorkerId'])
+
+        return Worker.objects.filter(id_worker__in=set_workers_blocked_hard).values_list('id', flat=True)
+
+
+    @classmethod
+    def update_status_block_soft(cls, is_blocked, instance, database_object_project, use_sandbox):
+        if is_blocked:
+            cls.add_block_soft_for_worker(instance, database_object_project, use_sandbox)
+        else:
+            cls.remove_block_soft_for_worker(instance, database_object_project, use_sandbox)
+
+        return is_blocked
+
+    @classmethod
+    def add_block_soft_for_worker(cls, instance, database_object_project, use_sandbox):
+        # object_worker = Worker.objects.get_or_create(id_worker=id_worker)[0]
+
+        object_worker_block_project = Worker_Block_Project.objects.get_or_create(
+            # is_sandbox=use_sandbox,
+            project=database_object_project,
+            worker=instance,
+        )[0]
+
+    @classmethod
+    def remove_block_soft_for_worker(cls, instance, database_object_project, use_sandbox):
+        try:
+            # object_worker = Worker.objects.get_or_create(id_worker=id_worker)[0]
+            object_worker_block_project = Worker_Block_Project.objects.filter(
+                # is_sandbox=use_sandbox,
+                project=database_object_project,
+                worker=instance,
+            ).delete()
+        except:
+            pass
     # @classmethod
     # def get_all(cls, database_object_project, use_sandbox=True):
 
@@ -150,50 +290,38 @@ class Manager_Workers(object):
         }
 
     @classmethod
-    def add_block_soft_for_worker(cls, id_worker, database_object_project, use_sandbox):
-        object_worker = Worker.objects.get_or_create(id_worker=id_worker)[0]
-
-        object_worker_block_project = Worker_Block_Project.objects.get_or_create(
-            is_sandbox=use_sandbox,
-            fk_project=database_object_project,
-            fk_worker=object_worker,
-        )[0]
-
-    @classmethod
-    def remove_block_soft_for_worker(cls, id_worker, database_object_project, use_sandbox):
-        try:
-            object_worker = Worker.objects.get_or_create(id_worker=id_worker)[0]
-            object_worker_block_project = Worker_Block_Project.objects.filter(
-                is_sandbox=use_sandbox,
-                fk_project=database_object_project,
-                fk_worker=object_worker,
-            ).delete()
-        except:
-            pass
-
-    @classmethod
     def get_status_block_for_worker(cls, database_object_project, id_worker):
         is_blocked = False
 
         if Worker_Block_Project.objects.filter(
-                fk_project=database_object_project,
-                fk_worker__id_worker=id_worker,
+                project=database_object_project,
+                worker__id_worker=id_worker,
             ).exists():
             is_blocked = True
         else:
-            if database_object_project.count_assignments_max_per_worker > -1:
+            try:
+                worker = Worker.objects.get(id_worker=id_worker)
+            except Worker.DoesNotExist:
+                worker = None
 
-                queryset = Count_Assignments_Worker_Project.objects.filter(
-                    fk_project=database_object_project,
-                    fk_worker__id_worker=id_worker,
-                )
+            if worker != None and worker.is_blocked_global:
+                is_blocked = True
+            else:
+                # if a limit for this batch is set
+                if database_object_project.count_assignments_max_per_worker != None:
 
-                count_assignments = 0
+                    queryset = Count_Assignments_Worker_Project.objects.filter(
+                        project=database_object_project,
+                        worker__id_worker=id_worker,
+                    )
 
-                if len(queryset) == 1:
-                    count_assignments = queryset[0].count_assignments
+                    count_assignments = 0
 
-                is_blocked = count_assignments >= database_object_project.count_assignments_max_per_worker
+                    if len(queryset) == 1:
+                        count_assignments = queryset[0].count_assignments
+
+                    # is never true if limit of worker is -1
+                    is_blocked = count_assignments >= database_object_project.count_assignments_max_per_worker
 
         return {
             # 'is_blocked': True,
@@ -232,11 +360,13 @@ class Manager_Workers(object):
             id_assignment=id_assignment,
         )
 
+        # only if first request for this assignment
         if was_created_assignment_worker:
             worker = Worker.objects.get_or_create(id_worker=id_worker)[0]
+
             count_assignments_worker_project, was_created = Count_Assignments_Worker_Project.objects.get_or_create(
-                fk_project=database_object_project,
-                fk_worker=worker,
+                project=database_object_project,
+                worker=worker,
                 defaults={
                     'count_assignments': 1, 
                 }
@@ -256,14 +386,14 @@ class Manager_Workers(object):
         worker = Worker.objects.get_or_create(id_worker=id_worker)[0]
 
         count_rows = Count_Assignments_Worker_Project.objects.filter(
-            fk_project=database_object_project,
-            fk_worker=worker,
+            project=database_object_project,
+            worker=worker,
         ).update(count_assignments=value)
 
         if count_rows == 0:
             Count_Assignments_Worker_Project.objects.create(
-                fk_project=database_object_project,
-                fk_worker=worker,
+                project=database_object_project,
+                worker=worker,
                 count_assignments=value, 
             )
 

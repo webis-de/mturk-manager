@@ -15,7 +15,7 @@
     "lodash": "^4.17.10",
     "material-design-icons-iconfont": "^3.0.3",
     "papaparse": "^4.4.0",
-    "parcel-bundler": "^1.8.1",
+    "parcel-bundler": "1.8.1",
     "upload-button": "^0.1.0",
     "v-runtime-template": "^1.5.1",
     "vue": "^2.5.16",

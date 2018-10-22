@@ -48,6 +48,7 @@ class Serializer_Project(serializers.ModelSerializer):
             'slug', 
             'version',
             'settings_batch_default',
+            'count_assignments_max_per_worker',
             # 'workers',
             # 'title',
             # 'description',
@@ -83,33 +84,33 @@ class Serializer_Project(serializers.ModelSerializer):
 
         return project
 
-    def update(self, instance, validated_data):
-        print('validated_data')
-        print(validated_data)
-        print('validated_data')
+    # def update(self, instance, validated_data):
+    #     print('validated_data')
+    #     print(validated_data)
+    #     print('validated_data')
 
-        for key, value in validated_data.items():
-            if key == 'keywords':
-                print(value)
-                instance.keywords.clear()
-                for keyword in value:
-                    try:
-                        instance.keywords.add(keyword['id'])
-                    except KeyError:
-                        keyword_new = Keyword.objects.get_or_create(text=keyword['text'])[0]
-                        instance.keywords.add(keyword_new)
-            elif key == 'count_assignments_max_per_worker':
-                response = Manager_Global_DB.set_count_assignments_max_per_worker(instance.slug, value)
+    #     for key, value in validated_data.items():
+    #         if key == 'keywords':
+    #             print(value)
+    #             instance.keywords.clear()
+    #             for keyword in value:
+    #                 try:
+    #                     instance.keywords.add(keyword['id'])
+    #                 except KeyError:
+    #                     keyword_new = Keyword.objects.get_or_create(text=keyword['text'])[0]
+    #                     instance.keywords.add(keyword_new)
+    #         elif key == 'count_assignments_max_per_worker':
+    #             response = Manager_Global_DB.set_count_assignments_max_per_worker(instance.slug, value)
 
-            else:
-                print('key')
-                print(key)
-                print(value)
-                setattr(instance, key, value)
+    #         else:
+    #             print('key')
+    #             print(key)
+    #             print(value)
+    #             setattr(instance, key, value)
 
-        instance.save()
+    #     instance.save()
 
-        return instance
+    #     return instance
 
 
     # def get_count_assignments_max_per_worker(self, obj):

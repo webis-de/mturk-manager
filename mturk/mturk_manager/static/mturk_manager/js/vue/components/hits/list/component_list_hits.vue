@@ -2,6 +2,7 @@
 <v-layout wrap>
     <v-flex>
         <!-- {{list_batches}} -->
+        <h1 class="headline">HITs</h1>
         <v-data-table
             select-all
             v-bind:pagination.sync="pagination"
@@ -10,7 +11,7 @@
             v-bind:search="search"
             v-model="hits_selected"
             item-key="id"
-
+            class="my-3"
         >
             <template slot="headers" slot-scope="props">
                 <tr id="row_header">
@@ -99,11 +100,20 @@ export default {
                     text: 'Name',
                     value: 'id_hit',
                 },
+                {
+                    text: 'Batch',
+                    value: 'batch',
+                },
+                {
+                    text: 'Progress',
+                    value: 'progress',
+                    align: 'center',
+                },
             ];
 
             if(this.show_links == true) {
                 list_headers.push({
-                    text: 'Link',
+                    text: '',
                     value: '',
                 });
             }

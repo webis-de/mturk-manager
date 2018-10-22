@@ -12,7 +12,7 @@
                 v-for="item_menu in list_items_menu"
                 v-bind:key="item_menu.name"
                 v-bind:to="{ name: item_menu.name }"
-                exact
+                v-bind:exact="item_menu.name == 'dashboard'? true:false"
             >
                 <v-list-tile-action>
                     <v-icon>{{ item_menu.icon }}</v-icon>
@@ -64,6 +64,11 @@ export default {
                     name: 'hits',
                     icon: 'notes',
                     // icon: 'ballot',
+                },
+                {
+                    label: 'Assignments',
+                    name: 'assignments',
+                    icon: 'notes',
                 },
                 {
                     label: 'Finances',

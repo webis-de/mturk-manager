@@ -1,5 +1,5 @@
 <template>
-        <span>
+        <div>
             <h1 class="headline">Batches</h1>
             <!-- {{list_batches}} -->
             <v-data-table
@@ -10,7 +10,7 @@
                 v-bind:search="search"
                 v-model="batches_selected"
                 item-key="id"
-
+                class="my-3"
             >
                 <template slot="headers" slot-scope="props">
                     <tr id="row_header">
@@ -28,14 +28,16 @@
                             v-bind:key="header.value"
                             v-bind:width="header.width"
                             v-bind:class="[
-                                'column sortable', 
+                                'column',
+                                {sortable: header.sortable != false}, 
                                 pagination.descending ? 'desc' : 'asc', 
                                 header.value === pagination.sortBy ? 'active' : ''
                             ]"
-                            v-on:click="changeSort(header.value)"
+                            v-on="header.sortable != false ? {click: () => changeSort(header.value)} : {}"
                         >
-                            <v-icon small>arrow_upward</v-icon>
+                            <v-icon small v-if="header.sortable != false">arrow_upward</v-icon>
                             {{ header.text }}
+                            <!-- v-on:click="changeSort(header.value)" -->
                         </th>
                     </tr>
                 </template>
@@ -49,7 +51,7 @@
                     >
                     </component-item-batch>
                 </template>
-                <template 
+                <!-- <template 
                     slot="expand" 
                     slot-scope="props"
                 >
@@ -59,16 +61,15 @@
                         >
                         </component-item-batch-details>
                     </v-card>
-                </template>
+                </template> -->
             </v-data-table>
             <!-- {{list_workers}} -->
-    </span>
+    </div>
 </template>
 <script>
     import { mapState, mapActions, mapGetters } from 'vuex';
     // import { Policy } from '../../store/modules/policies.js';
     import ComponentItemBatch from './component_item_batch.vue';
-    import ComponentItemBatchDetails from './component_item_batch_details.vue';
     // import ComponentShowMoneySpent from './component-show-money-spent.vue';
     // import ComponentShowBatches from './component-show-batches.vue';
     import table from '../../../mixins/table';
@@ -96,13 +97,23 @@ export default {
                 },
                 {
                     text: '#HITs',
-                    value: 'count_hits',
+                    value: 'hits.length',
                     align: 'center',
                 },
                 {
                     text: '#Assignments Per HIT',
-                    value: 'count_assignments',
+                    value: 'settings_batch.count_assignments',
                     align: 'center',
+                },
+                {
+                    text: 'Progress',
+                    value: 'progress',
+                    align: 'center',
+                },
+                {
+                    text: '',
+                    value: 'actions',
+                    sortable: false,
                 },
             ],
         }
@@ -131,7 +142,6 @@ export default {
 
     components: {
         ComponentItemBatch,
-        ComponentItemBatchDetails,
     },
 }
 </script>

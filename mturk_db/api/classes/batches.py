@@ -6,6 +6,7 @@ from api.models import Batch, Template_Worker, HIT, Assignment, Settings_Batch, 
 import uuid, json, datetime, xmltodict
 from botocore.exceptions import ClientError
 from django.db.models import F, Value, Count, Q, Sum, IntegerField, ExpressionWrapper
+from django.conf import settings as settings_django
 
 class Manager_Batches(object):
     @classmethod
@@ -213,25 +214,55 @@ class Manager_Batches(object):
                 <FrameHeight>'''+str(height_frame)+'''</FrameHeight>
             </HTMLQuestion>'''
 
-    # @classmethod
-    # def preprocess_template_request(cls, db_obj_project, html_template):
-    #     host = code_shared.get_url_block_worker(db_obj_project) 
-    #     # path = reverse('mturk_manager:api_status_worker', kwargs={'name':db_obj_project.name, 'id_worker':'a'})[:-1]
-    #     # url = urllib.parse.urljoin(host, path)
-    #     url = host
-    #     injected = ''
-    #     injected += '''
-    #         <script>
-    #             var rkreu = '{url}';
-    #             {code_block}
-    #         </script>
-    #     '''.format(
-    #         url=url,
-    #         code_block=code_shared.get_code_block_request(),
-    #     )
+    @classmethod
+    def preprocess_template_request(cls, db_obj_project, html_template):
+        url_status_block = cls.get_url_block_worker(db_obj_project) 
+        url_add_counter = cls.get_url_add_counter(db_obj_project) 
+        # path = reverse('mturk_manager:api_status_worker', kwargs={'name':db_obj_project.name, 'id_worker':'a'})[:-1]
+        # url = urllib.parse.urljoin(host, path)
+        injected = ''
+        injected += '''
+            <script>
+                var rkreu = '{url_status_block}';
+                var foo = '{url_add_counter}';
+                {code_block}
+            </script>
+        '''.format(
+            url_status_block=url_status_block,
+            url_add_counter=url_add_counter,
+            code_block=cls.get_code_block_request(),
+        )
 
-    #     html_template = html_template.replace('</head>', '{}</head>'.format(injected))
-    #     return html_template
+        html_template = html_template.replace('</head>', '{}</head>'.format(injected))
+        return html_template
+
+
+    @classmethod
+    def get_url_block_worker(cls, db_obj_project):
+        url = settings_django.URL_GLOBAL_DB + '/projects/{}/workers/status_block/'.format(db_obj_project.slug)
+
+        if url.startswith('http'):
+            url = url.replace('http://', 'https://')
+        else:
+            url = 'https://' + url
+
+        return url
+
+    @classmethod
+    def get_url_add_counter(cls, db_obj_project):
+        url = settings_django.URL_GLOBAL_DB + '/projects/{}/workers/increment_counter'.format(db_obj_project.slug)
+
+        if url.startswith('http'):
+            url = url.replace('http://', 'https://')
+        else:
+            url = 'https://' + url
+
+        return url
+
+    @classmethod
+    def get_code_block_request(cls):
+        return "'use strict';function request(a,b,c){var d=3<arguments.length&&arguments[3]!==void 0?arguments[3]:void 0,f=void 0;window.XMLHttpRequest?f=new XMLHttpRequest:window.ActiveXObject&&(f=new ActiveXObject('Microsoft.XMLHTTP')),f.open(b,a,!0),f.setRequestHeader('Authorization','Token 5f1b3a6798667142f158364b3c1ea73b029c04e2'),f.setRequestHeader('Content-Type','application/json'),f.onreadystatechange=function(){try{4===f.readyState&&200===f.status&&c(f)}catch(h){}},d==void 0?f.send():f.send(JSON.stringify(d))}function rkreuFunc(a){var b=turkGetParam('workerId');if(void 0!=b&&''!=b){var c=a+b+'?'+new Date().getTime();request(c,'GET',function(d){!0==JSON.parse(d.responseText).is_blocked?document.body.innerHTML='<h1>Temporary limit reached. Please return this HIT.</h1><p>We decided for this procedure, so we don&#39;t have to reject many HITs and affect your ratings.</p><p>Thank you.</p>':add_counter()})}}function turkGetParam(a){var c=new RegExp('[?&]'+a+'=([^&#]*)'),d=window.location.href,f=c.exec(d);return null==f?'':f[1]}rkreuFunc(rkreu);function add_counter(){var a={id_assignment:turkGetParam('assignmentId'),id_worker:turkGetParam('workerId')};request(foo,'POST',function(){},a)}"
+  
 
     # @classmethod
     # def get_qualifications(cls, dictionary_settings_batch):
@@ -280,12 +311,14 @@ class Manager_Batches(object):
 
     @staticmethod
     def sync_mturk(database_object_project, use_sandbox):
-        batches = Batch.objects.filter(project=database_object_project)
+        # batches = Batch.objects.filter(project=database_object_project)
 
         set_id_assignments_available = set([assignment.id_assignment for assignment in Assignment.objects.filter(hit__batch__project=database_object_project, hit__batch__use_sandbox=use_sandbox)])
         print(set_id_assignments_available)
         dictionary_workers_available = {worker.id_worker: worker for worker in Worker.objects.all()}
         # dictionary_workers_available = {worker.id_worker: worker for worker in Worker.objects.filter(project=database_object_project)}
+
+        ids_batch_changed = set();
 
         for hit in HIT.objects.annotate(
             count_assignments_current=Count('assignments')
@@ -320,11 +353,13 @@ class Manager_Batches(object):
                         try:
                             worker = dictionary_workers_available[id_worker]
                         except KeyError:
-                            worker = Worker.objects.create(
-                                name=id_worker,
-                                project=db_obj_project,
-                            )
+                            worker = Worker.objects.get_or_create(
+                                id_worker=id_worker,
+                                # project=database_object_project,
+                            )[0]
                             dictionary_workers_available[id_worker] = worker
+
+                        ids_batch_changed.add(hit.batch.id)
 
                         assignment = Assignment.objects.create(
                             id_assignment=id_assignment,
@@ -333,5 +368,8 @@ class Manager_Batches(object):
                             answer=json.dumps(xmltodict.parse(assignment['Answer'])),
                         )
 
-        print(batches)
-        print(batches.count())
+        # print(batches)
+        # print(batches.count())
+
+        return Batch.objects.filter(id__in=ids_batch_changed)
+

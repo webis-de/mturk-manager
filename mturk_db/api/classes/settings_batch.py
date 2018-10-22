@@ -26,6 +26,12 @@ class Manager_Settings_Batch(object):
         except KeyError:
             pass
 
+        dictionary_settings = {}
+        try:
+            dictionary_settings['count_assignments_max_per_worker'] = data['count_assignments_max_per_worker']
+        except KeyError:
+            pass
+
         settings_batch = Settings_Batch.objects.create(
             project = data['database_object_project'],
             name=data['name'],
@@ -34,12 +40,12 @@ class Manager_Settings_Batch(object):
             description=data['description'],
             reward=data['reward'],
             count_assignments=data['count_assignments'],
-            count_assignments_max_per_worker=data['count_assignments_max_per_worker'],
             lifetime=data['lifetime'],
             duration=data['duration'],
             template_worker=data['template_worker'],
             block_workers=data['block_workers'],
             has_content_adult=data['has_content_adult'],
+            **dictionary_settings,
             **dictionary_qualifications,
         )
 

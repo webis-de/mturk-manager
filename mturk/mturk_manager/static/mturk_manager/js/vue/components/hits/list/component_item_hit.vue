@@ -1,6 +1,7 @@
 <template>
     <!-- <div>wda</div> -->
     <tr 
+        v-bind:key="hit.id"
         v-on:click="props.expanded = !props.expanded"
     >
         <td>
@@ -11,7 +12,34 @@
             ></v-checkbox>
         </td>
         <td class="text-xs-center">
-            {{ props.item.id_hit }}
+            {{ hit.id_hit }}
+        </td>
+        <td class="text-xs-center">{{ hit.batch.name }}
+            <v-btn
+                slot="activator" 
+                class="my-0"
+                icon
+                small
+                v-bind:to="{
+                    name: 'batch',
+                    params: {
+                        slug_project: $route.params.slug_project, 
+                        id_batch: hit.batch.id,
+                    }
+                }"
+            >
+                <v-icon>info</v-icon>
+            </v-btn>
+        </td>
+        <td 
+            class="text-xs-center"
+        >
+            <component-progress
+                slot="activator"
+                v-bind:progress="hit.progress"
+            >
+                {{ hit.count_assignments_available }}/{{hit.count_assignments_total}} assignment{{hit.count_assignments_total > 1 ? 's' : ''}}
+            </component-progress>
         </td>
         <td 
             class="text-xs-center"
@@ -19,29 +47,32 @@
         >
             <v-btn
                 slot="activator" 
+                class="my-0"
                 icon
                 small
                 v-bind:to="{
                     name: 'hit', 
                     params: { 
                         slug_project: $route.params.slug_project, 
-                        id_hit: '32', 
+                        id_hit: hit.id, 
                     } 
                 }"
             >
-                <v-icon>link</v-icon>
+                <v-icon>info</v-icon>
             </v-btn>
         </td>
         <!-- <td class="text-xs-center">
-            {{ props.item.hits.length }}
+            {{ hit.hits.length }}
         </td>
         <td class="text-xs-center">
-            {{ props.item.count_assignments }}
+            {{ hit.count_assignments }}
         </td> -->
     </tr>
 </template>
 <script>
     import { mapState, mapActions, mapGetters } from 'vuex';
+    import ComponentProgress from '../../batches/list/component_progress.vue';
+    import _ from 'lodash';
 
 export default {
     name: 'component-item-hit',
@@ -66,6 +97,19 @@ export default {
     //     },
     // },
     computed: {
+        // count_assignments_total() {
+        //     return this.hit.batch.settings_batch.count_assignments;
+        // },
+        // count_assignments_available() {
+        //     return this.hit.assignments.length;
+        // },
+        // progress() {
+        //     console.log('EXECUTED')
+        //     return (this.count_assignments_available / this.count_assignments_total) * 100.0;
+        // },
+        hit() {
+            return this.props.item;
+        },
 
         // status_block() {
         //     if(this.worker.is_blocked == undefined)
@@ -104,6 +148,7 @@ export default {
     methods: {
     },
     components: {
+        ComponentProgress,
     },
 }
 </script>

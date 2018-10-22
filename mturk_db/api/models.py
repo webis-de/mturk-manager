@@ -19,6 +19,7 @@ class Project(models.Model):
     slug = models.SlugField(max_length=200, unique=True)
     fk_account_mturk = models.ForeignKey('Account_Mturk', on_delete=models.SET_NULL, null=True, related_name='projects')
     datetime_visited = models.DateTimeField(default=datetime.now)
+    count_assignments_max_per_worker = models.IntegerField(null=True)
 
     settings_batch_default = models.OneToOneField('Settings_Batch', on_delete=models.SET_NULL, null=True, related_name='project_default')
     
@@ -137,7 +138,13 @@ class Assignment(models.Model):
 
 
 class Worker(models.Model):
+    class Meta:
+        ordering = ['id_worker']
+        # unique_together = ("id_worker", "project")
+
     id_worker = models.CharField(max_length=200, unique=True)
+    is_blocked_global = models.BooleanField(default=False)
+    # project = models.ForeignKey('Project', on_delete=models.CASCADE, null=True, related_name='workers')
 
 # class Project(models.Model):
 #     slug = models.SlugField(null=False, max_length=200, unique=True)
@@ -145,18 +152,19 @@ class Worker(models.Model):
     
 
 class Worker_Block_Project(models.Model):
-    is_sandbox = models.BooleanField()
-    fk_project = models.ForeignKey('Project', on_delete=models.CASCADE, related_name='worker_blocks_project')
-    fk_worker = models.ForeignKey('Worker', on_delete=models.CASCADE, related_name='worker_blocks_project')
+    # is_sandbox = models.BoloeanField()
+    project = models.ForeignKey('Project', on_delete=models.CASCADE, related_name='worker_blocks_project')
+    worker = models.ForeignKey('Worker', on_delete=models.CASCADE, related_name='worker_blocks_project')
 
 class Count_Assignments_Worker_Project(models.Model):
     class Meta:
-        unique_together = ("fk_project", "fk_worker")
+        unique_together = ("project", "worker")
         
     count_assignments = models.IntegerField()
-    fk_project = models.ForeignKey('Project', on_delete=models.CASCADE, related_name='count_assignments')
-    fk_worker = models.ForeignKey('Worker', on_delete=models.CASCADE, related_name='count_assignments')
+    project = models.ForeignKey('Project', on_delete=models.CASCADE, related_name='count_assignments')
+    worker = models.ForeignKey('Worker', on_delete=models.CASCADE, related_name='count_assignments')
 
+# prevents double submissions for same assignment
 class Assignment_Worker(models.Model):
     class Meta:
         unique_together = ("id_worker", "id_assignment")

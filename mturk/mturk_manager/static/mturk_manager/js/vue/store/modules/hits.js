@@ -60,5 +60,19 @@ export const moduleHITs = {
 		},
 	},
 	actions: {
+        async set_hits({commit, state, getters, rootState, rootGetters, dispatch}, {object_batches, data_batches, use_sandbox}) {
+            commit('set_hits', {
+                object_batches, 
+                data_batches, 
+                use_sandbox
+            });
+
+            dispatch('moduleAssignments/set_assignments', {
+                object_batches, 
+                data_batches, 
+                'object_hits': getters.get_object_hits(use_sandbox), 
+                use_sandbox
+            }, {root: true});
+        },
 	},
 }

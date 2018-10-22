@@ -16,6 +16,7 @@ import { moduleQualifications } from './modules/qualifications.js';
 import { moduleWorkers } from './modules/workers.js';
 import { moduleBatches } from './modules/batches.js';
 import { moduleHITs } from './modules/hits.js';
+import { moduleAssignments } from './modules/assignments.js';
 import { moduleKeywords } from './modules/keywords.js';
 
 export const store = new Vuex.Store({
@@ -26,6 +27,7 @@ export const store = new Vuex.Store({
         moduleWorkers,
         moduleBatches,
         moduleHITs,
+        moduleAssignments,
         moduleKeywords,
     },
     state: {
@@ -91,8 +93,8 @@ export const store = new Vuex.Store({
             commit('moduleQualifications/set_url_api_qualifications', config.url_api_qualifications);
             // commit('moduleQualifications/set_url_api_qualification', config.url_api_qualification);
 
-            commit('moduleWorkers/set_url_api_workers', config.url_api_workers);
-            commit('moduleWorkers/set_url_api_global_db', config.url_api_global_db);
+            commit('moduleWorkers/set_urls', config);
+            // commit('moduleWorkers/set_url_api_global_db', config.url_api_global_db);
 
             commit('moduleProjects/set_urls', config);
 

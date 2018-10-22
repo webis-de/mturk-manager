@@ -8,33 +8,13 @@ export default class Worker
 		// this.m_created_at = new Date(data.CreationTime);
 		// this.m_description = data.Description;
 		// this.m_is_requestable = data.IsRequestable;
-		this.name = data.name;
-		this.count_assignments_limit = undefined;
-		this.is_blocked_soft = undefined;
-		this.is_blocked_hard = undefined;
+		this.id_worker = data.id_worker;
+		this.count_assignments_limit = data.count_assignments_limit;
+		this.is_blocked_soft = data.is_blocked_soft;
+		this.is_blocked_global = data.is_blocked_global;
+		this.is_blocked_hard = null;
 		// this.is_blocked = data.is_blocked;
 		// this.m_status = data.QualificationTypeStatus;
-	}
-
-	get_as_formdata() 
-	{
-		const form_data = new FormData();
-		// form_data.set('id', this.m_id);
-		// form_data.set('created_at', this.m_created_at);
-		// form_data.set('description', this.m_description);
-		// form_data.set('is_requestable', this.m_is_requestable);
-		form_data.set('name', this.name);
-		// form_data.set('status', this.m_status);
-
-		return form_data;
-		return {
-			id: this.m_id,
-			created_at: this.m_created_at,
-			description: this.m_description,
-			is_requestable: this.m_is_requestable,
-			name: this.name,
-			status: this.m_status,
-		};
 	}
 
 	// get_description() {

@@ -7,6 +7,7 @@ export default class Project
 		this.slug = data.slug;
 		this.version = data.version;
 		this.settings_batch_default = data.settings_batch_default;
+		this.count_assignments_max_per_worker = data.count_assignments_max_per_worker;
 		
         this.templates_worker = null;
 		this.settings_batch = null;

@@ -18,7 +18,6 @@ def app(request):
         # 'url_api_assignments_real_approved': reverse('mturk_manager:api_assignments_real_approved_tmp', args=[placeholder_slug_project]),
         # 'url_api_qualifications': reverse('mturk_manager:qualifications_for_project', args=[placeholder_slug_project]),
         # # 'url_api_qualification': reverse('mturk_manager:qualification_for_project', args=[placeholder_slug_project, 'da']),
-        # 'url_api_workers': reverse('mturk_manager:workers_for_project', args=[placeholder_slug_project]),
         # 'url_api_global_db': reverse('mturk_manager:workers_for_project_global_db', args=[placeholder_slug_project]),
         
         'url_api_projects': Manager_Global_DB.get_url_absolute('projects'),
@@ -27,6 +26,9 @@ def app(request):
         'url_api_projects_templates_worker': Manager_Global_DB.get_url_absolute('projects/{}/templates_worker'.format(placeholder_slug_project)),
         'url_api_projects_batches': Manager_Global_DB.get_url_absolute('projects/{}/batches'.format(placeholder_slug_project)),
         
+        'url_api_workers': Manager_Global_DB.get_url_absolute('projects/{}/workers'.format(placeholder_slug_project)),
+        'url_api_workers_get_blocks_hard': Manager_Global_DB.get_url_absolute('projects/{}/workers/blocks_hard'.format(placeholder_slug_project)),
+
         'url_api_keywords': Manager_Global_DB.get_url_absolute('api/keywords'.format(placeholder_slug_project)),
 
         # 'url_api_batches': reverse('mturk_manager:batches_for_project', args=[placeholder_slug_project]),

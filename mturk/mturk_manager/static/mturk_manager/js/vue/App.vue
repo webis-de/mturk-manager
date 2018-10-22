@@ -105,7 +105,7 @@
     import ComponentNavigationDrawer from './components/component-navigation-drawer.vue';
     import ComponentToolbarBatches from './components/batches/component_toolbar_batches.vue';
     import ComponentToolbarQualifications from './components/qualifications/component-toolbar-qualifications.vue';
-    import ComponentToolbarWorkers from './components/workers/component_toolbar_workers.vue';
+    // import ComponentToolbarWorkers from './components/workers/component_toolbar_workers.vue';
 export default {
     name: 'app',
     data() {
@@ -131,11 +131,17 @@ export default {
             {
                 case 'finances':
                 case 'batches':
+                case 'batch':
+                case 'hits':
+                case 'hit':
+                case 'assignments':
+                case 'assignment':
+                case 'workers':
                     return ComponentToolbarBatches;
                 case 'qualifications':
                     return ComponentToolbarQualifications;
-                case 'workers':
-                    return ComponentToolbarWorkers;
+                // case 'workers':
+                //     return ComponentToolbarWorkers;
             }
         },
         name_route_current: function() {

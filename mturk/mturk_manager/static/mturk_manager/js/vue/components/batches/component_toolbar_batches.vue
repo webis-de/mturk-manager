@@ -9,7 +9,13 @@
 
 <script>
     import { mapState, mapActions, mapGetters } from 'vuex';
+    // import slug_project from '../../mixins/slug_project';
+    import load_data from '../../mixins/load_data';
 export default {
+    mixins: [
+        // slug_project,
+        load_data,
+    ],
     name: 'component-toolbar-batches',
     data() {
         return {
@@ -19,14 +25,6 @@ export default {
         ...mapGetters(['get_show_progress_indicator']),
     },
     methods: {
-        refresh_data: function() {
-            this.set_show_progress_indicator(true);
-
-            // this.sync_database(true).then((result) => {
-            this.sync_mturk(true).then((result) => {
-            	this.set_show_progress_indicator(false);
-            });
-        },
         ...mapActions(['set_show_progress_indicator']),
         ...mapActions('moduleBatches', {
             'sync_database': 'sync_database',

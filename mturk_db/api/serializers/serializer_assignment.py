@@ -37,6 +37,7 @@ class Serializer_Assignment(serializers.ModelSerializer):
         model = Assignment
         fields = (
             'id',
+            'id_assignment',
             'hit',
             'worker',
             'answer',

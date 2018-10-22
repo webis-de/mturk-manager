@@ -41,7 +41,7 @@
                                 <v-btn
                                     small
                                     color="primary"
-                                    v-bind:to="{ name: 'settings_project', params: { slug_project: props.item.slug } }"
+                                    v-bind:to="{ name: 'batches', params: { slug_project: props.item.slug } }"
                                 >Open</v-btn>
                                     <!-- v-bind:to="{ name: 'batches', params: { slug_project: props.item.slug } }" -->
                             </td>

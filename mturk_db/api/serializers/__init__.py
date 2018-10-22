@@ -5,3 +5,4 @@ from .serializer_assignment import Serializer_Assignment
 from .serializer_hit import Serializer_HIT 
 from .serializer_batch import Serializer_Batch 
 from .serializer_project import Serializer_Project 
+from .serializer_worker import Serializer_Worker 

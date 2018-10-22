@@ -70,6 +70,15 @@ export const moduleProjects = {
                 Vue.set(state.object_projects, object_project.slug, object_project);
             });
         },
+        set_project(state, {project, project_new, array_fields}) {
+            _.forEach(array_fields, function(name_field) {
+                Vue.set(project, name_field, project_new[name_field]);
+            });         
+            // _.forEach(data_projects, function(data_project){
+            //     const object_project = new Project(data_project);
+            //     Vue.set(state.object_projects, object_project.slug, object_project);
+            // });
+        },
         update_settings_batch(state, {data, project}) {
             const object_settings_batch = new Settings_Batch(data);
             Vue.set(project.settings_batch, object_settings_batch.id, object_settings_batch);
@@ -93,13 +102,12 @@ export const moduleProjects = {
         async set_slug_project_current({state, commit, getters, rootGetters, dispatch}, slug_project_current) {
         	commit('set_slug_project_current', slug_project_current);
 
-
         	if(slug_project_current != undefined)
         	{
         		if(getters.get_project_current.settings_batch == null) {
         			dispatch('sync_settings_batch', getters.get_project_current);
         		}
-        		if(getters.get_project_current.templates == null) {
+        		if(getters.get_project_current.templates_worker == null) {
         			dispatch('sync_templates_worker', getters.get_project_current);
         		}
         		console.log(`SET ${slug_project_current}`)
@@ -209,6 +217,24 @@ export const moduleProjects = {
                 commit('remove_template_worker', {
                     template_worker: data.template_worker,
                     project: data.project,
+                });
+            });
+        },
+        async set_count_assignments_max_per_worker({state, commit, getters, rootState, rootGetters, dispatch}, {project, count_assignments_max_per_worker}) {
+            await dispatch('make_request', {
+                method: 'put',
+                url: rootGetters.get_url_api({
+                    url: state.url_api_projects, 
+                    value: project.slug,
+                }),
+                data: {
+                    count_assignments_max_per_worker
+                }
+            }, { root: true }).then(response => {
+                commit('set_project', {
+                    project,
+                    project_new: response.data,
+                    array_fields: ['count_assignments_max_per_worker'],
                 });
             });
         },

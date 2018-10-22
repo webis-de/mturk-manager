@@ -5,6 +5,7 @@ from api.classes import Manager_Projects
 from rest_framework.decorators import api_view, permission_classes
 from api.helpers import add_database_object_project
 from api.serializers import Serializer_Project
+from api.models import Project as Model_Project
 from rest_framework import status
 
 PERMISSIONS_INSTANCE_ONLY = (AllowOptionsAuthentication, IsInstance,)
@@ -31,8 +32,8 @@ class Project(APIView):
 
     def get_object(self, slug):
         try:
-            return m_Project.objects.get(slug=slug)
-        except m_Project.DoesNotExist:
+            return Model_Project.objects.get(slug=slug)
+        except Model_Project.DoesNotExist:
             raise Http404
 
     # def get(self, request, name, format=None):
@@ -42,8 +43,6 @@ class Project(APIView):
 
     @add_database_object_project
     def put(self, request, slug_project, database_object_project, use_sandbox, format=None):
-        print('####')
-        print(request.data)
         project = self.get_object(slug_project)
         serializer = Serializer_Project(project, data=request.data, partial=True)
         print(serializer)

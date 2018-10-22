@@ -3,11 +3,11 @@ from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 
 class Command(BaseCommand):
-    help = 'Closes the specified poll for voting'
+    help = 'Set the security tokens'
 
     def add_arguments(self, parser):
-        parser.add_argument('token_instance', help='Token of instance', type=str)
-        parser.add_argument('token_worker', help='Token of worker', type=str)
+        parser.add_argument('token_instance', help='Token used by instances', type=str)
+        parser.add_argument('token_worker', help='Token used by workers', type=str)
 
     def handle(self, *args, **options):
         object_instance = User.objects.create_user('instance')

@@ -38,7 +38,7 @@
             v-bind:error-messages="validation_errors.settings_batch.count_assignments"
         ></v-text-field>
 
-        <v-text-field
+        <!-- <v-text-field
             required
             type="number"
   			v-bind:value="count_assignments_max_per_worker"
@@ -48,7 +48,7 @@
             append-icon="clear"
             v-on:click:append="$emit('update:count_assignments_max_per_worker', undefined); v.settings_batch.count_assignments_max_per_worker.$touch()"
             v-bind:error-messages="validation_errors.settings_batch.count_assignments_max_per_worker"
-        ></v-text-field>
+        ></v-text-field> -->
 
         <v-text-field
             required

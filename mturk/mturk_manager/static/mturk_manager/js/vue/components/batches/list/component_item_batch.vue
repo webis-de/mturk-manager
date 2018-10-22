@@ -1,6 +1,8 @@
 <template>
     <!-- <div>wda</div> -->
-    <tr>
+    <tr
+        v-bind:key="batch.id"
+    >
         <td>
             <v-checkbox
                 v-model="props.selected"
@@ -9,84 +11,79 @@
             ></v-checkbox>
         </td>
         <td 
-            v-on:click="props.expanded = !props.expanded"
             class="text-xs-center"
         >
-            {{ props.item.name }}
+            {{ batch.name }}
         </td>
         <td 
-            v-on:click="props.expanded = !props.expanded"
             class="text-xs-center"
         >
-            {{ props.item.hits.length }}
+            {{ batch.hits.length }}
         </td>
         <td 
-            v-on:click="props.expanded = !props.expanded"
             class="text-xs-center"
         >
-            {{ props.item.count_assignments }}
+            {{ batch.settings_batch.count_assignments }}
+        </td>
+        <td 
+            class="text-xs-center"
+        >
+            <component-progress
+                slot="activator"
+                v-bind:progress="batch.progress"
+            >
+                {{ batch.count_assignments_available }}/{{batch.count_assignments_total}} assignment{{batch.count_assignments_total > 1 ? 's' : ''}}
+            </component-progress>
+        </td>
+        <td 
+            class="text-xs-center"
+        >
+            <v-btn
+                slot="activator" 
+                class="my-0"
+                icon
+                small
+                v-bind:to="{
+                    name: 'batch', 
+                    params: { 
+                        slug_project: $route.params.slug_project, 
+                        id_batch: batch.id, 
+                    } 
+                }"
+            >
+                <v-icon>info</v-icon>
+            </v-btn>
         </td>
     </tr>
 </template>
 <script>
     import { mapState, mapActions, mapGetters } from 'vuex';
-
+    import _ from 'lodash';
+    import ComponentProgress from './component_progress.vue';
 export default {
     name: 'component-item-batch',
     props: {
         props: {
             type: Object,
             required: true,
-        }
+        },
     },
     data () {
         return {
         }
     },
-    // watch: {
-    //     'worker.is_blocked': function() {
-    //         console.log(this.worker.is_blocked)
-    //     },
-    // },
     computed: {
-
-        // status_block() {
-        //     if(this.worker.is_blocked == undefined)
-        //     {
-        //         return {
-        //             description: 'Loading',
-        //             color: 'success',
-        //             icon: '',
-        //         };
-        //     }
-
-        //     switch(this.worker.is_blocked)
-        //     {
-        //         case STATUS_BLOCK.NONE:
-        //             return {
-        //                 description: 'Not Blocked',
-        //                 color: 'success',
-        //                 icon: 'check',
-        //             };
-        //         case STATUS_BLOCK.SOFT:
-        //             return {
-        //                 description: 'Soft Blocked',
-        //                 color: 'warning',
-        //                 icon: 'block',
-        //             };
-        //         case STATUS_BLOCK.HARD:
-        //             return {
-        //                 description: 'Hard Blocked',
-        //                 color: 'error',
-        //                 icon: 'block',
-        //             };
-        //     }
-        // },
+        batch() {
+            return this.props.item;
+        },
         ...mapGetters(['get_show_progress_indicator']),
     },
     methods: {
     },
+    mounted(){
+    },
     components: {
+        ComponentProgress,
     },
 }
 </script>
