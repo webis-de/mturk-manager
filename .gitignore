@@ -1,4 +1,5 @@
 mturk/node_modules
+mturk/.cache
 .directory
 
 venv
