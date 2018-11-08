@@ -12,16 +12,16 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 
 import os
 from django.conf import settings
-from django.contrib.messages import constants as messages
+# from django.contrib.messages import constants as messages
 
-import configparser
-MESSAGE_TAGS = {
-    messages.DEBUG: 'alert-info',
-    messages.INFO: 'alert-info',
-    messages.SUCCESS: 'alert-success',
-    messages.WARNING: 'alert-warning',
-    messages.ERROR: 'alert-danger',
-}
+# import configparser
+# MESSAGE_TAGS = {
+#     messages.DEBUG: 'alert-info',
+#     messages.INFO: 'alert-info',
+#     messages.SUCCESS: 'alert-success',
+#     messages.WARNING: 'alert-warning',
+#     messages.ERROR: 'alert-danger',
+# }
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -40,7 +40,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-    'viewer.apps.ViewerConfig',
+    # 'viewer.apps.ViewerConfig',
     'mturk_manager.apps.MturkManagerConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -53,29 +53,29 @@ INSTALLED_APPS = [
 ]
 
 
-import importlib, inspect, sys
-path_plugins = os.path.join(BASE_DIR, '..', 'plugins')
-try:
-    for name_plugin in os.listdir(path_plugins):
-        path_app = os.path.join(BASE_DIR, name_plugin)
-        try:
-            os.symlink(os.path.join(path_plugins, name_plugin), path_app)
-        except FileExistsError:
-            pass
+# import importlib, inspect, sys
+# path_plugins = os.path.join(BASE_DIR, '..', 'plugins')
+# try:
+#     for name_plugin in os.listdir(path_plugins):
+#         path_app = os.path.join(BASE_DIR, name_plugin)
+#         try:
+#             os.symlink(os.path.join(path_plugins, name_plugin), path_app)
+#         except FileExistsError:
+#             pass
 
-        print('installing plugin \'{}\''.format(name_plugin))
-        name_appsconfig = None
-        module_index_handle = importlib.import_module(name_plugin+'.apps')
-        for name, obj in inspect.getmembers(module_index_handle):
-            if inspect.isclass(obj):
-                if obj.__module__.startswith(name_plugin):
-                    name_appsconfig = obj.__name__
-                    break
+#         print('installing plugin \'{}\''.format(name_plugin))
+#         name_appsconfig = None
+#         module_index_handle = importlib.import_module(name_plugin+'.apps')
+#         for name, obj in inspect.getmembers(module_index_handle):
+#             if inspect.isclass(obj):
+#                 if obj.__module__.startswith(name_plugin):
+#                     name_appsconfig = obj.__name__
+#                     break
 
-        INSTALLED_APPS = ['{}.apps.{}'.format(name_plugin, name_appsconfig)] + INSTALLED_APPS
+#         INSTALLED_APPS = ['{}.apps.{}'.format(name_plugin, name_appsconfig)] + INSTALLED_APPS
 
-except FileNotFoundError: 
-    pass
+# except FileNotFoundError: 
+#     pass
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -112,21 +112,21 @@ WSGI_APPLICATION = 'mturk.wsgi.application'
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
 VERSION_PROJECT = 14
-MESSAGE_BLOCK_DEFAULT = 'Some default block message'
+# MESSAGE_BLOCK_DEFAULT = 'Some default block message'
 
-config = configparser.ConfigParser()
-config.read('../../mturk_settings.ini')
-try:
-    PATH_DATABASE = config['MTurk']['database'].strip()
-except KeyError:
-    PATH_DATABASE = 'db.sqlite3'
-    pass
-try:
-    PATH_FILES_SETTINGS = config['MTurk']['settings-path'].strip()
-except KeyError:
-    pass
+# config = configparser.ConfigParser()
+# config.read('../../mturk_settings.ini')
+# try:
+#     PATH_DATABASE = config['MTurk']['database'].strip()
+# except KeyError:
+#     PATH_DATABASE = 'db.sqlite3'
+#     pass
+# try:
+#     PATH_FILES_SETTINGS = config['MTurk']['settings-path'].strip()
+# except KeyError:
+#     pass
 
-print('storing database into {}'.format(PATH_DATABASE))
+# print('storing database into {}'.format(PATH_DATABASE))
 
 DATABASES = {
     'default': {
@@ -135,13 +135,13 @@ DATABASES = {
     }
 }
 
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-        'LOCATION': '../cache',
-        'TIMEOUT': None,
-    }
-}
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+#         'LOCATION': '../cache',
+#         'TIMEOUT': None,
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
@@ -185,11 +185,11 @@ STATIC_URL = '/static/'
 
 # URL_GLOBAL_DB = 'https://webis18.medien.uni-weimar.de/mturk-manager'
 URL_GLOBAL_DB = 'http://localhost:8002'
-URL_MTURK_SANDBOX = 'https://mturk-requester-sandbox.us-east-1.amazonaws.com'
+# URL_MTURK_SANDBOX = 'https://mturk-requester-sandbox.us-east-1.amazonaws.com'
 # URL_BLOCK_WORKERS = 'https://webis16.medien.uni-weimar.de'
-PREEFIX_QUALIFICATION_BLOCK_SOFT = 'fbqeqihngl-'
-NAME_QUALIFICATION_BLOCK_SOFT = 'fbqeqihngl'
-DESCRIPTION_QUALIFICATION_BLOCK_SOFT = 'If you request this qualification, it is automatically granted!'
+# PREEFIX_QUALIFICATION_BLOCK_SOFT = 'fbqeqihngl-'
+# NAME_QUALIFICATION_BLOCK_SOFT = 'fbqeqihngl'
+# DESCRIPTION_QUALIFICATION_BLOCK_SOFT = 'If you request this qualification, it is automatically granted!'
 
 # when id_asignment is newly assigned
 # smaller table
