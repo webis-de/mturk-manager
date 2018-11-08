@@ -1,4 +1,4 @@
-# from mturk_manager.models import m_Project
+from api.models import Batch as Model_Batch
 from api.serializers import Serializer_Batch
 from mturk_db.permissions import IsInstance, AllowOptionsAuthentication
 from django.http import Http404
@@ -7,6 +7,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from api.helpers import add_database_object_project
 from api.classes import Manager_Batches
+from rest_framework.decorators import api_view, permission_classes
+import json
 
 PERMISSIONS_INSTANCE_ONLY = (AllowOptionsAuthentication, IsInstance,)
 
@@ -74,3 +76,29 @@ class Batches(APIView):
     #     project = self.get_object(name)
     #     project.delete()
     #     return Response(status=status.HTTP_204_NO_CONTENT)
+
+@api_view(['DELETE'])
+@permission_classes(PERMISSIONS_INSTANCE_ONLY)
+@add_database_object_project
+def clear_sandbox(request, slug_project, database_object_project, use_sandbox, format=None):
+    dictionary_data = Manager_Batches.clear_sandbox(database_object_project)
+    # dictionary_data = {}
+    # return Response(True)
+    return Response(dictionary_data)
+
+@api_view(['GET'])
+@permission_classes(PERMISSIONS_INSTANCE_ONLY)
+@add_database_object_project
+def batches_for_annotation(request, slug_project, database_object_project, use_sandbox, format=None):
+    list_ids = json.loads(request.query_params.get('list_ids', '[]'))
+    queryset_batches = Model_Batch.objects.filter(id__in=list_ids)
+    # queryset_batches = Manager_Batches.batches_for_annotation(database_object_project, list_ids)
+    serializer = Serializer_Batch(
+        queryset_batches, 
+        context={
+            'detailed': True
+        }, 
+        many=True
+    )
+    return Response(serializer.data)
+    # return Response(dictionary_data)

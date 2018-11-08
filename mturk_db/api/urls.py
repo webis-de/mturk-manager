@@ -28,18 +28,31 @@ urlpatterns = format_suffix_patterns([
     
 
     path('projects/<str:slug_project>/settings_batch', views.Settings_Batch.as_view(), name='settings_batch_for_project'),
-    path('projects/<str:slug_project>/settings_batch/<int:id_settings_batch>', views.Setting_Batch.as_view(), name='settings_batch_for_project'),
+    path('projects/<str:slug_project>/settings_batch/<int:id_settings_batch>', views.Setting_Batch.as_view(), name='setting_batch_for_project'),
 
     path('projects/<str:slug_project>/templates_worker', views.Templates_Worker.as_view(), name='templates_for_project'),
     path('projects/<str:slug_project>/templates_worker/<int:id_template>', views.Template_Worker.as_view(), name='template_for_project'),
+    path('projects/<str:slug_project>/templates_assignment', views.Templates_Assignment.as_view(), name='templates_assignment_for_project'),
+    path('projects/<str:slug_project>/templates_assignment/<int:id_template>', views.Template_Assignment.as_view(), name='template_assignment_for_project'),
+    path('projects/<str:slug_project>/templates_hit', views.Templates_HIT.as_view(), name='templates_hit_for_project'),
+    path('projects/<str:slug_project>/templates_hit/<int:id_template>', views.Template_HIT.as_view(), name='template_hit_for_project'),
+    path('projects/<str:slug_project>/templates_global', views.Templates_Global.as_view(), name='templates_global_for_project'),
+    path('projects/<str:slug_project>/templates_global/<int:id_template>', views.Template_Global.as_view(), name='template_global_for_project'),
     # path('projects/<str:slug_project>/settings_batch', views.Settings_Batch.as_view(), name='settings_batch_for_project'),
 
     path('projects/<str:slug_project>/count_assignments_max_per_worker', views.get_count_assignments_max_per_worker),
     path('projects/<str:slug_project>/count_assignments_max_per_worker/<negint:value>', views.set_count_assignments_max_per_worker),
 
     path('projects/<str:slug_project>/batches', views.Batches.as_view(), name='batches_for_project'),
+    path('projects/<str:slug_project>/batches_for_annotation', views.batches_for_annotation, name='batches_for_annotation'),
+    path('projects/<str:slug_project>/hits', views.HITs.as_view(), name='hits_for_project'),
+    path('projects/<str:slug_project>/assignments', views.Assignments.as_view(), name='assignments_for_project'),
+    # path('projects/<str:slug_project>/assignments/<int:id_assignment>', views.Assignment.as_view(), name='assignment_for_project'),
+    path('projects/<str:slug_project>/clear_sandbox', views.clear_sandbox, name='clear_sandbox'),
+    path('projects/<str:slug_project>/ping', views.ping, name='ping'),
 
 
+    path('api/messages_reject', views.Messages_Reject.as_view(), name='messages_reject'),
     path('api/keywords', views.Keywords.as_view(), name='keywords'),
 
     path('projects/<str:slug_project>/workers/status_block/<str:id_worker>', views.status_block_for_worker),
@@ -47,7 +60,7 @@ urlpatterns = format_suffix_patterns([
 
     path('projects/<str:slug_project>/workers', views.Workers.as_view()),
     path('projects/<str:slug_project>/workers/blocks_hard', views.get_blocks_hard),
-    
+
     path('projects/<str:slug_project>/workers/<str:id_worker>', views.Worker.as_view()),
     # path('projects/<str:slug_project>/workers/status_block', views.Workers.as_view()),
     path('projects/<str:slug_project>/workers/<str:id_worker>/add_block_soft', views.add_block_soft_for_worker),

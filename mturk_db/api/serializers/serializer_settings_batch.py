@@ -1,45 +1,28 @@
 from rest_framework import serializers
 from api.models import Settings_Batch
-# from api.models import Project, Keyword
 from api.classes import Manager_Settings_Batch
-from api.serializers import Serializer_Keyword
+from api.serializers import Serializer_Keyword, Serializer_Template_Worker
 from django.db import IntegrityError
-
-# class CustomField(serializers.Field):
-#     def get_attribute(self, obj):
-#         return obj
-
-#     def to_representation(self, obj):
-#         response = Manager_Global_DB.get_count_assignments_max_per_worker(obj.slug)
-#         return response
-
-#     # def get_value(self, obj):
-#         # return obj
-
-#     def to_internal_value(self, data):
-#         # print('++++++')
-#         # print(data)
-#         # response = Manager_Global_DB.set_count_assignments_max_per_worker(obj.slug, data)
-#         return int(data)
-
 
 
 class Serializer_Settings_Batch(serializers.ModelSerializer):
-    # workers = serializers.HyperlinkedRelatedField(
-    #     many=True,
-    #     read_only=True,
-    #     view_name='mturk_manager:worker',
-    #     lookup_field='name',
-    # )
-    # url = serializers.HyperlinkedIdentityField(view_name='mturk_manager:project_api_tmp', lookup_field='name')
-    # workers = Serializer_Worker(many=True, read_only=True)
-    keywords = Serializer_Keyword(many=True)
-    # templates = Serializer_Template_Worker(many=True)
-    qualification_locale = serializers.JSONField()
-    # qualification_locale = serializers.ListField()
-    # count_assignments_max_per_worker = CustomField()
-    # count_assignments_max_per_worker = serializers.SerializerMethodField()
+    def __init__(self, *args, **kwargs):
+        super(Serializer_Settings_Batch, self).__init__(*args, **kwargs)
+        print(kwargs)
+        if 'context' in kwargs:
+            if kwargs['context'].get('detailed', False):
+                self.fields['template'] = Serializer_Template_Worker(source='template_worker', context=kwargs['context'])
+            
 
+    #     # print(self.fields)
+    #     if foo == 3:
+    #     # else:
+        # self.fields['template'] = serializers.PrimaryKeyRelatedField(read_only=True)
+        # self.fields['template'] = serializers.IntegerField(source='template_worker')
+
+
+    keywords = Serializer_Keyword(many=True)
+    qualification_locale = serializers.JSONField()
 
     class Meta:
         model = Settings_Batch
@@ -66,8 +49,6 @@ class Serializer_Settings_Batch(serializers.ModelSerializer):
             'template': {
                 'source': 'template_worker',
             },
-            # 'slug': {'required': False},
-            # 'version': {'required': False},
         }
 
 
@@ -100,8 +81,3 @@ class Serializer_Settings_Batch(serializers.ModelSerializer):
         )
 
         return instance
-
-
-    # def get_count_assignments_max_per_worker(self, obj):
-    #     response = Manager_Global_DB.get_count_assignments_max_per_worker(obj.slug)
-    #     return response

@@ -41,7 +41,8 @@ class Serializer_Assignment(serializers.ModelSerializer):
             'hit',
             'worker',
             'answer',
-            # 'id_hit',
+            'status_external',
+            'status_internal',
             # 'batch',
             # 'datetime_creation',
             # 'datetime_expiration',
@@ -58,3 +59,16 @@ class Serializer_Assignment(serializers.ModelSerializer):
         data['answer'] = json.loads(data['answer'])
 
         return data
+
+    # def update(self, instance, validated_data):
+    #     print('validated_data')
+    #     print(validated_data)
+    #     print('validated_data')
+    #     print(instance)
+
+    #     instance = Manager_Assignments.update(
+    #         instance=instance,
+    #         data=validated_data,
+    #     )
+
+    #     return instance

@@ -1,3 +1,4 @@
+from api.models import Settings_Batch as foo
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from mturk_db.permissions import IsInstance, IsWorker, AllowOptionsAuthentication
@@ -7,6 +8,7 @@ from api.helpers import add_database_object_project
 from api.serializers import Serializer_Settings_Batch
 from api.models import Settings_Batch as Model_Settings_Batch
 from rest_framework import status
+from django.http import Http404
 
 PERMISSIONS_INSTANCE_ONLY = (AllowOptionsAuthentication, IsInstance,)
 PERMISSIONS_WORKER_ONLY = (AllowOptionsAuthentication, IsWorker,)
@@ -45,8 +47,8 @@ class Setting_Batch(APIView):
 
     @add_database_object_project
     def put(self, request, slug_project, database_object_project, use_sandbox, id_settings_batch, format=None):
-        project = self.get_object(id_settings_batch)
-        serializer = Serializer_Settings_Batch(project, data=request.data, partial=True)
+        settings_batch = self.get_object(id_settings_batch)
+        serializer = Serializer_Settings_Batch(settings_batch, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)

@@ -1,22 +1,22 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from mturk_db.permissions import IsInstance, IsWorker, AllowOptionsAuthentication
-from api.classes import Manager_Keywords
+from api.classes import Manager_Messages_Reject
 from rest_framework.decorators import api_view, permission_classes
 from api.helpers import add_database_object_project
-from api.serializers import Serializer_Keyword
+from api.serializers import Serializer_Message_Reject
 from rest_framework import status
 from django.http import Http404
 
 PERMISSIONS_INSTANCE_ONLY = (AllowOptionsAuthentication, IsInstance,)
 PERMISSIONS_WORKER_ONLY = (AllowOptionsAuthentication, IsWorker,)
 
-class Keywords(APIView):
+class Messages_Reject(APIView):
     permission_classes = PERMISSIONS_INSTANCE_ONLY
 
     def get(self, request, format=None):
-        queryset_keywords = Manager_Keywords.get_all()
-        serializer = Serializer_Keyword(queryset_keywords, many=True, context={'request': request})
+        queryset_messages_reject = Manager_Messages_Reject.get_all()
+        serializer = Serializer_Message_Reject(queryset_messages_reject, many=True, context={'request': request})
         return Response(serializer.data)
 
     # @add_database_object_project

@@ -11,6 +11,8 @@ from django.conf import settings as settings_django
 class Manager_Batches(object):
     @classmethod
     def get_all(cls, database_object_project, use_sandbox=True):
+        # import time
+        # time.sleep(2)
         queryset_batch = Batch.objects.filter(project=database_object_project, use_sandbox=use_sandbox)
         return queryset_batch
 
@@ -46,7 +48,14 @@ class Manager_Batches(object):
         except KeyError:
             name_batch = uuid.uuid4().hex
 
+        database_object_batch = Batch.objects.create(
+            name=name_batch,
+            project=database_object_project,
+            use_sandbox=use_sandbox,
+        )
+
         settings_batch = Settings_Batch.objects.create(
+            batch=database_object_batch,
             project=database_object_project,
             name='{}__{}__{}'.format(database_object_project.id, name_batch, uuid.uuid4().hex),
 
@@ -64,17 +73,10 @@ class Manager_Batches(object):
             qualification_assignments_approved=dictionary_settings_batch['qualification_assignments_approved'],
             qualification_hits_approved=dictionary_settings_batch['qualification_hits_approved'],
             qualification_locale=json.dumps(dictionary_settings_batch['qualification_locale']),
+
         )
         settings_batch.keywords.set([keyword['id'] for keyword in dictionary_settings_batch['keywords']])
         settings_batch.save()
-
-        database_object_batch = Batch.objects.create(
-            name=name_batch,
-            project=database_object_project,
-            use_sandbox=use_sandbox,
-            settings_batch=settings_batch,
-        )
-        database_object_batch.save()
 
         title = dictionary_settings_batch['title']
         if dictionary_settings_batch['has_content_adult'] == True:
@@ -90,7 +92,7 @@ class Manager_Batches(object):
                     LifetimeInSeconds=dictionary_settings_batch['lifetime'],
                     AssignmentDurationInSeconds=dictionary_settings_batch['duration'],
                     AutoApprovalDelayInSeconds=1209600,
-                    Reward=dictionary_settings_batch['reward'],
+                    Reward=cls.cent_to_dollar(dictionary_settings_batch['reward']),
                     Title=title,
                     Description=dictionary_settings_batch['description'],
                     Question=cls.create_question(dictionary_settings_batch['template_worker'].template, dictionary_settings_batch['template_worker'].height_frame, dictionary_hit),
@@ -199,6 +201,19 @@ class Manager_Batches(object):
     #     key_corpus=db_obj_project.name
     # )[0]
         return database_object_batch
+
+    @staticmethod
+    def cent_to_dollar(amount):
+        cents = amount % 100
+        dollars = (amount - cents) / 100
+
+        result = ''
+        if cents <= 9:
+            result = '0{}'.format(cents)
+        else:
+            result = '{}'.format(cents)
+
+        return '{}.{}'.format(int(dollars), result)
 
     @staticmethod
     def create_question(template, height_frame, dict_parameters):
@@ -373,3 +388,13 @@ class Manager_Batches(object):
 
         return Batch.objects.filter(id__in=ids_batch_changed)
 
+    @staticmethod
+    def clear_sandbox(database_object_project):
+        # import time
+        # time.sleep(2)
+        queryset_batches = Batch.objects.filter(
+            use_sandbox=True,
+            project=database_object_project,
+        )
+
+        queryset_batches.delete()

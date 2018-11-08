@@ -7,6 +7,7 @@ from api.helpers import add_database_object_project
 from api.serializers import Serializer_Worker
 from api.models import Worker as Model_Worker
 from rest_framework import status
+from django.http import Http404
 
 PERMISSIONS_WORKER_ONLY = (AllowOptionsAuthentication, IsWorker,)
 PERMISSIONS_INSTANCE_ONLY = (AllowOptionsAuthentication, IsInstance,)

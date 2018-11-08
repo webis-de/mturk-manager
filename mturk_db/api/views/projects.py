@@ -7,6 +7,7 @@ from api.helpers import add_database_object_project
 from api.serializers import Serializer_Project
 from api.models import Project as Model_Project
 from rest_framework import status
+from django.http import Http404
 
 PERMISSIONS_INSTANCE_ONLY = (AllowOptionsAuthentication, IsInstance,)
 PERMISSIONS_WORKER_ONLY = (AllowOptionsAuthentication, IsWorker,)
@@ -30,31 +31,24 @@ class Projects(APIView):
 class Project(APIView):
     permission_classes = PERMISSIONS_INSTANCE_ONLY
 
-    def get_object(self, slug):
-        try:
-            return Model_Project.objects.get(slug=slug)
-        except Model_Project.DoesNotExist:
-            raise Http404
-
-    # def get(self, request, name, format=None):
-    #     project = self.get_object(name)
-    #     serializer = Serializer_Project(project, context={'request': request})
-    #     return Response(serializer.data)
+    @add_database_object_project
+    def get(self, request, slug_project, database_object_project, use_sandbox, format=None):
+        serializer = Serializer_Project(database_object_project)
+        # serializer = Serializer_Project(database_object_project, context={'request': request})
+        return Response(serializer.data)
 
     @add_database_object_project
     def put(self, request, slug_project, database_object_project, use_sandbox, format=None):
-        project = self.get_object(slug_project)
-        serializer = Serializer_Project(project, data=request.data, partial=True)
-        print(serializer)
+        serializer = Serializer_Project(database_object_project, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    # def delete(self, request, name, format=None):
-    #     project = self.get_object(name)
-    #     project.delete()
-    #     return Response(status=status.HTTP_204_NO_CONTENT)
+    @add_database_object_project
+    def delete(self, request, slug_project, database_object_project, use_sandbox, format=None):
+        Manager_Projects.delete(database_object_project)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['GET'])
 @permission_classes(PERMISSIONS_INSTANCE_ONLY)
@@ -81,4 +75,11 @@ def set_count_assignments_max_per_worker(request, slug_project, database_object_
     dictionary_data = Manager_Projects.set_count_assignments_max_per_worker(database_object_project, value)
     # dictionary_data = {}
     # return Response(True)
+    return Response(dictionary_data)
+
+@api_view(['PUT'])
+@permission_classes(PERMISSIONS_INSTANCE_ONLY)
+@add_database_object_project
+def ping(request, slug_project, database_object_project, use_sandbox, format=None):
+    dictionary_data = Manager_Projects.ping(database_object_project)
     return Response(dictionary_data)

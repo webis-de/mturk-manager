@@ -4,6 +4,8 @@ from urllib.parse import parse_qs
 def add_database_object_project(some_function):
 
     def wrapper(*args, **kwargs):
+        # import time
+        # time.sleep(1)
         try:
             slug_project = kwargs['slug_project']
         except KeyError:

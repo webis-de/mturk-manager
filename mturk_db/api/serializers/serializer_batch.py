@@ -12,6 +12,18 @@ from api.serializers import Serializer_HIT, Serializer_Settings_Batch, Serialize
 #         return 'Active' if data == True else 'Inactive'
 
 class Serializer_Batch(serializers.ModelSerializer):
+    def __init__(self, *args, **kwargs):
+        super(Serializer_Batch, self).__init__(*args, **kwargs)
+        # print(kwargs['context'])
+        if 'context' in kwargs:
+            self.fields['settings_batch'] = Serializer_Settings_Batch(context=kwargs['context'])
+            self.fields.pop('hits')
+            # self.fields['hits'] = serializers.PrimaryKeyRelatedField(read_only=True, many=True)
+
+            # if kwargs['context'].get('include_settings_batch', False):
+            #     self.fields['settings_batch'] = Serializer_Settings_Batch(context=kwargs['context'])
+            # else:
+
 # class Serializer_Batch(serializers.Serializer):
     # workers = serializers.HyperlinkedRelatedField(
     #     many=True,
@@ -19,8 +31,9 @@ class Serializer_Batch(serializers.ModelSerializer):
     #     view_name='mturk_manager:worker',
     #     lookup_field='name',
     # )
-    # settings = serializers.DictField(required=False)
     settings_batch = Serializer_Settings_Batch()
+
+    # settings = serializers.DictField(required=False)
     data_csv = serializers.ListField(required=False)
     # keywords = Serializer_Keyword(many=True)
     # template = Serializer_Template_Worker()

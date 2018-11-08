@@ -1,8 +1,8 @@
 from rest_framework import serializers
-from api.models import Template_Worker
+from api.models import Template_Assignment
 # from api.models import Project, Keyword
-from api.classes import Manager_Templates_Worker
-from api.serializers import Serializer_Template_Assignment, Serializer_Template_HIT, Serializer_Template_Global
+from api.classes import Manager_Templates_Assignment
+from api.serializers import Serializer_Keyword
 from django.db import IntegrityError
 
 # class CustomField(serializers.Field):
@@ -24,17 +24,7 @@ from django.db import IntegrityError
 
 
 
-class Serializer_Template_Worker(serializers.ModelSerializer):
-    def __init__(self, *args, **kwargs):
-        super(Serializer_Template_Worker, self).__init__(*args, **kwargs)
-        print(kwargs)
-        if 'context' in kwargs:
-            if kwargs['context'].get('detailed', False):
-                self.fields['template_assignment'] = Serializer_Template_Assignment(context=kwargs['context'])
-                self.fields['template_hit'] = Serializer_Template_HIT(context=kwargs['context'])
-                self.fields['template_global'] = Serializer_Template_Global(context=kwargs['context'])
-
-
+class Serializer_Template_Assignment(serializers.ModelSerializer):
     # workers = serializers.HyperlinkedRelatedField(
     #     many=True,
     #     read_only=True,
@@ -44,44 +34,20 @@ class Serializer_Template_Worker(serializers.ModelSerializer):
     # url = serializers.HyperlinkedIdentityField(view_name='mturk_manager:project_api_tmp', lookup_field='name')
     # workers = Serializer_Worker(many=True, read_only=True)
     # keywords = Serializer_Keyword(many=True)
-    # templates = Serializer_Template_Worker(many=True)
+    # templates = Serializer_Template_Assignment(many=True)
     # qualification_locale = serializers.ListField()
     # count_assignments_max_per_worker = CustomField()
     # count_assignments_max_per_worker = serializers.SerializerMethodField()
 
 
     class Meta:
-        model = Template_Worker
+        model = Template_Assignment
         fields = (
             'id', 
             'name', 
-            'height_frame', 
             'template', 
-            'json_dict_parameters', 
-            'template_assignment', 
-            'template_hit', 
-            'template_global', 
-            # 'settings_batch_default',
-            # 'title',
-            # 'description',
-            # 'keywords',
-            # 'count_assignments',
-            # 'reward',
-            # 'lifetime',
-            # 'duration',
-            # 'has_content_adult',
-            # 'qualification_assignments_approved',
-            # 'qualification_hits_approved',
-            # 'qualification_locale',
-            # 'block_workers',
-            # 'template_worker',
-            # 'count_assignments_max_per_worker',
         )
         extra_kwargs = {
-            'json_dict_parameters': {'required': False}
-            # 'name': {'required': False},
-            # 'slug': {'required': False},
-            # 'version': {'required': False},
         }
 
     def create(self, validated_data):
@@ -89,25 +55,24 @@ class Serializer_Template_Worker(serializers.ModelSerializer):
         print(validated_data)
         print('validated_data')
 
-        project = Manager_Templates_Worker.create(
+        project = Manager_Templates_Assignment.create(
             data=validated_data
         )
 
         return project
-
 
     def update(self, instance, validated_data):
         print('validated_data')
         print(validated_data)
         print('validated_data')
 
-        instance = Manager_Templates_Worker.update(
+        instance = Manager_Templates_Assignment.update(
             instance=instance,
             data=validated_data,
         )
 
         return instance
-        
+
     # def update(self, instance, validated_data):
     #     print('validated_data')
     #     print(validated_data)

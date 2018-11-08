@@ -18,6 +18,8 @@ class Manager_Templates_Worker(object):
             height_frame=data['height_frame'],
             template=data['template'],
             json_dict_parameters=json.dumps(cls.count_parameters_in_template(data['template'])),
+            template_assignment=data.get('template_assignment', None),
+            template_hit=data.get('template_hit', None),
         )
 
         return template_worker
@@ -27,6 +29,15 @@ class Manager_Templates_Worker(object):
         list_matches = re.findall('\$\{([a-zA-Z0-9_-]+)\}', string_template)
         counter = Counter(list_matches)
         return counter
+        
+    @classmethod
+    def update(cls, instance, data):
+        for key, value in data.items():
+            setattr(instance, key, value)
+
+        instance.save()
+
+        return instance
 
     @staticmethod
     def delete(id_template):

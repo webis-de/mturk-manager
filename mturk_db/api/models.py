@@ -29,7 +29,7 @@ class Project(models.Model):
     # fk_template_assignment_main = models.OneToOneField('m_Template_Assignment', on_delete=models.SET_NULL, null=True, related_name='project')
     # fk_template_hit_main = models.OneToOneField('m_Template_Hit', on_delete=models.SET_NULL, null=True, related_name='project')
     # fk_template_global_main = models.OneToOneField('m_Template_Global', on_delete=models.SET_NULL, null=True, related_name='project')
-    # fk_message_reject_default = models.OneToOneField('m_Message_Reject', on_delete=models.SET_NULL, null=True, related_name='project')
+    message_reject_default = models.ForeignKey('Message_Reject', on_delete=models.SET_NULL, null=True, related_name='project')
     # fk_message_block_default = models.OneToOneField('m_Message_Block', on_delete=models.SET_NULL, null=True, related_name='project')
     
 
@@ -47,13 +47,15 @@ class Project(models.Model):
 class Settings_Batch(models.Model):
     class Meta:
         unique_together = ('project', 'name')
+    
+    batch = models.OneToOneField('Batch', on_delete=models.CASCADE, null=True, related_name='settings_batch')
 
     project = models.ForeignKey('Project', on_delete=models.CASCADE, related_name='settings_batch')
     name = models.CharField(max_length=200)
 
     title = models.TextField(null=True)
     description = models.TextField(null=True)
-    reward = models.CharField(default='0.0', max_length=10)
+    reward = models.IntegerField(default=0)
     count_assignments = models.IntegerField(default=1)
     count_assignments_max_per_worker = models.IntegerField(null=True)
     lifetime = models.IntegerField(default=604800)
@@ -90,7 +92,8 @@ class Template(models.Model):
 class Template_Worker(Template):
     height_frame = models.IntegerField()
     template_assignment = models.ForeignKey('Template_Assignment', null=True, on_delete=models.SET_NULL, related_name='templates_used')
-    template_hit = models.ForeignKey('Template_Hit', null=True, on_delete=models.SET_NULL, related_name='templates_used')
+    template_hit = models.ForeignKey('Template_HIT', null=True, on_delete=models.SET_NULL, related_name='templates_used')
+    template_global = models.ForeignKey('Template_Global', null=True, on_delete=models.SET_NULL, related_name='templates_used')
     json_dict_parameters = models.TextField()
 
     def __str__(self):
@@ -99,14 +102,16 @@ class Template_Worker(Template):
 class Template_Assignment(Template):
     pass
 
-class Template_Hit(Template):
+class Template_HIT(Template):
+    pass
+
+class Template_Global(Template):
     pass
 
 # class Batch(Settings_Batch):
 class Batch(models.Model):
     project = models.ForeignKey('Project', on_delete=models.CASCADE, null=True, related_name='batch')
     name = models.CharField(max_length=200)
-    settings_batch = models.OneToOneField('Settings_Batch', on_delete=models.CASCADE, null=True, related_name='batch')
     use_sandbox = models.BooleanField()
 
     def __str__(self):
@@ -133,6 +138,13 @@ class Assignment(models.Model):
     answer = models.TextField()
 
 
+
+class Message_Reject(models.Model):
+    # project = models.ForeignKey('Project', on_delete=models.CASCADE, related_name='messages_reject')
+    message = models.CharField(max_length=1024, unique=True)
+    
+    def __str__(self):
+        return self.message
 
 
 

@@ -2,7 +2,7 @@ from rest_framework import serializers
 from api.models import Project
 # from api.models import Project, Keyword
 from api.classes import Manager_Projects
-# from mturk_manager.serializers import Serializer_Keyword, Serializer_Template_Worker
+from api.serializers import Serializer_Message_Reject
 from django.db import IntegrityError
 
 # class CustomField(serializers.Field):
@@ -38,7 +38,8 @@ class Serializer_Project(serializers.ModelSerializer):
 
     # count_assignments_max_per_worker = CustomField()
     # count_assignments_max_per_worker = serializers.SerializerMethodField()
-
+    message_reject = serializers.CharField(required=False)
+    message_reject_default = Serializer_Message_Reject()
 
     class Meta:
         model = Project
@@ -49,6 +50,9 @@ class Serializer_Project(serializers.ModelSerializer):
             'version',
             'settings_batch_default',
             'count_assignments_max_per_worker',
+            'datetime_visited',
+            'message_reject_default',
+            'message_reject',
             # 'workers',
             # 'title',
             # 'description',
@@ -84,11 +88,14 @@ class Serializer_Project(serializers.ModelSerializer):
 
         return project
 
-    # def update(self, instance, validated_data):
+    def update(self, instance, validated_data):
     #     print('validated_data')
     #     print(validated_data)
     #     print('validated_data')
-
+        project = Manager_Projects.update(
+            instance=instance,
+            validated_data=validated_data
+        )
     #     for key, value in validated_data.items():
     #         if key == 'keywords':
     #             print(value)
@@ -110,7 +117,7 @@ class Serializer_Project(serializers.ModelSerializer):
 
     #     instance.save()
 
-    #     return instance
+        return project
 
 
     # def get_count_assignments_max_per_worker(self, obj):

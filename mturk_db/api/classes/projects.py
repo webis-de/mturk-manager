@@ -1,12 +1,16 @@
-from api.models import Account_Mturk, Project
+from django.db.models import F, Value, Count, Q, Sum, IntegerField, ExpressionWrapper
+from api.models import Account_Mturk, Project, Message_Reject
 from mturk_db.settings import URL_MTURK_SANDBOX
 import boto3
+from pytz import timezone
+from datetime import datetime
 from django.utils.text import slugify
 from django.conf import settings
 
 class Manager_Projects(object):
     try:
-        object_account_mturk = Account_Mturk.objects.get(name='webis')
+        object_account_mturk = Account_Mturk.objects.all()[0]
+        # object_account_mturk = Account_Mturk.objects.get(name='webis')
     except:
         print('No credentials for the MTurk account are set')
 
@@ -45,6 +49,22 @@ class Manager_Projects(object):
 
         return project
 
+    @staticmethod
+    def update(instance, validated_data):
+        for key, value in validated_data.items():
+            if key == 'message_reject':
+                message_reject = Message_Reject.objects.get_or_create(message=value)[0]
+                instance.message_reject_default = message_reject
+
+                messages_reject_deleted = Message_Reject.objects.all().annotate(
+                    count_usage=Count('project')
+                ).filter(count_usage=0).delete()
+            else:
+                setattr(instance, key, value)
+
+        instance.save()
+        return instance
+
     @classmethod
     def get_count_assignments_max_per_worker(cls, database_object_project):
         project = Project.objects.get(slug=database_object_project.slug)
@@ -62,3 +82,14 @@ class Manager_Projects(object):
         return {
             'count_assignments_max_per_worker': value,
         }
+
+    @staticmethod
+    def ping(database_object_project):
+        now = datetime.now(timezone('Europe/Berlin'))
+        database_object_project.datetime_visited = now
+        database_object_project.save()
+        return { 'datetime': now }
+
+    @staticmethod
+    def delete(database_object_project):
+        database_object_project.delete()
