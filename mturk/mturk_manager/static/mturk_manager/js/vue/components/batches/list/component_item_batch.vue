@@ -18,7 +18,16 @@
         <td 
             class="text-xs-center"
         >
-            {{ batch.hits.length }}
+            <component-display-datetime
+                v-bind:datetime="batch.datetime_creation"
+            >
+            </component-display-datetime>
+        </td>
+        <td 
+        v-on:click="foo()"
+            class="text-xs-center"
+        >
+            {{ Object.keys(batch.object_hits).length }}
         </td>
         <td 
             class="text-xs-center"
@@ -57,14 +66,15 @@
     </tr>
 </template>
 <script>
-    import { mapState, mapActions, mapGetters } from 'vuex';
+    import { mapState, mapActions, mapMutations, mapGetters } from 'vuex';
     import _ from 'lodash';
     import ComponentProgress from './component_progress.vue';
+    import ComponentDisplayDatetime from '../../helpers/component_display_datetime.vue';
+    import Batch from '../../../classes/batch.js';
 export default {
     name: 'component-item-batch',
     props: {
         props: {
-            type: Object,
             required: true,
         },
     },
@@ -74,6 +84,7 @@ export default {
     },
     computed: {
         batch() {
+            console.log('calculated batch')
             return this.props.item;
         },
         ...mapGetters(['get_show_progress_indicator']),
@@ -84,6 +95,7 @@ export default {
     },
     components: {
         ComponentProgress,
+        ComponentDisplayDatetime,
     },
 }
 </script>

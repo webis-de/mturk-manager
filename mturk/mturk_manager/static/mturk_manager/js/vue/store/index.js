@@ -18,6 +18,7 @@ import { moduleBatches } from './modules/batches.js';
 import { moduleHITs } from './modules/hits.js';
 import { moduleAssignments } from './modules/assignments.js';
 import { moduleKeywords } from './modules/keywords.js';
+import { moduleMessagesReject } from './modules/messages_reject.js';
 
 export const store = new Vuex.Store({
     modules: {
@@ -29,6 +30,7 @@ export const store = new Vuex.Store({
         moduleHITs,
         moduleAssignments,
         moduleKeywords,
+        moduleMessagesReject,
     },
     state: {
         has_loaded_projects: false,
@@ -76,6 +78,8 @@ export const store = new Vuex.Store({
         set_show_progress_indicator(state, show) {
             state.show_progress_indicator += show == true ? 1 : -1;
         },
+        // set_urls(state, config) {
+        // },
     },
     actions: {
         async init({state, commit, dispatch}) {
@@ -93,6 +97,8 @@ export const store = new Vuex.Store({
             commit('moduleQualifications/set_url_api_qualifications', config.url_api_qualifications);
             // commit('moduleQualifications/set_url_api_qualification', config.url_api_qualification);
 
+            // commit('set_urls', config);
+
             commit('moduleWorkers/set_urls', config);
             // commit('moduleWorkers/set_url_api_global_db', config.url_api_global_db);
 
@@ -104,6 +110,7 @@ export const store = new Vuex.Store({
             commit('moduleBatches/set_urls', config);
             
             commit('moduleKeywords/set_urls', config);
+            commit('moduleMessagesReject/set_urls', config);
 
             await dispatch('moduleProjects/load_projects');
             state.has_loaded_projects = true;

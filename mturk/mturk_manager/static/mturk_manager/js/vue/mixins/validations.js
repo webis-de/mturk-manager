@@ -3,6 +3,8 @@ const MESSAGES_DEFAULT= {
 	required: 'Required!',
 	minValue: 'Too low!',
 	maxValue: 'Too high!',
+	contains_form_injection: '\'data-inject_input_forms\' is missing!',
+	contains_injection_assignments: '\'data-inject_assignments\' is missing!',
 };
 
 export default {

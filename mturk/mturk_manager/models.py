@@ -10,7 +10,7 @@ class Global_DB(models.Model):
 class m_Account_Mturk(models.Model):
     name = models.CharField(max_length=200, unique=True)
     key_access = models.CharField(max_length=200)
-    key_secret = models.CharField(max_length=200)
+    key_secret = models.CharField(max_length=200)   
 
     def __str__(self):
         return self.name

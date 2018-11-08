@@ -17,16 +17,28 @@
             v-bind:error-messages="validation_errors.settings_batch.description"
         ></v-text-field>
 
-        <v-text-field
-            required
-            type="number"
-            v-bind:value="reward"
-            v-on:input="$emit('update:reward', try_number($event)); v.settings_batch.reward.$touch()"
-            step="0.01"
-            label="Reward"
-            append-icon="attach_money"
-            v-bind:error-messages="validation_errors.settings_batch.reward"
-        ></v-text-field>
+        <v-layout row align-center>
+            <v-flex>
+                <v-text-field
+                    required
+                    type="number"
+                    v-bind:value="reward"
+                    v-on:input="$emit('update:reward', try_number($event)); v.settings_batch.reward.$touch()"
+                    step="0.01"
+                    v-bind:label="`Reward (${ amount_formatted(reward) })`"
+                    v-bind:error-messages="validation_errors.settings_batch.reward"
+                >
+                </v-text-field>
+            </v-flex>
+            <v-flex shrink>
+                <div
+                    slot="append"
+                    class="text-no-wrap"
+                >
+                    ct, in Dollar: {{ amount_formatted(reward) }}
+                </div>
+            </v-flex>
+        </v-layout>
 
         <v-text-field
             required

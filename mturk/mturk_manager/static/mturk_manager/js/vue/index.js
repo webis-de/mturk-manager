@@ -9,7 +9,7 @@ import app_dashboard from './components/dashboard/app_dashboard.vue';
 import app_batches from './components/batches/app_batches.vue';
 import app_hits from './components/hits/app_hits.vue';
 import app_assignments from './components/assignments/app_assignments.vue';
-import AppFinances from './components/finances/AppFinances.vue';
+import app_finances from './components/finances/app_finances.vue';
 import AppQualifications from './components/qualifications/AppQualifications.vue';
 import app_workers from './components/workers/app_workers.vue';
 import AppSettingsProject from './components/settings_project/app_settings_project.vue';
@@ -91,7 +91,7 @@ const routes = [
 	{ 
 		path: '/projects/:slug_project/finances', 
 		name: 'finances',
-		component: AppFinances,
+		component: app_finances,
 	},
 	{ 
 		path: '/projects/:slug_project/workers', 

@@ -8,8 +8,8 @@ export const moduleWorkers = {
 	namespaced: true,
 	state: {
         url_api_workers: undefined,
-        object_workers: null,
-        object_workers_sandbox: null,
+        object_workers: {},
+        object_workers_sandbox: {},
         
         url_api_global_db: undefined,
         // loaded_status_block: false,
@@ -127,6 +127,20 @@ export const moduleWorkers = {
     			Vue.set(object_workers, obj_worker.id, obj_worker);
         	});
 		},
+		append_workers(state, {data_workers, use_sandbox}) {
+			let object_workers = null;
+			if(use_sandbox)
+			{
+				object_workers = state.object_workers_sandbox;
+			} else {
+				object_workers = state.object_workers;
+			}
+
+        	_.forEach(data_workers, function(data_worker){
+    			const obj_worker = new Worker(data_worker);
+    			Vue.set(object_workers, obj_worker.id, obj_worker);
+        	});
+		},
 		// set_workers(state, {data_workers, use_sandbox}) {
 		// 	let object_workers = null;
 		// 	if(use_sandbox)
@@ -199,6 +213,9 @@ export const moduleWorkers = {
 				}
 			});
 		},
+        clear_sandbox(state) {
+            state.object_workers_sandbox = {}; 
+        },
 	},
 	actions: {
 		// async sync_workers({commit, state, getters, rootState, rootGetters}, force=false) {
@@ -216,9 +233,13 @@ export const moduleWorkers = {
 		// 	    })
 		// 	}
 		// },
-		async sync_workers_by_ids({commit, state, getters, rootState, rootGetters, dispatch}, {list_ids, use_sandbox}) {
-			console.log(list_ids);
-			console.log(use_sandbox);
+		async sync_workers_by_ids({commit, state, getters, rootState, rootGetters, dispatch}, {list_ids, use_sandbox, append}) {
+			// console.log(list_ids);
+			// console.log(use_sandbox);
+			if(_.size(list_ids) == 0)
+			{
+				return
+			}
 
             const response = await dispatch('make_request', {
                 method: 'patch',
@@ -231,10 +252,18 @@ export const moduleWorkers = {
 
             const data_workers = response.data;
 
-            commit('set_workers', {
-                data_workers, 
-                use_sandbox
-            });
+            if(append === true)
+            {
+	            commit('append_workers', {
+	                data_workers, 
+	                use_sandbox,
+	            });
+            } else {
+	            commit('set_workers', {
+	                data_workers, 
+	                use_sandbox,
+	            });
+            }
 
             dispatch('moduleBatches/add_workers', {
                 'object_workers': getters.get_object_workers(use_sandbox), 

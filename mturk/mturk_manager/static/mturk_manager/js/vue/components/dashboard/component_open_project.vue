@@ -33,9 +33,16 @@
                         slot="items"
                         slot-scope="props"
                     >
-                        <tr>
-                            <td>
+                        <tr
+                            v-bind:key="props.item.id"
+                        >
+                            <td> 
                                 {{ props.item.name }}
+                            </td>
+                            <td>
+                                <component-display-datetime
+                                v-bind:datetime="props.item.datetime_visited"
+                                ></component-display-datetime>
                             </td>
                             <td class="text-xs-right">
                                 <v-btn
@@ -57,6 +64,7 @@
 <script>
     import { mapState, mapActions, mapGetters } from 'vuex';
     import _ from 'lodash';
+    import ComponentDisplayDatetime from '../helpers/component_display_datetime';
     import table from '../../mixins/table';
 export default {
     mixins: [
@@ -70,7 +78,12 @@ export default {
                 {
                     text: 'Name',
                     value: 'name',
-                    align: 'left'
+                    align: 'left',
+                },
+                {
+                    text: 'Last Usage',
+                    value: 'datetime_visited',
+                    align: 'left',
                 },
                 {
                     text: '',
@@ -78,11 +91,15 @@ export default {
                     align: ''
                 },
             ],
+            pagination: {
+                sortBy: 'datetime_visited',
+                descending: true,
+            },
         }
     },
     computed: {
         list_projects() {
-            return _.orderBy(this.object_projects, (project) => project.name);
+            return _.orderBy(this.object_projects, ['datetime_visited'], ['desc']);
         },
         ...mapGetters('moduleProjects', {
             'object_projects': 'get_object_projects',
@@ -93,6 +110,7 @@ export default {
     created: function() {
     },
     components: {
+        ComponentDisplayDatetime,
     },
 }
 </script>

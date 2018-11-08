@@ -1,10 +1,34 @@
 <template>
-    <v-tooltip bottom>
-        <v-btn icon v-bind:loading="get_show_progress_indicator" v-on:click="refresh_data" slot="activator">
-            <v-icon>refresh</v-icon>
-        </v-btn>
-        <span>Refresh batch data</span>
-    </v-tooltip>
+<v-layout align-center justify-end>
+    <v-flex shrink>
+        <v-tooltip bottom>
+            <v-btn 
+                flat
+                v-bind:loading="get_show_progress_indicator" 
+                v-on:click="refresh_data(true)" 
+                slot="activator"
+            >
+                <v-icon>refresh</v-icon>
+                Refresh Data
+            </v-btn>
+            <span>Refresh batch data</span>
+        </v-tooltip>
+    </v-flex>
+    <v-flex shrink>
+        <v-tooltip bottom>
+            <v-btn 
+                flat
+                v-bind:loading="is_syncing_mturk" 
+                v-on:click="sync_mturk(true)" 
+                slot="activator"
+            >
+                <v-icon>sync</v-icon>
+                Sync with MTurk
+            </v-btn>
+            <span>Refresh batch data</span>
+        </v-tooltip>
+    </v-flex>
+</v-layout>
 </template>
 
 <script>
@@ -17,12 +41,22 @@ export default {
         load_data,
     ],
     name: 'component-toolbar-batches',
+    props: {
+        name_route: {
+        },
+    },
     data() {
         return {
     	}
     },
+    created() {
+        // console.log($route);
+    },
     computed: {
         ...mapGetters(['get_show_progress_indicator']),
+        ...mapGetters('moduleBatches', {
+            'is_syncing_mturk': 'get_is_syncing_mturk',
+        }),
     },
     methods: {
         ...mapActions(['set_show_progress_indicator']),

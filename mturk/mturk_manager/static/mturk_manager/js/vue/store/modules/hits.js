@@ -54,24 +54,43 @@ export const moduleHITs = {
 
 		            Vue.set(object_hits, hit.id, hit);
 
-		            Vue.set(batch.hits, batch.hits.length, hit);
+		            Vue.set(batch.object_hits, hit.id, hit);
                 });
             });
 		},
+        clear_sandbox(state) {
+            state.object_hits_sandbox = {}; 
+        },
 	},
 	actions: {
-        async set_hits({commit, state, getters, rootState, rootGetters, dispatch}, {object_batches, data_batches, use_sandbox}) {
+        async set_hits({commit, state, getters, rootState, rootGetters, dispatch}, {object_batches, data_batches, use_sandbox}) {           
+            console.log('set_hits');
             commit('set_hits', {
                 object_batches, 
                 data_batches, 
                 use_sandbox
             });
+            console.log('after set_hits');
 
-            dispatch('moduleAssignments/set_assignments', {
-                object_batches, 
+            console.log('dispatch_set_assignments');
+            await dispatch('moduleAssignments/set_assignments', {
                 data_batches, 
                 'object_hits': getters.get_object_hits(use_sandbox), 
                 use_sandbox
+            }, {root: true});
+            console.log('after dispatch_set_assignments');
+        },
+        async append_hits({commit, state, getters, rootState, rootGetters, dispatch}, {data_batches, use_sandbox}) {
+            // commit('set_hits', {
+            //     object_batches, 
+            //     data_batches, 
+            //     use_sandbox
+            // });
+            await dispatch('moduleAssignments/append_assignments', {
+                // object_batches, 
+                data_batches, 
+                'object_hits': getters.get_object_hits(use_sandbox), 
+                use_sandbox,
             }, {root: true});
         },
 	},

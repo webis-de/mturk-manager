@@ -1,9 +1,13 @@
 <template>
-<span>{{ amount_formatted }}</span>
+<span>{{ amount_formatted_ }}</span>
 </template>
 
 <script>
+    import helpers from '../mixins/helpers';
 export default {
+    mixins: [
+        helpers,
+    ],
     name: 'component-display-money',
     props: {
     	amount: {
@@ -12,7 +16,8 @@ export default {
     	}
     },
     computed: {
-    	amount_formatted: function() {
+    	amount_formatted_: function() {
+            return this.amount_formatted(this.amount);
     		return this.amount.toFixed(2) + ' $';
     	},
     },

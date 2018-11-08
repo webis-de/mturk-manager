@@ -19,11 +19,46 @@
                     {{ Object.keys(props.item.dict_parameters).length }}
                 </td>
                 <td>
-                    <component-delete-template-worker
+                    <span 
+                        v-if="props.item.template_assignment == undefined"
+                    >
+                        None
+                    </span> 
+                    <span v-else>
+                        {{ props.item.template_assignment.name }}
+                    </span>
+                </td>
+                <td>
+                    <span 
+                        v-if="props.item.template_hit == undefined"
+                    >
+                        None
+                    </span> 
+                    <span v-else>
+                        {{ props.item.template_hit.name }}
+                    </span>
+                </td>
+                <td>
+                    <span 
+                        v-if="props.item.template_global == undefined"
+                    >
+                        None
+                    </span> 
+                    <span v-else>
+                        {{ props.item.template_global.name }}
+                    </span>
+                </td>
+                <td>
+                    <component-edit-template-worker
+                        v-bind:key="`component-edit-template-worker-${props.item.id}`"
+                        v-bind:template_worker_current="props.item"
+                        v-on:edited="snackbar_edited = true"
+                    ></component-edit-template-worker>
+                    <!-- <component-delete-template-worker
                         v-bind:key="`component-delete-template-worker-${props.item.id}`"
                         v-bind:template_worker="props.item"
                         v-on:deleted="snackbar_deleted = true"
-                    ></component-delete-template-worker>
+                    ></component-delete-template-worker> -->
                 </td>
             </tr>
         </template>
@@ -61,11 +96,23 @@
         Saved!
         <v-spacer></v-spacer>
     </v-snackbar>
+
+    <v-snackbar
+        v-model="snackbar_edited"
+        v-bind:timeout="1500"
+        bottom
+        color="success"
+    >
+        <v-spacer></v-spacer>
+        Updated!
+        <v-spacer></v-spacer>
+    </v-snackbar>
 </div>
 </template>
 
 <script>
     import ComponentAddTemplateWorker from './component_add_template_worker.vue';
+    import ComponentEditTemplateWorker from './component_edit_template_worker.vue';
     import ComponentDeleteTemplateWorker from './component_delete_template_worker.vue';
     import { mapState, mapActions, mapGetters } from 'vuex';
     import _ from 'lodash';
@@ -91,6 +138,18 @@ export default {
                     value: 'count_parameters',
                 },
                 {
+                    text: 'Assignment Template',
+                    value: 'template_assigmnent',
+                },
+                {
+                    text: 'Assignment HIT',
+                    value: 'template_hit',
+                },
+                {
+                    text: 'Assignment Global',
+                    value: 'template_global',
+                },
+                {
                     text: 'Actions',
                     value: '',
                     sortable: false,
@@ -98,6 +157,7 @@ export default {
             ],
 
             snackbar_deleted: false,
+            snackbar_edited: false,
             snackbar_created: false,
         }
     },
@@ -118,6 +178,7 @@ export default {
     },
     components: {
         ComponentAddTemplateWorker,
+        ComponentEditTemplateWorker,
     	ComponentDeleteTemplateWorker,
     },
 }

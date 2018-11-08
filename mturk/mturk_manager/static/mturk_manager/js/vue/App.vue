@@ -20,24 +20,36 @@
         >
             <v-toolbar-side-icon @click.stop="show_drawer = !show_drawer"></v-toolbar-side-icon>
             <v-toolbar-title>"{{ project_current.name }}" - {{name_route_current}}</v-toolbar-title>
+
             <v-spacer></v-spacer>
 
-            <v-tooltip bottom>
-                <v-switch 
-                    hide-details 
-                    slot="activator" 
-                    v-bind:label="use_sandbox ? 'Use Sandbox' : 'Use Sandbox'" 
-                    v-bind:input-value="use_sandbox" 
-                    v-on:click.native="toggle_use_sandbox"
-                ></v-switch>
-                <span>You are currently <b v-if="!use_sandbox">not</b> using the Sandbox</span>
-            </v-tooltip>
+            <v-layout align-center justify-end>
+                <v-flex shrink>
+                    <v-tooltip bottom>
+                        <v-switch 
+                            hide-details 
+                            slot="activator" 
+                            v-bind:label="use_sandbox ? 'Toggle Sandbox' : 'Toggle Sandbox'" 
+                            v-bind:input-value="use_sandbox" 
+                            v-on:click.native="toggle_use_sandbox"
+                        ></v-switch>
+                        <span>You are currently <b v-if="!use_sandbox">not</b> using the Sandbox</span>
+                    </v-tooltip>
+                </v-flex>
 
-            <!-- <v-spacer></v-spacer> -->
+                <v-divider 
+                    class="mx-2"
+                    inset
+                    vertical
+                ></v-divider>
 
-            <component  
-                v-bind:is="currentTabComponent"
-            ></component>
+                <v-flex shrink>
+                    <component  
+                        v-bind:name_route="name_route_current"
+                        v-bind:is="currentTabComponent"
+                    ></component>
+                </v-flex>
+            </v-layout>
         </v-toolbar>
 
 
@@ -115,7 +127,7 @@ export default {
             show_drawer: true,
             show_snackbar: false,
             text_snackbar: 'Finished refreshing the data',
-
+            id_interval: undefined,
         }
     },
     computed: {
@@ -148,14 +160,14 @@ export default {
             // return this.$router.currentRoute;
             return this.$route.name;
         },
-        setting_show_with_fee: {
-            get: function() {
-                return this.show_with_fee;
-            },
-            set: function(value) {
-                this.set_show_with_fee(value);
-            }
-        },
+        // setting_show_with_fee: {
+        //     get: function() {
+        //         return this.show_with_fee;
+        //     },
+        //     set: function(value) {
+        //         this.set_show_with_fee(value);
+        //     }
+        // },
         ...mapState(['show_with_fee', 'use_sandbox', 'has_loaded_projects']),
         ...mapGetters('moduleProjects', {
             'project_current': 'get_project_current',
@@ -163,6 +175,19 @@ export default {
             'object_projects': 'get_object_projects',
         }),
         ...mapGetters(['get_show_progress_indicator']),
+    },
+    watch: {
+        slug_project_current(slug_project_current) {
+            clearInterval(this.id_interval);
+
+            if(slug_project_current != null)
+            {
+                this.ping();
+                this.id_interval = setInterval(() => {
+                    this.ping();
+                }, 1000 * 60 * 5);
+            }
+        },
     },
     methods: {
         toggle_use_sandbox: function() {
@@ -175,7 +200,15 @@ export default {
         //         this.show_snackbar = true;
         //     });
         // },
-        ...mapActions(['init', 'set_show_with_fee', 'set_show_progress_indicator', 'set_use_sandbox']),
+        ...mapActions([
+            'init', 
+            'set_show_with_fee', 
+            'set_show_progress_indicator', 
+            'set_use_sandbox',
+        ]),
+        ...mapActions('moduleProjects', {
+            'ping': 'ping',
+        }),
         // load_config: function() {
         //     const configElement = document.getElementById( 'config' );
         //     const config = JSON.parse( configElement.innerHTML );
@@ -183,11 +216,10 @@ export default {
         //     this.url_api_get_balance = config.url_api_get_balance;
         // },
     },
-    created: function() {
+    created: async function() {
         this.set_show_progress_indicator(true);
-        this.init().then(() => {
-            this.set_show_progress_indicator(false);
-        });
+        await this.init()
+        this.set_show_progress_indicator(false);
     },
     components: {
         ComponentNavigationDrawer,
@@ -196,4 +228,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+    // sandbox switch
+    .v-input--selection-controls {
+        padding-top: 0;
+    }
 </style>

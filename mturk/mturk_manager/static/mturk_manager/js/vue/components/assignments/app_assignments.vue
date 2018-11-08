@@ -6,6 +6,8 @@
         <component-list-assignments
             v-bind:show_links="true"
         ></component-list-assignments>
+        <component-annotate>
+        </component-annotate>
     </template>
     <template 
         v-else-if="$route.name == 'assignment'"
@@ -23,6 +25,7 @@
     // import ComponentCreateBatch from './create/component_create_batch.vue';
     import ComponentListAssignments from './list/component_list_assignments.vue';
     import ComponentAssignmentDetail from './detail/component_assignment_detail.vue';
+    import ComponentAnnotate from './annotate/component_annotate.vue';
     // import ComponentShowMoneySpent from './component-show-money-spent.vue';
     // import ComponentShowBatches from './component-show-batches.vue';
     import slug_project from '../../mixins/slug_project';
@@ -52,6 +55,7 @@ export default {
      // ComponentCreateBatch,
      ComponentListAssignments,
      ComponentAssignmentDetail,
+     ComponentAnnotate,
     },
 }
 </script>

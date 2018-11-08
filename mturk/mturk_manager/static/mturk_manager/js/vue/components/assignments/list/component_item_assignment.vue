@@ -92,7 +92,7 @@ export default {
     // },
     computed: {
         assignment() {
-        	console.log(this.props.item)
+        	// console.log(this.props.item)
             return this.props.item;
         },
 

@@ -1,6 +1,6 @@
 <template>
 <div>
-	<h1>Worker Templates</h1>
+	<h2 class="headline">Worker Templates</h2>
     <component-list-templates-worker></component-list-templates-worker>
 </div>
 </template>

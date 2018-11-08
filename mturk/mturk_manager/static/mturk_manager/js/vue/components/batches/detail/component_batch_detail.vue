@@ -18,7 +18,7 @@
         </h2>
         <v-divider class="my-3"></v-divider>
         <component-list-hits
-            v-bind:list_hits="batch.hits"
+            v-bind:list_hits="list_hits"
         ></component-list-hits>
 	</v-flex>
 </v-layout>
@@ -27,6 +27,7 @@
 <script>
     import { mapState, mapActions, mapGetters } from 'vuex';
     import ComponentListHits from '../../hits/list/component_list_hits.vue';
+    import _ from 'lodash';
 
 export default {
     name: 'component-batch-detail',
@@ -51,12 +52,25 @@ export default {
     //     },
     // },
     computed: {
+        list_hits() {
+            if(this.batch.object_hits == undefined)
+            {
+                return [];
+            } else {
+                return _.orderBy(this.batch.object_hits);
+            }
+        },
     	batch() {
     		const object_batches = this.get_object_batches();
     		if(object_batches == null) {
     			return {}
     		} else {
-    			return object_batches[this.id_batch];
+                if(object_batches[this.id_batch] == undefined)
+                {
+                    return {};
+                } else {
+                    return object_batches[this.id_batch];
+                }
     		}
     	},
 

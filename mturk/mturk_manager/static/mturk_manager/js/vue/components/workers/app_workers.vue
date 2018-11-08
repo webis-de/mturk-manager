@@ -21,26 +21,10 @@ export default {
     mixins: [
         slug_project,
     ],
-    name: 'app-finances',
-
+    name: 'app-workers',
     data () {
         return {
         	workers_selected: [],
-		    pagination: {
-		      rowsPerPage: 10,
-		    },
-            list_headers: [
-                {
-                    text: 'Name',
-                    value: 'name',
-                },
-            ],
-
-            show_dialog_policy: false,
-            policy_to_be_edited: null,
-            // policy_new: new Policy({
-            //     QualificationTypeStatus: 'Active',
-            // }),
         }
     },
     computed: {
@@ -97,9 +81,9 @@ export default {
         // }),
         // ...mapActions(['set_show_progress_indicator']),
     },
-    created: function() {
-        // this.refresh_data();
-    },
+    // created: function() {
+    //     // this.refresh_data();
+    // },
 
     components: {
      ComponentListWorkers,

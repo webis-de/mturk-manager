@@ -2,15 +2,22 @@ export default class Project
 {
 	constructor(data={}) 
 	{
+		console.log(data)
 		this.id = data.id;
 		this.name = data.name;
 		this.slug = data.slug;
 		this.version = data.version;
 		this.settings_batch_default = data.settings_batch_default;
+		this.datetime_visited = new Date(data.datetime_visited);
 		this.count_assignments_max_per_worker = data.count_assignments_max_per_worker;
 		
         this.templates_worker = null;
+        this.templates_assignment = null;
+        this.templates_hit = null;
+        this.templates_global = null;
 		this.settings_batch = null;
+
+		this.message_reject_default = data.message_reject_default;
 
         // this.title = data.title;
         // this.description = data.description;

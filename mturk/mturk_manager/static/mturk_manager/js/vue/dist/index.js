@@ -36338,1587 +36338,7 @@ function Vuelidate(Vue) {
 
 var _default = Vuelidate;
 exports.default = _default;
-},{"./vval":24,"./params":25}],180:[function(require,module,exports) {
-
-// https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
-var global = module.exports = typeof window != 'undefined' && window.Math == Math
-  ? window : typeof self != 'undefined' && self.Math == Math ? self
-  // eslint-disable-next-line no-new-func
-  : Function('return this')();
-if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
-
-},{}],118:[function(require,module,exports) {
-var core = module.exports = { version: '2.5.7' };
-if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
-
-},{}],189:[function(require,module,exports) {
-module.exports = function (it) {
-  if (typeof it != 'function') throw TypeError(it + ' is not a function!');
-  return it;
-};
-
-},{}],185:[function(require,module,exports) {
-// optional / simple context binding
-var aFunction = require('./_a-function');
-module.exports = function (fn, that, length) {
-  aFunction(fn);
-  if (that === undefined) return fn;
-  switch (length) {
-    case 1: return function (a) {
-      return fn.call(that, a);
-    };
-    case 2: return function (a, b) {
-      return fn.call(that, a, b);
-    };
-    case 3: return function (a, b, c) {
-      return fn.call(that, a, b, c);
-    };
-  }
-  return function (/* ...args */) {
-    return fn.apply(that, arguments);
-  };
-};
-
-},{"./_a-function":189}],188:[function(require,module,exports) {
-module.exports = function (it) {
-  return typeof it === 'object' ? it !== null : typeof it === 'function';
-};
-
-},{}],243:[function(require,module,exports) {
-var isObject = require('./_is-object');
-module.exports = function (it) {
-  if (!isObject(it)) throw TypeError(it + ' is not an object!');
-  return it;
-};
-
-},{"./_is-object":188}],273:[function(require,module,exports) {
-module.exports = function (exec) {
-  try {
-    return !!exec();
-  } catch (e) {
-    return true;
-  }
-};
-
-},{}],238:[function(require,module,exports) {
-// Thank's IE8 for his funny defineProperty
-module.exports = !require('./_fails')(function () {
-  return Object.defineProperty({}, 'a', { get: function () { return 7; } }).a != 7;
-});
-
-},{"./_fails":273}],246:[function(require,module,exports) {
-var isObject = require('./_is-object');
-var document = require('./_global').document;
-// typeof document.createElement is 'object' in old IE
-var is = isObject(document) && isObject(document.createElement);
-module.exports = function (it) {
-  return is ? document.createElement(it) : {};
-};
-
-},{"./_is-object":188,"./_global":180}],292:[function(require,module,exports) {
-module.exports = !require('./_descriptors') && !require('./_fails')(function () {
-  return Object.defineProperty(require('./_dom-create')('div'), 'a', { get: function () { return 7; } }).a != 7;
-});
-
-},{"./_descriptors":238,"./_fails":273,"./_dom-create":246}],293:[function(require,module,exports) {
-// 7.1.1 ToPrimitive(input [, PreferredType])
-var isObject = require('./_is-object');
-// instead of the ES6 spec version, we didn't implement @@toPrimitive case
-// and the second argument - flag - preferred type is a string
-module.exports = function (it, S) {
-  if (!isObject(it)) return it;
-  var fn, val;
-  if (S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it))) return val;
-  if (typeof (fn = it.valueOf) == 'function' && !isObject(val = fn.call(it))) return val;
-  if (!S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it))) return val;
-  throw TypeError("Can't convert object to primitive value");
-};
-
-},{"./_is-object":188}],236:[function(require,module,exports) {
-var anObject = require('./_an-object');
-var IE8_DOM_DEFINE = require('./_ie8-dom-define');
-var toPrimitive = require('./_to-primitive');
-var dP = Object.defineProperty;
-
-exports.f = require('./_descriptors') ? Object.defineProperty : function defineProperty(O, P, Attributes) {
-  anObject(O);
-  P = toPrimitive(P, true);
-  anObject(Attributes);
-  if (IE8_DOM_DEFINE) try {
-    return dP(O, P, Attributes);
-  } catch (e) { /* empty */ }
-  if ('get' in Attributes || 'set' in Attributes) throw TypeError('Accessors not supported!');
-  if ('value' in Attributes) O[P] = Attributes.value;
-  return O;
-};
-
-},{"./_an-object":243,"./_ie8-dom-define":292,"./_to-primitive":293,"./_descriptors":238}],237:[function(require,module,exports) {
-module.exports = function (bitmap, value) {
-  return {
-    enumerable: !(bitmap & 1),
-    configurable: !(bitmap & 2),
-    writable: !(bitmap & 4),
-    value: value
-  };
-};
-
-},{}],181:[function(require,module,exports) {
-var dP = require('./_object-dp');
-var createDesc = require('./_property-desc');
-module.exports = require('./_descriptors') ? function (object, key, value) {
-  return dP.f(object, key, createDesc(1, value));
-} : function (object, key, value) {
-  object[key] = value;
-  return object;
-};
-
-},{"./_object-dp":236,"./_property-desc":237,"./_descriptors":238}],242:[function(require,module,exports) {
-var hasOwnProperty = {}.hasOwnProperty;
-module.exports = function (it, key) {
-  return hasOwnProperty.call(it, key);
-};
-
-},{}],187:[function(require,module,exports) {
-
-var global = require('./_global');
-var core = require('./_core');
-var ctx = require('./_ctx');
-var hide = require('./_hide');
-var has = require('./_has');
-var PROTOTYPE = 'prototype';
-
-var $export = function (type, name, source) {
-  var IS_FORCED = type & $export.F;
-  var IS_GLOBAL = type & $export.G;
-  var IS_STATIC = type & $export.S;
-  var IS_PROTO = type & $export.P;
-  var IS_BIND = type & $export.B;
-  var IS_WRAP = type & $export.W;
-  var exports = IS_GLOBAL ? core : core[name] || (core[name] = {});
-  var expProto = exports[PROTOTYPE];
-  var target = IS_GLOBAL ? global : IS_STATIC ? global[name] : (global[name] || {})[PROTOTYPE];
-  var key, own, out;
-  if (IS_GLOBAL) source = name;
-  for (key in source) {
-    // contains in native
-    own = !IS_FORCED && target && target[key] !== undefined;
-    if (own && has(exports, key)) continue;
-    // export native or passed
-    out = own ? target[key] : source[key];
-    // prevent global pollution for namespaces
-    exports[key] = IS_GLOBAL && typeof target[key] != 'function' ? source[key]
-    // bind timers to global for call from export context
-    : IS_BIND && own ? ctx(out, global)
-    // wrap global constructors for prevent change them in library
-    : IS_WRAP && target[key] == out ? (function (C) {
-      var F = function (a, b, c) {
-        if (this instanceof C) {
-          switch (arguments.length) {
-            case 0: return new C();
-            case 1: return new C(a);
-            case 2: return new C(a, b);
-          } return new C(a, b, c);
-        } return C.apply(this, arguments);
-      };
-      F[PROTOTYPE] = C[PROTOTYPE];
-      return F;
-    // make static versions for prototype methods
-    })(out) : IS_PROTO && typeof out == 'function' ? ctx(Function.call, out) : out;
-    // export proto methods to core.%CONSTRUCTOR%.methods.%NAME%
-    if (IS_PROTO) {
-      (exports.virtual || (exports.virtual = {}))[key] = out;
-      // export proto methods to core.%CONSTRUCTOR%.prototype.%NAME%
-      if (type & $export.R && expProto && !expProto[key]) hide(expProto, key, out);
-    }
-  }
-};
-// type bitmap
-$export.F = 1;   // forced
-$export.G = 2;   // global
-$export.S = 4;   // static
-$export.P = 8;   // proto
-$export.B = 16;  // bind
-$export.W = 32;  // wrap
-$export.U = 64;  // safe
-$export.R = 128; // real proto method for `library`
-module.exports = $export;
-
-},{"./_global":180,"./_core":118,"./_ctx":185,"./_hide":181,"./_has":242}],241:[function(require,module,exports) {
-var toString = {}.toString;
-
-module.exports = function (it) {
-  return toString.call(it).slice(8, -1);
-};
-
-},{}],272:[function(require,module,exports) {
-// fallback for non-array-like ES3 and non-enumerable old V8 strings
-var cof = require('./_cof');
-// eslint-disable-next-line no-prototype-builtins
-module.exports = Object('z').propertyIsEnumerable(0) ? Object : function (it) {
-  return cof(it) == 'String' ? it.split('') : Object(it);
-};
-
-},{"./_cof":241}],229:[function(require,module,exports) {
-// 7.2.1 RequireObjectCoercible(argument)
-module.exports = function (it) {
-  if (it == undefined) throw TypeError("Can't call method on  " + it);
-  return it;
-};
-
-},{}],235:[function(require,module,exports) {
-// to indexed object, toObject with fallback for non-array-like ES3 strings
-var IObject = require('./_iobject');
-var defined = require('./_defined');
-module.exports = function (it) {
-  return IObject(defined(it));
-};
-
-},{"./_iobject":272,"./_defined":229}],228:[function(require,module,exports) {
-// 7.1.4 ToInteger
-var ceil = Math.ceil;
-var floor = Math.floor;
-module.exports = function (it) {
-  return isNaN(it = +it) ? 0 : (it > 0 ? floor : ceil)(it);
-};
-
-},{}],224:[function(require,module,exports) {
-// 7.1.15 ToLength
-var toInteger = require('./_to-integer');
-var min = Math.min;
-module.exports = function (it) {
-  return it > 0 ? min(toInteger(it), 0x1fffffffffffff) : 0; // pow(2, 53) - 1 == 9007199254740991
-};
-
-},{"./_to-integer":228}],303:[function(require,module,exports) {
-var toInteger = require('./_to-integer');
-var max = Math.max;
-var min = Math.min;
-module.exports = function (index, length) {
-  index = toInteger(index);
-  return index < 0 ? max(index + length, 0) : min(index, length);
-};
-
-},{"./_to-integer":228}],298:[function(require,module,exports) {
-// false -> Array#indexOf
-// true  -> Array#includes
-var toIObject = require('./_to-iobject');
-var toLength = require('./_to-length');
-var toAbsoluteIndex = require('./_to-absolute-index');
-module.exports = function (IS_INCLUDES) {
-  return function ($this, el, fromIndex) {
-    var O = toIObject($this);
-    var length = toLength(O.length);
-    var index = toAbsoluteIndex(fromIndex, length);
-    var value;
-    // Array#includes uses SameValueZero equality algorithm
-    // eslint-disable-next-line no-self-compare
-    if (IS_INCLUDES && el != el) while (length > index) {
-      value = O[index++];
-      // eslint-disable-next-line no-self-compare
-      if (value != value) return true;
-    // Array#indexOf ignores holes, Array#includes - not
-    } else for (;length > index; index++) if (IS_INCLUDES || index in O) {
-      if (O[index] === el) return IS_INCLUDES || index || 0;
-    } return !IS_INCLUDES && -1;
-  };
-};
-
-},{"./_to-iobject":235,"./_to-length":224,"./_to-absolute-index":303}],184:[function(require,module,exports) {
-module.exports = true;
-
-},{}],239:[function(require,module,exports) {
-
-var core = require('./_core');
-var global = require('./_global');
-var SHARED = '__core-js_shared__';
-var store = global[SHARED] || (global[SHARED] = {});
-
-(module.exports = function (key, value) {
-  return store[key] || (store[key] = value !== undefined ? value : {});
-})('versions', []).push({
-  version: core.version,
-  mode: require('./_library') ? 'pure' : 'global',
-  copyright: '© 2018 Denis Pushkarev (zloirock.ru)'
-});
-
-},{"./_core":118,"./_global":180,"./_library":184}],240:[function(require,module,exports) {
-var id = 0;
-var px = Math.random();
-module.exports = function (key) {
-  return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
-};
-
-},{}],291:[function(require,module,exports) {
-var shared = require('./_shared')('keys');
-var uid = require('./_uid');
-module.exports = function (key) {
-  return shared[key] || (shared[key] = uid(key));
-};
-
-},{"./_shared":239,"./_uid":240}],283:[function(require,module,exports) {
-var has = require('./_has');
-var toIObject = require('./_to-iobject');
-var arrayIndexOf = require('./_array-includes')(false);
-var IE_PROTO = require('./_shared-key')('IE_PROTO');
-
-module.exports = function (object, names) {
-  var O = toIObject(object);
-  var i = 0;
-  var result = [];
-  var key;
-  for (key in O) if (key != IE_PROTO) has(O, key) && result.push(key);
-  // Don't enum bug & hidden keys
-  while (names.length > i) if (has(O, key = names[i++])) {
-    ~arrayIndexOf(result, key) || result.push(key);
-  }
-  return result;
-};
-
-},{"./_has":242,"./_to-iobject":235,"./_array-includes":298,"./_shared-key":291}],284:[function(require,module,exports) {
-// IE 8- don't enum bug keys
-module.exports = (
-  'constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf'
-).split(',');
-
-},{}],220:[function(require,module,exports) {
-// 19.1.2.14 / 15.2.3.14 Object.keys(O)
-var $keys = require('./_object-keys-internal');
-var enumBugKeys = require('./_enum-bug-keys');
-
-module.exports = Object.keys || function keys(O) {
-  return $keys(O, enumBugKeys);
-};
-
-},{"./_object-keys-internal":283,"./_enum-bug-keys":284}],270:[function(require,module,exports) {
-exports.f = Object.getOwnPropertySymbols;
-
-},{}],271:[function(require,module,exports) {
-exports.f = {}.propertyIsEnumerable;
-
-},{}],219:[function(require,module,exports) {
-// 7.1.13 ToObject(argument)
-var defined = require('./_defined');
-module.exports = function (it) {
-  return Object(defined(it));
-};
-
-},{"./_defined":229}],204:[function(require,module,exports) {
-'use strict';
-// 19.1.2.1 Object.assign(target, source, ...)
-var getKeys = require('./_object-keys');
-var gOPS = require('./_object-gops');
-var pIE = require('./_object-pie');
-var toObject = require('./_to-object');
-var IObject = require('./_iobject');
-var $assign = Object.assign;
-
-// should work with symbols and should have deterministic property order (V8 bug)
-module.exports = !$assign || require('./_fails')(function () {
-  var A = {};
-  var B = {};
-  // eslint-disable-next-line no-undef
-  var S = Symbol();
-  var K = 'abcdefghijklmnopqrst';
-  A[S] = 7;
-  K.split('').forEach(function (k) { B[k] = k; });
-  return $assign({}, A)[S] != 7 || Object.keys($assign({}, B)).join('') != K;
-}) ? function assign(target, source) { // eslint-disable-line no-unused-vars
-  var T = toObject(target);
-  var aLen = arguments.length;
-  var index = 1;
-  var getSymbols = gOPS.f;
-  var isEnum = pIE.f;
-  while (aLen > index) {
-    var S = IObject(arguments[index++]);
-    var keys = getSymbols ? getKeys(S).concat(getSymbols(S)) : getKeys(S);
-    var length = keys.length;
-    var j = 0;
-    var key;
-    while (length > j) if (isEnum.call(S, key = keys[j++])) T[key] = S[key];
-  } return T;
-} : $assign;
-
-},{"./_object-keys":220,"./_object-gops":270,"./_object-pie":271,"./_to-object":219,"./_iobject":272,"./_fails":273}],135:[function(require,module,exports) {
-// 19.1.3.1 Object.assign(target, source)
-var $export = require('./_export');
-
-$export($export.S + $export.F, 'Object', { assign: require('./_object-assign') });
-
-},{"./_export":187,"./_object-assign":204}],111:[function(require,module,exports) {
-require('../../modules/es6.object.assign');
-module.exports = require('../../modules/_core').Object.assign;
-
-},{"../../modules/es6.object.assign":135,"../../modules/_core":118}],69:[function(require,module,exports) {
-module.exports = { "default": require("core-js/library/fn/object/assign"), __esModule: true };
-},{"core-js/library/fn/object/assign":111}],49:[function(require,module,exports) {
-"use strict";
-
-exports.__esModule = true;
-
-var _assign = require("../core-js/object/assign");
-
-var _assign2 = _interopRequireDefault(_assign);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = _assign2.default || function (target) {
-  for (var i = 1; i < arguments.length; i++) {
-    var source = arguments[i];
-
-    for (var key in source) {
-      if (Object.prototype.hasOwnProperty.call(source, key)) {
-        target[key] = source[key];
-      }
-    }
-  }
-
-  return target;
-};
-},{"../core-js/object/assign":69}],38:[function(require,module,exports) {
-var Vue // late bind
-var version
-var map = Object.create(null)
-if (typeof window !== 'undefined') {
-  window.__VUE_HOT_MAP__ = map
-}
-var installed = false
-var isBrowserify = false
-var initHookName = 'beforeCreate'
-
-exports.install = function (vue, browserify) {
-  if (installed) { return }
-  installed = true
-
-  Vue = vue.__esModule ? vue.default : vue
-  version = Vue.version.split('.').map(Number)
-  isBrowserify = browserify
-
-  // compat with < 2.0.0-alpha.7
-  if (Vue.config._lifecycleHooks.indexOf('init') > -1) {
-    initHookName = 'init'
-  }
-
-  exports.compatible = version[0] >= 2
-  if (!exports.compatible) {
-    console.warn(
-      '[HMR] You are using a version of vue-hot-reload-api that is ' +
-        'only compatible with Vue.js core ^2.0.0.'
-    )
-    return
-  }
-}
-
-/**
- * Create a record for a hot module, which keeps track of its constructor
- * and instances
- *
- * @param {String} id
- * @param {Object} options
- */
-
-exports.createRecord = function (id, options) {
-  if(map[id]) { return }
-
-  var Ctor = null
-  if (typeof options === 'function') {
-    Ctor = options
-    options = Ctor.options
-  }
-  makeOptionsHot(id, options)
-  map[id] = {
-    Ctor: Ctor,
-    options: options,
-    instances: []
-  }
-}
-
-/**
- * Check if module is recorded
- *
- * @param {String} id
- */
-
-exports.isRecorded = function (id) {
-  return typeof map[id] !== 'undefined'
-}
-
-/**
- * Make a Component options object hot.
- *
- * @param {String} id
- * @param {Object} options
- */
-
-function makeOptionsHot(id, options) {
-  if (options.functional) {
-    var render = options.render
-    options.render = function (h, ctx) {
-      var instances = map[id].instances
-      if (ctx && instances.indexOf(ctx.parent) < 0) {
-        instances.push(ctx.parent)
-      }
-      return render(h, ctx)
-    }
-  } else {
-    injectHook(options, initHookName, function() {
-      var record = map[id]
-      if (!record.Ctor) {
-        record.Ctor = this.constructor
-      }
-      record.instances.push(this)
-    })
-    injectHook(options, 'beforeDestroy', function() {
-      var instances = map[id].instances
-      instances.splice(instances.indexOf(this), 1)
-    })
-  }
-}
-
-/**
- * Inject a hook to a hot reloadable component so that
- * we can keep track of it.
- *
- * @param {Object} options
- * @param {String} name
- * @param {Function} hook
- */
-
-function injectHook(options, name, hook) {
-  var existing = options[name]
-  options[name] = existing
-    ? Array.isArray(existing) ? existing.concat(hook) : [existing, hook]
-    : [hook]
-}
-
-function tryWrap(fn) {
-  return function (id, arg) {
-    try {
-      fn(id, arg)
-    } catch (e) {
-      console.error(e)
-      console.warn(
-        'Something went wrong during Vue component hot-reload. Full reload required.'
-      )
-    }
-  }
-}
-
-function updateOptions (oldOptions, newOptions) {
-  for (var key in oldOptions) {
-    if (!(key in newOptions)) {
-      delete oldOptions[key]
-    }
-  }
-  for (var key$1 in newOptions) {
-    oldOptions[key$1] = newOptions[key$1]
-  }
-}
-
-exports.rerender = tryWrap(function (id, options) {
-  var record = map[id]
-  if (!options) {
-    record.instances.slice().forEach(function (instance) {
-      instance.$forceUpdate()
-    })
-    return
-  }
-  if (typeof options === 'function') {
-    options = options.options
-  }
-  if (record.Ctor) {
-    record.Ctor.options.render = options.render
-    record.Ctor.options.staticRenderFns = options.staticRenderFns
-    record.instances.slice().forEach(function (instance) {
-      instance.$options.render = options.render
-      instance.$options.staticRenderFns = options.staticRenderFns
-      // reset static trees
-      // pre 2.5, all static trees are cached together on the instance
-      if (instance._staticTrees) {
-        instance._staticTrees = []
-      }
-      // 2.5.0
-      if (Array.isArray(record.Ctor.options.cached)) {
-        record.Ctor.options.cached = []
-      }
-      // 2.5.3
-      if (Array.isArray(instance.$options.cached)) {
-        instance.$options.cached = []
-      }
-      // post 2.5.4: v-once trees are cached on instance._staticTrees.
-      // Pure static trees are cached on the staticRenderFns array
-      // (both already reset above)
-      instance.$forceUpdate()
-    })
-  } else {
-    // functional or no instance created yet
-    record.options.render = options.render
-    record.options.staticRenderFns = options.staticRenderFns
-
-    // handle functional component re-render
-    if (record.options.functional) {
-      // rerender with full options
-      if (Object.keys(options).length > 2) {
-        updateOptions(record.options, options)
-      } else {
-        // template-only rerender.
-        // need to inject the style injection code for CSS modules
-        // to work properly.
-        var injectStyles = record.options._injectStyles
-        if (injectStyles) {
-          var render = options.render
-          record.options.render = function (h, ctx) {
-            injectStyles.call(ctx)
-            return render(h, ctx)
-          }
-        }
-      }
-      record.options._Ctor = null
-      // 2.5.3
-      if (Array.isArray(record.options.cached)) {
-        record.options.cached = []
-      }
-      record.instances.slice().forEach(function (instance) {
-        instance.$forceUpdate()
-      })
-    }
-  }
-})
-
-exports.reload = tryWrap(function (id, options) {
-  var record = map[id]
-  if (options) {
-    if (typeof options === 'function') {
-      options = options.options
-    }
-    makeOptionsHot(id, options)
-    if (record.Ctor) {
-      if (version[1] < 2) {
-        // preserve pre 2.2 behavior for global mixin handling
-        record.Ctor.extendOptions = options
-      }
-      var newCtor = record.Ctor.super.extend(options)
-      record.Ctor.options = newCtor.options
-      record.Ctor.cid = newCtor.cid
-      record.Ctor.prototype = newCtor.prototype
-      if (newCtor.release) {
-        // temporary global mixin strategy used in < 2.0.0-alpha.6
-        newCtor.release()
-      }
-    } else {
-      updateOptions(record.options, options)
-    }
-  }
-  record.instances.slice().forEach(function (instance) {
-    if (instance.$vnode && instance.$vnode.context) {
-      instance.$vnode.context.$forceUpdate()
-    } else {
-      console.warn(
-        'Root or manually mounted instance modified. Full reload required.'
-      )
-    }
-  })
-})
-
-},{}],27:[function(require,module,exports) {
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _extends2 = require('babel-runtime/helpers/extends');
-
-var _extends3 = _interopRequireDefault(_extends2);
-
-var _vuex = require('vuex');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = {
-    name: 'component-navigation-drawer',
-    props: {
-        show_drawer: {
-            required: true,
-            type: Boolean
-        }
-    },
-    data: function data() {
-        return {
-            list_items_menu: [{
-                label: 'Dashboard',
-                name: 'dashboard',
-                icon: 'dashboard'
-                // icon: 'ballot',
-            }, {
-                label: 'Batches',
-                name: 'batches',
-                icon: 'notes'
-                // icon: 'ballot',
-            }, {
-                label: 'HITs',
-                name: 'hits',
-                icon: 'notes'
-                // icon: 'ballot',
-            }, {
-                label: 'Assignments',
-                name: 'assignments',
-                icon: 'notes'
-            }, {
-                label: 'Finances',
-                name: 'finances',
-                icon: 'attach_money'
-            }, {
-                label: 'Workers',
-                name: 'workers',
-                icon: 'person'
-            }, {
-                label: 'Project Settings',
-                name: 'settings_project',
-                icon: 'settings_applications'
-            }]
-        };
-    },
-
-    computed: (0, _extends3.default)({}, (0, _vuex.mapState)(['url_project']))
-
-}; //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-      var $bab2ac = exports.default || module.exports;
-      if (typeof $bab2ac === 'function') {
-        $bab2ac = $bab2ac.options;
-      }
-    
-        /* template */
-        Object.assign($bab2ac, (function () {
-          var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "v-navigation-drawer",
-    {
-      attrs: { value: _vm.show_drawer, clipped: "", fixed: "", app: "" },
-      on: {
-        input: function($event) {
-          _vm.$emit("update:show_drawer", $event)
-        }
-      }
-    },
-    [
-      _c(
-        "v-list",
-        [
-          _vm._l(_vm.list_items_menu, function(item_menu) {
-            return _c(
-              "v-list-tile",
-              {
-                key: item_menu.name,
-                attrs: {
-                  to: { name: item_menu.name },
-                  exact: item_menu.name == "dashboard" ? true : false
-                }
-              },
-              [
-                _c(
-                  "v-list-tile-action",
-                  [_c("v-icon", [_vm._v(_vm._s(item_menu.icon))])],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "v-list-tile-content",
-                  [_c("v-list-tile-title", [_vm._v(_vm._s(item_menu.label))])],
-                  1
-                )
-              ],
-              1
-            )
-          }),
-          _vm._v(" "),
-          _c("v-divider")
-        ],
-        2
-      )
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-
-          return {
-            render: render,
-            staticRenderFns: staticRenderFns,
-            _compiled: true,
-            _scopeId: null,
-            functional: undefined
-          };
-        })());
-      
-    /* hot reload */
-    (function () {
-      if (module.hot) {
-        var api = require('vue-hot-reload-api');
-        api.install(require('vue'));
-        if (api.compatible) {
-          module.hot.accept();
-          if (!module.hot.data) {
-            api.createRecord('$bab2ac', $bab2ac);
-          } else {
-            api.reload('$bab2ac', $bab2ac);
-          }
-        }
-
-        
-      }
-    })();
-},{"babel-runtime/helpers/extends":49,"vuex":15,"vue-hot-reload-api":38,"vue":3}],72:[function(require,module,exports) {
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-				value: true
-});
-
-var _extends2 = require('babel-runtime/helpers/extends');
-
-var _extends3 = _interopRequireDefault(_extends2);
-
-var _vuex = require('vuex');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = {
-				methods: (0, _extends3.default)({
-								refresh_data: function refresh_data() {
-												var _this = this;
-
-												console.log(this.use_sandbox);
-												this.set_show_progress_indicator(true);
-												// this.set_show_progress_indicator(true);
-
-												// this.sync_database().then(() => {
-												//     this.set_show_progress_indicator(false);
-												// });
-
-												this.sync_batches(true).then(function () {
-																_this.set_show_progress_indicator(false);
-												});
-
-												// this.update_balance().then(() => {
-												//     this.set_show_progress_indicator(false);
-												// });
-								}
-				}, (0, _vuex.mapActions)(['set_show_progress_indicator']), (0, _vuex.mapActions)('moduleBatches', {
-								'sync_batches': 'sync_batches'
-				})),
-				computed: (0, _extends3.default)({}, (0, _vuex.mapState)(['use_sandbox'])),
-				created: function created() {
-								this.refresh_data();
-				},
-
-				watch: {
-								use_sandbox: function use_sandbox() {
-												this.refresh_data();
-								}
-				}
-};
-},{"babel-runtime/helpers/extends":49,"vuex":15}],28:[function(require,module,exports) {
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _extends2 = require('babel-runtime/helpers/extends');
-
-var _extends3 = _interopRequireDefault(_extends2);
-
-var _vuex = require('vuex');
-
-var _load_data = require('../../mixins/load_data');
-
-var _load_data2 = _interopRequireDefault(_load_data);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-exports.default = {
-    mixins: [
-    // slug_project,
-    _load_data2.default],
-    name: 'component-toolbar-batches',
-    data: function data() {
-        return {};
-    },
-
-    computed: (0, _extends3.default)({}, (0, _vuex.mapGetters)(['get_show_progress_indicator'])),
-    methods: (0, _extends3.default)({}, (0, _vuex.mapActions)(['set_show_progress_indicator']), (0, _vuex.mapActions)('moduleBatches', {
-        'sync_database': 'sync_database',
-        'sync_mturk': 'sync_mturk'
-    }))
-};
-// import slug_project from '../../mixins/slug_project';
-      var $2742f3 = exports.default || module.exports;
-      if (typeof $2742f3 === 'function') {
-        $2742f3 = $2742f3.options;
-      }
-    
-        /* template */
-        Object.assign($2742f3, (function () {
-          var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "v-tooltip",
-    { attrs: { bottom: "" } },
-    [
-      _c(
-        "v-btn",
-        {
-          attrs: {
-            slot: "activator",
-            icon: "",
-            loading: _vm.get_show_progress_indicator
-          },
-          on: { click: _vm.refresh_data },
-          slot: "activator"
-        },
-        [_c("v-icon", [_vm._v("refresh")])],
-        1
-      ),
-      _vm._v(" "),
-      _c("span", [_vm._v("Refresh batch data")])
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-
-          return {
-            render: render,
-            staticRenderFns: staticRenderFns,
-            _compiled: true,
-            _scopeId: null,
-            functional: undefined
-          };
-        })());
-      
-    /* hot reload */
-    (function () {
-      if (module.hot) {
-        var api = require('vue-hot-reload-api');
-        api.install(require('vue'));
-        if (api.compatible) {
-          module.hot.accept();
-          if (!module.hot.data) {
-            api.createRecord('$2742f3', $2742f3);
-          } else {
-            api.reload('$2742f3', $2742f3);
-          }
-        }
-
-        
-      }
-    })();
-},{"babel-runtime/helpers/extends":49,"vuex":15,"../../mixins/load_data":72,"vue-hot-reload-api":38,"vue":3}],29:[function(require,module,exports) {
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _extends2 = require('babel-runtime/helpers/extends');
-
-var _extends3 = _interopRequireDefault(_extends2);
-
-var _vuex = require('vuex');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = {
-    name: 'component-toolbar-qualifications',
-    data: function data() {
-        return {};
-    },
-
-    computed: (0, _extends3.default)({}, (0, _vuex.mapGetters)(['get_show_progress_indicator'])),
-    methods: (0, _extends3.default)({
-        refresh_data: function refresh_data() {
-            var _this = this;
-
-            this.set_show_progress_indicator(true);
-
-            this.sync_qualifications(true).then(function () {
-                _this.set_show_progress_indicator(false);
-            });
-        }
-    }, (0, _vuex.mapActions)(['set_show_progress_indicator']), (0, _vuex.mapActions)('moduleQualifications', {
-        'sync_qualifications': 'sync_qualifications'
-    }))
-}; //
-//
-//
-//
-//
-//
-//
-//
-//
-      var $b13306 = exports.default || module.exports;
-      if (typeof $b13306 === 'function') {
-        $b13306 = $b13306.options;
-      }
-    
-        /* template */
-        Object.assign($b13306, (function () {
-          var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "v-tooltip",
-    { attrs: { bottom: "" } },
-    [
-      _c(
-        "v-btn",
-        {
-          attrs: {
-            slot: "activator",
-            icon: "",
-            loading: _vm.get_show_progress_indicator
-          },
-          on: { click: _vm.refresh_data },
-          slot: "activator"
-        },
-        [_c("v-icon", [_vm._v("refresh")])],
-        1
-      ),
-      _vm._v(" "),
-      _c("span", [_vm._v("Refresh qualifications")])
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-
-          return {
-            render: render,
-            staticRenderFns: staticRenderFns,
-            _compiled: true,
-            _scopeId: null,
-            functional: undefined
-          };
-        })());
-      
-    /* hot reload */
-    (function () {
-      if (module.hot) {
-        var api = require('vue-hot-reload-api');
-        api.install(require('vue'));
-        if (api.compatible) {
-          module.hot.accept();
-          if (!module.hot.data) {
-            api.createRecord('$b13306', $b13306);
-          } else {
-            api.reload('$b13306', $b13306);
-          }
-        }
-
-        
-      }
-    })();
-},{"babel-runtime/helpers/extends":49,"vuex":15,"vue-hot-reload-api":38,"vue":3}],67:[function(require,module,exports) {
-var bundleURL = null;
-function getBundleURLCached() {
-  if (!bundleURL) {
-    bundleURL = getBundleURL();
-  }
-
-  return bundleURL;
-}
-
-function getBundleURL() {
-  // Attempt to find the URL of the current script and use that as the base URL
-  try {
-    throw new Error();
-  } catch (err) {
-    var matches = ('' + err.stack).match(/(https?|file|ftp):\/\/[^)\n]+/g);
-    if (matches) {
-      return getBaseURL(matches[0]);
-    }
-  }
-
-  return '/';
-}
-
-function getBaseURL(url) {
-  return ('' + url).replace(/^((?:https?|file|ftp):\/\/.+)\/[^/]+$/, '$1') + '/';
-}
-
-exports.getBundleURL = getBundleURLCached;
-exports.getBaseURL = getBaseURL;
-},{}],26:[function(require,module,exports) {
-var bundle = require('./bundle-url');
-
-function updateLink(link) {
-  var newLink = link.cloneNode();
-  newLink.onload = function () {
-    link.remove();
-  };
-  newLink.href = link.href.split('?')[0] + '?' + Date.now();
-  link.parentNode.insertBefore(newLink, link.nextSibling);
-}
-
-var cssTimeout = null;
-function reloadCSS() {
-  if (cssTimeout) {
-    return;
-  }
-
-  cssTimeout = setTimeout(function () {
-    var links = document.querySelectorAll('link[rel="stylesheet"]');
-    for (var i = 0; i < links.length; i++) {
-      if (bundle.getBaseURL(links[i].href) === bundle.getBundleURL()) {
-        updateLink(links[i]);
-      }
-    }
-
-    cssTimeout = null;
-  }, 50);
-}
-
-module.exports = reloadCSS;
-},{"./bundle-url":67}],2:[function(require,module,exports) {
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _extends2 = require('babel-runtime/helpers/extends');
-
-var _extends3 = _interopRequireDefault(_extends2);
-
-var _vuex = require('vuex');
-
-var _componentNavigationDrawer = require('./components/component-navigation-drawer.vue');
-
-var _componentNavigationDrawer2 = _interopRequireDefault(_componentNavigationDrawer);
-
-var _component_toolbar_batches = require('./components/batches/component_toolbar_batches.vue');
-
-var _component_toolbar_batches2 = _interopRequireDefault(_component_toolbar_batches);
-
-var _componentToolbarQualifications = require('./components/qualifications/component-toolbar-qualifications.vue');
-
-var _componentToolbarQualifications2 = _interopRequireDefault(_componentToolbarQualifications);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-// import ComponentToolbarWorkers from './components/workers/component_toolbar_workers.vue';
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-exports.default = {
-    name: 'app',
-    data: function data() {
-        return {
-            dialog: false,
-
-            show_drawer: true,
-            show_snackbar: false,
-            text_snackbar: 'Finished refreshing the data'
-
-        };
-    },
-
-    computed: (0, _extends3.default)({
-        object_styles_toolbar: function object_styles_toolbar() {
-            if (this.use_sandbox) {
-                return { 'background-color': '#dd6e00' };
-            } else {
-                return {};
-            }
-        },
-        currentTabComponent: function currentTabComponent() {
-            switch (this.$route.name) {
-                case 'finances':
-                case 'batches':
-                case 'batch':
-                case 'hits':
-                case 'hit':
-                case 'assignments':
-                case 'assignment':
-                case 'workers':
-                    return _component_toolbar_batches2.default;
-                case 'qualifications':
-                    return _componentToolbarQualifications2.default;
-                // case 'workers':
-                //     return ComponentToolbarWorkers;
-            }
-        },
-        name_route_current: function name_route_current() {
-            // return this.$router.currentRoute;
-            return this.$route.name;
-        },
-        setting_show_with_fee: {
-            get: function get() {
-                return this.show_with_fee;
-            },
-            set: function set(value) {
-                this.set_show_with_fee(value);
-            }
-        }
-    }, (0, _vuex.mapState)(['show_with_fee', 'use_sandbox', 'has_loaded_projects']), (0, _vuex.mapGetters)('moduleProjects', {
-        'project_current': 'get_project_current',
-        'slug_project_current': 'get_slug_project_current',
-        'object_projects': 'get_object_projects'
-    }), (0, _vuex.mapGetters)(['get_show_progress_indicator'])),
-    methods: (0, _extends3.default)({
-        toggle_use_sandbox: function toggle_use_sandbox() {
-            this.set_use_sandbox(!this.use_sandbox);
-        }
-    }, (0, _vuex.mapActions)(['init', 'set_show_with_fee', 'set_show_progress_indicator', 'set_use_sandbox'])),
-    created: function created() {
-        var _this = this;
-
-        this.set_show_progress_indicator(true);
-        this.init().then(function () {
-            _this.set_show_progress_indicator(false);
-        });
-    },
-    components: {
-        ComponentNavigationDrawer: _componentNavigationDrawer2.default
-    }
-};
-      var $04c29b = exports.default || module.exports;
-      if (typeof $04c29b === 'function') {
-        $04c29b = $04c29b.options;
-      }
-    
-        /* template */
-        Object.assign($04c29b, (function () {
-          var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "v-app",
-    { attrs: { dark: "" } },
-    [
-      _vm.has_loaded_projects && Object.keys(_vm.project_current).length > 0
-        ? [
-            _c("component-navigation-drawer", {
-              attrs: { show_drawer: _vm.show_drawer },
-              on: {
-                "update:show_drawer": function($event) {
-                  _vm.show_drawer = $event
-                }
-              }
-            }),
-            _vm._v(" "),
-            _c("v-progress-linear", {
-              staticStyle: {
-                "z-index": "50",
-                position: "absolute",
-                margin: "0"
-              },
-              attrs: {
-                active: _vm.get_show_progress_indicator,
-                height: "4",
-                app: "",
-                indeterminate: ""
-              }
-            }),
-            _vm._v(" "),
-            _c(
-              "v-toolbar",
-              {
-                style: _vm.object_styles_toolbar,
-                attrs: { app: "", fixed: "", "clipped-left": "" }
-              },
-              [
-                _c("v-toolbar-side-icon", {
-                  on: {
-                    click: function($event) {
-                      $event.stopPropagation()
-                      _vm.show_drawer = !_vm.show_drawer
-                    }
-                  }
-                }),
-                _vm._v(" "),
-                _c("v-toolbar-title", [
-                  _vm._v(
-                    '"' +
-                      _vm._s(_vm.project_current.name) +
-                      '" - ' +
-                      _vm._s(_vm.name_route_current)
-                  )
-                ]),
-                _vm._v(" "),
-                _c("v-spacer"),
-                _vm._v(" "),
-                _c(
-                  "v-tooltip",
-                  { attrs: { bottom: "" } },
-                  [
-                    _c("v-switch", {
-                      attrs: {
-                        slot: "activator",
-                        "hide-details": "",
-                        label: _vm.use_sandbox ? "Use Sandbox" : "Use Sandbox",
-                        "input-value": _vm.use_sandbox
-                      },
-                      nativeOn: {
-                        click: function($event) {
-                          return _vm.toggle_use_sandbox($event)
-                        }
-                      },
-                      slot: "activator"
-                    }),
-                    _vm._v(" "),
-                    _c("span", [
-                      _vm._v("You are currently "),
-                      !_vm.use_sandbox ? _c("b", [_vm._v("not")]) : _vm._e(),
-                      _vm._v(" using the Sandbox")
-                    ])
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(_vm.currentTabComponent, { tag: "component" })
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _c(
-              "v-content",
-              [
-                _c(
-                  "v-container",
-                  { attrs: { fluid: "" } },
-                  [_c("router-view")],
-                  1
-                )
-              ],
-              1
-            )
-          ]
-        : _vm.has_loaded_projects
-          ? [
-              _c(
-                "v-content",
-                [
-                  _c(
-                    "v-container",
-                    { attrs: { fluid: "" } },
-                    [_c("router-view")],
-                    1
-                  )
-                ],
-                1
-              )
-            ]
-          : [
-              _c("v-spacer"),
-              _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "text-xs-center" },
-                [
-                  _c("v-progress-circular", {
-                    attrs: { indeterminate: "", color: "primary" }
-                  })
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c("v-spacer")
-            ]
-    ],
-    2
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-
-          return {
-            render: render,
-            staticRenderFns: staticRenderFns,
-            _compiled: true,
-            _scopeId: "data-v-04c29b",
-            functional: undefined
-          };
-        })());
-      
-    /* hot reload */
-    (function () {
-      if (module.hot) {
-        var api = require('vue-hot-reload-api');
-        api.install(require('vue'));
-        if (api.compatible) {
-          module.hot.accept();
-          if (!module.hot.data) {
-            api.createRecord('$04c29b', $04c29b);
-          } else {
-            api.reload('$04c29b', $04c29b);
-          }
-        }
-
-        
-        var reloadCSS = require('_css_loader');
-        module.hot.dispose(reloadCSS);
-        module.hot.accept(reloadCSS);
-      
-      }
-    })();
-},{"babel-runtime/helpers/extends":49,"vuex":15,"./components/component-navigation-drawer.vue":27,"./components/batches/component_toolbar_batches.vue":28,"./components/qualifications/component-toolbar-qualifications.vue":29,"_css_loader":26,"vue-hot-reload-api":38,"vue":3}],211:[function(require,module,exports) {
+},{"./vval":24,"./params":25}],231:[function(require,module,exports) {
 var global = arguments[3];
 /**
  * Copyright (c) 2014-present, Facebook, Inc.
@@ -38648,7 +37068,7 @@ var global = arguments[3];
   (function() { return this })() || Function("return this")()
 );
 
-},{}],165:[function(require,module,exports) {
+},{}],180:[function(require,module,exports) {
 /**
  * Copyright (c) 2014-present, Facebook, Inc.
  *
@@ -38685,12 +37105,27 @@ if (hadRuntime) {
   }
 }
 
-},{"./runtime":211}],117:[function(require,module,exports) {
+},{"./runtime":231}],131:[function(require,module,exports) {
 module.exports = require("regenerator-runtime");
 
-},{"regenerator-runtime":165}],129:[function(require,module,exports) {
+},{"regenerator-runtime":180}],142:[function(require,module,exports) {
 
-},{}],177:[function(require,module,exports) {
+},{}],253:[function(require,module,exports) {
+// 7.1.4 ToInteger
+var ceil = Math.ceil;
+var floor = Math.floor;
+module.exports = function (it) {
+  return isNaN(it = +it) ? 0 : (it > 0 ? floor : ceil)(it);
+};
+
+},{}],254:[function(require,module,exports) {
+// 7.2.1 RequireObjectCoercible(argument)
+module.exports = function (it) {
+  if (it == undefined) throw TypeError("Can't call method on  " + it);
+  return it;
+};
+
+},{}],203:[function(require,module,exports) {
 var toInteger = require('./_to-integer');
 var defined = require('./_defined');
 // true  -> String#at
@@ -38709,13 +37144,349 @@ module.exports = function (TO_STRING) {
   };
 };
 
-},{"./_to-integer":228,"./_defined":229}],230:[function(require,module,exports) {
+},{"./_to-integer":253,"./_defined":254}],210:[function(require,module,exports) {
+module.exports = true;
+
+},{}],206:[function(require,module,exports) {
+
+// https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
+var global = module.exports = typeof window != 'undefined' && window.Math == Math
+  ? window : typeof self != 'undefined' && self.Math == Math ? self
+  // eslint-disable-next-line no-new-func
+  : Function('return this')();
+if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
+
+},{}],133:[function(require,module,exports) {
+var core = module.exports = { version: '2.5.7' };
+if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
+
+},{}],215:[function(require,module,exports) {
+module.exports = function (it) {
+  if (typeof it != 'function') throw TypeError(it + ' is not a function!');
+  return it;
+};
+
+},{}],211:[function(require,module,exports) {
+// optional / simple context binding
+var aFunction = require('./_a-function');
+module.exports = function (fn, that, length) {
+  aFunction(fn);
+  if (that === undefined) return fn;
+  switch (length) {
+    case 1: return function (a) {
+      return fn.call(that, a);
+    };
+    case 2: return function (a, b) {
+      return fn.call(that, a, b);
+    };
+    case 3: return function (a, b, c) {
+      return fn.call(that, a, b, c);
+    };
+  }
+  return function (/* ...args */) {
+    return fn.apply(that, arguments);
+  };
+};
+
+},{"./_a-function":215}],214:[function(require,module,exports) {
+module.exports = function (it) {
+  return typeof it === 'object' ? it !== null : typeof it === 'function';
+};
+
+},{}],268:[function(require,module,exports) {
+var isObject = require('./_is-object');
+module.exports = function (it) {
+  if (!isObject(it)) throw TypeError(it + ' is not an object!');
+  return it;
+};
+
+},{"./_is-object":214}],299:[function(require,module,exports) {
+module.exports = function (exec) {
+  try {
+    return !!exec();
+  } catch (e) {
+    return true;
+  }
+};
+
+},{}],263:[function(require,module,exports) {
+// Thank's IE8 for his funny defineProperty
+module.exports = !require('./_fails')(function () {
+  return Object.defineProperty({}, 'a', { get: function () { return 7; } }).a != 7;
+});
+
+},{"./_fails":299}],271:[function(require,module,exports) {
+var isObject = require('./_is-object');
+var document = require('./_global').document;
+// typeof document.createElement is 'object' in old IE
+var is = isObject(document) && isObject(document.createElement);
+module.exports = function (it) {
+  return is ? document.createElement(it) : {};
+};
+
+},{"./_is-object":214,"./_global":206}],318:[function(require,module,exports) {
+module.exports = !require('./_descriptors') && !require('./_fails')(function () {
+  return Object.defineProperty(require('./_dom-create')('div'), 'a', { get: function () { return 7; } }).a != 7;
+});
+
+},{"./_descriptors":263,"./_fails":299,"./_dom-create":271}],319:[function(require,module,exports) {
+// 7.1.1 ToPrimitive(input [, PreferredType])
+var isObject = require('./_is-object');
+// instead of the ES6 spec version, we didn't implement @@toPrimitive case
+// and the second argument - flag - preferred type is a string
+module.exports = function (it, S) {
+  if (!isObject(it)) return it;
+  var fn, val;
+  if (S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it))) return val;
+  if (typeof (fn = it.valueOf) == 'function' && !isObject(val = fn.call(it))) return val;
+  if (!S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it))) return val;
+  throw TypeError("Can't convert object to primitive value");
+};
+
+},{"./_is-object":214}],261:[function(require,module,exports) {
+var anObject = require('./_an-object');
+var IE8_DOM_DEFINE = require('./_ie8-dom-define');
+var toPrimitive = require('./_to-primitive');
+var dP = Object.defineProperty;
+
+exports.f = require('./_descriptors') ? Object.defineProperty : function defineProperty(O, P, Attributes) {
+  anObject(O);
+  P = toPrimitive(P, true);
+  anObject(Attributes);
+  if (IE8_DOM_DEFINE) try {
+    return dP(O, P, Attributes);
+  } catch (e) { /* empty */ }
+  if ('get' in Attributes || 'set' in Attributes) throw TypeError('Accessors not supported!');
+  if ('value' in Attributes) O[P] = Attributes.value;
+  return O;
+};
+
+},{"./_an-object":268,"./_ie8-dom-define":318,"./_to-primitive":319,"./_descriptors":263}],262:[function(require,module,exports) {
+module.exports = function (bitmap, value) {
+  return {
+    enumerable: !(bitmap & 1),
+    configurable: !(bitmap & 2),
+    writable: !(bitmap & 4),
+    value: value
+  };
+};
+
+},{}],207:[function(require,module,exports) {
+var dP = require('./_object-dp');
+var createDesc = require('./_property-desc');
+module.exports = require('./_descriptors') ? function (object, key, value) {
+  return dP.f(object, key, createDesc(1, value));
+} : function (object, key, value) {
+  object[key] = value;
+  return object;
+};
+
+},{"./_object-dp":261,"./_property-desc":262,"./_descriptors":263}],267:[function(require,module,exports) {
+var hasOwnProperty = {}.hasOwnProperty;
+module.exports = function (it, key) {
+  return hasOwnProperty.call(it, key);
+};
+
+},{}],213:[function(require,module,exports) {
+
+var global = require('./_global');
+var core = require('./_core');
+var ctx = require('./_ctx');
+var hide = require('./_hide');
+var has = require('./_has');
+var PROTOTYPE = 'prototype';
+
+var $export = function (type, name, source) {
+  var IS_FORCED = type & $export.F;
+  var IS_GLOBAL = type & $export.G;
+  var IS_STATIC = type & $export.S;
+  var IS_PROTO = type & $export.P;
+  var IS_BIND = type & $export.B;
+  var IS_WRAP = type & $export.W;
+  var exports = IS_GLOBAL ? core : core[name] || (core[name] = {});
+  var expProto = exports[PROTOTYPE];
+  var target = IS_GLOBAL ? global : IS_STATIC ? global[name] : (global[name] || {})[PROTOTYPE];
+  var key, own, out;
+  if (IS_GLOBAL) source = name;
+  for (key in source) {
+    // contains in native
+    own = !IS_FORCED && target && target[key] !== undefined;
+    if (own && has(exports, key)) continue;
+    // export native or passed
+    out = own ? target[key] : source[key];
+    // prevent global pollution for namespaces
+    exports[key] = IS_GLOBAL && typeof target[key] != 'function' ? source[key]
+    // bind timers to global for call from export context
+    : IS_BIND && own ? ctx(out, global)
+    // wrap global constructors for prevent change them in library
+    : IS_WRAP && target[key] == out ? (function (C) {
+      var F = function (a, b, c) {
+        if (this instanceof C) {
+          switch (arguments.length) {
+            case 0: return new C();
+            case 1: return new C(a);
+            case 2: return new C(a, b);
+          } return new C(a, b, c);
+        } return C.apply(this, arguments);
+      };
+      F[PROTOTYPE] = C[PROTOTYPE];
+      return F;
+    // make static versions for prototype methods
+    })(out) : IS_PROTO && typeof out == 'function' ? ctx(Function.call, out) : out;
+    // export proto methods to core.%CONSTRUCTOR%.methods.%NAME%
+    if (IS_PROTO) {
+      (exports.virtual || (exports.virtual = {}))[key] = out;
+      // export proto methods to core.%CONSTRUCTOR%.prototype.%NAME%
+      if (type & $export.R && expProto && !expProto[key]) hide(expProto, key, out);
+    }
+  }
+};
+// type bitmap
+$export.F = 1;   // forced
+$export.G = 2;   // global
+$export.S = 4;   // static
+$export.P = 8;   // proto
+$export.B = 16;  // bind
+$export.W = 32;  // wrap
+$export.U = 64;  // safe
+$export.R = 128; // real proto method for `library`
+module.exports = $export;
+
+},{"./_global":206,"./_core":133,"./_ctx":211,"./_hide":207,"./_has":267}],255:[function(require,module,exports) {
 module.exports = require('./_hide');
 
-},{"./_hide":181}],182:[function(require,module,exports) {
+},{"./_hide":207}],208:[function(require,module,exports) {
 module.exports = {};
 
-},{}],296:[function(require,module,exports) {
+},{}],266:[function(require,module,exports) {
+var toString = {}.toString;
+
+module.exports = function (it) {
+  return toString.call(it).slice(8, -1);
+};
+
+},{}],298:[function(require,module,exports) {
+// fallback for non-array-like ES3 and non-enumerable old V8 strings
+var cof = require('./_cof');
+// eslint-disable-next-line no-prototype-builtins
+module.exports = Object('z').propertyIsEnumerable(0) ? Object : function (it) {
+  return cof(it) == 'String' ? it.split('') : Object(it);
+};
+
+},{"./_cof":266}],260:[function(require,module,exports) {
+// to indexed object, toObject with fallback for non-array-like ES3 strings
+var IObject = require('./_iobject');
+var defined = require('./_defined');
+module.exports = function (it) {
+  return IObject(defined(it));
+};
+
+},{"./_iobject":298,"./_defined":254}],248:[function(require,module,exports) {
+// 7.1.15 ToLength
+var toInteger = require('./_to-integer');
+var min = Math.min;
+module.exports = function (it) {
+  return it > 0 ? min(toInteger(it), 0x1fffffffffffff) : 0; // pow(2, 53) - 1 == 9007199254740991
+};
+
+},{"./_to-integer":253}],330:[function(require,module,exports) {
+var toInteger = require('./_to-integer');
+var max = Math.max;
+var min = Math.min;
+module.exports = function (index, length) {
+  index = toInteger(index);
+  return index < 0 ? max(index + length, 0) : min(index, length);
+};
+
+},{"./_to-integer":253}],325:[function(require,module,exports) {
+// false -> Array#indexOf
+// true  -> Array#includes
+var toIObject = require('./_to-iobject');
+var toLength = require('./_to-length');
+var toAbsoluteIndex = require('./_to-absolute-index');
+module.exports = function (IS_INCLUDES) {
+  return function ($this, el, fromIndex) {
+    var O = toIObject($this);
+    var length = toLength(O.length);
+    var index = toAbsoluteIndex(fromIndex, length);
+    var value;
+    // Array#includes uses SameValueZero equality algorithm
+    // eslint-disable-next-line no-self-compare
+    if (IS_INCLUDES && el != el) while (length > index) {
+      value = O[index++];
+      // eslint-disable-next-line no-self-compare
+      if (value != value) return true;
+    // Array#indexOf ignores holes, Array#includes - not
+    } else for (;length > index; index++) if (IS_INCLUDES || index in O) {
+      if (O[index] === el) return IS_INCLUDES || index || 0;
+    } return !IS_INCLUDES && -1;
+  };
+};
+
+},{"./_to-iobject":260,"./_to-length":248,"./_to-absolute-index":330}],264:[function(require,module,exports) {
+
+var core = require('./_core');
+var global = require('./_global');
+var SHARED = '__core-js_shared__';
+var store = global[SHARED] || (global[SHARED] = {});
+
+(module.exports = function (key, value) {
+  return store[key] || (store[key] = value !== undefined ? value : {});
+})('versions', []).push({
+  version: core.version,
+  mode: require('./_library') ? 'pure' : 'global',
+  copyright: '© 2018 Denis Pushkarev (zloirock.ru)'
+});
+
+},{"./_core":133,"./_global":206,"./_library":210}],265:[function(require,module,exports) {
+var id = 0;
+var px = Math.random();
+module.exports = function (key) {
+  return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
+};
+
+},{}],317:[function(require,module,exports) {
+var shared = require('./_shared')('keys');
+var uid = require('./_uid');
+module.exports = function (key) {
+  return shared[key] || (shared[key] = uid(key));
+};
+
+},{"./_shared":264,"./_uid":265}],310:[function(require,module,exports) {
+var has = require('./_has');
+var toIObject = require('./_to-iobject');
+var arrayIndexOf = require('./_array-includes')(false);
+var IE_PROTO = require('./_shared-key')('IE_PROTO');
+
+module.exports = function (object, names) {
+  var O = toIObject(object);
+  var i = 0;
+  var result = [];
+  var key;
+  for (key in O) if (key != IE_PROTO) has(O, key) && result.push(key);
+  // Don't enum bug & hidden keys
+  while (names.length > i) if (has(O, key = names[i++])) {
+    ~arrayIndexOf(result, key) || result.push(key);
+  }
+  return result;
+};
+
+},{"./_has":267,"./_to-iobject":260,"./_array-includes":325,"./_shared-key":317}],311:[function(require,module,exports) {
+// IE 8- don't enum bug keys
+module.exports = (
+  'constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf'
+).split(',');
+
+},{}],251:[function(require,module,exports) {
+// 19.1.2.14 / 15.2.3.14 Object.keys(O)
+var $keys = require('./_object-keys-internal');
+var enumBugKeys = require('./_enum-bug-keys');
+
+module.exports = Object.keys || function keys(O) {
+  return $keys(O, enumBugKeys);
+};
+
+},{"./_object-keys-internal":310,"./_enum-bug-keys":311}],324:[function(require,module,exports) {
 var dP = require('./_object-dp');
 var anObject = require('./_an-object');
 var getKeys = require('./_object-keys');
@@ -38730,11 +37501,11 @@ module.exports = require('./_descriptors') ? Object.defineProperties : function 
   return O;
 };
 
-},{"./_object-dp":236,"./_an-object":243,"./_object-keys":220,"./_descriptors":238}],245:[function(require,module,exports) {
+},{"./_object-dp":261,"./_an-object":268,"./_object-keys":251,"./_descriptors":263}],270:[function(require,module,exports) {
 var document = require('./_global').document;
 module.exports = document && document.documentElement;
 
-},{"./_global":180}],276:[function(require,module,exports) {
+},{"./_global":206}],305:[function(require,module,exports) {
 // 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
 var anObject = require('./_an-object');
 var dPs = require('./_object-dps');
@@ -38777,7 +37548,7 @@ module.exports = Object.create || function create(O, Properties) {
   return Properties === undefined ? result : dPs(result, Properties);
 };
 
-},{"./_an-object":243,"./_object-dps":296,"./_enum-bug-keys":284,"./_shared-key":291,"./_dom-create":246,"./_html":245}],183:[function(require,module,exports) {
+},{"./_an-object":268,"./_object-dps":324,"./_enum-bug-keys":311,"./_shared-key":317,"./_dom-create":271,"./_html":270}],209:[function(require,module,exports) {
 var store = require('./_shared')('wks');
 var uid = require('./_uid');
 var Symbol = require('./_global').Symbol;
@@ -38790,7 +37561,7 @@ var $exports = module.exports = function (name) {
 
 $exports.store = store;
 
-},{"./_shared":239,"./_uid":240,"./_global":180}],200:[function(require,module,exports) {
+},{"./_shared":264,"./_uid":265,"./_global":206}],226:[function(require,module,exports) {
 var def = require('./_object-dp').f;
 var has = require('./_has');
 var TAG = require('./_wks')('toStringTag');
@@ -38799,7 +37570,7 @@ module.exports = function (it, tag, stat) {
   if (it && !has(it = stat ? it : it.prototype, TAG)) def(it, TAG, { configurable: true, value: tag });
 };
 
-},{"./_object-dp":236,"./_has":242,"./_wks":183}],231:[function(require,module,exports) {
+},{"./_object-dp":261,"./_has":267,"./_wks":209}],256:[function(require,module,exports) {
 'use strict';
 var create = require('./_object-create');
 var descriptor = require('./_property-desc');
@@ -38814,7 +37585,14 @@ module.exports = function (Constructor, NAME, next) {
   setToStringTag(Constructor, NAME + ' Iterator');
 };
 
-},{"./_object-create":276,"./_property-desc":237,"./_set-to-string-tag":200,"./_hide":181,"./_wks":183}],232:[function(require,module,exports) {
+},{"./_object-create":305,"./_property-desc":262,"./_set-to-string-tag":226,"./_hide":207,"./_wks":209}],245:[function(require,module,exports) {
+// 7.1.13 ToObject(argument)
+var defined = require('./_defined');
+module.exports = function (it) {
+  return Object(defined(it));
+};
+
+},{"./_defined":254}],257:[function(require,module,exports) {
 // 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
 var has = require('./_has');
 var toObject = require('./_to-object');
@@ -38829,7 +37607,7 @@ module.exports = Object.getPrototypeOf || function (O) {
   } return O instanceof Object ? ObjectProto : null;
 };
 
-},{"./_has":242,"./_to-object":219,"./_shared-key":291}],178:[function(require,module,exports) {
+},{"./_has":267,"./_to-object":245,"./_shared-key":317}],204:[function(require,module,exports) {
 'use strict';
 var LIBRARY = require('./_library');
 var $export = require('./_export');
@@ -38900,7 +37678,7 @@ module.exports = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCE
   return methods;
 };
 
-},{"./_library":184,"./_export":187,"./_redefine":230,"./_hide":181,"./_iterators":182,"./_iter-create":231,"./_set-to-string-tag":200,"./_object-gpo":232,"./_wks":183}],130:[function(require,module,exports) {
+},{"./_library":210,"./_export":213,"./_redefine":255,"./_hide":207,"./_iterators":208,"./_iter-create":256,"./_set-to-string-tag":226,"./_object-gpo":257,"./_wks":209}],143:[function(require,module,exports) {
 'use strict';
 var $at = require('./_string-at')(true);
 
@@ -38919,15 +37697,15 @@ require('./_iter-define')(String, 'String', function (iterated) {
   return { value: point, done: false };
 });
 
-},{"./_string-at":177,"./_iter-define":178}],233:[function(require,module,exports) {
+},{"./_string-at":203,"./_iter-define":204}],258:[function(require,module,exports) {
 module.exports = function () { /* empty */ };
 
-},{}],234:[function(require,module,exports) {
+},{}],259:[function(require,module,exports) {
 module.exports = function (done, value) {
   return { value: value, done: !!done };
 };
 
-},{}],179:[function(require,module,exports) {
+},{}],205:[function(require,module,exports) {
 'use strict';
 var addToUnscopables = require('./_add-to-unscopables');
 var step = require('./_iter-step');
@@ -38963,7 +37741,7 @@ addToUnscopables('keys');
 addToUnscopables('values');
 addToUnscopables('entries');
 
-},{"./_add-to-unscopables":233,"./_iter-step":234,"./_iterators":182,"./_to-iobject":235,"./_iter-define":178}],131:[function(require,module,exports) {
+},{"./_add-to-unscopables":258,"./_iter-step":259,"./_iterators":208,"./_to-iobject":260,"./_iter-define":204}],144:[function(require,module,exports) {
 
 require('./es6.array.iterator');
 var global = require('./_global');
@@ -38985,7 +37763,7 @@ for (var i = 0; i < DOMIterables.length; i++) {
   Iterators[NAME] = Iterators.Array;
 }
 
-},{"./es6.array.iterator":179,"./_global":180,"./_hide":181,"./_iterators":182,"./_wks":183}],186:[function(require,module,exports) {
+},{"./es6.array.iterator":205,"./_global":206,"./_hide":207,"./_iterators":208,"./_wks":209}],212:[function(require,module,exports) {
 // getting tag from 19.1.3.6 Object.prototype.toString()
 var cof = require('./_cof');
 var TAG = require('./_wks')('toStringTag');
@@ -39010,14 +37788,14 @@ module.exports = function (it) {
     : (B = cof(O)) == 'Object' && typeof O.callee == 'function' ? 'Arguments' : B;
 };
 
-},{"./_cof":241,"./_wks":183}],190:[function(require,module,exports) {
+},{"./_cof":266,"./_wks":209}],216:[function(require,module,exports) {
 module.exports = function (it, Constructor, name, forbiddenField) {
   if (!(it instanceof Constructor) || (forbiddenField !== undefined && forbiddenField in it)) {
     throw TypeError(name + ': incorrect invocation!');
   } return it;
 };
 
-},{}],222:[function(require,module,exports) {
+},{}],246:[function(require,module,exports) {
 // call something on iterator step with safe closing on error
 var anObject = require('./_an-object');
 module.exports = function (iterator, fn, value, entries) {
@@ -39031,7 +37809,7 @@ module.exports = function (iterator, fn, value, entries) {
   }
 };
 
-},{"./_an-object":243}],223:[function(require,module,exports) {
+},{"./_an-object":268}],247:[function(require,module,exports) {
 // check on default Array iterator
 var Iterators = require('./_iterators');
 var ITERATOR = require('./_wks')('iterator');
@@ -39041,7 +37819,7 @@ module.exports = function (it) {
   return it !== undefined && (Iterators.Array === it || ArrayProto[ITERATOR] === it);
 };
 
-},{"./_iterators":182,"./_wks":183}],226:[function(require,module,exports) {
+},{"./_iterators":208,"./_wks":209}],250:[function(require,module,exports) {
 var classof = require('./_classof');
 var ITERATOR = require('./_wks')('iterator');
 var Iterators = require('./_iterators');
@@ -39051,7 +37829,7 @@ module.exports = require('./_core').getIteratorMethod = function (it) {
     || Iterators[classof(it)];
 };
 
-},{"./_classof":186,"./_wks":183,"./_iterators":182,"./_core":118}],191:[function(require,module,exports) {
+},{"./_classof":212,"./_wks":209,"./_iterators":208,"./_core":133}],217:[function(require,module,exports) {
 var ctx = require('./_ctx');
 var call = require('./_iter-call');
 var isArrayIter = require('./_is-array-iter');
@@ -39078,7 +37856,7 @@ var exports = module.exports = function (iterable, entries, fn, that, ITERATOR) 
 exports.BREAK = BREAK;
 exports.RETURN = RETURN;
 
-},{"./_ctx":185,"./_iter-call":222,"./_is-array-iter":223,"./_an-object":243,"./_to-length":224,"./core.get-iterator-method":226}],192:[function(require,module,exports) {
+},{"./_ctx":211,"./_iter-call":246,"./_is-array-iter":247,"./_an-object":268,"./_to-length":248,"./core.get-iterator-method":250}],218:[function(require,module,exports) {
 // 7.3.20 SpeciesConstructor(O, defaultConstructor)
 var anObject = require('./_an-object');
 var aFunction = require('./_a-function');
@@ -39089,7 +37867,7 @@ module.exports = function (O, D) {
   return C === undefined || (S = anObject(C)[SPECIES]) == undefined ? D : aFunction(S);
 };
 
-},{"./_an-object":243,"./_a-function":189,"./_wks":183}],244:[function(require,module,exports) {
+},{"./_an-object":268,"./_a-function":215,"./_wks":209}],269:[function(require,module,exports) {
 // fast apply, http://jsperf.lnkit.com/fast-apply/5
 module.exports = function (fn, args, that) {
   var un = that === undefined;
@@ -39107,7 +37885,7 @@ module.exports = function (fn, args, that) {
   } return fn.apply(that, args);
 };
 
-},{}],193:[function(require,module,exports) {
+},{}],219:[function(require,module,exports) {
 
 
 var ctx = require('./_ctx');
@@ -39195,7 +37973,7 @@ module.exports = {
   clear: clearTask
 };
 
-},{"./_ctx":185,"./_invoke":244,"./_html":245,"./_dom-create":246,"./_global":180,"./_cof":241}],194:[function(require,module,exports) {
+},{"./_ctx":211,"./_invoke":269,"./_html":270,"./_dom-create":271,"./_global":206,"./_cof":266}],220:[function(require,module,exports) {
 
 
 var global = require('./_global');
@@ -39268,7 +38046,7 @@ module.exports = function () {
   };
 };
 
-},{"./_global":180,"./_task":193,"./_cof":241}],195:[function(require,module,exports) {
+},{"./_global":206,"./_task":219,"./_cof":266}],221:[function(require,module,exports) {
 'use strict';
 // 25.4.1.5 NewPromiseCapability(C)
 var aFunction = require('./_a-function');
@@ -39288,7 +38066,7 @@ module.exports.f = function (C) {
   return new PromiseCapability(C);
 };
 
-},{"./_a-function":189}],196:[function(require,module,exports) {
+},{"./_a-function":215}],222:[function(require,module,exports) {
 module.exports = function (exec) {
   try {
     return { e: false, v: exec() };
@@ -39297,14 +38075,14 @@ module.exports = function (exec) {
   }
 };
 
-},{}],197:[function(require,module,exports) {
+},{}],223:[function(require,module,exports) {
 
 var global = require('./_global');
 var navigator = global.navigator;
 
 module.exports = navigator && navigator.userAgent || '';
 
-},{"./_global":180}],198:[function(require,module,exports) {
+},{"./_global":206}],224:[function(require,module,exports) {
 var anObject = require('./_an-object');
 var isObject = require('./_is-object');
 var newPromiseCapability = require('./_new-promise-capability');
@@ -39318,7 +38096,7 @@ module.exports = function (C, x) {
   return promiseCapability.promise;
 };
 
-},{"./_an-object":243,"./_is-object":188,"./_new-promise-capability":195}],199:[function(require,module,exports) {
+},{"./_an-object":268,"./_is-object":214,"./_new-promise-capability":221}],225:[function(require,module,exports) {
 var hide = require('./_hide');
 module.exports = function (target, src, safe) {
   for (var key in src) {
@@ -39327,7 +38105,7 @@ module.exports = function (target, src, safe) {
   } return target;
 };
 
-},{"./_hide":181}],201:[function(require,module,exports) {
+},{"./_hide":207}],227:[function(require,module,exports) {
 
 'use strict';
 var global = require('./_global');
@@ -39344,7 +38122,7 @@ module.exports = function (KEY) {
   });
 };
 
-},{"./_global":180,"./_core":118,"./_object-dp":236,"./_descriptors":238,"./_wks":183}],202:[function(require,module,exports) {
+},{"./_global":206,"./_core":133,"./_object-dp":261,"./_descriptors":263,"./_wks":209}],228:[function(require,module,exports) {
 var ITERATOR = require('./_wks')('iterator');
 var SAFE_CLOSING = false;
 
@@ -39368,7 +38146,7 @@ module.exports = function (exec, skipClosing) {
   return safe;
 };
 
-},{"./_wks":183}],132:[function(require,module,exports) {
+},{"./_wks":209}],145:[function(require,module,exports) {
 
 
 'use strict';
@@ -39658,7 +38436,7 @@ $export($export.S + $export.F * !(USE_NATIVE && require('./_iter-detect')(functi
   }
 });
 
-},{"./_library":184,"./_global":180,"./_ctx":185,"./_classof":186,"./_export":187,"./_is-object":188,"./_a-function":189,"./_an-instance":190,"./_for-of":191,"./_species-constructor":192,"./_task":193,"./_microtask":194,"./_new-promise-capability":195,"./_perform":196,"./_user-agent":197,"./_promise-resolve":198,"./_wks":183,"./_redefine-all":199,"./_set-to-string-tag":200,"./_set-species":201,"./_core":118,"./_iter-detect":202}],133:[function(require,module,exports) {
+},{"./_library":210,"./_global":206,"./_ctx":211,"./_classof":212,"./_export":213,"./_is-object":214,"./_a-function":215,"./_an-instance":216,"./_for-of":217,"./_species-constructor":218,"./_task":219,"./_microtask":220,"./_new-promise-capability":221,"./_perform":222,"./_user-agent":223,"./_promise-resolve":224,"./_wks":209,"./_redefine-all":225,"./_set-to-string-tag":226,"./_set-species":227,"./_core":133,"./_iter-detect":228}],146:[function(require,module,exports) {
 
 // https://github.com/tc39/proposal-promise-finally
 'use strict';
@@ -39681,7 +38459,7 @@ $export($export.P + $export.R, 'Promise', { 'finally': function (onFinally) {
   );
 } });
 
-},{"./_export":187,"./_core":118,"./_global":180,"./_species-constructor":192,"./_promise-resolve":198}],134:[function(require,module,exports) {
+},{"./_export":213,"./_core":133,"./_global":206,"./_species-constructor":218,"./_promise-resolve":224}],147:[function(require,module,exports) {
 'use strict';
 // https://github.com/tc39/proposal-promise-try
 var $export = require('./_export');
@@ -39695,7 +38473,7 @@ $export($export.S, 'Promise', { 'try': function (callbackfn) {
   return promiseCapability.promise;
 } });
 
-},{"./_export":187,"./_new-promise-capability":195,"./_perform":196}],110:[function(require,module,exports) {
+},{"./_export":213,"./_new-promise-capability":221,"./_perform":222}],125:[function(require,module,exports) {
 require('../modules/es6.object.to-string');
 require('../modules/es6.string.iterator');
 require('../modules/web.dom.iterable');
@@ -39704,9 +38482,9 @@ require('../modules/es7.promise.finally');
 require('../modules/es7.promise.try');
 module.exports = require('../modules/_core').Promise;
 
-},{"../modules/es6.object.to-string":129,"../modules/es6.string.iterator":130,"../modules/web.dom.iterable":131,"../modules/es6.promise":132,"../modules/es7.promise.finally":133,"../modules/es7.promise.try":134,"../modules/_core":118}],70:[function(require,module,exports) {
+},{"../modules/es6.object.to-string":142,"../modules/es6.string.iterator":143,"../modules/web.dom.iterable":144,"../modules/es6.promise":145,"../modules/es7.promise.finally":146,"../modules/es7.promise.try":147,"../modules/_core":133}],77:[function(require,module,exports) {
 module.exports = { "default": require("core-js/library/fn/promise"), __esModule: true };
-},{"core-js/library/fn/promise":110}],66:[function(require,module,exports) {
+},{"core-js/library/fn/promise":125}],50:[function(require,module,exports) {
 "use strict";
 
 exports.__esModule = true;
@@ -39745,7 +38523,1404 @@ exports.default = function (fn) {
     });
   };
 };
-},{"../core-js/promise":70}],112:[function(require,module,exports) {
+},{"../core-js/promise":77}],296:[function(require,module,exports) {
+exports.f = Object.getOwnPropertySymbols;
+
+},{}],297:[function(require,module,exports) {
+exports.f = {}.propertyIsEnumerable;
+
+},{}],230:[function(require,module,exports) {
+'use strict';
+// 19.1.2.1 Object.assign(target, source, ...)
+var getKeys = require('./_object-keys');
+var gOPS = require('./_object-gops');
+var pIE = require('./_object-pie');
+var toObject = require('./_to-object');
+var IObject = require('./_iobject');
+var $assign = Object.assign;
+
+// should work with symbols and should have deterministic property order (V8 bug)
+module.exports = !$assign || require('./_fails')(function () {
+  var A = {};
+  var B = {};
+  // eslint-disable-next-line no-undef
+  var S = Symbol();
+  var K = 'abcdefghijklmnopqrst';
+  A[S] = 7;
+  K.split('').forEach(function (k) { B[k] = k; });
+  return $assign({}, A)[S] != 7 || Object.keys($assign({}, B)).join('') != K;
+}) ? function assign(target, source) { // eslint-disable-line no-unused-vars
+  var T = toObject(target);
+  var aLen = arguments.length;
+  var index = 1;
+  var getSymbols = gOPS.f;
+  var isEnum = pIE.f;
+  while (aLen > index) {
+    var S = IObject(arguments[index++]);
+    var keys = getSymbols ? getKeys(S).concat(getSymbols(S)) : getKeys(S);
+    var length = keys.length;
+    var j = 0;
+    var key;
+    while (length > j) if (isEnum.call(S, key = keys[j++])) T[key] = S[key];
+  } return T;
+} : $assign;
+
+},{"./_object-keys":251,"./_object-gops":296,"./_object-pie":297,"./_to-object":245,"./_iobject":298,"./_fails":299}],151:[function(require,module,exports) {
+// 19.1.3.1 Object.assign(target, source)
+var $export = require('./_export');
+
+$export($export.S + $export.F, 'Object', { assign: require('./_object-assign') });
+
+},{"./_export":213,"./_object-assign":230}],126:[function(require,module,exports) {
+require('../../modules/es6.object.assign');
+module.exports = require('../../modules/_core').Object.assign;
+
+},{"../../modules/es6.object.assign":151,"../../modules/_core":133}],79:[function(require,module,exports) {
+module.exports = { "default": require("core-js/library/fn/object/assign"), __esModule: true };
+},{"core-js/library/fn/object/assign":126}],51:[function(require,module,exports) {
+"use strict";
+
+exports.__esModule = true;
+
+var _assign = require("../core-js/object/assign");
+
+var _assign2 = _interopRequireDefault(_assign);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = _assign2.default || function (target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i];
+
+    for (var key in source) {
+      if (Object.prototype.hasOwnProperty.call(source, key)) {
+        target[key] = source[key];
+      }
+    }
+  }
+
+  return target;
+};
+},{"../core-js/object/assign":79}],39:[function(require,module,exports) {
+var Vue // late bind
+var version
+var map = Object.create(null)
+if (typeof window !== 'undefined') {
+  window.__VUE_HOT_MAP__ = map
+}
+var installed = false
+var isBrowserify = false
+var initHookName = 'beforeCreate'
+
+exports.install = function (vue, browserify) {
+  if (installed) { return }
+  installed = true
+
+  Vue = vue.__esModule ? vue.default : vue
+  version = Vue.version.split('.').map(Number)
+  isBrowserify = browserify
+
+  // compat with < 2.0.0-alpha.7
+  if (Vue.config._lifecycleHooks.indexOf('init') > -1) {
+    initHookName = 'init'
+  }
+
+  exports.compatible = version[0] >= 2
+  if (!exports.compatible) {
+    console.warn(
+      '[HMR] You are using a version of vue-hot-reload-api that is ' +
+        'only compatible with Vue.js core ^2.0.0.'
+    )
+    return
+  }
+}
+
+/**
+ * Create a record for a hot module, which keeps track of its constructor
+ * and instances
+ *
+ * @param {String} id
+ * @param {Object} options
+ */
+
+exports.createRecord = function (id, options) {
+  if(map[id]) { return }
+
+  var Ctor = null
+  if (typeof options === 'function') {
+    Ctor = options
+    options = Ctor.options
+  }
+  makeOptionsHot(id, options)
+  map[id] = {
+    Ctor: Ctor,
+    options: options,
+    instances: []
+  }
+}
+
+/**
+ * Check if module is recorded
+ *
+ * @param {String} id
+ */
+
+exports.isRecorded = function (id) {
+  return typeof map[id] !== 'undefined'
+}
+
+/**
+ * Make a Component options object hot.
+ *
+ * @param {String} id
+ * @param {Object} options
+ */
+
+function makeOptionsHot(id, options) {
+  if (options.functional) {
+    var render = options.render
+    options.render = function (h, ctx) {
+      var instances = map[id].instances
+      if (ctx && instances.indexOf(ctx.parent) < 0) {
+        instances.push(ctx.parent)
+      }
+      return render(h, ctx)
+    }
+  } else {
+    injectHook(options, initHookName, function() {
+      var record = map[id]
+      if (!record.Ctor) {
+        record.Ctor = this.constructor
+      }
+      record.instances.push(this)
+    })
+    injectHook(options, 'beforeDestroy', function() {
+      var instances = map[id].instances
+      instances.splice(instances.indexOf(this), 1)
+    })
+  }
+}
+
+/**
+ * Inject a hook to a hot reloadable component so that
+ * we can keep track of it.
+ *
+ * @param {Object} options
+ * @param {String} name
+ * @param {Function} hook
+ */
+
+function injectHook(options, name, hook) {
+  var existing = options[name]
+  options[name] = existing
+    ? Array.isArray(existing) ? existing.concat(hook) : [existing, hook]
+    : [hook]
+}
+
+function tryWrap(fn) {
+  return function (id, arg) {
+    try {
+      fn(id, arg)
+    } catch (e) {
+      console.error(e)
+      console.warn(
+        'Something went wrong during Vue component hot-reload. Full reload required.'
+      )
+    }
+  }
+}
+
+function updateOptions (oldOptions, newOptions) {
+  for (var key in oldOptions) {
+    if (!(key in newOptions)) {
+      delete oldOptions[key]
+    }
+  }
+  for (var key$1 in newOptions) {
+    oldOptions[key$1] = newOptions[key$1]
+  }
+}
+
+exports.rerender = tryWrap(function (id, options) {
+  var record = map[id]
+  if (!options) {
+    record.instances.slice().forEach(function (instance) {
+      instance.$forceUpdate()
+    })
+    return
+  }
+  if (typeof options === 'function') {
+    options = options.options
+  }
+  if (record.Ctor) {
+    record.Ctor.options.render = options.render
+    record.Ctor.options.staticRenderFns = options.staticRenderFns
+    record.instances.slice().forEach(function (instance) {
+      instance.$options.render = options.render
+      instance.$options.staticRenderFns = options.staticRenderFns
+      // reset static trees
+      // pre 2.5, all static trees are cached together on the instance
+      if (instance._staticTrees) {
+        instance._staticTrees = []
+      }
+      // 2.5.0
+      if (Array.isArray(record.Ctor.options.cached)) {
+        record.Ctor.options.cached = []
+      }
+      // 2.5.3
+      if (Array.isArray(instance.$options.cached)) {
+        instance.$options.cached = []
+      }
+      // post 2.5.4: v-once trees are cached on instance._staticTrees.
+      // Pure static trees are cached on the staticRenderFns array
+      // (both already reset above)
+      instance.$forceUpdate()
+    })
+  } else {
+    // functional or no instance created yet
+    record.options.render = options.render
+    record.options.staticRenderFns = options.staticRenderFns
+
+    // handle functional component re-render
+    if (record.options.functional) {
+      // rerender with full options
+      if (Object.keys(options).length > 2) {
+        updateOptions(record.options, options)
+      } else {
+        // template-only rerender.
+        // need to inject the style injection code for CSS modules
+        // to work properly.
+        var injectStyles = record.options._injectStyles
+        if (injectStyles) {
+          var render = options.render
+          record.options.render = function (h, ctx) {
+            injectStyles.call(ctx)
+            return render(h, ctx)
+          }
+        }
+      }
+      record.options._Ctor = null
+      // 2.5.3
+      if (Array.isArray(record.options.cached)) {
+        record.options.cached = []
+      }
+      record.instances.slice().forEach(function (instance) {
+        instance.$forceUpdate()
+      })
+    }
+  }
+})
+
+exports.reload = tryWrap(function (id, options) {
+  var record = map[id]
+  if (options) {
+    if (typeof options === 'function') {
+      options = options.options
+    }
+    makeOptionsHot(id, options)
+    if (record.Ctor) {
+      if (version[1] < 2) {
+        // preserve pre 2.2 behavior for global mixin handling
+        record.Ctor.extendOptions = options
+      }
+      var newCtor = record.Ctor.super.extend(options)
+      record.Ctor.options = newCtor.options
+      record.Ctor.cid = newCtor.cid
+      record.Ctor.prototype = newCtor.prototype
+      if (newCtor.release) {
+        // temporary global mixin strategy used in < 2.0.0-alpha.6
+        newCtor.release()
+      }
+    } else {
+      updateOptions(record.options, options)
+    }
+  }
+  record.instances.slice().forEach(function (instance) {
+    if (instance.$vnode && instance.$vnode.context) {
+      instance.$vnode.context.$forceUpdate()
+    } else {
+      console.warn(
+        'Root or manually mounted instance modified. Full reload required.'
+      )
+    }
+  })
+})
+
+},{}],27:[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends2 = require('babel-runtime/helpers/extends');
+
+var _extends3 = _interopRequireDefault(_extends2);
+
+var _vuex = require('vuex');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+    name: 'component-navigation-drawer',
+    props: {
+        show_drawer: {
+            required: true,
+            type: Boolean
+        }
+    },
+    data: function data() {
+        return {
+            list_items_menu: [{
+                name: 'dashboard',
+                label: 'Dashboard',
+                icon: 'dashboard'
+                // icon: 'ballot',
+            }, {
+                name: 'batches',
+                label: 'Batches',
+                icon: 'notes'
+                // icon: 'ballot',
+            }, {
+                name: 'hits',
+                label: 'HITs',
+                icon: 'notes'
+                // icon: 'ballot',
+            }, {
+                name: 'assignments',
+                label: 'Assignments',
+                icon: 'notes'
+            },
+            // {
+            //     name: 'finances',
+            //     label: 'Finances',
+            //     icon: 'attach_money',
+            // },
+            {
+                name: 'workers',
+                label: 'Workers',
+                icon: 'person'
+            }, {
+                name: 'settings_project',
+                label: 'Project Settings',
+                icon: 'settings_applications'
+            }]
+        };
+    },
+
+    computed: (0, _extends3.default)({}, (0, _vuex.mapState)(['url_project']))
+
+}; //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+      var $bab2ac = exports.default || module.exports;
+      if (typeof $bab2ac === 'function') {
+        $bab2ac = $bab2ac.options;
+      }
+    
+        /* template */
+        Object.assign($bab2ac, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-navigation-drawer",
+    {
+      attrs: { value: _vm.show_drawer, clipped: "", fixed: "", app: "" },
+      on: {
+        input: function($event) {
+          _vm.$emit("update:show_drawer", $event)
+        }
+      }
+    },
+    [
+      _c(
+        "v-list",
+        [
+          _vm._l(_vm.list_items_menu, function(item_menu) {
+            return _c(
+              "v-list-tile",
+              {
+                key: item_menu.name,
+                attrs: {
+                  to: { name: item_menu.name },
+                  exact: item_menu.name == "dashboard" ? true : false
+                }
+              },
+              [
+                _c(
+                  "v-list-tile-action",
+                  [_c("v-icon", [_vm._v(_vm._s(item_menu.icon))])],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "v-list-tile-content",
+                  [_c("v-list-tile-title", [_vm._v(_vm._s(item_menu.label))])],
+                  1
+                )
+              ],
+              1
+            )
+          }),
+          _vm._v(" "),
+          _c("v-divider")
+        ],
+        2
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: null,
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$bab2ac', $bab2ac);
+          } else {
+            api.reload('$bab2ac', $bab2ac);
+          }
+        }
+
+        
+      }
+    })();
+},{"babel-runtime/helpers/extends":51,"vuex":15,"vue-hot-reload-api":39,"vue":3}],81:[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+				value: true
+});
+
+var _extends2 = require('babel-runtime/helpers/extends');
+
+var _extends3 = _interopRequireDefault(_extends2);
+
+var _vuex = require('vuex');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+				methods: (0, _extends3.default)({
+								refresh_data: function refresh_data() {
+												var _this = this;
+
+												var force = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+
+												// console.log(this.use_sandbox)
+												this.set_show_progress_indicator(true);
+												// this.set_show_progress_indicator(true);
+
+												// this.sync_database().then(() => {
+												//     this.set_show_progress_indicator(false);
+												// });
+
+												this.sync_batches(force).then(function () {
+																_this.set_show_progress_indicator(false);
+												});
+
+												// this.update_balance().then(() => {
+												//     this.set_show_progress_indicator(false);
+												// });
+								}
+				}, (0, _vuex.mapActions)(['set_show_progress_indicator']), (0, _vuex.mapActions)('moduleBatches', {
+								'sync_batches': 'sync_batches'
+				})),
+				computed: (0, _extends3.default)({}, (0, _vuex.mapState)(['use_sandbox'])),
+				created: function created() {
+								this.refresh_data(false);
+				},
+
+				watch: {
+								use_sandbox: function use_sandbox() {
+												this.refresh_data(false);
+								}
+				}
+};
+},{"babel-runtime/helpers/extends":51,"vuex":15}],28:[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends2 = require('babel-runtime/helpers/extends');
+
+var _extends3 = _interopRequireDefault(_extends2);
+
+var _vuex = require('vuex');
+
+var _load_data = require('../../mixins/load_data');
+
+var _load_data2 = _interopRequireDefault(_load_data);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+exports.default = {
+    mixins: [
+    // slug_project,
+    _load_data2.default],
+    name: 'component-toolbar-batches',
+    props: {
+        name_route: {}
+    },
+    data: function data() {
+        return {};
+    },
+    created: function created() {
+        // console.log($route);
+    },
+
+    computed: (0, _extends3.default)({}, (0, _vuex.mapGetters)(['get_show_progress_indicator']), (0, _vuex.mapGetters)('moduleBatches', {
+        'is_syncing_mturk': 'get_is_syncing_mturk'
+    })),
+    methods: (0, _extends3.default)({}, (0, _vuex.mapActions)(['set_show_progress_indicator']), (0, _vuex.mapActions)('moduleBatches', {
+        'sync_database': 'sync_database',
+        'sync_mturk': 'sync_mturk'
+    }))
+};
+// import slug_project from '../../mixins/slug_project';
+      var $2742f3 = exports.default || module.exports;
+      if (typeof $2742f3 === 'function') {
+        $2742f3 = $2742f3.options;
+      }
+    
+        /* template */
+        Object.assign($2742f3, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-layout",
+    { attrs: { "align-center": "", "justify-end": "" } },
+    [
+      _c(
+        "v-flex",
+        { attrs: { shrink: "" } },
+        [
+          _c(
+            "v-tooltip",
+            { attrs: { bottom: "" } },
+            [
+              _c(
+                "v-btn",
+                {
+                  attrs: {
+                    slot: "activator",
+                    flat: "",
+                    loading: _vm.get_show_progress_indicator
+                  },
+                  on: {
+                    click: function($event) {
+                      _vm.refresh_data(true)
+                    }
+                  },
+                  slot: "activator"
+                },
+                [
+                  _c("v-icon", [_vm._v("refresh")]),
+                  _vm._v("\n                Refresh Data\n            ")
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c("span", [_vm._v("Refresh batch data")])
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-flex",
+        { attrs: { shrink: "" } },
+        [
+          _c(
+            "v-tooltip",
+            { attrs: { bottom: "" } },
+            [
+              _c(
+                "v-btn",
+                {
+                  attrs: {
+                    slot: "activator",
+                    flat: "",
+                    loading: _vm.is_syncing_mturk
+                  },
+                  on: {
+                    click: function($event) {
+                      _vm.sync_mturk(true)
+                    }
+                  },
+                  slot: "activator"
+                },
+                [
+                  _c("v-icon", [_vm._v("sync")]),
+                  _vm._v("\n                Sync with MTurk\n            ")
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c("span", [_vm._v("Refresh batch data")])
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: null,
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$2742f3', $2742f3);
+          } else {
+            api.reload('$2742f3', $2742f3);
+          }
+        }
+
+        
+      }
+    })();
+},{"babel-runtime/helpers/extends":51,"vuex":15,"../../mixins/load_data":81,"vue-hot-reload-api":39,"vue":3}],29:[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends2 = require('babel-runtime/helpers/extends');
+
+var _extends3 = _interopRequireDefault(_extends2);
+
+var _vuex = require('vuex');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+    name: 'component-toolbar-qualifications',
+    data: function data() {
+        return {};
+    },
+
+    computed: (0, _extends3.default)({}, (0, _vuex.mapGetters)(['get_show_progress_indicator'])),
+    methods: (0, _extends3.default)({
+        refresh_data: function refresh_data() {
+            var _this = this;
+
+            this.set_show_progress_indicator(true);
+
+            this.sync_qualifications(true).then(function () {
+                _this.set_show_progress_indicator(false);
+            });
+        }
+    }, (0, _vuex.mapActions)(['set_show_progress_indicator']), (0, _vuex.mapActions)('moduleQualifications', {
+        'sync_qualifications': 'sync_qualifications'
+    }))
+}; //
+//
+//
+//
+//
+//
+//
+//
+//
+      var $b13306 = exports.default || module.exports;
+      if (typeof $b13306 === 'function') {
+        $b13306 = $b13306.options;
+      }
+    
+        /* template */
+        Object.assign($b13306, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-tooltip",
+    { attrs: { bottom: "" } },
+    [
+      _c(
+        "v-btn",
+        {
+          attrs: {
+            slot: "activator",
+            icon: "",
+            loading: _vm.get_show_progress_indicator
+          },
+          on: { click: _vm.refresh_data },
+          slot: "activator"
+        },
+        [_c("v-icon", [_vm._v("refresh")])],
+        1
+      ),
+      _vm._v(" "),
+      _c("span", [_vm._v("Refresh qualifications")])
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: null,
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$b13306', $b13306);
+          } else {
+            api.reload('$b13306', $b13306);
+          }
+        }
+
+        
+      }
+    })();
+},{"babel-runtime/helpers/extends":51,"vuex":15,"vue-hot-reload-api":39,"vue":3}],76:[function(require,module,exports) {
+var bundleURL = null;
+function getBundleURLCached() {
+  if (!bundleURL) {
+    bundleURL = getBundleURL();
+  }
+
+  return bundleURL;
+}
+
+function getBundleURL() {
+  // Attempt to find the URL of the current script and use that as the base URL
+  try {
+    throw new Error();
+  } catch (err) {
+    var matches = ('' + err.stack).match(/(https?|file|ftp):\/\/[^)\n]+/g);
+    if (matches) {
+      return getBaseURL(matches[0]);
+    }
+  }
+
+  return '/';
+}
+
+function getBaseURL(url) {
+  return ('' + url).replace(/^((?:https?|file|ftp):\/\/.+)\/[^/]+$/, '$1') + '/';
+}
+
+exports.getBundleURL = getBundleURLCached;
+exports.getBaseURL = getBaseURL;
+},{}],26:[function(require,module,exports) {
+var bundle = require('./bundle-url');
+
+function updateLink(link) {
+  var newLink = link.cloneNode();
+  newLink.onload = function () {
+    link.remove();
+  };
+  newLink.href = link.href.split('?')[0] + '?' + Date.now();
+  link.parentNode.insertBefore(newLink, link.nextSibling);
+}
+
+var cssTimeout = null;
+function reloadCSS() {
+  if (cssTimeout) {
+    return;
+  }
+
+  cssTimeout = setTimeout(function () {
+    var links = document.querySelectorAll('link[rel="stylesheet"]');
+    for (var i = 0; i < links.length; i++) {
+      if (bundle.getBaseURL(links[i].href) === bundle.getBundleURL()) {
+        updateLink(links[i]);
+      }
+    }
+
+    cssTimeout = null;
+  }, 50);
+}
+
+module.exports = reloadCSS;
+},{"./bundle-url":76}],2:[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _regenerator = require('babel-runtime/regenerator');
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
+
+var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
+
+var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
+
+var _extends2 = require('babel-runtime/helpers/extends');
+
+var _extends3 = _interopRequireDefault(_extends2);
+
+var _vuex = require('vuex');
+
+var _componentNavigationDrawer = require('./components/component-navigation-drawer.vue');
+
+var _componentNavigationDrawer2 = _interopRequireDefault(_componentNavigationDrawer);
+
+var _component_toolbar_batches = require('./components/batches/component_toolbar_batches.vue');
+
+var _component_toolbar_batches2 = _interopRequireDefault(_component_toolbar_batches);
+
+var _componentToolbarQualifications = require('./components/qualifications/component-toolbar-qualifications.vue');
+
+var _componentToolbarQualifications2 = _interopRequireDefault(_componentToolbarQualifications);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// import ComponentToolbarWorkers from './components/workers/component_toolbar_workers.vue';
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+exports.default = {
+    name: 'app',
+    data: function data() {
+        return {
+            dialog: false,
+
+            show_drawer: true,
+            show_snackbar: false,
+            text_snackbar: 'Finished refreshing the data',
+            id_interval: undefined
+        };
+    },
+
+    computed: (0, _extends3.default)({
+        object_styles_toolbar: function object_styles_toolbar() {
+            if (this.use_sandbox) {
+                return { 'background-color': '#dd6e00' };
+            } else {
+                return {};
+            }
+        },
+        currentTabComponent: function currentTabComponent() {
+            switch (this.$route.name) {
+                case 'finances':
+                case 'batches':
+                case 'batch':
+                case 'hits':
+                case 'hit':
+                case 'assignments':
+                case 'assignment':
+                case 'workers':
+                    return _component_toolbar_batches2.default;
+                case 'qualifications':
+                    return _componentToolbarQualifications2.default;
+                // case 'workers':
+                //     return ComponentToolbarWorkers;
+            }
+        },
+        name_route_current: function name_route_current() {
+            // return this.$router.currentRoute;
+            return this.$route.name;
+        }
+    }, (0, _vuex.mapState)(['show_with_fee', 'use_sandbox', 'has_loaded_projects']), (0, _vuex.mapGetters)('moduleProjects', {
+        'project_current': 'get_project_current',
+        'slug_project_current': 'get_slug_project_current',
+        'object_projects': 'get_object_projects'
+    }), (0, _vuex.mapGetters)(['get_show_progress_indicator'])),
+    watch: {
+        slug_project_current: function slug_project_current(_slug_project_current) {
+            var _this = this;
+
+            clearInterval(this.id_interval);
+
+            if (_slug_project_current != null) {
+                this.ping();
+                this.id_interval = setInterval(function () {
+                    _this.ping();
+                }, 1000 * 60 * 5);
+            }
+        }
+    },
+    methods: (0, _extends3.default)({
+        toggle_use_sandbox: function toggle_use_sandbox() {
+            this.set_use_sandbox(!this.use_sandbox);
+        }
+    }, (0, _vuex.mapActions)(['init', 'set_show_with_fee', 'set_show_progress_indicator', 'set_use_sandbox']), (0, _vuex.mapActions)('moduleProjects', {
+        'ping': 'ping'
+    })),
+    created: function () {
+        var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
+            return _regenerator2.default.wrap(function _callee$(_context) {
+                while (1) {
+                    switch (_context.prev = _context.next) {
+                        case 0:
+                            this.set_show_progress_indicator(true);
+                            _context.next = 3;
+                            return this.init();
+
+                        case 3:
+                            this.set_show_progress_indicator(false);
+
+                        case 4:
+                        case 'end':
+                            return _context.stop();
+                    }
+                }
+            }, _callee, this);
+        }));
+
+        function created() {
+            return _ref.apply(this, arguments);
+        }
+
+        return created;
+    }(),
+    components: {
+        ComponentNavigationDrawer: _componentNavigationDrawer2.default
+    }
+};
+      var $04c29b = exports.default || module.exports;
+      if (typeof $04c29b === 'function') {
+        $04c29b = $04c29b.options;
+      }
+    
+        /* template */
+        Object.assign($04c29b, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-app",
+    { attrs: { dark: "" } },
+    [
+      _vm.has_loaded_projects && Object.keys(_vm.project_current).length > 0
+        ? [
+            _c("component-navigation-drawer", {
+              attrs: { show_drawer: _vm.show_drawer },
+              on: {
+                "update:show_drawer": function($event) {
+                  _vm.show_drawer = $event
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c("v-progress-linear", {
+              staticStyle: {
+                "z-index": "50",
+                position: "absolute",
+                margin: "0"
+              },
+              attrs: {
+                active: _vm.get_show_progress_indicator,
+                height: "4",
+                app: "",
+                indeterminate: ""
+              }
+            }),
+            _vm._v(" "),
+            _c(
+              "v-toolbar",
+              {
+                style: _vm.object_styles_toolbar,
+                attrs: { app: "", fixed: "", "clipped-left": "" }
+              },
+              [
+                _c("v-toolbar-side-icon", {
+                  on: {
+                    click: function($event) {
+                      $event.stopPropagation()
+                      _vm.show_drawer = !_vm.show_drawer
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c("v-toolbar-title", [
+                  _vm._v(
+                    '"' +
+                      _vm._s(_vm.project_current.name) +
+                      '" - ' +
+                      _vm._s(_vm.name_route_current)
+                  )
+                ]),
+                _vm._v(" "),
+                _c("v-spacer"),
+                _vm._v(" "),
+                _c(
+                  "v-layout",
+                  { attrs: { "align-center": "", "justify-end": "" } },
+                  [
+                    _c(
+                      "v-flex",
+                      { attrs: { shrink: "" } },
+                      [
+                        _c(
+                          "v-tooltip",
+                          { attrs: { bottom: "" } },
+                          [
+                            _c("v-switch", {
+                              attrs: {
+                                slot: "activator",
+                                "hide-details": "",
+                                label: _vm.use_sandbox
+                                  ? "Toggle Sandbox"
+                                  : "Toggle Sandbox",
+                                "input-value": _vm.use_sandbox
+                              },
+                              nativeOn: {
+                                click: function($event) {
+                                  return _vm.toggle_use_sandbox($event)
+                                }
+                              },
+                              slot: "activator"
+                            }),
+                            _vm._v(" "),
+                            _c("span", [
+                              _vm._v("You are currently "),
+                              !_vm.use_sandbox
+                                ? _c("b", [_vm._v("not")])
+                                : _vm._e(),
+                              _vm._v(" using the Sandbox")
+                            ])
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c("v-divider", {
+                      staticClass: "mx-2",
+                      attrs: { inset: "", vertical: "" }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "v-flex",
+                      { attrs: { shrink: "" } },
+                      [
+                        _c(_vm.currentTabComponent, {
+                          tag: "component",
+                          attrs: { name_route: _vm.name_route_current }
+                        })
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                )
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "v-content",
+              [
+                _c(
+                  "v-container",
+                  { attrs: { fluid: "" } },
+                  [_c("router-view")],
+                  1
+                )
+              ],
+              1
+            )
+          ]
+        : _vm.has_loaded_projects
+          ? [
+              _c(
+                "v-content",
+                [
+                  _c(
+                    "v-container",
+                    { attrs: { fluid: "" } },
+                    [_c("router-view")],
+                    1
+                  )
+                ],
+                1
+              )
+            ]
+          : [
+              _c("v-spacer"),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "text-xs-center" },
+                [
+                  _c("v-progress-circular", {
+                    attrs: { indeterminate: "", color: "primary" }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c("v-spacer")
+            ]
+    ],
+    2
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: "data-v-04c29b",
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$04c29b', $04c29b);
+          } else {
+            api.reload('$04c29b', $04c29b);
+          }
+        }
+
+        
+        var reloadCSS = require('_css_loader');
+        module.hot.dispose(reloadCSS);
+        module.hot.accept(reloadCSS);
+      
+      }
+    })();
+},{"babel-runtime/regenerator":131,"babel-runtime/helpers/asyncToGenerator":50,"babel-runtime/helpers/extends":51,"vuex":15,"./components/component-navigation-drawer.vue":27,"./components/batches/component_toolbar_batches.vue":28,"./components/qualifications/component-toolbar-qualifications.vue":29,"_css_loader":26,"vue-hot-reload-api":39,"vue":3}],127:[function(require,module,exports) {
 'use strict'
 
 exports.byteLength = byteLength
@@ -39898,7 +40073,7 @@ function fromByteArray (uint8) {
   return parts.join('')
 }
 
-},{}],113:[function(require,module,exports) {
+},{}],128:[function(require,module,exports) {
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
   var e, m
   var eLen = (nBytes * 8) - mLen - 1
@@ -39984,14 +40159,14 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
   buffer[offset + i - d] |= s * 128
 }
 
-},{}],114:[function(require,module,exports) {
+},{}],129:[function(require,module,exports) {
 var toString = {}.toString;
 
 module.exports = Array.isArray || function (arr) {
   return toString.call(arr) == '[object Array]';
 };
 
-},{}],71:[function(require,module,exports) {
+},{}],80:[function(require,module,exports) {
 
 var global = arguments[3];
 /*!
@@ -41784,7 +41959,7 @@ function isnan (val) {
   return val !== val // eslint-disable-line no-self-compare
 }
 
-},{"base64-js":112,"ieee754":113,"isarray":114,"buffer":71}],63:[function(require,module,exports) {
+},{"base64-js":127,"ieee754":128,"isarray":129,"buffer":80}],73:[function(require,module,exports) {
 var global = arguments[3];
 var Buffer = require("buffer").Buffer;
 var define;
@@ -58896,7 +59071,7 @@ var define;
   }
 }.call(this));
 
-},{"buffer":71}],104:[function(require,module,exports) {
+},{"buffer":80}],119:[function(require,module,exports) {
 'use strict';
 
 module.exports = function bind(fn, thisArg) {
@@ -58909,7 +59084,7 @@ module.exports = function bind(fn, thisArg) {
   };
 };
 
-},{}],128:[function(require,module,exports) {
+},{}],150:[function(require,module,exports) {
 /*!
  * Determine if an object is a Buffer
  *
@@ -58932,7 +59107,7 @@ function isSlowBuffer (obj) {
   return typeof obj.readFloatLE === 'function' && typeof obj.slice === 'function' && isBuffer(obj.slice(0, 0))
 }
 
-},{}],100:[function(require,module,exports) {
+},{}],115:[function(require,module,exports) {
 'use strict';
 
 var bind = require('./helpers/bind');
@@ -59237,7 +59412,7 @@ module.exports = {
   trim: trim
 };
 
-},{"./helpers/bind":104,"is-buffer":128}],121:[function(require,module,exports) {
+},{"./helpers/bind":119,"is-buffer":150}],136:[function(require,module,exports) {
 'use strict';
 
 var utils = require('../utils');
@@ -59251,7 +59426,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
   });
 };
 
-},{"../utils":100}],218:[function(require,module,exports) {
+},{"../utils":115}],244:[function(require,module,exports) {
 'use strict';
 
 /**
@@ -59274,7 +59449,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
   return error;
 };
 
-},{}],160:[function(require,module,exports) {
+},{}],187:[function(require,module,exports) {
 'use strict';
 
 var enhanceError = require('./enhanceError');
@@ -59294,7 +59469,7 @@ module.exports = function createError(message, config, code, request, response) 
   return enhanceError(error, config, code, request, response);
 };
 
-},{"./enhanceError":218}],156:[function(require,module,exports) {
+},{"./enhanceError":244}],183:[function(require,module,exports) {
 'use strict';
 
 var createError = require('./createError');
@@ -59322,7 +59497,7 @@ module.exports = function settle(resolve, reject, response) {
   }
 };
 
-},{"./createError":160}],157:[function(require,module,exports) {
+},{"./createError":187}],184:[function(require,module,exports) {
 'use strict';
 
 var utils = require('./../utils');
@@ -59390,7 +59565,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
   return url;
 };
 
-},{"./../utils":100}],158:[function(require,module,exports) {
+},{"./../utils":115}],185:[function(require,module,exports) {
 'use strict';
 
 var utils = require('./../utils');
@@ -59445,7 +59620,7 @@ module.exports = function parseHeaders(headers) {
   return parsed;
 };
 
-},{"./../utils":100}],159:[function(require,module,exports) {
+},{"./../utils":115}],186:[function(require,module,exports) {
 'use strict';
 
 var utils = require('./../utils');
@@ -59515,7 +59690,7 @@ module.exports = (
   })()
 );
 
-},{"./../utils":100}],161:[function(require,module,exports) {
+},{"./../utils":115}],188:[function(require,module,exports) {
 'use strict';
 
 // btoa polyfill for IE<10 courtesy https://github.com/davidchambers/Base64.js
@@ -59553,7 +59728,7 @@ function btoa(input) {
 
 module.exports = btoa;
 
-},{}],162:[function(require,module,exports) {
+},{}],189:[function(require,module,exports) {
 'use strict';
 
 var utils = require('./../utils');
@@ -59608,7 +59783,7 @@ module.exports = (
   })()
 );
 
-},{"./../utils":100}],122:[function(require,module,exports) {
+},{"./../utils":115}],137:[function(require,module,exports) {
 'use strict';
 
 var utils = require('./../utils');
@@ -59783,7 +59958,7 @@ module.exports = function xhrAdapter(config) {
     request.send(requestData);
   });
 };
-},{"./../utils":100,"./../core/settle":156,"./../helpers/buildURL":157,"./../helpers/parseHeaders":158,"./../helpers/isURLSameOrigin":159,"../core/createError":160,"./../helpers/btoa":161,"./../helpers/cookies":162}],124:[function(require,module,exports) {
+},{"./../utils":115,"./../core/settle":183,"./../helpers/buildURL":184,"./../helpers/parseHeaders":185,"./../helpers/isURLSameOrigin":186,"../core/createError":187,"./../helpers/btoa":188,"./../helpers/cookies":189}],139:[function(require,module,exports) {
 
 // shim for using process in browser
 var process = module.exports = {};
@@ -59970,7 +60145,7 @@ process.chdir = function (dir) {
 process.umask = function () {
     return 0;
 };
-},{}],101:[function(require,module,exports) {
+},{}],116:[function(require,module,exports) {
 var process = require("process");
 'use strict';
 
@@ -60069,7 +60244,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = defaults;
 
-},{"./utils":100,"./helpers/normalizeHeaderName":121,"./adapters/xhr":122,"./adapters/http":122,"process":124}],125:[function(require,module,exports) {
+},{"./utils":115,"./helpers/normalizeHeaderName":136,"./adapters/xhr":137,"./adapters/http":137,"process":139}],140:[function(require,module,exports) {
 'use strict';
 
 var utils = require('./../utils');
@@ -60123,7 +60298,7 @@ InterceptorManager.prototype.forEach = function forEach(fn) {
 
 module.exports = InterceptorManager;
 
-},{"./../utils":100}],173:[function(require,module,exports) {
+},{"./../utils":115}],199:[function(require,module,exports) {
 'use strict';
 
 var utils = require('./../utils');
@@ -60145,14 +60320,14 @@ module.exports = function transformData(data, headers, fns) {
   return data;
 };
 
-},{"./../utils":100}],108:[function(require,module,exports) {
+},{"./../utils":115}],123:[function(require,module,exports) {
 'use strict';
 
 module.exports = function isCancel(value) {
   return !!(value && value.__CANCEL__);
 };
 
-},{}],174:[function(require,module,exports) {
+},{}],200:[function(require,module,exports) {
 'use strict';
 
 /**
@@ -60168,7 +60343,7 @@ module.exports = function isAbsoluteURL(url) {
   return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url);
 };
 
-},{}],175:[function(require,module,exports) {
+},{}],201:[function(require,module,exports) {
 'use strict';
 
 /**
@@ -60184,7 +60359,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
     : baseURL;
 };
 
-},{}],126:[function(require,module,exports) {
+},{}],141:[function(require,module,exports) {
 'use strict';
 
 var utils = require('./../utils');
@@ -60272,7 +60447,7 @@ module.exports = function dispatchRequest(config) {
   });
 };
 
-},{"./../utils":100,"./transformData":173,"../cancel/isCancel":108,"../defaults":101,"./../helpers/isAbsoluteURL":174,"./../helpers/combineURLs":175}],105:[function(require,module,exports) {
+},{"./../utils":115,"./transformData":199,"../cancel/isCancel":123,"../defaults":116,"./../helpers/isAbsoluteURL":200,"./../helpers/combineURLs":201}],120:[function(require,module,exports) {
 'use strict';
 
 var defaults = require('./../defaults');
@@ -60353,7 +60528,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = Axios;
 
-},{"./../defaults":101,"./../utils":100,"./InterceptorManager":125,"./dispatchRequest":126}],106:[function(require,module,exports) {
+},{"./../defaults":116,"./../utils":115,"./InterceptorManager":140,"./dispatchRequest":141}],121:[function(require,module,exports) {
 'use strict';
 
 /**
@@ -60374,7 +60549,7 @@ Cancel.prototype.__CANCEL__ = true;
 
 module.exports = Cancel;
 
-},{}],107:[function(require,module,exports) {
+},{}],122:[function(require,module,exports) {
 'use strict';
 
 var Cancel = require('./Cancel');
@@ -60433,7 +60608,7 @@ CancelToken.source = function source() {
 
 module.exports = CancelToken;
 
-},{"./Cancel":106}],109:[function(require,module,exports) {
+},{"./Cancel":121}],124:[function(require,module,exports) {
 'use strict';
 
 /**
@@ -60462,7 +60637,7 @@ module.exports = function spread(callback) {
   };
 };
 
-},{}],68:[function(require,module,exports) {
+},{}],78:[function(require,module,exports) {
 'use strict';
 
 var utils = require('./utils');
@@ -60516,9 +60691,9 @@ module.exports = axios;
 // Allow use of default import syntax in TypeScript
 module.exports.default = axios;
 
-},{"./utils":100,"./helpers/bind":104,"./core/Axios":105,"./defaults":101,"./cancel/Cancel":106,"./cancel/CancelToken":107,"./cancel/isCancel":108,"./helpers/spread":109}],61:[function(require,module,exports) {
+},{"./utils":115,"./helpers/bind":119,"./core/Axios":120,"./defaults":116,"./cancel/Cancel":121,"./cancel/CancelToken":122,"./cancel/isCancel":123,"./helpers/spread":124}],71:[function(require,module,exports) {
 module.exports = require('./lib/axios');
-},{"./lib/axios":68}],299:[function(require,module,exports) {
+},{"./lib/axios":78}],326:[function(require,module,exports) {
 var global = arguments[3];
 "use strict";
 
@@ -60553,7 +60728,7 @@ var fakeWithParams = function fakeWithParams(paramsOrClosure, maybeValidator) {
 
 var withParams = root.vuelidate ? root.vuelidate.withParams : fakeWithParams;
 exports.withParams = withParams;
-},{}],290:[function(require,module,exports) {
+},{}],320:[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -60563,7 +60738,7 @@ exports.default = void 0;
 var withParams = undefined === 'web' ? require('./withParamsBrowser').withParams : require('./params').withParams;
 var _default = withParams;
 exports.default = _default;
-},{"./withParamsBrowser":299,"./params":25}],268:[function(require,module,exports) {
+},{"./withParamsBrowser":326,"./params":25}],295:[function(require,module,exports) {
 "use strict";
 
 var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -60652,7 +60827,7 @@ var regex = function regex(type, expr) {
 };
 
 exports.regex = regex;
-},{"../withParams":290}],247:[function(require,module,exports) {
+},{"../withParams":320}],287:[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -60665,7 +60840,7 @@ var _common = require("./common");
 var _default = (0, _common.regex)('alpha', /^[a-zA-Z]*$/);
 
 exports.default = _default;
-},{"./common":268}],248:[function(require,module,exports) {
+},{"./common":295}],274:[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -60678,7 +60853,7 @@ var _common = require("./common");
 var _default = (0, _common.regex)('alphaNum', /^[a-zA-Z0-9]*$/);
 
 exports.default = _default;
-},{"./common":268}],249:[function(require,module,exports) {
+},{"./common":295}],275:[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -60691,7 +60866,7 @@ var _common = require("./common");
 var _default = (0, _common.regex)('numeric', /^[0-9]*$/);
 
 exports.default = _default;
-},{"./common":268}],250:[function(require,module,exports) {
+},{"./common":295}],276:[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -60712,7 +60887,7 @@ var _default = function _default(min, max) {
 };
 
 exports.default = _default;
-},{"./common":268}],251:[function(require,module,exports) {
+},{"./common":295}],277:[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -60727,7 +60902,7 @@ var emailRegex = /(^$|^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+")
 var _default = (0, _common.regex)('email', emailRegex);
 
 exports.default = _default;
-},{"./common":268}],252:[function(require,module,exports) {
+},{"./common":295}],278:[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -60770,7 +60945,7 @@ var nibbleValid = function nibbleValid(nibble) {
   var numeric = +nibble | 0;
   return numeric >= 0 && numeric <= 255;
 };
-},{"./common":268}],253:[function(require,module,exports) {
+},{"./common":295}],279:[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -60803,7 +60978,7 @@ exports.default = _default;
 var hexValid = function hexValid(hex) {
   return hex.toLowerCase().match(/^[0-9a-f]{2}$/);
 };
-},{"./common":268}],254:[function(require,module,exports) {
+},{"./common":295}],280:[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -60823,7 +60998,7 @@ var _default = function _default(length) {
 };
 
 exports.default = _default;
-},{"./common":268}],255:[function(require,module,exports) {
+},{"./common":295}],281:[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -60843,7 +61018,7 @@ var _default = function _default(length) {
 };
 
 exports.default = _default;
-},{"./common":268}],256:[function(require,module,exports) {
+},{"./common":295}],282:[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -60858,7 +61033,7 @@ var _default = (0, _common.withParams)({
 }, _common.req);
 
 exports.default = _default;
-},{"./common":268}],257:[function(require,module,exports) {
+},{"./common":295}],283:[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -60878,7 +61053,7 @@ var _default = function _default(prop) {
 };
 
 exports.default = _default;
-},{"./common":268}],258:[function(require,module,exports) {
+},{"./common":295}],284:[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -60898,7 +61073,7 @@ var _default = function _default(prop) {
 };
 
 exports.default = _default;
-},{"./common":268}],259:[function(require,module,exports) {
+},{"./common":295}],285:[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -60918,7 +61093,7 @@ var _default = function _default(equalTo) {
 };
 
 exports.default = _default;
-},{"./common":268}],260:[function(require,module,exports) {
+},{"./common":295}],286:[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -60933,7 +61108,7 @@ var urlRegex = /^(?:(?:https?|ftp):\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\
 var _default = (0, _common.regex)('url', urlRegex);
 
 exports.default = _default;
-},{"./common":268}],261:[function(require,module,exports) {
+},{"./common":295}],288:[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -60964,7 +61139,7 @@ var _default = function _default() {
 };
 
 exports.default = _default;
-},{"./common":268}],266:[function(require,module,exports) {
+},{"./common":295}],289:[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -60995,7 +61170,7 @@ var _default = function _default() {
 };
 
 exports.default = _default;
-},{"./common":268}],262:[function(require,module,exports) {
+},{"./common":295}],290:[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -61014,7 +61189,7 @@ var _default = function _default(validator) {
 };
 
 exports.default = _default;
-},{"./common":268}],263:[function(require,module,exports) {
+},{"./common":295}],291:[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -61034,7 +61209,7 @@ var _default = function _default(min) {
 };
 
 exports.default = _default;
-},{"./common":268}],264:[function(require,module,exports) {
+},{"./common":295}],292:[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -61054,7 +61229,7 @@ var _default = function _default(max) {
 };
 
 exports.default = _default;
-},{"./common":268}],265:[function(require,module,exports) {
+},{"./common":295}],293:[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -61067,7 +61242,7 @@ var _common = require("./common");
 var _default = (0, _common.regex)('integer', /^-?[0-9]*$/);
 
 exports.default = _default;
-},{"./common":268}],267:[function(require,module,exports) {
+},{"./common":295}],294:[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -61080,7 +61255,7 @@ var _common = require("./common");
 var _default = (0, _common.regex)('decimal', /^[-]?\d*(\.\d+)?$/);
 
 exports.default = _default;
-},{"./common":268}],203:[function(require,module,exports) {
+},{"./common":295}],229:[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -61281,7 +61456,7 @@ function _interopRequireWildcard(obj) {
 function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : { default: obj };
 }
-},{"./alpha":247,"./alphaNum":248,"./numeric":249,"./between":250,"./email":251,"./ipAddress":252,"./macAddress":253,"./maxLength":254,"./minLength":255,"./required":256,"./requiredIf":257,"./requiredUnless":258,"./sameAs":259,"./url":260,"./or":261,"./and":266,"./not":262,"./minValue":263,"./maxValue":264,"./integer":265,"./decimal":267,"./common":268}],40:[function(require,module,exports) {
+},{"./alpha":287,"./alphaNum":274,"./numeric":275,"./between":276,"./email":277,"./ipAddress":278,"./macAddress":279,"./maxLength":280,"./minLength":281,"./required":282,"./requiredIf":283,"./requiredUnless":284,"./sameAs":285,"./url":286,"./or":288,"./and":289,"./not":290,"./minValue":291,"./maxValue":292,"./integer":293,"./decimal":294,"./common":295}],41:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -61348,15 +61523,27 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 exports.default = {
-
     name: 'component-create-project',
-
     data: function data() {
         return {
+            snackbar_created: false,
             name: '',
             // name: undefined,
+            is_creating: false,
             name_instant: ''
             // rules: [
             // 	this.check_uniqueness,
@@ -61382,6 +61569,41 @@ exports.default = {
         }
     },
     methods: (0, _extends3.default)({
+        save: function () {
+            var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(name) {
+                var slug;
+                return _regenerator2.default.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                this.is_creating = true;
+                                _context.next = 3;
+                                return this.create_project(name);
+
+                            case 3:
+                                slug = _context.sent;
+
+                                this.name = '';
+                                this.$v.$reset();
+                                this.is_creating = false;
+                                this.$router.push({ name: 'batches', params: { slug_project: slug } });
+                                // this.snackbar_created = true;
+
+                            case 8:
+                            case 'end':
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, this);
+            }));
+
+            function save(_x) {
+                return _ref.apply(this, arguments);
+            }
+
+            return save;
+        }(),
+
         update_name: _lodash2.default.debounce(function (value) {
             this.name = value.trim();
             this.$v.name.$touch();
@@ -61395,39 +61617,39 @@ exports.default = {
             required: _validators.required,
             // 		minLength: minLength(4),
             is_unique: function () {
-                var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(name) {
+                var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(name) {
                     var response;
-                    return _regenerator2.default.wrap(function _callee$(_context) {
+                    return _regenerator2.default.wrap(function _callee2$(_context2) {
                         while (1) {
-                            switch (_context.prev = _context.next) {
+                            switch (_context2.prev = _context2.next) {
                                 case 0:
                                     if (!(name === '' || name == undefined)) {
-                                        _context.next = 2;
+                                        _context2.next = 2;
                                         break;
                                     }
 
-                                    return _context.abrupt('return', true);
+                                    return _context2.abrupt('return', true);
 
                                 case 2:
-                                    _context.next = 4;
+                                    _context2.next = 4;
                                     return this.validate_name(name);
 
                                 case 4:
-                                    response = _context.sent;
+                                    response = _context2.sent;
 
                                     console.log(response.data);
-                                    return _context.abrupt('return', response.data);
+                                    return _context2.abrupt('return', response.data);
 
                                 case 7:
                                 case 'end':
-                                    return _context.stop();
+                                    return _context2.stop();
                             }
                         }
-                    }, _callee, this);
+                    }, _callee2, this);
                 }));
 
-                function is_unique(_x) {
-                    return _ref.apply(this, arguments);
+                function is_unique(_x2) {
+                    return _ref2.apply(this, arguments);
                 }
 
                 return is_unique;
@@ -61505,6 +61727,7 @@ exports.default = {
                     "v-btn",
                     {
                       attrs: {
+                        loading: _vm.is_creating,
                         color: "primary",
                         disabled:
                           _vm.$v.pending ||
@@ -61513,7 +61736,7 @@ exports.default = {
                       },
                       on: {
                         click: function($event) {
-                          _vm.create_project(_vm.name)
+                          _vm.save(_vm.name)
                         }
                       }
                     },
@@ -61563,7 +61786,87 @@ render._withStripped = true
         
       }
     })();
-},{"babel-runtime/regenerator":117,"babel-runtime/helpers/asyncToGenerator":66,"babel-runtime/helpers/extends":49,"vuex":15,"lodash":63,"axios":61,"vuelidate/lib/validators":203,"vue-hot-reload-api":38,"vue":3}],87:[function(require,module,exports) {
+},{"babel-runtime/regenerator":131,"babel-runtime/helpers/asyncToGenerator":50,"babel-runtime/helpers/extends":51,"vuex":15,"lodash":73,"axios":71,"vuelidate/lib/validators":229,"vue-hot-reload-api":39,"vue":3}],98:[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+//
+//
+//
+//
+
+// import helpers from '../mixins/helpers';
+exports.default = {
+    // mixins: [
+    //     // helpers,
+    // ],
+    name: 'component_display_datetime',
+    props: {
+        datetime: {
+            required: true,
+            type: Date | undefined
+        }
+    },
+    computed: {
+        datetime_formatted: function datetime_formatted() {
+            if (this.datetime == undefined) {
+                return undefined;
+            } else {
+                // return this.datetime;
+                // console.log(typeof this.datetime)
+                // console.log(this.datetime)
+                return this.datetime.toLocaleString();
+            }
+            //       return this.amount_formatted(this.amount);
+            // return this.amount.toFixed(2) + ' $';
+        }
+    }
+};
+      var $fe73c4 = exports.default || module.exports;
+      if (typeof $fe73c4 === 'function') {
+        $fe73c4 = $fe73c4.options;
+      }
+    
+        /* template */
+        Object.assign($fe73c4, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("span", [_vm._v(_vm._s(_vm.datetime_formatted))])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: null,
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$fe73c4', $fe73c4);
+          } else {
+            api.reload('$fe73c4', $fe73c4);
+          }
+        }
+
+        
+      }
+    })();
+},{"vue-hot-reload-api":39,"vue":3}],99:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -61587,6 +61890,7 @@ exports.default = {
             } else {
                 list_selected = list_items.slice();
             }
+            return list_selected;
             // if (this.workers_selected.length) this.workers_selected = []
             // else this.workers_selected = this.list_workers.slice()
         },
@@ -61603,7 +61907,7 @@ exports.default = {
 
     computed: {}
 };
-},{"vuex":15}],41:[function(require,module,exports) {
+},{"vuex":15}],42:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -61620,11 +61924,79 @@ var _lodash = require('lodash');
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
+var _component_display_datetime = require('../helpers/component_display_datetime');
+
+var _component_display_datetime2 = _interopRequireDefault(_component_display_datetime);
+
 var _table = require('../../mixins/table');
 
 var _table2 = _interopRequireDefault(_table);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 exports.default = {
     mixins: [_table2.default],
@@ -61637,81 +62009,34 @@ exports.default = {
                 value: 'name',
                 align: 'left'
             }, {
+                text: 'Last Usage',
+                value: 'datetime_visited',
+                align: 'left'
+            }, {
                 text: '',
                 value: '',
                 align: ''
-            }]
+            }],
+            pagination: {
+                sortBy: 'datetime_visited',
+                descending: true
+            }
         };
     },
 
     computed: (0, _extends3.default)({
         list_projects: function list_projects() {
-            return _lodash2.default.orderBy(this.object_projects, function (project) {
-                return project.name;
-            });
+            return _lodash2.default.orderBy(this.object_projects, ['datetime_visited'], ['desc']);
         }
     }, (0, _vuex.mapGetters)('moduleProjects', {
         'object_projects': 'get_object_projects'
     })),
     methods: {},
     created: function created() {},
-    components: {}
-}; //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+    components: {
+        ComponentDisplayDatetime: _component_display_datetime2.default
+    }
+};
       var $159c01 = exports.default || module.exports;
       if (typeof $159c01 === 'function') {
         $159c01 = $159c01.options;
@@ -61796,14 +62121,26 @@ exports.default = {
                         key: "items",
                         fn: function(props) {
                           return [
-                            _c("tr", [
+                            _c("tr", { key: props.item.id }, [
                               _c("td", [
                                 _vm._v(
-                                  "\n                                " +
+                                  " \n                                " +
                                     _vm._s(props.item.name) +
                                     "\n                            "
                                 )
                               ]),
+                              _vm._v(" "),
+                              _c(
+                                "td",
+                                [
+                                  _c("component-display-datetime", {
+                                    attrs: {
+                                      datetime: props.item.datetime_visited
+                                    }
+                                  })
+                                ],
+                                1
+                              ),
                               _vm._v(" "),
                               _c(
                                 "td",
@@ -61876,7 +62213,7 @@ render._withStripped = true
         
       }
     })();
-},{"babel-runtime/helpers/extends":49,"vuex":15,"lodash":63,"../../mixins/table":87,"vue-hot-reload-api":38,"vue":3}],50:[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":51,"vuex":15,"lodash":73,"../helpers/component_display_datetime":98,"../../mixins/table":99,"vue-hot-reload-api":39,"vue":3}],52:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -61902,7 +62239,7 @@ exports.default = {
 		}
 	}
 };
-},{"babel-runtime/helpers/extends":49,"vuex":15}],5:[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":51,"vuex":15}],5:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62035,7 +62372,7 @@ render._withStripped = true
         
       }
     })();
-},{"vuex":15,"./component_create_project.vue":40,"./component_open_project.vue":41,"../../mixins/slug_project":50,"vue-hot-reload-api":38,"vue":3}],221:[function(require,module,exports) {
+},{"vuex":15,"./component_create_project.vue":41,"./component_open_project.vue":42,"../../mixins/slug_project":52,"vue-hot-reload-api":39,"vue":3}],252:[function(require,module,exports) {
 // most Object methods by ES6 should accept primitives
 var $export = require('./_export');
 var core = require('./_core');
@@ -62047,7 +62384,7 @@ module.exports = function (KEY, exec) {
   $export($export.S + $export.F * fails(function () { fn(1); }), 'Object', exp);
 };
 
-},{"./_export":187,"./_core":118,"./_fails":273}],163:[function(require,module,exports) {
+},{"./_export":213,"./_core":133,"./_fails":299}],191:[function(require,module,exports) {
 // 19.1.2.14 Object.keys(O)
 var toObject = require('./_to-object');
 var $keys = require('./_object-keys');
@@ -62058,13 +62395,13 @@ require('./_object-sap')('keys', function () {
   };
 });
 
-},{"./_to-object":219,"./_object-keys":220,"./_object-sap":221}],119:[function(require,module,exports) {
+},{"./_to-object":245,"./_object-keys":251,"./_object-sap":252}],135:[function(require,module,exports) {
 require('../../modules/es6.object.keys');
 module.exports = require('../../modules/_core').Object.keys;
 
-},{"../../modules/es6.object.keys":163,"../../modules/_core":118}],85:[function(require,module,exports) {
+},{"../../modules/es6.object.keys":191,"../../modules/_core":133}],97:[function(require,module,exports) {
 module.exports = { "default": require("core-js/library/fn/object/keys"), __esModule: true };
-},{"core-js/library/fn/object/keys":119}],90:[function(require,module,exports) {
+},{"core-js/library/fn/object/keys":135}],101:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62080,7 +62417,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var MESSAGES_DEFAULT = {
 	required: 'Required!',
 	minValue: 'Too low!',
-	maxValue: 'Too high!'
+	maxValue: 'Too high!',
+	contains_form_injection: '\'data-inject_input_forms\' is missing!',
+	contains_injection_assignments: '\'data-inject_assignments\' is missing!'
 };
 
 exports.default = {
@@ -62181,10 +62520,10 @@ exports.default = {
 
 	validations: {}
 };
-},{"babel-runtime/core-js/object/keys":85}],17:[function(require,module,exports) {
+},{"babel-runtime/core-js/object/keys":97}],17:[function(require,module,exports) {
 var define;
 !function(e,t){"object"==typeof exports&&"object"==typeof module?module.exports=t():"function"==typeof define&&define.amd?define("vuetify-upload-button",[],t):"object"==typeof exports?exports["vuetify-upload-button"]=t():e["vuetify-upload-button"]=t()}(this,function(){return function(e){function t(o){if(n[o])return n[o].exports;var r=n[o]={exports:{},id:o,loaded:!1};return e[o].call(r.exports,r,r.exports,t),r.loaded=!0,r.exports}var n={};return t.m=e,t.c=n,t.p="",t(0)}([function(e,t,n){n(1);var o=n(6)(n(7),n(8),"data-v-26f644c0",null);e.exports=o.exports},function(e,t,n){var o=n(2);"string"==typeof o&&(o=[[e.id,o,""]]),o.locals&&(e.exports=o.locals);n(4)("9bbb4e68",o,!0)},function(e,t,n){t=e.exports=n(3)(!1),t.push([e.id,".upload-btn[data-v-26f644c0]{padding-left:16px;padding-right:16px}.upload-btn input[type=file][data-v-26f644c0]{position:absolute;height:.1px;width:.1px;overflow:hidden;opacity:0;z-index:-1}.upload-btn-hover[data-v-26f644c0]{cursor:pointer}",""])},function(e,t){function n(e,t){var n=e[1]||"",r=e[3];if(!r)return n;if(t&&"function"==typeof btoa){var a=o(r),i=r.sources.map(function(e){return"/*# sourceURL="+r.sourceRoot+e+" */"});return[n].concat(i).concat([a]).join("\n")}return[n].join("\n")}function o(e){var t=btoa(unescape(encodeURIComponent(JSON.stringify(e)))),n="sourceMappingURL=data:application/json;charset=utf-8;base64,"+t;return"/*# "+n+" */"}e.exports=function(e){var t=[];return t.toString=function(){return this.map(function(t){var o=n(t,e);return t[2]?"@media "+t[2]+"{"+o+"}":o}).join("")},t.i=function(e,n){"string"==typeof e&&(e=[[null,e,""]]);for(var o={},r=0;r<this.length;r++){var a=this[r][0];"number"==typeof a&&(o[a]=!0)}for(r=0;r<e.length;r++){var i=e[r];"number"==typeof i[0]&&o[i[0]]||(n&&!i[2]?i[2]=n:n&&(i[2]="("+i[2]+") and ("+n+")"),t.push(i))}},t}},function(e,t,n){function o(e){for(var t=0;t<e.length;t++){var n=e[t],o=d[n.id];if(o){o.refs++;for(var r=0;r<o.parts.length;r++)o.parts[r](n.parts[r]);for(;r<n.parts.length;r++)o.parts.push(a(n.parts[r]));o.parts.length>n.parts.length&&(o.parts.length=n.parts.length)}else{for(var i=[],r=0;r<n.parts.length;r++)i.push(a(n.parts[r]));d[n.id]={id:n.id,refs:1,parts:i}}}}function r(){var e=document.createElement("style");return e.type="text/css",p.appendChild(e),e}function a(e){var t,n,o=document.querySelector('style[data-vue-ssr-id~="'+e.id+'"]');if(o){if(v)return h;o.parentNode.removeChild(o)}if(b){var a=c++;o=f||(f=r()),t=i.bind(null,o,a,!1),n=i.bind(null,o,a,!0)}else o=r(),t=l.bind(null,o),n=function(){o.parentNode.removeChild(o)};return t(e),function(o){if(o){if(o.css===e.css&&o.media===e.media&&o.sourceMap===e.sourceMap)return;t(e=o)}else n()}}function i(e,t,n,o){var r=n?"":o.css;if(e.styleSheet)e.styleSheet.cssText=g(t,r);else{var a=document.createTextNode(r),i=e.childNodes;i[t]&&e.removeChild(i[t]),i.length?e.insertBefore(a,i[t]):e.appendChild(a)}}function l(e,t){var n=t.css,o=t.media,r=t.sourceMap;if(o&&e.setAttribute("media",o),r&&(n+="\n/*# sourceURL="+r.sources[0]+" */",n+="\n/*# sourceMappingURL=data:application/json;base64,"+btoa(unescape(encodeURIComponent(JSON.stringify(r))))+" */"),e.styleSheet)e.styleSheet.cssText=n;else{for(;e.firstChild;)e.removeChild(e.firstChild);e.appendChild(document.createTextNode(n))}}var s="undefined"!=typeof document,u=n(5),d={},p=s&&(document.head||document.getElementsByTagName("head")[0]),f=null,c=0,v=!1,h=function(){},b="undefined"!=typeof navigator&&/msie [6-9]\b/.test(navigator.userAgent.toLowerCase());e.exports=function(e,t,n){v=n;var r=u(e,t);return o(r),function(t){for(var n=[],a=0;a<r.length;a++){var i=r[a],l=d[i.id];l.refs--,n.push(l)}t?(r=u(e,t),o(r)):r=[];for(var a=0;a<n.length;a++){var l=n[a];if(0===l.refs){for(var s=0;s<l.parts.length;s++)l.parts[s]();delete d[l.id]}}}};var g=function(){var e=[];return function(t,n){return e[t]=n,e.filter(Boolean).join("\n")}}()},function(e,t){e.exports=function(e,t){for(var n=[],o={},r=0;r<t.length;r++){var a=t[r],i=a[0],l=a[1],s=a[2],u=a[3],d={id:e+":"+r,css:l,media:s,sourceMap:u};o[i]?o[i].parts.push(d):n.push(o[i]={id:i,parts:[d]})}return n}},function(e,t){e.exports=function(e,t,n,o){var r,a=e=e||{},i=typeof e["default"];"object"!==i&&"function"!==i||(r=e,a=e["default"]);var l="function"==typeof a?a.options:a;if(t&&(l.render=t.render,l.staticRenderFns=t.staticRenderFns),n&&(l._scopeId=n),o){var s=Object.create(l.computed||null);Object.keys(o).forEach(function(e){var t=o[e];s[e]=function(){return t}}),l.computed=s}return{esModule:r,exports:a,options:l}}},function(e,t){"use strict";Object.defineProperty(t,"__esModule",{value:!0}),t["default"]={name:"upload-btn",props:{accept:{"default":"*",type:String},block:{"default":!1,type:Boolean},fileChangedCallback:{"default":void 0,type:Function},color:{"default":"primary",type:String},disabled:{"default":!1,type:Boolean},flat:{"default":!1,type:Boolean},hover:{"default":!0,type:Boolean},icon:{"default":!1,type:Boolean},large:{"default":!1,type:Boolean},loading:{"default":!1,type:Boolean},name:{"default":"uploadFile",type:String},outline:{"default":!1,type:Boolean},ripple:{"default":!0,type:Boolean},round:{"default":!1,type:Boolean},small:{"default":!1,type:Boolean},title:{"default":"Upload",type:String}},computed:{classes:function n(){var n={"v-btn--block":this.block,"v-btn--flat":this.flat,"upload-btn-hover":this.hover,"v-btn--icon":this.icon,"v-btn--large":this.large,"v-btn--loading":this.loading,"v-btn--outline":this.outline,"v-btn--round":this.round,"v-btn--small":this.small,"v-btn--disabled":this.disabled},e="";for(var t in n)n[t]&&(e+=t+" ");return e}},methods:{fileChanged:function(e){e&&this.fileChangedCallback&&(e.target.files[0]?this.fileChangedCallback(e.target.files[0]):this.fileChangedCallback(null))}}}},function(e,t){e.exports={render:function(){var e=this,t=e.$createElement,n=e._self._c||t;return n("div",{staticClass:"upload-btn"},[n("input",{attrs:{id:"uploadFile",type:"file",name:e.name,accept:e.accept},on:{change:e.fileChanged}}),e._v(" "),n("label",{directives:[{name:"ripple",rawName:"v-ripple",value:e.ripple,expression:"ripple"}],"class":"v-btn "+e.classes+e.color+" upload-btn",attrs:{"for":"uploadFile"}},[e._v("\n    "+e._s(e.icon?"":e.title)+"\n    "),e._t("icon")],2)])},staticRenderFns:[]}}])});
-},{}],155:[function(require,module,exports) {
+},{}],182:[function(require,module,exports) {
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -62450,7 +62789,7 @@ function isObject(arg) {
 function isUndefined(arg) {
   return arg === void 0;
 }
-},{}],167:[function(require,module,exports) {
+},{}],193:[function(require,module,exports) {
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -62475,7 +62814,7 @@ if (typeof Object.create === 'function') {
   }
 }
 
-},{}],285:[function(require,module,exports) {
+},{}],312:[function(require,module,exports) {
 var process = require("process");
 'use strict';
 
@@ -62522,10 +62861,10 @@ function nextTick(fn, arg1, arg2, arg3) {
 }
 
 
-},{"process":124}],280:[function(require,module,exports) {
+},{"process":139}],307:[function(require,module,exports) {
 module.exports = require('events').EventEmitter;
 
-},{"events":155}],286:[function(require,module,exports) {
+},{"events":182}],313:[function(require,module,exports) {
 
 /* eslint-disable node/no-deprecated-api */
 var buffer = require('buffer')
@@ -62590,7 +62929,7 @@ SafeBuffer.allocUnsafeSlow = function (size) {
   return buffer.SlowBuffer(size)
 }
 
-},{"buffer":71}],287:[function(require,module,exports) {
+},{"buffer":80}],314:[function(require,module,exports) {
 var Buffer = require("buffer").Buffer;
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -62700,9 +63039,9 @@ function objectToString(o) {
   return Object.prototype.toString.call(o);
 }
 
-},{"buffer":71}],275:[function(require,module,exports) {
+},{"buffer":80}],306:[function(require,module,exports) {
 
-},{}],281:[function(require,module,exports) {
+},{}],308:[function(require,module,exports) {
 
 'use strict';
 
@@ -62783,7 +63122,7 @@ if (util && util.inspect && util.inspect.custom) {
     return this.constructor.name + ' ' + obj;
   };
 }
-},{"safe-buffer":286,"util":275}],282:[function(require,module,exports) {
+},{"safe-buffer":313,"util":306}],309:[function(require,module,exports) {
 'use strict';
 
 /*<replacement>*/
@@ -62858,7 +63197,7 @@ module.exports = {
   destroy: destroy,
   undestroy: undestroy
 };
-},{"process-nextick-args":285}],289:[function(require,module,exports) {
+},{"process-nextick-args":312}],316:[function(require,module,exports) {
 var global = arguments[3];
 
 /**
@@ -62928,7 +63267,7 @@ function config (name) {
   return String(val).toLowerCase() === 'true';
 }
 
-},{}],213:[function(require,module,exports) {
+},{}],239:[function(require,module,exports) {
 var process = require("process");
 
 var global = arguments[3];
@@ -63619,7 +63958,7 @@ Writable.prototype._destroy = function (err, cb) {
   this.end();
   cb(err);
 };
-},{"process-nextick-args":285,"core-util-is":287,"inherits":167,"util-deprecate":289,"./internal/streams/stream":280,"safe-buffer":286,"./internal/streams/destroy":282,"./_stream_duplex":214,"process":124}],214:[function(require,module,exports) {
+},{"process-nextick-args":312,"core-util-is":314,"inherits":193,"util-deprecate":316,"./internal/streams/stream":307,"safe-buffer":313,"./internal/streams/destroy":309,"./_stream_duplex":240,"process":139}],240:[function(require,module,exports) {
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -63751,7 +64090,7 @@ Duplex.prototype._destroy = function (err, cb) {
 
   pna.nextTick(cb, err);
 };
-},{"process-nextick-args":285,"core-util-is":287,"inherits":167,"./_stream_readable":212,"./_stream_writable":213}],288:[function(require,module,exports) {
+},{"process-nextick-args":312,"core-util-is":314,"inherits":193,"./_stream_readable":238,"./_stream_writable":239}],315:[function(require,module,exports) {
 
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -64049,7 +64388,7 @@ function simpleWrite(buf) {
 function simpleEnd(buf) {
   return buf && buf.length ? this.write(buf) : '';
 }
-},{"safe-buffer":286}],212:[function(require,module,exports) {
+},{"safe-buffer":313}],238:[function(require,module,exports) {
 
 var global = arguments[3];
 var process = require("process");
@@ -65072,7 +65411,7 @@ function indexOf(xs, x) {
   }
   return -1;
 }
-},{"process-nextick-args":285,"isarray":114,"events":155,"./internal/streams/stream":280,"safe-buffer":286,"core-util-is":287,"inherits":167,"util":275,"./internal/streams/BufferList":281,"./internal/streams/destroy":282,"./_stream_duplex":214,"string_decoder/":288,"process":124}],215:[function(require,module,exports) {
+},{"process-nextick-args":312,"isarray":129,"events":182,"./internal/streams/stream":307,"safe-buffer":313,"core-util-is":314,"inherits":193,"util":306,"./internal/streams/BufferList":308,"./internal/streams/destroy":309,"./_stream_duplex":240,"string_decoder/":315,"process":139}],241:[function(require,module,exports) {
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -65287,7 +65626,7 @@ function done(stream, er, data) {
 
   return stream.push(null);
 }
-},{"./_stream_duplex":214,"core-util-is":287,"inherits":167}],216:[function(require,module,exports) {
+},{"./_stream_duplex":240,"core-util-is":314,"inherits":193}],242:[function(require,module,exports) {
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -65335,7 +65674,7 @@ function PassThrough(options) {
 PassThrough.prototype._transform = function (chunk, encoding, cb) {
   cb(null, chunk);
 };
-},{"./_stream_transform":215,"core-util-is":287,"inherits":167}],168:[function(require,module,exports) {
+},{"./_stream_transform":241,"core-util-is":314,"inherits":193}],194:[function(require,module,exports) {
 exports = module.exports = require('./lib/_stream_readable.js');
 exports.Stream = exports;
 exports.Readable = exports;
@@ -65344,19 +65683,19 @@ exports.Duplex = require('./lib/_stream_duplex.js');
 exports.Transform = require('./lib/_stream_transform.js');
 exports.PassThrough = require('./lib/_stream_passthrough.js');
 
-},{"./lib/_stream_readable.js":212,"./lib/_stream_writable.js":213,"./lib/_stream_duplex.js":214,"./lib/_stream_transform.js":215,"./lib/_stream_passthrough.js":216}],169:[function(require,module,exports) {
+},{"./lib/_stream_readable.js":238,"./lib/_stream_writable.js":239,"./lib/_stream_duplex.js":240,"./lib/_stream_transform.js":241,"./lib/_stream_passthrough.js":242}],195:[function(require,module,exports) {
 module.exports = require('./lib/_stream_writable.js');
 
-},{"./lib/_stream_writable.js":213}],170:[function(require,module,exports) {
+},{"./lib/_stream_writable.js":239}],196:[function(require,module,exports) {
 module.exports = require('./lib/_stream_duplex.js');
 
-},{"./lib/_stream_duplex.js":214}],171:[function(require,module,exports) {
+},{"./lib/_stream_duplex.js":240}],197:[function(require,module,exports) {
 module.exports = require('./readable').Transform
 
-},{"./readable":168}],172:[function(require,module,exports) {
+},{"./readable":194}],198:[function(require,module,exports) {
 module.exports = require('./readable').PassThrough
 
-},{"./readable":168}],123:[function(require,module,exports) {
+},{"./readable":194}],138:[function(require,module,exports) {
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -65485,7 +65824,7 @@ Stream.prototype.pipe = function(dest, options) {
   return dest;
 };
 
-},{"events":155,"inherits":167,"readable-stream/readable.js":168,"readable-stream/writable.js":169,"readable-stream/duplex.js":170,"readable-stream/transform.js":171,"readable-stream/passthrough.js":172}],103:[function(require,module,exports) {
+},{"events":182,"inherits":193,"readable-stream/readable.js":194,"readable-stream/writable.js":195,"readable-stream/duplex.js":196,"readable-stream/transform.js":197,"readable-stream/passthrough.js":198}],118:[function(require,module,exports) {
 var define;
 var global = arguments[3];
 /* @license
@@ -67296,7 +67635,7 @@ if (!Array.isArray)
 	return Papa;
 }));
 
-},{"stream":123}],91:[function(require,module,exports) {
+},{"stream":138}],102:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -67540,7 +67879,7 @@ render._withStripped = true
       
       }
     })();
-},{"babel-runtime/helpers/extends":49,"vuex":15,"vuetify-upload-button":17,"papaparse":103,"_css_loader":26,"vue-hot-reload-api":38,"vue":3}],74:[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":51,"vuex":15,"vuetify-upload-button":17,"papaparse":118,"_css_loader":26,"vue-hot-reload-api":39,"vue":3}],83:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -67551,6 +67890,15 @@ Object.defineProperty(exports, "__esModule", {
 //     SOFT: 2,
 //     HARD: 3,
 // }
+var STATUS_EXTERNAL = exports.STATUS_EXTERNAL = {
+    APPROVED: 0,
+    REJECTED: 1,
+    APPROVED_OVERRIDDEN: 2
+};
+var STATUS_INTERNAL = exports.STATUS_INTERNAL = {
+    APPROVED: 0,
+    REJECTED: 1
+};
 
 var DESCRIPTIONS = exports.DESCRIPTIONS = {
     TITLE_HIT: 'The title of the HIT. A title should be short and descriptive about the kind of task the HIT contains. On the Amazon Mechanical Turk web site, the HIT title appears in search results, and everywhere the HIT is mentioned.',
@@ -67562,17 +67910,17 @@ var DESCRIPTIONS = exports.DESCRIPTIONS = {
     KEYWORDS_HIT: 'One or more words or phrases that describe the HIT. These words are used in searches to find HITs.'
 
 };
-},{}],294:[function(require,module,exports) {
+},{}],321:[function(require,module,exports) {
 exports.f = require('./_wks');
 
-},{"./_wks":183}],227:[function(require,module,exports) {
+},{"./_wks":209}],272:[function(require,module,exports) {
 require('../../modules/es6.string.iterator');
 require('../../modules/web.dom.iterable');
 module.exports = require('../../modules/_wks-ext').f('iterator');
 
-},{"../../modules/es6.string.iterator":130,"../../modules/web.dom.iterable":131,"../../modules/_wks-ext":294}],176:[function(require,module,exports) {
+},{"../../modules/es6.string.iterator":143,"../../modules/web.dom.iterable":144,"../../modules/_wks-ext":321}],202:[function(require,module,exports) {
 module.exports = { "default": require("core-js/library/fn/symbol/iterator"), __esModule: true };
-},{"core-js/library/fn/symbol/iterator":227}],277:[function(require,module,exports) {
+},{"core-js/library/fn/symbol/iterator":272}],302:[function(require,module,exports) {
 var META = require('./_uid')('meta');
 var isObject = require('./_is-object');
 var has = require('./_has');
@@ -67627,7 +67975,7 @@ var meta = module.exports = {
   onFreeze: onFreeze
 };
 
-},{"./_uid":240,"./_is-object":188,"./_has":242,"./_object-dp":236,"./_fails":273}],309:[function(require,module,exports) {
+},{"./_uid":265,"./_is-object":214,"./_has":267,"./_object-dp":261,"./_fails":299}],336:[function(require,module,exports) {
 
 var global = require('./_global');
 var core = require('./_core');
@@ -67639,7 +67987,7 @@ module.exports = function (name) {
   if (name.charAt(0) != '_' && !(name in $Symbol)) defineProperty($Symbol, name, { value: wksExt.f(name) });
 };
 
-},{"./_global":180,"./_core":118,"./_library":184,"./_wks-ext":294,"./_object-dp":236}],310:[function(require,module,exports) {
+},{"./_global":206,"./_core":133,"./_library":210,"./_wks-ext":321,"./_object-dp":261}],337:[function(require,module,exports) {
 // all enumerable object keys, includes symbols
 var getKeys = require('./_object-keys');
 var gOPS = require('./_object-gops');
@@ -67656,14 +68004,14 @@ module.exports = function (it) {
   } return result;
 };
 
-},{"./_object-keys":220,"./_object-gops":270,"./_object-pie":271}],307:[function(require,module,exports) {
+},{"./_object-keys":251,"./_object-gops":296,"./_object-pie":297}],334:[function(require,module,exports) {
 // 7.2.2 IsArray(argument)
 var cof = require('./_cof');
 module.exports = Array.isArray || function isArray(arg) {
   return cof(arg) == 'Array';
 };
 
-},{"./_cof":241}],313:[function(require,module,exports) {
+},{"./_cof":266}],340:[function(require,module,exports) {
 // 19.1.2.7 / 15.2.3.4 Object.getOwnPropertyNames(O)
 var $keys = require('./_object-keys-internal');
 var hiddenKeys = require('./_enum-bug-keys').concat('length', 'prototype');
@@ -67672,7 +68020,7 @@ exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
   return $keys(O, hiddenKeys);
 };
 
-},{"./_object-keys-internal":283,"./_enum-bug-keys":284}],311:[function(require,module,exports) {
+},{"./_object-keys-internal":310,"./_enum-bug-keys":311}],338:[function(require,module,exports) {
 // fallback for IE11 buggy Object.getOwnPropertyNames with iframe and window
 var toIObject = require('./_to-iobject');
 var gOPN = require('./_object-gopn').f;
@@ -67693,7 +68041,7 @@ module.exports.f = function getOwnPropertyNames(it) {
   return windowNames && toString.call(it) == '[object Window]' ? getWindowNames(it) : gOPN(toIObject(it));
 };
 
-},{"./_to-iobject":235,"./_object-gopn":313}],312:[function(require,module,exports) {
+},{"./_to-iobject":260,"./_object-gopn":340}],339:[function(require,module,exports) {
 var pIE = require('./_object-pie');
 var createDesc = require('./_property-desc');
 var toIObject = require('./_to-iobject');
@@ -67711,7 +68059,7 @@ exports.f = require('./_descriptors') ? gOPD : function getOwnPropertyDescriptor
   if (has(O, P)) return createDesc(!pIE.f.call(O, P), O[P]);
 };
 
-},{"./_object-pie":271,"./_property-desc":237,"./_to-iobject":235,"./_to-primitive":293,"./_has":242,"./_ie8-dom-define":292,"./_descriptors":238}],304:[function(require,module,exports) {
+},{"./_object-pie":297,"./_property-desc":262,"./_to-iobject":260,"./_to-primitive":319,"./_has":267,"./_ie8-dom-define":318,"./_descriptors":263}],331:[function(require,module,exports) {
 
 'use strict';
 // ECMAScript 6 symbols shim
@@ -67948,22 +68296,22 @@ setToStringTag(Math, 'Math', true);
 // 24.3.3 JSON[@@toStringTag]
 setToStringTag(global.JSON, 'JSON', true);
 
-},{"./_global":180,"./_has":242,"./_descriptors":238,"./_export":187,"./_redefine":230,"./_meta":277,"./_fails":273,"./_shared":239,"./_set-to-string-tag":200,"./_uid":240,"./_wks":183,"./_wks-ext":294,"./_wks-define":309,"./_enum-keys":310,"./_is-array":307,"./_an-object":243,"./_is-object":188,"./_to-iobject":235,"./_to-primitive":293,"./_property-desc":237,"./_object-create":276,"./_object-gopn-ext":311,"./_object-gopd":312,"./_object-dp":236,"./_object-keys":220,"./_object-gopn":313,"./_object-pie":271,"./_object-gops":270,"./_library":184,"./_hide":181}],305:[function(require,module,exports) {
+},{"./_global":206,"./_has":267,"./_descriptors":263,"./_export":213,"./_redefine":255,"./_meta":302,"./_fails":299,"./_shared":264,"./_set-to-string-tag":226,"./_uid":265,"./_wks":209,"./_wks-ext":321,"./_wks-define":336,"./_enum-keys":337,"./_is-array":334,"./_an-object":268,"./_is-object":214,"./_to-iobject":260,"./_to-primitive":319,"./_property-desc":262,"./_object-create":305,"./_object-gopn-ext":338,"./_object-gopd":339,"./_object-dp":261,"./_object-keys":251,"./_object-gopn":340,"./_object-pie":297,"./_object-gops":296,"./_library":210,"./_hide":207}],332:[function(require,module,exports) {
 require('./_wks-define')('asyncIterator');
 
-},{"./_wks-define":309}],306:[function(require,module,exports) {
+},{"./_wks-define":336}],333:[function(require,module,exports) {
 require('./_wks-define')('observable');
 
-},{"./_wks-define":309}],300:[function(require,module,exports) {
+},{"./_wks-define":336}],327:[function(require,module,exports) {
 require('../../modules/es6.symbol');
 require('../../modules/es6.object.to-string');
 require('../../modules/es7.symbol.async-iterator');
 require('../../modules/es7.symbol.observable');
 module.exports = require('../../modules/_core').Symbol;
 
-},{"../../modules/es6.symbol":304,"../../modules/es6.object.to-string":129,"../../modules/es7.symbol.async-iterator":305,"../../modules/es7.symbol.observable":306,"../../modules/_core":118}],166:[function(require,module,exports) {
+},{"../../modules/es6.symbol":331,"../../modules/es6.object.to-string":142,"../../modules/es7.symbol.async-iterator":332,"../../modules/es7.symbol.observable":333,"../../modules/_core":133}],192:[function(require,module,exports) {
 module.exports = { "default": require("core-js/library/fn/symbol"), __esModule: true };
-},{"core-js/library/fn/symbol":300}],127:[function(require,module,exports) {
+},{"core-js/library/fn/symbol":327}],148:[function(require,module,exports) {
 "use strict";
 
 exports.__esModule = true;
@@ -67985,16 +68333,16 @@ exports.default = typeof _symbol2.default === "function" && _typeof(_iterator2.d
 } : function (obj) {
   return obj && typeof _symbol2.default === "function" && obj.constructor === _symbol2.default && obj !== _symbol2.default.prototype ? "symbol" : typeof obj === "undefined" ? "undefined" : _typeof(obj);
 };
-},{"../core-js/symbol/iterator":176,"../core-js/symbol":166}],88:[function(require,module,exports) {
+},{"../core-js/symbol/iterator":202,"../core-js/symbol":192}],100:[function(require,module,exports) {
 var core = require('../../modules/_core');
 var $JSON = core.JSON || (core.JSON = { stringify: JSON.stringify });
 module.exports = function stringify(it) { // eslint-disable-line no-unused-vars
   return $JSON.stringify.apply($JSON, arguments);
 };
 
-},{"../../modules/_core":118}],65:[function(require,module,exports) {
+},{"../../modules/_core":133}],75:[function(require,module,exports) {
 module.exports = { "default": require("core-js/library/fn/json/stringify"), __esModule: true };
-},{"core-js/library/fn/json/stringify":88}],83:[function(require,module,exports) {
+},{"core-js/library/fn/json/stringify":100}],94:[function(require,module,exports) {
 "use strict";
 
 exports.__esModule = true;
@@ -68004,21 +68352,21 @@ exports.default = function (instance, Constructor) {
     throw new TypeError("Cannot call a class as a function");
   }
 };
-},{}],217:[function(require,module,exports) {
+},{}],243:[function(require,module,exports) {
 var $export = require('./_export');
 // 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
 $export($export.S + $export.F * !require('./_descriptors'), 'Object', { defineProperty: require('./_object-dp').f });
 
-},{"./_export":187,"./_descriptors":238,"./_object-dp":236}],153:[function(require,module,exports) {
+},{"./_export":213,"./_descriptors":263,"./_object-dp":261}],179:[function(require,module,exports) {
 require('../../modules/es6.object.define-property');
 var $Object = require('../../modules/_core').Object;
 module.exports = function defineProperty(it, key, desc) {
   return $Object.defineProperty(it, key, desc);
 };
 
-},{"../../modules/es6.object.define-property":217,"../../modules/_core":118}],115:[function(require,module,exports) {
+},{"../../modules/es6.object.define-property":243,"../../modules/_core":133}],130:[function(require,module,exports) {
 module.exports = { "default": require("core-js/library/fn/object/define-property"), __esModule: true };
-},{"core-js/library/fn/object/define-property":153}],84:[function(require,module,exports) {
+},{"core-js/library/fn/object/define-property":179}],95:[function(require,module,exports) {
 "use strict";
 
 exports.__esModule = true;
@@ -68046,7 +68394,7 @@ exports.default = function () {
     return Constructor;
   };
 }();
-},{"../core-js/object/define-property":115}],79:[function(require,module,exports) {
+},{"../core-js/object/define-property":130}],88:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -68160,7 +68508,7 @@ var Settings_Batch = function () {
 }();
 
 exports.default = Settings_Batch;
-},{"babel-runtime/helpers/typeof":127,"babel-runtime/core-js/json/stringify":65,"babel-runtime/helpers/classCallCheck":83,"babel-runtime/helpers/createClass":84,"lodash":63}],137:[function(require,module,exports) {
+},{"babel-runtime/helpers/typeof":148,"babel-runtime/core-js/json/stringify":75,"babel-runtime/helpers/classCallCheck":94,"babel-runtime/helpers/createClass":95,"lodash":73}],152:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -68294,7 +68642,7 @@ exports.default = {
         return validations;
     }
 };
-},{"babel-runtime/helpers/extends":49,"../classes/enums":74,"vuex":15,"../classes/settings_batch":79,"vuelidate/lib/validators":203}],308:[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":51,"../classes/enums":83,"vuex":15,"../classes/settings_batch":88,"vuelidate/lib/validators":229}],335:[function(require,module,exports) {
 var getKeys = require('./_object-keys');
 var toIObject = require('./_to-iobject');
 var isEnum = require('./_object-pie').f;
@@ -68312,7 +68660,7 @@ module.exports = function (isEntries) {
   };
 };
 
-},{"./_object-keys":220,"./_to-iobject":235,"./_object-pie":271}],302:[function(require,module,exports) {
+},{"./_object-keys":251,"./_to-iobject":260,"./_object-pie":297}],329:[function(require,module,exports) {
 // https://github.com/tc39/proposal-object-values-entries
 var $export = require('./_export');
 var $values = require('./_object-to-array')(false);
@@ -68323,13 +68671,13 @@ $export($export.S, 'Object', {
   }
 });
 
-},{"./_export":187,"./_object-to-array":308}],295:[function(require,module,exports) {
+},{"./_export":213,"./_object-to-array":335}],322:[function(require,module,exports) {
 require('../../modules/es7.object.values');
 module.exports = require('../../modules/_core').Object.values;
 
-},{"../../modules/es7.object.values":302,"../../modules/_core":118}],274:[function(require,module,exports) {
+},{"../../modules/es7.object.values":329,"../../modules/_core":133}],301:[function(require,module,exports) {
 module.exports = { "default": require("core-js/library/fn/object/values"), __esModule: true };
-},{"core-js/library/fn/object/values":295}],154:[function(require,module,exports) {
+},{"core-js/library/fn/object/values":322}],181:[function(require,module,exports) {
 var define;
 // HumanizeDuration.js - https://git.io/j0HgmQ
 
@@ -69013,25 +69361,41 @@ var define;
   }
 })(); // eslint-disable-line semi
 
-},{}],269:[function(require,module,exports) {
-"use strict";
+},{}],149:[function(require,module,exports) {
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-	value: true
+  value: true
 });
 exports.default = {
-	methods: {
-		try_number: function try_number(number) {
-			var number_parsed = parseFloat(number);
-			if (isNaN(number_parsed)) {
-				return number;
-			} else {
-				return number_parsed;
-			}
-		}
-	}
+  methods: {
+    amount_formatted: function amount_formatted(value) {
+      if (isNaN(value)) {
+        return 'invalid';
+      } else {
+        return (value / 100.0).toFixed(2) + ' $';
+      }
+    },
+    try_money: function try_money(value) {
+      var number = this.try_number(value);
+      if (isNaN(number)) {
+        return number;
+      } else {
+        return number * 100;
+      }
+    },
+    try_number: function try_number(number) {
+      var number_parsed = parseFloat(number);
+      if (isNaN(number_parsed)) {
+        console.log('######');
+        return number;
+      } else {
+        return number_parsed;
+      }
+    }
+  }
 };
-},{}],148:[function(require,module,exports) {
+},{}],174:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -69062,6 +69426,18 @@ var _helpers2 = _interopRequireDefault(_helpers);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -69351,23 +69727,53 @@ exports.default = {
         }
       }),
       _vm._v(" "),
-      _c("v-text-field", {
-        attrs: {
-          required: "",
-          type: "number",
-          value: _vm.reward,
-          step: "0.01",
-          label: "Reward",
-          "append-icon": "attach_money",
-          "error-messages": _vm.validation_errors.settings_batch.reward
-        },
-        on: {
-          input: function($event) {
-            _vm.$emit("update:reward", _vm.try_number($event))
-            _vm.v.settings_batch.reward.$touch()
-          }
-        }
-      }),
+      _c(
+        "v-layout",
+        { attrs: { row: "", "align-center": "" } },
+        [
+          _c(
+            "v-flex",
+            [
+              _c("v-text-field", {
+                attrs: {
+                  required: "",
+                  type: "number",
+                  value: _vm.reward,
+                  step: "0.01",
+                  label: "Reward (" + _vm.amount_formatted(_vm.reward) + ")",
+                  "error-messages": _vm.validation_errors.settings_batch.reward
+                },
+                on: {
+                  input: function($event) {
+                    _vm.$emit("update:reward", _vm.try_number($event))
+                    _vm.v.settings_batch.reward.$touch()
+                  }
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c("v-flex", { attrs: { shrink: "" } }, [
+            _c(
+              "div",
+              {
+                staticClass: "text-no-wrap",
+                attrs: { slot: "append" },
+                slot: "append"
+              },
+              [
+                _vm._v(
+                  "\n                    ct, in Dollar: " +
+                    _vm._s(_vm.amount_formatted(_vm.reward)) +
+                    "\n                "
+                )
+              ]
+            )
+          ])
+        ],
+        1
+      ),
       _vm._v(" "),
       _c("v-text-field", {
         attrs: {
@@ -69671,7 +70077,7 @@ render._withStripped = true
       
       }
     })();
-},{"babel-runtime/core-js/object/values":274,"babel-runtime/helpers/extends":49,"vuex":15,"humanize-duration":154,"lodash":63,"../../../mixins/helpers":269,"_css_loader":26,"vue-hot-reload-api":38,"vue":3}],92:[function(require,module,exports) {
+},{"babel-runtime/core-js/object/values":301,"babel-runtime/helpers/extends":51,"vuex":15,"humanize-duration":181,"lodash":73,"../../../mixins/helpers":149,"_css_loader":26,"vue-hot-reload-api":39,"vue":3}],103:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -69872,18 +70278,21 @@ render._withStripped = true
         
       }
     })();
-},{"babel-runtime/helpers/extends":49,"vuex":15,"../../../mixins/settings_batch":137,"../../../mixins/validations":90,"../../settings_project/settings_batch/component_form_settings_batch":148,"lodash":63,"vue-hot-reload-api":38,"vue":3}],81:[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":51,"vuex":15,"../../../mixins/settings_batch":152,"../../../mixins/validations":101,"../../settings_project/settings_batch/component_form_settings_batch":174,"lodash":73,"vue-hot-reload-api":39,"vue":3}],92:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-//
-//
-//
-//
+
+var _helpers = require('../mixins/helpers');
+
+var _helpers2 = _interopRequireDefault(_helpers);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
+    mixins: [_helpers2.default],
     name: 'component-display-money',
     props: {
         amount: {
@@ -69892,11 +70301,15 @@ exports.default = {
         }
     },
     computed: {
-        amount_formatted: function amount_formatted() {
+        amount_formatted_: function amount_formatted_() {
+            return this.amount_formatted(this.amount);
             return this.amount.toFixed(2) + ' $';
         }
     }
-};
+}; //
+//
+//
+//
       var $d13bb8 = exports.default || module.exports;
       if (typeof $d13bb8 === 'function') {
         $d13bb8 = $d13bb8.options;
@@ -69908,7 +70321,7 @@ exports.default = {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("span", [_vm._v(_vm._s(_vm.amount_formatted))])
+  return _c("span", [_vm._v(_vm._s(_vm.amount_formatted_))])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -69939,7 +70352,7 @@ render._withStripped = true
         
       }
     })();
-},{"vue-hot-reload-api":38,"vue":3}],93:[function(require,module,exports) {
+},{"../mixins/helpers":149,"vue-hot-reload-api":39,"vue":3}],104:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -70444,7 +70857,7 @@ render._withStripped = true
       
       }
     })();
-},{"babel-runtime/core-js/object/keys":85,"babel-runtime/helpers/extends":49,"vuex":15,"../../../classes/settings_batch":79,"../../component-display-money.vue":81,"humanize-duration":154,"_css_loader":26,"vue-hot-reload-api":38,"vue":3}],95:[function(require,module,exports) {
+},{"babel-runtime/core-js/object/keys":97,"babel-runtime/helpers/extends":51,"vuex":15,"../../../classes/settings_batch":88,"../../component-display-money.vue":92,"humanize-duration":181,"_css_loader":26,"vue-hot-reload-api":39,"vue":3}],105:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -70598,7 +71011,7 @@ render._withStripped = true
       
       }
     })();
-},{"babel-runtime/helpers/extends":49,"vuex":15,"../../../classes/settings_batch":79,"_css_loader":26,"vue-hot-reload-api":38,"vue":3}],51:[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":51,"vuex":15,"../../../classes/settings_batch":88,"_css_loader":26,"vue-hot-reload-api":39,"vue":3}],53:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -71047,7 +71460,7 @@ render._withStripped = true
       
       }
     })();
-},{"babel-runtime/helpers/extends":49,"vuex":15,"../../../mixins/validations":90,"vuelidate/lib/validators":203,"./component_upload_csv.vue":91,"./component_settings_batch.vue":92,"./component_overview.vue":93,"./component_submit_batch.vue":95,"_css_loader":26,"vue-hot-reload-api":38,"vue":3}],136:[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":51,"vuex":15,"../../../mixins/validations":101,"vuelidate/lib/validators":229,"./component_upload_csv.vue":102,"./component_settings_batch.vue":103,"./component_overview.vue":104,"./component_submit_batch.vue":105,"_css_loader":26,"vue-hot-reload-api":39,"vue":3}],153:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -71167,7 +71580,102 @@ render._withStripped = true
         
       }
     })();
-},{"vuex":15,"lodash":63,"vue-hot-reload-api":38,"vue":3}],89:[function(require,module,exports) {
+},{"vuex":15,"lodash":73,"vue-hot-reload-api":39,"vue":3}],85:[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _vue = require('vue');
+
+var _vue2 = _interopRequireDefault(_vue);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Batch = function () {
+    function Batch() {
+        var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+        (0, _classCallCheck3.default)(this, Batch);
+
+        this.id = data.id;
+        this.name = data.name;
+        this.id_project = data.id_project;
+        this.use_sandbox = data.use_sandbox;
+        this.object_hits = {};
+        this.settings_batch = data.settings_batch;
+
+        // this._count_assignments_total = null;
+        // this._count_assignments_available = null;
+        // this._progress = null;
+        // this._datetime_creation = null;
+    }
+
+    (0, _createClass3.default)(Batch, [{
+        key: 'count_assignments_total',
+        get: function get() {
+            // if(this._count_assignments_total != null) return this._count_assignments_total;
+
+            var count_assignments_total = this.settings_batch.count_assignments * _lodash2.default.size(this.object_hits);
+            // this._count_assignments_total = count_assignments_total;
+            return count_assignments_total;
+        }
+    }, {
+        key: 'count_assignments_available',
+        get: function get() {
+            // if(this._count_assignments_available != null) return this._count_assignments_available;
+
+            var count_assignments_available = 0;
+            // console.log('EXPENSIVE1')
+            _lodash2.default.forEach(this.object_hits, function (hit) {
+                count_assignments_available += _lodash2.default.size(hit.object_assignments);
+            });
+
+            // this._count_assignments_available = count_assignments_available;
+            return count_assignments_available;
+        }
+    }, {
+        key: 'progress',
+        get: function get() {
+            // if(this._progress != null) return this._progress;
+            // 
+            var progress = this.count_assignments_available / this.count_assignments_total * 100.0;
+            // console.log('EXECUTED1')
+
+            // this._progress = progress;
+            return this.count_assignments_available / this.count_assignments_total * 100.0;
+        }
+    }, {
+        key: 'datetime_creation',
+        get: function get() {
+            // if(this._datetime_creation != null) return this._datetime_creation;
+
+            if (_lodash2.default.size(this.object_hits) > 0) {
+                return this.object_hits[_lodash2.default.keys(this.object_hits)[0]].datetime_creation;
+                // this._datetime_creation = this.object_hits[_.keys(this.object_hits)[0]].datetime_creation;
+                // return this._datetime_creation;
+            } else {
+                return undefined;
+            }
+        }
+    }]);
+    return Batch;
+}();
+
+exports.default = Batch;
+},{"babel-runtime/helpers/classCallCheck":94,"babel-runtime/helpers/createClass":95,"lodash":73,"vue":3}],106:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -71188,13 +71696,20 @@ var _component_progress = require('./component_progress.vue');
 
 var _component_progress2 = _interopRequireDefault(_component_progress);
 
+var _component_display_datetime = require('../../helpers/component_display_datetime.vue');
+
+var _component_display_datetime2 = _interopRequireDefault(_component_display_datetime);
+
+var _batch = require('../../../classes/batch.js');
+
+var _batch2 = _interopRequireDefault(_batch);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
     name: 'component-item-batch',
     props: {
         props: {
-            type: Object,
             required: true
         }
     },
@@ -71204,6 +71719,7 @@ exports.default = {
 
     computed: (0, _extends3.default)({
         batch: function batch() {
+            console.log('calculated batch');
             return this.props.item;
         }
     }, (0, _vuex.mapGetters)(['get_show_progress_indicator'])),
@@ -71211,9 +71727,19 @@ exports.default = {
     mounted: function mounted() {},
 
     components: {
-        ComponentProgress: _component_progress2.default
+        ComponentProgress: _component_progress2.default,
+        ComponentDisplayDatetime: _component_display_datetime2.default
     }
 }; //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -71304,9 +71830,35 @@ exports.default = {
       _vm._v("\n        " + _vm._s(_vm.batch.name) + "\n    ")
     ]),
     _vm._v(" "),
-    _c("td", { staticClass: "text-xs-center" }, [
-      _vm._v("\n        " + _vm._s(_vm.batch.hits.length) + "\n    ")
-    ]),
+    _c(
+      "td",
+      { staticClass: "text-xs-center" },
+      [
+        _c("component-display-datetime", {
+          attrs: { datetime: _vm.batch.datetime_creation }
+        })
+      ],
+      1
+    ),
+    _vm._v(" "),
+    _c(
+      "td",
+      {
+        staticClass: "text-xs-center",
+        on: {
+          click: function($event) {
+            _vm.foo()
+          }
+        }
+      },
+      [
+        _vm._v(
+          "\n        " +
+            _vm._s(Object.keys(_vm.batch.object_hits).length) +
+            "\n    "
+        )
+      ]
+    ),
     _vm._v(" "),
     _c("td", { staticClass: "text-xs-center" }, [
       _vm._v(
@@ -71405,7 +71957,7 @@ render._withStripped = true
       
       }
     })();
-},{"babel-runtime/helpers/extends":49,"vuex":15,"lodash":63,"./component_progress.vue":136,"_css_loader":26,"vue-hot-reload-api":38,"vue":3}],52:[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":51,"vuex":15,"lodash":73,"./component_progress.vue":153,"../../helpers/component_display_datetime.vue":98,"../../../classes/batch.js":85,"_css_loader":26,"vue-hot-reload-api":39,"vue":3}],54:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -71452,6 +72004,10 @@ exports.default = {
                 value: 'hits.length',
                 align: 'center'
             }, {
+                text: 'Creation',
+                value: 'datetime_creation',
+                align: 'center'
+            }, {
                 text: '#Assignments Per HIT',
                 value: 'settings_batch.count_assignments',
                 align: 'center'
@@ -71476,7 +72032,7 @@ exports.default = {
         // }),
     },
     created: function created() {
-
+        console.log(this.list_batches);
         // this.update_status_block({
         //     worker: {name: 'A7W013PM199BS'},
         //     status_block_new: 1,
@@ -71603,14 +72159,17 @@ exports.default = {
                       [
                         _c("v-checkbox", {
                           attrs: {
-                            ":input-value": props.all,
-                            ":indeterminate": props.indeterminate,
+                            "input-value": props.all,
+                            indeterminate: props.indeterminate,
                             primary: "",
                             "hide-details": ""
                           },
                           nativeOn: {
                             click: function($event) {
-                              return _vm.toggleAll($event)
+                              _vm.batches_selected = _vm.toggleAll(
+                                _vm.batches_selected,
+                                _vm.list_batches
+                              )
                             }
                           }
                         })
@@ -71715,7 +72274,7 @@ render._withStripped = true
       
       }
     })();
-},{"babel-runtime/helpers/extends":49,"vuex":15,"./component_item_batch.vue":89,"../../../mixins/table":87,"_css_loader":26,"vue-hot-reload-api":38,"vue":3}],94:[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":51,"vuex":15,"./component_item_batch.vue":106,"../../../mixins/table":99,"_css_loader":26,"vue-hot-reload-api":39,"vue":3}],107:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -71764,9 +72323,10 @@ exports.default = {
         // count_assignments_total() {
         //     return this.hit.batch.settings_batch.count_assignments;
         // },
-        // count_assignments_available() {
-        //     return this.hit.assignments.length;
-        // },
+        count_assignments: function count_assignments() {
+            return _lodash2.default.size(this.hit.assignments);
+        },
+
         // progress() {
         //     console.log('EXECUTED')
         //     return (this.count_assignments_available / this.count_assignments_total) * 100.0;
@@ -71780,6 +72340,7 @@ exports.default = {
         ComponentProgress: _component_progress2.default
     }
 }; //
+//
 //
 //
 //
@@ -71897,7 +72458,7 @@ exports.default = {
         "td",
         { staticClass: "text-xs-center" },
         [
-          _vm._v(_vm._s(_vm.hit.batch.name) + "\n        "),
+          _vm._v("\n        " + _vm._s(_vm.hit.batch.name) + "\n        "),
           _c(
             "v-btn",
             {
@@ -72015,7 +72576,7 @@ render._withStripped = true
       
       }
     })();
-},{"babel-runtime/helpers/extends":49,"vuex":15,"../../batches/list/component_progress.vue":136,"lodash":63,"_css_loader":26,"vue-hot-reload-api":38,"vue":3}],54:[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":51,"vuex":15,"../../batches/list/component_progress.vue":153,"lodash":73,"_css_loader":26,"vue-hot-reload-api":39,"vue":3}],56:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -72045,7 +72606,7 @@ exports.default = {
     props: {
         list_hits: {
             required: false,
-            type: Array | undefined
+            type: Array
         },
         show_links: {
             required: false,
@@ -72228,14 +72789,17 @@ exports.default = {
                           [
                             _c("v-checkbox", {
                               attrs: {
-                                ":input-value": props.all,
-                                ":indeterminate": props.indeterminate,
+                                "input-value": props.all,
+                                indeterminate: props.indeterminate,
                                 primary: "",
                                 "hide-details": ""
                               },
                               nativeOn: {
                                 click: function($event) {
-                                  return _vm.toggleAll($event)
+                                  _vm.hits_selected = _vm.toggleAll(
+                                    _vm.hits_selected,
+                                    _vm.list_hits_processed
+                                  )
                                 }
                               }
                             })
@@ -72340,7 +72904,7 @@ render._withStripped = true
       
       }
     })();
-},{"babel-runtime/helpers/extends":49,"vuex":15,"./component_item_hit.vue":94,"../../../mixins/table":87,"_css_loader":26,"vue-hot-reload-api":38,"vue":3}],53:[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":51,"vuex":15,"./component_item_hit.vue":107,"../../../mixins/table":99,"_css_loader":26,"vue-hot-reload-api":39,"vue":3}],55:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -72357,34 +72921,11 @@ var _component_list_hits = require('../../hits/list/component_list_hits.vue');
 
 var _component_list_hits2 = _interopRequireDefault(_component_list_hits);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _lodash = require('lodash');
 
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+var _lodash2 = _interopRequireDefault(_lodash);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
     name: 'component-batch-detail',
@@ -72409,12 +72950,23 @@ exports.default = {
     //     },
     // },
     computed: (0, _extends3.default)({
+        list_hits: function list_hits() {
+            if (this.batch.object_hits == undefined) {
+                return [];
+            } else {
+                return _lodash2.default.orderBy(this.batch.object_hits);
+            }
+        },
         batch: function batch() {
             var object_batches = this.get_object_batches();
             if (object_batches == null) {
                 return {};
             } else {
-                return object_batches[this.id_batch];
+                if (object_batches[this.id_batch] == undefined) {
+                    return {};
+                } else {
+                    return object_batches[this.id_batch];
+                }
             }
         }
     }, (0, _vuex.mapGetters)('moduleBatches', {
@@ -72424,7 +72976,32 @@ exports.default = {
     components: {
         ComponentListHits: _component_list_hits2.default
     }
-};
+}; //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
       var $febc0e = exports.default || module.exports;
       if (typeof $febc0e === 'function') {
         $febc0e = $febc0e.options;
@@ -72471,7 +73048,7 @@ exports.default = {
           _vm._v(" "),
           _c("v-divider", { staticClass: "my-3" }),
           _vm._v(" "),
-          _c("component-list-hits", { attrs: { list_hits: _vm.batch.hits } })
+          _c("component-list-hits", { attrs: { list_hits: _vm.list_hits } })
         ],
         1
       )
@@ -72512,7 +73089,7 @@ render._withStripped = true
       
       }
     })();
-},{"babel-runtime/helpers/extends":49,"vuex":15,"../../hits/list/component_list_hits.vue":54,"_css_loader":26,"vue-hot-reload-api":38,"vue":3}],6:[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":51,"vuex":15,"../../hits/list/component_list_hits.vue":56,"lodash":73,"_css_loader":26,"vue-hot-reload-api":39,"vue":3}],6:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -72638,7 +73215,7 @@ render._withStripped = true
         
       }
     })();
-},{"vuex":15,"./create/component_create_batch.vue":51,"./list/component_list_batches.vue":52,"./detail/component_batch_detail.vue":53,"../../mixins/slug_project":50,"vue-hot-reload-api":38,"vue":3}],96:[function(require,module,exports) {
+},{"vuex":15,"./create/component_create_batch.vue":53,"./list/component_list_batches.vue":54,"./detail/component_batch_detail.vue":55,"../../mixins/slug_project":52,"vue-hot-reload-api":39,"vue":3}],108:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -72748,7 +73325,7 @@ exports.default = {
     // },
     computed: (0, _extends3.default)({
         assignment: function assignment() {
-            console.log(this.props.item);
+            // console.log(this.props.item)
             return this.props.item;
         }
     }, (0, _vuex.mapGetters)(['get_show_progress_indicator'])),
@@ -72900,7 +73477,7 @@ render._withStripped = true
       
       }
     })();
-},{"babel-runtime/helpers/extends":49,"vuex":15,"lodash":63,"_css_loader":26,"vue-hot-reload-api":38,"vue":3}],56:[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":51,"vuex":15,"lodash":73,"_css_loader":26,"vue-hot-reload-api":39,"vue":3}],58:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -72940,7 +73517,7 @@ exports.default = {
     },
     data: function data() {
         return {
-            hits_selected: [],
+            // assignments_selected: [],
             pagination: { rowsPerPage: 25 },
 
             search: ''
@@ -72954,6 +73531,14 @@ exports.default = {
     },
 
     computed: (0, _extends3.default)({
+        assignments_selected_local: {
+            get: function get() {
+                return this.assignments_selected;
+            },
+            set: function set(value) {
+                this.set_assignments_selected(value);
+            }
+        },
         list_headers: function list_headers() {
             var list_headers = [{
                 text: 'Name',
@@ -72985,12 +73570,12 @@ exports.default = {
         }
     }, (0, _vuex.mapGetters)('moduleAssignments', {
         'list_assignments_all': 'list_assignments'
+    }), (0, _vuex.mapState)('moduleAssignments', {
+        'assignments_selected': 'assignments_selected'
     })),
-    methods: {
-        // ...mapActions('moduleWorkers', {
-        // 'update_status_block': 'update_status_block',
-        // }),
-    },
+    methods: (0, _extends3.default)({}, (0, _vuex.mapMutations)('moduleAssignments', {
+        'set_assignments_selected': 'set_assignments_selected'
+    })),
     created: function created() {
 
         // this.update_status_block({
@@ -73006,7 +73591,6 @@ exports.default = {
 };
 // import ComponentShowMoneySpent from './component-show-money-spent.vue';
 // import ComponentShowBatches from './component-show-batches.vue';
-//
 //
 //
 //
@@ -73113,14 +73697,17 @@ exports.default = {
                           [
                             _c("v-checkbox", {
                               attrs: {
-                                ":input-value": props.all,
-                                ":indeterminate": props.indeterminate,
+                                "input-value": props.all,
+                                indeterminate: props.indeterminate,
                                 primary: "",
                                 "hide-details": ""
                               },
                               nativeOn: {
                                 click: function($event) {
-                                  return _vm.toggleAll($event)
+                                  _vm.assignments_selected_local = _vm.toggleAll(
+                                    _vm.assignments_selected_local,
+                                    _vm.list_assignments_processed
+                                  )
                                 }
                               }
                             })
@@ -73178,11 +73765,11 @@ exports.default = {
               }
             ]),
             model: {
-              value: _vm.hits_selected,
+              value: _vm.assignments_selected_local,
               callback: function($$v) {
-                _vm.hits_selected = $$v
+                _vm.assignments_selected_local = $$v
               },
-              expression: "hits_selected"
+              expression: "assignments_selected_local"
             }
           })
         ],
@@ -73225,7 +73812,7 @@ render._withStripped = true
       
       }
     })();
-},{"babel-runtime/helpers/extends":49,"vuex":15,"./component_item_assignment.vue":96,"../../../mixins/table":87,"_css_loader":26,"vue-hot-reload-api":38,"vue":3}],55:[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":51,"vuex":15,"./component_item_assignment.vue":108,"../../../mixins/table":99,"_css_loader":26,"vue-hot-reload-api":39,"vue":3}],57:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -73242,34 +73829,11 @@ var _component_list_assignments = require('../../assignments/list/component_list
 
 var _component_list_assignments2 = _interopRequireDefault(_component_list_assignments);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _lodash = require('lodash');
 
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+var _lodash2 = _interopRequireDefault(_lodash);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
     name: 'component-hit-detail',
@@ -73294,12 +73858,23 @@ exports.default = {
     //     },
     // },
     computed: (0, _extends3.default)({
+        list_assignments: function list_assignments() {
+            if (this.hit.object_assignments == undefined) {
+                return [];
+            } else {
+                return _lodash2.default.orderBy(this.hit.object_assignments);
+            }
+        },
         hit: function hit() {
             var object_hits = this.get_object_hits();
             if (object_hits == null) {
                 return {};
             } else {
-                return object_hits[this.id_hit];
+                if (object_hits[this.id_hit] == undefined) {
+                    return {};
+                } else {
+                    return object_hits[this.id_hit];
+                }
             }
         }
     }, (0, _vuex.mapGetters)('moduleHITs', {
@@ -73309,7 +73884,32 @@ exports.default = {
     components: {
         ComponentListAssignments: _component_list_assignments2.default
     }
-};
+}; //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
       var $0c9ce9 = exports.default || module.exports;
       if (typeof $0c9ce9 === 'function') {
         $0c9ce9 = $0c9ce9.options;
@@ -73332,9 +73932,6 @@ exports.default = {
             "h2",
             { staticClass: "headline" },
             [
-              _vm._v(
-                "\n            HIT " + _vm._s(_vm.hit.id_hit) + "\n            "
-              ),
               _c(
                 "v-btn",
                 {
@@ -73357,7 +73954,7 @@ exports.default = {
           _c("v-divider", { staticClass: "my-3" }),
           _vm._v(" "),
           _c("component-list-assignments", {
-            attrs: { list_assignments: _vm.hit.assignments }
+            attrs: { list_assignments: _vm.list_assignments }
           })
         ],
         1
@@ -73399,7 +73996,7 @@ render._withStripped = true
       
       }
     })();
-},{"babel-runtime/helpers/extends":49,"vuex":15,"../../assignments/list/component_list_assignments.vue":56,"_css_loader":26,"vue-hot-reload-api":38,"vue":3}],7:[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":51,"vuex":15,"../../assignments/list/component_list_assignments.vue":58,"lodash":73,"_css_loader":26,"vue-hot-reload-api":39,"vue":3}],7:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -73520,7 +74117,7 @@ render._withStripped = true
         
       }
     })();
-},{"vuex":15,"./list/component_list_hits.vue":54,"./detail/component_hit_detail.vue":55,"../../mixins/slug_project":50,"vue-hot-reload-api":38,"vue":3}],57:[function(require,module,exports) {
+},{"vuex":15,"./list/component_list_hits.vue":56,"./detail/component_hit_detail.vue":57,"../../mixins/slug_project":52,"vue-hot-reload-api":39,"vue":3}],59:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -73674,26 +74271,22 @@ render._withStripped = true
       
       }
     })();
-},{"babel-runtime/helpers/extends":49,"vuex":15,"_css_loader":26,"vue-hot-reload-api":38,"vue":3}],8:[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":51,"vuex":15,"_css_loader":26,"vue-hot-reload-api":39,"vue":3}],60:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _extends2 = require('babel-runtime/helpers/extends');
+
+var _extends3 = _interopRequireDefault(_extends2);
+
 var _vuex = require('vuex');
 
-var _component_list_assignments = require('./list/component_list_assignments.vue');
+var _lodash = require('lodash');
 
-var _component_list_assignments2 = _interopRequireDefault(_component_list_assignments);
-
-var _component_assignment_detail = require('./detail/component_assignment_detail.vue');
-
-var _component_assignment_detail2 = _interopRequireDefault(_component_assignment_detail);
-
-var _slug_project = require('../../mixins/slug_project');
-
-var _slug_project2 = _interopRequireDefault(_slug_project);
+var _lodash2 = _interopRequireDefault(_lodash);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -73718,6 +74311,148 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 
 exports.default = {
+    name: 'component_annotate',
+    data: function data() {
+        return {};
+    },
+
+    methods: {
+        submit: function submit() {
+            window.location.href = this.url;
+        }
+    },
+    computed: (0, _extends3.default)({
+        url: function url() {
+            var url = '/view/' + this.project_current.slug + '?list_ids=[';
+
+            url += _lodash2.default.join(_lodash2.default.map(this.assignments_selected, function (assignment) {
+                return assignment.id;
+            }), ',');
+
+            return url + ']';
+        }
+    }, (0, _vuex.mapState)('moduleAssignments', {
+        'assignments_selected': 'assignments_selected'
+    }), (0, _vuex.mapGetters)('moduleProjects', {
+        'project_current': 'get_project_current'
+    })),
+    components: {}
+};
+      var $ad6e19 = exports.default || module.exports;
+      if (typeof $ad6e19 === 'function') {
+        $ad6e19 = $ad6e19.options;
+      }
+    
+        /* template */
+        Object.assign($ad6e19, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c(
+      "form",
+      {
+        on: {
+          submit: function($event) {
+            $event.preventDefault()
+            return _vm.submit($event)
+          }
+        }
+      },
+      [
+        _c("input", {
+          attrs: { type: "hidden", name: "list_ids[]", value: "1" }
+        }),
+        _vm._v(" "),
+        _c("input", {
+          attrs: { type: "hidden", name: "list_ids[]", value: "3" }
+        }),
+        _vm._v(" "),
+        _c(
+          "v-btn",
+          {
+            attrs: {
+              type: "submit",
+              color: "primary",
+              disabled: _vm.assignments_selected.length == 0
+            }
+          },
+          [
+            _vm._v(
+              "\n\t    \tAnnotate " +
+                _vm._s(_vm.assignments_selected.length) +
+                " assignment(s)\n\t\t"
+            )
+          ]
+        )
+      ],
+      1
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: "data-v-ad6e19",
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$ad6e19', $ad6e19);
+          } else {
+            api.reload('$ad6e19', $ad6e19);
+          }
+        }
+
+        
+        var reloadCSS = require('_css_loader');
+        module.hot.dispose(reloadCSS);
+        module.hot.accept(reloadCSS);
+      
+      }
+    })();
+},{"babel-runtime/helpers/extends":51,"vuex":15,"lodash":73,"_css_loader":26,"vue-hot-reload-api":39,"vue":3}],8:[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _vuex = require('vuex');
+
+var _component_list_assignments = require('./list/component_list_assignments.vue');
+
+var _component_list_assignments2 = _interopRequireDefault(_component_list_assignments);
+
+var _component_assignment_detail = require('./detail/component_assignment_detail.vue');
+
+var _component_assignment_detail2 = _interopRequireDefault(_component_assignment_detail);
+
+var _component_annotate = require('./annotate/component_annotate.vue');
+
+var _component_annotate2 = _interopRequireDefault(_component_annotate);
+
+var _slug_project = require('../../mixins/slug_project');
+
+var _slug_project2 = _interopRequireDefault(_slug_project);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// import ComponentCreateBatch from './create/component_create_batch.vue';
+exports.default = {
     mixins: [_slug_project2.default],
     props: {
         id_assignment: {}
@@ -73735,14 +74470,33 @@ exports.default = {
     components: {
         // ComponentCreateBatch,
         ComponentListAssignments: _component_list_assignments2.default,
-        ComponentAssignmentDetail: _component_assignment_detail2.default
+        ComponentAssignmentDetail: _component_assignment_detail2.default,
+        ComponentAnnotate: _component_annotate2.default
     }
 };
 // import ComponentShowMoneySpent from './component-show-money-spent.vue';
 // import ComponentShowBatches from './component-show-batches.vue';
-
-
-// import ComponentCreateBatch from './create/component_create_batch.vue';
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
       var $17a246 = exports.default || module.exports;
       if (typeof $17a246 === 'function') {
         $17a246 = $17a246.options;
@@ -73758,7 +74512,11 @@ exports.default = {
     "span",
     [
       _vm.$route.name == "assignments"
-        ? [_c("component-list-assignments", { attrs: { show_links: true } })]
+        ? [
+            _c("component-list-assignments", { attrs: { show_links: true } }),
+            _vm._v(" "),
+            _c("component-annotate")
+          ]
         : _vm.$route.name == "assignment"
           ? [
               _c("component-assignment-detail", {
@@ -73799,7 +74557,7 @@ render._withStripped = true
         
       }
     })();
-},{"vuex":15,"./list/component_list_assignments.vue":56,"./detail/component_assignment_detail.vue":57,"../../mixins/slug_project":50,"vue-hot-reload-api":38,"vue":3}],42:[function(require,module,exports) {
+},{"vuex":15,"./list/component_list_assignments.vue":58,"./detail/component_assignment_detail.vue":59,"./annotate/component_annotate.vue":60,"../../mixins/slug_project":52,"vue-hot-reload-api":39,"vue":3}],43:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -73958,7 +74716,7 @@ render._withStripped = true
       
       }
     })();
-},{"babel-runtime/helpers/extends":49,"./../component-display-money.vue":81,"vuex":15,"_css_loader":26,"vue-hot-reload-api":38,"vue":3}],102:[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":51,"./../component-display-money.vue":92,"vuex":15,"_css_loader":26,"vue-hot-reload-api":39,"vue":3}],117:[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -74030,7 +74788,7 @@ var index = {
 };
 
 exports.default = index;
-},{}],43:[function(require,module,exports) {
+},{}],44:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -74216,14 +74974,14 @@ render._withStripped = true
       
       }
     })();
-},{"babel-runtime/helpers/extends":49,"vue":3,"v-runtime-template":102,"vuex":15,"./../component-display-money.vue":81,"lodash":63,"_css_loader":26,"vue-hot-reload-api":38}],206:[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":51,"vue":3,"v-runtime-template":117,"vuex":15,"./../component-display-money.vue":92,"lodash":73,"_css_loader":26,"vue-hot-reload-api":39}],233:[function(require,module,exports) {
 var isObject = require('./_is-object');
 module.exports = function (it, TYPE) {
   if (!isObject(it) || it._t !== TYPE) throw TypeError('Incompatible receiver, ' + TYPE + ' required!');
   return it;
 };
 
-},{"./_is-object":188}],205:[function(require,module,exports) {
+},{"./_is-object":214}],232:[function(require,module,exports) {
 'use strict';
 var dP = require('./_object-dp').f;
 var create = require('./_object-create');
@@ -74369,7 +75127,7 @@ module.exports = {
   }
 };
 
-},{"./_object-dp":236,"./_object-create":276,"./_redefine-all":199,"./_ctx":185,"./_an-instance":190,"./_for-of":191,"./_iter-define":178,"./_iter-step":234,"./_set-species":201,"./_descriptors":238,"./_meta":277,"./_validate-collection":206}],301:[function(require,module,exports) {
+},{"./_object-dp":261,"./_object-create":305,"./_redefine-all":225,"./_ctx":211,"./_an-instance":216,"./_for-of":217,"./_iter-define":204,"./_iter-step":259,"./_set-species":227,"./_descriptors":263,"./_meta":302,"./_validate-collection":233}],328:[function(require,module,exports) {
 var isObject = require('./_is-object');
 var isArray = require('./_is-array');
 var SPECIES = require('./_wks')('species');
@@ -74387,7 +75145,7 @@ module.exports = function (original) {
   } return C === undefined ? Array : C;
 };
 
-},{"./_is-object":188,"./_is-array":307,"./_wks":183}],297:[function(require,module,exports) {
+},{"./_is-object":214,"./_is-array":334,"./_wks":209}],323:[function(require,module,exports) {
 // 9.4.2.3 ArraySpeciesCreate(originalArray, length)
 var speciesConstructor = require('./_array-species-constructor');
 
@@ -74395,7 +75153,7 @@ module.exports = function (original, length) {
   return new (speciesConstructor(original))(length);
 };
 
-},{"./_array-species-constructor":301}],278:[function(require,module,exports) {
+},{"./_array-species-constructor":328}],303:[function(require,module,exports) {
 // 0 -> Array#forEach
 // 1 -> Array#map
 // 2 -> Array#filter
@@ -74441,7 +75199,7 @@ module.exports = function (TYPE, $create) {
   };
 };
 
-},{"./_ctx":185,"./_iobject":272,"./_to-object":219,"./_to-length":224,"./_array-species-create":297}],207:[function(require,module,exports) {
+},{"./_ctx":211,"./_iobject":298,"./_to-object":245,"./_to-length":248,"./_array-species-create":323}],234:[function(require,module,exports) {
 
 'use strict';
 var global = require('./_global');
@@ -74503,7 +75261,7 @@ module.exports = function (NAME, wrapper, methods, common, IS_MAP, IS_WEAK) {
   return C;
 };
 
-},{"./_global":180,"./_export":187,"./_meta":277,"./_fails":273,"./_hide":181,"./_redefine-all":199,"./_for-of":191,"./_an-instance":190,"./_is-object":188,"./_set-to-string-tag":200,"./_object-dp":236,"./_array-methods":278,"./_descriptors":238}],149:[function(require,module,exports) {
+},{"./_global":206,"./_export":213,"./_meta":302,"./_fails":299,"./_hide":207,"./_redefine-all":225,"./_for-of":217,"./_an-instance":216,"./_is-object":214,"./_set-to-string-tag":226,"./_object-dp":261,"./_array-methods":303,"./_descriptors":263}],175:[function(require,module,exports) {
 'use strict';
 var strong = require('./_collection-strong');
 var validate = require('./_validate-collection');
@@ -74519,7 +75277,7 @@ module.exports = require('./_collection')(SET, function (get) {
   }
 }, strong);
 
-},{"./_collection-strong":205,"./_validate-collection":206,"./_collection":207}],279:[function(require,module,exports) {
+},{"./_collection-strong":232,"./_validate-collection":233,"./_collection":234}],304:[function(require,module,exports) {
 var forOf = require('./_for-of');
 
 module.exports = function (iter, ITERATOR) {
@@ -74528,7 +75286,7 @@ module.exports = function (iter, ITERATOR) {
   return result;
 };
 
-},{"./_for-of":191}],208:[function(require,module,exports) {
+},{"./_for-of":217}],235:[function(require,module,exports) {
 // https://github.com/DavidBruant/Map-Set.prototype.toJSON
 var classof = require('./_classof');
 var from = require('./_array-from-iterable');
@@ -74539,13 +75297,13 @@ module.exports = function (NAME) {
   };
 };
 
-},{"./_classof":186,"./_array-from-iterable":279}],150:[function(require,module,exports) {
+},{"./_classof":212,"./_array-from-iterable":304}],176:[function(require,module,exports) {
 // https://github.com/DavidBruant/Map-Set.prototype.toJSON
 var $export = require('./_export');
 
 $export($export.P + $export.R, 'Set', { toJSON: require('./_collection-to-json')('Set') });
 
-},{"./_export":187,"./_collection-to-json":208}],209:[function(require,module,exports) {
+},{"./_export":213,"./_collection-to-json":235}],236:[function(require,module,exports) {
 'use strict';
 // https://tc39.github.io/proposal-setmap-offrom/
 var $export = require('./_export');
@@ -74559,11 +75317,11 @@ module.exports = function (COLLECTION) {
   } });
 };
 
-},{"./_export":187}],151:[function(require,module,exports) {
+},{"./_export":213}],177:[function(require,module,exports) {
 // https://tc39.github.io/proposal-setmap-offrom/#sec-set.of
 require('./_set-collection-of')('Set');
 
-},{"./_set-collection-of":209}],210:[function(require,module,exports) {
+},{"./_set-collection-of":236}],237:[function(require,module,exports) {
 'use strict';
 // https://tc39.github.io/proposal-setmap-offrom/
 var $export = require('./_export');
@@ -74593,11 +75351,11 @@ module.exports = function (COLLECTION) {
   } });
 };
 
-},{"./_export":187,"./_a-function":189,"./_ctx":185,"./_for-of":191}],152:[function(require,module,exports) {
+},{"./_export":213,"./_a-function":215,"./_ctx":211,"./_for-of":217}],178:[function(require,module,exports) {
 // https://tc39.github.io/proposal-setmap-offrom/#sec-set.from
 require('./_set-collection-from')('Set');
 
-},{"./_set-collection-from":210}],116:[function(require,module,exports) {
+},{"./_set-collection-from":237}],132:[function(require,module,exports) {
 require('../modules/es6.object.to-string');
 require('../modules/es6.string.iterator');
 require('../modules/web.dom.iterable');
@@ -74607,9 +75365,9 @@ require('../modules/es7.set.of');
 require('../modules/es7.set.from');
 module.exports = require('../modules/_core').Set;
 
-},{"../modules/es6.object.to-string":129,"../modules/es6.string.iterator":130,"../modules/web.dom.iterable":131,"../modules/es6.set":149,"../modules/es7.set.to-json":150,"../modules/es7.set.of":151,"../modules/es7.set.from":152,"../modules/_core":118}],82:[function(require,module,exports) {
+},{"../modules/es6.object.to-string":142,"../modules/es6.string.iterator":143,"../modules/web.dom.iterable":144,"../modules/es6.set":175,"../modules/es7.set.to-json":176,"../modules/es7.set.of":177,"../modules/es7.set.from":178,"../modules/_core":133}],93:[function(require,module,exports) {
 module.exports = { "default": require("core-js/library/fn/set"), __esModule: true };
-},{"core-js/library/fn/set":116}],44:[function(require,module,exports) {
+},{"core-js/library/fn/set":132}],45:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -74894,7 +75652,7 @@ exports.default = {
                   "td",
                   [
                     _c("component-display-money", {
-                      attrs: { amount: props.item.reward }
+                      attrs: { amount: props.item.settings_batch.reward }
                     })
                   ],
                   1
@@ -75020,16 +75778,12 @@ render._withStripped = true
       
       }
     })();
-},{"babel-runtime/core-js/set":82,"babel-runtime/helpers/extends":49,"vuex":15,"./../component-display-money.vue":81,"axios":61,"papaparse":103,"lodash":63,"_css_loader":26,"vue-hot-reload-api":38,"vue":3}],9:[function(require,module,exports) {
+},{"babel-runtime/core-js/set":93,"babel-runtime/helpers/extends":51,"vuex":15,"./../component-display-money.vue":92,"axios":71,"papaparse":118,"lodash":73,"_css_loader":26,"vue-hot-reload-api":39,"vue":3}],9:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-
-var _extends2 = require('babel-runtime/helpers/extends');
-
-var _extends3 = _interopRequireDefault(_extends2);
 
 var _vuex = require('vuex');
 
@@ -75045,71 +75799,37 @@ var _componentShowBatches = require('./component-show-batches.vue');
 
 var _componentShowBatches2 = _interopRequireDefault(_componentShowBatches);
 
+var _slug_project = require('../../mixins/slug_project');
+
+var _slug_project2 = _interopRequireDefault(_slug_project);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
 exports.default = {
+    mixins: [_slug_project2.default],
     name: 'app-finances',
-
     data: function data() {
         return {
-            dialog: false,
+            // dialog: false,
 
-            drawer: false,
-            is_refreshing: true,
-            show_snackbar: false,
-            text_snackbar: 'Finished refreshing the data'
+            // drawer: false,
+            // is_refreshing: true,
+            // show_snackbar: false,
+            // text_snackbar: 'Finished refreshing the data',
         };
     },
 
-    methods: (0, _extends3.default)({
-        refresh_data: function refresh_data() {
-            var _this = this;
-
-            this.set_show_progress_indicator(true);
-            this.set_show_progress_indicator(true);
-
-            this.sync_database().then(function () {
-                _this.set_show_progress_indicator(false);
-            });
-
-            this.update_balance().then(function () {
-                _this.set_show_progress_indicator(false);
-            });
-        }
-    }, (0, _vuex.mapActions)(['set_show_progress_indicator']), (0, _vuex.mapActions)('moduleBatches', {
-        'sync_database': 'sync_database'
-    }), (0, _vuex.mapActions)('moduleMoney', {
-        'update_balance': 'update_balance'
-    })),
-    watch: {
-        use_sandbox: function use_sandbox() {
-            this.refresh_data();
-        }
+    methods: {
+        // ...mapActions(['set_show_progress_indicator']),
+        // ...mapActions('moduleBatches', {
+        // 	'sync_database': 'sync_database', 
+        // }),
+        // ...mapActions('moduleMoney', {
+        // 	'update_balance': 'update_balance'
+        // }),
     },
-    computed: (0, _extends3.default)({}, (0, _vuex.mapState)(['use_sandbox'])),
-    created: function created() {
-        this.refresh_data();
+    computed: {
+        // ...mapState(['use_sandbox']),
     },
 
     components: {
@@ -75117,14 +75837,33 @@ exports.default = {
         ComponentShowMoneySpent: _componentShowMoneySpent2.default,
         ComponentShowBatches: _componentShowBatches2.default
     }
-};
-      var $2e9627 = exports.default || module.exports;
-      if (typeof $2e9627 === 'function') {
-        $2e9627 = $2e9627.options;
+}; //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+      var $db6cf7 = exports.default || module.exports;
+      if (typeof $db6cf7 === 'function') {
+        $db6cf7 = $db6cf7.options;
       }
     
         /* template */
-        Object.assign($2e9627, (function () {
+        Object.assign($db6cf7, (function () {
           var render = function() {
   var _vm = this
   var _h = _vm.$createElement
@@ -75132,33 +75871,12 @@ exports.default = {
   return _c(
     "div",
     [
-      _c(
-        "v-layout",
-        { attrs: { wrap: "" } },
-        [
-          _c(
-            "v-flex",
-            { attrs: { xs12: "", md6: "" } },
-            [_c("component-show-money-spent")],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "v-flex",
-            { attrs: { xs12: "", md6: "", "text-md-right": "" } },
-            [_c("component-show-balance")],
-            1
-          )
-        ],
-        1
-      ),
-      _vm._v(" "),
       _c("v-divider", { staticClass: "my-3" }),
       _vm._v(" "),
       _c(
         "div",
         { staticStyle: { "max-width": "100%" } },
-        [_c("component-show-batches")],
+        [_c("v-flex", [_c("component-show-batches")], 1)],
         1
       )
     ],
@@ -75185,16 +75903,16 @@ render._withStripped = true
         if (api.compatible) {
           module.hot.accept();
           if (!module.hot.data) {
-            api.createRecord('$2e9627', $2e9627);
+            api.createRecord('$db6cf7', $db6cf7);
           } else {
-            api.reload('$2e9627', $2e9627);
+            api.reload('$db6cf7', $db6cf7);
           }
         }
 
         
       }
     })();
-},{"babel-runtime/helpers/extends":49,"vuex":15,"./component-show-balance.vue":42,"./component-show-money-spent.vue":43,"./component-show-batches.vue":44,"vue-hot-reload-api":38,"vue":3}],39:[function(require,module,exports) {
+},{"vuex":15,"./component-show-balance.vue":43,"./component-show-money-spent.vue":44,"./component-show-batches.vue":45,"../../mixins/slug_project":52,"vue-hot-reload-api":39,"vue":3}],40:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -75306,7 +76024,7 @@ var Qualification = function () {
 }();
 
 exports.default = Qualification;
-},{"babel-runtime/core-js/set":82,"babel-runtime/core-js/json/stringify":65,"babel-runtime/helpers/classCallCheck":83,"babel-runtime/helpers/createClass":84,"lodash":63}],45:[function(require,module,exports) {
+},{"babel-runtime/core-js/set":93,"babel-runtime/core-js/json/stringify":75,"babel-runtime/helpers/classCallCheck":94,"babel-runtime/helpers/createClass":95,"lodash":73}],46:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -75813,7 +76531,7 @@ render._withStripped = true
         
       }
     })();
-},{"babel-runtime/helpers/extends":49,"vuex":15,"../../classes/qualifications.js":39,"vue-hot-reload-api":38,"vue":3}],46:[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":51,"vuex":15,"../../classes/qualifications.js":40,"vue-hot-reload-api":39,"vue":3}],47:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -76116,7 +76834,7 @@ render._withStripped = true
         
       }
     })();
-},{"babel-runtime/helpers/extends":49,"vuex":15,"../../classes/qualifications.js":39,"vue-hot-reload-api":38,"vue":3}],47:[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":51,"vuex":15,"../../classes/qualifications.js":40,"vue-hot-reload-api":39,"vue":3}],48:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -76585,7 +77303,7 @@ render._withStripped = true
         
       }
     })();
-},{"babel-runtime/helpers/extends":49,"vuex":15,"../../classes/qualifications.js":39,"vue-hot-reload-api":38,"vue":3}],48:[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":51,"vuex":15,"../../classes/qualifications.js":40,"vue-hot-reload-api":39,"vue":3}],49:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -76736,7 +77454,7 @@ render._withStripped = true
         
       }
     })();
-},{"babel-runtime/helpers/extends":49,"vuex":15,"lodash":63,"vue-hot-reload-api":38,"vue":3}],10:[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":51,"vuex":15,"lodash":73,"vue-hot-reload-api":39,"vue":3}],10:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -77106,7 +77824,7 @@ render._withStripped = true
         
       }
     })();
-},{"babel-runtime/helpers/extends":49,"vuex":15,"../../classes/qualifications.js":39,"./component-add-qualification.vue":45,"./component-delete-qualification.vue":46,"./component-update-qualification.vue":47,"./component-download-qualifications.vue":48,"vue-hot-reload-api":38,"vue":3}],138:[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":51,"vuex":15,"../../classes/qualifications.js":40,"./component-add-qualification.vue":46,"./component-delete-qualification.vue":47,"./component-update-qualification.vue":48,"./component-download-qualifications.vue":49,"vue-hot-reload-api":39,"vue":3}],154:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -77298,7 +78016,7 @@ render._withStripped = true
         
       }
     })();
-},{"babel-runtime/helpers/extends":49,"vuex":15,"../../../classes/enums.js":74,"vue-hot-reload-api":38,"vue":3}],139:[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":51,"vuex":15,"../../../classes/enums.js":83,"vue-hot-reload-api":39,"vue":3}],155:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -77545,7 +78263,7 @@ render._withStripped = true
         
       }
     })();
-},{"babel-runtime/helpers/extends":49,"vuex":15,"vue-hot-reload-api":38,"vue":3}],141:[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":51,"vuex":15,"vue-hot-reload-api":39,"vue":3}],156:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -77792,7 +78510,7 @@ render._withStripped = true
         
       }
     })();
-},{"babel-runtime/helpers/extends":49,"vuex":15,"vue-hot-reload-api":38,"vue":3}],140:[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":51,"vuex":15,"vue-hot-reload-api":39,"vue":3}],157:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -77820,7 +78538,7 @@ exports.default = {
         return {
             // labels_ticks: ['None', 'Soft', 'Hard'],
             // values: [STATUS_BLOCK.NONE, STATUS_BLOCK.SOFT, STATUS_BLOCK.HARD],
-            is_updating: true,
+            // is_updating: true,
             // status_block_current: undefined,
             // status_block_new: undefined,
             show_snackbar: false
@@ -77828,11 +78546,11 @@ exports.default = {
     },
 
     watch: {
-        'worker.is_blocked_hard': function workerIs_blocked_hard(value) {
-            if (value != undefined) {
-                this.is_updating = false;
-            }
-        }
+        // 'worker.is_blocked_hard': function(value) {
+        //     if(value != undefined) {
+        //         this.is_updating = false;
+        //     }
+        // }
         // 'worker.is_blocked': function(value) {
         //     this.status_block_current = value;
 
@@ -77854,6 +78572,9 @@ exports.default = {
         // },  
     },
     computed: {
+        is_updating: function is_updating() {
+            return this.worker.is_blocked_hard == undefined;
+        },
         text_tooltip: function text_tooltip() {
             return this.worker.is_blocked_hard ? 'Is blocked globally' : 'Is not blocked globally';
         },
@@ -77866,7 +78587,7 @@ exports.default = {
             var _this = this;
 
             this.set_show_progress_indicator(true);
-            this.is_updating = true;
+            // this.is_updating = true;
 
             this.update_status_block_hard({
                 worker: this.worker,
@@ -77874,7 +78595,7 @@ exports.default = {
                 // status_block_new: value_new,
                 // status_block_old: this.worker.is_blocked,
             }).then(function () {
-                _this.is_updating = false;
+                // this.is_updating = false;
                 _this.show_snackbar = true;
                 _this.set_show_progress_indicator(false);
             });
@@ -78046,7 +78767,7 @@ render._withStripped = true
         
       }
     })();
-},{"babel-runtime/helpers/extends":49,"vuex":15,"vue-hot-reload-api":38,"vue":3}],142:[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":51,"vuex":15,"vue-hot-reload-api":39,"vue":3}],158:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -78427,7 +79148,7 @@ render._withStripped = true
       
       }
     })();
-},{"babel-runtime/helpers/extends":49,"vuex":15,"_css_loader":26,"vue-hot-reload-api":38,"vue":3}],97:[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":51,"vuex":15,"_css_loader":26,"vue-hot-reload-api":39,"vue":3}],109:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -78729,7 +79450,7 @@ render._withStripped = true
       
       }
     })();
-},{"babel-runtime/helpers/extends":49,"vuex":15,"../../../classes/enums.js":74,"./component_block_worker.vue":138,"./component_block_soft_worker.vue":139,"./component_block_global_worker.vue":141,"./component_block_hard_worker.vue":140,"./component_limit_assignments.vue":142,"_css_loader":26,"vue-hot-reload-api":38,"vue":3}],58:[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":51,"vuex":15,"../../../classes/enums.js":83,"./component_block_worker.vue":154,"./component_block_soft_worker.vue":155,"./component_block_global_worker.vue":156,"./component_block_hard_worker.vue":157,"./component_limit_assignments.vue":158,"_css_loader":26,"vue-hot-reload-api":39,"vue":3}],61:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -78854,11 +79575,10 @@ exports.default = {
                 });
             }
 
-            // console.log(items)
             search = search.trim();
             if (search != '') {
                 items = items.filter(function (e) {
-                    return filter(e.name, search);
+                    return filter(e.id_worker, search);
                 });
             }
             // console.log(filter)
@@ -78868,7 +79588,6 @@ exports.default = {
         'update_status_block': 'update_status_block'
     })),
     created: function created() {
-
         // this.update_status_block({
         //     worker: {name: 'A7W013PM199BS'},
         //     status_block_new: 1,
@@ -79270,7 +79989,7 @@ render._withStripped = true
       
       }
     })();
-},{"babel-runtime/helpers/extends":49,"vuex":15,"../../../classes/enums.js":74,"./component_item_worker.vue":97,"_css_loader":26,"vue-hot-reload-api":38,"vue":3}],11:[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":51,"vuex":15,"../../../classes/enums.js":83,"./component_item_worker.vue":109,"_css_loader":26,"vue-hot-reload-api":39,"vue":3}],11:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -79293,24 +80012,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.default = {
     mixins: [_slug_project2.default],
-    name: 'app-finances',
-
+    name: 'app-workers',
     data: function data() {
         return {
-            workers_selected: [],
-            pagination: {
-                rowsPerPage: 10
-            },
-            list_headers: [{
-                text: 'Name',
-                value: 'name'
-            }],
-
-            show_dialog_policy: false,
-            policy_to_be_edited: null
-            // policy_new: new Policy({
-            //     QualificationTypeStatus: 'Active',
-            // }),
+            workers_selected: []
         };
     },
 
@@ -79368,9 +80073,9 @@ exports.default = {
         // }),
         // ...mapActions(['set_show_progress_indicator']),
     },
-    created: function created() {
-        // this.refresh_data();
-    },
+    // created: function() {
+    //     // this.refresh_data();
+    // },
 
     components: {
         ComponentListWorkers: _component_list_workers2.default
@@ -79433,7 +80138,7 @@ render._withStripped = true
         
       }
     })();
-},{"vuex":15,"./list/component_list_workers.vue":58,"../../mixins/slug_project":50,"vue-hot-reload-api":38,"vue":3}],328:[function(require,module,exports) {
+},{"vuex":15,"./list/component_list_workers.vue":61,"../../mixins/slug_project":52,"vue-hot-reload-api":39,"vue":3}],62:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -79544,7 +80249,7 @@ exports.default = {
   return _c(
     "div",
     [
-      _c("h1", [_vm._v("Limit Block")]),
+      _c("h2", { staticClass: "headline" }, [_vm._v("Limit Block")]),
       _vm._v(" "),
       _c(
         "v-layout",
@@ -79649,7 +80354,262 @@ render._withStripped = true
       
       }
     })();
-},{"babel-runtime/helpers/extends":49,"vuex":15,"vuelidate/lib/validators":203,"../../../mixins/validations":90,"_css_loader":26,"vue-hot-reload-api":38,"vue":3}],143:[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":51,"vuex":15,"vuelidate/lib/validators":229,"../../../mixins/validations":101,"_css_loader":26,"vue-hot-reload-api":39,"vue":3}],63:[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends2 = require('babel-runtime/helpers/extends');
+
+var _extends3 = _interopRequireDefault(_extends2);
+
+var _vuex = require('vuex');
+
+var _validators = require('vuelidate/lib/validators');
+
+var _validations = require('../../../mixins/validations');
+
+var _validations2 = _interopRequireDefault(_validations);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+    mixins: [_validations2.default],
+    data: function data() {
+        return {
+            // message_reject: null,
+            search: null,
+            snackbar_updated: false
+        };
+    },
+
+    methods: (0, _extends3.default)({
+        save: function save() {
+            var _this = this;
+
+            this.set_message_reject_default({
+                project: this.project_current,
+                message_reject: this.search
+            }).then(function () {
+                _this.snackbar_updated = true;
+            });
+        }
+    }, (0, _vuex.mapActions)('moduleMessagesReject', {
+        'load_messages_reject': 'load_messages_reject'
+    }), (0, _vuex.mapActions)('moduleProjects', {
+        'set_message_reject_default': 'set_message_reject_default'
+    })),
+    computed: (0, _extends3.default)({}, (0, _vuex.mapGetters)('moduleMessagesReject', {
+        'list_messages_reject': 'get_list_messages_reject'
+    }), (0, _vuex.mapGetters)('moduleProjects', {
+        'project_current': 'get_project_current'
+    })),
+    created: function created() {
+        this.load_messages_reject();
+    },
+
+    components: {},
+    validations: {}
+}; //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+      var $6f7ca5 = exports.default || module.exports;
+      if (typeof $6f7ca5 === 'function') {
+        $6f7ca5 = $6f7ca5.options;
+      }
+    
+        /* template */
+        Object.assign($6f7ca5, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c("h2", { staticClass: "headline" }, [_vm._v("Default Reject Message")]),
+      _vm._v(" "),
+      _c(
+        "v-layout",
+        { attrs: { row: "" } },
+        [
+          _c(
+            "v-flex",
+            [
+              _c(
+                "v-combobox",
+                {
+                  attrs: {
+                    value: _vm.project_current.message_reject_default,
+                    items: _vm.list_messages_reject,
+                    "search-input": _vm.search,
+                    label: "Enter your default reject message",
+                    "item-text": "message"
+                  },
+                  on: {
+                    "update:searchInput": function($event) {
+                      _vm.search = $event
+                    }
+                  }
+                },
+                [
+                  _c(
+                    "template",
+                    { slot: "no-data" },
+                    [
+                      _c(
+                        "v-list-tile",
+                        [
+                          _c(
+                            "v-list-tile-content",
+                            [
+                              _c("v-list-tile-title", [
+                                _vm._v(
+                                  "\n                                No results found. Press 'UPDATE' to create a new reject message.\n                            "
+                                )
+                              ])
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                2
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-flex",
+            { attrs: { shrink: "" } },
+            [
+              _c(
+                "v-btn",
+                {
+                  attrs: { disabled: _vm.$v.$invalid, color: "primary" },
+                  on: { click: _vm.save }
+                },
+                [_vm._v("Update")]
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-snackbar",
+        {
+          attrs: { timeout: 1500, bottom: "", color: "success" },
+          model: {
+            value: _vm.snackbar_updated,
+            callback: function($$v) {
+              _vm.snackbar_updated = $$v
+            },
+            expression: "snackbar_updated"
+          }
+        },
+        [
+          _c("v-spacer"),
+          _vm._v("\n        Updated!\n        "),
+          _c("v-spacer")
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: "data-v-6f7ca5",
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$6f7ca5', $6f7ca5);
+          } else {
+            api.reload('$6f7ca5', $6f7ca5);
+          }
+        }
+
+        
+        var reloadCSS = require('_css_loader');
+        module.hot.dispose(reloadCSS);
+        module.hot.accept(reloadCSS);
+      
+      }
+    })();
+},{"babel-runtime/helpers/extends":51,"vuex":15,"vuelidate/lib/validators":229,"../../../mixins/validations":101,"_css_loader":26,"vue-hot-reload-api":39,"vue":3}],159:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -79929,7 +80889,7 @@ render._withStripped = true
         
       }
     })();
-},{"babel-runtime/helpers/extends":49,"./component_form_settings_batch":148,"vuex":15,"lodash":63,"../../../mixins/settings_batch":137,"../../../mixins/validations":90,"vue-hot-reload-api":38,"vue":3}],144:[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":51,"./component_form_settings_batch":174,"vuex":15,"lodash":73,"../../../mixins/settings_batch":152,"../../../mixins/validations":101,"vue-hot-reload-api":39,"vue":3}],160:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -80239,7 +81199,7 @@ render._withStripped = true
         
       }
     })();
-},{"babel-runtime/helpers/extends":49,"./component_form_settings_batch":148,"../../../mixins/settings_batch":137,"../../../mixins/validations":90,"vuex":15,"lodash":63,"vuelidate/lib/validators":203,"vue-hot-reload-api":38,"vue":3}],145:[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":51,"./component_form_settings_batch":174,"../../../mixins/settings_batch":152,"../../../mixins/validations":101,"vuex":15,"lodash":73,"vuelidate/lib/validators":229,"vue-hot-reload-api":39,"vue":3}],161:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -80432,7 +81392,7 @@ render._withStripped = true
       
       }
     })();
-},{"babel-runtime/helpers/extends":49,"vuex":15,"_css_loader":26,"vue-hot-reload-api":38,"vue":3}],98:[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":51,"vuex":15,"_css_loader":26,"vue-hot-reload-api":39,"vue":3}],110:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -80763,7 +81723,7 @@ render._withStripped = true
         
       }
     })();
-},{"babel-runtime/helpers/extends":49,"./component_add_settings_batch.vue":143,"./component_edit_settings_batch.vue":144,"./component_delete_settings_batch.vue":145,"vuex":15,"lodash":63,"../../../mixins/table":87,"vue-hot-reload-api":38,"vue":3}],59:[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":51,"./component_add_settings_batch.vue":159,"./component_edit_settings_batch.vue":160,"./component_delete_settings_batch.vue":161,"vuex":15,"lodash":73,"../../../mixins/table":99,"vue-hot-reload-api":39,"vue":3}],64:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -80816,7 +81776,7 @@ exports.default = {
   return _c(
     "div",
     [
-      _c("h1", [_vm._v("Batch Profiles")]),
+      _c("h2", { staticClass: "headline" }, [_vm._v("Batch Profiles")]),
       _vm._v(" "),
       _c("component-list-settings-batch")
     ],
@@ -80856,7 +81816,87 @@ render._withStripped = true
       
       }
     })();
-},{"./component_list_settings_batch.vue":98,"vuex":15,"lodash":63,"_css_loader":26,"vue-hot-reload-api":38,"vue":3}],146:[function(require,module,exports) {
+},{"./component_list_settings_batch.vue":110,"vuex":15,"lodash":73,"_css_loader":26,"vue-hot-reload-api":39,"vue":3}],89:[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _typeof2 = require('babel-runtime/helpers/typeof');
+
+var _typeof3 = _interopRequireDefault(_typeof2);
+
+var _keys = require('babel-runtime/core-js/object/keys');
+
+var _keys2 = _interopRequireDefault(_keys);
+
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Template_Worker = function () {
+	function Template_Worker() {
+		var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+		(0, _classCallCheck3.default)(this, Template_Worker);
+
+		this.id = data.id;
+		this.name = data.name;
+		this.height_frame = data.height_frame != undefined ? data.height_frame : 800;
+		this.template = data.template;
+		this.template_assignment = data.template_assignment;
+		this.template_hit = data.template_hit;
+		this.template_global = data.template_global;
+		this.dict_parameters = data.json_dict_parameters != undefined ? JSON.parse(data.json_dict_parameters) : {};
+		this.count_parameters = (0, _keys2.default)(this.dict_parameters).length;
+	}
+
+	(0, _createClass3.default)(Template_Worker, [{
+		key: 'get_changes',
+		value: function get_changes(template_worker) {
+			var object = {};
+			for (var key in this) {
+				// if(template_worker[key] != undefined)
+				{
+					if (this[key] != template_worker[key]) {
+						if ((0, _typeof3.default)(template_worker[key]) == 'object') {
+							if (_lodash2.default.differenceBy(template_worker[key], this[key], function (value) {
+								return value['text'].toLowerCase();
+							}).length > 0 || _lodash2.default.differenceBy(this[key], template_worker[key], function (value) {
+								return value['text'].toLowerCase();
+							}).length > 0) {
+								object[key] = template_worker[key];
+							}
+						} else {
+							var value = template_worker[key];
+							if (value == undefined) {
+								object[key] = null;
+							} else {
+								object[key] = value;
+							}
+						}
+					}
+				}
+			}
+
+			return object;
+		}
+	}]);
+	return Template_Worker;
+}();
+
+exports.default = Template_Worker;
+},{"babel-runtime/helpers/typeof":148,"babel-runtime/core-js/object/keys":97,"babel-runtime/helpers/classCallCheck":94,"babel-runtime/helpers/createClass":95,"lodash":73}],162:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -80879,8 +81919,53 @@ var _validations = require('../../../mixins/validations');
 
 var _validations2 = _interopRequireDefault(_validations);
 
+var _helpers = require('../../../mixins/helpers');
+
+var _helpers2 = _interopRequireDefault(_helpers);
+
+var _template_worker = require('../../../classes/template_worker');
+
+var _template_worker2 = _interopRequireDefault(_template_worker);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -80941,13 +82026,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 // import ComponentFormSettingsBatch from './component_form_settings_batch';
 exports.default = {
-    mixins: [_validations2.default],
+    mixins: [_helpers2.default, _validations2.default],
     data: function data() {
         return {
-            name: undefined,
-            height_frame: 800,
-            template: undefined,
-
+            template_worker: new _template_worker2.default(),
             dialog: false
         };
     },
@@ -80958,22 +82040,25 @@ exports.default = {
         }
     },
     validations: {
-        name: {
-            required: _validators.required
-        },
-        height_frame: {
-            required: _validators.required,
-            minValue: (0, _validators.minValue)(1)
-        },
-        template: {
-            required: _validators.required
+        template_worker: {
+            name: {
+                required: _validators.required
+            },
+            height_frame: {
+                required: _validators.required,
+                minValue: (0, _validators.minValue)(1)
+            },
+            template: {
+                required: _validators.required
+            },
+            template_assignment: {},
+            template_hit: {},
+            template_global: {}
         }
     },
     methods: (0, _extends3.default)({
         reset: function reset() {
-            this.name = undefined;
-            this.height_frame = 800;
-            this.template = undefined;
+            this.template_worker = new _template_worker2.default();
             this.$v.$reset();
         },
         create: function create() {
@@ -80981,11 +82066,7 @@ exports.default = {
 
             if (this.$refs.form.validate()) {
                 this.create_template_worker({
-                    template_worker: {
-                        name: this.name,
-                        height_frame: this.height_frame,
-                        template: this.template
-                    },
+                    template_worker: this.template_worker,
                     project: this.project_current
                 }).then(function () {
                     _this.$emit('created');
@@ -80997,7 +82078,23 @@ exports.default = {
     }, (0, _vuex.mapActions)('moduleProjects', {
         'create_template_worker': 'create_template_worker'
     })),
-    computed: (0, _extends3.default)({}, (0, _vuex.mapGetters)('moduleProjects', {
+    computed: (0, _extends3.default)({
+        list_templates_assignment: function list_templates_assignment() {
+            return _lodash2.default.orderBy(this.project_current.templates_assignment, function (template) {
+                return template.name;
+            });
+        },
+        list_templates_hit: function list_templates_hit() {
+            return _lodash2.default.orderBy(this.project_current.templates_hit, function (template) {
+                return template.name;
+            });
+        },
+        list_templates_global: function list_templates_global() {
+            return _lodash2.default.orderBy(this.project_current.templates_global, function (template) {
+                return template.name;
+            });
+        }
+    }, (0, _vuex.mapGetters)('moduleProjects', {
         'project_current': 'get_project_current'
     })),
     components: {}
@@ -81045,7 +82142,7 @@ exports.default = {
                 "v-card-title",
                 [
                   _c("span", { staticClass: "headline" }, [
-                    _vm._v("Add Template")
+                    _vm._v("Add Worker Template")
                   ]),
                   _vm._v(" "),
                   _c("v-spacer"),
@@ -81078,13 +82175,14 @@ exports.default = {
                         attrs: {
                           required: "",
                           label: "Name",
-                          value: _vm.name,
-                          "error-messages": _vm.validation_errors.name
+                          value: _vm.template_worker.name,
+                          "error-messages":
+                            _vm.validation_errors.template_worker.name
                         },
                         on: {
                           input: function($event) {
-                            _vm.name = $event
-                            _vm.$v.name.$touch()
+                            _vm.template_worker.name = $event
+                            _vm.$v.template_worker.name.$touch()
                           }
                         }
                       }),
@@ -81093,14 +82191,17 @@ exports.default = {
                         attrs: {
                           type: "number",
                           required: "",
-                          value: _vm.height_frame,
+                          value: _vm.template_worker.height_frame,
                           label: "Height",
-                          "error-messages": _vm.validation_errors.height_frame
+                          "error-messages":
+                            _vm.validation_errors.template_worker.height_frame
                         },
                         on: {
                           input: function($event) {
-                            _vm.height_frame = _vm.try_number($event)
-                            _vm.$v.height_frame.$touch()
+                            _vm.template_worker.height_frame = _vm.try_number(
+                              $event
+                            )
+                            _vm.$v.template_worker.height_frame.$touch()
                           }
                         }
                       }),
@@ -81108,14 +82209,71 @@ exports.default = {
                       _c("v-text-field", {
                         attrs: {
                           required: "",
-                          value: _vm.template,
+                          value: _vm.template_worker.template,
                           label: "Template",
-                          "error-messages": _vm.validation_errors.template
+                          "error-messages":
+                            _vm.validation_errors.template_worker.template
                         },
                         on: {
                           input: function($event) {
-                            _vm.template = $event
-                            _vm.$v.template.$touch()
+                            _vm.template_worker.template = $event
+                            _vm.$v.template_worker.template.$touch()
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("v-select", {
+                        attrs: {
+                          value: _vm.template_worker.template_assignment,
+                          items: _vm.list_templates_assignment,
+                          label: "Assignment Template",
+                          "item-text": "name",
+                          "item-value": "id",
+                          "error-messages":
+                            _vm.validation_errors.template_worker
+                              .template_assignment
+                        },
+                        on: {
+                          input: function($event) {
+                            _vm.template_worker.template_assignment = $event
+                            _vm.$v.template_worker.template_assignment.$touch()
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("v-select", {
+                        attrs: {
+                          value: _vm.template_worker.template_hit,
+                          items: _vm.list_templates_hit,
+                          label: "HIT Template",
+                          "item-text": "name",
+                          "item-value": "id",
+                          "error-messages":
+                            _vm.validation_errors.template_worker.template_hit
+                        },
+                        on: {
+                          input: function($event) {
+                            _vm.template_worker.template_hit = $event
+                            _vm.$v.template_worker.template_hit.$touch()
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("v-select", {
+                        attrs: {
+                          value: _vm.template_worker.template_global,
+                          items: _vm.list_templates_global,
+                          label: "Global Template",
+                          "item-text": "name",
+                          "item-value": "id",
+                          "error-messages":
+                            _vm.validation_errors.template_worker
+                              .template_global
+                        },
+                        on: {
+                          input: function($event) {
+                            _vm.template_worker.template_global = $event
+                            _vm.$v.template_worker.template_global.$touch()
                           }
                         }
                       })
@@ -81178,7 +82336,470 @@ render._withStripped = true
         
       }
     })();
-},{"babel-runtime/helpers/extends":49,"vuex":15,"lodash":63,"vuelidate/lib/validators":203,"../../../mixins/validations":90,"vue-hot-reload-api":38,"vue":3}],147:[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":51,"vuex":15,"lodash":73,"vuelidate/lib/validators":229,"../../../mixins/validations":101,"../../../mixins/helpers":149,"../../../classes/template_worker":89,"vue-hot-reload-api":39,"vue":3}],163:[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends2 = require('babel-runtime/helpers/extends');
+
+var _extends3 = _interopRequireDefault(_extends2);
+
+var _validations = require('../../../mixins/validations');
+
+var _validations2 = _interopRequireDefault(_validations);
+
+var _helpers = require('../../../mixins/helpers');
+
+var _helpers2 = _interopRequireDefault(_helpers);
+
+var _vuex = require('vuex');
+
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _validators = require('vuelidate/lib/validators');
+
+var _template_worker = require('../../../classes/template_worker');
+
+var _template_worker2 = _interopRequireDefault(_template_worker);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+exports.default = {
+    mixins: [_helpers2.default, _validations2.default],
+    props: {
+        template_worker_current: {}
+    },
+    data: function data() {
+        return {
+            template_worker: new _template_worker2.default(this.template_worker_current),
+            dialog: false
+        };
+    },
+
+    methods: (0, _extends3.default)({
+        update: function update() {
+            var _this = this;
+
+            if (this.$refs.form.validate()) {
+                this.edit_template_worker({
+                    data: {
+                        template_worker_current: this.template_worker_current,
+                        template_worker_new: this.template_worker,
+                        project: this.project_current
+                    }
+                }).then(function () {
+                    _this.dialog = false;
+                    _this.$emit('edited');
+                    _this.reset();
+                });
+            }
+            // console.log(this.project_current);
+        },
+        reset: function reset() {
+            this.template_worker = new _template_worker2.default(this.template_worker_current), this.$v.$reset();
+            this.$v.$touch();
+        }
+    }, (0, _vuex.mapActions)('moduleProjects', {
+        'edit_template_worker': 'edit_template_worker'
+    })),
+    computed: (0, _extends3.default)({
+        list_templates_assignment: function list_templates_assignment() {
+            return _lodash2.default.orderBy(this.project_current.templates_assignment, function (template) {
+                return template.name;
+            });
+        },
+        list_templates_hit: function list_templates_hit() {
+            return _lodash2.default.orderBy(this.project_current.templates_hit, function (template) {
+                return template.name;
+            });
+        },
+        list_templates_global: function list_templates_global() {
+            return _lodash2.default.orderBy(this.project_current.templates_global, function (template) {
+                return template.name;
+            });
+        }
+    }, (0, _vuex.mapGetters)('moduleProjects', {
+        'project_current': 'get_project_current'
+    })),
+    watch: {
+        dialog: function dialog() {
+            this.reset();
+        }
+    },
+    validations: {
+        template_worker: {
+            name: {
+                required: _validators.required
+            },
+            height_frame: {
+                required: _validators.required,
+                minValue: (0, _validators.minValue)(1)
+            },
+            template: {
+                required: _validators.required
+            },
+            template_assignment: {},
+            template_hit: {},
+            template_global: {}
+        }
+    },
+    created: function created() {
+        this.$v.$touch();
+    },
+
+    components: {}
+};
+      var $0bbe49 = exports.default || module.exports;
+      if (typeof $0bbe49 === 'function') {
+        $0bbe49 = $0bbe49.options;
+      }
+    
+        /* template */
+        Object.assign($0bbe49, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-dialog",
+    {
+      attrs: { "max-width": "80%" },
+      model: {
+        value: _vm.dialog,
+        callback: function($$v) {
+          _vm.dialog = $$v
+        },
+        expression: "dialog"
+      }
+    },
+    [
+      _c(
+        "v-btn",
+        {
+          attrs: { slot: "activator", icon: "", small: "" },
+          on: {
+            click: function($event) {
+              _vm.dialog = true
+            }
+          },
+          slot: "activator"
+        },
+        [_c("v-icon", { attrs: { color: "warning" } }, [_vm._v("edit")])],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-card",
+        [
+          _c(
+            "v-card-title",
+            [
+              _c("span", { staticClass: "headline" }, [
+                _vm._v("Edit Worker Template")
+              ]),
+              _vm._v(" "),
+              _c("v-spacer"),
+              _vm._v(" "),
+              _c(
+                "v-btn",
+                {
+                  attrs: { icon: "" },
+                  on: {
+                    click: function($event) {
+                      _vm.dialog = false
+                    }
+                  }
+                },
+                [_c("v-icon", [_vm._v("close")])],
+                1
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-card-text",
+            [
+              _c(
+                "v-form",
+                { ref: "form", attrs: { "lazy-validation": "" } },
+                [
+                  _c("v-text-field", {
+                    attrs: {
+                      required: "",
+                      label: "Name",
+                      value: _vm.template_worker.name,
+                      "error-messages":
+                        _vm.validation_errors.template_worker.name
+                    },
+                    on: {
+                      input: function($event) {
+                        _vm.template_worker.name = $event
+                        _vm.$v.template_worker.name.$touch()
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("v-text-field", {
+                    attrs: {
+                      type: "number",
+                      required: "",
+                      value: _vm.template_worker.height_frame,
+                      label: "Height",
+                      "error-messages":
+                        _vm.validation_errors.template_worker.height_frame
+                    },
+                    on: {
+                      input: function($event) {
+                        _vm.template_worker.height_frame = _vm.try_number(
+                          $event
+                        )
+                        _vm.$v.template_worker.height_frame.$touch()
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("v-text-field", {
+                    attrs: {
+                      required: "",
+                      value: _vm.template_worker.template,
+                      label: "Template",
+                      "error-messages":
+                        _vm.validation_errors.template_worker.template
+                    },
+                    on: {
+                      input: function($event) {
+                        _vm.template_worker.template = $event
+                        _vm.$v.template_worker.template.$touch()
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("v-select", {
+                    attrs: {
+                      value: _vm.template_worker.template_assignment,
+                      items: _vm.list_templates_assignment,
+                      label: "Assignment Template",
+                      "item-text": "name",
+                      "item-value": "id",
+                      "error-messages":
+                        _vm.validation_errors.template_worker
+                          .template_assignment,
+                      clearable: ""
+                    },
+                    on: {
+                      input: function($event) {
+                        _vm.template_worker.template_assignment = $event
+                        _vm.$v.template_worker.template_assignment.$touch()
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("v-select", {
+                    attrs: {
+                      value: _vm.template_worker.template_hit,
+                      items: _vm.list_templates_hit,
+                      label: "HIT Template",
+                      "item-text": "name",
+                      "item-value": "id",
+                      "error-messages":
+                        _vm.validation_errors.template_worker.template_hit,
+                      clearable: ""
+                    },
+                    on: {
+                      input: function($event) {
+                        _vm.template_worker.template_hit = $event
+                        _vm.$v.template_worker.template_hit.$touch()
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("v-select", {
+                    attrs: {
+                      value: _vm.template_worker.template_global,
+                      items: _vm.list_templates_global,
+                      label: "Global Template",
+                      "item-text": "name",
+                      "item-value": "id",
+                      "error-messages":
+                        _vm.validation_errors.template_worker.template_global,
+                      clearable: ""
+                    },
+                    on: {
+                      input: function($event) {
+                        _vm.template_worker.template_global = $event
+                        _vm.$v.template_worker.template_global.$touch()
+                      }
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-btn",
+                {
+                  staticClass: "ml-0",
+                  attrs: { color: "primary", disabled: _vm.$v.$invalid },
+                  on: {
+                    click: function($event) {
+                      _vm.update()
+                    }
+                  }
+                },
+                [_vm._v("Update")]
+              )
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: null,
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$0bbe49', $0bbe49);
+          } else {
+            api.reload('$0bbe49', $0bbe49);
+          }
+        }
+
+        
+      }
+    })();
+},{"babel-runtime/helpers/extends":51,"../../../mixins/validations":101,"../../../mixins/helpers":149,"vuex":15,"lodash":73,"vuelidate/lib/validators":229,"../../../classes/template_worker":89,"vue-hot-reload-api":39,"vue":3}],164:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -81261,8 +82882,6 @@ exports.default = {
 //
 //
 //
-//
-//
       var $7584ec = exports.default || module.exports;
       if (typeof $7584ec === 'function') {
         $7584ec = $7584ec.options;
@@ -81275,66 +82894,60 @@ exports.default = {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "div",
+    "v-dialog",
+    {
+      attrs: { "max-width": "500" },
+      model: {
+        value: _vm.dialog,
+        callback: function($$v) {
+          _vm.dialog = $$v
+        },
+        expression: "dialog"
+      }
+    },
     [
       _c(
-        "v-dialog",
+        "v-btn",
         {
-          attrs: { "max-width": "500" },
-          model: {
-            value: _vm.dialog,
-            callback: function($$v) {
-              _vm.dialog = $$v
-            },
-            expression: "dialog"
-          }
+          attrs: { slot: "activator", icon: "", small: "" },
+          on: {
+            click: function($event) {
+              _vm.dialog = true
+            }
+          },
+          slot: "activator"
         },
+        [_c("v-icon", { attrs: { color: "error" } }, [_vm._v("delete")])],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-card",
         [
-          _c(
-            "v-btn",
-            {
-              attrs: { slot: "activator", icon: "", small: "" },
-              on: {
-                click: function($event) {
-                  _vm.dialog = true
-                }
-              },
-              slot: "activator"
-            },
-            [_c("v-icon", { attrs: { color: "error" } }, [_vm._v("delete")])],
-            1
-          ),
+          _c("v-card-text", [
+            _vm._v(
+              "\n            Do you really want to delete the assignment template '" +
+                _vm._s(_vm.template_worker.name) +
+                "'? \n        "
+            )
+          ]),
           _vm._v(" "),
           _c(
-            "v-card",
+            "v-card-actions",
             [
-              _c("v-card-text", [
-                _vm._v(
-                  "\n                Do you really want to delete the worker template '" +
-                    _vm._s(_vm.template_worker.name) +
-                    "'? \n            "
-                )
-              ]),
+              _c("v-spacer"),
               _vm._v(" "),
               _c(
-                "v-card-actions",
-                [
-                  _c("v-spacer"),
-                  _vm._v(" "),
-                  _c(
-                    "v-btn",
-                    {
-                      attrs: { flat: "", color: "error" },
-                      on: {
-                        click: function($event) {
-                          _vm.remove()
-                        }
-                      }
-                    },
-                    [_vm._v("Delete")]
-                  )
-                ],
-                1
+                "v-btn",
+                {
+                  attrs: { flat: "", color: "error" },
+                  on: {
+                    click: function($event) {
+                      _vm.remove()
+                    }
+                  }
+                },
+                [_vm._v("Delete")]
               )
             ],
             1
@@ -81379,7 +82992,7 @@ render._withStripped = true
       
       }
     })();
-},{"babel-runtime/helpers/extends":49,"vuex":15,"_css_loader":26,"vue-hot-reload-api":38,"vue":3}],99:[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":51,"vuex":15,"_css_loader":26,"vue-hot-reload-api":39,"vue":3}],111:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -81393,6 +83006,10 @@ var _extends3 = _interopRequireDefault(_extends2);
 var _component_add_template_worker = require('./component_add_template_worker.vue');
 
 var _component_add_template_worker2 = _interopRequireDefault(_component_add_template_worker);
+
+var _component_edit_template_worker = require('./component_edit_template_worker.vue');
+
+var _component_edit_template_worker2 = _interopRequireDefault(_component_edit_template_worker);
 
 var _component_delete_template_worker = require('./component_delete_template_worker.vue');
 
@@ -81410,6 +83027,119 @@ var _table2 = _interopRequireDefault(_table);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 exports.default = {
     mixins: [_table2.default],
     name: 'component-list-templates-worker',
@@ -81425,12 +83155,22 @@ exports.default = {
                 text: '#Variables',
                 value: 'count_parameters'
             }, {
+                text: 'Assignment Template',
+                value: 'template_assigmnent'
+            }, {
+                text: 'Assignment HIT',
+                value: 'template_hit'
+            }, {
+                text: 'Assignment Global',
+                value: 'template_global'
+            }, {
                 text: 'Actions',
                 value: '',
                 sortable: false
             }],
 
             snackbar_deleted: false,
+            snackbar_edited: false,
             snackbar_created: false
         };
     },
@@ -81451,74 +83191,10 @@ exports.default = {
     created: function created() {},
     components: {
         ComponentAddTemplateWorker: _component_add_template_worker2.default,
+        ComponentEditTemplateWorker: _component_edit_template_worker2.default,
         ComponentDeleteTemplateWorker: _component_delete_template_worker2.default
     }
-}; //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+};
       var $3d8ff1 = exports.default || module.exports;
       if (typeof $3d8ff1 === 'function') {
         $3d8ff1 = $3d8ff1.options;
@@ -81572,16 +83248,64 @@ exports.default = {
                       )
                     ]),
                     _vm._v(" "),
+                    _c("td", [
+                      props.item.template_assignment == undefined
+                        ? _c("span", [
+                            _vm._v(
+                              "\n                        None\n                    "
+                            )
+                          ])
+                        : _c("span", [
+                            _vm._v(
+                              "\n                        " +
+                                _vm._s(props.item.template_assignment.name) +
+                                "\n                    "
+                            )
+                          ])
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      props.item.template_hit == undefined
+                        ? _c("span", [
+                            _vm._v(
+                              "\n                        None\n                    "
+                            )
+                          ])
+                        : _c("span", [
+                            _vm._v(
+                              "\n                        " +
+                                _vm._s(props.item.template_hit.name) +
+                                "\n                    "
+                            )
+                          ])
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      props.item.template_global == undefined
+                        ? _c("span", [
+                            _vm._v(
+                              "\n                        None\n                    "
+                            )
+                          ])
+                        : _c("span", [
+                            _vm._v(
+                              "\n                        " +
+                                _vm._s(props.item.template_global.name) +
+                                "\n                    "
+                            )
+                          ])
+                    ]),
+                    _vm._v(" "),
                     _c(
                       "td",
                       [
-                        _c("component-delete-template-worker", {
+                        _c("component-edit-template-worker", {
                           key:
-                            "component-delete-template-worker-" + props.item.id,
-                          attrs: { template_worker: props.item },
+                            "component-edit-template-worker-" + props.item.id,
+                          attrs: { template_worker_current: props.item },
                           on: {
-                            deleted: function($event) {
-                              _vm.snackbar_deleted = true
+                            edited: function($event) {
+                              _vm.snackbar_edited = true
                             }
                           }
                         })
@@ -81657,6 +83381,26 @@ exports.default = {
         },
         [_c("v-spacer"), _vm._v("\n        Saved!\n        "), _c("v-spacer")],
         1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-snackbar",
+        {
+          attrs: { timeout: 1500, bottom: "", color: "success" },
+          model: {
+            value: _vm.snackbar_edited,
+            callback: function($$v) {
+              _vm.snackbar_edited = $$v
+            },
+            expression: "snackbar_edited"
+          }
+        },
+        [
+          _c("v-spacer"),
+          _vm._v("\n        Updated!\n        "),
+          _c("v-spacer")
+        ],
+        1
       )
     ],
     1
@@ -81691,7 +83435,7 @@ render._withStripped = true
         
       }
     })();
-},{"babel-runtime/helpers/extends":49,"./component_add_template_worker.vue":146,"./component_delete_template_worker.vue":147,"vuex":15,"lodash":63,"../../../mixins/table":87,"vue-hot-reload-api":38,"vue":3}],60:[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":51,"./component_add_template_worker.vue":162,"./component_edit_template_worker.vue":163,"./component_delete_template_worker.vue":164,"vuex":15,"lodash":73,"../../../mixins/table":99,"vue-hot-reload-api":39,"vue":3}],65:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -81748,7 +83492,7 @@ exports.default = {
   return _c(
     "div",
     [
-      _c("h1", [_vm._v("Worker Templates")]),
+      _c("h2", { staticClass: "headline" }, [_vm._v("Worker Templates")]),
       _vm._v(" "),
       _c("component-list-templates-worker")
     ],
@@ -81788,7 +83532,4623 @@ render._withStripped = true
       
       }
     })();
-},{"./component_list_templates_worker.vue":99,"vuex":15,"lodash":63,"_css_loader":26,"vue-hot-reload-api":38,"vue":3}],12:[function(require,module,exports) {
+},{"./component_list_templates_worker.vue":111,"vuex":15,"lodash":73,"_css_loader":26,"vue-hot-reload-api":39,"vue":3}],165:[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends2 = require('babel-runtime/helpers/extends');
+
+var _extends3 = _interopRequireDefault(_extends2);
+
+var _vuex = require('vuex');
+
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _validators = require('vuelidate/lib/validators');
+
+var _validations = require('../../../mixins/validations');
+
+var _validations2 = _interopRequireDefault(_validations);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+// import ComponentFormSettingsBatch from './component_form_settings_batch';
+exports.default = {
+    mixins: [_validations2.default],
+    data: function data() {
+        return {
+            name: undefined,
+            template: undefined,
+
+            dialog: false
+        };
+    },
+
+    watch: {
+        dialog: function dialog() {
+            this.reset();
+        }
+    },
+    validations: {
+        name: {
+            required: _validators.required
+        },
+        template: {
+            required: _validators.required,
+            contains_form_injection: function contains_form_injection(value) {
+                return value != undefined && value.indexOf(' data-inject_input_forms') >= 0;
+            }
+        }
+    },
+    methods: (0, _extends3.default)({
+        reset: function reset() {
+            this.name = undefined;
+            this.template = undefined;
+            this.$v.$reset();
+        },
+        create: function create() {
+            var _this = this;
+
+            if (this.$refs.form.validate()) {
+                this.create_template_assignment({
+                    template_assignment: {
+                        name: this.name,
+                        template: this.template
+                    },
+                    project: this.project_current
+                }).then(function () {
+                    _this.$emit('created');
+                    _this.dialog = false;
+                    _this.reset();
+                });
+            }
+        }
+    }, (0, _vuex.mapActions)('moduleProjects', {
+        'create_template_assignment': 'create_template_assignment'
+    })),
+    computed: (0, _extends3.default)({}, (0, _vuex.mapGetters)('moduleProjects', {
+        'project_current': 'get_project_current'
+    })),
+    components: {}
+};
+      var $e22c75 = exports.default || module.exports;
+      if (typeof $e22c75 === 'function') {
+        $e22c75 = $e22c75.options;
+      }
+    
+        /* template */
+        Object.assign($e22c75, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c(
+        "v-dialog",
+        {
+          model: {
+            value: _vm.dialog,
+            callback: function($$v) {
+              _vm.dialog = $$v
+            },
+            expression: "dialog"
+          }
+        },
+        [
+          _c(
+            "v-btn",
+            {
+              attrs: { slot: "activator", color: "primary", small: "" },
+              slot: "activator"
+            },
+            [_c("v-icon", [_vm._v("add")]), _vm._v(" Add Template")],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-card",
+            [
+              _c(
+                "v-card-title",
+                [
+                  _c("span", { staticClass: "headline" }, [
+                    _vm._v("Add Assignment Template")
+                  ]),
+                  _vm._v(" "),
+                  _c("v-spacer"),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { icon: "" },
+                      on: {
+                        click: function($event) {
+                          _vm.dialog = false
+                        }
+                      }
+                    },
+                    [_c("v-icon", [_vm._v("close")])],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-card-text",
+                [
+                  _c(
+                    "v-form",
+                    { ref: "form" },
+                    [
+                      _c("v-text-field", {
+                        attrs: {
+                          required: "",
+                          label: "Name",
+                          value: _vm.name,
+                          "error-messages": _vm.validation_errors.name
+                        },
+                        on: {
+                          input: function($event) {
+                            _vm.name = $event
+                            _vm.$v.name.$touch()
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("v-textarea", {
+                        attrs: {
+                          required: "",
+                          rows: "20",
+                          value: _vm.template,
+                          label: "Template",
+                          "error-messages": _vm.validation_errors.template
+                        },
+                        on: {
+                          input: function($event) {
+                            _vm.template = $event
+                            _vm.$v.template.$touch()
+                          }
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      staticClass: "ml-0",
+                      attrs: { color: "primary", disabled: _vm.$v.$invalid },
+                      on: {
+                        click: function($event) {
+                          _vm.create()
+                        }
+                      }
+                    },
+                    [_vm._v("Create")]
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: null,
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$e22c75', $e22c75);
+          } else {
+            api.reload('$e22c75', $e22c75);
+          }
+        }
+
+        
+      }
+    })();
+},{"babel-runtime/helpers/extends":51,"vuex":15,"lodash":73,"vuelidate/lib/validators":229,"../../../mixins/validations":101,"vue-hot-reload-api":39,"vue":3}],166:[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends2 = require('babel-runtime/helpers/extends');
+
+var _extends3 = _interopRequireDefault(_extends2);
+
+var _vuex = require('vuex');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+    props: {
+        template_assignment: {}
+    },
+    data: function data() {
+        return {
+            dialog: false
+        };
+    },
+
+    methods: (0, _extends3.default)({
+        remove: function remove() {
+            var _this = this;
+
+            this.delete_template_assignment({
+                project: this.project_current,
+                template_assignment: this.template_assignment,
+                callback: function callback() {
+                    _this.$emit('deleted');
+                    _this.dialog = false;
+                }
+            }).then(function () {});
+        }
+    }, (0, _vuex.mapActions)('moduleProjects', {
+        'delete_template_assignment': 'delete_template_assignment'
+    })),
+    computed: (0, _extends3.default)({}, (0, _vuex.mapGetters)('moduleProjects', {
+        'project_current': 'get_project_current'
+    })),
+    components: {}
+}; //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+      var $3b00cc = exports.default || module.exports;
+      if (typeof $3b00cc === 'function') {
+        $3b00cc = $3b00cc.options;
+      }
+    
+        /* template */
+        Object.assign($3b00cc, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-dialog",
+    {
+      attrs: { "max-width": "500" },
+      model: {
+        value: _vm.dialog,
+        callback: function($$v) {
+          _vm.dialog = $$v
+        },
+        expression: "dialog"
+      }
+    },
+    [
+      _c(
+        "v-btn",
+        {
+          attrs: { slot: "activator", icon: "", small: "" },
+          on: {
+            click: function($event) {
+              _vm.dialog = true
+            }
+          },
+          slot: "activator"
+        },
+        [_c("v-icon", { attrs: { color: "error" } }, [_vm._v("delete")])],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-card",
+        [
+          _c("v-card-text", [
+            _vm._v(
+              "\n            Do you really want to delete the worker template '" +
+                _vm._s(_vm.template_assignment.name) +
+                "'? \n        "
+            )
+          ]),
+          _vm._v(" "),
+          _c(
+            "v-card-actions",
+            [
+              _c("v-spacer"),
+              _vm._v(" "),
+              _c(
+                "v-btn",
+                {
+                  attrs: { flat: "", color: "error" },
+                  on: {
+                    click: function($event) {
+                      _vm.remove()
+                    }
+                  }
+                },
+                [_vm._v("Delete")]
+              )
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: "data-v-3b00cc",
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$3b00cc', $3b00cc);
+          } else {
+            api.reload('$3b00cc', $3b00cc);
+          }
+        }
+
+        
+        var reloadCSS = require('_css_loader');
+        module.hot.dispose(reloadCSS);
+        module.hot.accept(reloadCSS);
+      
+      }
+    })();
+},{"babel-runtime/helpers/extends":51,"vuex":15,"_css_loader":26,"vue-hot-reload-api":39,"vue":3}],90:[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _typeof2 = require('babel-runtime/helpers/typeof');
+
+var _typeof3 = _interopRequireDefault(_typeof2);
+
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Template_Assignment = function () {
+	function Template_Assignment() {
+		var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
+		(0, _classCallCheck3.default)(this, Template_Assignment);
+
+		this.id = data != undefined ? data.id : undefined;
+		this.name = data != undefined ? data.name : undefined;
+		this.template = data != undefined ? data.template : undefined;
+	}
+
+	(0, _createClass3.default)(Template_Assignment, [{
+		key: 'update',
+		value: function update(data) {
+			var _this = this;
+
+			_lodash2.default.forEach(data, function (value, key) {
+				_this[key] = value;
+			});
+		}
+	}, {
+		key: 'get_changes',
+		value: function get_changes(template_assignment) {
+			var object = {};
+			for (var key in this) {
+				// if(template_assignment[key] != undefined)
+				{
+					if (this[key] != template_assignment[key]) {
+						if ((0, _typeof3.default)(template_assignment[key]) == 'object') {
+							if (_lodash2.default.differenceBy(template_assignment[key], this[key], function (value) {
+								return value['text'].toLowerCase();
+							}).length > 0 || _lodash2.default.differenceBy(this[key], template_assignment[key], function (value) {
+								return value['text'].toLowerCase();
+							}).length > 0) {
+								object[key] = template_assignment[key];
+							}
+						} else {
+							var value = template_assignment[key];
+							if (value == undefined) {
+								object[key] = null;
+							} else {
+								object[key] = value;
+							}
+						}
+					}
+				}
+			}
+
+			return object;
+		}
+	}]);
+	return Template_Assignment;
+}();
+
+exports.default = Template_Assignment;
+},{"babel-runtime/helpers/typeof":148,"babel-runtime/helpers/classCallCheck":94,"babel-runtime/helpers/createClass":95,"lodash":73}],167:[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends2 = require('babel-runtime/helpers/extends');
+
+var _extends3 = _interopRequireDefault(_extends2);
+
+var _validations = require('../../../mixins/validations');
+
+var _validations2 = _interopRequireDefault(_validations);
+
+var _helpers = require('../../../mixins/helpers');
+
+var _helpers2 = _interopRequireDefault(_helpers);
+
+var _vuex = require('vuex');
+
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _validators = require('vuelidate/lib/validators');
+
+var _template_assignment = require('../../../classes/template_assignment');
+
+var _template_assignment2 = _interopRequireDefault(_template_assignment);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+exports.default = {
+    mixins: [_helpers2.default, _validations2.default],
+    props: {
+        template_assignment_current: {}
+    },
+    data: function data() {
+        return {
+            template_assignment: new _template_assignment2.default(this.template_assignment_current),
+            dialog: false
+        };
+    },
+
+    methods: (0, _extends3.default)({
+        update: function update(close) {
+            var _this = this;
+
+            if (this.$refs.form.validate()) {
+                this.edit_template_assignment({
+                    data: {
+                        template_assignment_current: this.template_assignment_current,
+                        template_assignment_new: this.template_assignment,
+                        project: this.project_current
+                    }
+                }).then(function () {
+                    if (close == true) {
+                        _this.dialog = false;
+                        _this.reset();
+                    }
+                    _this.$emit('edited');
+                });
+            }
+            // console.log(this.project_current);
+        },
+        reset: function reset() {
+            this.template_assignment = new _template_assignment2.default(this.template_assignment_current), this.$v.$reset();
+            this.$v.$touch();
+        }
+    }, (0, _vuex.mapActions)('moduleProjects', {
+        'edit_template_assignment': 'edit_template_assignment'
+    })),
+    computed: (0, _extends3.default)({
+        list_templates_assignment: function list_templates_assignment() {
+            return _lodash2.default.orderBy(this.project_current.templates_assignment, function (template) {
+                return template.name;
+            });
+        }
+    }, (0, _vuex.mapGetters)('moduleProjects', {
+        'project_current': 'get_project_current'
+    })),
+    watch: {
+        dialog: function dialog() {
+            this.reset();
+        }
+    },
+    validations: {
+        template_assignment: {
+            name: {
+                required: _validators.required
+            },
+            template: {
+                required: _validators.required,
+                contains_form_injection: function contains_form_injection(value) {
+                    return value != undefined && value.indexOf(' data-inject_input_forms') >= 0;
+                }
+            }
+        }
+    },
+    created: function created() {
+        this.$v.$touch();
+    },
+
+    components: {}
+};
+      var $4ad810 = exports.default || module.exports;
+      if (typeof $4ad810 === 'function') {
+        $4ad810 = $4ad810.options;
+      }
+    
+        /* template */
+        Object.assign($4ad810, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-dialog",
+    {
+      attrs: { "max-width": "80%", persistent: "" },
+      model: {
+        value: _vm.dialog,
+        callback: function($$v) {
+          _vm.dialog = $$v
+        },
+        expression: "dialog"
+      }
+    },
+    [
+      _c(
+        "v-btn",
+        {
+          attrs: { slot: "activator", icon: "", small: "" },
+          on: {
+            click: function($event) {
+              _vm.dialog = true
+            }
+          },
+          slot: "activator"
+        },
+        [_c("v-icon", { attrs: { color: "warning" } }, [_vm._v("edit")])],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-card",
+        [
+          _c(
+            "v-card-title",
+            [
+              _c("span", { staticClass: "headline" }, [
+                _vm._v("Edit Assignment Template")
+              ]),
+              _vm._v(" "),
+              _c("v-spacer"),
+              _vm._v(" "),
+              _c(
+                "v-btn",
+                {
+                  attrs: { icon: "" },
+                  on: {
+                    click: function($event) {
+                      _vm.dialog = false
+                    }
+                  }
+                },
+                [_c("v-icon", [_vm._v("close")])],
+                1
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-card-text",
+            [
+              _c(
+                "v-form",
+                { ref: "form", attrs: { "lazy-validation": "" } },
+                [
+                  _c("v-text-field", {
+                    attrs: {
+                      required: "",
+                      label: "Name",
+                      value: _vm.template_assignment.name,
+                      "error-messages":
+                        _vm.validation_errors.template_assignment.name
+                    },
+                    on: {
+                      input: function($event) {
+                        _vm.template_assignment.name = $event
+                        _vm.$v.template_assignment.name.$touch()
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("v-textarea", {
+                    attrs: {
+                      required: "",
+                      rows: "20",
+                      value: _vm.template_assignment.template,
+                      label: "Template",
+                      "error-messages":
+                        _vm.validation_errors.template_assignment.template
+                    },
+                    on: {
+                      input: function($event) {
+                        _vm.template_assignment.template = $event
+                        _vm.$v.template_assignment.template.$touch()
+                      }
+                    }
+                  })
+                ],
+                1
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-card-actions",
+            [
+              _c(
+                "v-btn",
+                {
+                  staticClass: "ml-0",
+                  attrs: { flat: "", color: "înfo", disabled: _vm.$v.$invalid },
+                  on: {
+                    click: function($event) {
+                      _vm.dialog = false
+                      _vm.reset()
+                    }
+                  }
+                },
+                [_vm._v("Cancel")]
+              ),
+              _vm._v(" "),
+              _c("v-spacer"),
+              _vm._v(" "),
+              _c(
+                "v-btn",
+                {
+                  staticClass: "ml-0",
+                  attrs: {
+                    flat: "",
+                    color: "primary",
+                    disabled: _vm.$v.$invalid
+                  },
+                  on: {
+                    click: function($event) {
+                      _vm.update()
+                    }
+                  }
+                },
+                [_vm._v("Save")]
+              ),
+              _vm._v(" "),
+              _c(
+                "v-btn",
+                {
+                  staticClass: "ml-0",
+                  attrs: {
+                    flat: "",
+                    color: "success",
+                    disabled: _vm.$v.$invalid
+                  },
+                  on: {
+                    click: function($event) {
+                      _vm.update(true)
+                    }
+                  }
+                },
+                [_vm._v("Save and Close")]
+              )
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: null,
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$4ad810', $4ad810);
+          } else {
+            api.reload('$4ad810', $4ad810);
+          }
+        }
+
+        
+      }
+    })();
+},{"babel-runtime/helpers/extends":51,"../../../mixins/validations":101,"../../../mixins/helpers":149,"vuex":15,"lodash":73,"vuelidate/lib/validators":229,"../../../classes/template_assignment":90,"vue-hot-reload-api":39,"vue":3}],112:[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends2 = require('babel-runtime/helpers/extends');
+
+var _extends3 = _interopRequireDefault(_extends2);
+
+var _component_add_template_assignment = require('./component_add_template_assignment.vue');
+
+var _component_add_template_assignment2 = _interopRequireDefault(_component_add_template_assignment);
+
+var _component_delete_template_assignment = require('./component_delete_template_assignment.vue');
+
+var _component_delete_template_assignment2 = _interopRequireDefault(_component_delete_template_assignment);
+
+var _component_edit_template_assignment = require('./component_edit_template_assignment.vue');
+
+var _component_edit_template_assignment2 = _interopRequireDefault(_component_edit_template_assignment);
+
+var _vuex = require('vuex');
+
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _table = require('../../../mixins/table');
+
+var _table2 = _interopRequireDefault(_table);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+exports.default = {
+    mixins: [_table2.default],
+    name: 'component-list-templates-assignment',
+    data: function data() {
+        return {
+            list_headers: [{
+                text: 'Name',
+                value: 'name'
+            }, {
+                text: 'Actions',
+                value: '',
+                sortable: false
+            }],
+
+            snackbar_deleted: false,
+            snackbar_edited: false,
+            snackbar_created: false
+        };
+    },
+
+    computed: (0, _extends3.default)({
+        list_templates_assignment: function list_templates_assignment() {
+            // return [{name:"dawd"}]
+            if (this.project_current.templates_assignment == null) return [];
+
+            return _lodash2.default.orderBy(this.project_current.templates_assignment, function (template) {
+                return template.name;
+            });
+        }
+    }, (0, _vuex.mapGetters)('moduleProjects', {
+        'project_current': 'get_project_current'
+    })),
+    methods: {},
+    created: function created() {},
+    components: {
+        ComponentAddTemplateAssignment: _component_add_template_assignment2.default,
+        ComponentDeleteTemplateAssignment: _component_delete_template_assignment2.default,
+        ComponentEditTemplateAssignment: _component_edit_template_assignment2.default
+    }
+};
+      var $f7d907 = exports.default || module.exports;
+      if (typeof $f7d907 === 'function') {
+        $f7d907 = $f7d907.options;
+      }
+    
+        /* template */
+        Object.assign($f7d907, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c(
+        "v-data-table",
+        {
+          attrs: {
+            headers: _vm.list_headers,
+            items: _vm.list_templates_assignment
+          },
+          scopedSlots: _vm._u([
+            {
+              key: "items",
+              fn: function(props) {
+                return [
+                  _c("tr", [
+                    _c("td", [
+                      _vm._v(
+                        "\n                    " +
+                          _vm._s(props.item.name) +
+                          "\n                "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "td",
+                      [
+                        _c("component-edit-template-assignment", {
+                          key:
+                            "component-edit-template-assignment-" +
+                            props.item.id,
+                          attrs: { template_assignment_current: props.item },
+                          on: {
+                            edited: function($event) {
+                              _vm.snackbar_edited = true
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("component-delete-template-assignment", {
+                          key:
+                            "component-delete-template-assignment-" +
+                            props.item.id,
+                          attrs: { template_assignment: props.item },
+                          on: {
+                            deleted: function($event) {
+                              _vm.snackbar_deleted = true
+                            }
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  ])
+                ]
+              }
+            }
+          ])
+        },
+        [
+          _c("template", { slot: "no-data" }, [
+            _c("div", { staticClass: "text-xs-center" }, [
+              _vm._v(
+                "\n                There exist no templates!\n            "
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c("template", { slot: "footer" }, [
+            _c(
+              "td",
+              { attrs: { colspan: "100%" } },
+              [
+                _c("component-add-template-assignment", {
+                  on: {
+                    created: function($event) {
+                      _vm.snackbar_created = true
+                    }
+                  }
+                })
+              ],
+              1
+            )
+          ])
+        ],
+        2
+      ),
+      _vm._v(" "),
+      _c(
+        "v-snackbar",
+        {
+          attrs: { timeout: 1500, bottom: "" },
+          model: {
+            value: _vm.snackbar_deleted,
+            callback: function($$v) {
+              _vm.snackbar_deleted = $$v
+            },
+            expression: "snackbar_deleted"
+          }
+        },
+        [
+          _c("v-spacer"),
+          _vm._v("\n        Deleted!\n        "),
+          _c("v-spacer")
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-snackbar",
+        {
+          attrs: { timeout: 1500, bottom: "", color: "success" },
+          model: {
+            value: _vm.snackbar_created,
+            callback: function($$v) {
+              _vm.snackbar_created = $$v
+            },
+            expression: "snackbar_created"
+          }
+        },
+        [_c("v-spacer"), _vm._v("\n        Saved!\n        "), _c("v-spacer")],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-snackbar",
+        {
+          attrs: { timeout: 1500, bottom: "", color: "success" },
+          model: {
+            value: _vm.snackbar_edited,
+            callback: function($$v) {
+              _vm.snackbar_edited = $$v
+            },
+            expression: "snackbar_edited"
+          }
+        },
+        [
+          _c("v-spacer"),
+          _vm._v("\n        Updated!\n        "),
+          _c("v-spacer")
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: null,
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$f7d907', $f7d907);
+          } else {
+            api.reload('$f7d907', $f7d907);
+          }
+        }
+
+        
+      }
+    })();
+},{"babel-runtime/helpers/extends":51,"./component_add_template_assignment.vue":165,"./component_delete_template_assignment.vue":166,"./component_edit_template_assignment.vue":167,"vuex":15,"lodash":73,"../../../mixins/table":99,"vue-hot-reload-api":39,"vue":3}],66:[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _component_list_templates_assignment = require('./component_list_templates_assignment.vue');
+
+var _component_list_templates_assignment2 = _interopRequireDefault(_component_list_templates_assignment);
+
+var _vuex = require('vuex');
+
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// import settings_batch from '../../../mixins/settings_batch';
+exports.default = {
+    // mixins: [
+    //     settings_batch,
+    // ],
+    name: 'component-templates-assignment',
+    data: function data() {
+        return {
+            // search: undefined,
+        };
+    },
+
+    methods: {},
+    computed: {},
+    components: {
+        ComponentListTemplatesAssignment: _component_list_templates_assignment2.default
+    }
+}; //
+//
+//
+//
+//
+//
+//
+      var $ad949d = exports.default || module.exports;
+      if (typeof $ad949d === 'function') {
+        $ad949d = $ad949d.options;
+      }
+    
+        /* template */
+        Object.assign($ad949d, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c("h2", { staticClass: "headline" }, [_vm._v("Assignment Templates")]),
+      _vm._v(" "),
+      _c("component-list-templates-assignment")
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: "data-v-ad949d",
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$ad949d', $ad949d);
+          } else {
+            api.reload('$ad949d', $ad949d);
+          }
+        }
+
+        
+        var reloadCSS = require('_css_loader');
+        module.hot.dispose(reloadCSS);
+        module.hot.accept(reloadCSS);
+      
+      }
+    })();
+},{"./component_list_templates_assignment.vue":112,"vuex":15,"lodash":73,"_css_loader":26,"vue-hot-reload-api":39,"vue":3}],168:[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends2 = require('babel-runtime/helpers/extends');
+
+var _extends3 = _interopRequireDefault(_extends2);
+
+var _vuex = require('vuex');
+
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _validators = require('vuelidate/lib/validators');
+
+var _validations = require('../../../mixins/validations');
+
+var _validations2 = _interopRequireDefault(_validations);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+// import ComponentFormSettingsBatch from './component_form_settings_batch';
+exports.default = {
+    mixins: [_validations2.default],
+    data: function data() {
+        return {
+            name: undefined,
+            template: undefined,
+
+            dialog: false
+        };
+    },
+
+    watch: {
+        dialog: function dialog() {
+            this.reset();
+        }
+    },
+    validations: {
+        name: {
+            required: _validators.required
+        },
+        template: {
+            required: _validators.required
+        }
+    },
+    methods: (0, _extends3.default)({
+        reset: function reset() {
+            this.name = undefined;
+            this.template = undefined;
+            this.$v.$reset();
+        },
+        create: function create() {
+            var _this = this;
+
+            if (this.$refs.form.validate()) {
+                this.create_template_global({
+                    template_global: {
+                        name: this.name,
+                        template: this.template
+                    },
+                    project: this.project_current
+                }).then(function () {
+                    _this.$emit('created');
+                    _this.dialog = false;
+                    _this.reset();
+                });
+            }
+        }
+    }, (0, _vuex.mapActions)('moduleProjects', {
+        'create_template_global': 'create_template_global'
+    })),
+    computed: (0, _extends3.default)({}, (0, _vuex.mapGetters)('moduleProjects', {
+        'project_current': 'get_project_current'
+    })),
+    components: {}
+};
+      var $ea5d6f = exports.default || module.exports;
+      if (typeof $ea5d6f === 'function') {
+        $ea5d6f = $ea5d6f.options;
+      }
+    
+        /* template */
+        Object.assign($ea5d6f, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c(
+        "v-dialog",
+        {
+          model: {
+            value: _vm.dialog,
+            callback: function($$v) {
+              _vm.dialog = $$v
+            },
+            expression: "dialog"
+          }
+        },
+        [
+          _c(
+            "v-btn",
+            {
+              attrs: { slot: "activator", color: "primary", small: "" },
+              slot: "activator"
+            },
+            [_c("v-icon", [_vm._v("add")]), _vm._v(" Add Template")],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-card",
+            [
+              _c(
+                "v-card-title",
+                [
+                  _c("span", { staticClass: "headline" }, [
+                    _vm._v("Add Global Template")
+                  ]),
+                  _vm._v(" "),
+                  _c("v-spacer"),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { icon: "" },
+                      on: {
+                        click: function($event) {
+                          _vm.dialog = false
+                        }
+                      }
+                    },
+                    [_c("v-icon", [_vm._v("close")])],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-card-text",
+                [
+                  _c(
+                    "v-form",
+                    { ref: "form" },
+                    [
+                      _c("v-text-field", {
+                        attrs: {
+                          required: "",
+                          label: "Name",
+                          value: _vm.name,
+                          "error-messages": _vm.validation_errors.name
+                        },
+                        on: {
+                          input: function($event) {
+                            _vm.name = $event
+                            _vm.$v.name.$touch()
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("v-textarea", {
+                        attrs: {
+                          required: "",
+                          rows: "20",
+                          value: _vm.template,
+                          label: "Template",
+                          "error-messages": _vm.validation_errors.template
+                        },
+                        on: {
+                          input: function($event) {
+                            _vm.template = $event
+                            _vm.$v.template.$touch()
+                          }
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      staticClass: "ml-0",
+                      attrs: { color: "primary", disabled: _vm.$v.$invalid },
+                      on: {
+                        click: function($event) {
+                          _vm.create()
+                        }
+                      }
+                    },
+                    [_vm._v("Create")]
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: null,
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$ea5d6f', $ea5d6f);
+          } else {
+            api.reload('$ea5d6f', $ea5d6f);
+          }
+        }
+
+        
+      }
+    })();
+},{"babel-runtime/helpers/extends":51,"vuex":15,"lodash":73,"vuelidate/lib/validators":229,"../../../mixins/validations":101,"vue-hot-reload-api":39,"vue":3}],169:[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends2 = require('babel-runtime/helpers/extends');
+
+var _extends3 = _interopRequireDefault(_extends2);
+
+var _vuex = require('vuex');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+    props: {
+        template_global: {}
+    },
+    data: function data() {
+        return {
+            dialog: false
+        };
+    },
+
+    methods: (0, _extends3.default)({
+        remove: function remove() {
+            var _this = this;
+
+            this.delete_template_global({
+                project: this.project_current,
+                template_global: this.template_global,
+                callback: function callback() {
+                    _this.$emit('deleted');
+                    _this.dialog = false;
+                }
+            }).then(function () {});
+        }
+    }, (0, _vuex.mapActions)('moduleProjects', {
+        'delete_template_global': 'delete_template_global'
+    })),
+    computed: (0, _extends3.default)({}, (0, _vuex.mapGetters)('moduleProjects', {
+        'project_current': 'get_project_current'
+    })),
+    components: {}
+}; //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+      var $37b50f = exports.default || module.exports;
+      if (typeof $37b50f === 'function') {
+        $37b50f = $37b50f.options;
+      }
+    
+        /* template */
+        Object.assign($37b50f, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-dialog",
+    {
+      attrs: { "max-width": "500" },
+      model: {
+        value: _vm.dialog,
+        callback: function($$v) {
+          _vm.dialog = $$v
+        },
+        expression: "dialog"
+      }
+    },
+    [
+      _c(
+        "v-btn",
+        {
+          attrs: { slot: "activator", icon: "", small: "" },
+          on: {
+            click: function($event) {
+              _vm.dialog = true
+            }
+          },
+          slot: "activator"
+        },
+        [_c("v-icon", { attrs: { color: "error" } }, [_vm._v("delete")])],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-card",
+        [
+          _c("v-card-text", [
+            _vm._v(
+              "\n            Do you really want to delete the global template '" +
+                _vm._s(_vm.template_global.name) +
+                "'? \n        "
+            )
+          ]),
+          _vm._v(" "),
+          _c(
+            "v-card-actions",
+            [
+              _c("v-spacer"),
+              _vm._v(" "),
+              _c(
+                "v-btn",
+                {
+                  attrs: { flat: "", color: "error" },
+                  on: {
+                    click: function($event) {
+                      _vm.remove()
+                    }
+                  }
+                },
+                [_vm._v("Delete")]
+              )
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: "data-v-37b50f",
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$37b50f', $37b50f);
+          } else {
+            api.reload('$37b50f', $37b50f);
+          }
+        }
+
+        
+        var reloadCSS = require('_css_loader');
+        module.hot.dispose(reloadCSS);
+        module.hot.accept(reloadCSS);
+      
+      }
+    })();
+},{"babel-runtime/helpers/extends":51,"vuex":15,"_css_loader":26,"vue-hot-reload-api":39,"vue":3}],273:[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _typeof2 = require('babel-runtime/helpers/typeof');
+
+var _typeof3 = _interopRequireDefault(_typeof2);
+
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Template_Global = function () {
+	function Template_Global() {
+		var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
+		(0, _classCallCheck3.default)(this, Template_Global);
+
+		this.id = data != undefined ? data.id : undefined;
+		this.name = data != undefined ? data.name : undefined;
+		this.template = data != undefined ? data.template : undefined;
+	}
+
+	(0, _createClass3.default)(Template_Global, [{
+		key: 'update',
+		value: function update(data) {
+			var _this = this;
+
+			_lodash2.default.forEach(data, function (value, key) {
+				_this[key] = value;
+			});
+		}
+	}, {
+		key: 'get_changes',
+		value: function get_changes(template_global) {
+			var object = {};
+			for (var key in this) {
+				// if(template_global[key] != undefined)
+				{
+					if (this[key] != template_global[key]) {
+						if ((0, _typeof3.default)(template_global[key]) == 'object') {
+							if (_lodash2.default.differenceBy(template_global[key], this[key], function (value) {
+								return value['text'].toLowerCase();
+							}).length > 0 || _lodash2.default.differenceBy(this[key], template_global[key], function (value) {
+								return value['text'].toLowerCase();
+							}).length > 0) {
+								object[key] = template_global[key];
+							}
+						} else {
+							var value = template_global[key];
+							if (value == undefined) {
+								object[key] = null;
+							} else {
+								object[key] = value;
+							}
+						}
+					}
+				}
+			}
+
+			return object;
+		}
+	}]);
+	return Template_Global;
+}();
+
+exports.default = Template_Global;
+},{"babel-runtime/helpers/typeof":148,"babel-runtime/helpers/classCallCheck":94,"babel-runtime/helpers/createClass":95,"lodash":73}],170:[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends2 = require('babel-runtime/helpers/extends');
+
+var _extends3 = _interopRequireDefault(_extends2);
+
+var _validations = require('../../../mixins/validations');
+
+var _validations2 = _interopRequireDefault(_validations);
+
+var _helpers = require('../../../mixins/helpers');
+
+var _helpers2 = _interopRequireDefault(_helpers);
+
+var _vuex = require('vuex');
+
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _validators = require('vuelidate/lib/validators');
+
+var _template_global = require('../../../classes/template_global');
+
+var _template_global2 = _interopRequireDefault(_template_global);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+exports.default = {
+    mixins: [_helpers2.default, _validations2.default],
+    props: {
+        template_global_current: {}
+    },
+    data: function data() {
+        return {
+            template_global: new _template_global2.default(this.template_global_current),
+            dialog: false
+        };
+    },
+
+    methods: (0, _extends3.default)({
+        update: function update(close) {
+            var _this = this;
+
+            if (this.$refs.form.validate()) {
+                this.edit_template_global({
+                    data: {
+                        template_global_current: this.template_global_current,
+                        template_global_new: this.template_global,
+                        project: this.project_current
+                    }
+                }).then(function () {
+                    if (close == true) {
+                        _this.dialog = false;
+                        _this.reset();
+                    }
+                    _this.$emit('edited');
+                });
+            }
+            // console.log(this.project_current);
+        },
+        reset: function reset() {
+            this.template_global = new _template_global2.default(this.template_global_current), this.$v.$reset();
+            this.$v.$touch();
+        }
+    }, (0, _vuex.mapActions)('moduleProjects', {
+        'edit_template_global': 'edit_template_global'
+    })),
+    computed: (0, _extends3.default)({
+        list_templates_global: function list_templates_global() {
+            return _lodash2.default.orderBy(this.project_current.templates_global, function (template) {
+                return template.name;
+            });
+        }
+    }, (0, _vuex.mapGetters)('moduleProjects', {
+        'project_current': 'get_project_current'
+    })),
+    watch: {
+        dialog: function dialog() {
+            this.reset();
+        }
+    },
+    validations: {
+        template_global: {
+            name: {
+                required: _validators.required
+            },
+            template: {
+                required: _validators.required
+            }
+        }
+    },
+    created: function created() {
+        this.$v.$touch();
+    },
+
+    components: {}
+};
+      var $41b339 = exports.default || module.exports;
+      if (typeof $41b339 === 'function') {
+        $41b339 = $41b339.options;
+      }
+    
+        /* template */
+        Object.assign($41b339, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-dialog",
+    {
+      attrs: { "max-width": "80%", persistent: "" },
+      model: {
+        value: _vm.dialog,
+        callback: function($$v) {
+          _vm.dialog = $$v
+        },
+        expression: "dialog"
+      }
+    },
+    [
+      _c(
+        "v-btn",
+        {
+          attrs: { slot: "activator", icon: "", small: "" },
+          on: {
+            click: function($event) {
+              _vm.dialog = true
+            }
+          },
+          slot: "activator"
+        },
+        [_c("v-icon", { attrs: { color: "warning" } }, [_vm._v("edit")])],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-card",
+        [
+          _c(
+            "v-card-title",
+            [
+              _c("span", { staticClass: "headline" }, [
+                _vm._v("Edit Global Template")
+              ]),
+              _vm._v(" "),
+              _c("v-spacer"),
+              _vm._v(" "),
+              _c(
+                "v-btn",
+                {
+                  attrs: { icon: "" },
+                  on: {
+                    click: function($event) {
+                      _vm.dialog = false
+                    }
+                  }
+                },
+                [_c("v-icon", [_vm._v("close")])],
+                1
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-card-text",
+            [
+              _c(
+                "v-form",
+                { ref: "form", attrs: { "lazy-validation": "" } },
+                [
+                  _c("v-text-field", {
+                    attrs: {
+                      required: "",
+                      label: "Name",
+                      value: _vm.template_global.name,
+                      "error-messages":
+                        _vm.validation_errors.template_global.name
+                    },
+                    on: {
+                      input: function($event) {
+                        _vm.template_global.name = $event
+                        _vm.$v.template_global.name.$touch()
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("v-textarea", {
+                    attrs: {
+                      required: "",
+                      rows: "20",
+                      value: _vm.template_global.template,
+                      label: "Template",
+                      "error-messages":
+                        _vm.validation_errors.template_global.template
+                    },
+                    on: {
+                      input: function($event) {
+                        _vm.template_global.template = $event
+                        _vm.$v.template_global.template.$touch()
+                      }
+                    }
+                  })
+                ],
+                1
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-card-actions",
+            [
+              _c(
+                "v-btn",
+                {
+                  staticClass: "ml-0",
+                  attrs: { flat: "", color: "înfo", disabled: _vm.$v.$invalid },
+                  on: {
+                    click: function($event) {
+                      _vm.dialog = false
+                      _vm.reset()
+                    }
+                  }
+                },
+                [_vm._v("Cancel")]
+              ),
+              _vm._v(" "),
+              _c("v-spacer"),
+              _vm._v(" "),
+              _c(
+                "v-btn",
+                {
+                  staticClass: "ml-0",
+                  attrs: {
+                    flat: "",
+                    color: "primary",
+                    disabled: _vm.$v.$invalid
+                  },
+                  on: {
+                    click: function($event) {
+                      _vm.update()
+                    }
+                  }
+                },
+                [_vm._v("Save")]
+              ),
+              _vm._v(" "),
+              _c(
+                "v-btn",
+                {
+                  staticClass: "ml-0",
+                  attrs: {
+                    flat: "",
+                    color: "success",
+                    disabled: _vm.$v.$invalid
+                  },
+                  on: {
+                    click: function($event) {
+                      _vm.update(true)
+                    }
+                  }
+                },
+                [_vm._v("Save and Close")]
+              )
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: null,
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$41b339', $41b339);
+          } else {
+            api.reload('$41b339', $41b339);
+          }
+        }
+
+        
+      }
+    })();
+},{"babel-runtime/helpers/extends":51,"../../../mixins/validations":101,"../../../mixins/helpers":149,"vuex":15,"lodash":73,"vuelidate/lib/validators":229,"../../../classes/template_global":273,"vue-hot-reload-api":39,"vue":3}],113:[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends2 = require('babel-runtime/helpers/extends');
+
+var _extends3 = _interopRequireDefault(_extends2);
+
+var _component_add_template_global = require('./component_add_template_global.vue');
+
+var _component_add_template_global2 = _interopRequireDefault(_component_add_template_global);
+
+var _component_delete_template_global = require('./component_delete_template_global.vue');
+
+var _component_delete_template_global2 = _interopRequireDefault(_component_delete_template_global);
+
+var _component_edit_template_global = require('./component_edit_template_global.vue');
+
+var _component_edit_template_global2 = _interopRequireDefault(_component_edit_template_global);
+
+var _vuex = require('vuex');
+
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _table = require('../../../mixins/table');
+
+var _table2 = _interopRequireDefault(_table);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+exports.default = {
+    mixins: [_table2.default],
+    name: 'component-list-templates-global',
+    data: function data() {
+        return {
+            list_headers: [{
+                text: 'Name',
+                value: 'name'
+            }, {
+                text: 'Actions',
+                value: '',
+                sortable: false
+            }],
+
+            snackbar_deleted: false,
+            snackbar_edited: false,
+            snackbar_created: false
+        };
+    },
+
+    computed: (0, _extends3.default)({
+        list_templates_global: function list_templates_global() {
+            // return [{name:"dawd"}]
+            if (this.project_current.templates_global == null) return [];
+
+            return _lodash2.default.orderBy(this.project_current.templates_global, function (template) {
+                return template.name;
+            });
+        }
+    }, (0, _vuex.mapGetters)('moduleProjects', {
+        'project_current': 'get_project_current'
+    })),
+    methods: {},
+    created: function created() {},
+    components: {
+        ComponentAddTemplateGlobal: _component_add_template_global2.default,
+        ComponentDeleteTemplateGlobal: _component_delete_template_global2.default,
+        ComponentEditTemplateGlobal: _component_edit_template_global2.default
+    }
+};
+      var $c881cc = exports.default || module.exports;
+      if (typeof $c881cc === 'function') {
+        $c881cc = $c881cc.options;
+      }
+    
+        /* template */
+        Object.assign($c881cc, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c(
+        "v-data-table",
+        {
+          attrs: {
+            headers: _vm.list_headers,
+            items: _vm.list_templates_global
+          },
+          scopedSlots: _vm._u([
+            {
+              key: "items",
+              fn: function(props) {
+                return [
+                  _c("tr", [
+                    _c("td", [
+                      _vm._v(
+                        "\n                    " +
+                          _vm._s(props.item.name) +
+                          "\n                "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "td",
+                      [
+                        _c("component-edit-template-global", {
+                          key:
+                            "component-edit-template-global-" + props.item.id,
+                          attrs: { template_global_current: props.item },
+                          on: {
+                            edited: function($event) {
+                              _vm.snackbar_edited = true
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("component-delete-template-global", {
+                          key:
+                            "component-delete-template-global-" + props.item.id,
+                          attrs: { template_global: props.item },
+                          on: {
+                            deleted: function($event) {
+                              _vm.snackbar_deleted = true
+                            }
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  ])
+                ]
+              }
+            }
+          ])
+        },
+        [
+          _c("template", { slot: "no-data" }, [
+            _c("div", { staticClass: "text-xs-center" }, [
+              _vm._v(
+                "\n                There exist no templates!\n            "
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c("template", { slot: "footer" }, [
+            _c(
+              "td",
+              { attrs: { colspan: "100%" } },
+              [
+                _c("component-add-template-global", {
+                  on: {
+                    created: function($event) {
+                      _vm.snackbar_created = true
+                    }
+                  }
+                })
+              ],
+              1
+            )
+          ])
+        ],
+        2
+      ),
+      _vm._v(" "),
+      _c(
+        "v-snackbar",
+        {
+          attrs: { timeout: 1500, bottom: "" },
+          model: {
+            value: _vm.snackbar_deleted,
+            callback: function($$v) {
+              _vm.snackbar_deleted = $$v
+            },
+            expression: "snackbar_deleted"
+          }
+        },
+        [
+          _c("v-spacer"),
+          _vm._v("\n        Deleted!\n        "),
+          _c("v-spacer")
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-snackbar",
+        {
+          attrs: { timeout: 1500, bottom: "", color: "success" },
+          model: {
+            value: _vm.snackbar_created,
+            callback: function($$v) {
+              _vm.snackbar_created = $$v
+            },
+            expression: "snackbar_created"
+          }
+        },
+        [_c("v-spacer"), _vm._v("\n        Saved!\n        "), _c("v-spacer")],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-snackbar",
+        {
+          attrs: { timeout: 1500, bottom: "", color: "success" },
+          model: {
+            value: _vm.snackbar_edited,
+            callback: function($$v) {
+              _vm.snackbar_edited = $$v
+            },
+            expression: "snackbar_edited"
+          }
+        },
+        [
+          _c("v-spacer"),
+          _vm._v("\n        Updated!\n        "),
+          _c("v-spacer")
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: null,
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$c881cc', $c881cc);
+          } else {
+            api.reload('$c881cc', $c881cc);
+          }
+        }
+
+        
+      }
+    })();
+},{"babel-runtime/helpers/extends":51,"./component_add_template_global.vue":168,"./component_delete_template_global.vue":169,"./component_edit_template_global.vue":170,"vuex":15,"lodash":73,"../../../mixins/table":99,"vue-hot-reload-api":39,"vue":3}],67:[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _component_list_templates_global = require('./component_list_templates_global.vue');
+
+var _component_list_templates_global2 = _interopRequireDefault(_component_list_templates_global);
+
+var _vuex = require('vuex');
+
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// import settings_batch from '../../../mixins/settings_batch';
+exports.default = {
+    // mixins: [
+    //     settings_batch,
+    // ],
+    name: 'component-templates-global',
+    data: function data() {
+        return {
+            // search: undefined,
+        };
+    },
+
+    methods: {},
+    computed: {},
+    components: {
+        ComponentListTemplatesGlobal: _component_list_templates_global2.default
+    }
+}; //
+//
+//
+//
+//
+//
+//
+      var $36d113 = exports.default || module.exports;
+      if (typeof $36d113 === 'function') {
+        $36d113 = $36d113.options;
+      }
+    
+        /* template */
+        Object.assign($36d113, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c("h2", { staticClass: "headline" }, [_vm._v("Global Templates")]),
+      _vm._v(" "),
+      _c("component-list-templates-global")
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: "data-v-36d113",
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$36d113', $36d113);
+          } else {
+            api.reload('$36d113', $36d113);
+          }
+        }
+
+        
+        var reloadCSS = require('_css_loader');
+        module.hot.dispose(reloadCSS);
+        module.hot.accept(reloadCSS);
+      
+      }
+    })();
+},{"./component_list_templates_global.vue":113,"vuex":15,"lodash":73,"_css_loader":26,"vue-hot-reload-api":39,"vue":3}],171:[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends2 = require('babel-runtime/helpers/extends');
+
+var _extends3 = _interopRequireDefault(_extends2);
+
+var _vuex = require('vuex');
+
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _validators = require('vuelidate/lib/validators');
+
+var _validations = require('../../../mixins/validations');
+
+var _validations2 = _interopRequireDefault(_validations);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+// import ComponentFormSettingsBatch from './component_form_settings_batch';
+exports.default = {
+  mixins: [_validations2.default],
+  data: function data() {
+    return {
+      name: undefined,
+      template: undefined,
+
+      dialog: false
+    };
+  },
+
+  watch: {
+    dialog: function dialog() {
+      this.reset();
+    }
+  },
+  validations: {
+    name: {
+      required: _validators.required
+    },
+    template: {
+      required: _validators.required,
+      contains_injection_assignments: function contains_injection_assignments(value) {
+        return value != undefined && value.indexOf(' data-inject_assignments') >= 0;
+      }
+    }
+  },
+  methods: (0, _extends3.default)({
+    reset: function reset() {
+      this.name = undefined;
+      this.template = undefined;
+      this.$v.$reset();
+    },
+    create: function create() {
+      var _this = this;
+
+      if (this.$refs.form.validate()) {
+        this.create_template_hit({
+          template_hit: {
+            name: this.name,
+            template: this.template
+          },
+          project: this.project_current
+        }).then(function () {
+          _this.$emit('created');
+          _this.dialog = false;
+          _this.reset();
+        });
+      }
+    }
+  }, (0, _vuex.mapActions)('moduleProjects', {
+    'create_template_hit': 'create_template_hit'
+  })),
+  computed: (0, _extends3.default)({}, (0, _vuex.mapGetters)('moduleProjects', {
+    'project_current': 'get_project_current'
+  })),
+  components: {}
+};
+      var $0153d8 = exports.default || module.exports;
+      if (typeof $0153d8 === 'function') {
+        $0153d8 = $0153d8.options;
+      }
+    
+        /* template */
+        Object.assign($0153d8, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c(
+        "v-dialog",
+        {
+          model: {
+            value: _vm.dialog,
+            callback: function($$v) {
+              _vm.dialog = $$v
+            },
+            expression: "dialog"
+          }
+        },
+        [
+          _c(
+            "v-btn",
+            {
+              attrs: { slot: "activator", color: "primary", small: "" },
+              slot: "activator"
+            },
+            [_c("v-icon", [_vm._v("add")]), _vm._v(" Add Template")],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-card",
+            [
+              _c(
+                "v-card-title",
+                [
+                  _c("span", { staticClass: "headline" }, [
+                    _vm._v("Add HIT Template")
+                  ]),
+                  _vm._v(" "),
+                  _c("v-spacer"),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { icon: "" },
+                      on: {
+                        click: function($event) {
+                          _vm.dialog = false
+                        }
+                      }
+                    },
+                    [_c("v-icon", [_vm._v("close")])],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-card-text",
+                [
+                  _c(
+                    "v-form",
+                    { ref: "form" },
+                    [
+                      _c("v-text-field", {
+                        attrs: {
+                          required: "",
+                          label: "Name",
+                          value: _vm.name,
+                          "error-messages": _vm.validation_errors.name
+                        },
+                        on: {
+                          input: function($event) {
+                            _vm.name = $event
+                            _vm.$v.name.$touch()
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("v-textarea", {
+                        attrs: {
+                          required: "",
+                          rows: "20",
+                          value: _vm.template,
+                          label: "Template",
+                          "error-messages": _vm.validation_errors.template
+                        },
+                        on: {
+                          input: function($event) {
+                            _vm.template = $event
+                            _vm.$v.template.$touch()
+                          }
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      staticClass: "ml-0",
+                      attrs: { color: "primary", disabled: _vm.$v.$invalid },
+                      on: {
+                        click: function($event) {
+                          _vm.create()
+                        }
+                      }
+                    },
+                    [_vm._v("Create")]
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: null,
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$0153d8', $0153d8);
+          } else {
+            api.reload('$0153d8', $0153d8);
+          }
+        }
+
+        
+      }
+    })();
+},{"babel-runtime/helpers/extends":51,"vuex":15,"lodash":73,"vuelidate/lib/validators":229,"../../../mixins/validations":101,"vue-hot-reload-api":39,"vue":3}],172:[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends2 = require('babel-runtime/helpers/extends');
+
+var _extends3 = _interopRequireDefault(_extends2);
+
+var _vuex = require('vuex');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+    props: {
+        template_hit: {}
+    },
+    data: function data() {
+        return {
+            dialog: false
+        };
+    },
+
+    methods: (0, _extends3.default)({
+        remove: function remove() {
+            var _this = this;
+
+            this.delete_template_hit({
+                project: this.project_current,
+                template_hit: this.template_hit,
+                callback: function callback() {
+                    _this.$emit('deleted');
+                    _this.dialog = false;
+                }
+            }).then(function () {});
+        }
+    }, (0, _vuex.mapActions)('moduleProjects', {
+        'delete_template_hit': 'delete_template_hit'
+    })),
+    computed: (0, _extends3.default)({}, (0, _vuex.mapGetters)('moduleProjects', {
+        'project_current': 'get_project_current'
+    })),
+    components: {}
+}; //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+      var $5d89a9 = exports.default || module.exports;
+      if (typeof $5d89a9 === 'function') {
+        $5d89a9 = $5d89a9.options;
+      }
+    
+        /* template */
+        Object.assign($5d89a9, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-dialog",
+    {
+      attrs: { "max-width": "500" },
+      model: {
+        value: _vm.dialog,
+        callback: function($$v) {
+          _vm.dialog = $$v
+        },
+        expression: "dialog"
+      }
+    },
+    [
+      _c(
+        "v-btn",
+        {
+          attrs: { slot: "activator", icon: "", small: "" },
+          on: {
+            click: function($event) {
+              _vm.dialog = true
+            }
+          },
+          slot: "activator"
+        },
+        [_c("v-icon", { attrs: { color: "error" } }, [_vm._v("delete")])],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-card",
+        [
+          _c("v-card-text", [
+            _vm._v(
+              "\n            Do you really want to delete the HIT template '" +
+                _vm._s(_vm.template_hit.name) +
+                "'? \n        "
+            )
+          ]),
+          _vm._v(" "),
+          _c(
+            "v-card-actions",
+            [
+              _c("v-spacer"),
+              _vm._v(" "),
+              _c(
+                "v-btn",
+                {
+                  attrs: { flat: "", color: "error" },
+                  on: {
+                    click: function($event) {
+                      _vm.remove()
+                    }
+                  }
+                },
+                [_vm._v("Delete")]
+              )
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: "data-v-5d89a9",
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$5d89a9', $5d89a9);
+          } else {
+            api.reload('$5d89a9', $5d89a9);
+          }
+        }
+
+        
+        var reloadCSS = require('_css_loader');
+        module.hot.dispose(reloadCSS);
+        module.hot.accept(reloadCSS);
+      
+      }
+    })();
+},{"babel-runtime/helpers/extends":51,"vuex":15,"_css_loader":26,"vue-hot-reload-api":39,"vue":3}],91:[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _typeof2 = require('babel-runtime/helpers/typeof');
+
+var _typeof3 = _interopRequireDefault(_typeof2);
+
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Template_HIT = function () {
+	function Template_HIT() {
+		var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
+		(0, _classCallCheck3.default)(this, Template_HIT);
+
+		this.id = data != undefined ? data.id : undefined;
+		this.name = data != undefined ? data.name : undefined;
+		this.template = data != undefined ? data.template : undefined;
+	}
+
+	(0, _createClass3.default)(Template_HIT, [{
+		key: 'update',
+		value: function update(data) {
+			var _this = this;
+
+			_lodash2.default.forEach(data, function (value, key) {
+				_this[key] = value;
+			});
+		}
+	}, {
+		key: 'get_changes',
+		value: function get_changes(template_hit) {
+			var object = {};
+			for (var key in this) {
+				// if(template_hit[key] != undefined)
+				{
+					if (this[key] != template_hit[key]) {
+						if ((0, _typeof3.default)(template_hit[key]) == 'object') {
+							if (_lodash2.default.differenceBy(template_hit[key], this[key], function (value) {
+								return value['text'].toLowerCase();
+							}).length > 0 || _lodash2.default.differenceBy(this[key], template_hit[key], function (value) {
+								return value['text'].toLowerCase();
+							}).length > 0) {
+								object[key] = template_hit[key];
+							}
+						} else {
+							var value = template_hit[key];
+							if (value == undefined) {
+								object[key] = null;
+							} else {
+								object[key] = value;
+							}
+						}
+					}
+				}
+			}
+
+			return object;
+		}
+	}]);
+	return Template_HIT;
+}();
+
+exports.default = Template_HIT;
+},{"babel-runtime/helpers/typeof":148,"babel-runtime/helpers/classCallCheck":94,"babel-runtime/helpers/createClass":95,"lodash":73}],173:[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+   value: true
+});
+
+var _extends2 = require('babel-runtime/helpers/extends');
+
+var _extends3 = _interopRequireDefault(_extends2);
+
+var _validations = require('../../../mixins/validations');
+
+var _validations2 = _interopRequireDefault(_validations);
+
+var _helpers = require('../../../mixins/helpers');
+
+var _helpers2 = _interopRequireDefault(_helpers);
+
+var _vuex = require('vuex');
+
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _validators = require('vuelidate/lib/validators');
+
+var _template_hit = require('../../../classes/template_hit');
+
+var _template_hit2 = _interopRequireDefault(_template_hit);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+exports.default = {
+   mixins: [_helpers2.default, _validations2.default],
+   props: {
+      template_hit_current: {}
+   },
+   data: function data() {
+      return {
+         template_hit: new _template_hit2.default(this.template_hit_current),
+         dialog: false
+      };
+   },
+
+   methods: (0, _extends3.default)({
+      update: function update(close) {
+         var _this = this;
+
+         if (this.$refs.form.validate()) {
+            this.edit_template_hit({
+               data: {
+                  template_hit_current: this.template_hit_current,
+                  template_hit_new: this.template_hit,
+                  project: this.project_current
+               }
+            }).then(function () {
+               if (close == true) {
+                  _this.dialog = false;
+                  _this.reset();
+               }
+               _this.$emit('edited');
+            });
+         }
+         // console.log(this.project_current);
+      },
+      reset: function reset() {
+         this.template_hit = new _template_hit2.default(this.template_hit_current), this.$v.$reset();
+         this.$v.$touch();
+      }
+   }, (0, _vuex.mapActions)('moduleProjects', {
+      'edit_template_hit': 'edit_template_hit'
+   })),
+   computed: (0, _extends3.default)({
+      list_templates_hit: function list_templates_hit() {
+         return _lodash2.default.orderBy(this.project_current.templates_hit, function (template) {
+            return template.name;
+         });
+      }
+   }, (0, _vuex.mapGetters)('moduleProjects', {
+      'project_current': 'get_project_current'
+   })),
+   watch: {
+      dialog: function dialog() {
+         this.reset();
+      }
+   },
+   validations: {
+      template_hit: {
+         name: {
+            required: _validators.required
+         },
+         template: {
+            required: _validators.required,
+            contains_injection_assignments: function contains_injection_assignments(value) {
+               return value != undefined && value.indexOf(' data-inject_assignments') >= 0;
+            }
+         }
+      }
+   },
+   created: function created() {
+      this.$v.$touch();
+   },
+
+   components: {}
+};
+      var $2b7cb8 = exports.default || module.exports;
+      if (typeof $2b7cb8 === 'function') {
+        $2b7cb8 = $2b7cb8.options;
+      }
+    
+        /* template */
+        Object.assign($2b7cb8, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-dialog",
+    {
+      attrs: { "max-width": "80%", persistent: "" },
+      model: {
+        value: _vm.dialog,
+        callback: function($$v) {
+          _vm.dialog = $$v
+        },
+        expression: "dialog"
+      }
+    },
+    [
+      _c(
+        "v-btn",
+        {
+          attrs: { slot: "activator", icon: "", small: "" },
+          on: {
+            click: function($event) {
+              _vm.dialog = true
+            }
+          },
+          slot: "activator"
+        },
+        [_c("v-icon", { attrs: { color: "warning" } }, [_vm._v("edit")])],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-card",
+        [
+          _c(
+            "v-card-title",
+            [
+              _c("span", { staticClass: "headline" }, [
+                _vm._v("Edit HIT Template")
+              ]),
+              _vm._v(" "),
+              _c("v-spacer"),
+              _vm._v(" "),
+              _c(
+                "v-btn",
+                {
+                  attrs: { icon: "" },
+                  on: {
+                    click: function($event) {
+                      _vm.dialog = false
+                    }
+                  }
+                },
+                [_c("v-icon", [_vm._v("close")])],
+                1
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-card-text",
+            [
+              _c(
+                "v-form",
+                { ref: "form", attrs: { "lazy-validation": "" } },
+                [
+                  _c("v-text-field", {
+                    attrs: {
+                      required: "",
+                      label: "Name",
+                      value: _vm.template_hit.name,
+                      "error-messages": _vm.validation_errors.template_hit.name
+                    },
+                    on: {
+                      input: function($event) {
+                        _vm.template_hit.name = $event
+                        _vm.$v.template_hit.name.$touch()
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("v-textarea", {
+                    attrs: {
+                      required: "",
+                      rows: "20",
+                      value: _vm.template_hit.template,
+                      label: "Template",
+                      "error-messages":
+                        _vm.validation_errors.template_hit.template
+                    },
+                    on: {
+                      input: function($event) {
+                        _vm.template_hit.template = $event
+                        _vm.$v.template_hit.template.$touch()
+                      }
+                    }
+                  })
+                ],
+                1
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-card-actions",
+            [
+              _c(
+                "v-btn",
+                {
+                  staticClass: "ml-0",
+                  attrs: { flat: "", color: "înfo", disabled: _vm.$v.$invalid },
+                  on: {
+                    click: function($event) {
+                      _vm.dialog = false
+                      _vm.reset()
+                    }
+                  }
+                },
+                [_vm._v("Cancel")]
+              ),
+              _vm._v(" "),
+              _c("v-spacer"),
+              _vm._v(" "),
+              _c(
+                "v-btn",
+                {
+                  staticClass: "ml-0",
+                  attrs: {
+                    flat: "",
+                    color: "primary",
+                    disabled: _vm.$v.$invalid
+                  },
+                  on: {
+                    click: function($event) {
+                      _vm.update()
+                    }
+                  }
+                },
+                [_vm._v("Save")]
+              ),
+              _vm._v(" "),
+              _c(
+                "v-btn",
+                {
+                  staticClass: "ml-0",
+                  attrs: {
+                    flat: "",
+                    color: "success",
+                    disabled: _vm.$v.$invalid
+                  },
+                  on: {
+                    click: function($event) {
+                      _vm.update(true)
+                    }
+                  }
+                },
+                [_vm._v("Save and Close")]
+              )
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: null,
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$2b7cb8', $2b7cb8);
+          } else {
+            api.reload('$2b7cb8', $2b7cb8);
+          }
+        }
+
+        
+      }
+    })();
+},{"babel-runtime/helpers/extends":51,"../../../mixins/validations":101,"../../../mixins/helpers":149,"vuex":15,"lodash":73,"vuelidate/lib/validators":229,"../../../classes/template_hit":91,"vue-hot-reload-api":39,"vue":3}],114:[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends2 = require('babel-runtime/helpers/extends');
+
+var _extends3 = _interopRequireDefault(_extends2);
+
+var _component_add_template_hit = require('./component_add_template_hit.vue');
+
+var _component_add_template_hit2 = _interopRequireDefault(_component_add_template_hit);
+
+var _component_delete_template_hit = require('./component_delete_template_hit.vue');
+
+var _component_delete_template_hit2 = _interopRequireDefault(_component_delete_template_hit);
+
+var _component_edit_template_hit = require('./component_edit_template_hit.vue');
+
+var _component_edit_template_hit2 = _interopRequireDefault(_component_edit_template_hit);
+
+var _vuex = require('vuex');
+
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _table = require('../../../mixins/table');
+
+var _table2 = _interopRequireDefault(_table);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+exports.default = {
+    mixins: [_table2.default],
+    name: 'component-list-templates-hit',
+    data: function data() {
+        return {
+            list_headers: [{
+                text: 'Name',
+                value: 'name'
+            }, {
+                text: 'Actions',
+                value: '',
+                sortable: false
+            }],
+
+            snackbar_deleted: false,
+            snackbar_edited: false,
+            snackbar_created: false
+        };
+    },
+
+    computed: (0, _extends3.default)({
+        list_templates_hit: function list_templates_hit() {
+            // return [{name:"dawd"}]
+            if (this.project_current.templates_hit == null) return [];
+
+            return _lodash2.default.orderBy(this.project_current.templates_hit, function (template) {
+                return template.name;
+            });
+        }
+    }, (0, _vuex.mapGetters)('moduleProjects', {
+        'project_current': 'get_project_current'
+    })),
+    methods: {},
+    created: function created() {},
+    components: {
+        ComponentAddTemplateHit: _component_add_template_hit2.default,
+        ComponentDeleteTemplateHit: _component_delete_template_hit2.default,
+        ComponentEditTemplateHit: _component_edit_template_hit2.default
+    }
+};
+      var $6ad3c6 = exports.default || module.exports;
+      if (typeof $6ad3c6 === 'function') {
+        $6ad3c6 = $6ad3c6.options;
+      }
+    
+        /* template */
+        Object.assign($6ad3c6, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c(
+        "v-data-table",
+        {
+          attrs: { headers: _vm.list_headers, items: _vm.list_templates_hit },
+          scopedSlots: _vm._u([
+            {
+              key: "items",
+              fn: function(props) {
+                return [
+                  _c("tr", [
+                    _c("td", [
+                      _vm._v(
+                        "\n                    " +
+                          _vm._s(props.item.name) +
+                          "\n                "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "td",
+                      [
+                        _c("component-edit-template-hit", {
+                          key: "component-edit-template-hit-" + props.item.id,
+                          attrs: { template_hit_current: props.item },
+                          on: {
+                            edited: function($event) {
+                              _vm.snackbar_edited = true
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("component-delete-template-hit", {
+                          key: "component-delete-template-hit-" + props.item.id,
+                          attrs: { template_hit: props.item },
+                          on: {
+                            deleted: function($event) {
+                              _vm.snackbar_deleted = true
+                            }
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  ])
+                ]
+              }
+            }
+          ])
+        },
+        [
+          _c("template", { slot: "no-data" }, [
+            _c("div", { staticClass: "text-xs-center" }, [
+              _vm._v(
+                "\n                There exist no templates!\n            "
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c("template", { slot: "footer" }, [
+            _c(
+              "td",
+              { attrs: { colspan: "100%" } },
+              [
+                _c("component-add-template-hit", {
+                  on: {
+                    created: function($event) {
+                      _vm.snackbar_created = true
+                    }
+                  }
+                })
+              ],
+              1
+            )
+          ])
+        ],
+        2
+      ),
+      _vm._v(" "),
+      _c(
+        "v-snackbar",
+        {
+          attrs: { timeout: 1500, bottom: "" },
+          model: {
+            value: _vm.snackbar_deleted,
+            callback: function($$v) {
+              _vm.snackbar_deleted = $$v
+            },
+            expression: "snackbar_deleted"
+          }
+        },
+        [
+          _c("v-spacer"),
+          _vm._v("\n        Deleted!\n        "),
+          _c("v-spacer")
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-snackbar",
+        {
+          attrs: { timeout: 1500, bottom: "", color: "success" },
+          model: {
+            value: _vm.snackbar_created,
+            callback: function($$v) {
+              _vm.snackbar_created = $$v
+            },
+            expression: "snackbar_created"
+          }
+        },
+        [_c("v-spacer"), _vm._v("\n        Saved!\n        "), _c("v-spacer")],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-snackbar",
+        {
+          attrs: { timeout: 1500, bottom: "", color: "success" },
+          model: {
+            value: _vm.snackbar_edited,
+            callback: function($$v) {
+              _vm.snackbar_edited = $$v
+            },
+            expression: "snackbar_edited"
+          }
+        },
+        [
+          _c("v-spacer"),
+          _vm._v("\n        Updated!\n        "),
+          _c("v-spacer")
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: null,
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$6ad3c6', $6ad3c6);
+          } else {
+            api.reload('$6ad3c6', $6ad3c6);
+          }
+        }
+
+        
+      }
+    })();
+},{"babel-runtime/helpers/extends":51,"./component_add_template_hit.vue":171,"./component_delete_template_hit.vue":172,"./component_edit_template_hit.vue":173,"vuex":15,"lodash":73,"../../../mixins/table":99,"vue-hot-reload-api":39,"vue":3}],68:[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _component_list_templates_hit = require('./component_list_templates_hit.vue');
+
+var _component_list_templates_hit2 = _interopRequireDefault(_component_list_templates_hit);
+
+var _vuex = require('vuex');
+
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// import settings_batch from '../../../mixins/settings_batch';
+exports.default = {
+    // mixins: [
+    //     settings_batch,
+    // ],
+    name: 'component-templates-hit',
+    data: function data() {
+        return {
+            // search: undefined,
+        };
+    },
+
+    methods: {},
+    computed: {},
+    components: {
+        ComponentListTemplatesHit: _component_list_templates_hit2.default
+    }
+}; //
+//
+//
+//
+//
+//
+//
+      var $d7f5ad = exports.default || module.exports;
+      if (typeof $d7f5ad === 'function') {
+        $d7f5ad = $d7f5ad.options;
+      }
+    
+        /* template */
+        Object.assign($d7f5ad, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c("h2", { staticClass: "headline" }, [_vm._v("HIT Templates")]),
+      _vm._v(" "),
+      _c("component-list-templates-hit")
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: "data-v-d7f5ad",
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$d7f5ad', $d7f5ad);
+          } else {
+            api.reload('$d7f5ad', $d7f5ad);
+          }
+        }
+
+        
+        var reloadCSS = require('_css_loader');
+        module.hot.dispose(reloadCSS);
+        module.hot.accept(reloadCSS);
+      
+      }
+    })();
+},{"./component_list_templates_hit.vue":114,"vuex":15,"lodash":73,"_css_loader":26,"vue-hot-reload-api":39,"vue":3}],69:[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _regenerator = require('babel-runtime/regenerator');
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
+
+var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
+
+var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
+
+var _extends2 = require('babel-runtime/helpers/extends');
+
+var _extends3 = _interopRequireDefault(_extends2);
+
+var _vuex = require('vuex');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+    name: 'component_clear_sandbox',
+    data: function data() {
+        return {
+            dialog: false
+        };
+    },
+
+    methods: (0, _extends3.default)({
+        clear: function () {
+            var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
+                return _regenerator2.default.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                _context.next = 2;
+                                return this.clear_sandbox();
+
+                            case 2:
+                                this.dialog = false;
+
+                            case 3:
+                            case 'end':
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, this);
+            }));
+
+            function clear() {
+                return _ref.apply(this, arguments);
+            }
+
+            return clear;
+        }()
+    }, (0, _vuex.mapActions)('moduleProjects', {
+        'clear_sandbox': 'clear_sandbox'
+    })),
+    computed: {},
+    components: {}
+}; //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+      var $ca314c = exports.default || module.exports;
+      if (typeof $ca314c === 'function') {
+        $ca314c = $ca314c.options;
+      }
+    
+        /* template */
+        Object.assign($ca314c, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c("h2", { staticClass: "headline" }, [_vm._v("Sandbox")]),
+      _vm._v(" "),
+      _c(
+        "v-dialog",
+        {
+          attrs: { "max-width": "500" },
+          model: {
+            value: _vm.dialog,
+            callback: function($$v) {
+              _vm.dialog = $$v
+            },
+            expression: "dialog"
+          }
+        },
+        [
+          _c(
+            "v-btn",
+            {
+              attrs: { slot: "activator", color: "warning" },
+              slot: "activator"
+            },
+            [
+              _c("v-icon", [_vm._v("delete")]),
+              _vm._v("\n\t    \tClear Sandbox\n\t\t")
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-card",
+            [
+              _c("v-card-text", [
+                _vm._v(
+                  "\n                Do you really want to clear the sandbox? \n            "
+                )
+              ]),
+              _vm._v(" "),
+              _c(
+                "v-card-actions",
+                [
+                  _c("v-spacer"),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { flat: "", color: "warning" },
+                      on: { click: _vm.clear }
+                    },
+                    [_vm._v("Clear")]
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: "data-v-ca314c",
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$ca314c', $ca314c);
+          } else {
+            api.reload('$ca314c', $ca314c);
+          }
+        }
+
+        
+        var reloadCSS = require('_css_loader');
+        module.hot.dispose(reloadCSS);
+        module.hot.accept(reloadCSS);
+      
+      }
+    })();
+},{"babel-runtime/regenerator":131,"babel-runtime/helpers/asyncToGenerator":50,"babel-runtime/helpers/extends":51,"vuex":15,"_css_loader":26,"vue-hot-reload-api":39,"vue":3}],70:[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _regenerator = require('babel-runtime/regenerator');
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
+
+var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
+
+var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
+
+var _extends2 = require('babel-runtime/helpers/extends');
+
+var _extends3 = _interopRequireDefault(_extends2);
+
+var _vuex = require('vuex');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+    name: 'component_delete_project',
+    data: function data() {
+        return {
+            dialog: false
+        };
+    },
+
+    methods: (0, _extends3.default)({
+        confirm: function () {
+            var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
+                return _regenerator2.default.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                _context.next = 2;
+                                return this.delete_project(this.$router);
+
+                            case 2:
+                            case 'end':
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, this);
+            }));
+
+            function confirm() {
+                return _ref.apply(this, arguments);
+            }
+
+            return confirm;
+        }()
+    }, (0, _vuex.mapActions)('moduleProjects', {
+        'delete_project': 'delete_project'
+    })),
+    computed: {},
+    components: {}
+}; //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+      var $cf8a5f = exports.default || module.exports;
+      if (typeof $cf8a5f === 'function') {
+        $cf8a5f = $cf8a5f.options;
+      }
+    
+        /* template */
+        Object.assign($cf8a5f, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c("h2", { staticClass: "headline" }, [_vm._v("Administration")]),
+      _vm._v(" "),
+      _c(
+        "v-dialog",
+        {
+          attrs: { "max-width": "500" },
+          model: {
+            value: _vm.dialog,
+            callback: function($$v) {
+              _vm.dialog = $$v
+            },
+            expression: "dialog"
+          }
+        },
+        [
+          _c(
+            "v-btn",
+            { attrs: { slot: "activator", color: "error" }, slot: "activator" },
+            [
+              _c("v-icon", [_vm._v("delete_forever")]),
+              _vm._v("\n\t    \tDelete Project\n\t\t")
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-card",
+            [
+              _c("v-card-text", [
+                _vm._v(
+                  "\n                Do you really want to delete this project? \n            "
+                )
+              ]),
+              _vm._v(" "),
+              _c(
+                "v-card-actions",
+                [
+                  _c("v-spacer"),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { flat: "", color: "error" },
+                      on: { click: _vm.confirm }
+                    },
+                    [_vm._v("Delete")]
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: "data-v-cf8a5f",
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$cf8a5f', $cf8a5f);
+          } else {
+            api.reload('$cf8a5f', $cf8a5f);
+          }
+        }
+
+        
+        var reloadCSS = require('_css_loader');
+        module.hot.dispose(reloadCSS);
+        module.hot.accept(reloadCSS);
+      
+      }
+    })();
+},{"babel-runtime/regenerator":131,"babel-runtime/helpers/asyncToGenerator":50,"babel-runtime/helpers/extends":51,"vuex":15,"_css_loader":26,"vue-hot-reload-api":39,"vue":3}],12:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -81799,6 +88159,10 @@ var _component_block_limit = require('./block_limit/component_block_limit.vue');
 
 var _component_block_limit2 = _interopRequireDefault(_component_block_limit);
 
+var _component_messages_reject_default = require('./messages_reject/component_messages_reject_default.vue');
+
+var _component_messages_reject_default2 = _interopRequireDefault(_component_messages_reject_default);
+
 var _component_settings_batch = require('./settings_batch/component_settings_batch.vue');
 
 var _component_settings_batch2 = _interopRequireDefault(_component_settings_batch);
@@ -81807,12 +88171,61 @@ var _component_templates_worker = require('./templates_worker/component_template
 
 var _component_templates_worker2 = _interopRequireDefault(_component_templates_worker);
 
+var _component_templates_assignment = require('./templates_assignment/component_templates_assignment.vue');
+
+var _component_templates_assignment2 = _interopRequireDefault(_component_templates_assignment);
+
+var _component_templates_global = require('./templates_global/component_templates_global.vue');
+
+var _component_templates_global2 = _interopRequireDefault(_component_templates_global);
+
+var _component_templates_hit = require('./templates_hit/component_templates_hit.vue');
+
+var _component_templates_hit2 = _interopRequireDefault(_component_templates_hit);
+
+var _component_clear_sandbox = require('./clear_sandbox/component_clear_sandbox.vue');
+
+var _component_clear_sandbox2 = _interopRequireDefault(_component_clear_sandbox);
+
+var _component_delete_project = require('./delete_project/component_delete_project.vue');
+
+var _component_delete_project2 = _interopRequireDefault(_component_delete_project);
+
 var _slug_project = require('../../mixins/slug_project');
 
 var _slug_project2 = _interopRequireDefault(_slug_project);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -81845,8 +88258,14 @@ exports.default = {
 
     components: {
         ComponentBlockLimit: _component_block_limit2.default,
+        ComponentMessagesRejectDefault: _component_messages_reject_default2.default,
         ComponentSettingsBatch: _component_settings_batch2.default,
-        ComponentTemplatesWorker: _component_templates_worker2.default
+        ComponentTemplatesWorker: _component_templates_worker2.default,
+        ComponentTemplatesAssignment: _component_templates_assignment2.default,
+        ComponentTemplatesGlobal: _component_templates_global2.default,
+        ComponentTemplatesHit: _component_templates_hit2.default,
+        ComponentClearSandbox: _component_clear_sandbox2.default,
+        ComponentDeleteProject: _component_delete_project2.default
     }
 };
       var $506d31 = exports.default || module.exports;
@@ -81870,7 +88289,32 @@ exports.default = {
           _c(
             "v-flex",
             { staticClass: "pa-1", attrs: { xs6: "" } },
-            [_c("component-block-limit")],
+            [_c("component-settings-batch")],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-flex",
+            { staticClass: "pa-1", attrs: { xs6: "" } },
+            [
+              _c("component-block-limit"),
+              _vm._v(" "),
+              _c("component-messages-reject-default")
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-layout",
+        { attrs: { wrap: "" } },
+        [
+          _c(
+            "v-flex",
+            { staticClass: "pa-1", attrs: { xs: "" } },
+            [_c("component-templates-worker")],
             1
           )
         ],
@@ -81884,14 +88328,42 @@ exports.default = {
           _c(
             "v-flex",
             { staticClass: "pa-1", attrs: { xs6: "" } },
-            [_c("component-settings-batch")],
+            [_c("component-templates-assignment")],
             1
           ),
           _vm._v(" "),
           _c(
             "v-flex",
             { staticClass: "pa-1", attrs: { xs6: "" } },
-            [_c("component-templates-worker")],
+            [_c("component-templates-hit")],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-layout",
+        { attrs: { wrap: "" } },
+        [
+          _c(
+            "v-flex",
+            { staticClass: "pa-1", attrs: { xs6: "" } },
+            [_c("component-templates-global")],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-flex",
+            { staticClass: "pa-1", attrs: { shrink: "" } },
+            [_c("component-clear-sandbox")],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-flex",
+            { staticClass: "pa-1", attrs: { shrink: "" } },
+            [_c("component-delete-project")],
             1
           )
         ],
@@ -81934,10 +88406,10 @@ render._withStripped = true
       
       }
     })();
-},{"./block_limit/component_block_limit.vue":328,"./settings_batch/component_settings_batch.vue":59,"./templates_worker/component_templates_worker.vue":60,"../../mixins/slug_project":50,"_css_loader":26,"vue-hot-reload-api":38,"vue":3}],62:[function(require,module,exports) {
+},{"./block_limit/component_block_limit.vue":62,"./messages_reject/component_messages_reject_default.vue":63,"./settings_batch/component_settings_batch.vue":64,"./templates_worker/component_templates_worker.vue":65,"./templates_assignment/component_templates_assignment.vue":66,"./templates_global/component_templates_global.vue":67,"./templates_hit/component_templates_hit.vue":68,"./clear_sandbox/component_clear_sandbox.vue":69,"./delete_project/component_delete_project.vue":70,"../../mixins/slug_project":52,"_css_loader":26,"vue-hot-reload-api":39,"vue":3}],72:[function(require,module,exports) {
 var define;
 "use strict";var _typeof="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(o){return typeof o}:function(o){return o&&"function"==typeof Symbol&&o.constructor===Symbol&&o!==Symbol.prototype?"symbol":typeof o};!function(){function o(e,t){if(!o.installed){if(o.installed=!0,!t)return void console.error("You have to install axios");e.axios=t,Object.defineProperties(e.prototype,{axios:{get:function(){return t}},$http:{get:function(){return t}}})}}"object"==("undefined"==typeof exports?"undefined":_typeof(exports))?module.exports=o:"function"==typeof define&&define.amd?define([],function(){return o}):window.Vue&&window.axios&&Vue.use(o,window.axios)}();
-},{}],64:[function(require,module,exports) {
+},{}],74:[function(require,module,exports) {
 var define;
 /**
  * Vue Cookies v1.5.7
@@ -82062,7 +88534,7 @@ var define;
     }
 
 })()
-},{}],78:[function(require,module,exports) {
+},{}],87:[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -82079,15 +88551,22 @@ var Project = function Project() {
 						var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 						(0, _classCallCheck3.default)(this, Project);
 
+						console.log(data);
 						this.id = data.id;
 						this.name = data.name;
 						this.slug = data.slug;
 						this.version = data.version;
 						this.settings_batch_default = data.settings_batch_default;
+						this.datetime_visited = new Date(data.datetime_visited);
 						this.count_assignments_max_per_worker = data.count_assignments_max_per_worker;
 
 						this.templates_worker = null;
+						this.templates_assignment = null;
+						this.templates_hit = null;
+						this.templates_global = null;
 						this.settings_batch = null;
+
+						this.message_reject_default = data.message_reject_default;
 
 						// this.title = data.title;
 						// this.description = data.description;
@@ -82157,37 +88636,7 @@ var Project = function Project() {
 ;
 
 exports.default = Project;
-},{"babel-runtime/helpers/classCallCheck":83}],80:[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _keys = require("babel-runtime/core-js/object/keys");
-
-var _keys2 = _interopRequireDefault(_keys);
-
-var _classCallCheck2 = require("babel-runtime/helpers/classCallCheck");
-
-var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var Template_Worker = function Template_Worker() {
-	var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
-	(0, _classCallCheck3.default)(this, Template_Worker);
-
-	this.id = data != undefined ? data.id : undefined;
-	this.name = data != undefined ? data.name : undefined;
-	this.height_frame = data != undefined ? data.height_frame : 800;
-	this.template = data != undefined ? data.template : undefined;
-	this.dict_parameters = data != undefined ? JSON.parse(data.json_dict_parameters) : undefined;
-	this.count_parameters = (0, _keys2.default)(this.dict_parameters).length;
-};
-
-exports.default = Template_Worker;
-},{"babel-runtime/core-js/object/keys":85,"babel-runtime/helpers/classCallCheck":83}],30:[function(require,module,exports) {
+},{"babel-runtime/helpers/classCallCheck":94}],30:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -82231,7 +88680,21 @@ var _template_worker = require('../../classes/template_worker');
 
 var _template_worker2 = _interopRequireDefault(_template_worker);
 
+var _template_assignment = require('../../classes/template_assignment');
+
+var _template_assignment2 = _interopRequireDefault(_template_assignment);
+
+var _template_hit = require('../../classes/template_hit');
+
+var _template_hit2 = _interopRequireDefault(_template_hit);
+
+var _template_global = require('../../classes/template_global');
+
+var _template_global2 = _interopRequireDefault(_template_global);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// import router from 'router'
 
 var moduleProjects = exports.moduleProjects = {
     namespaced: true,
@@ -82242,7 +88705,10 @@ var moduleProjects = exports.moduleProjects = {
         url_api_projects: undefined,
         url_api_projects_check_uniqueness: undefined,
         url_api_projects_settings_batch: undefined,
-        url_api_projects_templates_worker: undefined
+        url_api_projects_templates_worker: undefined,
+        url_api_projects_templates_assignment: undefined,
+        url_api_projects_clear_sandbox: undefined,
+        url_api_ping: null
     },
     getters: {
         get_project_current: function get_project_current(state) {
@@ -82274,6 +88740,11 @@ var moduleProjects = exports.moduleProjects = {
             state.url_api_projects_check_uniqueness = config.url_api_projects_check_uniqueness;
             state.url_api_projects_settings_batch = config.url_api_projects_settings_batch;
             state.url_api_projects_templates_worker = config.url_api_projects_templates_worker;
+            state.url_api_projects_templates_assignment = config.url_api_projects_templates_assignment;
+            state.url_api_projects_templates_hit = config.url_api_projects_templates_hit;
+            state.url_api_projects_templates_global = config.url_api_projects_templates_global;
+            state.url_api_projects_clear_sandbox = config.url_api_projects_clear_sandbox;
+            state.url_api_ping = config.url_api_ping;
         },
         set_settings_batch: function set_settings_batch(state, _ref) {
             var data = _ref.data,
@@ -82295,6 +88766,48 @@ var moduleProjects = exports.moduleProjects = {
             _lodash2.default.forEach(data, function (data_templates_worker) {
                 var object_template_worker = new _template_worker2.default(data_templates_worker);
                 _vue2.default.set(project.templates_worker, object_template_worker.id, object_template_worker);
+
+                if (object_template_worker.template_assignment != undefined) {
+                    _vue2.default.set(object_template_worker, 'template_assignment', project.templates_assignment[object_template_worker.template_assignment]);
+                }
+                if (object_template_worker.template_hit != undefined) {
+                    _vue2.default.set(object_template_worker, 'template_hit', project.templates_hit[object_template_worker.template_hit]);
+                }
+                if (object_template_worker.template_global != undefined) {
+                    _vue2.default.set(object_template_worker, 'template_global', project.templates_global[object_template_worker.template_global]);
+                }
+            });
+        },
+        set_templates_assignment: function set_templates_assignment(state, _ref3) {
+            var data = _ref3.data,
+                project = _ref3.project;
+
+            project.templates_assignment = {};
+
+            _lodash2.default.forEach(data, function (data_templates_assignment) {
+                var object_template_assignment = new _template_assignment2.default(data_templates_assignment);
+                _vue2.default.set(project.templates_assignment, object_template_assignment.id, object_template_assignment);
+            });
+        },
+        set_templates_hit: function set_templates_hit(state, _ref4) {
+            var data = _ref4.data,
+                project = _ref4.project;
+
+            project.templates_hit = {};
+
+            _lodash2.default.forEach(data, function (data_templates_hit) {
+                var object_template_hit = new _template_hit2.default(data_templates_hit);
+                _vue2.default.set(project.templates_hit, object_template_hit.id, object_template_hit);
+            });
+        },
+        set_templates_global: function set_templates_global(state, _ref5) {
+            var data = _ref5.data,
+                project = _ref5.project;
+
+            project.templates_global = {};
+            _lodash2.default.forEach(data, function (data_templates_global) {
+                var object_template_global = new _template_global2.default(data_templates_global);
+                _vue2.default.set(project.templates_global, object_template_global.id, object_template_global);
             });
         },
         set_projects: function set_projects(state, data_projects) {
@@ -82305,61 +88818,157 @@ var moduleProjects = exports.moduleProjects = {
                 _vue2.default.set(state.object_projects, object_project.slug, object_project);
             });
         },
-        set_project: function set_project(state, _ref3) {
-            var project = _ref3.project,
-                project_new = _ref3.project_new,
-                array_fields = _ref3.array_fields;
+        add_project: function add_project(state, data_project) {
+            var object_project = new _project2.default(data_project);
+            _vue2.default.set(state.object_projects, object_project.slug, object_project);
+        },
+        set_project: function set_project(state, _ref6) {
+            var project = _ref6.project,
+                project_new = _ref6.project_new,
+                array_fields = _ref6.array_fields;
 
             _lodash2.default.forEach(array_fields, function (name_field) {
                 _vue2.default.set(project, name_field, project_new[name_field]);
             });
-            // _.forEach(data_projects, function(data_project){
-            //     const object_project = new Project(data_project);
-            //     Vue.set(state.object_projects, object_project.slug, object_project);
-            // });
         },
-        update_settings_batch: function update_settings_batch(state, _ref4) {
-            var data = _ref4.data,
-                project = _ref4.project;
+        update_settings_batch: function update_settings_batch(state, _ref7) {
+            var data = _ref7.data,
+                project = _ref7.project;
 
             var object_settings_batch = new _settings_batch2.default(data);
             _vue2.default.set(project.settings_batch, object_settings_batch.id, object_settings_batch);
         },
-        add_settings_batch: function add_settings_batch(state, _ref5) {
-            var data = _ref5.data,
-                project = _ref5.project;
+        update_template_worker: function update_template_worker(state, _ref8) {
+            var data = _ref8.data,
+                project = _ref8.project;
+
+            var template_worker = new _template_worker2.default(data);
+            _vue2.default.set(project.templates_worker, template_worker.id, template_worker);
+
+            if (template_worker.template_assignment != undefined) {
+                _vue2.default.set(template_worker, 'template_assignment', project.templates_assignment[template_worker.template_assignment]);
+            }
+
+            if (template_worker.template_hit != undefined) {
+                _vue2.default.set(template_worker, 'template_hit', project.templates_hit[template_worker.template_hit]);
+            }
+
+            if (template_worker.template_global != undefined) {
+                _vue2.default.set(template_worker, 'template_global', project.templates_global[template_worker.template_global]);
+            }
+        },
+        update_template_assignment: function update_template_assignment(state, _ref9) {
+            var data = _ref9.data,
+                project = _ref9.project;
+
+            // const template_assignment = new Template_Assignment(data);
+            // Vue.set(project.templates_assignment, template_assignment.id, template_assignment);
+            project.templates_assignment[data.id].update(data);
+        },
+        update_template_hit: function update_template_hit(state, _ref10) {
+            var data = _ref10.data,
+                project = _ref10.project;
+
+            // const template_hit = new Template_HIT(data);
+            // Vue.set(project.templates_hit, template_hit.id, template_hit);
+            project.templates_hit[data.id].update(data);
+        },
+        update_template_global: function update_template_global(state, _ref11) {
+            var data = _ref11.data,
+                project = _ref11.project;
+
+            project.templates_global[data.id].update(data);
+            // const template_global = new Template_Global(data);
+            // Vue.set(project.templates_global, template_global.id, template_global);
+        },
+        add_settings_batch: function add_settings_batch(state, _ref12) {
+            var data = _ref12.data,
+                project = _ref12.project;
 
             var object_settings_batch = new _settings_batch2.default(data);
             _vue2.default.set(project.settings_batch, object_settings_batch.id, object_settings_batch);
         },
-        add_template_worker: function add_template_worker(state, _ref6) {
-            var data = _ref6.data,
-                project = _ref6.project;
+        add_template_worker: function add_template_worker(state, _ref13) {
+            var data = _ref13.data,
+                project = _ref13.project;
 
             var object_template_worker = new _template_worker2.default(data);
             _vue2.default.set(project.templates_worker, object_template_worker.id, object_template_worker);
+            if (object_template_worker.template_assignment != undefined) {
+                _vue2.default.set(object_template_worker, 'template_assignment', project.templates_assignment[object_template_worker.template_assignment]);
+            }
         },
-        remove_template_worker: function remove_template_worker(state, _ref7) {
-            var template_worker = _ref7.template_worker,
-                project = _ref7.project;
+        add_template_assignment: function add_template_assignment(state, _ref14) {
+            var data = _ref14.data,
+                project = _ref14.project;
+
+            var object_template_assignment = new _template_assignment2.default(data);
+            _vue2.default.set(project.templates_assignment, object_template_assignment.id, object_template_assignment);
+        },
+        add_template_hit: function add_template_hit(state, _ref15) {
+            var data = _ref15.data,
+                project = _ref15.project;
+
+            var object_template_hit = new _template_hit2.default(data);
+            _vue2.default.set(project.templates_hit, object_template_hit.id, object_template_hit);
+        },
+        add_template_global: function add_template_global(state, _ref16) {
+            var data = _ref16.data,
+                project = _ref16.project;
+
+            var object_template_global = new _template_global2.default(data);
+            _vue2.default.set(project.templates_global, object_template_global.id, object_template_global);
+        },
+        remove_template_worker: function remove_template_worker(state, _ref17) {
+            var template_worker = _ref17.template_worker,
+                project = _ref17.project;
 
             _vue2.default.delete(project.templates_worker, template_worker.id);
         },
-        remove_settings_batch: function remove_settings_batch(state, _ref8) {
-            var settings_batch = _ref8.settings_batch,
-                project = _ref8.project;
+        remove_template_assignment: function remove_template_assignment(state, _ref18) {
+            var template_assignment = _ref18.template_assignment,
+                project = _ref18.project;
+
+            _vue2.default.delete(project.templates_assignment, template_assignment.id);
+        },
+        remove_template_hit: function remove_template_hit(state, _ref19) {
+            var template_hit = _ref19.template_hit,
+                project = _ref19.project;
+
+            _vue2.default.delete(project.templates_hit, template_hit.id);
+        },
+        remove_template_global: function remove_template_global(state, _ref20) {
+            var template_global = _ref20.template_global,
+                project = _ref20.project;
+
+            _vue2.default.delete(project.templates_global, template_global.id);
+        },
+        remove_settings_batch: function remove_settings_batch(state, _ref21) {
+            var settings_batch = _ref21.settings_batch,
+                project = _ref21.project;
 
             _vue2.default.delete(project.settings_batch, settings_batch.id);
+        },
+        set_ping: function set_ping(state, _ref22) {
+            var project = _ref22.project,
+                data = _ref22.data;
+
+            _vue2.default.set(project, 'datetime_visited', new Date(data.datetime));
+        },
+        delete_project: function delete_project(state, _ref23) {
+            var project = _ref23.project;
+
+            _vue2.default.delete(state.object_projects, project.slug);
         }
     },
     actions: {
         set_slug_project_current: function () {
-            var _ref10 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(_ref9, slug_project_current) {
-                var state = _ref9.state,
-                    commit = _ref9.commit,
-                    getters = _ref9.getters,
-                    rootGetters = _ref9.rootGetters,
-                    dispatch = _ref9.dispatch;
+            var _ref25 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(_ref24, slug_project_current) {
+                var state = _ref24.state,
+                    commit = _ref24.commit,
+                    getters = _ref24.getters,
+                    rootGetters = _ref24.rootGetters,
+                    dispatch = _ref24.dispatch;
                 return _regenerator2.default.wrap(function _callee$(_context) {
                     while (1) {
                         switch (_context.prev = _context.next) {
@@ -82370,9 +88979,22 @@ var moduleProjects = exports.moduleProjects = {
                                     if (getters.get_project_current.settings_batch == null) {
                                         dispatch('sync_settings_batch', getters.get_project_current);
                                     }
-                                    if (getters.get_project_current.templates_worker == null) {
-                                        dispatch('sync_templates_worker', getters.get_project_current);
+                                    if (getters.get_project_current.templates_assignment == null) {
+                                        dispatch('sync_templates_assignment', getters.get_project_current).then(function () {
+                                            if (getters.get_project_current.templates_hit == null) {
+                                                dispatch('sync_templates_hit', getters.get_project_current).then(function () {
+                                                    if (getters.get_project_current.templates_global == null) {
+                                                        dispatch('sync_templates_global', getters.get_project_current).then(function () {
+                                                            if (getters.get_project_current.templates_worker == null) {
+                                                                dispatch('sync_templates_worker', getters.get_project_current);
+                                                            }
+                                                        });
+                                                    }
+                                                });
+                                            }
+                                        });
                                     }
+
                                     console.log('SET ' + slug_project_current);
                                 }
 
@@ -82385,18 +89007,18 @@ var moduleProjects = exports.moduleProjects = {
             }));
 
             function set_slug_project_current(_x, _x2) {
-                return _ref10.apply(this, arguments);
+                return _ref25.apply(this, arguments);
             }
 
             return set_slug_project_current;
         }(),
         load_projects: function () {
-            var _ref12 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(_ref11) {
-                var state = _ref11.state,
-                    commit = _ref11.commit,
-                    getters = _ref11.getters,
-                    rootGetters = _ref11.rootGetters,
-                    dispatch = _ref11.dispatch;
+            var _ref27 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(_ref26) {
+                var state = _ref26.state,
+                    commit = _ref26.commit,
+                    getters = _ref26.getters,
+                    rootGetters = _ref26.rootGetters,
+                    dispatch = _ref26.dispatch;
                 return _regenerator2.default.wrap(function _callee2$(_context2) {
                     while (1) {
                         switch (_context2.prev = _context2.next) {
@@ -82426,18 +89048,18 @@ var moduleProjects = exports.moduleProjects = {
             }));
 
             function load_projects(_x3) {
-                return _ref12.apply(this, arguments);
+                return _ref27.apply(this, arguments);
             }
 
             return load_projects;
         }(),
         sync_settings_batch: function () {
-            var _ref14 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3(_ref13, project) {
-                var state = _ref13.state,
-                    commit = _ref13.commit,
-                    getters = _ref13.getters,
-                    rootGetters = _ref13.rootGetters,
-                    dispatch = _ref13.dispatch;
+            var _ref29 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3(_ref28, project) {
+                var state = _ref28.state,
+                    commit = _ref28.commit,
+                    getters = _ref28.getters,
+                    rootGetters = _ref28.rootGetters,
+                    dispatch = _ref28.dispatch;
                 return _regenerator2.default.wrap(function _callee3$(_context3) {
                     while (1) {
                         switch (_context3.prev = _context3.next) {
@@ -82464,18 +89086,18 @@ var moduleProjects = exports.moduleProjects = {
             }));
 
             function sync_settings_batch(_x4, _x5) {
-                return _ref14.apply(this, arguments);
+                return _ref29.apply(this, arguments);
             }
 
             return sync_settings_batch;
         }(),
         sync_templates_worker: function () {
-            var _ref16 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee4(_ref15, project) {
-                var state = _ref15.state,
-                    commit = _ref15.commit,
-                    getters = _ref15.getters,
-                    rootGetters = _ref15.rootGetters,
-                    dispatch = _ref15.dispatch;
+            var _ref31 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee4(_ref30, project) {
+                var state = _ref30.state,
+                    commit = _ref30.commit,
+                    getters = _ref30.getters,
+                    rootGetters = _ref30.rootGetters,
+                    dispatch = _ref30.dispatch;
                 return _regenerator2.default.wrap(function _callee4$(_context4) {
                     while (1) {
                         switch (_context4.prev = _context4.next) {
@@ -82502,25 +89124,139 @@ var moduleProjects = exports.moduleProjects = {
             }));
 
             function sync_templates_worker(_x6, _x7) {
-                return _ref16.apply(this, arguments);
+                return _ref31.apply(this, arguments);
             }
 
             return sync_templates_worker;
         }(),
-        create_settings_batch: function () {
-            var _ref18 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee5(_ref17, data) {
-                var state = _ref17.state,
-                    commit = _ref17.commit,
-                    getters = _ref17.getters,
-                    rootGetters = _ref17.rootGetters,
-                    dispatch = _ref17.dispatch;
+        sync_templates_assignment: function () {
+            var _ref33 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee5(_ref32, project) {
+                var state = _ref32.state,
+                    commit = _ref32.commit,
+                    getters = _ref32.getters,
+                    rootGetters = _ref32.rootGetters,
+                    dispatch = _ref32.dispatch;
                 return _regenerator2.default.wrap(function _callee5$(_context5) {
                     while (1) {
                         switch (_context5.prev = _context5.next) {
                             case 0:
+                                _context5.next = 2;
+                                return dispatch('make_request', {
+                                    method: 'get',
+                                    url: rootGetters.get_url_api({
+                                        url: state.url_api_projects_templates_assignment
+                                    })
+                                }, { root: true }).then(function (response) {
+                                    commit('set_templates_assignment', {
+                                        data: response.data,
+                                        project: project
+                                    });
+                                });
+
+                            case 2:
+                            case 'end':
+                                return _context5.stop();
+                        }
+                    }
+                }, _callee5, this);
+            }));
+
+            function sync_templates_assignment(_x8, _x9) {
+                return _ref33.apply(this, arguments);
+            }
+
+            return sync_templates_assignment;
+        }(),
+        sync_templates_hit: function () {
+            var _ref35 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee6(_ref34, project) {
+                var state = _ref34.state,
+                    commit = _ref34.commit,
+                    getters = _ref34.getters,
+                    rootGetters = _ref34.rootGetters,
+                    dispatch = _ref34.dispatch;
+                return _regenerator2.default.wrap(function _callee6$(_context6) {
+                    while (1) {
+                        switch (_context6.prev = _context6.next) {
+                            case 0:
+                                _context6.next = 2;
+                                return dispatch('make_request', {
+                                    method: 'get',
+                                    url: rootGetters.get_url_api({
+                                        url: state.url_api_projects_templates_hit
+                                    })
+                                }, { root: true }).then(function (response) {
+                                    commit('set_templates_hit', {
+                                        data: response.data,
+                                        project: project
+                                    });
+                                });
+
+                            case 2:
+                            case 'end':
+                                return _context6.stop();
+                        }
+                    }
+                }, _callee6, this);
+            }));
+
+            function sync_templates_hit(_x10, _x11) {
+                return _ref35.apply(this, arguments);
+            }
+
+            return sync_templates_hit;
+        }(),
+        sync_templates_global: function () {
+            var _ref37 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee7(_ref36, project) {
+                var state = _ref36.state,
+                    commit = _ref36.commit,
+                    getters = _ref36.getters,
+                    rootGetters = _ref36.rootGetters,
+                    dispatch = _ref36.dispatch;
+                return _regenerator2.default.wrap(function _callee7$(_context7) {
+                    while (1) {
+                        switch (_context7.prev = _context7.next) {
+                            case 0:
+                                _context7.next = 2;
+                                return dispatch('make_request', {
+                                    method: 'get',
+                                    url: rootGetters.get_url_api({
+                                        url: state.url_api_projects_templates_global
+                                    })
+                                }, { root: true }).then(function (response) {
+                                    commit('set_templates_global', {
+                                        data: response.data,
+                                        project: project
+                                    });
+                                });
+
+                            case 2:
+                            case 'end':
+                                return _context7.stop();
+                        }
+                    }
+                }, _callee7, this);
+            }));
+
+            function sync_templates_global(_x12, _x13) {
+                return _ref37.apply(this, arguments);
+            }
+
+            return sync_templates_global;
+        }(),
+        create_settings_batch: function () {
+            var _ref39 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee8(_ref38, data) {
+                var state = _ref38.state,
+                    commit = _ref38.commit,
+                    getters = _ref38.getters,
+                    rootGetters = _ref38.rootGetters,
+                    dispatch = _ref38.dispatch;
+                return _regenerator2.default.wrap(function _callee8$(_context8) {
+                    while (1) {
+                        switch (_context8.prev = _context8.next) {
+                            case 0:
                                 console.log(data);
 
-                                _context5.next = 3;
+                                _context8.next = 3;
                                 return dispatch('make_request', {
                                     method: 'post',
                                     url: rootGetters.get_url_api({
@@ -82536,30 +89272,30 @@ var moduleProjects = exports.moduleProjects = {
 
                             case 3:
                             case 'end':
-                                return _context5.stop();
+                                return _context8.stop();
                         }
                     }
-                }, _callee5, this);
+                }, _callee8, this);
             }));
 
-            function create_settings_batch(_x8, _x9) {
-                return _ref18.apply(this, arguments);
+            function create_settings_batch(_x14, _x15) {
+                return _ref39.apply(this, arguments);
             }
 
             return create_settings_batch;
         }(),
         create_template_worker: function () {
-            var _ref20 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee6(_ref19, data) {
-                var state = _ref19.state,
-                    commit = _ref19.commit,
-                    getters = _ref19.getters,
-                    rootGetters = _ref19.rootGetters,
-                    dispatch = _ref19.dispatch;
-                return _regenerator2.default.wrap(function _callee6$(_context6) {
+            var _ref41 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee9(_ref40, data) {
+                var state = _ref40.state,
+                    commit = _ref40.commit,
+                    getters = _ref40.getters,
+                    rootGetters = _ref40.rootGetters,
+                    dispatch = _ref40.dispatch;
+                return _regenerator2.default.wrap(function _callee9$(_context9) {
                     while (1) {
-                        switch (_context6.prev = _context6.next) {
+                        switch (_context9.prev = _context9.next) {
                             case 0:
-                                _context6.next = 2;
+                                _context9.next = 2;
                                 return dispatch('make_request', {
                                     method: 'post',
                                     url: rootGetters.get_url_api({
@@ -82576,30 +89312,150 @@ var moduleProjects = exports.moduleProjects = {
 
                             case 2:
                             case 'end':
-                                return _context6.stop();
+                                return _context9.stop();
                         }
                     }
-                }, _callee6, this);
+                }, _callee9, this);
             }));
 
-            function create_template_worker(_x10, _x11) {
-                return _ref20.apply(this, arguments);
+            function create_template_worker(_x16, _x17) {
+                return _ref41.apply(this, arguments);
             }
 
             return create_template_worker;
         }(),
-        delete_settings_batch: function () {
-            var _ref22 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee7(_ref21, data) {
-                var state = _ref21.state,
-                    commit = _ref21.commit,
-                    getters = _ref21.getters,
-                    rootGetters = _ref21.rootGetters,
-                    dispatch = _ref21.dispatch;
-                return _regenerator2.default.wrap(function _callee7$(_context7) {
+        create_template_assignment: function () {
+            var _ref43 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee10(_ref42, data) {
+                var state = _ref42.state,
+                    commit = _ref42.commit,
+                    getters = _ref42.getters,
+                    rootGetters = _ref42.rootGetters,
+                    dispatch = _ref42.dispatch;
+                return _regenerator2.default.wrap(function _callee10$(_context10) {
                     while (1) {
-                        switch (_context7.prev = _context7.next) {
+                        switch (_context10.prev = _context10.next) {
                             case 0:
-                                _context7.next = 2;
+                                _context10.next = 2;
+                                return dispatch('make_request', {
+                                    method: 'post',
+                                    url: rootGetters.get_url_api({
+                                        url: state.url_api_projects_templates_assignment
+                                    }),
+                                    data: data.template_assignment
+                                }, { root: true }).then(function (response) {
+                                    console.log(response);
+                                    commit('add_template_assignment', {
+                                        data: response.data,
+                                        project: data.project
+                                    });
+                                });
+
+                            case 2:
+                            case 'end':
+                                return _context10.stop();
+                        }
+                    }
+                }, _callee10, this);
+            }));
+
+            function create_template_assignment(_x18, _x19) {
+                return _ref43.apply(this, arguments);
+            }
+
+            return create_template_assignment;
+        }(),
+        create_template_hit: function () {
+            var _ref45 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee11(_ref44, data) {
+                var state = _ref44.state,
+                    commit = _ref44.commit,
+                    getters = _ref44.getters,
+                    rootGetters = _ref44.rootGetters,
+                    dispatch = _ref44.dispatch;
+                return _regenerator2.default.wrap(function _callee11$(_context11) {
+                    while (1) {
+                        switch (_context11.prev = _context11.next) {
+                            case 0:
+                                _context11.next = 2;
+                                return dispatch('make_request', {
+                                    method: 'post',
+                                    url: rootGetters.get_url_api({
+                                        url: state.url_api_projects_templates_hit
+                                    }),
+                                    data: data.template_hit
+                                }, { root: true }).then(function (response) {
+                                    console.log(response);
+                                    commit('add_template_hit', {
+                                        data: response.data,
+                                        project: data.project
+                                    });
+                                });
+
+                            case 2:
+                            case 'end':
+                                return _context11.stop();
+                        }
+                    }
+                }, _callee11, this);
+            }));
+
+            function create_template_hit(_x20, _x21) {
+                return _ref45.apply(this, arguments);
+            }
+
+            return create_template_hit;
+        }(),
+        create_template_global: function () {
+            var _ref47 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee12(_ref46, data) {
+                var state = _ref46.state,
+                    commit = _ref46.commit,
+                    getters = _ref46.getters,
+                    rootGetters = _ref46.rootGetters,
+                    dispatch = _ref46.dispatch;
+                return _regenerator2.default.wrap(function _callee12$(_context12) {
+                    while (1) {
+                        switch (_context12.prev = _context12.next) {
+                            case 0:
+                                _context12.next = 2;
+                                return dispatch('make_request', {
+                                    method: 'post',
+                                    url: rootGetters.get_url_api({
+                                        url: state.url_api_projects_templates_global
+                                    }),
+                                    data: data.template_global
+                                }, { root: true }).then(function (response) {
+                                    console.log(response);
+                                    commit('add_template_global', {
+                                        data: response.data,
+                                        project: data.project
+                                    });
+                                });
+
+                            case 2:
+                            case 'end':
+                                return _context12.stop();
+                        }
+                    }
+                }, _callee12, this);
+            }));
+
+            function create_template_global(_x22, _x23) {
+                return _ref47.apply(this, arguments);
+            }
+
+            return create_template_global;
+        }(),
+        delete_settings_batch: function () {
+            var _ref49 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee13(_ref48, data) {
+                var state = _ref48.state,
+                    commit = _ref48.commit,
+                    getters = _ref48.getters,
+                    rootGetters = _ref48.rootGetters,
+                    dispatch = _ref48.dispatch;
+                return _regenerator2.default.wrap(function _callee13$(_context13) {
+                    while (1) {
+                        switch (_context13.prev = _context13.next) {
+                            case 0:
+                                _context13.next = 2;
                                 return dispatch('make_request', {
                                     method: 'delete',
                                     url: rootGetters.get_url_api({
@@ -82616,30 +89472,30 @@ var moduleProjects = exports.moduleProjects = {
 
                             case 2:
                             case 'end':
-                                return _context7.stop();
+                                return _context13.stop();
                         }
                     }
-                }, _callee7, this);
+                }, _callee13, this);
             }));
 
-            function delete_settings_batch(_x12, _x13) {
-                return _ref22.apply(this, arguments);
+            function delete_settings_batch(_x24, _x25) {
+                return _ref49.apply(this, arguments);
             }
 
             return delete_settings_batch;
         }(),
         delete_template_worker: function () {
-            var _ref24 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee8(_ref23, data) {
-                var state = _ref23.state,
-                    commit = _ref23.commit,
-                    getters = _ref23.getters,
-                    rootGetters = _ref23.rootGetters,
-                    dispatch = _ref23.dispatch;
-                return _regenerator2.default.wrap(function _callee8$(_context8) {
+            var _ref51 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee14(_ref50, data) {
+                var state = _ref50.state,
+                    commit = _ref50.commit,
+                    getters = _ref50.getters,
+                    rootGetters = _ref50.rootGetters,
+                    dispatch = _ref50.dispatch;
+                return _regenerator2.default.wrap(function _callee14$(_context14) {
                     while (1) {
-                        switch (_context8.prev = _context8.next) {
+                        switch (_context14.prev = _context14.next) {
                             case 0:
-                                _context8.next = 2;
+                                _context14.next = 2;
                                 return dispatch('make_request', {
                                     method: 'delete',
                                     url: rootGetters.get_url_api({
@@ -82656,33 +89512,153 @@ var moduleProjects = exports.moduleProjects = {
 
                             case 2:
                             case 'end':
-                                return _context8.stop();
+                                return _context14.stop();
                         }
                     }
-                }, _callee8, this);
+                }, _callee14, this);
             }));
 
-            function delete_template_worker(_x14, _x15) {
-                return _ref24.apply(this, arguments);
+            function delete_template_worker(_x26, _x27) {
+                return _ref51.apply(this, arguments);
             }
 
             return delete_template_worker;
         }(),
-        set_count_assignments_max_per_worker: function () {
-            var _ref27 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee9(_ref25, _ref26) {
-                var state = _ref25.state,
-                    commit = _ref25.commit,
-                    getters = _ref25.getters,
-                    rootState = _ref25.rootState,
-                    rootGetters = _ref25.rootGetters,
-                    dispatch = _ref25.dispatch;
-                var project = _ref26.project,
-                    count_assignments_max_per_worker = _ref26.count_assignments_max_per_worker;
-                return _regenerator2.default.wrap(function _callee9$(_context9) {
+        delete_template_assignment: function () {
+            var _ref53 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee15(_ref52, data) {
+                var state = _ref52.state,
+                    commit = _ref52.commit,
+                    getters = _ref52.getters,
+                    rootGetters = _ref52.rootGetters,
+                    dispatch = _ref52.dispatch;
+                return _regenerator2.default.wrap(function _callee15$(_context15) {
                     while (1) {
-                        switch (_context9.prev = _context9.next) {
+                        switch (_context15.prev = _context15.next) {
                             case 0:
-                                _context9.next = 2;
+                                _context15.next = 2;
+                                return dispatch('make_request', {
+                                    method: 'delete',
+                                    url: rootGetters.get_url_api({
+                                        url: state.url_api_projects_templates_assignment,
+                                        value: data.template_assignment.id
+                                    })
+                                }, { root: true }).then(function (response) {
+                                    data.callback();
+                                    commit('remove_template_assignment', {
+                                        template_assignment: data.template_assignment,
+                                        project: data.project
+                                    });
+                                });
+
+                            case 2:
+                            case 'end':
+                                return _context15.stop();
+                        }
+                    }
+                }, _callee15, this);
+            }));
+
+            function delete_template_assignment(_x28, _x29) {
+                return _ref53.apply(this, arguments);
+            }
+
+            return delete_template_assignment;
+        }(),
+        delete_template_hit: function () {
+            var _ref55 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee16(_ref54, data) {
+                var state = _ref54.state,
+                    commit = _ref54.commit,
+                    getters = _ref54.getters,
+                    rootGetters = _ref54.rootGetters,
+                    dispatch = _ref54.dispatch;
+                return _regenerator2.default.wrap(function _callee16$(_context16) {
+                    while (1) {
+                        switch (_context16.prev = _context16.next) {
+                            case 0:
+                                _context16.next = 2;
+                                return dispatch('make_request', {
+                                    method: 'delete',
+                                    url: rootGetters.get_url_api({
+                                        url: state.url_api_projects_templates_hit,
+                                        value: data.template_hit.id
+                                    })
+                                }, { root: true }).then(function (response) {
+                                    data.callback();
+                                    commit('remove_template_hit', {
+                                        template_hit: data.template_hit,
+                                        project: data.project
+                                    });
+                                });
+
+                            case 2:
+                            case 'end':
+                                return _context16.stop();
+                        }
+                    }
+                }, _callee16, this);
+            }));
+
+            function delete_template_hit(_x30, _x31) {
+                return _ref55.apply(this, arguments);
+            }
+
+            return delete_template_hit;
+        }(),
+        delete_template_global: function () {
+            var _ref57 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee17(_ref56, data) {
+                var state = _ref56.state,
+                    commit = _ref56.commit,
+                    getters = _ref56.getters,
+                    rootGetters = _ref56.rootGetters,
+                    dispatch = _ref56.dispatch;
+                return _regenerator2.default.wrap(function _callee17$(_context17) {
+                    while (1) {
+                        switch (_context17.prev = _context17.next) {
+                            case 0:
+                                _context17.next = 2;
+                                return dispatch('make_request', {
+                                    method: 'delete',
+                                    url: rootGetters.get_url_api({
+                                        url: state.url_api_projects_templates_global,
+                                        value: data.template_global.id
+                                    })
+                                }, { root: true }).then(function (response) {
+                                    data.callback();
+                                    commit('remove_template_global', {
+                                        template_global: data.template_global,
+                                        project: data.project
+                                    });
+                                });
+
+                            case 2:
+                            case 'end':
+                                return _context17.stop();
+                        }
+                    }
+                }, _callee17, this);
+            }));
+
+            function delete_template_global(_x32, _x33) {
+                return _ref57.apply(this, arguments);
+            }
+
+            return delete_template_global;
+        }(),
+        set_count_assignments_max_per_worker: function () {
+            var _ref60 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee18(_ref58, _ref59) {
+                var state = _ref58.state,
+                    commit = _ref58.commit,
+                    getters = _ref58.getters,
+                    rootState = _ref58.rootState,
+                    rootGetters = _ref58.rootGetters,
+                    dispatch = _ref58.dispatch;
+                var project = _ref59.project,
+                    count_assignments_max_per_worker = _ref59.count_assignments_max_per_worker;
+                return _regenerator2.default.wrap(function _callee18$(_context18) {
+                    while (1) {
+                        switch (_context18.prev = _context18.next) {
+                            case 0:
+                                _context18.next = 2;
                                 return dispatch('make_request', {
                                     method: 'put',
                                     url: rootGetters.get_url_api({
@@ -82702,48 +89678,95 @@ var moduleProjects = exports.moduleProjects = {
 
                             case 2:
                             case 'end':
-                                return _context9.stop();
+                                return _context18.stop();
                         }
                     }
-                }, _callee9, this);
+                }, _callee18, this);
             }));
 
-            function set_count_assignments_max_per_worker(_x16, _x17) {
-                return _ref27.apply(this, arguments);
+            function set_count_assignments_max_per_worker(_x34, _x35) {
+                return _ref60.apply(this, arguments);
             }
 
             return set_count_assignments_max_per_worker;
         }(),
-        edit_settings_batch: function () {
-            var _ref30 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee10(_ref28, _ref29) {
-                var state = _ref28.state,
-                    commit = _ref28.commit,
-                    getters = _ref28.getters,
-                    rootState = _ref28.rootState,
-                    rootGetters = _ref28.rootGetters,
-                    dispatch = _ref28.dispatch;
-                var data = _ref29.data;
-                var data_changed;
-                return _regenerator2.default.wrap(function _callee10$(_context10) {
+        set_message_reject_default: function () {
+            var _ref63 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee19(_ref61, _ref62) {
+                var state = _ref61.state,
+                    commit = _ref61.commit,
+                    getters = _ref61.getters,
+                    rootState = _ref61.rootState,
+                    rootGetters = _ref61.rootGetters,
+                    dispatch = _ref61.dispatch;
+                var project = _ref62.project,
+                    message_reject = _ref62.message_reject;
+                return _regenerator2.default.wrap(function _callee19$(_context19) {
                     while (1) {
-                        switch (_context10.prev = _context10.next) {
+                        switch (_context19.prev = _context19.next) {
                             case 0:
-                                // const changes = project.get_changes(project_new);
-                                // changes['slug'] = project.slug;
+                                _context19.next = 2;
+                                return dispatch('make_request', {
+                                    method: 'put',
+                                    url: rootGetters.get_url_api({
+                                        url: state.url_api_projects,
+                                        value: project.slug
+                                    }),
+                                    data: {
+                                        message_reject: message_reject
+                                    }
+                                }, { root: true }).then(function (response) {
+                                    commit('set_project', {
+                                        project: project,
+                                        project_new: response.data,
+                                        array_fields: ['message_reject_default']
+                                    });
 
+                                    commit('moduleMessagesReject/add_message_reject', {
+                                        message_reject: response.data.message_reject_default
+                                    }, { root: true });
+                                });
+
+                            case 2:
+                            case 'end':
+                                return _context19.stop();
+                        }
+                    }
+                }, _callee19, this);
+            }));
+
+            function set_message_reject_default(_x36, _x37) {
+                return _ref63.apply(this, arguments);
+            }
+
+            return set_message_reject_default;
+        }(),
+        edit_settings_batch: function () {
+            var _ref66 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee20(_ref64, _ref65) {
+                var state = _ref64.state,
+                    commit = _ref64.commit,
+                    getters = _ref64.getters,
+                    rootState = _ref64.rootState,
+                    rootGetters = _ref64.rootGetters,
+                    dispatch = _ref64.dispatch;
+                var data = _ref65.data;
+                var data_changed;
+                return _regenerator2.default.wrap(function _callee20$(_context20) {
+                    while (1) {
+                        switch (_context20.prev = _context20.next) {
+                            case 0:
                                 data_changed = data.settings_batch_current.get_changes(data.settings_batch_new);
 
                                 console.log(data_changed);
 
                                 if (!((0, _keys2.default)(data_changed).length == 0)) {
-                                    _context10.next = 4;
+                                    _context20.next = 4;
                                     break;
                                 }
 
-                                return _context10.abrupt('return');
+                                return _context20.abrupt('return');
 
                             case 4:
-                                _context10.next = 6;
+                                _context20.next = 6;
                                 return dispatch('make_request', {
                                     method: 'put',
                                     url: rootGetters.get_url_api({
@@ -82762,32 +89785,256 @@ var moduleProjects = exports.moduleProjects = {
 
                             case 6:
                             case 'end':
-                                return _context10.stop();
+                                return _context20.stop();
                         }
                     }
-                }, _callee10, this);
+                }, _callee20, this);
             }));
 
-            function edit_settings_batch(_x18, _x19) {
-                return _ref30.apply(this, arguments);
+            function edit_settings_batch(_x38, _x39) {
+                return _ref66.apply(this, arguments);
             }
 
             return edit_settings_batch;
         }(),
-        validate_name: function () {
-            var _ref32 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee11(_ref31, name) {
-                var state = _ref31.state,
-                    commit = _ref31.commit,
-                    getters = _ref31.getters,
-                    rootState = _ref31.rootState,
-                    rootGetters = _ref31.rootGetters,
-                    dispatch = _ref31.dispatch;
-                var response;
-                return _regenerator2.default.wrap(function _callee11$(_context11) {
+        edit_template_worker: function () {
+            var _ref69 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee21(_ref67, _ref68) {
+                var state = _ref67.state,
+                    commit = _ref67.commit,
+                    getters = _ref67.getters,
+                    rootState = _ref67.rootState,
+                    rootGetters = _ref67.rootGetters,
+                    dispatch = _ref67.dispatch;
+                var data = _ref68.data;
+                var data_changed;
+                return _regenerator2.default.wrap(function _callee21$(_context21) {
                     while (1) {
-                        switch (_context11.prev = _context11.next) {
+                        switch (_context21.prev = _context21.next) {
                             case 0:
-                                _context11.next = 2;
+                                data_changed = data.template_worker_current.get_changes(data.template_worker_new);
+
+                                console.log(data_changed);
+                                console.log(data);
+
+                                if (!((0, _keys2.default)(data_changed).length == 0)) {
+                                    _context21.next = 5;
+                                    break;
+                                }
+
+                                return _context21.abrupt('return');
+
+                            case 5:
+                                _context21.next = 7;
+                                return dispatch('make_request', {
+                                    method: 'put',
+                                    url: rootGetters.get_url_api({
+                                        url: state.url_api_projects_templates_worker,
+                                        value: data.template_worker_current.id
+                                    }),
+                                    data: data_changed
+                                }, { root: true }).then(function (response) {
+                                    commit('update_template_worker', {
+                                        data: response.data,
+                                        project: data.project
+                                    });
+                                });
+
+                            case 7:
+                            case 'end':
+                                return _context21.stop();
+                        }
+                    }
+                }, _callee21, this);
+            }));
+
+            function edit_template_worker(_x40, _x41) {
+                return _ref69.apply(this, arguments);
+            }
+
+            return edit_template_worker;
+        }(),
+        edit_template_assignment: function () {
+            var _ref72 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee22(_ref70, _ref71) {
+                var state = _ref70.state,
+                    commit = _ref70.commit,
+                    getters = _ref70.getters,
+                    rootState = _ref70.rootState,
+                    rootGetters = _ref70.rootGetters,
+                    dispatch = _ref70.dispatch;
+                var data = _ref71.data;
+                var data_changed;
+                return _regenerator2.default.wrap(function _callee22$(_context22) {
+                    while (1) {
+                        switch (_context22.prev = _context22.next) {
+                            case 0:
+                                data_changed = data.template_assignment_current.get_changes(data.template_assignment_new);
+
+                                console.log(data_changed);
+                                console.log(data);
+
+                                if (!((0, _keys2.default)(data_changed).length == 0)) {
+                                    _context22.next = 5;
+                                    break;
+                                }
+
+                                return _context22.abrupt('return');
+
+                            case 5:
+                                _context22.next = 7;
+                                return dispatch('make_request', {
+                                    method: 'put',
+                                    url: rootGetters.get_url_api({
+                                        url: state.url_api_projects_templates_assignment,
+                                        value: data.template_assignment_current.id
+                                    }),
+                                    data: data_changed
+                                }, { root: true }).then(function (response) {
+                                    commit('update_template_assignment', {
+                                        data: response.data,
+                                        project: data.project
+                                    });
+                                });
+
+                            case 7:
+                            case 'end':
+                                return _context22.stop();
+                        }
+                    }
+                }, _callee22, this);
+            }));
+
+            function edit_template_assignment(_x42, _x43) {
+                return _ref72.apply(this, arguments);
+            }
+
+            return edit_template_assignment;
+        }(),
+        edit_template_hit: function () {
+            var _ref75 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee23(_ref73, _ref74) {
+                var state = _ref73.state,
+                    commit = _ref73.commit,
+                    getters = _ref73.getters,
+                    rootState = _ref73.rootState,
+                    rootGetters = _ref73.rootGetters,
+                    dispatch = _ref73.dispatch;
+                var data = _ref74.data;
+                var data_changed;
+                return _regenerator2.default.wrap(function _callee23$(_context23) {
+                    while (1) {
+                        switch (_context23.prev = _context23.next) {
+                            case 0:
+                                data_changed = data.template_hit_current.get_changes(data.template_hit_new);
+
+                                console.log(data_changed);
+                                console.log(data);
+
+                                if (!((0, _keys2.default)(data_changed).length == 0)) {
+                                    _context23.next = 5;
+                                    break;
+                                }
+
+                                return _context23.abrupt('return');
+
+                            case 5:
+                                _context23.next = 7;
+                                return dispatch('make_request', {
+                                    method: 'put',
+                                    url: rootGetters.get_url_api({
+                                        url: state.url_api_projects_templates_hit,
+                                        value: data.template_hit_current.id
+                                    }),
+                                    data: data_changed
+                                }, { root: true }).then(function (response) {
+                                    commit('update_template_hit', {
+                                        data: response.data,
+                                        project: data.project
+                                    });
+                                });
+
+                            case 7:
+                            case 'end':
+                                return _context23.stop();
+                        }
+                    }
+                }, _callee23, this);
+            }));
+
+            function edit_template_hit(_x44, _x45) {
+                return _ref75.apply(this, arguments);
+            }
+
+            return edit_template_hit;
+        }(),
+        edit_template_global: function () {
+            var _ref78 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee24(_ref76, _ref77) {
+                var state = _ref76.state,
+                    commit = _ref76.commit,
+                    getters = _ref76.getters,
+                    rootState = _ref76.rootState,
+                    rootGetters = _ref76.rootGetters,
+                    dispatch = _ref76.dispatch;
+                var data = _ref77.data;
+                var data_changed;
+                return _regenerator2.default.wrap(function _callee24$(_context24) {
+                    while (1) {
+                        switch (_context24.prev = _context24.next) {
+                            case 0:
+                                data_changed = data.template_global_current.get_changes(data.template_global_new);
+
+                                console.log(data_changed);
+                                console.log(data);
+
+                                if (!((0, _keys2.default)(data_changed).length == 0)) {
+                                    _context24.next = 5;
+                                    break;
+                                }
+
+                                return _context24.abrupt('return');
+
+                            case 5:
+                                _context24.next = 7;
+                                return dispatch('make_request', {
+                                    method: 'put',
+                                    url: rootGetters.get_url_api({
+                                        url: state.url_api_projects_templates_global,
+                                        value: data.template_global_current.id
+                                    }),
+                                    data: data_changed
+                                }, { root: true }).then(function (response) {
+                                    commit('update_template_global', {
+                                        data: response.data,
+                                        project: data.project
+                                    });
+                                });
+
+                            case 7:
+                            case 'end':
+                                return _context24.stop();
+                        }
+                    }
+                }, _callee24, this);
+            }));
+
+            function edit_template_global(_x46, _x47) {
+                return _ref78.apply(this, arguments);
+            }
+
+            return edit_template_global;
+        }(),
+        validate_name: function () {
+            var _ref80 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee25(_ref79, name) {
+                var state = _ref79.state,
+                    commit = _ref79.commit,
+                    getters = _ref79.getters,
+                    rootState = _ref79.rootState,
+                    rootGetters = _ref79.rootGetters,
+                    dispatch = _ref79.dispatch;
+                var response;
+                return _regenerator2.default.wrap(function _callee25$(_context25) {
+                    while (1) {
+                        switch (_context25.prev = _context25.next) {
+                            case 0:
+                                _context25.next = 2;
                                 return dispatch('make_request', {
                                     method: 'get',
                                     url: rootGetters.get_url_api({
@@ -82797,37 +90044,37 @@ var moduleProjects = exports.moduleProjects = {
                                 }, { root: true });
 
                             case 2:
-                                response = _context11.sent;
-                                return _context11.abrupt('return', response);
+                                response = _context25.sent;
+                                return _context25.abrupt('return', response);
 
                             case 4:
                             case 'end':
-                                return _context11.stop();
+                                return _context25.stop();
                         }
                     }
-                }, _callee11, this);
+                }, _callee25, this);
             }));
 
-            function validate_name(_x20, _x21) {
-                return _ref32.apply(this, arguments);
+            function validate_name(_x48, _x49) {
+                return _ref80.apply(this, arguments);
             }
 
             return validate_name;
         }(),
         create_project: function () {
-            var _ref34 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee12(_ref33, name) {
-                var state = _ref33.state,
-                    commit = _ref33.commit,
-                    getters = _ref33.getters,
-                    rootState = _ref33.rootState,
-                    rootGetters = _ref33.rootGetters,
-                    dispatch = _ref33.dispatch;
+            var _ref82 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee26(_ref81, name) {
+                var state = _ref81.state,
+                    commit = _ref81.commit,
+                    getters = _ref81.getters,
+                    rootState = _ref81.rootState,
+                    rootGetters = _ref81.rootGetters,
+                    dispatch = _ref81.dispatch;
                 var response;
-                return _regenerator2.default.wrap(function _callee12$(_context12) {
+                return _regenerator2.default.wrap(function _callee26$(_context26) {
                     while (1) {
-                        switch (_context12.prev = _context12.next) {
+                        switch (_context26.prev = _context26.next) {
                             case 0:
-                                _context12.next = 2;
+                                _context26.next = 2;
                                 return dispatch('make_request', {
                                     method: 'post',
                                     url: rootGetters.get_url_api({
@@ -82839,26 +90086,169 @@ var moduleProjects = exports.moduleProjects = {
                                 }, { root: true });
 
                             case 2:
-                                response = _context12.sent;
-                                return _context12.abrupt('return', response);
+                                response = _context26.sent;
 
-                            case 4:
+
+                                commit('add_project', response.data);
+                                return _context26.abrupt('return', response.data.slug);
+
+                            case 5:
                             case 'end':
-                                return _context12.stop();
+                                return _context26.stop();
                         }
                     }
-                }, _callee12, this);
+                }, _callee26, this);
             }));
 
-            function create_project(_x22, _x23) {
-                return _ref34.apply(this, arguments);
+            function create_project(_x50, _x51) {
+                return _ref82.apply(this, arguments);
             }
 
             return create_project;
+        }(),
+        clear_sandbox: function () {
+            var _ref84 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee27(_ref83) {
+                var state = _ref83.state,
+                    commit = _ref83.commit,
+                    rootGetters = _ref83.rootGetters,
+                    dispatch = _ref83.dispatch;
+                var response;
+                return _regenerator2.default.wrap(function _callee27$(_context27) {
+                    while (1) {
+                        switch (_context27.prev = _context27.next) {
+                            case 0:
+                                _context27.next = 2;
+                                return dispatch('make_request', {
+                                    method: 'delete',
+                                    url: rootGetters.get_url_api({
+                                        url: state.url_api_projects_clear_sandbox
+                                    })
+                                }, { root: true });
+
+                            case 2:
+                                response = _context27.sent;
+
+
+                                commit('moduleBatches/clear_sandbox', null, { root: true });
+                                commit('moduleHITs/clear_sandbox', null, { root: true });
+                                commit('moduleAssignments/clear_sandbox', null, { root: true });
+                                commit('moduleWorkers/clear_sandbox', null, { root: true });
+
+                            case 7:
+                            case 'end':
+                                return _context27.stop();
+                        }
+                    }
+                }, _callee27, this);
+            }));
+
+            function clear_sandbox(_x52) {
+                return _ref84.apply(this, arguments);
+            }
+
+            return clear_sandbox;
+        }(),
+        ping: function () {
+            var _ref86 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee28(_ref85) {
+                var commit = _ref85.commit,
+                    state = _ref85.state,
+                    rootGetters = _ref85.rootGetters,
+                    dispatch = _ref85.dispatch;
+                var project_current, slug_project_current, response;
+                return _regenerator2.default.wrap(function _callee28$(_context28) {
+                    while (1) {
+                        switch (_context28.prev = _context28.next) {
+                            case 0:
+                                project_current = rootGetters['moduleProjects/get_project_current'];
+                                slug_project_current = project_current.slug;
+
+                                if (!(slug_project_current == null)) {
+                                    _context28.next = 4;
+                                    break;
+                                }
+
+                                return _context28.abrupt('return');
+
+                            case 4:
+                                _context28.next = 6;
+                                return dispatch('make_request', {
+                                    method: 'put',
+                                    url: rootGetters.get_url_api({
+                                        url: state.url_api_ping
+                                    })
+                                }, { root: true });
+
+                            case 6:
+                                response = _context28.sent;
+
+                                // console.log(response);
+                                commit('set_ping', {
+                                    project: project_current,
+                                    data: response.data
+                                });
+
+                            case 8:
+                            case 'end':
+                                return _context28.stop();
+                        }
+                    }
+                }, _callee28, this);
+            }));
+
+            function ping(_x53) {
+                return _ref86.apply(this, arguments);
+            }
+
+            return ping;
+        }(),
+        delete_project: function () {
+            var _ref88 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee29(_ref87, router) {
+                var commit = _ref87.commit,
+                    state = _ref87.state,
+                    rootGetters = _ref87.rootGetters,
+                    dispatch = _ref87.dispatch;
+                var project, response;
+                return _regenerator2.default.wrap(function _callee29$(_context29) {
+                    while (1) {
+                        switch (_context29.prev = _context29.next) {
+                            case 0:
+                                project = rootGetters['moduleProjects/get_project_current'];
+                                _context29.next = 3;
+                                return dispatch('make_request', {
+                                    method: 'delete',
+                                    url: rootGetters.get_url_api({
+                                        url: state.url_api_projects,
+                                        value: project.slug
+                                    })
+                                }, { root: true });
+
+                            case 3:
+                                response = _context29.sent;
+
+
+                                router.push({ name: 'dashboard' });
+
+                                commit('delete_project', {
+                                    project: project
+                                });
+
+                            case 6:
+                            case 'end':
+                                return _context29.stop();
+                        }
+                    }
+                }, _callee29, this);
+            }));
+
+            function delete_project(_x54, _x55) {
+                return _ref88.apply(this, arguments);
+            }
+
+            return delete_project;
         }()
     }
 };
-},{"babel-runtime/core-js/object/keys":85,"babel-runtime/regenerator":117,"babel-runtime/helpers/asyncToGenerator":66,"vue":3,"axios":61,"lodash":63,"../../classes/project":78,"../../classes/settings_batch":79,"../../classes/template_worker":80}],31:[function(require,module,exports) {
+},{"babel-runtime/core-js/object/keys":97,"babel-runtime/regenerator":131,"babel-runtime/helpers/asyncToGenerator":50,"vue":3,"axios":71,"lodash":73,"../../classes/project":87,"../../classes/settings_batch":88,"../../classes/template_worker":89,"../../classes/template_assignment":90,"../../classes/template_hit":91,"../../classes/template_global":273}],31:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -82944,7 +90334,7 @@ var moduleMoney = exports.moduleMoney = {
 		}()
 	}
 };
-},{"babel-runtime/regenerator":117,"babel-runtime/helpers/asyncToGenerator":66,"axios":61}],32:[function(require,module,exports) {
+},{"babel-runtime/regenerator":131,"babel-runtime/helpers/asyncToGenerator":50,"axios":71}],32:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -83194,7 +90584,7 @@ var moduleQualifications = exports.moduleQualifications = {
 		}()
 	}
 };
-},{"babel-runtime/regenerator":117,"babel-runtime/helpers/asyncToGenerator":66,"axios":61,"vue":3,"lodash":63,"../../classes/qualifications.js":39}],225:[function(require,module,exports) {
+},{"babel-runtime/regenerator":131,"babel-runtime/helpers/asyncToGenerator":50,"axios":71,"vue":3,"lodash":73,"../../classes/qualifications.js":40}],249:[function(require,module,exports) {
 'use strict';
 var $defineProperty = require('./_object-dp');
 var createDesc = require('./_property-desc');
@@ -83204,7 +90594,7 @@ module.exports = function (object, index, value) {
   else object[index] = value;
 };
 
-},{"./_object-dp":236,"./_property-desc":237}],164:[function(require,module,exports) {
+},{"./_object-dp":261,"./_property-desc":262}],190:[function(require,module,exports) {
 'use strict';
 var ctx = require('./_ctx');
 var $export = require('./_export');
@@ -83243,14 +90633,14 @@ $export($export.S + $export.F * !require('./_iter-detect')(function (iter) { Arr
   }
 });
 
-},{"./_ctx":185,"./_export":187,"./_to-object":219,"./_iter-call":222,"./_is-array-iter":223,"./_to-length":224,"./_create-property":225,"./core.get-iterator-method":226,"./_iter-detect":202}],120:[function(require,module,exports) {
+},{"./_ctx":211,"./_export":213,"./_to-object":245,"./_iter-call":246,"./_is-array-iter":247,"./_to-length":248,"./_create-property":249,"./core.get-iterator-method":250,"./_iter-detect":228}],134:[function(require,module,exports) {
 require('../../modules/es6.string.iterator');
 require('../../modules/es6.array.from');
 module.exports = require('../../modules/_core').Array.from;
 
-},{"../../modules/es6.string.iterator":130,"../../modules/es6.array.from":164,"../../modules/_core":118}],86:[function(require,module,exports) {
+},{"../../modules/es6.string.iterator":143,"../../modules/es6.array.from":190,"../../modules/_core":133}],96:[function(require,module,exports) {
 module.exports = { "default": require("core-js/library/fn/array/from"), __esModule: true };
-},{"core-js/library/fn/array/from":120}],73:[function(require,module,exports) {
+},{"core-js/library/fn/array/from":134}],82:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -83273,7 +90663,7 @@ var Worker = function Worker(data) {
 	// this.m_description = data.Description;
 	// this.m_is_requestable = data.IsRequestable;
 	this.id_worker = data.id_worker;
-	this.count_assignments_limit = data.count_assignments_limit;
+	this.count_assignments_limit = data.count_assignments_limit == null ? 0 : data.count_assignments_limit;
 	this.is_blocked_soft = data.is_blocked_soft;
 	this.is_blocked_global = data.is_blocked_global;
 	this.is_blocked_hard = null;
@@ -83293,7 +90683,7 @@ var Worker = function Worker(data) {
 ;
 
 exports.default = Worker;
-},{"babel-runtime/helpers/classCallCheck":83,"./enums.js":74}],33:[function(require,module,exports) {
+},{"babel-runtime/helpers/classCallCheck":94,"./enums.js":83}],33:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -83341,8 +90731,8 @@ var moduleWorkers = exports.moduleWorkers = {
 	namespaced: true,
 	state: {
 		url_api_workers: undefined,
-		object_workers: null,
-		object_workers_sandbox: null,
+		object_workers: {},
+		object_workers_sandbox: {},
 
 		url_api_global_db: undefined
 		// loaded_status_block: false,
@@ -83482,6 +90872,22 @@ var moduleWorkers = exports.moduleWorkers = {
 				_vue2.default.set(object_workers, obj_worker.id, obj_worker);
 			});
 		},
+		append_workers: function append_workers(state, _ref7) {
+			var data_workers = _ref7.data_workers,
+			    use_sandbox = _ref7.use_sandbox;
+
+			var object_workers = null;
+			if (use_sandbox) {
+				object_workers = state.object_workers_sandbox;
+			} else {
+				object_workers = state.object_workers;
+			}
+
+			_lodash2.default.forEach(data_workers, function (data_worker) {
+				var obj_worker = new _workers2.default(data_worker);
+				_vue2.default.set(object_workers, obj_worker.id, obj_worker);
+			});
+		},
 
 		// set_workers(state, {data_workers, use_sandbox}) {
 		// 	let object_workers = null;
@@ -83499,9 +90905,9 @@ var moduleWorkers = exports.moduleWorkers = {
 		//   			Vue.set(object_workers, obj_worker.name, obj_worker);
 		//       	});
 		// },
-		set_blocks_hard: function set_blocks_hard(state, _ref7) {
-			var array_blocks_hard = _ref7.array_blocks_hard,
-			    use_sandbox = _ref7.use_sandbox;
+		set_blocks_hard: function set_blocks_hard(state, _ref8) {
+			var array_blocks_hard = _ref8.array_blocks_hard,
+			    use_sandbox = _ref8.use_sandbox;
 
 			var set_blocked_hard = new _set2.default(array_blocks_hard);
 
@@ -83520,9 +90926,9 @@ var moduleWorkers = exports.moduleWorkers = {
 				}
 			});
 		},
-		set_data_global_db: function set_data_global_db(state, _ref8) {
-			var data = _ref8.data,
-			    use_sandbox = _ref8.use_sandbox;
+		set_data_global_db: function set_data_global_db(state, _ref9) {
+			var data = _ref9.data,
+			    use_sandbox = _ref9.use_sandbox;
 
 			var data_status_block = data.blocks;
 			var object_counters = data.counters;
@@ -83556,6 +90962,9 @@ var moduleWorkers = exports.moduleWorkers = {
 					_vue2.default.set(worker, 'count_assignments_limit', 0);
 				}
 			});
+		},
+		clear_sandbox: function clear_sandbox(state) {
+			state.object_workers_sandbox = {};
 		}
 	},
 	actions: {
@@ -83575,23 +90984,29 @@ var moduleWorkers = exports.moduleWorkers = {
 		// 	}
 		// },
 		sync_workers_by_ids: function () {
-			var _ref11 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(_ref9, _ref10) {
-				var commit = _ref9.commit,
-				    state = _ref9.state,
-				    getters = _ref9.getters,
-				    rootState = _ref9.rootState,
-				    rootGetters = _ref9.rootGetters,
-				    dispatch = _ref9.dispatch;
-				var list_ids = _ref10.list_ids,
-				    use_sandbox = _ref10.use_sandbox;
+			var _ref12 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(_ref10, _ref11) {
+				var commit = _ref10.commit,
+				    state = _ref10.state,
+				    getters = _ref10.getters,
+				    rootState = _ref10.rootState,
+				    rootGetters = _ref10.rootGetters,
+				    dispatch = _ref10.dispatch;
+				var list_ids = _ref11.list_ids,
+				    use_sandbox = _ref11.use_sandbox,
+				    append = _ref11.append;
 				var response, data_workers, blocks_hard, array_blocks_hard;
 				return _regenerator2.default.wrap(function _callee$(_context) {
 					while (1) {
 						switch (_context.prev = _context.next) {
 							case 0:
-								console.log(list_ids);
-								console.log(use_sandbox);
+								if (!(_lodash2.default.size(list_ids) == 0)) {
+									_context.next = 2;
+									break;
+								}
 
+								return _context.abrupt('return');
+
+							case 2:
 								_context.next = 4;
 								return dispatch('make_request', {
 									method: 'patch',
@@ -83607,10 +91022,17 @@ var moduleWorkers = exports.moduleWorkers = {
 								data_workers = response.data;
 
 
-								commit('set_workers', {
-									data_workers: data_workers,
-									use_sandbox: use_sandbox
-								});
+								if (append === true) {
+									commit('append_workers', {
+										data_workers: data_workers,
+										use_sandbox: use_sandbox
+									});
+								} else {
+									commit('set_workers', {
+										data_workers: data_workers,
+										use_sandbox: use_sandbox
+									});
+								}
 
 								dispatch('moduleBatches/add_workers', {
 									'object_workers': getters.get_object_workers(use_sandbox),
@@ -83645,7 +91067,7 @@ var moduleWorkers = exports.moduleWorkers = {
 			}));
 
 			function sync_workers_by_ids(_x2, _x3) {
-				return _ref11.apply(this, arguments);
+				return _ref12.apply(this, arguments);
 			}
 
 			return sync_workers_by_ids;
@@ -83686,15 +91108,15 @@ var moduleWorkers = exports.moduleWorkers = {
 		//     })
 		// },
 		update_status_block_soft: function () {
-			var _ref14 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(_ref12, _ref13) {
-				var commit = _ref12.commit,
-				    state = _ref12.state,
-				    getters = _ref12.getters,
-				    rootState = _ref12.rootState,
-				    rootGetters = _ref12.rootGetters,
-				    dispatch = _ref12.dispatch;
-				var worker = _ref13.worker,
-				    is_blocked = _ref13.is_blocked;
+			var _ref15 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(_ref13, _ref14) {
+				var commit = _ref13.commit,
+				    state = _ref13.state,
+				    getters = _ref13.getters,
+				    rootState = _ref13.rootState,
+				    rootGetters = _ref13.rootGetters,
+				    dispatch = _ref13.dispatch;
+				var worker = _ref14.worker,
+				    is_blocked = _ref14.is_blocked;
 				var use_sandbox, response;
 				return _regenerator2.default.wrap(function _callee2$(_context2) {
 					while (1) {
@@ -83743,21 +91165,21 @@ var moduleWorkers = exports.moduleWorkers = {
 			}));
 
 			function update_status_block_soft(_x4, _x5) {
-				return _ref14.apply(this, arguments);
+				return _ref15.apply(this, arguments);
 			}
 
 			return update_status_block_soft;
 		}(),
 		update_status_block_hard: function () {
-			var _ref17 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3(_ref15, _ref16) {
-				var commit = _ref15.commit,
-				    state = _ref15.state,
-				    getters = _ref15.getters,
-				    rootState = _ref15.rootState,
-				    rootGetters = _ref15.rootGetters,
-				    dispatch = _ref15.dispatch;
-				var worker = _ref16.worker,
-				    is_blocked = _ref16.is_blocked;
+			var _ref18 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3(_ref16, _ref17) {
+				var commit = _ref16.commit,
+				    state = _ref16.state,
+				    getters = _ref16.getters,
+				    rootState = _ref16.rootState,
+				    rootGetters = _ref16.rootGetters,
+				    dispatch = _ref16.dispatch;
+				var worker = _ref17.worker,
+				    is_blocked = _ref17.is_blocked;
 				var use_sandbox, response;
 				return _regenerator2.default.wrap(function _callee3$(_context3) {
 					while (1) {
@@ -83792,21 +91214,21 @@ var moduleWorkers = exports.moduleWorkers = {
 			}));
 
 			function update_status_block_hard(_x6, _x7) {
-				return _ref17.apply(this, arguments);
+				return _ref18.apply(this, arguments);
 			}
 
 			return update_status_block_hard;
 		}(),
 		update_status_block_global: function () {
-			var _ref20 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee4(_ref18, _ref19) {
-				var commit = _ref18.commit,
-				    state = _ref18.state,
-				    getters = _ref18.getters,
-				    rootState = _ref18.rootState,
-				    rootGetters = _ref18.rootGetters,
-				    dispatch = _ref18.dispatch;
-				var worker = _ref19.worker,
-				    is_blocked = _ref19.is_blocked;
+			var _ref21 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee4(_ref19, _ref20) {
+				var commit = _ref19.commit,
+				    state = _ref19.state,
+				    getters = _ref19.getters,
+				    rootState = _ref19.rootState,
+				    rootGetters = _ref19.rootGetters,
+				    dispatch = _ref19.dispatch;
+				var worker = _ref20.worker,
+				    is_blocked = _ref20.is_blocked;
 				var use_sandbox, response;
 				return _regenerator2.default.wrap(function _callee4$(_context4) {
 					while (1) {
@@ -83841,21 +91263,21 @@ var moduleWorkers = exports.moduleWorkers = {
 			}));
 
 			function update_status_block_global(_x8, _x9) {
-				return _ref20.apply(this, arguments);
+				return _ref21.apply(this, arguments);
 			}
 
 			return update_status_block_global;
 		}(),
 		update_count_assignments_limit: function () {
-			var _ref23 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee5(_ref21, _ref22) {
-				var commit = _ref21.commit,
-				    state = _ref21.state,
-				    getters = _ref21.getters,
-				    rootState = _ref21.rootState,
-				    rootGetters = _ref21.rootGetters,
-				    dispatch = _ref21.dispatch;
-				var worker = _ref22.worker,
-				    value = _ref22.value;
+			var _ref24 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee5(_ref22, _ref23) {
+				var commit = _ref22.commit,
+				    state = _ref22.state,
+				    getters = _ref22.getters,
+				    rootState = _ref22.rootState,
+				    rootGetters = _ref22.rootGetters,
+				    dispatch = _ref22.dispatch;
+				var worker = _ref23.worker,
+				    value = _ref23.value;
 				var use_sandbox, response;
 				return _regenerator2.default.wrap(function _callee5$(_context5) {
 					while (1) {
@@ -83912,14 +91334,14 @@ var moduleWorkers = exports.moduleWorkers = {
 			}));
 
 			function update_count_assignments_limit(_x10, _x11) {
-				return _ref23.apply(this, arguments);
+				return _ref24.apply(this, arguments);
 			}
 
 			return update_count_assignments_limit;
 		}()
 	}
 };
-},{"babel-runtime/regenerator":117,"babel-runtime/core-js/array/from":86,"babel-runtime/helpers/asyncToGenerator":66,"babel-runtime/core-js/set":82,"axios":61,"vue":3,"lodash":63,"../../classes/workers.js":73,"../../classes/enums.js":74}],77:[function(require,module,exports) {
+},{"babel-runtime/regenerator":131,"babel-runtime/core-js/array/from":96,"babel-runtime/helpers/asyncToGenerator":50,"babel-runtime/core-js/set":93,"axios":71,"vue":3,"lodash":73,"../../classes/workers.js":82,"../../classes/enums.js":83}],84:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -83940,90 +91362,6 @@ var _lodash2 = _interopRequireDefault(_lodash);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Batch = function () {
-    function Batch() {
-        var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-        (0, _classCallCheck3.default)(this, Batch);
-
-        this.id = data.id;
-        this.name = data.name;
-        this.id_project = data.id_project;
-        this.use_sandbox = data.use_sandbox;
-        this.hits = [];
-        // this.hits = JSON.parse(JSON.stringify(data.hits));
-        this.settings_batch = data.settings_batch;
-
-        this._count_assignments_total = null;
-        this._count_assignments_available = null;
-        this._progress = null;
-    }
-
-    // get name() {
-    // 	console.log('get name');
-    // 	return this._name;
-    // }
-
-    // set name(val) {
-    // 	// return val;
-    // 	this._name = val;
-    // }
-
-    (0, _createClass3.default)(Batch, [{
-        key: 'count_assignments_total',
-        get: function get() {
-            if (this._count_assignments_total != null) return this._count_assignments_total;
-
-            var count_assignments_total = this.settings_batch.count_assignments * this.hits.length;
-            this._count_assignments_total = count_assignments_total;
-            return count_assignments_total;
-        }
-    }, {
-        key: 'count_assignments_available',
-        get: function get() {
-            if (this._count_assignments_available != null) return this._count_assignments_available;
-
-            var count_assignments_available = 0;
-            console.log('EXPENSIVE1');
-            _lodash2.default.forEach(this.hits, function (hit) {
-                count_assignments_available += hit.assignments.length;
-            });
-
-            this._count_assignments_available = count_assignments_available;
-            return count_assignments_available;
-        }
-    }, {
-        key: 'progress',
-        get: function get() {
-            if (this._progress != null) return this._progress;
-
-            var progress = this.count_assignments_available / this.count_assignments_total * 100.0;
-            console.log('EXECUTED1');
-
-            this._progress = progress;
-            return this.count_assignments_available / this.count_assignments_total * 100.0;
-        }
-    }]);
-    return Batch;
-}();
-
-exports.default = Batch;
-},{"babel-runtime/helpers/classCallCheck":83,"babel-runtime/helpers/createClass":84,"lodash":63}],75:[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _classCallCheck2 = require("babel-runtime/helpers/classCallCheck");
-
-var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-var _createClass2 = require("babel-runtime/helpers/createClass");
-
-var _createClass3 = _interopRequireDefault(_createClass2);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 var HIT = function () {
     function HIT() {
         var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -84033,41 +91371,41 @@ var HIT = function () {
         this.id_hit = data.id_hit;
         this.batch = data.batch;
         this.count_assignments_additional = data.count_assignments_additional;
-        this.datetime_creation = data.datetime_creation;
-        this.datetime_expiration = data.datetime_expiration;
+        this.datetime_creation = new Date(data.datetime_creation);
+        this.datetime_expiration = new Date(data.datetime_expiration);
         this.parameters = data.parameters;
-        this.assignments = [];
+        this.object_assignments = {};
 
-        this._count_assignments_total = null;
-        this._count_assignments_available = null;
-        this._progress = null;
+        // this._count_assignments_total = null;
+        // this._count_assignments_available = null;
+        // this._progress = null;
     }
 
     (0, _createClass3.default)(HIT, [{
-        key: "count_assignments_total",
+        key: 'count_assignments_total',
         get: function get() {
-            if (this._count_assignments_total != null) return this._count_assignments_total;
+            // if(this._count_assignments_total != null) return this._count_assignments_total;
 
             var count_assignments_total = this.batch.settings_batch.count_assignments;
-            this._count_assignments_total = count_assignments_total;
+            // this._count_assignments_total = count_assignments_total;
             return count_assignments_total;
         }
     }, {
-        key: "count_assignments_available",
+        key: 'count_assignments_available',
         get: function get() {
-            if (this._count_assignments_available != null) return this._count_assignments_available;
+            // if(this._count_assignments_available != null) return this._count_assignments_available;
 
-            var count_assignments_available = this.assignments.length;
-            this._count_assignments_available = count_assignments_available;
+            var count_assignments_available = _lodash2.default.size(this.object_assignments);
+            // this._count_assignments_available = count_assignments_available;
             return count_assignments_available;
         }
     }, {
-        key: "progress",
+        key: 'progress',
         get: function get() {
-            if (this._progress != null) return this._progress;
+            // if(this._progress != null) return this._progress;
 
             var progress = this.count_assignments_available / this.count_assignments_total * 100.0;
-            this._progress = progress;
+            // this._progress = progress;
             return progress;
         }
     }]);
@@ -84075,7 +91413,7 @@ var HIT = function () {
 }();
 
 exports.default = HIT;
-},{"babel-runtime/helpers/classCallCheck":83,"babel-runtime/helpers/createClass":84}],34:[function(require,module,exports) {
+},{"babel-runtime/helpers/classCallCheck":94,"babel-runtime/helpers/createClass":95,"lodash":73}],34:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -84140,7 +91478,8 @@ var moduleBatches = exports.moduleBatches = {
 
         url_api_projects_batches: undefined,
 
-        object_csv_parsed: undefined
+        object_csv_parsed: undefined,
+        is_syncing_mturk: false
     },
     getters: {
         get_object_batches: function get_object_batches(state, getters, rootState) {
@@ -84148,7 +91487,7 @@ var moduleBatches = exports.moduleBatches = {
                 var use_sandbox = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
 
                 if (use_sandbox == undefined) {
-                    console.log(rootState.use_sandbox);
+                    // console.log(rootState.use_sandbox)
                     return rootState.use_sandbox ? state.object_batches_sandbox : state.object_batches;
                 } else {
                     return use_sandbox ? state.object_batches_sandbox : state.object_batches;
@@ -84174,6 +91513,8 @@ var moduleBatches = exports.moduleBatches = {
             if (object_batches == null) {
                 return [];
             }
+            // const foo = {3:object_batches[3]};
+            // return _.orderBy(foo, ['datetime_creation'], ['desc']);
             return _lodash2.default.orderBy(object_batches, ['datetime_creation'], ['desc']);
         },
 
@@ -84185,127 +91526,135 @@ var moduleBatches = exports.moduleBatches = {
                 });
             });
             return list_hits;
+        },
+        get_is_syncing_mturk: function get_is_syncing_mturk(state) {
+            return state.is_syncing_mturk;
         }
     },
     mutations: {
-        setBatchesAndHits_sandbox: function setBatchesAndHits_sandbox(state, _ref) {
-            var list_hits = _ref.list_hits,
-                dict_batches = _ref.dict_batches;
+        // setBatchesAndHits_sandbox(state, {list_hits, dict_batches}) {
+        //     // set batches
+        //     state.object_batches_sandbox = {};
+        //     _.forIn(dict_batches, function(batch, id_batch) {
+        //         state.object_batches_sandbox[id_batch] = batch;
+        //         state.object_batches_sandbox[id_batch]['hits'] = [];
 
-            // set batches
-            state.object_batches_sandbox = {};
-            _lodash2.default.forIn(dict_batches, function (batch, id_batch) {
-                state.object_batches_sandbox[id_batch] = batch;
-                state.object_batches_sandbox[id_batch]['hits'] = [];
-            });
+        //     });
 
-            // set hits
-            _lodash2.default.forEach(list_hits, function (hit) {
-                // console.log(Date.parse(hit.datetime_creation));
-                hit.datetime_creation = new Date(hit.datetime_creation);
+        //     // set hits
+        //     _.forEach(list_hits, function(hit){
+        //         // console.log(Date.parse(hit.datetime_creation));
+        //         hit.datetime_creation = new Date(hit.datetime_creation);
 
-                state.object_batches_sandbox[hit.id_batch].hits.push(hit);
-            });
+        //         state.object_batches_sandbox[hit.id_batch].hits.push(hit);
+        //     });
 
-            _lodash2.default.forIn(state.object_batches_sandbox, function (batch, id_batch) {
-                // datetime of last hit is created time of batch
-                batch.datetime_creation = batch.hits[0].datetime_creation;
 
-                batch.count_assignments_approved = _lodash2.default.sumBy(batch.hits, 'count_assignments_approved');
-                batch.count_assignments_rejected = _lodash2.default.sumBy(batch.hits, 'count_assignments_rejected');
+        //     _.forIn(state.object_batches_sandbox, function(batch, id_batch) {
+        //         // datetime of last hit is created time of batch
+        //         batch.datetime_creation = batch.hits[0].datetime_creation;
 
-                batch.count_assignments_total = batch.hits.length * batch.count_assignments_per_hit;
+        //         batch.count_assignments_approved = _.sumBy(
+        //             batch.hits, 'count_assignments_approved'
+        //         );
+        //         batch.count_assignments_rejected = _.sumBy(
+        //             batch.hits, 'count_assignments_rejected'
+        //         );
 
-                batch.money_spent_without_fee = batch.count_assignments_approved * batch.reward;
-                if (batch.count_assignments_per_hit < 10) {
-                    batch.money_spent_with_fee = batch.money_spent_without_fee * 1.2;
-                } else {
-                    batch.money_spent_with_fee = batch.money_spent_without_fee * 1.4;
-                }
+        //         batch.count_assignments_total =  batch.hits.length * batch.count_assignments_per_hit;
 
-                batch.money_spent_max_without_fee = batch.count_assignments_total * batch.reward;
-                if (batch.count_assignments_per_hit < 10) {
-                    batch.money_spent_max_with_fee = batch.money_spent_max_without_fee * 1.2;
-                } else {
-                    batch.money_spent_max_with_fee = batch.money_spent_max_without_fee * 1.4;
-                }
+        //         batch.money_spent_without_fee = batch.count_assignments_approved * batch.reward;
+        //         if(batch.count_assignments_per_hit < 10) {
+        //             batch.money_spent_with_fee = batch.money_spent_without_fee * 1.2;
+        //         } else {
+        //             batch.money_spent_with_fee = batch.money_spent_without_fee * 1.4;
+        //         }
 
-                batch.money_not_spent_without_fee = batch.count_assignments_rejected * batch.reward;
-                if (batch.count_assignments_per_hit < 10) {
-                    batch.money_not_spent_with_fee = batch.money_not_spent_without_fee * 1.2;
-                } else {
-                    batch.money_not_spent_with_fee = batch.money_not_spent_without_fee * 1.4;
-                }
-            });
+        //         batch.money_spent_max_without_fee = batch.count_assignments_total * batch.reward;
+        //         if(batch.count_assignments_per_hit < 10) {
+        //             batch.money_spent_max_with_fee = batch.money_spent_max_without_fee * 1.2;
+        //         } else {
+        //             batch.money_spent_max_with_fee = batch.money_spent_max_without_fee * 1.4;
+        //         }
 
-            // console.log(state.object_batches_sandbox)
+        //         batch.money_not_spent_without_fee = batch.count_assignments_rejected * batch.reward;
+        //         if(batch.count_assignments_per_hit < 10) {
+        //             batch.money_not_spent_with_fee = batch.money_not_spent_without_fee * 1.2;
+        //         } else {
+        //             batch.money_not_spent_with_fee = batch.money_not_spent_without_fee * 1.4;
+        //         }
+        //     });
 
-            state.object_batches_sandbox = dict_batches;
-        },
-        setBatchesAndHits: function setBatchesAndHits(state, _ref2) {
-            var list_hits = _ref2.list_hits,
-                dict_batches = _ref2.dict_batches;
+        //     // console.log(state.object_batches_sandbox)
 
-            // set batches
-            state.object_batches = {};
-            _lodash2.default.forIn(dict_batches, function (batch, id_batch) {
-                state.object_batches[id_batch] = batch;
-                state.object_batches[id_batch]['hits'] = [];
-            });
+        //     state.object_batches_sandbox = dict_batches;
+        // },
+        // setBatchesAndHits(state, {list_hits, dict_batches}) {
+        //     // set batches
+        //     state.object_batches = {};
+        //     _.forIn(dict_batches, function(batch, id_batch) {
+        //         state.object_batches[id_batch] = batch;
+        //         state.object_batches[id_batch]['hits'] = [];
 
-            // set hits
-            _lodash2.default.forEach(list_hits, function (hit) {
-                // console.log(Date.parse(hit.datetime_creation));
-                hit.datetime_creation = new Date(hit.datetime_creation);
+        //     });
 
-                state.object_batches[hit.id_batch].hits.push(hit);
-            });
+        //     // set hits
+        //     _.forEach(list_hits, function(hit){
+        //         // console.log(Date.parse(hit.datetime_creation));
+        //         hit.datetime_creation = new Date(hit.datetime_creation);
 
-            _lodash2.default.forIn(state.object_batches, function (batch, id_batch) {
-                // datetime of last hit is created time of batch
-                batch.datetime_creation = batch.hits[0].datetime_creation;
+        //         state.object_batches[hit.id_batch].hits.push(hit);
+        //     });
 
-                batch.count_assignments_approved = _lodash2.default.sumBy(batch.hits, 'count_assignments_approved');
-                batch.count_assignments_rejected = _lodash2.default.sumBy(batch.hits, 'count_assignments_rejected');
 
-                batch.count_assignments_total = batch.hits.length * batch.count_assignments_per_hit;
+        //     _.forIn(state.object_batches, function(batch, id_batch) {
+        //         // datetime of last hit is created time of batch
+        //         batch.datetime_creation = batch.hits[0].datetime_creation;
 
-                batch.money_spent_without_fee = batch.count_assignments_approved * batch.reward;
-                if (batch.count_assignments_per_hit < 10) {
-                    batch.money_spent_with_fee = batch.money_spent_without_fee * 1.2;
-                } else {
-                    batch.money_spent_with_fee = batch.money_spent_without_fee * 1.4;
-                }
+        //         batch.count_assignments_approved = _.sumBy(
+        //             batch.hits, 'count_assignments_approved'
+        //         );
+        //         batch.count_assignments_rejected = _.sumBy(
+        //             batch.hits, 'count_assignments_rejected'
+        //         );
 
-                batch.money_spent_max_without_fee = batch.count_assignments_total * batch.reward;
-                if (batch.count_assignments_per_hit < 10) {
-                    batch.money_spent_max_with_fee = batch.money_spent_max_without_fee * 1.2;
-                } else {
-                    batch.money_spent_max_with_fee = batch.money_spent_max_without_fee * 1.4;
-                }
+        //         batch.count_assignments_total =  batch.hits.length * batch.count_assignments_per_hit;
 
-                batch.money_not_spent_without_fee = batch.count_assignments_rejected * batch.reward;
-                if (batch.count_assignments_per_hit < 10) {
-                    batch.money_not_spent_with_fee = batch.money_not_spent_without_fee * 1.2;
-                } else {
-                    batch.money_not_spent_with_fee = batch.money_not_spent_without_fee * 1.4;
-                }
-            });
+        //         batch.money_spent_without_fee = batch.count_assignments_approved * batch.reward;
+        //         if(batch.count_assignments_per_hit < 10) {
+        //             batch.money_spent_with_fee = batch.money_spent_without_fee * 1.2;
+        //         } else {
+        //             batch.money_spent_with_fee = batch.money_spent_without_fee * 1.4;
+        //         }
 
-            console.log(state.object_batches);
+        //         batch.money_spent_max_without_fee = batch.count_assignments_total * batch.reward;
+        //         if(batch.count_assignments_per_hit < 10) {
+        //             batch.money_spent_max_with_fee = batch.money_spent_max_without_fee * 1.2;
+        //         } else {
+        //             batch.money_spent_max_with_fee = batch.money_spent_max_without_fee * 1.4;
+        //         }
 
-            state.object_batches = dict_batches;
-        },
+        //         batch.money_not_spent_without_fee = batch.count_assignments_rejected * batch.reward;
+        //         if(batch.count_assignments_per_hit < 10) {
+        //             batch.money_not_spent_with_fee = batch.money_not_spent_without_fee * 1.2;
+        //         } else {
+        //             batch.money_not_spent_with_fee = batch.money_not_spent_without_fee * 1.4;
+        //         }
+        //     });
 
+        //     console.log(state.object_batches)
+
+        //     state.object_batches = dict_batches;
+        // },
         // setObjectBatches(state, dict_batches) {
         //     for(let id_batch in dict_batches) {
         //         state.object_batches[id_batch] = dict_batches[id_batch];
         //     };
         //     state.object_batches = dict_batches;
         // },
-        set_batches: function set_batches(state, _ref3) {
-            var data_batches = _ref3.data_batches,
-                use_sandbox = _ref3.use_sandbox;
+        set_batches: function set_batches(state, _ref) {
+            var data_batches = _ref.data_batches,
+                use_sandbox = _ref.use_sandbox;
 
             var object_batches = null;
             if (use_sandbox) {
@@ -84321,30 +91670,46 @@ var moduleBatches = exports.moduleBatches = {
                 _vue2.default.set(object_batches, batch.id, batch);
             });
         },
-        add_workers: function add_workers(state, _ref4) {
-            var object_workers = _ref4.object_workers,
-                use_sandbox = _ref4.use_sandbox;
 
+        // append_batches(state, {data_batches, use_sandbox}) {
+        //     let object_batches = null;
+        //     if(use_sandbox)
+        //     {
+        //         object_batches = state.object_batches_sandbox;
+        //     } else {
+        //         object_batches = state.object_batches;
+        //     }
+
+        //     _.forEach(data_batches, function(data_batch){
+        //         const batch = new Batch(data_batch);
+        //         Vue.set(object_batches, batch.id, batch);
+        //     });
+        // },
+        add_workers: function add_workers(state, _ref2) {
+            var object_workers = _ref2.object_workers,
+                use_sandbox = _ref2.use_sandbox;
+
+            console.log('#####');
             var object_batches = null;
             if (use_sandbox) {
                 object_batches = state.object_batches_sandbox;
             } else {
                 object_batches = state.object_batches;
             }
-
             _lodash2.default.forEach(object_batches, function (batch) {
-                _lodash2.default.forEach(batch.hits, function (hit) {
-                    _lodash2.default.forEach(hit.assignments, function (assignment) {
-                        console.log(object_workers[assignment.worker]);
-                        assignment.worker = object_workers[assignment.worker];
+                _lodash2.default.forEach(batch.object_hits, function (hit) {
+                    _lodash2.default.forEach(hit.object_assignments, function (assignment) {
+                        // console.log(assignment)
+                        _vue2.default.set(assignment, 'worker', object_workers[assignment.worker]);
+                        // assignment.worker = object_workers[assignment.worker];
                         // Vue.set(assignment.worker, );
                     });
                 });
             });
         },
-        add_batch: function add_batch(state, _ref5) {
-            var data_batch = _ref5.data_batch,
-                use_sandbox = _ref5.use_sandbox;
+        add_batch: function add_batch(state, _ref3) {
+            var data_batch = _ref3.data_batch,
+                use_sandbox = _ref3.use_sandbox;
 
             var object_batches = null;
             if (use_sandbox) {
@@ -84370,49 +91735,23 @@ var moduleBatches = exports.moduleBatches = {
         },
         set_csv_parsed: function set_csv_parsed(state, csv_parsed) {
             state.object_csv_parsed = csv_parsed;
+        },
+        set_is_syncing_mturk: function set_is_syncing_mturk(state, value) {
+            state.is_syncing_mturk = value;
+        },
+        clear_sandbox: function clear_sandbox(state) {
+            state.object_batches_sandbox = {};
         }
     },
     actions: {
-        // async sync_mturk({commit, state, getters, rootState, rootGetters, dispatch}) {
-        //     const use_sandbox = rootState.use_sandbox;
-
-        //     await dispatch('make_request', {
-        //         method: 'patch',
-        //         url: rootGetters.get_url_api({
-        //             url: state.url_api_projects_batches,
-        //             use_sandbox, 
-        //         }),
-        //      }, { root: true }).then(response => {
-        //         console.log(response);
-        //         // commit('set_batches', {'data_batches': response.data, use_sandbox});
-
-        //         // commit('add_settings_batch', {
-        //         //     data: response.data,
-        //         //     project: data.project,
-        //         // });
-        //     });
-        // },
-        // async sync_database({commit, state, getters, rootState, rootGetters}, force=false) {
-        //     if(getters.get_object_batches == null || force) {
-        //         await axios.get(rootGetters.get_url_api(state.url_api_assignments_real_approved))
-        //         .then(response => {
-        //             if(rootState.use_sandbox) {
-        //                 commit('setBatchesAndHits_sandbox', response.data);
-        //             } else {
-        //                 commit('setBatchesAndHits', response.data);
-        //             }
-        //         })
-        //     }
-        // },
-
         sync_batches: function () {
-            var _ref7 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(_ref6) {
-                var commit = _ref6.commit,
-                    state = _ref6.state,
-                    getters = _ref6.getters,
-                    rootState = _ref6.rootState,
-                    rootGetters = _ref6.rootGetters,
-                    dispatch = _ref6.dispatch;
+            var _ref5 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(_ref4) {
+                var commit = _ref4.commit,
+                    state = _ref4.state,
+                    getters = _ref4.getters,
+                    rootState = _ref4.rootState,
+                    rootGetters = _ref4.rootGetters,
+                    dispatch = _ref4.dispatch;
                 var force = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
                 var use_sandbox, response, data_batches;
                 return _regenerator2.default.wrap(function _callee$(_context) {
@@ -84422,7 +91761,7 @@ var moduleBatches = exports.moduleBatches = {
                                 use_sandbox = rootState.use_sandbox;
 
                                 if (!(getters.get_object_batches(use_sandbox) == null || force)) {
-                                    _context.next = 9;
+                                    _context.next = 12;
                                     break;
                                 }
 
@@ -84440,19 +91779,45 @@ var moduleBatches = exports.moduleBatches = {
                                 data_batches = response.data;
 
 
+                                console.log('set_batches');
                                 commit('set_batches', {
                                     data_batches: data_batches,
                                     use_sandbox: use_sandbox
                                 });
 
-                                _context.next = 9;
+                                console.log('dispatch_set_hits');
+                                _context.next = 11;
                                 return dispatch('moduleHITs/set_hits', {
                                     'object_batches': getters.get_object_batches(use_sandbox),
                                     data_batches: data_batches,
                                     use_sandbox: use_sandbox
                                 }, { root: true });
 
-                            case 9:
+                            case 11:
+                                console.log('after dispatch_set_hits');
+
+                                // await dispatch('moduleHITs/set_hits', {
+                                //     'object_batches': getters.get_object_batches(use_sandbox), 
+                                //     data_batches, 
+                                //     use_sandbox
+                                // }, {root: true});
+
+                                // commit('add_settings_batch', {
+                                //     data: response.data,
+                                //     project: data.project,
+                                // });
+
+                                // await axios.get(rootGetters.get_url_api(state.url_api_projects_batches, use_sandbox))
+                                // .then(response => {
+                                //     commit('set_batches', {'data_batches': response.data, use_sandbox});
+                                // })
+
+                                // await axios.get(rootGetters.get_url_api(state.url_api_global_db, use_sandbox))
+                                // .then(response => {
+                                //     commit('set_data_global_db', {'data': response.data, use_sandbox});
+                                // })
+
+                            case 12:
                             case 'end':
                                 return _context.stop();
                         }
@@ -84461,13 +91826,66 @@ var moduleBatches = exports.moduleBatches = {
             }));
 
             function sync_batches(_x3) {
-                return _ref7.apply(this, arguments);
+                return _ref5.apply(this, arguments);
             }
 
             return sync_batches;
         }(),
+        sync_mturk: function () {
+            var _ref7 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(_ref6) {
+                var commit = _ref6.commit,
+                    state = _ref6.state,
+                    getters = _ref6.getters,
+                    rootState = _ref6.rootState,
+                    rootGetters = _ref6.rootGetters,
+                    dispatch = _ref6.dispatch;
+                var use_sandbox, response, data_batches;
+                return _regenerator2.default.wrap(function _callee2$(_context2) {
+                    while (1) {
+                        switch (_context2.prev = _context2.next) {
+                            case 0:
+                                use_sandbox = rootState.use_sandbox;
+
+
+                                commit('set_is_syncing_mturk', true);
+                                _context2.next = 4;
+                                return dispatch('make_request', {
+                                    method: 'patch',
+                                    url: rootGetters.get_url_api({
+                                        url: state.url_api_projects_batches,
+                                        use_sandbox: use_sandbox
+                                    })
+                                }, { root: true });
+
+                            case 4:
+                                response = _context2.sent;
+                                data_batches = response.data;
+                                _context2.next = 8;
+                                return dispatch('moduleHITs/append_hits', {
+                                    data_batches: data_batches,
+                                    use_sandbox: use_sandbox
+                                }, { root: true });
+
+                            case 8:
+
+                                commit('set_is_syncing_mturk', false);
+
+                            case 9:
+                            case 'end':
+                                return _context2.stop();
+                        }
+                    }
+                }, _callee2, this);
+            }));
+
+            function sync_mturk(_x4) {
+                return _ref7.apply(this, arguments);
+            }
+
+            return sync_mturk;
+        }(),
         add_batch: function () {
-            var _ref9 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(_ref8, data) {
+            var _ref9 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3(_ref8, data) {
                 var state = _ref8.state,
                     commit = _ref8.commit,
                     getters = _ref8.getters,
@@ -84475,16 +91893,16 @@ var moduleBatches = exports.moduleBatches = {
                     rootGetters = _ref8.rootGetters,
                     dispatch = _ref8.dispatch;
                 var use_sandbox;
-                return _regenerator2.default.wrap(function _callee2$(_context2) {
+                return _regenerator2.default.wrap(function _callee3$(_context3) {
                     while (1) {
-                        switch (_context2.prev = _context2.next) {
+                        switch (_context3.prev = _context3.next) {
                             case 0:
                                 use_sandbox = rootState.use_sandbox;
 
                                 console.log(use_sandbox);
                                 console.log(data);
                                 console.log(state.url_api_projects_batches);
-                                _context2.next = 6;
+                                _context3.next = 6;
                                 return dispatch('make_request', {
                                     method: 'post',
                                     url: rootGetters.get_url_api({
@@ -84506,24 +91924,24 @@ var moduleBatches = exports.moduleBatches = {
                                 });
 
                             case 6:
-                                return _context2.abrupt('return');
+                                return _context3.abrupt('return');
 
                             case 7:
                             case 'end':
-                                return _context2.stop();
+                                return _context3.stop();
                         }
                     }
-                }, _callee2, this);
+                }, _callee3, this);
             }));
 
-            function add_batch(_x4, _x5) {
+            function add_batch(_x5, _x6) {
                 return _ref9.apply(this, arguments);
             }
 
             return add_batch;
         }(),
         add_workers: function () {
-            var _ref12 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3(_ref10, _ref11) {
+            var _ref12 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee4(_ref10, _ref11) {
                 var commit = _ref10.commit,
                     state = _ref10.state,
                     getters = _ref10.getters,
@@ -84532,24 +91950,26 @@ var moduleBatches = exports.moduleBatches = {
                     dispatch = _ref10.dispatch;
                 var object_workers = _ref11.object_workers,
                     use_sandbox = _ref11.use_sandbox;
-                return _regenerator2.default.wrap(function _callee3$(_context3) {
+                return _regenerator2.default.wrap(function _callee4$(_context4) {
                     while (1) {
-                        switch (_context3.prev = _context3.next) {
+                        switch (_context4.prev = _context4.next) {
                             case 0:
+                                console.log('add_workers');
                                 commit('add_workers', {
                                     object_workers: object_workers,
                                     use_sandbox: use_sandbox
                                 });
+                                console.log('after add_workers');
 
-                            case 1:
+                            case 3:
                             case 'end':
-                                return _context3.stop();
+                                return _context4.stop();
                         }
                     }
-                }, _callee3, this);
+                }, _callee4, this);
             }));
 
-            function add_workers(_x6, _x7) {
+            function add_workers(_x7, _x8) {
                 return _ref12.apply(this, arguments);
             }
 
@@ -84557,7 +91977,7 @@ var moduleBatches = exports.moduleBatches = {
         }()
     }
 };
-},{"babel-runtime/regenerator":117,"babel-runtime/helpers/asyncToGenerator":66,"vuex":15,"vue":3,"axios":61,"vue-axios":62,"lodash":63,"../../classes/batch.js":77,"../../classes/hit.js":75,"vue-cookies":64}],35:[function(require,module,exports) {
+},{"babel-runtime/regenerator":131,"babel-runtime/helpers/asyncToGenerator":50,"vuex":15,"vue":3,"axios":71,"vue-axios":72,"lodash":73,"../../classes/batch.js":85,"../../classes/hit.js":84,"vue-cookies":74}],35:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -84660,9 +92080,12 @@ var moduleHITs = exports.moduleHITs = {
 
                     _vue2.default.set(object_hits, hit.id, hit);
 
-                    _vue2.default.set(batch.hits, batch.hits.length, hit);
+                    _vue2.default.set(batch.object_hits, hit.id, hit);
                 });
             });
+        },
+        clear_sandbox: function clear_sandbox(state) {
+            state.object_hits_sandbox = {};
         }
     },
     actions: {
@@ -84681,20 +92104,26 @@ var moduleHITs = exports.moduleHITs = {
                     while (1) {
                         switch (_context.prev = _context.next) {
                             case 0:
+                                console.log('set_hits');
                                 commit('set_hits', {
                                     object_batches: object_batches,
                                     data_batches: data_batches,
                                     use_sandbox: use_sandbox
                                 });
+                                console.log('after set_hits');
 
-                                dispatch('moduleAssignments/set_assignments', {
-                                    object_batches: object_batches,
+                                console.log('dispatch_set_assignments');
+                                _context.next = 6;
+                                return dispatch('moduleAssignments/set_assignments', {
                                     data_batches: data_batches,
                                     'object_hits': getters.get_object_hits(use_sandbox),
                                     use_sandbox: use_sandbox
                                 }, { root: true });
 
-                            case 2:
+                            case 6:
+                                console.log('after dispatch_set_assignments');
+
+                            case 7:
                             case 'end':
                                 return _context.stop();
                         }
@@ -84707,10 +92136,46 @@ var moduleHITs = exports.moduleHITs = {
             }
 
             return set_hits;
+        }(),
+        append_hits: function () {
+            var _ref7 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(_ref5, _ref6) {
+                var commit = _ref5.commit,
+                    state = _ref5.state,
+                    getters = _ref5.getters,
+                    rootState = _ref5.rootState,
+                    rootGetters = _ref5.rootGetters,
+                    dispatch = _ref5.dispatch;
+                var data_batches = _ref6.data_batches,
+                    use_sandbox = _ref6.use_sandbox;
+                return _regenerator2.default.wrap(function _callee2$(_context2) {
+                    while (1) {
+                        switch (_context2.prev = _context2.next) {
+                            case 0:
+                                _context2.next = 2;
+                                return dispatch('moduleAssignments/append_assignments', {
+                                    // object_batches, 
+                                    data_batches: data_batches,
+                                    'object_hits': getters.get_object_hits(use_sandbox),
+                                    use_sandbox: use_sandbox
+                                }, { root: true });
+
+                            case 2:
+                            case 'end':
+                                return _context2.stop();
+                        }
+                    }
+                }, _callee2, this);
+            }));
+
+            function append_hits(_x4, _x5) {
+                return _ref7.apply(this, arguments);
+            }
+
+            return append_hits;
         }()
     }
 };
-},{"babel-runtime/regenerator":117,"babel-runtime/helpers/asyncToGenerator":66,"babel-runtime/core-js/object/keys":85,"vuex":15,"vue":3,"axios":61,"vue-axios":62,"lodash":63,"../../classes/hit.js":75,"vue-cookies":64}],76:[function(require,module,exports) {
+},{"babel-runtime/regenerator":131,"babel-runtime/helpers/asyncToGenerator":50,"babel-runtime/core-js/object/keys":97,"vuex":15,"vue":3,"axios":71,"vue-axios":72,"lodash":73,"../../classes/hit.js":84,"vue-cookies":74}],86:[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -84735,7 +92200,7 @@ var Assignment = function Assignment() {
 };
 
 exports.default = Assignment;
-},{"babel-runtime/helpers/classCallCheck":83}],36:[function(require,module,exports) {
+},{"babel-runtime/helpers/classCallCheck":94}],36:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -84799,7 +92264,8 @@ var moduleAssignments = exports.moduleAssignments = {
     state: {
         object_assignments: {},
         object_assignments_sandbox: {},
-        set_ids_worker: null
+        set_ids_worker: null,
+        assignments_selected: []
     },
     getters: {
         get_object_assignments: function get_object_assignments(state, getters, rootState) {
@@ -84822,8 +92288,7 @@ var moduleAssignments = exports.moduleAssignments = {
     },
     mutations: {
         set_assignments: function set_assignments(state, _ref) {
-            var object_batches = _ref.object_batches,
-                data_batches = _ref.data_batches,
+            var data_batches = _ref.data_batches,
                 object_hits = _ref.object_hits,
                 use_sandbox = _ref.use_sandbox;
 
@@ -84833,13 +92298,10 @@ var moduleAssignments = exports.moduleAssignments = {
             } else {
                 object_assignments = state.object_assignments;
             }
-
+            // console.log('########')
             state.set_ids_worker = new _set2.default();
 
             _lodash2.default.forEach(data_batches, function (data_batch) {
-                var id_batch = data_batch.id;
-                var batch = object_batches[id_batch];
-
                 _lodash2.default.forEach(data_batch.hits, function (data_hit) {
                     var id_hit = data_hit.id;
                     var hit = object_hits[id_hit];
@@ -84847,16 +92309,60 @@ var moduleAssignments = exports.moduleAssignments = {
                     _lodash2.default.forEach(data_hit.assignments, function (data_assignment) {
                         state.set_ids_worker.add(data_assignment.worker);
                         data_assignment.hit = hit;
+                        // console.log(hit)
                         var assignment = new _assignment2.default(data_assignment);
+                        // console.log(assignment)
 
                         _vue2.default.set(object_assignments, assignment.id, assignment);
 
-                        _vue2.default.set(hit.assignments, hit.assignments.length, assignment);
+                        _vue2.default.set(hit.object_assignments, assignment.id, assignment);
                     });
                 });
             });
+            // console.log('########')
 
-            console.log(state.set_ids_worker);
+            // console.log(state.set_ids_worker);
+        },
+        clear_sandbox: function clear_sandbox(state) {
+            state.object_assignments_sandbox = {};
+        },
+
+        // append_assignments(state, {object_batches, data_batches, object_hits, use_sandbox}) {
+        //           let object_assignments = null;
+        //           if(use_sandbox)
+        //           {
+        //               object_assignments = state.object_assignments_sandbox;
+        //           } else {
+        //               object_assignments = state.object_assignments;
+        //           }
+
+        //           state.set_ids_worker = new Set(); 
+
+        //           _.forEach(data_batches, function(data_batch) {
+        //           	const id_batch = data_batch.id;
+        //           	const batch = object_batches[id_batch];
+
+        //               _.forEach(data_batch.hits, function(data_hit) {
+        //            	const id_hit = data_hit.id;
+        //            	const hit = object_hits[id_hit];
+
+
+        //                _.forEach(data_hit.assignments, function(data_assignment) {
+        //                	state.set_ids_worker.add(data_assignment.worker);
+        //                	data_assignment.hit = hit;
+        // 	            const assignment = new Assignment(data_assignment);
+
+        // 	            Vue.set(object_assignments, assignment.id, assignment);
+
+        // 	            Vue.set(hit.assignments, hit.assignments.length, assignment);
+        //             });
+        //               });
+        //           });
+
+        //           console.log(state.set_ids_worker);
+        // },
+        set_assignments_selected: function set_assignments_selected(state, assignments_selected) {
+            state.assignments_selected = assignments_selected;
         }
     },
     actions: {
@@ -84868,27 +92374,32 @@ var moduleAssignments = exports.moduleAssignments = {
                     rootState = _ref2.rootState,
                     rootGetters = _ref2.rootGetters,
                     dispatch = _ref2.dispatch;
-                var object_batches = _ref3.object_batches,
-                    data_batches = _ref3.data_batches,
+                var data_batches = _ref3.data_batches,
                     object_hits = _ref3.object_hits,
                     use_sandbox = _ref3.use_sandbox;
                 return _regenerator2.default.wrap(function _callee$(_context) {
                     while (1) {
                         switch (_context.prev = _context.next) {
                             case 0:
+                                console.log('set_assignments');
                                 commit('set_assignments', {
-                                    object_batches: object_batches,
                                     data_batches: data_batches,
                                     object_hits: object_hits,
                                     use_sandbox: use_sandbox
                                 });
+                                console.log('after set_assignments');
 
-                                dispatch('moduleWorkers/sync_workers_by_ids', {
+                                console.log('dispatch_sync_workers_by_ids');
+                                _context.next = 6;
+                                return dispatch('moduleWorkers/sync_workers_by_ids', {
                                     list_ids: state.set_ids_worker,
                                     use_sandbox: use_sandbox
                                 }, { root: true });
 
-                            case 2:
+                            case 6:
+                                console.log('after dispatch_sync_workers_by_ids');
+
+                            case 7:
                             case 'end':
                                 return _context.stop();
                         }
@@ -84901,10 +92412,51 @@ var moduleAssignments = exports.moduleAssignments = {
             }
 
             return set_assignments;
+        }(),
+        append_assignments: function () {
+            var _ref7 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(_ref5, _ref6) {
+                var commit = _ref5.commit,
+                    state = _ref5.state,
+                    getters = _ref5.getters,
+                    rootState = _ref5.rootState,
+                    rootGetters = _ref5.rootGetters,
+                    dispatch = _ref5.dispatch;
+                var data_batches = _ref6.data_batches,
+                    object_hits = _ref6.object_hits,
+                    use_sandbox = _ref6.use_sandbox;
+                return _regenerator2.default.wrap(function _callee2$(_context2) {
+                    while (1) {
+                        switch (_context2.prev = _context2.next) {
+                            case 0:
+                                commit('set_assignments', {
+                                    data_batches: data_batches,
+                                    object_hits: object_hits,
+                                    use_sandbox: use_sandbox
+                                });
+
+                                dispatch('moduleWorkers/sync_workers_by_ids', {
+                                    list_ids: state.set_ids_worker,
+                                    use_sandbox: use_sandbox,
+                                    append: true
+                                }, { root: true });
+
+                            case 2:
+                            case 'end':
+                                return _context2.stop();
+                        }
+                    }
+                }, _callee2, this);
+            }));
+
+            function append_assignments(_x4, _x5) {
+                return _ref7.apply(this, arguments);
+            }
+
+            return append_assignments;
         }()
     }
 };
-},{"babel-runtime/regenerator":117,"babel-runtime/helpers/asyncToGenerator":66,"babel-runtime/core-js/set":82,"babel-runtime/core-js/object/keys":85,"vuex":15,"vue":3,"axios":61,"vue-axios":62,"lodash":63,"../../classes/assignment.js":76,"vue-cookies":64}],37:[function(require,module,exports) {
+},{"babel-runtime/regenerator":131,"babel-runtime/helpers/asyncToGenerator":50,"babel-runtime/core-js/set":93,"babel-runtime/core-js/object/keys":97,"vuex":15,"vue":3,"axios":71,"vue-axios":72,"lodash":73,"../../classes/assignment.js":86,"vue-cookies":74}],37:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -85002,7 +92554,113 @@ var moduleKeywords = exports.moduleKeywords = {
     }()
   }
 };
-},{"babel-runtime/regenerator":117,"babel-runtime/helpers/asyncToGenerator":66,"axios":61,"lodash":63,"vue":3}],4:[function(require,module,exports) {
+},{"babel-runtime/regenerator":131,"babel-runtime/helpers/asyncToGenerator":50,"axios":71,"lodash":73,"vue":3}],38:[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.moduleMessagesReject = undefined;
+
+var _regenerator = require('babel-runtime/regenerator');
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
+
+var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
+
+var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
+
+var _axios = require('axios');
+
+var _axios2 = _interopRequireDefault(_axios);
+
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _vue = require('vue');
+
+var _vue2 = _interopRequireDefault(_vue);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var moduleMessagesReject = exports.moduleMessagesReject = {
+  namespaced: true,
+  state: {
+    object_messages_reject: null,
+    url_api_messages_reject: undefined
+  },
+  getters: {
+    get_object_messages_reject: function get_object_messages_reject(state) {
+      return state.object_messages_reject;
+    },
+    get_list_messages_reject: function get_list_messages_reject(state) {
+      return _lodash2.default.orderBy(state.object_messages_reject, 'count_usage', 'desc');
+    }
+  },
+  mutations: {
+    set_messages_reject: function set_messages_reject(state, data) {
+      state.object_messages_reject = {};
+
+      _lodash2.default.forEach(data, function (message_reject) {
+        // const object_project = new Project(message_reject);
+        _vue2.default.set(state.object_messages_reject, message_reject.message, message_reject);
+      });
+    },
+    add_message_reject: function add_message_reject(state, _ref) {
+      var message_reject = _ref.message_reject;
+
+      _vue2.default.set(state.object_messages_reject, message_reject.message, message_reject);
+    },
+    set_urls: function set_urls(state, config) {
+      state.url_api_messages_reject = config.url_api_messages_reject;
+    }
+  },
+  actions: {
+    load_messages_reject: function () {
+      var _ref3 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(_ref2) {
+        var state = _ref2.state,
+            commit = _ref2.commit,
+            getters = _ref2.getters,
+            rootGetters = _ref2.rootGetters,
+            dispatch = _ref2.dispatch;
+        return _regenerator2.default.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                if (!(getters.get_object_messages_reject == null)) {
+                  _context.next = 3;
+                  break;
+                }
+
+                _context.next = 3;
+                return dispatch('make_request', {
+                  method: 'get',
+                  url: rootGetters.get_url_api({
+                    url: state.url_api_messages_reject
+                  })
+                }, { root: true }).then(function (response) {
+                  // console.log(response.data)
+                  commit('set_messages_reject', response.data);
+                });
+
+              case 3:
+              case 'end':
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function load_messages_reject(_x) {
+        return _ref3.apply(this, arguments);
+      }
+
+      return load_messages_reject;
+    }()
+  }
+};
+},{"babel-runtime/regenerator":131,"babel-runtime/helpers/asyncToGenerator":50,"axios":71,"lodash":73,"vue":3}],4:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -85062,6 +92720,8 @@ var _assignments = require('./modules/assignments.js');
 
 var _keywords = require('./modules/keywords.js');
 
+var _messages_reject = require('./modules/messages_reject.js');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 _vue2.default.use(_vuex2.default);
@@ -85079,7 +92739,8 @@ var store = exports.store = new _vuex2.default.Store({
         moduleBatches: _batches.moduleBatches,
         moduleHITs: _hits.moduleHITs,
         moduleAssignments: _assignments.moduleAssignments,
-        moduleKeywords: _keywords.moduleKeywords
+        moduleKeywords: _keywords.moduleKeywords,
+        moduleMessagesReject: _messages_reject.moduleMessagesReject
     },
     state: {
         has_loaded_projects: false,
@@ -85160,6 +92821,8 @@ var store = exports.store = new _vuex2.default.Store({
                                 commit('moduleQualifications/set_url_api_qualifications', config.url_api_qualifications);
                                 // commit('moduleQualifications/set_url_api_qualification', config.url_api_qualification);
 
+                                // commit('set_urls', config);
+
                                 commit('moduleWorkers/set_urls', config);
                                 // commit('moduleWorkers/set_url_api_global_db', config.url_api_global_db);
 
@@ -85171,14 +92834,15 @@ var store = exports.store = new _vuex2.default.Store({
                                 commit('moduleBatches/set_urls', config);
 
                                 commit('moduleKeywords/set_urls', config);
+                                commit('moduleMessagesReject/set_urls', config);
 
-                                _context.next = 13;
+                                _context.next = 14;
                                 return dispatch('moduleProjects/load_projects');
 
-                            case 13:
+                            case 14:
                                 state.has_loaded_projects = true;
 
-                            case 14:
+                            case 15:
                             case 'end':
                                 return _context.stop();
                         }
@@ -85311,7 +92975,7 @@ var store = exports.store = new _vuex2.default.Store({
         }()
     }
 });
-},{"babel-runtime/core-js/json/stringify":65,"babel-runtime/regenerator":117,"babel-runtime/helpers/asyncToGenerator":66,"vuex":15,"vue":3,"axios":61,"vue-axios":62,"lodash":63,"vue-cookies":64,"./modules/projects.js":30,"./modules/money.js":31,"./modules/qualifications.js":32,"./modules/workers.js":33,"./modules/batches.js":34,"./modules/hits.js":35,"./modules/assignments.js":36,"./modules/keywords.js":37}],18:[function(require,module,exports) {
+},{"babel-runtime/core-js/json/stringify":75,"babel-runtime/regenerator":131,"babel-runtime/helpers/asyncToGenerator":50,"vuex":15,"vue":3,"axios":71,"vue-axios":72,"lodash":73,"vue-cookies":74,"./modules/projects.js":30,"./modules/money.js":31,"./modules/qualifications.js":32,"./modules/workers.js":33,"./modules/batches.js":34,"./modules/hits.js":35,"./modules/assignments.js":36,"./modules/keywords.js":37,"./modules/messages_reject.js":38}],18:[function(require,module,exports) {
 
         var reloadCSS = require('_css_loader');
         module.hot.dispose(reloadCSS);
@@ -85366,9 +93030,9 @@ var _app_assignments = require('./components/assignments/app_assignments.vue');
 
 var _app_assignments2 = _interopRequireDefault(_app_assignments);
 
-var _AppFinances = require('./components/finances/AppFinances.vue');
+var _app_finances = require('./components/finances/app_finances.vue');
 
-var _AppFinances2 = _interopRequireDefault(_AppFinances);
+var _app_finances2 = _interopRequireDefault(_app_finances);
 
 var _AppQualifications = require('./components/qualifications/AppQualifications.vue');
 
@@ -85455,7 +93119,7 @@ var routes = [{
 }, {
 	path: '/projects/:slug_project/finances',
 	name: 'finances',
-	component: _AppFinances2.default
+	component: _app_finances2.default
 }, {
 	path: '/projects/:slug_project/workers',
 	name: 'workers',
@@ -85499,7 +93163,7 @@ new _vue2.default({
 		return h(_App2.default);
 	}
 });
-},{"vue":3,"vue-router":13,"vuetify":14,"vuex":15,"vuelidate":16,"./App.vue":2,"./components/dashboard/app_dashboard.vue":5,"./components/batches/app_batches.vue":6,"./components/hits/app_hits.vue":7,"./components/assignments/app_assignments.vue":8,"./components/finances/AppFinances.vue":9,"./components/qualifications/AppQualifications.vue":10,"./components/workers/app_workers.vue":11,"./components/settings_project/app_settings_project.vue":12,"./store/index.js":4,"vuetify-upload-button":17,"material-design-icons-iconfont/dist/material-design-icons.css":18,"vuetify/dist/vuetify.min.css":19}],330:[function(require,module,exports) {
+},{"vue":3,"vue-router":13,"vuetify":14,"vuex":15,"vuelidate":16,"./App.vue":2,"./components/dashboard/app_dashboard.vue":5,"./components/batches/app_batches.vue":6,"./components/hits/app_hits.vue":7,"./components/assignments/app_assignments.vue":8,"./components/finances/app_finances.vue":9,"./components/qualifications/AppQualifications.vue":10,"./components/workers/app_workers.vue":11,"./components/settings_project/app_settings_project.vue":12,"./store/index.js":4,"vuetify-upload-button":17,"material-design-icons-iconfont/dist/material-design-icons.css":18,"vuetify/dist/vuetify.min.css":19}],346:[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 
@@ -85528,7 +93192,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = '' || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + '44223' + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '35057' + '/');
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
 
@@ -85669,5 +93333,5 @@ function hmrAccept(bundle, id) {
     return hmrAccept(global.parcelRequire, id);
   });
 }
-},{}]},{},[330,1], null)
+},{}]},{},[346,1], null)
 //# sourceMappingURL=/index.map

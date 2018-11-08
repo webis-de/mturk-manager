@@ -68,18 +68,18 @@ export default {
         return {
             // labels_ticks: ['None', 'Soft', 'Hard'],
             // values: [STATUS_BLOCK.NONE, STATUS_BLOCK.SOFT, STATUS_BLOCK.HARD],
-            is_updating: true,
+            // is_updating: true,
             // status_block_current: undefined,
             // status_block_new: undefined,
             show_snackbar: false,
         }
     },
     watch: {
-        'worker.is_blocked_hard': function(value) {
-            if(value != undefined) {
-                this.is_updating = false;
-            }
-        }
+        // 'worker.is_blocked_hard': function(value) {
+        //     if(value != undefined) {
+        //         this.is_updating = false;
+        //     }
+        // }
         // 'worker.is_blocked': function(value) {
         //     this.status_block_current = value;
 
@@ -101,6 +101,9 @@ export default {
         // },  
     },
     computed: {
+        is_updating() {
+            return this.worker.is_blocked_hard == undefined;
+        },
         text_tooltip() {
             return this.worker.is_blocked_hard ? 'Is blocked globally': 'Is not blocked globally';
         },
@@ -114,7 +117,7 @@ export default {
     methods: {
         toggle() {
             this.set_show_progress_indicator(true);
-            this.is_updating = true;
+            // this.is_updating = true;
 
             this.update_status_block_hard({
                 worker: this.worker,
@@ -122,7 +125,7 @@ export default {
                 // status_block_new: value_new,
                 // status_block_old: this.worker.is_blocked,
             }).then(() => {
-                this.is_updating = false;
+                // this.is_updating = false;
                 this.show_snackbar = true;
                 this.set_show_progress_indicator(false);
             });

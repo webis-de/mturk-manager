@@ -3,14 +3,36 @@ from mturk_manager.views import code_shared
 from mturk_manager.models import *
 from viewer.models import *
 import json
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 import urllib.parse
 import time
 from django.db.models import Prefetch, Count, When, BooleanField, Case, Q
 from django.contrib import messages
+from mturk_manager.classes import Manager_Global_DB
+from django.middleware.csrf import get_token
 
 def view(request, name):
+    placeholder_slug_project = 'PLACEHOLDER_SLUG_PROJECT'
+    list_ids = json.loads(request.GET.get('list_ids', '[]'))
+
+    context = {
+        'token_instance': Manager_Global_DB.object_global_db.token_instance,
+        'token_csrf': get_token(request),
+        'url_api_project':  Manager_Global_DB.get_url_absolute('projects/{}'.format(placeholder_slug_project)),
+        'url_api_assignments':  Manager_Global_DB.get_url_absolute('projects/{}/assignments'.format(placeholder_slug_project)),
+        'url_api_hits':  Manager_Global_DB.get_url_absolute('projects/{}/hits'.format(placeholder_slug_project)),
+        'url_api_batches':  Manager_Global_DB.get_url_absolute('projects/{}/batches_for_annotation'.format(placeholder_slug_project)),
+        'url_api_workers':  Manager_Global_DB.get_url_absolute('projects/{}/workers'.format(placeholder_slug_project)),
+        'url_api_messages_reject':  Manager_Global_DB.get_url_absolute('api/messages_reject'.format(placeholder_slug_project)),
+        
+        'slug_project': name,
+        'list_ids': list_ids,
+    }
+    context['context'] = json.dumps(context)
+
+    return render(request, 'mturk_manager/view.html', context=context)
+    ############
     context = {}
     name_quoted = name
     name_project = urllib.parse.unquote(name_quoted)

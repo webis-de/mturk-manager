@@ -21,7 +21,8 @@
 			</v-flex>
 			<v-flex shrink>
 				<v-btn 
-					v-on:click="create_project(name)"
+					v-on:click="save(name)"
+                    v-bind:loading="is_creating"
 					color="primary"
 					v-bind:disabled="$v.pending || $v.$invalid || name_instant.trim() == ''"
 				>Create</v-btn>
@@ -29,6 +30,17 @@
 			<v-spacer></v-spacer>
 		</v-layout>
 	</v-flex>
+
+    <!-- <v-snackbar
+        v-model="snackbar_created"
+        v-bind:timeout="1500"
+        bottom
+        color="success"
+    >
+        <v-spacer></v-spacer>
+        Created!
+        <v-spacer></v-spacer>
+    </v-snackbar> -->
 </v-layout>
 </template>
 
@@ -39,13 +51,13 @@
 
     import { required, minLength, between } from 'vuelidate/lib/validators'
 export default {
-
     name: 'component-create-project',
-
     data () {
         return {
+            snackbar_created: false,
         	name: '',
         	// name: undefined,
+            is_creating: false,
         	name_instant: '',
         	// rules: [
         	// 	this.check_uniqueness,
@@ -73,6 +85,15 @@ export default {
       },
     },
     methods: {
+        async save(name) {
+            this.is_creating = true;
+            const slug = await this.create_project(name);
+            this.name = '';
+            this.$v.$reset();
+            this.is_creating = false;
+            this.$router.push({name: 'batches', params: {slug_project: slug}});
+            // this.snackbar_created = true;
+        },
     	update_name: _.debounce(function(value) {
     		this.name = value.trim();
     		this.$v.name.$touch();

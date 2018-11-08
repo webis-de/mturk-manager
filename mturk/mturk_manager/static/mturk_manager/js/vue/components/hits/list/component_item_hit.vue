@@ -14,7 +14,8 @@
         <td class="text-xs-center">
             {{ hit.id_hit }}
         </td>
-        <td class="text-xs-center">{{ hit.batch.name }}
+        <td class="text-xs-center">
+            {{ hit.batch.name }}
             <v-btn
                 slot="activator" 
                 class="my-0"
@@ -100,9 +101,9 @@ export default {
         // count_assignments_total() {
         //     return this.hit.batch.settings_batch.count_assignments;
         // },
-        // count_assignments_available() {
-        //     return this.hit.assignments.length;
-        // },
+        count_assignments() {
+            return _.size(this.hit.assignments);
+        },
         // progress() {
         //     console.log('EXECUTED')
         //     return (this.count_assignments_available / this.count_assignments_total) * 100.0;

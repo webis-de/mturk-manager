@@ -1,6 +1,6 @@
 <template>
 <div>
-	<h1>Batch Profiles</h1>
+	<h2 class="headline">Batch Profiles</h2>
     <component-list-settings-batch></component-list-settings-batch>
 </div>
 </template>

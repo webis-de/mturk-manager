@@ -2,8 +2,8 @@ import { mapState, mapActions, mapGetters } from 'vuex';
 
 export default {
 	methods: {
-	    refresh_data() {
-	    	console.log(this.use_sandbox)
+	    refresh_data(force=false) {
+	    	// console.log(this.use_sandbox)
 	        this.set_show_progress_indicator(true);
 	        // this.set_show_progress_indicator(true);
 
@@ -11,7 +11,7 @@ export default {
 	        //     this.set_show_progress_indicator(false);
 	        // });
 
-	        this.sync_batches(true).then(() => {
+	        this.sync_batches(force).then(() => {
 	            this.set_show_progress_indicator(false);
 	        });
 	        
@@ -28,11 +28,11 @@ export default {
         ...mapState(['use_sandbox']),
 	},
  	created() {
-        this.refresh_data();
+        this.refresh_data(false);
 	},
     watch: {
         use_sandbox: function() {
-            this.refresh_data();
+            this.refresh_data(false);
         },
     },
 }

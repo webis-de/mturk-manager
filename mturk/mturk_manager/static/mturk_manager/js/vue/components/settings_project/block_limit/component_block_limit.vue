@@ -1,6 +1,6 @@
 <template>
 <div>
-    <h1>Limit Block</h1>
+    <h2 class="headline">Limit Block</h2>
     <v-layout row>
         <v-flex>
                 <!-- v-model="$v.count_assignments_max_per_worker.$model" -->

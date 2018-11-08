@@ -48,41 +48,41 @@ export default {
         return {
             list_items_menu: [
                 {
-                    label: 'Dashboard',
                     name: 'dashboard',
+                    label: 'Dashboard',
                     icon: 'dashboard',
                     // icon: 'ballot',
                 },
                 {
-                    label: 'Batches',
                     name: 'batches',
+                    label: 'Batches',
                     icon: 'notes',
                     // icon: 'ballot',
                 },
                 {
-                    label: 'HITs',
                     name: 'hits',
+                    label: 'HITs',
                     icon: 'notes',
                     // icon: 'ballot',
                 },
                 {
-                    label: 'Assignments',
                     name: 'assignments',
+                    label: 'Assignments',
                     icon: 'notes',
                 },
+                // {
+                //     name: 'finances',
+                //     label: 'Finances',
+                //     icon: 'attach_money',
+                // },
                 {
-                    label: 'Finances',
-                    name: 'finances',
-                    icon: 'attach_money',
-                },
-                {
-                    label: 'Workers',
                     name: 'workers',
+                    label: 'Workers',
                     icon: 'person',
                 },
                 {
-                    label: 'Project Settings',
                     name: 'settings_project',
+                    label: 'Project Settings',
                     icon: 'settings_applications',
                 },
 	            // {

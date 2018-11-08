@@ -1,5 +1,4 @@
 <template>
-<div>
     <v-dialog 
         v-model="dialog"
         max-width="500"
@@ -22,7 +21,7 @@
                 </v-btn>
             </v-card-title> -->
             <v-card-text>
-                Do you really want to delete the worker template '{{ template_worker.name }}'? 
+                Do you really want to delete the assignment template '{{ template_worker.name }}'? 
             </v-card-text>
 
             <v-card-actions>
@@ -35,7 +34,6 @@
             </v-card-actions>
         </v-card>
     </v-dialog>
-</div>
 </template>
 
 <script>

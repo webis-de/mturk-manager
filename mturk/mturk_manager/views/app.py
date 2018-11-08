@@ -24,12 +24,18 @@ def app(request):
         'url_api_projects_check_uniqueness': Manager_Global_DB.get_url_absolute('info_projects/uniqueness'),
         'url_api_projects_settings_batch': Manager_Global_DB.get_url_absolute('projects/{}/settings_batch'.format(placeholder_slug_project)),
         'url_api_projects_templates_worker': Manager_Global_DB.get_url_absolute('projects/{}/templates_worker'.format(placeholder_slug_project)),
+        'url_api_projects_templates_assignment': Manager_Global_DB.get_url_absolute('projects/{}/templates_assignment'.format(placeholder_slug_project)),
+        'url_api_projects_templates_hit': Manager_Global_DB.get_url_absolute('projects/{}/templates_hit'.format(placeholder_slug_project)),
+        'url_api_projects_templates_global': Manager_Global_DB.get_url_absolute('projects/{}/templates_global'.format(placeholder_slug_project)),
         'url_api_projects_batches': Manager_Global_DB.get_url_absolute('projects/{}/batches'.format(placeholder_slug_project)),
+        'url_api_projects_clear_sandbox': Manager_Global_DB.get_url_absolute('projects/{}/clear_sandbox'.format(placeholder_slug_project)),
+        'url_api_ping': Manager_Global_DB.get_url_absolute('projects/{}/ping'.format(placeholder_slug_project)),
         
         'url_api_workers': Manager_Global_DB.get_url_absolute('projects/{}/workers'.format(placeholder_slug_project)),
         'url_api_workers_get_blocks_hard': Manager_Global_DB.get_url_absolute('projects/{}/workers/blocks_hard'.format(placeholder_slug_project)),
 
         'url_api_keywords': Manager_Global_DB.get_url_absolute('api/keywords'.format(placeholder_slug_project)),
+        'url_api_messages_reject': Manager_Global_DB.get_url_absolute('api/messages_reject'.format(placeholder_slug_project)),
 
         # 'url_api_batches': reverse('mturk_manager:batches_for_project', args=[placeholder_slug_project]),
         

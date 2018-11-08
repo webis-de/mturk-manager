@@ -16,11 +16,11 @@
                     <tr id="row_header">
                         <th>
                             <v-checkbox
-                                v-bind::input-value="props.all"
-                                v-bind::indeterminate="props.indeterminate"
+                                v-bind:input-value="props.all"
+                                v-bind:indeterminate="props.indeterminate"
                                 primary
                                 hide-details
-                                v-on:click.native="toggleAll"
+                                v-on:click.native="batches_selected = toggleAll(batches_selected, list_batches)"
                             ></v-checkbox>
                         </th>
                         <th
@@ -101,6 +101,11 @@ export default {
                     align: 'center',
                 },
                 {
+                    text: 'Creation',
+                    value: 'datetime_creation',
+                    align: 'center',
+                },
+                {
                     text: '#Assignments Per HIT',
                     value: 'settings_batch.count_assignments',
                     align: 'center',
@@ -132,7 +137,7 @@ export default {
         // }),
     },
     created: function() {
-
+        console.log(this.list_batches)
             // this.update_status_block({
             //     worker: {name: 'A7W013PM199BS'},
             //     status_block_new: 1,

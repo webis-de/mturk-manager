@@ -31,7 +31,7 @@
 			<td>{{ props.item.id }}</td>
 			<td>{{ props.item.datetime_creation.toLocaleString() }}</td>
 
-			<td><component-display-money v-bind:amount="props.item.reward"></component-display-money></td>
+			<td><component-display-money v-bind:amount="props.item.settings_batch.reward"></component-display-money></td>
 			<td>{{ props.item.hits.length }}</td>
 			<td>{{ props.item.count_assignments_per_hit }}</td>
 			<td>{{ props.item.count_assignments_total }}</td>

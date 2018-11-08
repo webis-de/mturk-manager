@@ -17,11 +17,11 @@
                 <tr id="row_header">
                     <th>
                         <v-checkbox
-                            v-bind::input-value="props.all"
-                            v-bind::indeterminate="props.indeterminate"
+                            v-bind:input-value="props.all"
+                            v-bind:indeterminate="props.indeterminate"
                             primary
                             hide-details
-                            v-on:click.native="toggleAll"
+                            v-on:click.native="hits_selected = toggleAll(hits_selected, list_hits_processed)"
                         ></v-checkbox>
                     </th>
                     <th
@@ -71,7 +71,7 @@ export default {
     props: {
         list_hits: {
             required: false,
-            type: Array|undefined,
+            type: Array,
         },
         show_links: {
             required: false,

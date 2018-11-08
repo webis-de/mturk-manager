@@ -238,11 +238,10 @@ export default {
                 items = items.filter(e => e.is_blocked_hard);
             }
 
-            // console.log(items)
             search = search.trim()
             if(search != '')
             {
-                items = items.filter(e => filter(e.name, search));
+                items = items.filter(e => filter(e.id_worker, search));
                 
             }
             // console.log(filter)
@@ -289,7 +288,6 @@ export default {
         }),
     },
     created: function() {
-
             // this.update_status_block({
             //     worker: {name: 'A7W013PM199BS'},
             //     status_block_new: 1,

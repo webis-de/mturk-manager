@@ -3,6 +3,15 @@
 //     SOFT: 2,
 //     HARD: 3,
 // }
+export const STATUS_EXTERNAL = {
+    APPROVED: 0,
+    REJECTED: 1,
+    APPROVED_OVERRIDDEN: 2,
+};
+export const STATUS_INTERNAL = {
+    APPROVED: 0,
+    REJECTED: 1,
+};
 
 export const DESCRIPTIONS = {
     TITLE_HIT: 'The title of the HIT. A title should be short and descriptive about the kind of task the HIT contains. On the Amazon Mechanical Turk web site, the HIT title appears in search results, and everywhere the HIT is mentioned.',

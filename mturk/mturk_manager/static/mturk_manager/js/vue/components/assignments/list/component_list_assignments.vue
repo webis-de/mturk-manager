@@ -9,7 +9,7 @@
             v-bind:headers="list_headers"
             v-bind:items="list_assignments_processed"
             v-bind:search="search"
-            v-model="hits_selected"
+            v-model="assignments_selected_local"
             item-key="id"
             class="my-3"
         >
@@ -17,11 +17,11 @@
                 <tr id="row_header">
                     <th>
                         <v-checkbox
-                            v-bind::input-value="props.all"
-                            v-bind::indeterminate="props.indeterminate"
+                            v-bind:input-value="props.all"
+                            v-bind:indeterminate="props.indeterminate"
                             primary
                             hide-details
-                            v-on:click.native="toggleAll"
+                            v-on:click.native="assignments_selected_local = toggleAll(assignments_selected_local, list_assignments_processed)"
                         ></v-checkbox>
                     </th>
                     <th
@@ -48,8 +48,7 @@
                 <component-item-assignment
                     v-bind:props="props"
                     v-bind:show_links="show_links"
-                >
-                </component-item-assignment>
+                ></component-item-assignment>
             </template>
         </v-data-table>
         <!-- {{list_workers}} -->
@@ -57,7 +56,7 @@
 </v-layout>
 </template>
 <script>
-    import { mapState, mapActions, mapGetters } from 'vuex';
+    import { mapState, mapActions, mapMutations, mapGetters } from 'vuex';
     // import { Policy } from '../../store/modules/policies.js';
     import ComponentItemAssignment from './component_item_assignment.vue';
     // import ComponentShowMoneySpent from './component-show-money-spent.vue';
@@ -81,7 +80,7 @@ export default {
     },
     data () {
         return {
-            hits_selected: [],
+            // assignments_selected: [],
             pagination: { rowsPerPage: 25 },
 
             search: '',
@@ -94,6 +93,14 @@ export default {
         }
     },
     computed: {
+    	assignments_selected_local: {
+    		get() {
+    			return this.assignments_selected;
+    		},
+    		set(value) {
+    			this.set_assignments_selected(value);
+    		},
+    	},
         list_headers() {
             const list_headers = [
                 {
@@ -134,8 +141,14 @@ export default {
         ...mapGetters('moduleAssignments', {
             'list_assignments_all': 'list_assignments',
         }),
+        ...mapState('moduleAssignments', {
+            'assignments_selected': 'assignments_selected',
+        }),
     },
     methods: {
+        ...mapMutations('moduleAssignments', {
+            'set_assignments_selected': 'set_assignments_selected',
+        }),
         // ...mapActions('moduleWorkers', {
             // 'update_status_block': 'update_status_block',
         // }),
