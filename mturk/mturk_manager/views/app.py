@@ -5,7 +5,7 @@ import json
 # import urllib.parse
 # from mturk_manager.views import code_shared
 from django.middleware.csrf import get_token
-from mturk_manager.classes import Manager_Global_DB
+# from mturk_manager.classes import Manager_Global_DB
 from django.conf import settings as settings_django
 
 def app(request):
@@ -52,7 +52,7 @@ def app(request):
     return render(request, 'mturk_manager/app.html', context)
 
 
-def get_url_absolute(cls, path='', use_sandbox=True):
+def get_url_absolute(path='', use_sandbox=True):
     url = ''
     if path.startswith('/'):
         url = settings_django.URL_GLOBAL_DB + path

@@ -1,5 +1,6 @@
 mturk/node_modules
 mturk/.cache
+mturk_settings.ini
 .directory
 
 venv

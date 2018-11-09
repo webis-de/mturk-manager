@@ -1,4 +1,5 @@
-// import Vue from 'vue/dist/vue.common';
+import "@babel/polyfill";
+
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Vuetify from 'vuetify';
@@ -15,7 +16,6 @@ import app_workers from './components/workers/app_workers.vue';
 import AppSettingsProject from './components/settings_project/app_settings_project.vue';
 import {store} from './store/index.js';
 import UploadButton from 'vuetify-upload-button';
-
 import 'material-design-icons-iconfont/dist/material-design-icons.css';
 import 'vuetify/dist/vuetify.min.css';
 

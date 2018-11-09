@@ -1,6 +1,5 @@
 from django.urls import path, include, re_path
 from django.contrib import admin
-from rest_framework.urlpatterns import format_suffix_patterns
 
 from mturk_manager import views
 
@@ -10,7 +9,7 @@ from mturk_manager import views
 # router.register('projects', views.ViewSet_Projects)
 
 app_name = 'mturk_manager'
-urlpatterns = format_suffix_patterns([
+urlpatterns = [
 
     # # path('api/qualifications/', views.Qualifications.as_view(), name='qualifications'),
     # # path('api/qualifications/<str:name>/', views.Qualification.as_view(), name='qualification'),
@@ -64,4 +63,4 @@ urlpatterns = format_suffix_patterns([
     # path('project/<str:slug_project>', views.project, name='project'),
 
 
-])
+]
