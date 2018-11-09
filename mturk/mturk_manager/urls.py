@@ -35,7 +35,7 @@ urlpatterns = [
 
 
 
-    # path('view/<str:name>', views.view, name='view'),
+    path('view/<str:name>', views.view, name='view'),
     # path('documentation', views.documentation, name='documentation'),
 
     # path('settings', views.settings, name='settings'),
