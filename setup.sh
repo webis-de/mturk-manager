@@ -7,13 +7,13 @@ git pull
 # pip3 install -r requirements.txt
 pip3 install django==2.0
 
-cd ./mturk
+# cd ./mturk
 
-if [ $OSTYPE = "msys" ]; then
-	command="python"
-else
-	command="python3"
-fi
+# if [ $OSTYPE = "msys" ]; then
+# 	command="python"
+# else
+# 	command="python3"
+# fi
 
 # $command manage.py createcachetable
-$command manage.py migrate
+# $command manage.py migrate

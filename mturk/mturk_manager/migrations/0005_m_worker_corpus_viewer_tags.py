@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('viewer', '0001_initial'),
+        # ('viewer', '0001_initial'),
         ('mturk_manager', '0004_auto_20180214_0949'),
     ]
 

@@ -14,7 +14,7 @@ import os
 from django.conf import settings
 # from django.contrib.messages import constants as messages
 
-# import configparser
+import configparser
 # MESSAGE_TAGS = {
 #     messages.DEBUG: 'alert-info',
 #     messages.INFO: 'alert-info',
@@ -114,8 +114,13 @@ WSGI_APPLICATION = 'mturk.wsgi.application'
 VERSION_PROJECT = 14
 # MESSAGE_BLOCK_DEFAULT = 'Some default block message'
 
-# config = configparser.ConfigParser()
-# config.read('../../mturk_settings.ini')
+config = configparser.ConfigParser()
+config.read('../mturk_settings.ini')
+TOKEN_INSTANCE = config.get('MTurk', 'token_instance', fallback=None)
+URL_GLOBAL_DB = config.get('MTurk', 'url_global_db', fallback=None)
+
+# # URL_GLOBAL_DB = 'https://webis18.medien.uni-weimar.de/mturk-manager'
+# URL_GLOBAL_DB = 'http://localhost:8002'
 # try:
 #     PATH_DATABASE = config['MTurk']['database'].strip()
 # except KeyError:
@@ -131,7 +136,7 @@ VERSION_PROJECT = 14
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, PATH_DATABASE),
+        'NAME': 'db.sqlite3'
     }
 }
 
@@ -182,9 +187,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 # STATIC_ROOT = 'static/'
 
-
-# URL_GLOBAL_DB = 'https://webis18.medien.uni-weimar.de/mturk-manager'
-URL_GLOBAL_DB = 'http://localhost:8002'
 # URL_MTURK_SANDBOX = 'https://mturk-requester-sandbox.us-east-1.amazonaws.com'
 # URL_BLOCK_WORKERS = 'https://webis16.medien.uni-weimar.de'
 # PREEFIX_QUALIFICATION_BLOCK_SOFT = 'fbqeqihngl-'

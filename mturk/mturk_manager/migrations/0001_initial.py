@@ -9,7 +9,7 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('viewer', '0001_initial'),
+        # ('viewer', '0001_initial'),
     ]
 
     operations = [
