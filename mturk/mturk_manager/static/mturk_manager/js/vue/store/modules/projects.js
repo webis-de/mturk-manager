@@ -236,7 +236,7 @@ export const moduleProjects = {
                     });
                 }
                 
-        		console.log(`SET ${slug_project_current}`)
+        		// console.log(`SET ${slug_project_current}`)
         		
         	}
         },

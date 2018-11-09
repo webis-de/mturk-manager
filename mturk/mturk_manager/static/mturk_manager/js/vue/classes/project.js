@@ -2,7 +2,7 @@ export default class Project
 {
 	constructor(data={}) 
 	{
-		console.log(data)
+		// console.log(data)
 		this.id = data.id;
 		this.name = data.name;
 		this.slug = data.slug;

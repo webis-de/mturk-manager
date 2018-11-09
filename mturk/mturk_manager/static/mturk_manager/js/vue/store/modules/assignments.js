@@ -114,20 +114,20 @@ export const moduleAssignments = {
 	},
 	actions: {
         async set_assignments({commit, state, getters, rootState, rootGetters, dispatch}, {data_batches, object_hits, use_sandbox}) {
-            console.log('set_assignments');
+            // console.log('set_assignments');
             commit('set_assignments', {
                 data_batches, 
                 object_hits,
                 use_sandbox,
             });
-            console.log('after set_assignments');
+            // console.log('after set_assignments');
 
-            console.log('dispatch_sync_workers_by_ids');
+            // console.log('dispatch_sync_workers_by_ids');
             await dispatch('moduleWorkers/sync_workers_by_ids', {
                 list_ids: state.set_ids_worker,
                 use_sandbox,
             }, {root: true});
-            console.log('after dispatch_sync_workers_by_ids');
+            // console.log('after dispatch_sync_workers_by_ids');
 
         },
         async append_assignments({commit, state, getters, rootState, rootGetters, dispatch}, {data_batches, object_hits, use_sandbox}) {

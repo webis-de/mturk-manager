@@ -5,7 +5,7 @@
             <v-flex xs3>
                 <upload-btn
                     class="pl-0"
-                    :fileChangedCallback="file_changed"
+                    :filechangedcallback="file_changed"
                     title="Upload CSV"
                     v-bind:loading="is_parsing_csv"
                 ></upload-btn>

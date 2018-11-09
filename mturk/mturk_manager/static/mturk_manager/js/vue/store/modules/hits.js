@@ -64,21 +64,21 @@ export const moduleHITs = {
 	},
 	actions: {
         async set_hits({commit, state, getters, rootState, rootGetters, dispatch}, {object_batches, data_batches, use_sandbox}) {           
-            console.log('set_hits');
+            // console.log('set_hits');
             commit('set_hits', {
                 object_batches, 
                 data_batches, 
                 use_sandbox
             });
-            console.log('after set_hits');
+            // console.log('after set_hits');
 
-            console.log('dispatch_set_assignments');
+            // console.log('dispatch_set_assignments');
             await dispatch('moduleAssignments/set_assignments', {
                 data_batches, 
                 'object_hits': getters.get_object_hits(use_sandbox), 
                 use_sandbox
             }, {root: true});
-            console.log('after dispatch_set_assignments');
+            // console.log('after dispatch_set_assignments');
         },
         async append_hits({commit, state, getters, rootState, rootGetters, dispatch}, {data_batches, use_sandbox}) {
             // commit('set_hits', {

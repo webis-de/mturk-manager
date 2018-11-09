@@ -56,7 +56,7 @@
                     name: 'batch', 
                     params: { 
                         slug_project: $route.params.slug_project, 
-                        id_batch: batch.id, 
+                        id_batch: batch.id
                     } 
                 }"
             >
@@ -84,7 +84,6 @@ export default {
     },
     computed: {
         batch() {
-            console.log('calculated batch')
             return this.props.item;
         },
         ...mapGetters(['get_show_progress_indicator']),

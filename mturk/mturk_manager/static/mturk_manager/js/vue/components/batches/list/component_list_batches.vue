@@ -137,7 +137,7 @@ export default {
         // }),
     },
     created: function() {
-        console.log(this.list_batches)
+        // console.log(this.list_batches)
             // this.update_status_block({
             //     worker: {name: 'A7W013PM199BS'},
             //     status_block_new: 1,

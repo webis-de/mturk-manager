@@ -115,8 +115,8 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-	console.log(to)
-	console.log(from)
+	// console.log(to)
+	// console.log(from)
 	if(to.name == 'dashboard')
 	{
 		store.dispatch('moduleProjects/set_slug_project_current', null);

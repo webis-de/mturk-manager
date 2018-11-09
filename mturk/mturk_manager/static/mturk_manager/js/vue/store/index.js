@@ -85,7 +85,7 @@ export const store = new Vuex.Store({
         async init({state, commit, dispatch}) {
             const configElement = document.getElementById( 'config' );
             const config = JSON.parse( configElement.innerHTML );
-            console.log(config);
+            // console.log(config);
 
             commit('set_token_instance', config.token_instance);
             commit('set_token_csrf', config.token_csrf);
