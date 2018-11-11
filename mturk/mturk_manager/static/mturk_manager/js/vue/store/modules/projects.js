@@ -22,6 +22,8 @@ export const moduleProjects = {
         url_api_projects_templates_assignment: undefined,
         url_api_projects_clear_sandbox: undefined,
         url_api_ping: null,
+
+        response_data_projects: undefined,
 	},
 	getters: {
 		get_project_current(state) {
@@ -109,6 +111,9 @@ export const moduleProjects = {
                 const object_template_global = new Template_Global(data_templates_global);
                 Vue.set(project.templates_global, object_template_global.id, object_template_global);
             });
+        },
+        set_response_data_projects(state, data_projects) {
+            state.response_data_projects = data_projects;
         },
         set_projects(state, data_projects) {
             state.object_projects= {};
@@ -213,32 +218,44 @@ export const moduleProjects = {
 	},
 	actions: {
         async set_slug_project_current({state, commit, getters, rootGetters, dispatch}, slug_project_current) {
+            const project_has_changed = state.slug_project_current != slug_project_current ? true : false;
+
         	commit('set_slug_project_current', slug_project_current);
 
-        	if(slug_project_current != undefined)
-        	{
-        		if(getters.get_project_current.settings_batch == null) {
-        			dispatch('sync_settings_batch', getters.get_project_current);
-        		}
-                if(getters.get_project_current.templates_assignment == null) {
-                    dispatch('sync_templates_assignment', getters.get_project_current).then(() => {
-                        if(getters.get_project_current.templates_hit == null) {
-                            dispatch('sync_templates_hit', getters.get_project_current).then(() => {
-                                if(getters.get_project_current.templates_global == null) {
-                                    dispatch('sync_templates_global', getters.get_project_current).then(() => {
-                                        if(getters.get_project_current.templates_worker == null) {
-                                            dispatch('sync_templates_worker', getters.get_project_current);
-                                        }
-                                    });
-                                }
-                            });
-                        }
-                    });
-                }
-                
-        		// console.log(`SET ${slug_project_current}`)
-        		
-        	}
+
+            if(project_has_changed == true) 
+            {
+                // reset database
+    			await dispatch('reset_projects');
+
+
+                // load initial values for project
+                if(slug_project_current != undefined)
+                {
+                    if(getters.get_project_current.settings_batch == null) {
+                        dispatch('sync_settings_batch', getters.get_project_current);
+            		}
+                    if(getters.get_project_current.templates_assignment == null) {
+                        dispatch('sync_templates_assignment', getters.get_project_current).then(() => {
+                            if(getters.get_project_current.templates_hit == null) {
+                                dispatch('sync_templates_hit', getters.get_project_current).then(() => {
+                                    if(getters.get_project_current.templates_global == null) {
+                                        dispatch('sync_templates_global', getters.get_project_current).then(() => {
+                                            if(getters.get_project_current.templates_worker == null) {
+                                                dispatch('sync_templates_worker', getters.get_project_current);
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        });
+                    }
+                    
+            		// console.log(`SET ${slug_project_current}`)
+            		
+            	}
+            }
+
         },
         async load_projects({state, commit, getters, rootGetters, dispatch}) {
             if(getters.get_object_projects == null) {
@@ -250,6 +267,7 @@ export const moduleProjects = {
             		}),
             	}, { root: true }).then(response => {
 			    	// console.log(response.data)
+                    commit('set_response_data_projects', response.data);
                 	commit('set_projects', response.data);
             	});
 
@@ -258,6 +276,13 @@ export const moduleProjects = {
     //             	commit('set_status_block', {'data_status_block': response.data, use_sandbox});
 			 //    })
 			}
+        },
+        async reset_projects({state, commit, getters, rootGetters, dispatch}) {
+            commit('set_projects', state.response_data_projects);
+            commit('moduleBatches/reset', null, { root: true });
+            commit('moduleHITs/reset', null, { root: true });
+            commit('moduleAssignments/reset', null, { root: true });
+            commit('moduleWorkers/reset', null, { root: true });
         },
         async sync_settings_batch({state, commit, getters, rootGetters, dispatch}, project) {
         	await dispatch('make_request', {

@@ -281,6 +281,12 @@ export const moduleBatches = {
         clear_sandbox(state) {
             state.object_batches_sandbox = {}; 
         },
+        reset: (state) => {
+            state.object_batches = null;
+            state.object_batches_sandbox = null;
+            state.object_csv_parsed = undefined;
+            state.is_syncing_mturk = false;
+        }
 	},
 	actions: {
         async sync_batches({commit, state, getters, rootState, rootGetters, dispatch}, force=false) {

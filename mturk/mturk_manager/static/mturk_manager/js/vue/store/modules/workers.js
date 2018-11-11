@@ -216,6 +216,10 @@ export const moduleWorkers = {
         clear_sandbox(state) {
             state.object_workers_sandbox = {}; 
         },
+        reset: (state) => {
+        	state.object_workers = {};
+        	state.object_workers_sandbox = {};
+        }
 	},
 	actions: {
 		// async sync_workers({commit, state, getters, rootState, rootGetters}, force=false) {

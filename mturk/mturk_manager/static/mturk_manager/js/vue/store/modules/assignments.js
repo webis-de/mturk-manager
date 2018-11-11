@@ -111,6 +111,12 @@ export const moduleAssignments = {
 		set_assignments_selected(state, assignments_selected) {
 			state.assignments_selected = assignments_selected;
 		},
+        reset: (state) => {
+            state.object_assignments = {};
+            state.object_assignments_sandbox = {};
+            state.set_ids_worker = null;
+            state.assignments_selected = [];
+        }
 	},
 	actions: {
         async set_assignments({commit, state, getters, rootState, rootGetters, dispatch}, {data_batches, object_hits, use_sandbox}) {

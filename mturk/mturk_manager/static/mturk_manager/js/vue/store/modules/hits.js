@@ -61,6 +61,10 @@ export const moduleHITs = {
         clear_sandbox(state) {
             state.object_hits_sandbox = {}; 
         },
+        reset: (state) => {
+            state.object_hits = {};
+            state.object_hits_sandbox = {};
+        }
 	},
 	actions: {
         async set_hits({commit, state, getters, rootState, rootGetters, dispatch}, {object_batches, data_batches, use_sandbox}) {           
