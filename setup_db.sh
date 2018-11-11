@@ -8,6 +8,7 @@ pip3 install boto3
 pip3 install xmltodict
 pip3 install djangorestframework
 pip3 install django-cors-headers
+pip3 install psycopg2
 
 # pip3 install -r requirements.txt
 

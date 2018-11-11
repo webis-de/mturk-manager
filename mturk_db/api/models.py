@@ -164,6 +164,8 @@ class Worker(models.Model):
     
 
 class Worker_Block_Project(models.Model):
+    class Meta:
+        unique_together = ("project", "worker")
     # is_sandbox = models.BoloeanField()
     project = models.ForeignKey('Project', on_delete=models.CASCADE, related_name='worker_blocks_project')
     worker = models.ForeignKey('Worker', on_delete=models.CASCADE, related_name='worker_blocks_project')

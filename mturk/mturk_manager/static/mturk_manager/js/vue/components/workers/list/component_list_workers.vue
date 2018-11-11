@@ -131,7 +131,7 @@ export default {
     data () {
         return {
             workers_selected: [],
-            pagination: { rowsPerPage:-1 },
+            pagination: { rowsPerPage: 25 },
             show_dialog_policy: false,
             policy_to_be_edited: null,
 
