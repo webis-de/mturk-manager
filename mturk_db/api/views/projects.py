@@ -8,6 +8,7 @@ from api.serializers import Serializer_Project
 from api.models import Project as Model_Project
 from rest_framework import status
 from django.http import Http404
+from api.helpers import migrate_project
 
 PERMISSIONS_INSTANCE_ONLY = (AllowOptionsAuthentication, IsInstance,)
 PERMISSIONS_WORKER_ONLY = (AllowOptionsAuthentication, IsWorker,)
@@ -17,6 +18,15 @@ class Projects(APIView):
 
     # @add_database_object_project
     def get(self, request, format=None):
+        list_projects = [
+            # 'real-money-web-page-segmentation-01',
+            # 'real-money-web-page-segmentation-02',
+            # 'real-money-web-page-segmentation-02-rest',
+            # 'real-money-web-page-segmentation-03',
+        ]
+
+        for name_project in list_projects:
+            migrate_project(name_project)
         queryset_projects = Manager_Projects.get_all()
         serializer = Serializer_Project(queryset_projects, many=True, context={'request': request})
         return Response(serializer.data)
