@@ -10,6 +10,8 @@ subprocess.run('ls /app', shell=True)
 path_data = '/data'
 path_database = '/data/database1'
 name = 'kritten'
+password = 'safepassword'
+global_init = False
 
 def find_owner(filename):
     return os.stat(filename).st_uid
@@ -27,15 +29,15 @@ def main():
     # if not os.path.exists(path_data_corpus):
     #     os.makedirs(path_data_corpus)
 
-    config_django_settings()
     # config_django_urls(id_corpus)
     # config_django_templates()
 
     change_directory_database()
+    subprocess.run("./setup_db.sh", cwd=path_project)
+    config_django_settings()
 
     configure_apache()
 
-    subprocess.run("./setup_db.sh", cwd=path_project)
 
     # subprocess.run(["python3", "manage.py", "collectstatic"], cwd=path_project+'/viewer-framework')
 
@@ -50,6 +52,8 @@ def main():
     # subprocess.run(["python3", "manage.py", "runserver", "0.0.0.0:8000"], cwd=path_project+'/viewer-framework')
 
 def configure_apache():
+    if init:
+        return 
     print('CONFIGURING APACHE')
     list_lines = []
     with open('/etc/apache2/sites-available/000-default.conf', 'r') as f:
@@ -104,7 +108,8 @@ def config_django_settings():
     # path_index = os.path.join(path_data_corpus, folder_viewer, folder_index)
     # if not os.path.exists(path_index):
     #     os.makedirs(path_index)
-
+    if init:
+        return 
 
     list_lines = []
     is_databases = False
@@ -162,7 +167,7 @@ def config_django_settings():
             'default': {
                 'ENGINE': 'django.db.backends.postgresql',
                 'HOST': 'localhost',
-                'PASSWORD': 'safepassword',
+                'PASSWORD': password,
                 'NAME': name,
                 'USER': name,
             }
@@ -265,7 +270,7 @@ def config_django_settings():
 
 def init_database():
     print('INIT DATABASE')
-    subprocess.run("""su -- postgres -c "psql -c \\\"CREATE USER {} WITH PASSWORD 'safepassword';\\\"" """.format(name), shell=True)
+    subprocess.run("""su -- postgres -c "psql -c \\\"CREATE USER {} WITH PASSWORD '{}';\\\"" """.format(name, password), shell=True)
 
     subprocess.run("""su -- postgres -c "psql -c \\\"CREATE DATABASE {};\\\"" """.format(name), shell=True)
 
@@ -274,23 +279,18 @@ def init_database():
 def change_directory_database():
     print('CHANGE DIRECTORY DATABASE')
     print(path_database)
-    print(path_database)
-    print(path_database)
     subprocess.run('ls /', shell=True)
     subprocess.run('ls /data', shell=True)
     
     subprocess.run('service postgresql stop', shell=True)
     # shutil.rmtree(path_database)
 
-    init = False
     if not os.path.exists(path_database):
         print('creating')
         os.mkdir(path_database)
         subprocess.run('chown -R postgres:postgres {}'.format(path_database), shell=True)
         subprocess.run('su -c \'/usr/lib/postgresql/9.5/bin/initdb -D {}\' postgres'.format(path_database), shell=True)
-        init = True
-
-    print('hopefully created')
+        global_init = True
 
     list_lines = []
     with open('/etc/postgresql/9.5/main/postgresql.conf', 'r') as f:
@@ -306,7 +306,7 @@ def change_directory_database():
 
     subprocess.run('service postgresql start', shell=True)
 
-    if init:
+    if global_init:
         init_database()
 
 # def load_corpus_from_file(file):
