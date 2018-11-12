@@ -52,7 +52,7 @@ def main():
     # subprocess.run(["python3", "manage.py", "runserver", "0.0.0.0:8000"], cwd=path_project+'/viewer-framework')
 
 def configure_apache():
-    if init:
+    if init == False:
         return 
     print('CONFIGURING APACHE')
     list_lines = []
@@ -108,7 +108,7 @@ def config_django_settings():
     # path_index = os.path.join(path_data_corpus, folder_viewer, folder_index)
     # if not os.path.exists(path_index):
     #     os.makedirs(path_index)
-    if init:
+    if init == False:
         return 
 
     list_lines = []
