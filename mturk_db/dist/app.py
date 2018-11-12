@@ -3,6 +3,7 @@ import subprocess
 import shutil
 
 path_project = '/var/www/python/mturk-manager'
+global_init = False
 
 subprocess.run('ls /', shell=True)
 subprocess.run('ls /data', shell=True)
@@ -11,7 +12,6 @@ path_data = '/data'
 path_database = '/data/database1'
 name = 'kritten'
 password = 'safepassword'
-global_init = False
 
 def find_owner(filename):
     return os.stat(filename).st_uid
@@ -52,7 +52,7 @@ def main():
     # subprocess.run(["python3", "manage.py", "runserver", "0.0.0.0:8000"], cwd=path_project+'/viewer-framework')
 
 def configure_apache():
-    if init == False:
+    if global_init == False:
         return 
     print('CONFIGURING APACHE')
     list_lines = []
@@ -108,7 +108,7 @@ def config_django_settings():
     # path_index = os.path.join(path_data_corpus, folder_viewer, folder_index)
     # if not os.path.exists(path_index):
     #     os.makedirs(path_index)
-    if init == False:
+    if global_init == False:
         return 
 
     list_lines = []
@@ -286,6 +286,7 @@ def change_directory_database():
     # shutil.rmtree(path_database)
 
     if not os.path.exists(path_database):
+        global global_init
         print('creating')
         os.mkdir(path_database)
         subprocess.run('chown -R postgres:postgres {}'.format(path_database), shell=True)

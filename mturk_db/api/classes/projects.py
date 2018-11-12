@@ -11,7 +11,7 @@ class Manager_Projects(object):
     try:
         object_account_mturk = Account_Mturk.objects.all()[0]
         # object_account_mturk = Account_Mturk.objects.get(name='webis')
-    except:
+    except Exception:
         raise Exception('No credentials for the MTurk account are set')
 
     @classmethod

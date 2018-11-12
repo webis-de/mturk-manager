@@ -11,8 +11,6 @@ RUN pip3 install psycopg2 django==2.0 boto3 xmltodict djangorestframework markdo
 
 WORKDIR /var/www/python
 RUN git clone https://github.com/webis-de/mturk-manager.git
-WORKDIR /var/www/python/mturk-manager
-RUN git submodule update --recursive --remote --init
 
 ARG setting_files=/kritten
 ENV folder_setting_files=$setting_files
