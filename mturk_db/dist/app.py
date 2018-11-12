@@ -33,8 +33,8 @@ def main():
     # config_django_templates()
 
     change_directory_database()
-    subprocess.run("./setup_db.sh", cwd=path_project)
     config_django_settings()
+    subprocess.run("./setup_db.sh", cwd=path_project)
 
     configure_apache()
 

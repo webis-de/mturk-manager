@@ -39,7 +39,7 @@ class Serializer_Project(serializers.ModelSerializer):
     # count_assignments_max_per_worker = CustomField()
     # count_assignments_max_per_worker = serializers.SerializerMethodField()
     message_reject = serializers.CharField(required=False)
-    message_reject_default = Serializer_Message_Reject()
+    message_reject_default = Serializer_Message_Reject(required=False)
 
     class Meta:
         model = Project
