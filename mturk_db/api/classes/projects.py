@@ -8,11 +8,24 @@ from django.utils.text import slugify
 from django.conf import settings
 
 class Manager_Projects(object):
-    try:
-        object_account_mturk = Account_Mturk.objects.all()[0]
-        # object_account_mturk = Account_Mturk.objects.get(name='webis')
-    except Exception:
-        raise Exception('No credentials for the MTurk account are set')
+    object_account_mturk = None
+    # try:
+    #     object_account_mturk = Account_Mturk.objects.all()[0]
+    #     # object_account_mturk = Account_Mturk.objects.get(name='webis')
+    # except Exception:
+    #     raise Exception('No credentials for the MTurk account are set')
+
+
+    @classmethod
+    def get_object_account_mturk(cls):
+        if cls.object_account_mturk == None:
+            try:
+                cls.object_account_mturk = Account_Mturk.objects.all()[0]
+            except Exception:
+                raise Exception('No credentials for the MTurk account are set')
+
+        return cls.object_account_mturk
+
 
     @classmethod
     def get_all(cls):
@@ -22,15 +35,15 @@ class Manager_Projects(object):
     def get_mturk_api(cls, use_sandbox=True):
         if use_sandbox:
             return boto3.client('mturk',
-                aws_access_key_id=cls.object_account_mturk.key_access,
-                aws_secret_access_key=cls.object_account_mturk.key_secret,
+                aws_access_key_id=cls.get_object_account_mturk().key_access,
+                aws_secret_access_key=cls.get_object_account_mturk().key_secret,
                 region_name='us-east-1',
                 endpoint_url=URL_MTURK_SANDBOX
             )
         else:
             return boto3.client('mturk',
-                aws_access_key_id=cls.object_account_mturk.key_access,
-                aws_secret_access_key=cls.object_account_mturk.key_secret,
+                aws_access_key_id=cls.get_object_account_mturk().key_access,
+                aws_secret_access_key=cls.get_object_account_mturk().key_secret,
                 region_name='us-east-1'
             )
 
@@ -43,7 +56,7 @@ class Manager_Projects(object):
         project = Project.objects.create(
             name=data['name'],
             slug=slugify(data['name']),
-            fk_account_mturk=cls.object_account_mturk,
+            fk_account_mturk=cls.get_object_account_mturk(),
             version=settings.VERSION_PROJECT,
         )
 
