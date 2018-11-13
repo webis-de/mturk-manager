@@ -4,6 +4,7 @@ import shutil
 
 path_project = '/var/www/python/mturk-manager'
 global_init = False
+global_restart = False
 
 subprocess.run('ls /', shell=True)
 subprocess.run('ls /data', shell=True)
@@ -53,6 +54,10 @@ def main():
 
 def configure_apache():
     print('CONFIGURING APACHE')
+    
+    if global_restart:
+        print('Abort CONFIGURING DJANGO')
+        return
     list_lines = []
     with open('/etc/apache2/sites-available/000-default.conf', 'r') as f:
         for index, line in enumerate(f):
@@ -133,6 +138,10 @@ def config_django_settings():
                 #     line = 'PATH_FILES_INDEX = "{}"'.format(path_index)
 
                 if line.startswith('DEBUG'):
+                    if 'False' in line:
+                        global global_restart
+                        global_restart = True
+
                     line = 'DEBUG = False'
 
                 # if line.startswith('ALLOWED_HOSTS'):
@@ -161,7 +170,7 @@ def config_django_settings():
             #     line = 'PATH_FILES_INDEX = "{}"'.format(path_index)
             #     list_lines.append(line)
 
-    if 'DEBUG = False' in list_lines:
+    if global_restart:
         print('Abort CONFIGURING DJANGO')
         return
 
