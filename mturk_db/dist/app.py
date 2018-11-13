@@ -90,6 +90,7 @@ def configure_apache():
                 list_lines.append('WSGIPassAuthorization On\n')
 
     if 'WSGIProcessGroup mturk-manager\n' in list_lines:
+        print('Abort CONFIGURING APACHE')
         return
     # if global_init == False:
     #     return 
@@ -111,6 +112,7 @@ def config_django_settings():
     # path_index = os.path.join(path_data_corpus, folder_viewer, folder_index)
     # if not os.path.exists(path_index):
     #     os.makedirs(path_index)
+    print('CONFIGURING DJANGO')
 
     list_lines = []
     is_databases = False
@@ -160,6 +162,7 @@ def config_django_settings():
             #     list_lines.append(line)
 
     if 'DEBUG = False' in list_lines:
+        print('Abort CONFIGURING DJANGO')
         return
 
     with open(path_project+'/mturk_db/mturk_db/settings.py', 'w') as f:
