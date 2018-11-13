@@ -28,6 +28,7 @@ export const moduleProjects = {
 	getters: {
 		get_project_current(state) {
             if(state.slug_project_current == undefined) return {};
+            console.log('state.sliiiiig', state.slug_project_current)
 			return state.object_projects[state.slug_project_current];
 		},
    //  	get_object_project: (state, getters, rootState) => {
@@ -115,6 +116,9 @@ export const moduleProjects = {
         set_response_data_projects(state, data_projects) {
             state.response_data_projects = data_projects;
         },
+        add_to_response_data_projects(state, data_project) {
+            state.response_data_projects.push(data_project);
+        },
         set_projects(state, data_projects) {
             state.object_projects= {};
             
@@ -124,8 +128,11 @@ export const moduleProjects = {
             });
         },
         add_project(state, data_project) {
+            console.log('added project');
             const object_project = new Project(data_project);
             Vue.set(state.object_projects, object_project.slug, object_project);
+            console.log(state.object_projects[data_project.slug]);
+            
         },
         set_project(state, {project, project_new, array_fields}) {
             _.forEach(array_fields, function(name_field) {
@@ -222,18 +229,16 @@ export const moduleProjects = {
 
         	commit('set_slug_project_current', slug_project_current);
 
-
             if(project_has_changed == true) 
             {
                 // reset database
     			await dispatch('reset_projects');
 
-
                 // load initial values for project
                 if(slug_project_current != undefined)
                 {
                     if(getters.get_project_current.settings_batch == null) {
-                        dispatch('sync_settings_batch', getters.get_project_current);
+                        await dispatch('sync_settings_batch', getters.get_project_current);
             		}
                     if(getters.get_project_current.templates_assignment == null) {
                         dispatch('sync_templates_assignment', getters.get_project_current).then(() => {
@@ -350,8 +355,6 @@ export const moduleProjects = {
             });
         },
         async create_settings_batch({state, commit, getters, rootGetters, dispatch}, data) {
-        	console.log(data);
-
 			await dispatch('make_request', {
         		method: 'post',
         		url: rootGetters.get_url_api({
@@ -542,7 +545,6 @@ export const moduleProjects = {
         },
         async edit_settings_batch({state, commit, getters, rootState, rootGetters, dispatch}, {data}) {
             const data_changed = data.settings_batch_current.get_changes(data.settings_batch_new);
-            console.log(data_changed)
 
             if(Object.keys(data_changed).length == 0) return;
 
@@ -564,8 +566,6 @@ export const moduleProjects = {
         },
         async edit_template_worker({state, commit, getters, rootState, rootGetters, dispatch}, {data}) {
             const data_changed = data.template_worker_current.get_changes(data.template_worker_new);
-            console.log(data_changed)
-            console.log(data)
 
             if(Object.keys(data_changed).length == 0) return;
 
@@ -585,8 +585,6 @@ export const moduleProjects = {
         },
         async edit_template_assignment({state, commit, getters, rootState, rootGetters, dispatch}, {data}) {
             const data_changed = data.template_assignment_current.get_changes(data.template_assignment_new);
-            console.log(data_changed)
-            console.log(data)
 
             if(Object.keys(data_changed).length == 0) return;
 
@@ -606,8 +604,6 @@ export const moduleProjects = {
         },
         async edit_template_hit({state, commit, getters, rootState, rootGetters, dispatch}, {data}) {
             const data_changed = data.template_hit_current.get_changes(data.template_hit_new);
-            console.log(data_changed)
-            console.log(data)
 
             if(Object.keys(data_changed).length == 0) return;
 
@@ -627,8 +623,6 @@ export const moduleProjects = {
         },
         async edit_template_global({state, commit, getters, rootState, rootGetters, dispatch}, {data}) {
             const data_changed = data.template_global_current.get_changes(data.template_global_new);
-            console.log(data_changed)
-            console.log(data)
 
             if(Object.keys(data_changed).length == 0) return;
 
@@ -669,6 +663,7 @@ export const moduleProjects = {
         	}, { root: true });
 
             commit('add_project', response.data);
+            commit('add_to_response_data_projects', response.data);
             return response.data.slug;
         },
         async clear_sandbox({state, commit, rootGetters, dispatch}) {

@@ -39,9 +39,6 @@ export default {
     methods: {
     },
     created: function() {
-        console.log('####')
-        console.log(this.$route)
-        console.log('####')
     },
     components: {
         ComponentCreateProject,
