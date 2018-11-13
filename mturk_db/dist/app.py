@@ -52,8 +52,6 @@ def main():
     # subprocess.run(["python3", "manage.py", "runserver", "0.0.0.0:8000"], cwd=path_project+'/viewer-framework')
 
 def configure_apache():
-    if global_init == False:
-        return 
     print('CONFIGURING APACHE')
     list_lines = []
     with open('/etc/apache2/sites-available/000-default.conf', 'r') as f:
@@ -91,6 +89,11 @@ def configure_apache():
                 list_lines.append('WSGIScriptAlias / /var/www/python/mturk-manager/mturk_db/mturk_db/wsgi.py\n'.format(path_project))
                 list_lines.append('WSGIPassAuthorization On\n')
 
+    if 'WSGIProcessGroup mturk-manager\n' in list_lines:
+        return
+    # if global_init == False:
+    #     return 
+
     with open('/etc/apache2/sites-available/000-default.conf', 'w') as f:
         for line in list_lines:
             f.write(line)
@@ -108,8 +111,6 @@ def config_django_settings():
     # path_index = os.path.join(path_data_corpus, folder_viewer, folder_index)
     # if not os.path.exists(path_index):
     #     os.makedirs(path_index)
-    if global_init == False:
-        return 
 
     list_lines = []
     is_databases = False
@@ -158,6 +159,8 @@ def config_django_settings():
             #     line = 'PATH_FILES_INDEX = "{}"'.format(path_index)
             #     list_lines.append(line)
 
+    if 'DEBUG = False' in list_lines:
+        return
 
     with open(path_project+'/mturk_db/mturk_db/settings.py', 'w') as f:
         for line in list_lines:
