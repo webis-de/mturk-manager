@@ -54,7 +54,7 @@ def main():
 
 def configure_apache():
     print('CONFIGURING APACHE')
-    
+
     if global_restart:
         print('Abort CONFIGURING DJANGO')
         return
@@ -94,11 +94,9 @@ def configure_apache():
                 list_lines.append('WSGIScriptAlias / /var/www/python/mturk-manager/mturk_db/mturk_db/wsgi.py\n'.format(path_project))
                 list_lines.append('WSGIPassAuthorization On\n')
 
-    if 'WSGIProcessGroup mturk-manager\n' in list_lines:
-        print('Abort CONFIGURING APACHE')
-        return
     # if global_init == False:
     #     return 
+    print('Continue CONFIGURING APACHE')
 
     with open('/etc/apache2/sites-available/000-default.conf', 'w') as f:
         for line in list_lines:
@@ -173,6 +171,7 @@ def config_django_settings():
     if global_restart:
         print('Abort CONFIGURING DJANGO')
         return
+    print('Continue CONFIGURING DJANGO')
 
     with open(path_project+'/mturk_db/mturk_db/settings.py', 'w') as f:
         for line in list_lines:
