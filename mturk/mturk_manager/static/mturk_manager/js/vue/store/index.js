@@ -40,6 +40,7 @@ export const store = new Vuex.Store({
         show_progress_indicator: 0,
         // use_sandbox: false,
         use_sandbox: true,
+        instance_axios: undefined
     },
     getters: {
         get_show_progress_indicator(state, getters, rootState) {
@@ -87,6 +88,13 @@ export const store = new Vuex.Store({
             const config = JSON.parse( configElement.innerHTML );
             // console.log(config);
 
+            state.instance_axios = axios.create({
+                headers: {
+                    Authorization: `Token ${state.token_instance}`,
+                    "Content-Type": 'application/json',
+                }
+            });
+
             commit('set_token_instance', config.token_instance);
             commit('set_token_csrf', config.token_csrf);
 
@@ -125,26 +133,32 @@ export const store = new Vuex.Store({
             commit('set_use_sandbox', use_sandbox);
         },
         async make_request({commit, state}, {url, method, data}) {
-            let response = undefined;
             let function_axios = undefined;
 
             let config = {
                 method: method,
                 url: url,
                 data: JSON.stringify(data),
-                headers: {
-                    Authorization: `Token ${state.token_instance}`,
-                    "Content-Type": 'application/json',
-                }
             };
 
-            await axios(config).then(
-                    r => {
-                        response = r;
-                    }
-                );
+            const object_response = {
+                success: undefined,
+                response: undefined,
+                exception: undefined,
+            };
 
-            return response;
+            try {
+                object_response.response = await state.instance_axios.request(config);
+            } catch(exception) {
+                object_response.exception = exception;
+                object_response.success = false;
+            } 
+
+            if(object_response.success !== false) {
+                object_response.success = true;
+            }
+
+            return object_response;
         },
     }
 })

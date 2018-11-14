@@ -7,7 +7,7 @@ import Template_Worker from '../../classes/template_worker';
 import Template_Assignment from '../../classes/template_assignment';
 import Template_HIT from '../../classes/template_hit';
 import Template_Global from '../../classes/template_global';
-// import router from 'router'
+import { router } from '../..//index.js';
 
 export const moduleProjects = {
 	namespaced: true,
@@ -132,7 +132,7 @@ export const moduleProjects = {
             const object_project = new Project(data_project);
             Vue.set(state.object_projects, object_project.slug, object_project);
             console.log(state.object_projects[data_project.slug]);
-            
+
         },
         set_project(state, {project, project_new, array_fields}) {
             _.forEach(array_fields, function(name_field) {
@@ -265,16 +265,23 @@ export const moduleProjects = {
         async load_projects({state, commit, getters, rootGetters, dispatch}) {
             if(getters.get_object_projects == null) {
 
-            	await dispatch('make_request', {
+            	const response = await dispatch('make_request', {
             		method: 'get',
             		url: rootGetters.get_url_api({
             			url: state.url_api_projects, 
             		}),
-            	}, { root: true }).then(response => {
-			    	// console.log(response.data)
+            	}, { root: true })
+
+                console.log(response)
+                if(response.success == true)
+                {
                     commit('set_response_data_projects', response.data);
                 	commit('set_projects', response.data);
-            	});
+                } else {
+                    console.log(router)
+                    // router.push({name: 'error'}); 
+                }
+
 
 				// await axios.get(rootGetters.get_url_api(state.url_api_status_block, use_sandbox))
 			 //    .then(response => {
