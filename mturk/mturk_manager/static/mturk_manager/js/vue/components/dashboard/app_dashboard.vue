@@ -1,21 +1,25 @@
 <template>
-<v-layout wrap>
-    <v-flex>
+<v-content>
+    <v-container fluid>
         <v-layout wrap>
             <v-flex>
-                <component-create-project>
-                </component-create-project>
+                <v-layout wrap>
+                    <v-flex>
+                        <component-create-project>
+                        </component-create-project>
+                    </v-flex>
+                </v-layout>
+                <v-divider class="my-3"></v-divider>
+                <v-layout wrap>
+                    <v-flex>
+                        <component-open-project>
+                        </component-open-project>
+                    </v-flex>
+                </v-layout>
             </v-flex>
         </v-layout>
-        <v-divider class="my-3"></v-divider>
-        <v-layout wrap>
-            <v-flex>
-                <component-open-project>
-                </component-open-project>
-            </v-flex>
-        </v-layout>
-    </v-flex>
-</v-layout>
+    </v-container>
+</v-content>
 </template>
 
 <script>

@@ -278,7 +278,7 @@ export const moduleProjects = {
                     commit('set_response_data_projects', response.data);
                 	commit('set_projects', response.data);
                 } else {
-                    console.log(router)
+                    // console.log(router)
                     // router.push({name: 'error'}); 
                 }
 

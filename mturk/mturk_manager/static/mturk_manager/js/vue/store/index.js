@@ -88,15 +88,15 @@ export const store = new Vuex.Store({
             const config = JSON.parse( configElement.innerHTML );
             // console.log(config);
 
+            commit('set_token_instance', config.token_instance);
+            commit('set_token_csrf', config.token_csrf);
+
             state.instance_axios = axios.create({
                 headers: {
                     Authorization: `Token ${state.token_instance}`,
                     "Content-Type": 'application/json',
                 }
             });
-
-            commit('set_token_instance', config.token_instance);
-            commit('set_token_csrf', config.token_csrf);
 
             // commit('setUrlProject', config.url_project);
 
@@ -145,6 +145,7 @@ export const store = new Vuex.Store({
                 success: undefined,
                 response: undefined,
                 exception: undefined,
+                data: undefined,
             };
 
             try {
@@ -155,7 +156,9 @@ export const store = new Vuex.Store({
             } 
 
             if(object_response.success !== false) {
+
                 object_response.success = true;
+                object_response.data = object_response.response.data;
             }
 
             return object_response;

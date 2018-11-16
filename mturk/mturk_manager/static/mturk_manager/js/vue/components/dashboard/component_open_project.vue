@@ -45,10 +45,11 @@
                                 ></component-display-datetime>
                             </td>
                             <td class="text-xs-right">
+                                    <!-- v-bind:to="{ name: 'batches', params: { slug_project: props.item.slug } }" -->
                                 <v-btn
                                     small
                                     color="primary"
-                                    v-bind:to="{ name: 'batches', params: { slug_project: props.item.slug } }"
+                                    v-bind:to="{ name: 'project', params: { slug_project: props.item.slug } }"
                                 >Open</v-btn>
                                     <!-- v-bind:to="{ name: 'batches', params: { slug_project: props.item.slug } }" -->
                             </td>

@@ -1,6 +1,8 @@
 <template>
 <div>
-    <template 
+    app_batches
+    <router-view></router-view>
+    <!-- <template 
         v-if="$route.name == 'batches'"
     >
         <component-list-batches
@@ -13,7 +15,7 @@
         <component-batch-detail
             v-bind:id_batch="id_batch"
         ></component-batch-detail>
-    </template>
+    </template> -->
 </div>
 </template>
 
@@ -31,14 +33,17 @@ export default {
         slug_project,
         // load_data,
     ],
-    props: {
-        id_batch: {
-        },
-    },
+    // props: {
+    //     // id_batch: {
+    //     // },
+    // },
     name: 'app-batches',
     data () {
         return {
         }
+    },
+    created() {
+        console.log('fwa')
     },
     methods: {
     },

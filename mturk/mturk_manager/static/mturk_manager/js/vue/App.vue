@@ -1,72 +1,8 @@
 <template>
 <v-app dark>
-    <template v-if="has_loaded_projects && Object.keys(project_current).length > 0">
-        <component-navigation-drawer    
-            v-bind:show_drawer.sync="show_drawer"
-        ></component-navigation-drawer>
-        <v-progress-linear 
-            v-bind:active="get_show_progress_indicator" 
-            height="4" 
-            app 
-            indeterminate 
-            style="z-index: 50; position: absolute; margin: 0"
-        ></v-progress-linear>
-
-        <v-toolbar 
-            app 
-            fixed 
-            clipped-left
-            v-bind:style="object_styles_toolbar"
-        >
-            <v-toolbar-side-icon @click.stop="show_drawer = !show_drawer"></v-toolbar-side-icon>
-            <v-toolbar-title>"{{ project_current.name }}" - {{name_route_current}}</v-toolbar-title>
-
-            <v-spacer></v-spacer>
-
-            <v-layout align-center justify-end>
-                <v-flex shrink>
-                    <v-tooltip bottom>
-                        <v-switch 
-                            hide-details 
-                            slot="activator" 
-                            v-bind:label="use_sandbox ? 'Toggle Sandbox' : 'Toggle Sandbox'" 
-                            v-bind:input-value="use_sandbox" 
-                            v-on:click.native="toggle_use_sandbox"
-                        ></v-switch>
-                        <span>You are currently <b v-if="!use_sandbox">not</b> using the Sandbox</span>
-                    </v-tooltip>
-                </v-flex>
-
-                <v-divider 
-                    class="mx-2"
-                    inset
-                    vertical
-                ></v-divider>
-
-                <v-flex shrink>
-                    <component  
-                        v-bind:name_route="name_route_current"
-                        v-bind:is="currentTabComponent"
-                    ></component>
-                </v-flex>
-            </v-layout>
-        </v-toolbar>
-
-
-        <v-content>
-            <v-container fluid>
-                <router-view></router-view>
-            </v-container>
-        </v-content>
-    </template>
-
-    <template v-else-if="has_loaded_projects">
-        <v-content>
-            <v-container fluid>
-                <router-view></router-view>
-            </v-container>
-        </v-content>
-    </template>
+    
+    <router-view v-if="has_loaded_projects">
+    </router-view>
 
     <template v-else>
         <v-spacer></v-spacer>
@@ -78,158 +14,34 @@
             </div>
         <v-spacer></v-spacer>
     </template>
-<!--     <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
-        <v-card>
-          <v-toolbar dark color="primary">
-            <v-btn icon dark @click.native="dialog = false">
-              <v-icon>close</v-icon>
-            </v-btn>
-            <v-toolbar-title>Settings</v-toolbar-title>
-          </v-toolbar>
-            <v-list three-line subheader>
-                <v-subheader>General</v-subheader>
-                <v-list-tile avatar>
-                    <v-list-tile-action>
-                        <v-checkbox v-model="setting_show_with_fee"></v-checkbox>
-                    </v-list-tile-action>
-                    <v-list-tile-content>
-                        <v-list-tile-title>Show amounts with fee</v-list-tile-title>
-                        <v-list-tile-sub-title>Show the displayed amounts of money with regard to the Amazon fee</v-list-tile-sub-title>
-                    </v-list-tile-content>
-                </v-list-tile>
-            </v-list>
-        </v-card>
-    </v-dialog> -->
-
-
-   <!--  <v-snackbar
-      v-model="show_snackbar"
-      v-bind:timeout="2000"
-    >
-        {{ text_snackbar }}
-        <v-btn flat color="pink" @click.native="show_snackbar = false">Close</v-btn>
-    </v-snackbar> -->
 </v-app>
 </template>
 
 <script>
     import { mapState, mapActions, mapGetters } from 'vuex';
-    import ComponentNavigationDrawer from './components/component-navigation-drawer.vue';
-    import ComponentToolbarBatches from './components/batches/component_toolbar_batches.vue';
-    import ComponentToolbarQualifications from './components/qualifications/component-toolbar-qualifications.vue';
     // import ComponentToolbarWorkers from './components/workers/component_toolbar_workers.vue';
 export default {
     name: 'app',
     data() {
         return {
-            dialog: false,
 
-            show_drawer: true,
-            show_snackbar: false,
-            text_snackbar: 'Finished refreshing the data',
-            id_interval: undefined,
         }
-    },
-    computed: {
-        object_styles_toolbar: function() {
-            if(this.use_sandbox) {
-                return {'background-color': '#dd6e00'};
-            } else {
-                return {};
-            }
-        },
-        currentTabComponent: function() {
-            switch(this.$route.name) 
-            {
-                case 'finances':
-                case 'batches':
-                case 'batch':
-                case 'hits':
-                case 'hit':
-                case 'assignments':
-                case 'assignment':
-                case 'workers':
-                    return ComponentToolbarBatches;
-                case 'qualifications':
-                    return ComponentToolbarQualifications;
-                // case 'workers':
-                //     return ComponentToolbarWorkers;
-            }
-        },
-        name_route_current: function() {
-            // return this.$router.currentRoute;
-            return this.$route.name;
-        },
-        // setting_show_with_fee: {
-        //     get: function() {
-        //         return this.show_with_fee;
-        //     },
-        //     set: function(value) {
-        //         this.set_show_with_fee(value);
-        //     }
-        // },
-        ...mapState(['show_with_fee', 'use_sandbox', 'has_loaded_projects']),
-        ...mapGetters('moduleProjects', {
-            'project_current': 'get_project_current',
-            'slug_project_current': 'get_slug_project_current',
-            'object_projects': 'get_object_projects',
-        }),
-        ...mapGetters(['get_show_progress_indicator']),
-    },
-    watch: {
-        slug_project_current(slug_project_current) {
-            clearInterval(this.id_interval);
-
-            if(slug_project_current != null)
-            {
-                this.ping();
-                this.id_interval = setInterval(() => {
-                    this.ping();
-                }, 1000 * 60 * 5);
-            }
-        },
-    },
-    methods: {
-        toggle_use_sandbox: function() {
-            this.set_use_sandbox(!this.use_sandbox);
-        },
-        // refresh_data: function() {
-        //     this.is_refreshing = true;
-        //     this.sync_database(true).then((result) => {
-        //         this.is_refreshing = false;
-        //         this.show_snackbar = true;
-        //     });
-        // },
-        ...mapActions([
-            'init', 
-            'set_show_with_fee', 
-            'set_show_progress_indicator', 
-            'set_use_sandbox',
-        ]),
-        ...mapActions('moduleProjects', {
-            'ping': 'ping',
-        }),
-        // load_config: function() {
-        //     const configElement = document.getElementById( 'config' );
-        //     const config = JSON.parse( configElement.innerHTML );
-        //     console.log(config);
-        //     this.url_api_get_balance = config.url_api_get_balance;
-        // },
     },
     created: async function() {
         this.set_show_progress_indicator(true);
         await this.init()
         this.set_show_progress_indicator(false);
     },
+    computed: {
+        ...mapState(['has_loaded_projects']),
+    },
+    methods: {
+        ...mapActions([
+            'init', 
+            'set_show_progress_indicator', 
+        ]),
+    },
     components: {
-        ComponentNavigationDrawer,
     }
 }
 </script>
-
-<style lang="scss" scoped>
-    // sandbox switch
-    .v-input--selection-controls {
-        padding-top: 0;
-    }
-</style>
