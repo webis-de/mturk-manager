@@ -36,6 +36,12 @@
     "parcel-bundler": "^1.10.3",
     "vue-template-compiler": "^2.5.16"
   },
+  "scripts": {
+    "parcel": "./node_modules/.bin/parcel watch --no-hmr ./mturk_manager/static/mturk_manager/js/vue/index.js -d ./mturk_manager/static/mturk_manager/js/dist",
+    "parcel_build": "./node_modules/.bin/parcel build ./mturk_manager/static/mturk_manager/js/vue/index.js -d ./mturk_manager/static/mturk_manager/js/dist",
+    "parcel_annotate": "./node_modules/.bin/parcel watch --no-hmr ./mturk_manager/static/mturk_manager/js/annotate/index_annotate.js -d ./mturk_manager/static/mturk_manager/js/dist",
+    "parcel_annotate_build": "./node_modules/.bin/parcel build ./mturk_manager/static/mturk_manager/js/annotate/index_annotate.js -d ./mturk_manager/static/mturk_manager/js/dist"
+  },
   "alias": {
     "vue": "./node_modules/vue/dist/vue.common"
   }
