@@ -7,6 +7,7 @@ import Vuex from 'vuex';
 import Vuelidate from 'vuelidate'
 import App from './App.vue';
 import app_dashboard from './components/dashboard/app_dashboard.vue';
+import app_connection_error from './components/connection_error/app_connection_error.vue';
 import app_project from './components/project/app_project.vue';
 import app_batches from './components/batches/app_batches.vue';
 import app_hits from './components/hits/app_hits.vue';
@@ -130,6 +131,11 @@ const routes = [
 			},
 		]
 	},
+	{ 
+		path: '/connection_error', 
+		name: 'connection_error',
+		component: app_connection_error,
+	},
 ]
 
 export const router = new VueRouter({
@@ -137,8 +143,8 @@ export const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-	// console.log(from)
-	// console.log(to)
+	console.log('from', from)
+	console.log('to', to)
 	if(to.name == 'dashboard')
 	{
 		store.dispatch('moduleProjects/set_slug_project_current', null);

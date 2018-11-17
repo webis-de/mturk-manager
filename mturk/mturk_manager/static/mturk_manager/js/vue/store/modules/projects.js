@@ -272,16 +272,17 @@ export const moduleProjects = {
             		}),
             	}, { root: true })
 
-                console.log(response)
+                // console.log(response)
                 if(response.success == true)
                 {
                     commit('set_response_data_projects', response.data);
                 	commit('set_projects', response.data);
+                    return true;
                 } else {
                     // console.log(router)
                     // router.push({name: 'error'}); 
+                    return false;
                 }
-
 
 				// await axios.get(rootGetters.get_url_api(state.url_api_status_block, use_sandbox))
 			 //    .then(response => {

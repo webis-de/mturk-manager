@@ -19,6 +19,7 @@ import { moduleHITs } from './modules/hits.js';
 import { moduleAssignments } from './modules/assignments.js';
 import { moduleKeywords } from './modules/keywords.js';
 import { moduleMessagesReject } from './modules/messages_reject.js';
+import { router } from '../index.js';
 
 export const store = new Vuex.Store({
     modules: {
@@ -84,6 +85,7 @@ export const store = new Vuex.Store({
     },
     actions: {
         async init({state, commit, dispatch}) {
+            state.has_loaded_projects = false;
             const configElement = document.getElementById( 'config' );
             const config = JSON.parse( configElement.innerHTML );
             // console.log(config);
@@ -120,8 +122,9 @@ export const store = new Vuex.Store({
             commit('moduleKeywords/set_urls', config);
             commit('moduleMessagesReject/set_urls', config);
 
-            await dispatch('moduleProjects/load_projects');
+            const success = await dispatch('moduleProjects/load_projects');
             state.has_loaded_projects = true;
+            return success;
         },
         async set_show_with_fee({commit, state}, show) {
             commit('set_show_with_fee', show);
@@ -160,6 +163,14 @@ export const store = new Vuex.Store({
                 object_response.success = true;
                 object_response.data = object_response.response.data;
             }
+            if(object_response.success == false)
+            {
+                if(object_response.exception.message == 'Network Error') {
+                    router.push({name: 'connection_error'})
+                }
+            }
+
+            console.log('object_response', object_response)
 
             return object_response;
         },

@@ -43,6 +43,7 @@ export default {
     methods: {
     },
     created: function() {
+        console.log('dashboard')
     },
     components: {
         ComponentCreateProject,

@@ -28,6 +28,7 @@ export default {
         }
     },
     created: async function() {
+        console.log('init')
         this.set_show_progress_indicator(true);
         await this.init()
         this.set_show_progress_indicator(false);
