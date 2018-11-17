@@ -91,7 +91,7 @@ export default {
             this.name = '';
             this.$v.$reset();
             this.is_creating = false;
-            this.$router.push({name: 'batches', params: {slug_project: slug}});
+            this.$router.push({name: 'project', params: {slug_project: slug}});
             // this.snackbar_created = true;
         },
     	update_name: _.debounce(function(value) {

@@ -66,11 +66,12 @@
     import ComponentNavigationDrawer from '../component-navigation-drawer.vue';
     import ComponentToolbarBatches from '../batches/component_toolbar_batches.vue';
     import ComponentToolbarQualifications from '../qualifications/component-toolbar-qualifications.vue';
+    import slug_project from '../../mixins/slug_project';
 export default {
-    // mixins: [
-    //     slug_project,
-    //     // load_data,
-    // ],
+    mixins: [
+        slug_project,
+        // load_data,
+    ],
     // props: {
     //     // id_batch: {
     //     // },
@@ -83,17 +84,17 @@ export default {
         }
     },
     watch: {
-        slug_project_current(slug_project_current) {
-            clearInterval(this.id_interval);
+        // slug_project_current(slug_project_current) {
+        //     clearInterval(this.id_interval);
 
-            if(slug_project_current != null)
-            {
-                this.ping();
-                this.id_interval = setInterval(() => {
-                    this.ping();
-                }, 1000 * 60 * 5);
-            }
-        },
+        //     if(slug_project_current != null)
+        //     {
+        //         this.ping();
+        //         this.id_interval = setInterval(() => {
+        //             this.ping();
+        //         }, 1000 * 60 * 5);
+        //     }
+        // },
     },
     methods: {
         toggle_use_sandbox: function() {
