@@ -245,14 +245,14 @@ export const moduleWorkers = {
 				return
 			}
 
-            const response = await dispatch('make_request', {
+            const response = await Service_Endpoint.make_request({
                 method: 'patch',
                 url: rootGetters.get_url_api({
                     url: state.url_api_workers, 
                     use_sandbox, 
                 }),
                 data: Array.from(list_ids),
-            }, { root: true });
+            });
 
             const data_workers = response.data;
 
@@ -274,14 +274,14 @@ export const moduleWorkers = {
                 use_sandbox
             }, {root: true});
 
-            const blocks_hard = await dispatch('make_request', {
+            const blocks_hard = await Service_Endpoint.make_request({
                 method: 'patch',
                 url: rootGetters.get_url_api({
                     url: state.url_api_workers_get_blocks_hard, 
                     use_sandbox, 
                 }),
                 data: Array.from(list_ids),
-            }, { root: true });
+            });
 
             const array_blocks_hard = blocks_hard.data;
             commit('set_blocks_hard', {
@@ -327,7 +327,7 @@ export const moduleWorkers = {
 		async update_status_block_soft({commit, state, getters, rootState, rootGetters, dispatch}, {worker, is_blocked}) {
 			const use_sandbox = rootState.use_sandbox;
 
-            const response = await dispatch('make_request', {
+            const response = await Service_Endpoint.make_request({
                 method: 'put',
                 url: rootGetters.get_url_api({
                     url: state.url_api_workers, 
@@ -337,7 +337,7 @@ export const moduleWorkers = {
                 data: {
                 	is_blocked_soft: is_blocked,
                 },
-            }, { root: true });
+            });
 
         	commit('update_status_block_soft', {worker, data: response.data, use_sandbox});
 
@@ -358,7 +358,7 @@ export const moduleWorkers = {
 		async update_status_block_hard({commit, state, getters, rootState, rootGetters, dispatch}, {worker, is_blocked}) {
 			const use_sandbox = rootState.use_sandbox;
 			
-            const response = await dispatch('make_request', {
+            const response = await Service_Endpoint.make_request({
                 method: 'put',
                 url: rootGetters.get_url_api({
                     url: state.url_api_workers, 
@@ -368,7 +368,7 @@ export const moduleWorkers = {
                 data: {
                 	is_blocked_hard: is_blocked,
                 },
-            }, { root: true });
+            });
 
         	commit('update_status_block_hard', {worker, data: response.data, use_sandbox});
 		},
@@ -376,7 +376,7 @@ export const moduleWorkers = {
 		async update_status_block_global({commit, state, getters, rootState, rootGetters, dispatch}, {worker, is_blocked}) {
 			const use_sandbox = rootState.use_sandbox;
 			
-            const response = await dispatch('make_request', {
+            const response = await Service_Endpoint.make_request({
                 method: 'put',
                 url: rootGetters.get_url_api({
                     url: state.url_api_workers, 
@@ -386,14 +386,14 @@ export const moduleWorkers = {
                 data: {
                 	is_blocked_global: is_blocked,
                 },
-            }, { root: true });
+            });
 
         	commit('update_status_block_global', {worker, data: response.data, use_sandbox});
 		},
 		async update_count_assignments_limit({commit, state, getters, rootState, rootGetters, dispatch}, {worker, value}) {
 			const use_sandbox = rootState.use_sandbox;
 
-            const response = await dispatch('make_request', {
+            const response = await Service_Endpoint.make_request({
                 method: 'put',
                 url: rootGetters.get_url_api({
                     url: state.url_api_workers, 
@@ -403,7 +403,7 @@ export const moduleWorkers = {
                 data: {
                 	count_assignments_limit: value,
                 },
-            }, { root: true });
+            });
 
         	commit('set_worker', {
         		worker, 

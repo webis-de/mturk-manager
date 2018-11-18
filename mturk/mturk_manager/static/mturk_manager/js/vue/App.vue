@@ -1,6 +1,5 @@
 <template>
 <v-app dark>
-    
     <router-view v-if="has_loaded_projects">
     </router-view>
 

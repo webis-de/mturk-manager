@@ -6,6 +6,7 @@ import VueAxios from 'vue-axios';
 import _ from 'lodash';
 import Batch from '../../classes/batch.js';
 import HIT from '../../classes/hit.js';
+import Service_Endpoint from '../../services/service_endpoint';
 
 import VueCookies from 'vue-cookies'
 Vue.use(Vuex)
@@ -293,13 +294,13 @@ export const moduleBatches = {
             const use_sandbox = rootState.use_sandbox;
 
             if(getters.get_object_batches(use_sandbox) == null || force) {
-                const response = await dispatch('make_request', {
+                const response = await Service_Endpoint.make_request({
                     method: 'get',
                     url: rootGetters.get_url_api({
                         url: state.url_api_projects_batches, 
                         use_sandbox, 
                     }),
-                }, { root: true });
+                });
 
                 const data_batches = response.data;
 
@@ -343,13 +344,13 @@ export const moduleBatches = {
             const use_sandbox = rootState.use_sandbox;
 
             commit('set_is_syncing_mturk', true);
-            const response = await dispatch('make_request', {
+            const response = await Service_Endpoint.make_request({
                 method: 'patch',
                 url: rootGetters.get_url_api({
                     url: state.url_api_projects_batches,
                     use_sandbox, 
                 }),
-             }, { root: true });
+             });
 
             const data_batches = response.data;
 
@@ -365,13 +366,13 @@ export const moduleBatches = {
             // console.log(use_sandbox);
             // console.log(data);
             // console.log(state.url_api_projects_batches)
-            await dispatch('make_request', {
+            await Service_Endpoint.make_request({
                 method: 'post',
                 url: rootGetters.get_url_api({
                     url: state.url_api_projects_batches, 
                 }),
                 data: data,
-            }, { root: true }).then(response => {
+            }).then(response => {
                 // console.log(response)
                 commit('add_batch', {
                     data_batch: response.data,

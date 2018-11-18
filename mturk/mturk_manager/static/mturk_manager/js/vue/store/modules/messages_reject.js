@@ -1,6 +1,7 @@
 import axios from 'axios';
 import _ from 'lodash';
 import Vue from 'vue';
+import Service_Endpoint from '../../services/service_endpoint';
 
 export const moduleMessagesReject = {
 	namespaced: true,
@@ -35,12 +36,12 @@ export const moduleMessagesReject = {
 	actions: {
         async load_messages_reject({state, commit, getters, rootGetters, dispatch}) {
             if(getters.get_object_messages_reject == null) {
-            	await dispatch('make_request', {
+            	await Service_Endpoint.make_request({
             		method: 'get',
             		url: rootGetters.get_url_api({
             			url: state.url_api_messages_reject, 
             		}),
-            	}, { root: true }).then(response => {
+            	}).then(response => {
 			    	// console.log(response.data)
                 	commit('set_messages_reject', response.data);
             	});
