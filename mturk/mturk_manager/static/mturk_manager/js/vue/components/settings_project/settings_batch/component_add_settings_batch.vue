@@ -8,6 +8,7 @@
 			slot="activator" 
 			color="primary"
 			small
+			v-bind:disabled="is_disabled"
 		><v-icon>add</v-icon> Add Profile</v-btn>
       	<v-card>
 	        <v-card-title>
@@ -84,6 +85,9 @@
 		}),
     },
     computed: {
+    	is_disabled() {
+    		return _.size(_.get(this.project_current, 'templates_worker', [])) == 0;
+    	},
     },
     watch: {
     	dialog() {
