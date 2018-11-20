@@ -20,7 +20,12 @@ export default class View
 
 	check_submit_button()
 	{
-		if(this.loader.message_reject_default.trim() == '') return this.button_submit.prop('disabled', true);
+		console.log(this.loader.object_assignments_selected)
+		if(
+			this.loader.message_reject_default.trim() == '' &&
+			_.find(this.loader.object_assignments_selected, (e) => e.state == 'reject' || e.state == 'approve_internally') != undefined
+		) return this.button_submit.prop('disabled', true);
+
 		if(_.size(this.loader.object_assignments_selected) == 0) return this.button_submit.prop('disabled', true);
 
 		this.button_submit.prop('disabled', false);
@@ -81,16 +86,17 @@ export default class View
 		_.forEach(object_assignments_grouped_by_batch, (list_assignments, id_batch) =>
 		{
 			const batch = this.loader.object_batches[id_batch];
+			console.log(batch)
 
-			const template_global = batch.settings_batch.template.template_global.template;
+			const template_global = _.get(batch, 'settings_batch.template.template_global.template', undefined);
 			if(template_global != undefined)
 			{
 				this.wrapper_hits.append(template_global);
 			}
 
-			const template_hit = batch.settings_batch.template.template_hit.template
+			const template_hit = _.get(batch, 'settings_batch.template.template_hit.template', undefined);
 			
-			const template_assignment = batch.settings_batch.template.template_assignment.template;
+			const template_assignment = _.get(batch, 'settings_batch.template.template_assignment.template', undefined);
 
 			const template_assignment_parsed = $.parseHTML(template_assignment)
 			let is_table = false;
@@ -104,7 +110,6 @@ export default class View
 
 
 			let object_groups;
-
 			switch(this.group_by) {
 				case 'hit':
 					object_groups = _.groupBy(list_assignments, 'hit.id');
@@ -134,15 +139,25 @@ export default class View
 
 					wrapper_hit.append('<script>var hit_wrapper = $(\'span[data-id_hit="'+id+'"]\'); var hit = hit_wrapper.data("hit")</script>');
 
-					const template_hit_prepared = template_hit.replace(/data-inject_assignments/g, `data-inject_assignments data-id_hit="${id}"`);
-					wrapper_hit.append(template_hit_prepared);
-					this.wrapper_hits.append(wrapper_hit);
-					const wrapper_assignments = $(`[data-inject_assignments][data-id_hit="${id}"]`);
+					let wrapper_assignments = undefined;
 
-					if(wrapper_assignments.length == 0)
-					{
-						console.warn(`No 'data-inject_assignments' defined`);
-						return true
+					if(template_hit) {
+						const template_hit_prepared = template_hit.replace(/data-inject_assignments/g, `data-inject_assignments data-id_hit="${id}"`);
+						wrapper_hit.append(template_hit_prepared);
+
+						this.wrapper_hits.append(wrapper_hit);
+
+						wrapper_assignments = $(`[data-inject_assignments][data-id_hit="${id}"]`);
+
+						if(wrapper_assignments.length == 0)
+						{
+							console.warn(`No 'data-inject_assignments' defined`);
+							return true
+						}
+					} else {
+						this.wrapper_hits.append(wrapper_hit);
+
+						wrapper_assignments = wrapper_hit;
 					}
 
 					_.forEach(grouped_by_hits, (assignment) =>

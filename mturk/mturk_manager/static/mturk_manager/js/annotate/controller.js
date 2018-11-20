@@ -79,6 +79,8 @@ export default class Controller
 			            Authorization: 'Token ' + event.data.loader.context.token_instance,
 			            "Content-Type": 'application/json',
 			        },
+			    }).done((data) => {
+			    	location.reload();
 			    });
 			}
 		);
