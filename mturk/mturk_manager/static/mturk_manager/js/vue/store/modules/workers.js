@@ -3,6 +3,7 @@ import Vue from 'vue';
 import _ from 'lodash';
 import Worker from '../../classes/workers.js';
 import { STATUS_BLOCK } from '../../classes/enums.js';
+import Service_Endpoint from '../../services/service_endpoint';
 
 export const moduleWorkers = {
 	namespaced: true,
