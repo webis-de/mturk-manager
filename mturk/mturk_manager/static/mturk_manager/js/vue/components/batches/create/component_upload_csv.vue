@@ -5,7 +5,7 @@
             <v-flex xs3>
                 <upload-btn
                     class="pl-0"
-                    :filechangedcallback="file_changed"
+                    :file-changed-callback="file_changed"
                     title="Upload CSV"
                     v-bind:loading="is_parsing_csv"
                 ></upload-btn>
@@ -41,7 +41,7 @@
 
 <script>
     import { mapState, mapMutations, mapActions, mapGetters } from 'vuex';
-    import UploadBtn from 'vuetify-upload-button';
+    import UploadButton from 'vuetify-upload-button'
     import Papa from 'papaparse';
 
     // import ComponentStepUploadCSV from './component_step_upload_csv.vue';
@@ -103,7 +103,7 @@ export default {
         }),
     },
     components: {
-      UploadBtn,
+      'upload-btn': UploadButton
     }
 }
 </script>

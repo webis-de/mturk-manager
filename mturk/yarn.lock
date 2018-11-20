@@ -5916,10 +5916,10 @@ vuelidate@^0.7.4:
   resolved "https://registry.yarnpkg.com/vuelidate/-/vuelidate-0.7.4.tgz#5a0e54be09ac0192f1aa3387d74b92e0945bf8aa"
   integrity sha512-QHZWYOL325Zo+2K7VBNEJTZ496Kd8Z31p85aQJFldKudUUGBmgw4zu4ghl4CyqPwjRCmqZ9lDdx4FSdMnu4fGg==
 
-vuetify-upload-button@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/vuetify-upload-button/-/vuetify-upload-button-1.1.0.tgz#fdc8e19ea93bf1e8aa4833edc6f974782aa0f4a1"
-  integrity sha512-wVsHJqEDTOz46tDRqCoA136DMsucXAbjFdg2ig0Xo4Rak3JEySA3Y/Kq9wUWsrHnZ62Bfm1IBE/rFhwb0tt17A==
+vuetify-upload-button@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/vuetify-upload-button/-/vuetify-upload-button-1.2.0.tgz#37a47dbf89b1f799add0a5261d0a5e0756518909"
+  integrity sha512-f57EHo9lXMd98vBRfyd0JxuI96d0S2zwIwFk+nFj2e7c7OnzqmevjO0nFtQ+/fQRMgUhP9BtEPZpIbAOLnr9xg==
 
 vuetify@^1.2.1:
   version "1.2.9"
