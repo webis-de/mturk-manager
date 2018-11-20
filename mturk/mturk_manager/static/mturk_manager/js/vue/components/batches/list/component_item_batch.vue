@@ -10,11 +10,20 @@
                 hide-details
             ></v-checkbox>
         </td>
+
         <td 
             class="text-xs-center"
         >
             {{ batch.name }}
         </td>
+
+        <td 
+        v-on:click="foo()"
+            class="text-xs-center"
+        >
+            {{ Object.keys(batch.object_hits).length }}
+        </td>
+
         <td 
             class="text-xs-center"
         >
@@ -23,17 +32,13 @@
             >
             </component-display-datetime>
         </td>
-        <td 
-        v-on:click="foo()"
-            class="text-xs-center"
-        >
-            {{ Object.keys(batch.object_hits).length }}
-        </td>
+
         <td 
             class="text-xs-center"
         >
             {{ batch.settings_batch.count_assignments }}
         </td>
+
         <td 
             class="text-xs-center"
         >
@@ -44,6 +49,7 @@
                 {{ batch.count_assignments_available }}/{{batch.count_assignments_total}} assignment{{batch.count_assignments_total > 1 ? 's' : ''}}
             </component-progress>
         </td>
+        
         <td 
             class="text-xs-center"
         >

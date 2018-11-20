@@ -1,6 +1,5 @@
 <template>
 <div>
-    app_batches
     <!-- <router-view></router-view> -->
     <template 
         v-if="$route.name == 'batches'"
@@ -34,8 +33,8 @@ export default {
         // load_data,
     ],
     props: {
-        // id_batch: {
-        // },
+        id_batch: {
+        },
     },
     name: 'app-batches',
     data () {

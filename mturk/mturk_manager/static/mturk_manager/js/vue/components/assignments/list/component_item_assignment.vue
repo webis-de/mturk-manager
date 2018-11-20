@@ -38,7 +38,7 @@
         </td>
         <td 
             class="text-xs-center"
-            v-if="show_links == true"
+            v-if="show_links == false"
         >
             <v-btn
                 slot="activator" 

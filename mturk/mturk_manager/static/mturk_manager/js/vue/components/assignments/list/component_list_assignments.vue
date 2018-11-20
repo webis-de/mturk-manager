@@ -118,12 +118,12 @@ export default {
                 },
             ];
 
-            if(this.show_links == true) {
-                list_headers.push({
-                    text: 'Link',
-                    value: '',
-                });
-            }
+            // if(this.show_links == true) {
+            //     list_headers.push({
+            //         text: 'Link',
+            //         value: '',
+            //     });
+            // }
 
             return list_headers;
         },

@@ -5,7 +5,7 @@
     <v-flex>
         <!-- {{object_batches}} -->
         <h2 class="headline">
-            <!-- HIT {{hit.id_hit}} -->
+            HIT {{hit.id_hit}}
             <v-btn
                 slot="activator" 
                 class="my-0"
