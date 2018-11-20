@@ -3,6 +3,7 @@ from api.classes.projects import Manager_Projects
 from api.enums import STATUS_BLOCK
 import botocore
 from django.db.models import F, Q, When, Case, BooleanField, IntegerField, Count, Value, Subquery, OuterRef
+>>> from django.db.models.functions import Coalesce
 # from django.db.models import F, Value, Count, Q, Sum, IntegerField, ExpressionWrapper
 # from mturk_manager.classes import Manager_Qualifications
 
@@ -17,7 +18,7 @@ class Manager_Workers(object):
         return Worker.objects.filter(
             id__in=data
         ).annotate(
-            count_worker_blocks=Count('worker_blocks_project', filter=Q(worker_blocks_project__project=database_object_project)),
+            count_worker_blocks=Coalesce(Count('worker_blocks_project', filter=Q(worker_blocks_project__project=database_object_project)), 0),
             is_blocked_soft=Case(
                 When(count_worker_blocks=1, then=Value(True)),
                 default=Value(False),
