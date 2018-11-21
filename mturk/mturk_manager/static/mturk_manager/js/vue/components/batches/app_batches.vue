@@ -6,6 +6,10 @@
     >
         <component-list-batches
         ></component-list-batches>
+        
+        <component-download-batch
+        ></component-download-batch>
+
         <component-create-batch></component-create-batch>
     </template>
     <template 
@@ -24,6 +28,7 @@
     import ComponentCreateBatch from './create/component_create_batch.vue';
     import ComponentListBatches from './list/component_list_batches.vue';
     import ComponentBatchDetail from './detail/component_batch_detail.vue';
+    import ComponentDownloadBatch from './component_download_batch.vue';
     // import ComponentShowMoneySpent from './component-show-money-spent.vue';
     // import ComponentShowBatches from './component-show-batches.vue';
     import slug_project from '../../mixins/slug_project';
@@ -52,6 +57,7 @@ export default {
      ComponentCreateBatch,
      ComponentListBatches,
      ComponentBatchDetail,
+     ComponentDownloadBatch,
     },
 }
 </script>

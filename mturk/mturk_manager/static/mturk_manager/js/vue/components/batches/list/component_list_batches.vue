@@ -67,7 +67,7 @@
     </div>
 </template>
 <script>
-    import { mapState, mapActions, mapGetters } from 'vuex';
+    import { mapState, mapActions, mapMutations, mapGetters } from 'vuex';
     // import { Policy } from '../../store/modules/policies.js';
     import ComponentItemBatch from './component_item_batch.vue';
     // import ComponentShowMoneySpent from './component-show-money-spent.vue';
@@ -80,7 +80,6 @@ export default {
     name: 'component-list-batches',
     data () {
         return {
-            batches_selected: [],
             pagination: { rowsPerPage: 25 },
 
             search: '',
@@ -124,17 +123,29 @@ export default {
         }
     },
     computed: {
+        batches_selected: {
+            get() {
+                return this.array_batches_selected;
+            },
+            set(value) {
+                this.set_batches_selected(value);
+                // this.$store.commit('set_batches_selected', value);
+            }
+        },
         ...mapGetters('moduleBatches', {
             'list_batches': 'list_batches',
         }),
-        // ...mapGetters('moduleProjects', {
-        //     'project_current': 'get_project_current',
-        // }),
+        ...mapState('moduleBatches', {
+            'array_batches_selected': 'array_batches_selected',
+        }),
     },
     methods: {
         // ...mapActions('moduleWorkers', {
             // 'update_status_block': 'update_status_block',
         // }),
+        ...mapMutations('moduleBatches', {
+            'set_batches_selected': 'set_batches_selected',
+        }),
     },
     created: function() {
         // console.log(this.list_batches)

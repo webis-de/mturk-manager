@@ -22,6 +22,8 @@ export const moduleBatches = {
 
         url_api_projects_batches: undefined,
 
+        array_batches_selected: [],
+
         object_csv_parsed: undefined,
         is_syncing_mturk: false,
 	},
@@ -214,6 +216,9 @@ export const moduleBatches = {
                 const batch = new Batch(data_batch);
                 Vue.set(object_batches, batch.id, batch);
             });
+        },
+        set_batches_selected(state, value) {
+            state.array_batches_selected = value;
         },
         // append_batches(state, {data_batches, use_sandbox}) {
         //     let object_batches = null;
