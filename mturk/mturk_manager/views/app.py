@@ -7,7 +7,9 @@ import json
 from django.middleware.csrf import get_token
 # from mturk_manager.classes import Manager_Global_DB
 from django.conf import settings as settings_django
+from django.views.decorators.cache import never_cache
 
+@never_cache
 def app(request):
     placeholder_slug_project = 'PLACEHOLDER_SLUG_PROJECT'
     if settings_django.URL_GLOBAL_DB == None:
