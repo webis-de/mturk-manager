@@ -1,4 +1,5 @@
-import Loader from './loader'
+import Loader from './loader';
+import _ from 'lodash';
 
 function normalize_answer(answer_raw) {
 	var answer = {};
