@@ -141,5 +141,5 @@ REST_FRAMEWORK = {
 
 VERSION_PROJECT = 15
 
-# URL_GLOBAL_DB = 'https://webis18.medien.uni-weimar.de/mturk-manager'
-URL_GLOBAL_DB = 'http://localhost:8002'
+URL_GLOBAL_DB = 'https://webis18.medien.uni-weimar.de/mturk-manager'
+# URL_GLOBAL_DB = 'http://localhost:8002'
