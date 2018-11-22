@@ -2,6 +2,16 @@ import { DESCRIPTIONS } from '../classes/enums';
 import { mapState, mapMutations, mapActions, mapGetters } from 'vuex';
 import Settings_Batch from '../classes/settings_batch';
 import { required, minValue, maxValue } from 'vuelidate/lib/validators'
+import _ from 'lodash';
+
+const foo = (object_settings_batch, settings_batch_current) => (value) => {
+    if(_.get(settings_batch_current, 'name', undefined) == value) return true;
+
+    return _.find(object_settings_batch, (settings_batch) => {
+        return settings_batch.name == value;
+    }) == undefined;
+};
+
 export default {
 	data() {
 		return {
@@ -63,6 +73,7 @@ export default {
             settings_batch: {
                 name: {
                     required,
+                    is_unique: foo(this.project_current.settings_batch, this.settings_batch_current),
                 },
                 title: {
                     required,
@@ -111,10 +122,10 @@ export default {
                 },
             },
         }
-
+                    
         if(this.name_not_required)
         {
-            validations.settings_batch.name = {};
+            delete validations.settings_batch.name.required;
         }
 
         return validations;

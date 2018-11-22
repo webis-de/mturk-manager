@@ -80,6 +80,8 @@ export default {
     data() {
     	return {
 			dialog: false,
+			disable_unique_name: true,
+            name_not_unique: true,
     	}
     },
     methods: {

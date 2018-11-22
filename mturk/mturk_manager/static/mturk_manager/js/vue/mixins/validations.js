@@ -5,6 +5,7 @@ const MESSAGES_DEFAULT= {
 	maxValue: 'Too high!',
 	contains_form_injection: '\'data-inject_input_forms\' is missing!',
 	contains_injection_assignments: '\'data-inject_assignments\' is missing!',
+	is_unique: 'Has to be unique!',
 };
 
 export default {
