@@ -24,7 +24,7 @@
                     type="number"
                     v-bind:value="reward"
                     v-on:input="$emit('update:reward', try_number($event)); v.settings_batch.reward.$touch()"
-                    step="0.01"
+                    step="1"
                     v-bind:label="`Reward (${ amount_formatted(reward) })`"
                     v-bind:error-messages="validation_errors.settings_batch.reward"
                 >
