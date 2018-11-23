@@ -46,7 +46,7 @@ class Worker(APIView):
         worker = self.get_object(id_worker)
         serializer = Serializer_Worker(worker, data=request.data, partial=True)
         if serializer.is_valid():
-            serializer.save(database_object_project=database_object_project, use_sandbox=use_sandbox, id_worker=id_worker)
+            serializer.save(database_object_project=database_object_project, use_sandbox=use_sandbox)
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

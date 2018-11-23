@@ -18,7 +18,8 @@ class Manager_Workers(object):
         return Worker.objects.filter(
             id__in=data
         ).annotate(
-            count_worker_blocks=Coalesce(Count('worker_blocks_project', filter=Q(worker_blocks_project__project=database_object_project)), 0),
+            count_worker_blocks=Coalesce(Count('worker_blocks_project', filter=Q(worker_blocks_project__project=database_object_project)), 0)
+        ).annotate(
             is_blocked_soft=Case(
                 When(count_worker_blocks=1, then=Value(True)),
                 default=Value(False),
@@ -294,6 +295,7 @@ class Manager_Workers(object):
     def get_status_block_for_worker(cls, database_object_project, id_worker):
         is_blocked = False
 
+        # check if project block is active
         if Worker_Block_Project.objects.filter(
                 project=database_object_project,
                 worker__id_worker=id_worker,
