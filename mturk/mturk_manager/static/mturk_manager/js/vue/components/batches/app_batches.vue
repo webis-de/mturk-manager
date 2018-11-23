@@ -2,7 +2,7 @@
 <div>
     <!-- <router-view></router-view> -->
     <template 
-        v-if="$route.name == 'batches'"
+        v-if="$route.name === 'batches'"
     >
         <component-list-batches
         ></component-list-batches>
@@ -13,7 +13,7 @@
         <component-create-batch></component-create-batch>
     </template>
     <template 
-        v-else-if="$route.name == 'batch'"
+        v-else-if="$route.name === 'batch'"
     >
         <component-batch-detail
             v-bind:id_batch="id_batch"
@@ -47,7 +47,6 @@ export default {
         }
     },
     created() {
-        console.log('fwa')
     },
     methods: {
     },
