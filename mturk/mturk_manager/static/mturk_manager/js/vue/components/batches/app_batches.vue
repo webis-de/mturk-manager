@@ -6,7 +6,7 @@
     >
         <component-list-batches
         ></component-list-batches>
-        
+
         <component-download-batch
         ></component-download-batch>
 
