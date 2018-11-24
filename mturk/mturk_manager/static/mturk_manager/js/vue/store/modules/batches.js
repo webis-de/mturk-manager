@@ -374,7 +374,8 @@ export const moduleBatches = {
             await Service_Endpoint.make_request({
                 method: 'post',
                 url: rootGetters.get_url_api({
-                    url: state.url_api_projects_batches, 
+                    url: state.url_api_projects_batches,
+                        use_sandbox,
                 }),
                 data: data,
             }).then(response => {
