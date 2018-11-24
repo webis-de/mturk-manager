@@ -80,7 +80,7 @@ export default class Controller
 			            "Content-Type": 'application/json',
 			        },
 			    }).done((data) => {
-			    	this.loader.object_assignments_selected = {};
+			    	event.data.loader.object_assignments_selected = {};
 			    	location.reload();
 			    });
 			}
