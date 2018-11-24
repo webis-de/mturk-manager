@@ -43,6 +43,7 @@ class Serializer_Assignment(serializers.ModelSerializer):
             'answer',
             'status_external',
             'status_internal',
+            'datetime_update',
             # 'batch',
             # 'datetime_creation',
             # 'datetime_expiration',
