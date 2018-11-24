@@ -246,7 +246,11 @@ export const moduleBatches = {
             _.forEach(object_batches, function(batch){
                 _.forEach(batch.object_hits, function(hit){
                     _.forEach(hit.object_assignments, function(assignment){
-                        // console.log(assignment)
+                        if(_.isObject(assignment.worker))
+                        {
+                            // skip if assignment has already worker
+                            return true;
+                        }
                         Vue.set(assignment, 'worker', object_workers[assignment.worker]);
                         // assignment.worker = object_workers[assignment.worker];
                         // Vue.set(assignment.worker, );
