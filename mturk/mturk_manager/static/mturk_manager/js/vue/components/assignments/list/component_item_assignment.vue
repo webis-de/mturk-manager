@@ -14,6 +14,9 @@
         <td class="text-xs-center">
             {{ assignment.id_assignment }}
         </td>
+        <td class="text-xs-center">
+            <component-display-datetime v-bind:datetime="assignment.datetime_creation"></component-display-datetime>
+        </td>
         <td 
             class="text-xs-center"
         >
@@ -67,6 +70,7 @@
 <script>
     import { mapState, mapActions, mapGetters } from 'vuex';
     import _ from 'lodash';
+    import ComponentDisplayDatetime from "../../helpers/component_display_datetime";
 
 export default {
     name: 'component-item-assignment',
@@ -92,7 +96,7 @@ export default {
     // },
     computed: {
         assignment() {
-        	// console.log(this.props.item)
+            console.log('this.props.item', this.props.item);
             return this.props.item;
         },
 
@@ -133,6 +137,7 @@ export default {
     methods: {
     },
     components: {
+        ComponentDisplayDatetime
     },
 }
 </script>

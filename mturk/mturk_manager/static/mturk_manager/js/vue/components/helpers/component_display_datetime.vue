@@ -8,7 +8,7 @@ export default {
     // mixins: [
     //     // helpers,
     // ],
-    name: 'component_display_datetime',
+    name: 'component-display-datetime',
     props: {
     	datetime: {
     		required: true,

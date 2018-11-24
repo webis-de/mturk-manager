@@ -105,7 +105,11 @@ export default {
             const list_headers = [
                 {
                     text: 'Name',
-                    value: 'id_hit',
+                    value: 'id_assignment',
+                },
+                {
+                    text: 'Creation',
+                    value: 'datetime_creation',
                 },
                 {
                     text: 'Worker',
