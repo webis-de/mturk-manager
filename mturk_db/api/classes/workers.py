@@ -3,7 +3,7 @@ from api.classes.projects import Manager_Projects
 from api.enums import STATUS_BLOCK
 import botocore
 from django.db.models import F, Q, When, Case, BooleanField, IntegerField, Count, Value, Subquery, OuterRef
->>> from django.db.models.functions import Coalesce
+from django.db.models.functions import Coalesce
 # from django.db.models import F, Value, Count, Q, Sum, IntegerField, ExpressionWrapper
 # from mturk_manager.classes import Manager_Qualifications
 
