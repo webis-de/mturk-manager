@@ -52,7 +52,6 @@
         </v-layout>
     </v-toolbar>
 
-
     <v-content>
         <v-container fluid>
             <router-view></router-view>
@@ -83,19 +82,6 @@ export default {
             id_interval: undefined,
         }
     },
-    watch: {
-        // slug_project_current(slug_project_current) {
-        //     clearInterval(this.id_interval);
-
-        //     if(slug_project_current != null)
-        //     {
-        //         this.ping();
-        //         this.id_interval = setInterval(() => {
-        //             this.ping();
-        //         }, 1000 * 60 * 5);
-        //     }
-        // },
-    },
     methods: {
         toggle_use_sandbox: function() {
             this.set_use_sandbox(!this.use_sandbox);
@@ -103,9 +89,6 @@ export default {
         ...mapActions([
             'set_use_sandbox',
         ]),
-        ...mapActions('moduleProjects', {
-            'ping': 'ping',
-        }),
     },
     computed: {
         object_styles_toolbar: function() {

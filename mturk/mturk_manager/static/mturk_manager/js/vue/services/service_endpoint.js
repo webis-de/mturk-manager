@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-class Service_Endpoint {
+class Class_Service_Endpoint {
 	constructor(token) 
 	{
 		this.is_initialized = false;
@@ -32,7 +32,7 @@ class Service_Endpoint {
 	{
         let config = {
             method: method,
-            url: url,
+            url: this.get_url_api(url),
             data: JSON.stringify(data),
         };
 
@@ -59,10 +59,30 @@ class Service_Endpoint {
             }
         }
 
-        console.log('object_response', object_response)
-
         return object_response;
 	}
+
+    get_url_api({url, use_sandbox, value, project}) {
+        if(value != undefined)
+        {
+            url += `/${value}`;
+        }
+
+        if(use_sandbox === false) {
+            url += '?use_sandbox=false&';
+        } else {
+            url += '?';
+        }
+
+        if(project)
+        {
+            url = url.replace('PLACEHOLDER_SLUG_PROJECT',  project.slug);
+        }
+        // url = url.replace('PLACEHOLDER_SLUG_PROJECT',  getters['moduleProjects/get_project_current'].slug);
+
+        return url;
+    }
  }
 
-export default new Service_Endpoint();
+export const Service_Endpoint = new Class_Service_Endpoint();
+// export default new Service_Endpoint();

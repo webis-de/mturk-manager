@@ -24,23 +24,12 @@
 					v-on:click="save(name)"
                     v-bind:loading="is_creating"
 					color="primary"
-					v-bind:disabled="$v.pending || $v.$invalid || name_instant.trim() == ''"
+					v-bind:disabled="$v.pending || $v.$invalid || name_instant.trim() == '' || disabled"
 				>Create</v-btn>
 			</v-flex>
 			<v-spacer></v-spacer>
 		</v-layout>
 	</v-flex>
-
-    <!-- <v-snackbar
-        v-model="snackbar_created"
-        v-bind:timeout="1500"
-        bottom
-        color="success"
-    >
-        <v-spacer></v-spacer>
-        Created!
-        <v-spacer></v-spacer>
-    </v-snackbar> -->
 </v-layout>
 </template>
 
@@ -50,6 +39,7 @@
 	import axios from 'axios';
 
     import { required, minLength, between } from 'vuelidate/lib/validators'
+    import {Service_Projects} from "../../services/service_projects";
 export default {
     name: 'component-create-project',
     data () {
@@ -59,6 +49,7 @@ export default {
         	// name: undefined,
             is_creating: false,
         	name_instant: '',
+			disabled: true,
         	// rules: [
         	// 	this.check_uniqueness,
         	// ],
@@ -84,15 +75,21 @@ export default {
         return errors;
       },
     },
+	watch: {
+        name_instant() {
+			this.disabled = true;
+			this.is_creating = true;
+		}
+	},
     methods: {
-        async save(name) {
+        save(name) {
             this.is_creating = true;
-            const slug = await this.create_project(name);
-            this.name = '';
-            this.$v.$reset();
-            this.is_creating = false;
-            this.$router.push({name: 'project', params: {slug_project: slug}});
-            // this.snackbar_created = true;
+            Service_Projects.create_project(name).then((project) => {
+				this.name = '';
+				this.$v.$reset();
+				this.is_creating = false;
+				this.$router.push({name: 'project', params: {slug_project: project.slug}});
+			});
         },
     	update_name: _.debounce(function(value) {
     		this.name = value.trim();
@@ -106,12 +103,19 @@ export default {
     validations: {
     	name: {
     		required,
-      // 		minLength: minLength(4),
       		async is_unique(name) {
-      			if(name === '' || name == undefined) return true;
+    		    this.is_creating = false;
+      			if(name === '' || name === undefined)
+      			{
+					this.disabled = false;
+      			    return true;
+                }
 
-      			let response = await this.validate_name(name);
-      			console.log(response.data)
+      			let response = await Service_Projects.validate_name(name);
+      			if(response.data === true)
+				{
+					this.disabled = false;
+				}
       			return response.data;
       		}
     	}

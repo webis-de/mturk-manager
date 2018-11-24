@@ -3,7 +3,7 @@ import Vue from 'vue';
 import _ from 'lodash';
 import Worker from '../../classes/workers.js';
 import { STATUS_BLOCK } from '../../classes/enums.js';
-import Service_Endpoint from '../../services/service_endpoint';
+import {Service_Endpoint} from '../../services/service_endpoint';
 
 export const moduleWorkers = {
 	namespaced: true,
@@ -238,59 +238,6 @@ export const moduleWorkers = {
 		// 	    })
 		// 	}
 		// },
-		async sync_workers_by_ids({commit, state, getters, rootState, rootGetters, dispatch}, {list_ids, use_sandbox, append}) {
-			// console.log(list_ids);
-			// console.log(use_sandbox);
-			if(_.size(list_ids) == 0)
-			{
-				return
-			}
-
-            const response = await Service_Endpoint.make_request({
-                method: 'patch',
-                url: rootGetters.get_url_api({
-                    url: state.url_api_workers, 
-                    use_sandbox, 
-                }),
-                data: Array.from(list_ids),
-            });
-
-            const data_workers = response.data;
-
-            if(append === true)
-            {
-	            commit('append_workers', {
-	                data_workers, 
-	                use_sandbox,
-	            });
-            } else {
-	            commit('set_workers', {
-	                data_workers, 
-	                use_sandbox,
-	            });
-            }
-
-            dispatch('moduleBatches/add_workers', {
-                'object_workers': getters.get_object_workers(use_sandbox), 
-                use_sandbox
-            }, {root: true});
-
-            const blocks_hard = await Service_Endpoint.make_request({
-                method: 'patch',
-                url: rootGetters.get_url_api({
-                    url: state.url_api_workers_get_blocks_hard, 
-                    use_sandbox, 
-                }),
-                data: Array.from(list_ids),
-            });
-
-            const array_blocks_hard = blocks_hard.data;
-            commit('set_blocks_hard', {
-                array_blocks_hard, 
-                use_sandbox
-            });
-
-		},
 		// async update_status_block({commit, state, getters, rootState, rootGetters}, {worker, status_block_new, status_block_old}) {
 		// 	const use_sandbox = rootState.use_sandbox;
 
@@ -325,111 +272,5 @@ export const moduleWorkers = {
 		//     	// }
 		//     })
 		// },
-		async update_status_block_soft({commit, state, getters, rootState, rootGetters, dispatch}, {worker, is_blocked}) {
-			const use_sandbox = rootState.use_sandbox;
-
-            const response = await Service_Endpoint.make_request({
-                method: 'put',
-                url: rootGetters.get_url_api({
-                    url: state.url_api_workers, 
-                    value: worker.id,
-                    use_sandbox, 
-                }),
-                data: {
-                	is_blocked_soft: is_blocked,
-                },
-            });
-
-        	commit('update_status_block_soft', {worker, data: response.data, use_sandbox});
-
-			// await axios.put(
-			// 	rootGetters.get_url_api(state.url_api_workers, use_sandbox, worker.name),
-			// 	JSON.stringify({is_blocked_soft: is_blocked}),
-			// 	{
-			// 		headers: {
-			// 			"X-CSRFToken": rootState.token_csrf,
-			// 			"Content-Type": 'application/json',
-			// 		}
-			// 	},
-			// )
-		 //    .then(response => {
-   //          	commit('update_status_block_soft', {worker, data: response.data, use_sandbox});
-		 //    })
-		},
-		async update_status_block_hard({commit, state, getters, rootState, rootGetters, dispatch}, {worker, is_blocked}) {
-			const use_sandbox = rootState.use_sandbox;
-			
-            const response = await Service_Endpoint.make_request({
-                method: 'put',
-                url: rootGetters.get_url_api({
-                    url: state.url_api_workers, 
-                    value: worker.id,
-                    use_sandbox, 
-                }),
-                data: {
-                	is_blocked_hard: is_blocked,
-                },
-            });
-
-        	commit('update_status_block_hard', {worker, data: response.data, use_sandbox});
-		},
-
-		async update_status_block_global({commit, state, getters, rootState, rootGetters, dispatch}, {worker, is_blocked}) {
-			const use_sandbox = rootState.use_sandbox;
-			
-            const response = await Service_Endpoint.make_request({
-                method: 'put',
-                url: rootGetters.get_url_api({
-                    url: state.url_api_workers, 
-                    value: worker.id,
-                    use_sandbox, 
-                }),
-                data: {
-                	is_blocked_global: is_blocked,
-                },
-            });
-
-        	commit('update_status_block_global', {worker, data: response.data, use_sandbox});
-		},
-		async update_count_assignments_limit({commit, state, getters, rootState, rootGetters, dispatch}, {worker, value}) {
-			const use_sandbox = rootState.use_sandbox;
-
-            const response = await Service_Endpoint.make_request({
-                method: 'put',
-                url: rootGetters.get_url_api({
-                    url: state.url_api_workers, 
-                    value: worker.id,
-                    use_sandbox, 
-                }),
-                data: {
-                	count_assignments_limit: value,
-                },
-            });
-
-        	commit('set_worker', {
-        		worker, 
-        		worker_new: response.data, 
-                array_fields: ['count_assignments_limit'],
-        	});
-
-
-			// await axios.put(
-			// 	rootGetters.get_url_api(state.url_api_workers, use_sandbox, worker.name),
-			// 	JSON.stringify({counter_assignments: value}),
-			// 	{
-			// 		headers: {
-			// 			"X-CSRFToken": rootState.token_csrf,
-			// 			"Content-Type": 'application/json',
-			// 		}
-			// 	},
-			// )
-		 //    .then(response => {
-		 //    	// if(rootState.use_sandbox) {
-   //     //      		commit('update_worker_sandbox', response.data);
-		 //    	// } else {
-   //          	commit('update_worker_count_assignments_limit', {worker, 'value': response.data.counter_assignments, use_sandbox});
-		 //    	// }
-		 //    })
-		},
 	},
 }

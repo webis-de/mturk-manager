@@ -35,6 +35,7 @@
     import { mapState, mapActions, mapGetters } from 'vuex';
     // import slug_project from '../../mixins/slug_project';
     import load_data from '../../mixins/load_data';
+    import {Service_Batches} from "../../services/service_batches";
 export default {
     mixins: [
         // slug_project,
@@ -59,10 +60,12 @@ export default {
         }),
     },
     methods: {
+        sync_mturk() {
+            Service_Batches.sync_mturk();
+        },
         ...mapActions(['set_show_progress_indicator']),
         ...mapActions('moduleBatches', {
             'sync_database': 'sync_database',
-        	'sync_mturk': 'sync_mturk',
         }),
     }
 }

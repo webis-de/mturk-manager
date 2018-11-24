@@ -51,6 +51,7 @@
     import _ from 'lodash';
 	import settings_batch from '../../../mixins/settings_batch';
 	import validations from '../../../mixins/validations';
+    import {Service_Settings_Batch} from "../../../services/service_settings_batch";
  export default {
     mixins: [
         validations,
@@ -65,24 +66,20 @@
 		create() {
             if(this.$refs.form.validate()) 
             {
-    			this.create_settings_batch({
+                Service_Settings_Batch.create({
     				settings_batch: this.settings_batch,
     				project: this.project_current,
-    			}).then(() => {
+				}).then(() => {
                     this.dialog = false;
     				this.$emit('created');
                     this.reset();
                 });
             }
-			// console.log(this.project_current);
-		},	
+		},
     	reset() {
     		this.update_fields();
     		this.$v.$reset();
     	},
-		...mapActions('moduleProjects', {
-			'create_settings_batch': 'create_settings_batch',
-		}),
     },
     computed: {
     	is_disabled() {

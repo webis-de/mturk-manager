@@ -1,5 +1,4 @@
 import Vuex from 'vuex';
-// import Vue from 'vue/dist/vue.common';
 import Vue from 'vue';
 import axios from 'axios';
 import VueAxios from 'vue-axios';
@@ -10,8 +9,6 @@ Vue.use(Vuex)
 Vue.use(VueCookies)
 Vue.use(VueAxios, axios)
 
-import Service_Endpoint from '../services/service_endpoint';
-
 import { moduleProjects } from './modules/projects.js';
 import { moduleMoney } from './modules/money.js';
 import { moduleQualifications } from './modules/qualifications.js';
@@ -21,7 +18,8 @@ import { moduleHITs } from './modules/hits.js';
 import { moduleAssignments } from './modules/assignments.js';
 import { moduleKeywords } from './modules/keywords.js';
 import { moduleMessagesReject } from './modules/messages_reject.js';
-import { router } from './index.js';
+import {Service_Endpoint} from "../services/service_endpoint";
+// import { router } from './index.js';
 
 export const store = new Vuex.Store({
     modules: {
@@ -36,7 +34,6 @@ export const store = new Vuex.Store({
         moduleMessagesReject,
     },
     state: {
-        has_loaded_projects: false,
         token_instance: undefined,
         token_csrf: undefined,
         show_with_fee: true,
@@ -49,7 +46,7 @@ export const store = new Vuex.Store({
             return state.show_progress_indicator > 0 ? true : false;
         },
         get_url_api: (state, getters) => ({url, use_sandbox, value}) => {
-            if(value != undefined)
+            if(value !== undefined)
             {
                 url += `/${value}`;
             }
@@ -63,6 +60,12 @@ export const store = new Vuex.Store({
             url = url.replace('PLACEHOLDER_SLUG_PROJECT', getters['moduleProjects/get_project_current'].slug);
 
             return url;
+        },
+        get_url: (state) => (url, module) => {
+            return state[module][url];
+        },
+        get_use_sandbox(state) {
+            return state.use_sandbox;
         },
     },
     mutations: {
@@ -86,20 +89,12 @@ export const store = new Vuex.Store({
     },
     actions: {
         async init({state, commit, dispatch}) {
-            state.has_loaded_projects = false;
             const configElement = document.getElementById( 'config' );
             const config = JSON.parse( configElement.innerHTML );
             // console.log(config);
 
             commit('set_token_instance', config.token_instance);
             commit('set_token_csrf', config.token_csrf);
-
-            Service_Endpoint.init(
-                state.token_instance,
-                () => {
-                    router.push({name: 'connection_error'});
-                }
-            );
 
             // commit('setUrlProject', config.url_project);
 
@@ -123,9 +118,6 @@ export const store = new Vuex.Store({
             commit('moduleKeywords/set_urls', config);
             commit('moduleMessagesReject/set_urls', config);
 
-            const success = await dispatch('moduleProjects/load_projects');
-            state.has_loaded_projects = true;
-            return success;
         },
         async set_show_with_fee({commit, state}, show) {
             commit('set_show_with_fee', show);

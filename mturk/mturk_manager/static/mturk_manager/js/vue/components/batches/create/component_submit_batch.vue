@@ -9,6 +9,7 @@
 <script>
     import { mapState, mapActions, mapGetters } from 'vuex';
     import Settings_Batch from '../../../classes/settings_batch';
+    import {Service_Batches} from "../../../services/service_batches";
 export default {
 	name: 'component-submit-batch',
     props: {
@@ -50,7 +51,7 @@ export default {
 			this.is_uploading_batch = true;
 			console.log('adding batch')
 
-			this.add_batch({
+            Service_Batches.create({
                 name: this.name_batch,
 				settings_batch: this.settings_batch_current,
 				data_csv: this.object_csv_parsed.data,
@@ -60,9 +61,6 @@ export default {
 				console.log('done')
             });
 		},
-		...mapActions('moduleBatches', {
-			'add_batch': 'add_batch',
-		}),
 	},
 }
 </script>

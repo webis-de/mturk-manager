@@ -18,27 +18,47 @@
 
 <script>
     import { mapState, mapActions, mapGetters } from 'vuex';
+    import {Service_Endpoint} from "./services/service_endpoint";
+    import {router} from "./services/service_router";
+    import {Service_Projects} from "./services/service_projects";
     // import ComponentToolbarWorkers from './components/workers/component_toolbar_workers.vue';
 export default {
     name: 'app',
     data() {
         return {
-
+            has_loaded_projects: false,
         }
     },
     created: async function() {
-        console.log('init')
-        this.set_show_progress_indicator(true);
-        await this.init()
-        this.set_show_progress_indicator(false);
+        await this.init();
+
+        Service_Endpoint.init(
+            this.token_instance,
+            () => {
+                router.push({name: 'connection_error'});
+            }
+        );
+
+        await Service_Projects.load_projects();
+
+        Service_Projects.load_project_data();
+
+        this.has_loaded_projects = true;
+    },
+    watch: {
+        slug_project_current() {
+            Service_Projects.load_project_data();
+        }
     },
     computed: {
-        ...mapState(['has_loaded_projects']),
+        ...mapState(['token_instance']),
+        ...mapGetters('moduleProjects', {
+            'slug_project_current': 'get_slug_project_current',
+        }),
     },
     methods: {
         ...mapActions([
             'init', 
-            'set_show_progress_indicator', 
         ]),
     },
     components: {

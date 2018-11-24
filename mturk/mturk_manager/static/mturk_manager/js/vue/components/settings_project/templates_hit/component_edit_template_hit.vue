@@ -90,6 +90,7 @@
     import _ from 'lodash';
     import { required, minValue, maxValue } from 'vuelidate/lib/validators'
 	import Template_HIT from '../../../classes/template_hit';
+    import {Service_Templates_HIT} from "../../../services/service_templates_hit";
 export default {
     mixins: [
         helpers,
@@ -110,13 +111,11 @@ export default {
 		update(close) {
             if(this.$refs.form.validate()) 
             {
-    			this.edit_template_hit({
-    				data: {
-	    				template_hit_current: this.template_hit_current,
-	    				template_hit_new: this.template_hit,
-    					project: this.project_current,
-	    			},
-    			}).then(() => {
+                Service_Templates_HIT.edit({
+					template_hit_current: this.template_hit_current,
+					template_hit_new: this.template_hit,
+					project: this.project_current,
+				}).then(() => {
     				if(close == true)
     				{
                     	this.dialog = false;

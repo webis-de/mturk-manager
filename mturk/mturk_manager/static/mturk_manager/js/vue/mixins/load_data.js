@@ -1,4 +1,5 @@
 import { mapState, mapActions, mapGetters } from 'vuex';
+import {Service_Batches} from "../services/service_batches";
 
 export default {
 	methods: {
@@ -10,19 +11,15 @@ export default {
 	        // this.sync_database().then(() => {
 	        //     this.set_show_progress_indicator(false);
 	        // });
-
-	        this.sync_batches(force).then(() => {
+			Service_Batches.load_batches(force).then(() => {
 	            this.set_show_progress_indicator(false);
-	        });
+			});
 	        
 	        // this.update_balance().then(() => {
 	        //     this.set_show_progress_indicator(false);
 	        // });
 	    },
         ...mapActions(['set_show_progress_indicator']),
-        ...mapActions('moduleBatches', {
-            'sync_batches': 'sync_batches', 
-        }),
 	},
 	computed: {
         ...mapState(['use_sandbox']),

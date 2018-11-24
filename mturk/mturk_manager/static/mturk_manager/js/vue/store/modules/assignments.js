@@ -35,6 +35,9 @@ export const moduleAssignments = {
             }
             return _.orderBy(getters.get_object_assignments(), ['datetime_creation'], ['desc']);
         },
+        set_ids_worker: (state) => {
+            return state.set_ids_worker;
+        },
     },
 	mutations: {
 		set_assignments(state, {data_batches, object_hits, use_sandbox}) {
@@ -119,36 +122,5 @@ export const moduleAssignments = {
         }
 	},
 	actions: {
-        async set_assignments({commit, state, getters, rootState, rootGetters, dispatch}, {data_batches, object_hits, use_sandbox}) {
-            // console.log('set_assignments');
-            commit('set_assignments', {
-                data_batches, 
-                object_hits,
-                use_sandbox,
-            });
-            // console.log('after set_assignments');
-
-            // console.log('dispatch_sync_workers_by_ids');
-            await dispatch('moduleWorkers/sync_workers_by_ids', {
-                list_ids: state.set_ids_worker,
-                use_sandbox,
-            }, {root: true});
-            // console.log('after dispatch_sync_workers_by_ids');
-
-        },
-        async append_assignments({commit, state, getters, rootState, rootGetters, dispatch}, {data_batches, object_hits, use_sandbox}) {
-            commit('set_assignments', {
-                data_batches, 
-                object_hits,
-                use_sandbox,
-            });
-
-            dispatch('moduleWorkers/sync_workers_by_ids', {
-                list_ids: state.set_ids_worker,
-                use_sandbox,
-                append: true,
-            }, {root: true});
-
-        },
 	},
 }

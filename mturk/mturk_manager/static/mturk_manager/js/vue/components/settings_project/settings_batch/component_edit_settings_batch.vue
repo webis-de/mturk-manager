@@ -68,6 +68,7 @@
     import { mapState, mapMutations, mapActions, mapGetters } from 'vuex';
     import _ from 'lodash';
     import { required, minValue, maxValue } from 'vuelidate/lib/validators'
+    import {Service_Settings_Batch} from "../../../services/service_settings_batch";
 export default {
     mixins: [
         validations,
@@ -88,20 +89,17 @@ export default {
 		update() {
             if(this.$refs.form.validate()) 
             {
-    			this.edit_settings_batch({
-    				data: {
+                Service_Settings_Batch.edit({
 	    				settings_batch_current: this.settings_batch_current,
 	    				settings_batch_new: this.settings_batch,
     					project: this.project_current,
-	    			},
-    			}).then(() => {
-                    this.dialog = false;
-    				this.$emit('edited');
-    				this.reset();
-                });
+				});
+
+				this.dialog = false;
+				this.$emit('edited');
+				this.reset();
             }
-			// console.log(this.project_current);
-		},	
+		},
     	reset() {
     		this.update_fields();
     		this.$v.$reset();

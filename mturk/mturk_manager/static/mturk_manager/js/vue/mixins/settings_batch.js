@@ -3,6 +3,7 @@ import { mapState, mapMutations, mapActions, mapGetters } from 'vuex';
 import Settings_Batch from '../classes/settings_batch';
 import { required, minValue, maxValue } from 'vuelidate/lib/validators'
 import _ from 'lodash';
+import {Service_Keywords} from "../services/Service_Keywords";
 
 const foo = (object_settings_batch, settings_batch_current) => (value) => {
     if(_.get(settings_batch_current, 'name', undefined) == value) return true;
@@ -54,14 +55,11 @@ export default {
                 this.settings_batch = new Settings_Batch();
             }
 
-        },  
-        ...mapActions('moduleKeywords', {
-            'load_keywords': 'load_keywords',
-        }),
+        },
 	},
     created() {
         this.update_fields();
-        this.load_keywords();
+        Service_Keywords.load();
     },
     computed: {
         ...mapGetters('moduleProjects', {

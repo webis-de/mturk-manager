@@ -53,6 +53,7 @@
 </template>
 <script>
     import { mapState, mapActions, mapGetters } from 'vuex';
+    import {Service_Workers} from "../../../services/service_worker";
     // import { STATUS_BLOCK } from '../../classes/enums.js';
 export default {
     name: 'component-block-soft-worker',
@@ -109,21 +110,15 @@ export default {
             this.set_show_progress_indicator(true);
             this.is_updating = true;
 
-    		this.update_status_block_soft({
+            Service_Workers.update_status_block_soft({
                 worker: this.worker,
                 is_blocked: !this.worker.is_blocked_soft,
-                // status_block_new: value_new,
-                // status_block_old: this.worker.is_blocked,
             }).then(() => {
             	this.is_updating = false;
                 this.show_snackbar = true;
                 this.set_show_progress_indicator(false);
             });
-    		// console.log(this.worker.is_blocked_soft);
     	},
-        ...mapActions('moduleWorkers', {
-            'update_status_block_soft': 'update_status_block_soft',
-        }),
         ...mapActions(['set_show_progress_indicator']),
     },
     created: function() {

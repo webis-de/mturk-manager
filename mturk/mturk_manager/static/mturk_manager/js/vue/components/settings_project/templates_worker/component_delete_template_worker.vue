@@ -38,6 +38,7 @@
 
 <script>
     import { mapState, mapMutations, mapActions, mapGetters } from 'vuex';
+    import {Service_Templates_Worker} from "../../../services/service_templates_worker";
 export default {
     props: {
         template_worker: {
@@ -50,14 +51,13 @@ export default {
     },
     methods: {
         remove() {
-            this.delete_template_worker({
+            Service_Templates_Worker.delete({
                 project: this.project_current,
                 template_worker: this.template_worker,
                 callback: () => {
                     this.$emit('deleted');
                     this.dialog = false;
                 },
-            }).then(() => {
             });
         },
         ...mapActions('moduleProjects', {

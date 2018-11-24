@@ -36,7 +36,7 @@
                         <tr
                             v-bind:key="props.item.id"
                         >
-                            <td> 
+                            <td>
                                 {{ props.item.name }}
                             </td>
                             <td>

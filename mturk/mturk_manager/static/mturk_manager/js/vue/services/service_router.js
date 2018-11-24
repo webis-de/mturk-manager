@@ -1,5 +1,5 @@
 import VueRouter from 'vue-router';
-import {store} from '../store/index.js';
+import {store} from '../store/vuex.js';
 
 import app_dashboard from '../components/dashboard/app_dashboard.vue';
 import app_connection_error from '../components/connection_error/app_connection_error.vue';
@@ -11,6 +11,7 @@ import app_finances from '../components/finances/app_finances.vue';
 import AppQualifications from '../components/qualifications/AppQualifications.vue';
 import app_workers from '../components/workers/app_workers.vue';
 import AppSettingsProject from '../components/settings_project/app_settings_project.vue';
+import {Service_Projects} from "./service_projects";
 
 function parse_params(route)
 {
@@ -129,19 +130,11 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-	console.log('from', from)
-	console.log('to', to)
-	if(to.name == 'dashboard')
-	{
-		store.dispatch('moduleProjects/set_slug_project_current', null);
-	} else {
-		// if(store.getters['moduleProjects/get_slug_project_current'] == null)
-		// {
-		// 	console.log('redirected');
-		// 	next({name: 'dashboard'});
-		// }
-	}
+	// console.log('from', from)
+	// console.log('to', to)
+
+	Service_Projects.set_slug_current(to.params.slug_project);
 	next();
 });
 
-export default router;
+export {router};

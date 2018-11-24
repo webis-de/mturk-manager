@@ -44,6 +44,7 @@
     import { mapState, mapMutations, mapActions, mapGetters } from 'vuex';
     import { required, minValue, maxValue } from 'vuelidate/lib/validators'
     import validations from '../../../mixins/validations';
+    import {Service_Projects} from "../../../services/service_projects";
 export default {
     mixins: [
         validations,
@@ -56,7 +57,7 @@ export default {
     },
     methods: {
         save() {
-            this.set_count_assignments_max_per_worker({
+            Service_Projects.set_count_assignments_max_per_worker({
                 project: this.project_current,
                 count_assignments_max_per_worker: this.count_assignments_max_per_worker,
             }).then(() => {

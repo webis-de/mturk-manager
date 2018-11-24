@@ -38,6 +38,7 @@
 
 <script>
     import { mapState, mapMutations, mapActions, mapGetters } from 'vuex';
+    import {Service_Settings_Batch} from "../../../services/service_settings_batch";
 export default {
     props: {
         settings_batch_current: {
@@ -50,14 +51,13 @@ export default {
     },
     methods: {
         remove() {
-            this.delete_settings_batch({
+            Service_Settings_Batch.delete({
                 project: this.project_current,
                 settings_batch: this.settings_batch_current,
                 callback: () => {
                     this.$emit('deleted');
                     this.dialog = false;
                 },
-            }).then(() => {
             });
         },
         ...mapActions('moduleProjects', {

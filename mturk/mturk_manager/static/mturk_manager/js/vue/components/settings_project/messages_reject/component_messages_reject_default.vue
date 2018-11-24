@@ -53,6 +53,8 @@
     import { mapState, mapMutations, mapActions, mapGetters } from 'vuex';
     import { required, minValue, maxValue } from 'vuelidate/lib/validators'
     import validations from '../../../mixins/validations';
+    import {Service_Projects} from "../../../services/service_projects";
+    import {Service_Messages_Reject} from "../../../services/Service_Messages_Reject";
 export default {
     mixins: [
         validations,
@@ -66,19 +68,13 @@ export default {
     },
     methods: {
         save() {
-            this.set_message_reject_default({
+            Service_Projects.set_message_reject_default({
                 project: this.project_current,
                 message_reject: this.search,
             }).then(() => {
                 this.snackbar_updated = true;
             });
         },
-        ...mapActions('moduleMessagesReject', {
-            'load_messages_reject': 'load_messages_reject',
-        }),
-        ...mapActions('moduleProjects', {
-            'set_message_reject_default': 'set_message_reject_default',
-        }),
     },
     computed: {
         ...mapGetters('moduleMessagesReject', {
@@ -89,7 +85,7 @@ export default {
         }),
     },
     created() {
-        this.load_messages_reject();
+        Service_Messages_Reject.load();
     },
     components: {
 

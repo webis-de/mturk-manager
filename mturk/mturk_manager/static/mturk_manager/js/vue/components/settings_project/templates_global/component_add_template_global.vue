@@ -55,6 +55,7 @@
 
 	import { required, minValue } from 'vuelidate/lib/validators'
 	import validations from '../../../mixins/validations';
+    import {Service_Templates_Global} from "../../../services/service_templates_global";
 export default {
     mixins: [
         validations,
@@ -89,13 +90,13 @@ export default {
 		create() {
             if(this.$refs.form.validate()) 
             {
-    			this.create_template_global({
+                Service_Templates_Global.create({
     				template_global: {
     					name: this.name,
     					template: this.template,
     				},
     				project: this.project_current,
-    			}).then(() => {
+				}).then(() => {
     				this.$emit('created');
                     this.dialog = false;
                     this.reset();

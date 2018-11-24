@@ -40,6 +40,7 @@
 
 <script>
     import { mapState, mapMutations, mapActions, mapGetters } from 'vuex';
+    import {Service_Projects} from "../../../services/service_projects";
 export default {
 	name: 'component_delete_project',
     data() {
@@ -49,7 +50,7 @@ export default {
     },
     methods: {
     	async confirm() {
-    		await this.delete_project(this.$router);
+    	    Service_Projects.delete({router: this.$router});
     	},
     	...mapActions('moduleProjects', {
     		'delete_project': 'delete_project',

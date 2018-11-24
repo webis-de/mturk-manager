@@ -8,7 +8,7 @@ import Template_Assignment from '../../classes/template_assignment';
 import Template_HIT from '../../classes/template_hit';
 import Template_Global from '../../classes/template_global';
 import { router } from '../..//index.js';
-import Service_Endpoint from '../../services/service_endpoint';
+import {Service_Endpoint} from '../../services/service_endpoint';
 
 export const moduleProjects = {
 	namespaced: true,
@@ -24,7 +24,7 @@ export const moduleProjects = {
         url_api_projects_clear_sandbox: undefined,
         url_api_ping: null,
 
-        response_data_projects: undefined,
+        // response_data_projects: undefined,
 	},
 	getters: {
 		get_project_current(state) {
@@ -92,7 +92,6 @@ export const moduleProjects = {
         },
         set_templates_assignment(state, {data, project}) {
             project.templates_assignment = {};
-
             _.forEach(data, function(data_templates_assignment) {
                 const object_template_assignment = new Template_Assignment(data_templates_assignment);
                 Vue.set(project.templates_assignment, object_template_assignment.id, object_template_assignment);
@@ -113,12 +112,16 @@ export const moduleProjects = {
                 Vue.set(project.templates_global, object_template_global.id, object_template_global);
             });
         },
-        set_response_data_projects(state, data_projects) {
-            state.response_data_projects = data_projects;
-        },
-        add_to_response_data_projects(state, data_project) {
-            state.response_data_projects.push(data_project);
-        },
+        // set_response_data_projects(state, data_projects) {
+        //     state.response_data_projects = data_projects;
+        // },
+        // add_to_response_data_projects(state, data_project) {
+        //     state.response_data_projects.push(data_project);
+        // },
+        // remove_from_response_data_projects(state, data_project) {
+        //     const index = _.findIndex(state.response_data_projects, (p) => p.id === data_project.id);
+        //     Vue.delete(state.response_data_projects, index);
+        // },
         set_projects(state, data_projects) {
             state.object_projects= {};
             
@@ -127,12 +130,8 @@ export const moduleProjects = {
                 Vue.set(state.object_projects, object_project.slug, object_project);
             });
         },
-        add_project(state, data_project) {
-            console.log('added project');
-            const object_project = new Project(data_project);
-            Vue.set(state.object_projects, object_project.slug, object_project);
-            console.log(state.object_projects[data_project.slug]);
-
+        add_project(state, project) {
+            Vue.set(state.object_projects, project.slug, project);
         },
         set_project(state, {project, project_new, array_fields}) {
             _.forEach(array_fields, function(name_field) {
@@ -218,508 +217,25 @@ export const moduleProjects = {
         },
         set_ping(state, {project, data}) {
             Vue.set(project, 'datetime_visited', new Date(data.datetime));
+            console.log('project', project.slug, project.datetime_visited);
         },
         delete_project(state, { project }) {
             Vue.delete(state.object_projects, project.slug);
         },
 	},
 	actions: {
-        async set_slug_project_current({state, commit, getters, rootGetters, dispatch}, slug_project_current) {
-            const project_has_changed = state.slug_project_current != slug_project_current ? true : false;
-
-        	commit('set_slug_project_current', slug_project_current);
-
-            if(project_has_changed == true) 
-            {
-                // reset database
-    			await dispatch('reset_projects');
-
-                // load initial values for project
-                if(slug_project_current != undefined)
-                {
-                    if(getters.get_project_current.settings_batch == null) {
-                        await dispatch('sync_settings_batch', getters.get_project_current);
-            		}
-                    if(getters.get_project_current.templates_assignment == null) {
-                        dispatch('sync_templates_assignment', getters.get_project_current).then(() => {
-                            if(getters.get_project_current.templates_hit == null) {
-                                dispatch('sync_templates_hit', getters.get_project_current).then(() => {
-                                    if(getters.get_project_current.templates_global == null) {
-                                        dispatch('sync_templates_global', getters.get_project_current).then(() => {
-                                            if(getters.get_project_current.templates_worker == null) {
-                                                dispatch('sync_templates_worker', getters.get_project_current);
-                                            }
-                                        });
-                                    }
-                                });
-                            }
-                        });
-                    }
-                    
-            		// console.log(`SET ${slug_project_current}`)
-            		
-            	}
-            }
-
-        },
-        async load_projects({state, commit, getters, rootGetters, dispatch}) {
-            if(getters.get_object_projects == null) {
-
-            	const response = await Service_Endpoint.make_request({
-            		method: 'get',
-            		url: rootGetters.get_url_api({
-            			url: state.url_api_projects, 
-            		}),
-            	});
-
-                // console.log(response)
-                if(response.success == true)
-                {
-                    commit('set_response_data_projects', response.data);
-                	commit('set_projects', response.data);
-                    return true;
-                } else {
-                    // console.log(router)
-                    // router.push({name: 'error'}); 
-                    return false;
-                }
-
-				// await axios.get(rootGetters.get_url_api(state.url_api_status_block, use_sandbox))
-			 //    .then(response => {
-    //             	commit('set_status_block', {'data_status_block': response.data, use_sandbox});
-			 //    })
-			}
-        },
-        async reset_projects({state, commit, getters, rootGetters, dispatch}) {
-            commit('set_projects', state.response_data_projects);
+        reset_projects({state, commit, getters, rootGetters, dispatch}) {
+            // commit('set_projects', state.response_data_projects);
             commit('moduleBatches/reset', null, { root: true });
             commit('moduleHITs/reset', null, { root: true });
             commit('moduleAssignments/reset', null, { root: true });
             commit('moduleWorkers/reset', null, { root: true });
         },
-        async sync_settings_batch({state, commit, getters, rootGetters, dispatch}, project) {
-        	await Service_Endpoint.make_request({
-        		method: 'get',
-        		url: rootGetters.get_url_api({
-        			url: state.url_api_projects_settings_batch, 
-        		}),
-        	}).then(response => {
-            	commit('set_settings_batch', {
-            		data: response.data,
-            		project: project,
-            	});
-        	});
-        },
-        async sync_templates_worker({state, commit, getters, rootGetters, dispatch}, project) {
-            await Service_Endpoint.make_request({
-                method: 'get',
-                url: rootGetters.get_url_api({
-                    url: state.url_api_projects_templates_worker, 
-                }),
-            }).then(response => {
-                commit('set_templates_worker', {
-                    data: response.data,
-                    project: project,
-                });
-            });
-        },
-        async sync_templates_assignment({state, commit, getters, rootGetters, dispatch}, project) {
-            await Service_Endpoint.make_request({
-                method: 'get',
-                url: rootGetters.get_url_api({
-                    url: state.url_api_projects_templates_assignment, 
-                }),
-            }).then(response => {
-                commit('set_templates_assignment', {
-                    data: response.data,
-                    project: project,
-                });
-            });
-        },
-        async sync_templates_hit({state, commit, getters, rootGetters, dispatch}, project) {
-            await Service_Endpoint.make_request({
-                method: 'get',
-                url: rootGetters.get_url_api({
-                    url: state.url_api_projects_templates_hit, 
-                }),
-            }).then(response => {
-                commit('set_templates_hit', {
-                    data: response.data,
-                    project: project,
-                });
-            });
-        },
-        async sync_templates_global({state, commit, getters, rootGetters, dispatch}, project) {
-            await Service_Endpoint.make_request({
-                method: 'get',
-                url: rootGetters.get_url_api({
-                    url: state.url_api_projects_templates_global, 
-                }),
-            }).then(response => {
-                commit('set_templates_global', {
-                    data: response.data,
-                    project: project,
-                });
-            });
-        },
-        async create_settings_batch({state, commit, getters, rootGetters, dispatch}, data) {
-			await Service_Endpoint.make_request({
-        		method: 'post',
-        		url: rootGetters.get_url_api({
-        			url: state.url_api_projects_settings_batch, 
-        		}),
-    			data: data.settings_batch,
-        	}).then(response => {
-            	commit('add_settings_batch', {
-            		data: response.data,
-            		project: data.project,
-            	});
-        	});
-        },
-        async create_template_worker({state, commit, getters, rootGetters, dispatch}, data) {
-            await Service_Endpoint.make_request({
-                method: 'post',
-                url: rootGetters.get_url_api({
-                    url: state.url_api_projects_templates_worker, 
-                }),
-                data: data.template_worker,
-            }).then(response => {
-                console.log(response);
-                commit('add_template_worker', {
-                    data: response.data,
-                    project: data.project,
-                });
-            });
-        },
-        async create_template_assignment({state, commit, getters, rootGetters, dispatch}, data) {
-            await Service_Endpoint.make_request({
-                method: 'post',
-                url: rootGetters.get_url_api({
-                    url: state.url_api_projects_templates_assignment, 
-                }),
-                data: data.template_assignment,
-            }).then(response => {
-                console.log(response);
-                commit('add_template_assignment', {
-                    data: response.data,
-                    project: data.project,
-                });
-            });
-        },
-        async create_template_hit({state, commit, getters, rootGetters, dispatch}, data) {
-            await Service_Endpoint.make_request({
-                method: 'post',
-                url: rootGetters.get_url_api({
-                    url: state.url_api_projects_templates_hit, 
-                }),
-                data: data.template_hit,
-            }).then(response => {
-                console.log(response);
-                commit('add_template_hit', {
-                    data: response.data,
-                    project: data.project,
-                });
-            });
-        },
-        async create_template_global({state, commit, getters, rootGetters, dispatch}, data) {
-            await Service_Endpoint.make_request({
-                method: 'post',
-                url: rootGetters.get_url_api({
-                    url: state.url_api_projects_templates_global, 
-                }),
-                data: data.template_global,
-            }).then(response => {
-                console.log(response);
-                commit('add_template_global', {
-                    data: response.data,
-                    project: data.project,
-                });
-            });
-        },
-        async delete_settings_batch({state, commit, getters, rootGetters, dispatch}, data) {
-            await Service_Endpoint.make_request({
-                method: 'delete',
-                url: rootGetters.get_url_api({
-                    url: state.url_api_projects_settings_batch, 
-                    value: data.settings_batch.id
-                }),
-            }).then(response => {
-                data.callback();
-                commit('remove_settings_batch', {
-                    settings_batch: data.settings_batch,
-                    project: data.project,
-                });
-            });
-        },
-        async delete_template_worker({state, commit, getters, rootGetters, dispatch}, data) {
-            await Service_Endpoint.make_request({
-                method: 'delete',
-                url: rootGetters.get_url_api({
-                    url: state.url_api_projects_templates_worker, 
-                    value: data.template_worker.id
-                }),
-            }).then(response => {
-                data.callback();
-                commit('remove_template_worker', {
-                    template_worker: data.template_worker,
-                    project: data.project,
-                });
-            });
-        },
-        async delete_template_assignment({state, commit, getters, rootGetters, dispatch}, data) {
-            await Service_Endpoint.make_request({
-                method: 'delete',
-                url: rootGetters.get_url_api({
-                    url: state.url_api_projects_templates_assignment, 
-                    value: data.template_assignment.id
-                }),
-            }).then(response => {
-                data.callback();
-                commit('remove_template_assignment', {
-                    template_assignment: data.template_assignment,
-                    project: data.project,
-                });
-            });
-        },
-        async delete_template_hit({state, commit, getters, rootGetters, dispatch}, data) {
-            await Service_Endpoint.make_request({
-                method: 'delete',
-                url: rootGetters.get_url_api({
-                    url: state.url_api_projects_templates_hit, 
-                    value: data.template_hit.id
-                }),
-            }).then(response => {
-                data.callback();
-                commit('remove_template_hit', {
-                    template_hit: data.template_hit,
-                    project: data.project,
-                });
-            });
-        },
-        async delete_template_global({state, commit, getters, rootGetters, dispatch}, data) {
-            await Service_Endpoint.make_request({
-                method: 'delete',
-                url: rootGetters.get_url_api({
-                    url: state.url_api_projects_templates_global, 
-                    value: data.template_global.id
-                }),
-            }).then(response => {
-                data.callback();
-                commit('remove_template_global', {
-                    template_global: data.template_global,
-                    project: data.project,
-                });
-            });
-        },
-        async set_count_assignments_max_per_worker({state, commit, getters, rootState, rootGetters, dispatch}, {project, count_assignments_max_per_worker}) {
-            await Service_Endpoint.make_request({
-                method: 'put',
-                url: rootGetters.get_url_api({
-                    url: state.url_api_projects, 
-                    value: project.slug,
-                }),
-                data: {
-                    count_assignments_max_per_worker
-                }
-            }).then(response => {
-                commit('set_project', {
-                    project,
-                    project_new: response.data,
-                    array_fields: ['count_assignments_max_per_worker'],
-                });
-            });
-        },
-        async set_message_reject_default({state, commit, getters, rootState, rootGetters, dispatch}, {project, message_reject}) {
-            await Service_Endpoint.make_request({
-                method: 'put',
-                url: rootGetters.get_url_api({
-                    url: state.url_api_projects, 
-                    value: project.slug,
-                }),
-                data: {
-                    message_reject
-                }
-            }).then(response => {
-                commit('set_project', {
-                    project,
-                    project_new: response.data,
-                    array_fields: ['message_reject_default'],
-                });
-
-                commit('moduleMessagesReject/add_message_reject', {
-                    message_reject: response.data.message_reject_default
-                }, { root: true });
-            });
-        },
-        async edit_settings_batch({state, commit, getters, rootState, rootGetters, dispatch}, {data}) {
-            const data_changed = data.settings_batch_current.get_changes(data.settings_batch_new);
-
-            if(Object.keys(data_changed).length == 0) return;
-
-            await Service_Endpoint.make_request({
-                method: 'put',
-                url: rootGetters.get_url_api({
-                    url: state.url_api_projects_settings_batch, 
-                    value: data.settings_batch_current.id
-                }),
-                data: data_changed
-            }).then(response => {
-                console.log(response);
-                // data.callback();
-                commit('update_settings_batch', {
-                    data: response.data,
-                    project: data.project,
-                });
-            });
-        },
-        async edit_template_worker({state, commit, getters, rootState, rootGetters, dispatch}, {data}) {
-            const data_changed = data.template_worker_current.get_changes(data.template_worker_new);
-
-            if(Object.keys(data_changed).length == 0) return;
-
-            await Service_Endpoint.make_request({
-                method: 'put',
-                url: rootGetters.get_url_api({
-                    url: state.url_api_projects_templates_worker, 
-                    value: data.template_worker_current.id
-                }),
-                data: data_changed
-            }).then(response => {
-                commit('update_template_worker', {
-                    data: response.data,
-                    project: data.project,
-                });
-            });
-        },
-        async edit_template_assignment({state, commit, getters, rootState, rootGetters, dispatch}, {data}) {
-            const data_changed = data.template_assignment_current.get_changes(data.template_assignment_new);
-
-            if(Object.keys(data_changed).length == 0) return;
-
-            await Service_Endpoint.make_request({
-                method: 'put',
-                url: rootGetters.get_url_api({
-                    url: state.url_api_projects_templates_assignment, 
-                    value: data.template_assignment_current.id
-                }),
-                data: data_changed
-            }).then(response => {
-                commit('update_template_assignment', {
-                    data: response.data,
-                    project: data.project,
-                });
-            });
-        },
-        async edit_template_hit({state, commit, getters, rootState, rootGetters, dispatch}, {data}) {
-            const data_changed = data.template_hit_current.get_changes(data.template_hit_new);
-
-            if(Object.keys(data_changed).length == 0) return;
-
-            await Service_Endpoint.make_request({
-                method: 'put',
-                url: rootGetters.get_url_api({
-                    url: state.url_api_projects_templates_hit, 
-                    value: data.template_hit_current.id
-                }),
-                data: data_changed
-            }).then(response => {
-                commit('update_template_hit', {
-                    data: response.data,
-                    project: data.project,
-                });
-            });
-        },
-        async edit_template_global({state, commit, getters, rootState, rootGetters, dispatch}, {data}) {
-            const data_changed = data.template_global_current.get_changes(data.template_global_new);
-
-            if(Object.keys(data_changed).length == 0) return;
-
-            await Service_Endpoint.make_request({
-                method: 'put',
-                url: rootGetters.get_url_api({
-                    url: state.url_api_projects_templates_global, 
-                    value: data.template_global_current.id
-                }),
-                data: data_changed
-            }).then(response => {
-                commit('update_template_global', {
-                    data: response.data,
-                    project: data.project,
-                });
-            });
-        },
-        async validate_name({state, commit, getters, rootState, rootGetters, dispatch}, name) {
-        	const response = await Service_Endpoint.make_request({
-        		method: 'get',
-        		url: rootGetters.get_url_api({
-        			url: state.url_api_projects_check_uniqueness, 
-        			value: name,
-        		}),
-        	});
-        	
-        	return response
-        },
-        async create_project({state, commit, getters, rootState, rootGetters, dispatch}, name) {
-        	const response = await Service_Endpoint.make_request({
-        		method: 'post',
-        		url: rootGetters.get_url_api({
-        			url: state.url_api_projects,
-        		}),
-        		data: {
-        			name: name,
-        		}
-        	});
-
-            commit('add_project', response.data);
-            commit('add_to_response_data_projects', response.data);
-            return response.data.slug;
-        },
-        async clear_sandbox({state, commit, rootGetters, dispatch}) {
-            const response = await Service_Endpoint.make_request({
-                method: 'delete',
-                url: rootGetters.get_url_api({
-                    url: state.url_api_projects_clear_sandbox,
-                }),
-            });
-
+        clear_sandbox({state, commit, rootGetters, dispatch}) {
             commit('moduleBatches/clear_sandbox', null, {root: true});
             commit('moduleHITs/clear_sandbox', null, {root: true});
             commit('moduleAssignments/clear_sandbox', null, {root: true});
             commit('moduleWorkers/clear_sandbox', null, {root: true});
-        },
-        async ping({commit, state, rootGetters, dispatch}) {
-            const project_current = rootGetters['moduleProjects/get_project_current'];
-            const slug_project_current = project_current.slug;
-            if(slug_project_current == null) return;
-
-            const response = await Service_Endpoint.make_request({
-                method: 'put',
-                url: rootGetters.get_url_api({
-                    url: state.url_api_ping,
-                }),
-            });
-            // console.log(response);
-            commit('set_ping', {
-                project: project_current,
-                data: response.data,
-            });
-        },
-        async delete_project({commit, state, rootGetters, dispatch}, router) {
-            const project = rootGetters['moduleProjects/get_project_current'];
-
-            const response = await Service_Endpoint.make_request({
-                method: 'delete',
-                url: rootGetters.get_url_api({
-                    url: state.url_api_projects,
-                    value: project.slug,
-                }),
-            });
-
-            router.push({name: 'dashboard'}); 
-
-            commit('delete_project', {
-                project,
-            });
         },
 	},
 }

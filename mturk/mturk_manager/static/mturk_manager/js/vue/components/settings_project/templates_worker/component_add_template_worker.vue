@@ -101,6 +101,7 @@
 	import validations from '../../../mixins/validations';
 	import helpers from '../../../mixins/helpers';
 	import Template_Worker from '../../../classes/template_worker';
+    import {Service_Templates_Worker} from "../../../services/service_templates_worker";
 export default {
     mixins: [
         helpers,
@@ -145,7 +146,7 @@ export default {
 		create() {
             if(this.$refs.form.validate()) 
             {
-    			this.create_template_worker({
+                Service_Templates_Worker.create({
     				template_worker: this.template_worker,
     				project: this.project_current,
     			}).then(() => {
@@ -154,10 +155,7 @@ export default {
                     this.reset();
                 });
             }
-		},		
-		...mapActions('moduleProjects', {
-			'create_template_worker': 'create_template_worker',
-		}),
+		},
     },
     computed: {
 		list_templates_assignment() {
