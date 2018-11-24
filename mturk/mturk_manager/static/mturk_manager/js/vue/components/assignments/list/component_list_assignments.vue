@@ -1,57 +1,80 @@
 <template>
 <v-layout wrap>
     <v-flex>
-        <!-- {{list_batches}} -->
-       	<h1 class="headline">Assignments</h1>
-        <v-data-table
-            select-all
-            v-bind:pagination.sync="pagination"
-            v-bind:headers="list_headers"
-            v-bind:items="list_assignments_processed"
-            v-bind:search="search"
-            v-model="assignments_selected_local"
-            item-key="id"
-            class="my-3"
-        >
-            <template slot="headers" slot-scope="props">
-                <tr id="row_header">
-                    <th>
-                        <v-checkbox
-                            v-bind:input-value="props.all"
-                            v-bind:indeterminate="props.indeterminate"
-                            primary
-                            hide-details
-                            v-on:click.native="assignments_selected_local = toggleAll(assignments_selected_local, list_assignments_processed)"
-                        ></v-checkbox>
-                    </th>
-                    <th
-                        v-for="header in props.headers"
-                        v-bind:key="header.value"
-                        v-bind:width="header.width"
-                        v-bind:class="[
-                            'column sortable', 
-                            pagination.descending ? 'desc' : 'asc', 
-                            header.value === pagination.sortBy ? 'active' : ''
-                        ]"
-                        v-on:click="changeSort(header.value)"
-                    >
-                        <v-icon small>arrow_upward</v-icon>
-                        {{ header.text }}
-                    </th>
-                </tr>
-            </template>
+        <v-layout>
+            <v-flex>
+                <!-- {{list_batches}} -->
+                <h1 class="headline">Assignments</h1>
+            </v-flex>
+        </v-layout>
+        <v-layout>
+                <v-flex>
+                    <v-layout>
+                        <v-flex>
+                            <v-text-field
+                                v-model="search"
+                                append-icon="search"
+                                label="Filter by worker"
+                                hide-details
+                                class="mb-2"
+                            ></v-text-field>
+                        </v-flex>
+                    </v-layout>
+                </v-flex>
+        </v-layout>
+        <v-layout>
+            <v-flex>
+                <v-data-table
+                    select-all
+                    v-bind:pagination.sync="pagination"
+                    v-bind:headers="list_headers"
+                    v-bind:items="list_assignments_processed"
+                    v-bind:search="search"
+                    v-bind:custom-filter="custom_filter"
+                    v-model="assignments_selected_local"
+                    item-key="id"
+                    class="my-3"
+                >
+                    <template slot="headers" slot-scope="props">
+                        <tr id="row_header">
+                            <th>
+                                <v-checkbox
+                                    v-bind:input-value="props.all"
+                                    v-bind:indeterminate="props.indeterminate"
+                                    primary
+                                    hide-details
+                                    v-on:click.native="assignments_selected_local = toggleAll(assignments_selected_local, list_assignments_processed)"
+                                ></v-checkbox>
+                            </th>
+                            <th
+                                v-for="header in props.headers"
+                                v-bind:key="header.value"
+                                v-bind:width="header.width"
+                                v-bind:class="[
+                                    'column sortable',
+                                    pagination.descending ? 'desc' : 'asc',
+                                    header.value === pagination.sortBy ? 'active' : ''
+                                ]"
+                                v-on:click="changeSort(header.value)"
+                            >
+                                <v-icon small>arrow_upward</v-icon>
+                                {{ header.text }}
+                            </th>
+                        </tr>
+                    </template>
 
-            <template
-                slot="items"
-                slot-scope="props"
-            >
-                <component-item-assignment
-                    v-bind:props="props"
-                    v-bind:show_links="show_links"
-                ></component-item-assignment>
-            </template>
-        </v-data-table>
-        <!-- {{list_workers}} -->
+                    <template
+                        slot="items"
+                        slot-scope="props"
+                    >
+                        <component-item-assignment
+                            v-bind:props="props"
+                            v-bind:show_links="show_links"
+                        ></component-item-assignment>
+                    </template>
+                </v-data-table>
+            </v-flex>
+        </v-layout>
     </v-flex>
 </v-layout>
 </template>
@@ -150,6 +173,16 @@ export default {
         }),
     },
     methods: {
+        custom_filter(items, search, filter) {
+            search = search.trim()
+            if(search != '')
+            {
+                items = items.filter(e => filter(e.worker.id_worker, search));
+
+            }
+            // console.log(filter)
+            return items
+        },
         ...mapMutations('moduleAssignments', {
             'set_assignments_selected': 'set_assignments_selected',
         }),

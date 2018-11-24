@@ -96,7 +96,6 @@ export default {
     // },
     computed: {
         assignment() {
-            console.log('this.props.item', this.props.item);
             return this.props.item;
         },
 
