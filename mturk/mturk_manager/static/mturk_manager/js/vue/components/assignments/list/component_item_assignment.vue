@@ -22,6 +22,11 @@
         >
             {{ assignment.worker.id_worker }}
         </td>
+        <td class="text-xs-center">
+            <component-status-assignment
+                v-bind:assignment="assignment"
+            ></component-status-assignment>
+        </td>
         <td class="text-xs-center">{{ assignment.hit.id_hit }}
             <v-btn
                 slot="activator" 
@@ -71,6 +76,7 @@
     import { mapState, mapActions, mapGetters } from 'vuex';
     import _ from 'lodash';
     import ComponentDisplayDatetime from "../../helpers/component_display_datetime";
+    import ComponentStatusAssignment from "./component-status-assignment";
 
 export default {
     name: 'component-item-assignment',
@@ -136,6 +142,7 @@ export default {
     methods: {
     },
     components: {
+        ComponentStatusAssignment,
         ComponentDisplayDatetime
     },
 }

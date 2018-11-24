@@ -8,19 +8,18 @@
             </v-flex>
         </v-layout>
         <v-layout>
-                <v-flex>
-                    <v-layout>
-                        <v-flex>
-                            <v-text-field
-                                v-model="search"
-                                append-icon="search"
-                                label="Filter by worker"
-                                hide-details
-                                class="mb-2"
-                            ></v-text-field>
-                        </v-flex>
-                    </v-layout>
-                </v-flex>
+            <v-flex class="shrink" mr-3>
+                <v-switch label="Only Submitted" v-model="show_only_submitted_assignments"></v-switch>
+            </v-flex>
+            <v-flex>
+                <v-text-field
+                    v-model="search"
+                    append-icon="search"
+                    label="Filter by worker"
+                    hide-details
+                    class="mb-2"
+                ></v-text-field>
+            </v-flex>
         </v-layout>
         <v-layout>
             <v-flex>
@@ -51,7 +50,8 @@
                                 v-bind:key="header.value"
                                 v-bind:width="header.width"
                                 v-bind:class="[
-                                    'column sortable',
+                                    'column',
+                                    header.sortable === false ? '' : 'sortable',
                                     pagination.descending ? 'desc' : 'asc',
                                     header.value === pagination.sortBy ? 'active' : ''
                                 ]"
@@ -85,6 +85,7 @@
     // import ComponentShowMoneySpent from './component-show-money-spent.vue';
     // import ComponentShowBatches from './component-show-batches.vue';
     import table from '../../../mixins/table';
+    import {STATUS_EXTERNAL} from "../../../classes/enums";
 export default {
     mixins: [
         table,
@@ -105,7 +106,7 @@ export default {
         return {
             // assignments_selected: [],
             pagination: { rowsPerPage: 25 },
-
+            show_only_submitted_assignments: false,
             search: '',
 
             // search: 'A10BOAO1EONNS7',
@@ -138,6 +139,9 @@ export default {
                     text: 'Worker',
                     value: 'worker',
                     align: 'center',
+                },
+                {
+                    text: 'Status',
                 },
                 {
                     text: 'HIT',
@@ -174,6 +178,11 @@ export default {
     },
     methods: {
         custom_filter(items, search, filter) {
+            if(this.show_only_submitted_assignments)
+            {
+                items = items.filter(e => e.status_external === null);
+            }
+
             search = search.trim()
             if(search != '')
             {
