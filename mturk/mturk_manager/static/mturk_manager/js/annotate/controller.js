@@ -8,7 +8,7 @@ export default class Controller
 	constructor() 
 	{
 		this.loader = new Loader();
-		this.view = new View(this.loader);
+        this.view = new View(this.loader);
 	}
 
 	async init()
@@ -70,6 +70,7 @@ export default class Controller
 					assignments: event.data.loader.object_assignments_selected,
 				};
 
+				const loader = event.data.loader;
 				const result = await $.ajax({
 			        url: event.data.loader.context.url_api_assignments,
 			        method: 'PUT',
@@ -79,8 +80,8 @@ export default class Controller
 			            Authorization: 'Token ' + event.data.loader.context.token_instance,
 			            "Content-Type": 'application/json',
 			        },
-			    }).done((data) => {
-			    	event.data.loader.object_assignments_selected = {};
+			    }).done(() => {
+			    	loader.object_assignments_selected = {};
 			    	location.reload();
 			    });
 			}
