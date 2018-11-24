@@ -28,7 +28,7 @@ export default {
     },
     methods: {
     	submit() {
-    		window.location.href = this.url;
+	  		window.open(this.url, '_blank');
     	}
     },
     computed: {
