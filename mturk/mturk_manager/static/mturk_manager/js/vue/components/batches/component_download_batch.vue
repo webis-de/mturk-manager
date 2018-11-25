@@ -16,6 +16,7 @@
     import { mapState, mapMutations, mapActions, mapGetters } from 'vuex';
     import _ from 'lodash';
     import Papa from 'papaparse';
+    import {STATUS_EXTERNAL, STATUS_INTERNAL} from "../../classes/enums";
 export default {
     data() {
         return {
@@ -34,10 +35,15 @@ export default {
     			'sandbox',
     			'creation',
     			'expiration',
+    			'status_external',
+    			'status_internal',
     		];
     		const array_assignments = [];
     		let is_header_set_parameters = false;
     		let is_header_set_answers = false;
+
+    		const status_external_inverted = _.invert(STATUS_EXTERNAL);
+    		const status_internal_inverted = _.invert(STATUS_INTERNAL);
 
     		_.forEach(this.array_batches_selected, (batch) => {
     			console.log(batch)
@@ -67,6 +73,8 @@ export default {
 	    				array_assignment.push(assignment.hit.batch.use_sandbox);
 	    				array_assignment.push(assignment.hit.datetime_creation);
 	    				array_assignment.push(assignment.hit.datetime_expiration);
+	    				array_assignment.push(status_external_inverted[assignment.status_external]);
+	    				array_assignment.push(status_internal_inverted[assignment.status_internal]);
 
 	    				_.forEach(ordered_keys_parameters, (key) => {
 	    					array_assignment.push(_.get(parameters, key, undefined));
