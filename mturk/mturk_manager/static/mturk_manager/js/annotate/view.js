@@ -86,10 +86,9 @@ export default class View
 		_.forEach(object_assignments_grouped_by_batch, (list_assignments, id_batch) =>
 		{
 			const batch = this.loader.object_batches[id_batch];
-			console.log(batch)
 
 			const template_global = _.get(batch, 'settings_batch.template.template_global.template', undefined);
-			if(template_global != undefined)
+			if(template_global !== undefined)
 			{
 				this.wrapper_hits.append(template_global);
 			}
@@ -108,7 +107,6 @@ export default class View
 				}
 			});
 
-
 			let object_groups;
 			switch(this.group_by) {
 				case 'hit':
@@ -121,15 +119,12 @@ export default class View
 					object_groups = _.groupBy(list_assignments, 'id');
 			}
 
-
-
-
-			_.forEach(object_groups, (group) =>
+			_.forEach(object_groups, (group, id_group) =>
 			{
 				let object_grouped_by_hits = _.groupBy(group, 'hit.id');
 				_.forEach(object_grouped_by_hits, (grouped_by_hits, id_hit) =>
 				{
-					const id = `${id_batch}_${id_hit}`;
+					const id = `${id_batch}_${id_group}_${id_hit}`;
 					// save hit object
 					const hit = this.loader.object_hits[id_hit];
 					// create wrapper for template to be able to inject the hit
@@ -171,17 +166,17 @@ export default class View
 							</script>
 						`)[0];
 
-						if(is_table == true)
+						if(is_table === true)
 						{
 							wrapper_assignment = $(template_assignment);
-							const index_row = _.findIndex(wrapper_assignment, (e) => {return e.tagName == 'TR'})
+							const index_row = _.findIndex(wrapper_assignment, (e) => {return e.tagName === 'TR'})
 
 							wrapper_assignment[index_row].dataset.id_assignment = assignment.id;
 							$(wrapper_assignment[index_row]).data('assignment', assignment);
 
 							
-							const index_script = _.findIndex(wrapper_assignment, (e) => {return e.tagName == 'SCRIPT'});
-							if(index_script == -1)
+							const index_script = _.findIndex(wrapper_assignment, (e) => {return e.tagName === 'SCRIPT'});
+							if(index_script === -1)
 							{
 								wrapper_assignment.push(script_define_variables);
 							} else {
