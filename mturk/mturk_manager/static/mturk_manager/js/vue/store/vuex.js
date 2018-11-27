@@ -3,6 +3,7 @@ import Vue from 'vue';
 import axios from 'axios';
 import VueAxios from 'vue-axios';
 import _ from 'lodash';
+import localforage from 'localforage';
 
 import VueCookies from 'vue-cookies'
 Vue.use(Vuex)
@@ -80,9 +81,10 @@ export const store = new Vuex.Store({
         },
         set_use_sandbox(state, use_sandbox) {
             state.use_sandbox = use_sandbox;
+            localforage.setItem('use_sandbox', use_sandbox);
         },
         set_show_progress_indicator(state, show) {
-            state.show_progress_indicator += show == true ? 1 : -1;
+            state.show_progress_indicator += show === true ? 1 : -1;
         },
         // set_urls(state, config) {
         // },
@@ -95,6 +97,13 @@ export const store = new Vuex.Store({
 
             commit('set_token_instance', config.token_instance);
             commit('set_token_csrf', config.token_csrf);
+
+            let use_sandbox = await localforage.getItem('use_sandbox');
+            if(use_sandbox === null)
+            {
+                use_sandbox = true;
+            }
+            commit('set_use_sandbox', use_sandbox);
 
             // commit('setUrlProject', config.url_project);
 
