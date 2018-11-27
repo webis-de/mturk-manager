@@ -110,7 +110,7 @@
     import _ from 'lodash';
     import { required, minValue, maxValue } from 'vuelidate/lib/validators'
 	import Template_Worker from '../../../classes/template_worker';
-    import {Service_Templates_Worker} from "../../../services/service_templates_worker";
+    import {Service_Templates} from "../../../services/service_templates";
 export default {
     mixins: [
         helpers,
@@ -131,9 +131,10 @@ export default {
 		update() {
             if(this.$refs.form.validate()) 
             {
-                Service_Templates_Worker.edit({
-					template_worker_current: this.template_worker_current,
-					template_worker_new: this.template_worker,
+                Service_Templates.edit({
+					type_template: 'worker',
+					template_current: this.template_worker_current,
+					template_new: this.template_worker,
 					project: this.project_current,
 				}).then(() => {
                     this.dialog = false;

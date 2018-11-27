@@ -38,7 +38,7 @@
 
 <script>
     import { mapState, mapMutations, mapActions, mapGetters } from 'vuex';
-    import {Service_Templates_Global} from "../../../services/service_templates_global";
+    import {Service_Templates} from "../../../services/service_templates";
 export default {
     props: {
         template_global: {
@@ -51,9 +51,10 @@ export default {
     },
     methods: {
         remove() {
-            Service_Templates_Global.delete({
+            Service_Templates.delete({
+                type_template: 'global',
                 project: this.project_current,
-                template_global: this.template_global,
+                template: this.template_global,
                 callback: () => {
                     this.$emit('deleted');
                     this.dialog = false;

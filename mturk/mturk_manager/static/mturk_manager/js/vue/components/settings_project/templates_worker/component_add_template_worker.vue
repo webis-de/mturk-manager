@@ -101,7 +101,7 @@
 	import validations from '../../../mixins/validations';
 	import helpers from '../../../mixins/helpers';
 	import Template_Worker from '../../../classes/template_worker';
-    import {Service_Templates_Worker} from "../../../services/service_templates_worker";
+    import {Service_Templates} from "../../../services/service_templates";
 export default {
     mixins: [
         helpers,
@@ -146,8 +146,9 @@ export default {
 		create() {
             if(this.$refs.form.validate()) 
             {
-                Service_Templates_Worker.create({
-    				template_worker: this.template_worker,
+                Service_Templates.create({
+					type_template: 'worker',
+    				template: this.template_worker,
     				project: this.project_current,
     			}).then(() => {
     				this.$emit('created');

@@ -200,17 +200,17 @@ export const moduleProjects = {
             const object_template_global = new Template_Global(data);
             Vue.set(project.templates_global, object_template_global.id, object_template_global);
         },
-        remove_template_worker(state, {template_worker, project}) {
-            Vue.delete(project.templates_worker, template_worker.id);
+        remove_template_worker(state, {template, project}) {
+            Vue.delete(project.templates_worker, template.id);
         },
-        remove_template_assignment(state, {template_assignment, project}) {
-            Vue.delete(project.templates_assignment, template_assignment.id);
+        remove_template_assignment(state, {template, project}) {
+            Vue.delete(project.templates_assignment, template.id);
         },
-        remove_template_hit(state, {template_hit, project}) {
-            Vue.delete(project.templates_hit, template_hit.id);
+        remove_template_hit(state, {template, project}) {
+            Vue.delete(project.templates_hit, template.id);
         },
-        remove_template_global(state, {template_global, project}) {
-            Vue.delete(project.templates_global, template_global.id);
+        remove_template_global(state, {template, project}) {
+            Vue.delete(project.templates_global, template.id);
         },
         remove_settings_batch(state, {settings_batch, project}) {
             Vue.delete(project.settings_batch, settings_batch.id);

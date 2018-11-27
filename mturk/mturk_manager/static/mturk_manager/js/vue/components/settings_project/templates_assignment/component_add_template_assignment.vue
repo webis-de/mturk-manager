@@ -55,7 +55,7 @@
 
 	import { required, minValue } from 'vuelidate/lib/validators'
 	import validations from '../../../mixins/validations';
-    import {Service_Templates_Assignment} from "../../../services/service_templates_assignment";
+    import {Service_Templates} from "../../../services/service_templates";
 export default {
     mixins: [
         validations,
@@ -91,8 +91,9 @@ export default {
 		create() {
             if(this.$refs.form.validate()) 
             {
-                Service_Templates_Assignment.create({
-    				template_assignment: {
+                Service_Templates.create({
+					type_template: 'assignment',
+    				template: {
     					name: this.name,
     					template: this.template,
     				},

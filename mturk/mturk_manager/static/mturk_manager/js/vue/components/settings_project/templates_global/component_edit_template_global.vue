@@ -90,7 +90,7 @@
     import _ from 'lodash';
     import { required, minValue, maxValue } from 'vuelidate/lib/validators'
 	import Template_Global from '../../../classes/template_global';
-    import {Service_Templates_Global} from "../../../services/service_templates_global";
+    import {Service_Templates} from "../../../services/service_templates";
 export default {
     mixins: [
         helpers,
@@ -111,9 +111,10 @@ export default {
 		update(close) {
             if(this.$refs.form.validate()) 
             {
-                Service_Templates_Global.edit({
-					template_global_current: this.template_global_current,
-					template_global_new: this.template_global,
+                Service_Templates.edit({
+					type_template: 'global',
+					template_current: this.template_global_current,
+					template_new: this.template_global,
 					project: this.project_current,
 				}).then(() => {
     				if(close === true)

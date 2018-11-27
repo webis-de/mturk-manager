@@ -90,7 +90,7 @@
     import _ from 'lodash';
     import { required, minValue, maxValue } from 'vuelidate/lib/validators'
 	import Template_Assignment from '../../../classes/template_assignment';
-    import {Service_Templates_Assignment} from "../../../services/service_templates_assignment";
+    import {Service_Templates} from "../../../services/service_templates";
 export default {
     mixins: [
         helpers,
@@ -111,9 +111,10 @@ export default {
 		update(close) {
             if(this.$refs.form.validate()) 
             {
-                Service_Templates_Assignment.edit({
-					template_assignment_current: this.template_assignment_current,
-					template_assignment_new: this.template_assignment,
+                Service_Templates.edit({
+					type_template: 'assignment',
+					template_current: this.template_assignment_current,
+					template_new: this.template_assignment,
 					project: this.project_current,
 				}).then(() => {
     				if(close === true)

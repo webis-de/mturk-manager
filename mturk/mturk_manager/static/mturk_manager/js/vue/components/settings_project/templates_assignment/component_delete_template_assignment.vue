@@ -38,7 +38,7 @@
 
 <script>
     import { mapState, mapMutations, mapActions, mapGetters } from 'vuex';
-    import {Service_Templates_Assignment} from "../../../services/service_templates_assignment";
+    import {Service_Templates} from "../../../services/service_templates";
 export default {
     props: {
         template_assignment: {
@@ -51,9 +51,10 @@ export default {
     },
     methods: {
         remove() {
-            Service_Templates_Assignment.delete({
+            Service_Templates.delete({
+                type_template: 'assignment',
                 project: this.project_current,
-                template_assignment: this.template_assignment,
+                template: this.template_assignment,
                 callback: () => {
                     this.$emit('deleted');
                     this.dialog = false;

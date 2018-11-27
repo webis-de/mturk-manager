@@ -81,7 +81,7 @@ class Class_Service_Projects {
 		if(project.slug !== undefined)
 		{
 			Service_Settings_Batch.load();
-			Service_Templates.load();
+			Service_Templates.load_all();
 
                 this.ping();
                 this.id_interval = setInterval(() => {
