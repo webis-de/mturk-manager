@@ -40,10 +40,10 @@
             <component-clear-sandbox>
             </component-clear-sandbox>
         </v-flex>
-        <v-flex shrink class="pa-1">
-            <component-delete-project>
-            </component-delete-project>
-        </v-flex>
+        <!--<v-flex shrink class="pa-1">-->
+            <!--<component-delete-project>-->
+            <!--</component-delete-project>-->
+        <!--</v-flex>-->
     </v-layout>
 </div>
 </template>
