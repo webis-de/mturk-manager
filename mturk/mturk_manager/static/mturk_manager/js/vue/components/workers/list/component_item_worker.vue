@@ -11,10 +11,10 @@
         <td class="text-xs-left">
             {{ props.item.id_worker }}
         </td>
-        <td>
-        </td>
-        <td>
-        </td>
+        <!--<td>-->
+        <!--</td>-->
+        <!--<td>-->
+        <!--</td>-->
         <component-limit-assignments
             v-bind:key="`component_limit_assignments_${props.item.name}`"
             v-bind:worker="worker"

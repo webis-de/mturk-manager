@@ -155,18 +155,18 @@ export default {
                     value: 'name',
                 },
                 
-                {
-                    text: 'Approved (%)',
-                    value: 'percentage_approved_assignments',
-                    align: 'center',
-                    width: '1px'
-                },
-                {
-                    text: 'Rejected (%)',
-                    value: 'percentage_rejected_assignments',
-                    align: 'center',
-                    width: '1px'
-                },
+                // {
+                //     text: 'Approved (%)',
+                //     value: 'percentage_approved_assignments',
+                //     align: 'center',
+                //     width: '1px'
+                // },
+                // {
+                //     text: 'Rejected (%)',
+                //     value: 'percentage_rejected_assignments',
+                //     align: 'center',
+                //     width: '1px'
+                // },
                 
                 {
                     text: 'Assignment Limit',
