@@ -1,4 +1,5 @@
 import { mapState, mapMutations, mapActions, mapGetters } from 'vuex';
+import _ from 'lodash';
 export default {
 	data() {
 		return {
@@ -8,7 +9,18 @@ export default {
     watch: {
     },
 	methods: {
-        toggleAll(list_selected, list_items) {
+        toggleAll(list_selected, list_items, pagination=undefined) {
+            if(pagination)
+            {
+                list_items = _.orderBy(list_items, pagination.sortBy, pagination.descending ? 'desc' : 'asc');
+                list_selected = list_items.slice((pagination.page - 1) * pagination.rowsPerPage, pagination.page * pagination.rowsPerPage);
+                _.forEach(list_selected, (e) => {
+                    console.log('e', e.id_assignment);
+                });
+
+                return list_selected
+            }
+
             if(list_selected.length)
             {
                 list_selected = [];

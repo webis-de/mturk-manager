@@ -42,7 +42,7 @@
                                     v-bind:indeterminate="props.indeterminate"
                                     primary
                                     hide-details
-                                    v-on:click.native="assignments_selected_local = toggleAll(assignments_selected_local, list_assignments_processed)"
+                                    v-on:click.native="assignments_selected_local = toggleAll(assignments_selected_local, list_assignments_processed, pagination)"
                                 ></v-checkbox>
                             </th>
                             <th
@@ -76,6 +76,7 @@
             </v-flex>
         </v-layout>
     </v-flex>
+    {{pagination}}
 </v-layout>
 </template>
 <script>
@@ -105,7 +106,7 @@ export default {
     data () {
         return {
             // assignments_selected: [],
-            pagination: { rowsPerPage: 25 },
+            pagination: { rowsPerPage: 5 },
             show_only_submitted_assignments: false,
             search: '',
 
