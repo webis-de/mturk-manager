@@ -9,15 +9,24 @@ export default {
     watch: {
     },
 	methods: {
-        toggleAll(list_selected, list_items, pagination=undefined) {
+        toggleAll(list_selected, list_items, pagination=undefined, props, show_only_submitted_assignments) {
             if(pagination)
             {
                 list_items = _.orderBy(list_items, pagination.sortBy, pagination.descending ? 'desc' : 'asc');
-                list_selected = list_items.slice((pagination.page - 1) * pagination.rowsPerPage, pagination.page * pagination.rowsPerPage);
-                _.forEach(list_selected, (e) => {
-                    console.log('e', e.id_assignment);
-                });
+                if(show_only_submitted_assignments)
+                {
+                    list_items = list_items.filter(e => e.status_external === null);
+                }
 
+                if(props.all)
+                {
+                    list_selected = [];
+                } else {
+                    list_selected = list_items.slice((pagination.page - 1) * pagination.rowsPerPage, pagination.page * pagination.rowsPerPage);
+                }
+                _.forEach(list_selected, (e) => {
+                    // console.log('e', e.id_assignment);
+                });
                 return list_selected
             }
 
