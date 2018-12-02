@@ -13,6 +13,8 @@ export default class Worker
 		this.is_blocked_soft = data.is_blocked_soft;
 		this.is_blocked_global = data.is_blocked_global;
 		this.is_blocked_hard = null;
+
+		this.ratio_approved = null;
 		// this.is_blocked = data.is_blocked;
 		// this.m_status = data.QualificationTypeStatus;
 	}

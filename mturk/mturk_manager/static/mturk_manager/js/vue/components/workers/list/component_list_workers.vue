@@ -33,17 +33,19 @@
                 </v-flex>
 
             </v-layout>
+            {{pagination}}
 
                 <!-- select-all -->
                 <!-- v-bind:rows-per-page-items="items_per_page" -->
+                <!--v-bind:search="search"-->
             <v-data-table
-                select-all
-                v-bind:pagination.sync="pagination"
+                    select-all
                 v-bind:headers="list_headers"
                 v-bind:items="list_workers"
-                v-bind:search="search"
-                v-bind:custom-filter="custom_filter"
+                v-bind:pagination.sync="pagination"
+                v-bind:total-items="items_total"
                 v-model="workers_selected"
+                v-bind:custom-filter="custom_filter"
             >
                 <template slot="headers" slot-scope="props">
                     <tr class="row_header">
@@ -122,16 +124,25 @@
     import { mapState, mapActions, mapGetters } from 'vuex';
     // import { Policy } from '../../store/modules/policies.js';
     import { STATUS_BLOCK } from '../../../classes/enums.js';
-    
+    import _ from 'lodash';
     import ComponentItemWorker from './component_item_worker.vue';
+    import {Service_Workers} from "../../../services/service_worker";
+    import {update_sandbox} from "../../../mixins/update_sandbox";
+    import {external_pagination} from "../../../mixins/external_pagination";
     // import ComponentShowMoneySpent from './component-show-money-spent.vue';
     // import ComponentShowBatches from './component-show-batches.vue';
 export default {
+    mixins: [
+        update_sandbox,
+        external_pagination,
+    ],
     name: 'component-list-workers',
     data () {
         return {
             workers_selected: [],
-            pagination: { rowsPerPage: 25 },
+            pagination: { rowsPerPage: 5 },
+            items_total: undefined,
+            // pagination: { rowsPerPage: 5, totalItems: 30 },
             show_dialog_policy: false,
             policy_to_be_edited: null,
 
@@ -193,6 +204,9 @@ export default {
         }
     },
     computed: {
+        list_workers() {
+            return this.list_workers_processed.slice(0, 5)
+        },
         // policy_dialog: function() {
         //     return this.policy_to_be_edited == null ? this.policy_new : this.policy_to_be_edited;
         // },
@@ -200,13 +214,21 @@ export default {
         //     return this.policy_to_be_edited == null ? 'New Policy' : 'Edit Policy';
         // },
         ...mapGetters('moduleWorkers', {
-            'list_workers': 'list_workers',
+            'list_workers_processed': 'list_workers',
         }),
         ...mapGetters('moduleProjects', {
             'project_current': 'get_project_current',
         }),
     },
     methods: {
+        pagination_updated(pagination) {
+            Service_Workers.load_page(pagination, this).then((items_total) => {
+                this.items_total = items_total;
+            });
+        },
+        sandbox_updated() {
+            this.pagination_updated(this.pagination);
+        },
         // toggleAll () {
         //     if (this.workers_selected.length) this.workers_selected = []
         //     else this.workers_selected = this.list_workers.slice()

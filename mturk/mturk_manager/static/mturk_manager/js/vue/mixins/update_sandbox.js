@@ -1,0 +1,18 @@
+import { mapState, mapActions } from 'vuex';
+
+export const update_sandbox =  {
+	methods: {
+	    sandbox_updated(use_sandbox) {
+
+        },
+        ...mapActions(['set_show_progress_indicator']),
+	},
+	computed: {
+        ...mapState(['use_sandbox']),
+	},
+    watch: {
+        use_sandbox: function(use_sandbox) {
+            this.sandbox_updated(use_sandbox);
+        },
+    },
+}

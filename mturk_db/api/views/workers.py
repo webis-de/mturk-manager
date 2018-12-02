@@ -8,6 +8,7 @@ from api.serializers import Serializer_Worker
 from api.models import Worker as Model_Worker
 from rest_framework import status
 from django.http import Http404
+from rest_framework.settings import api_settings
 
 PERMISSIONS_WORKER_ONLY = (AllowOptionsAuthentication, IsWorker,)
 PERMISSIONS_INSTANCE_ONLY = (AllowOptionsAuthentication, IsInstance,)
@@ -15,23 +16,27 @@ PERMISSIONS_INSTANCE_ONLY = (AllowOptionsAuthentication, IsInstance,)
 class Workers(APIView):
     permission_classes = PERMISSIONS_INSTANCE_ONLY
 
-    # @add_database_object_project
-    # def get(self, request, slug_project, database_object_project, use_sandbox, format=None):
-    #     status_block = Manager_Workers.get_status_block(database_object_project, use_sandbox)
-    #     # dictionary_counters = Manager_Workers.get_counter(database_object_project, use_sandbox)
-
-    #     return Response({
-    #         'blocks': status_block,
-    #         # 'counters': dictionary_counters,
-    #     })
-
     @add_database_object_project
-    def patch(self, request, slug_project, database_object_project, use_sandbox, format=None):
-        queryset_workers = Manager_Workers.sync_workers_by_ids(database_object_project, request.data, use_sandbox)
-        serializer = Serializer_Worker(queryset_workers, many=True)
+    def get(self, request, slug_project, database_object_project, use_sandbox, format=None):
+        queryset_workers = Manager_Workers.get(database_object_project, use_sandbox)
 
-        # serializer = Serializer_Batch(data=request.data)
-        return Response(serializer.data)
+        paginator = api_settings.DEFAULT_PAGINATION_CLASS()
+        workers_paginated = paginator.paginate_queryset(queryset_workers, request)
+
+        serializer = Serializer_Worker(workers_paginated, many=True)
+
+        return Response({
+            'items_total': queryset_workers.count(),
+            'data': serializer.data,
+        })
+
+    # @add_database_object_project
+    # def patch(self, request, slug_project, database_object_project, use_sandbox, format=None):
+    #     queryset_workers = Manager_Workers.sync_workers_by_ids(database_object_project, request.data, use_sandbox)
+    #     serializer = Serializer_Worker(queryset_workers, many=True)
+    #
+    #     # serializer = Serializer_Batch(data=request.data)
+    #     return Response(serializer.data)
 
 
 class Worker(APIView):

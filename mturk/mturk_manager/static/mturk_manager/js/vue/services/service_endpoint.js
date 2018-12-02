@@ -28,12 +28,13 @@ class Class_Service_Endpoint {
 		this.callback_connection_error = callback_connection_error;
 	}
 
-	async make_request({url, method, data}) 
+	async make_request({url, method, data, params})
 	{
         let config = {
-            method: method,
+            method,
             url: this.get_url_api(url),
             data: JSON.stringify(data),
+            params
         };
 
         const object_response = {
@@ -62,7 +63,7 @@ class Class_Service_Endpoint {
         return object_response;
 	}
 
-    get_url_api({url, use_sandbox, value, project}) {
+    get_url_api({url, use_sandbox, value, project, params}) {
         if(value != undefined)
         {
             url += `/${value}`;

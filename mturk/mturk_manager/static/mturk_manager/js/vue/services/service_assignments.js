@@ -10,10 +10,10 @@ class Class_Service_Assignments {
             use_sandbox,
         });
 
-        await Service_Workers.load_workers({
-            list_ids: store.getters['moduleAssignments/set_ids_worker'],
-            use_sandbox,
-        });
+        // await Service_Workers.load_workers({
+        //     list_ids: store.getters['moduleAssignments/set_ids_worker'],
+        //     use_sandbox,
+        // });
     }
 
     async append_assignments({data_batches, object_hits, use_sandbox})
@@ -24,11 +24,11 @@ class Class_Service_Assignments {
             use_sandbox,
         });
 
-        await Service_Workers.load_workers({
-            list_ids: store.getters['moduleAssignments/set_ids_worker'],
-            use_sandbox,
-            append: true,
-        });
+        // await Service_Workers.load_workers({
+        //     list_ids: store.getters['moduleAssignments/set_ids_worker'],
+        //     use_sandbox,
+        //     append: true,
+        // });
     }
 }
 

@@ -137,6 +137,9 @@ REST_FRAMEWORK = {
         'mturk_db.permissions.AllowOptionsAuthentication', 
     ),
     'DEFAULT_METADATA_CLASS': 'rest_framework.metadata.SimpleMetadata',
+
+    'DEFAULT_PAGINATION_CLASS': 'api.helpers.CustomPagination',
+    'PAGE_SIZE': 25
 }
 
 VERSION_PROJECT = 15

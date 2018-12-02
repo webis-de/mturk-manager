@@ -2,6 +2,7 @@ import {store} from "../store/vuex";
 import _ from "lodash";
 import {Service_Endpoint} from "./service_endpoint";
 import {Service_Batches} from "./service_batches";
+import Vue from 'vue';
 
 class Class_Service_Workers {
     async load_workers({list_ids, use_sandbox, append})
@@ -153,6 +154,36 @@ class Class_Service_Workers {
             worker_new: response.data,
             array_fields: ['count_assignments_limit'],
         });
+    }
+
+    async load_page(pagination, instance) {
+		const use_sandbox = store.getters["get_use_sandbox"];
+
+        const response = await Service_Endpoint.make_request({
+            method: 'get',
+            url: {
+                url: store.getters["get_url"]('url_api_workers', 'moduleWorkers'),
+                use_sandbox,
+                project: store.getters['moduleProjects/get_project_current'],
+            },
+            params: {
+                page: pagination.page,
+                page_size: pagination.rowsPerPage,
+            }
+        });
+
+
+        store.commit('moduleWorkers/set_workers', {
+            data_workers: response.data.data,
+            use_sandbox,
+        });
+        // console.log('instance', instance.pagination);
+        // console.log('response', response);
+        // console.log('response.items_total', response.data.items_total);
+        // Vue.set(pagination, 'totalItems', response.data.items_total);
+        // instance.$set(instance.pagination, 'totalItems', response.data.items_total);
+        console.log('page loaded');
+        return response.data.items_total;
     }
 }
 

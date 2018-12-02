@@ -8,24 +8,59 @@ from django.db.models.functions import Coalesce
 # from mturk_manager.classes import Manager_Qualifications
 
 class Manager_Workers(object):
-    @classmethod
-    def sync_workers_by_ids(cls, database_object_project, data, use_sandbox=True):
+    # @classmethod
+    # def sync_workers_by_ids(cls, database_object_project, data, use_sandbox=True):
+    #     foo = Count_Assignments_Worker_Project.objects.filter(
+    #         worker=OuterRef('pk'),
+    #         # project=database_object_project,
+    #     )
+    #
+    #     return Worker.objects.filter(
+    #         id__in=data
+    #     ).annotate(
+    #         count_worker_blocks=Coalesce(Count('worker_blocks_project', filter=Q(worker_blocks_project__project=database_object_project)), 0)
+    #     ).annotate(
+    #         is_blocked_soft=Case(
+    #             When(count_worker_blocks=1, then=Value(True)),
+    #             default=Value(False),
+    #             output_field=BooleanField(),
+    #         ),
+    #         count_assignments_limit=Subquery(foo.filter(project=database_object_project).values('count_assignments')[:1]),
+    #         # count_assignments_limit=Q('count_assignments__count_assignments'),
+    #         # count_assignments_limit=Case(
+    #         #     When(count_assignments__project=database_object_project, then=Value(1)),
+    #         #     default=Value(None),
+    #         #     output_field=IntegerField(),
+    #         # )
+    #     )
+
+    @staticmethod
+    def get(database_object_project, use_sandbox):
         foo = Count_Assignments_Worker_Project.objects.filter(
             worker=OuterRef('pk'),
             # project=database_object_project,
         )
 
-        return Worker.objects.filter(
-            id__in=data
-        ).annotate(
-            count_worker_blocks=Coalesce(Count('worker_blocks_project', filter=Q(worker_blocks_project__project=database_object_project)), 0)
+        workers = Worker.objects.filter(
+            assignments__hit__batch__project=database_object_project,
+            assignments__hit__batch__use_sandbox=use_sandbox,
+        ).distinct().annotate(
+            count_worker_blocks=Coalesce(
+                Count(
+                    'worker_blocks_project',
+                    filter=Q(worker_blocks_project__project=database_object_project),
+                    distinct=True
+                ),
+                0
+            )
         ).annotate(
             is_blocked_soft=Case(
                 When(count_worker_blocks=1, then=Value(True)),
                 default=Value(False),
                 output_field=BooleanField(),
             ),
-            count_assignments_limit=Subquery(foo.filter(project=database_object_project).values('count_assignments')[:1]),
+            count_assignments_limit=Subquery(
+                foo.filter(project=database_object_project).values('count_assignments')[:1]),
             # count_assignments_limit=Q('count_assignments__count_assignments'),
             # count_assignments_limit=Case(
             #     When(count_assignments__project=database_object_project, then=Value(1)),
@@ -33,6 +68,8 @@ class Manager_Workers(object):
             #     output_field=IntegerField(),
             # )
         )
+
+        return workers
 
     @classmethod
     def update(cls, validated_data, instance):
