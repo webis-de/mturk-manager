@@ -35,12 +35,12 @@
         <td 
             class="text-xs-center"
         >
-            <component-progress
-                slot="activator"
-                v-bind:progress="hit.progress"
-            >
-                {{ hit.count_assignments_available }}/{{hit.count_assignments_total}} assignment{{hit.count_assignments_total > 1 ? 's' : ''}}
-            </component-progress>
+            <!--<component-progress-->
+                <!--slot="activator"-->
+                <!--v-bind:progress="hit.progress"-->
+            <!--&gt;-->
+                <!--{{ hit.count_assignments_available }}/{{hit.count_assignments_total}} assignment{{hit.count_assignments_total > 1 ? 's' : ''}}-->
+            <!--</component-progress>-->
         </td>
         <td 
             class="text-xs-center"

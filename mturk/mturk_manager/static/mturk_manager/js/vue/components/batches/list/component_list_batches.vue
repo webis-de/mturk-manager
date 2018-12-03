@@ -2,12 +2,14 @@
         <div>
             <h1 class="headline">Batches</h1>
             <!-- {{list_batches}} -->
+                <!--v-bind:search="search"-->
+            {{pagination}}
             <v-data-table
                 select-all
-                v-bind:pagination.sync="pagination"
                 v-bind:headers="list_headers"
-                v-bind:items="list_batches"
-                v-bind:search="search"
+                v-bind:items="array_batches_prepared"
+                v-bind:pagination.sync="pagination"
+                v-bind:total-items="items_total"
                 v-model="batches_selected"
                 item-key="id"
                 class="my-3"
@@ -33,11 +35,10 @@
                                 pagination.descending ? 'desc' : 'asc', 
                                 header.value === pagination.sortBy ? 'active' : ''
                             ]"
-                            v-on="header.sortable != false ? {click: () => changeSort(header.value)} : {}"
+                            v-on="header.sortable != false ? {click: () => {pagination.sortBy = header.value; pagination.descending = !pagination.descending}} : {}"
                         >
                             <v-icon small v-if="header.sortable != false">arrow_upward</v-icon>
                             {{ header.text }}
-                            <!-- v-on:click="changeSort(header.value)" -->
                         </th>
                     </tr>
                 </template>
@@ -73,14 +74,19 @@
     // import ComponentShowMoneySpent from './component-show-money-spent.vue';
     // import ComponentShowBatches from './component-show-batches.vue';
     import table from '../../../mixins/table';
+    import {update_sandbox} from "../../../mixins/update_sandbox";
+    import {external_pagination} from "../../../mixins/external_pagination";
+    import {Service_Batches} from "../../../services/service_batches";
 export default {
     mixins: [
-        table,
+        // table,
+        update_sandbox,
+        external_pagination,
     ],
     name: 'component-list-batches',
     data () {
         return {
-            pagination: { rowsPerPage: 25 },
+            pagination: { rowsPerPage: 25, sortBy: 'datetime_creation', descending: true },
 
             search: '',
 
@@ -96,7 +102,7 @@ export default {
                 },
                 {
                     text: '#HITs',
-                    value: 'hits.length',
+                    value: 'count_hits',
                     align: 'center',
                 },
                 {
@@ -108,11 +114,13 @@ export default {
                     text: '#Assignments Per HIT',
                     value: 'settings_batch.count_assignments',
                     align: 'center',
+                    sortable: false,
                 },
                 {
                     text: 'Progress',
                     value: 'progress',
                     align: 'center',
+                    sortable: false,
                 },
                 {
                     text: '',
@@ -132,14 +140,38 @@ export default {
                 // this.$store.commit('set_batches_selected', value);
             }
         },
+        array_batches_prepared() {
+            let array_batches_current = undefined;
+            if(this.use_sandbox === true)
+            {
+                array_batches_current = this.array_batches_sandbox;
+            } else {
+                array_batches_current = this.array_batches;
+            }
+
+            if(array_batches_current === null) {
+                return [];
+            }
+
+            return array_batches_current;
+        },
         ...mapGetters('moduleBatches', {
-            'list_batches': 'list_batches',
+            'array_batches': 'get_array_batches',
+            'array_batches_sandbox': 'get_array_batches_sandbox',
         }),
         ...mapState('moduleBatches', {
             'array_batches_selected': 'array_batches_selected',
         }),
     },
     methods: {
+        pagination_updated(pagination) {
+            Service_Batches.load_page(pagination).then((items_total) => {
+                this.items_total = items_total;
+            });
+        },
+        sandbox_updated() {
+            this.pagination_updated(this.pagination);
+        },
         // ...mapActions('moduleWorkers', {
             // 'update_status_block': 'update_status_block',
         // }),

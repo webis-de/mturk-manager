@@ -39,7 +39,7 @@
 export default {
     mixins: [
         // slug_project,
-        load_data,
+        // load_data,
     ],
     name: 'component-toolbar-batches',
     props: {

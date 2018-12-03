@@ -7,7 +7,7 @@
             select-all
             v-bind:pagination.sync="pagination"
             v-bind:headers="list_headers"
-            v-bind:items="list_hits_processed"
+            v-bind:items="array_hits_prepared"
             v-bind:search="search"
             v-model="hits_selected"
             item-key="id"
@@ -63,9 +63,14 @@
     // import ComponentShowMoneySpent from './component-show-money-spent.vue';
     // import ComponentShowBatches from './component-show-batches.vue';
     import table from '../../../mixins/table';
+    import {update_sandbox} from "../../../mixins/update_sandbox";
+    import {external_pagination} from "../../../mixins/external_pagination";
+    import {Service_HITs} from "../../../services/service_hits";
 export default {
     mixins: [
-        table,
+        // table,
+        update_sandbox,
+        external_pagination,
     ],
     name: 'component-list-hits',
     props: {
@@ -94,6 +99,21 @@ export default {
         }
     },
     computed: {
+        array_hits_prepared() {
+            let array_hits_current = undefined;
+            if(this.use_sandbox === true)
+            {
+                array_hits_current = this.array_hits_sandbox;
+            } else {
+                array_hits_current = this.array_hits;
+            }
+
+            if(array_hits_current === null) {
+                return [];
+            }
+
+            return array_hits_current;
+        },
         list_headers() {
             const list_headers = [
                 {
@@ -133,9 +153,19 @@ export default {
         // }),
         ...mapGetters('moduleHITs', {
             'list_hits_all': 'list_hits',
+            'array_hits': 'get_array_hits',
+            'array_hits_sandbox': 'get_array_hits_sandbox',
         }),
     },
     methods: {
+        pagination_updated(pagination) {
+            Service_HITs.load_page(pagination).then((items_total) => {
+                this.items_total = items_total;
+            });
+        },
+        sandbox_updated() {
+            this.pagination_updated(this.pagination);
+        },
         // ...mapActions('moduleWorkers', {
             // 'update_status_block': 'update_status_block',
         // }),

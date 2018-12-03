@@ -141,7 +141,6 @@ export default {
         return {
             workers_selected: [],
             pagination: { rowsPerPage: 5 },
-            items_total: undefined,
             // pagination: { rowsPerPage: 5, totalItems: 30 },
             show_dialog_policy: false,
             policy_to_be_edited: null,
@@ -222,7 +221,7 @@ export default {
     },
     methods: {
         pagination_updated(pagination) {
-            Service_Workers.load_page(pagination, this).then((items_total) => {
+            Service_Workers.load_page(pagination).then((items_total) => {
                 this.items_total = items_total;
             });
         },

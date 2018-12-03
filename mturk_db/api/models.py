@@ -20,6 +20,7 @@ class Project(models.Model):
     fk_account_mturk = models.ForeignKey('Account_Mturk', on_delete=models.SET_NULL, null=True, related_name='projects')
     datetime_visited = models.DateTimeField(default=datetime.now)
     count_assignments_max_per_worker = models.IntegerField(null=True)
+    datetime_creation = models.DateTimeField(auto_now_add=True, null=True)
 
     settings_batch_default = models.OneToOneField('Settings_Batch', on_delete=models.SET_NULL, null=True, related_name='project_default')
     
@@ -81,6 +82,8 @@ class Template(models.Model):
     project = models.ForeignKey('Project', on_delete=models.CASCADE, related_name='%(app_label)s_%(class)s_related')
     template = models.TextField()
     is_active = models.BooleanField(default=True)
+    datetime_creation = models.DateTimeField(auto_now_add=True, null=True)
+    datetime_update = models.DateTimeField(auto_now=True, null=True)
     
     class Meta:
         unique_together = ('project', 'name')
@@ -113,6 +116,8 @@ class Batch(models.Model):
     project = models.ForeignKey('Project', on_delete=models.CASCADE, null=True, related_name='batch')
     name = models.CharField(max_length=200)
     use_sandbox = models.BooleanField()
+    datetime_creation = models.DateTimeField(auto_now_add=True, null=True)
+    datetime_update = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
         return self.name
@@ -133,7 +138,8 @@ class Assignment(models.Model):
 
     status_external = models.IntegerField(null=True, choices=[(status.value, status.name) for status in assignments.STATUS_EXTERNAL])
     status_internal = models.IntegerField(null=True, choices=[(status.value, status.name) for status in assignments.STATUS_INTERNAL])
-    datetime_update = models.DateTimeField(auto_now=True)
+    datetime_creation = models.DateTimeField(auto_now_add=True, null=True)
+    datetime_update = models.DateTimeField(auto_now=True, null=True)
 
     answer = models.TextField()
 

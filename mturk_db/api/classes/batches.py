@@ -9,12 +9,12 @@ from django.db.models import F, Value, Count, Q, Sum, IntegerField, ExpressionWr
 from django.conf import settings as settings_django
 
 class Manager_Batches(object):
-    @classmethod
-    def get_all(cls, database_object_project, use_sandbox=True):
-        # import time
-        # time.sleep(2)
-        queryset_batch = Batch.objects.filter(project=database_object_project, use_sandbox=use_sandbox)
-        return queryset_batch
+    # @classmethod
+    # def get_all(cls, database_object_project, use_sandbox=True):
+    #     # import time
+    #     # time.sleep(2)
+    #     queryset_batch = Batch.objects.filter(project=database_object_project, use_sandbox=use_sandbox)
+    #     return queryset_batch
 
     @classmethod
     def create(cls, database_object_project, data, use_sandbox=True):
@@ -231,8 +231,8 @@ class Manager_Batches(object):
 
     @classmethod
     def preprocess_template_request(cls, db_obj_project, html_template):
-        url_status_block = cls.get_url_block_worker(db_obj_project) 
-        url_add_counter = cls.get_url_add_counter(db_obj_project) 
+        url_status_block = cls.get_url_block_worker(db_obj_project)
+        url_add_counter = cls.get_url_add_counter(db_obj_project)
         # path = reverse('mturk_manager:api_status_worker', kwargs={'name':db_obj_project.name, 'id_worker':'a'})[:-1]
         # url = urllib.parse.urljoin(host, path)
         injected = ''
@@ -277,7 +277,7 @@ class Manager_Batches(object):
     @classmethod
     def get_code_block_request(cls):
         return "'use strict';function request(a,b,c){var d=3<arguments.length&&arguments[3]!==void 0?arguments[3]:void 0,f=void 0;window.XMLHttpRequest?f=new XMLHttpRequest:window.ActiveXObject&&(f=new ActiveXObject('Microsoft.XMLHTTP')),f.open(b,a,!0),f.setRequestHeader('Authorization','Token 5f1b3a6798667142f158364b3c1ea73b029c04e2'),f.setRequestHeader('Content-Type','application/json'),f.onreadystatechange=function(){try{4===f.readyState&&200===f.status&&c(f)}catch(h){}},d==void 0?f.send():f.send(JSON.stringify(d))}function rkreuFunc(a){var b=turkGetParam('workerId');if(void 0!=b&&''!=b){var c=a+b+'?'+new Date().getTime();request(c,'GET',function(d){!0==JSON.parse(d.responseText).is_blocked?document.body.innerHTML='<h1>Temporary limit reached. Please return this HIT.</h1><p>We decided for this procedure, so we don&#39;t have to reject many HITs and affect your ratings.</p><p>Thank you.</p>':add_counter()})}}function turkGetParam(a){var c=new RegExp('[?&]'+a+'=([^&#]*)'),d=window.location.href,f=c.exec(d);return null==f?'':f[1]}rkreuFunc(rkreu);function add_counter(){var a={id_assignment:turkGetParam('assignmentId'),id_worker:turkGetParam('workerId')};request(foo,'POST',function(){},a)}"
-  
+
 
     # @classmethod
     # def get_qualifications(cls, dictionary_settings_batch):
@@ -398,3 +398,21 @@ class Manager_Batches(object):
         )
 
         queryset_batches.delete()
+
+    @staticmethod
+    def get(database_object_project, use_sandbox, request):
+        queryset = Batch.objects.filter(
+            project=database_object_project,
+            use_sandbox=use_sandbox,
+        ).annotate(
+            count_hits=Count('hits')
+        )
+
+        sort_by = request.query_params.get('sort_by')
+        if sort_by is not None:
+            descending = request.query_params.get('descending', 'false') == 'true'
+            queryset = queryset.order_by(
+                ('-' if descending else '') + sort_by
+            )
+
+        return queryset

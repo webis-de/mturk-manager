@@ -1,5 +1,8 @@
 # from mturk_manager.models import m_Project
 import json
+
+from rest_framework.settings import api_settings
+
 from api.serializers import Serializer_HIT
 from mturk_db.permissions import IsInstance, AllowOptionsAuthentication
 from django.http import Http404
@@ -17,10 +20,24 @@ class HITs(APIView):
 
     @add_database_object_project
     def get(self, request, slug_project, database_object_project, use_sandbox, format=None):
-        list_ids = json.loads(request.query_params.get('list_ids', '[]'))
+        queryset_batches = Manager_HITs.get(database_object_project, use_sandbox, request)
 
-        queryset_hits = Manager_HITs.get_all(database_object_project=database_object_project, use_sandbox=use_sandbox, list_ids=list_ids)
-        # queryset_projects = m_Project.objects.all()
-        # serializer = Serializer_Project(queryset_projects, many=True, context={'request': request})
-        serializer = Serializer_HIT(queryset_hits, many=True)
-        return Response(serializer.data)
+        paginator = api_settings.DEFAULT_PAGINATION_CLASS()
+        batches_paginated = paginator.paginate_queryset(queryset_batches, request)
+
+        serializer = Serializer_HIT(batches_paginated, many=True)
+
+        return Response({
+            'items_total': queryset_batches.count(),
+            'data': serializer.data,
+        })
+
+    # @add_database_object_project
+    # def get(self, request, slug_project, database_object_project, use_sandbox, format=None):
+    #     list_ids = json.loads(request.query_params.get('list_ids', '[]'))
+    #
+    #     queryset_hits = Manager_HITs.get_all(database_object_project=database_object_project, use_sandbox=use_sandbox, list_ids=list_ids)
+    #     # queryset_projects = m_Project.objects.all()
+    #     # serializer = Serializer_Project(queryset_projects, many=True, context={'request': request})
+    #     serializer = Serializer_HIT(queryset_hits, many=True)
+    #     return Response(serializer.data)

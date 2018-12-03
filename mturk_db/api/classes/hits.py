@@ -21,3 +21,19 @@ class Manager_HITs(object):
         else:
             queryset_batch = HIT.objects.filter(batch__project=database_object_project)
         return queryset_batch
+
+    @staticmethod
+    def get(database_object_project, use_sandbox, request):
+        queryset = HIT.objects.filter(
+            batch__project=database_object_project,
+            batch__use_sandbox=use_sandbox,
+        )
+
+        sort_by = request.query_params.get('sort_by')
+        if sort_by is not None:
+            descending = request.query_params.get('descending', 'false') == 'true'
+            queryset = queryset.order_by(
+                ('-' if descending else '') + sort_by
+            )
+
+        return queryset

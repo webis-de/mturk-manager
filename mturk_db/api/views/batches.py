@@ -1,7 +1,8 @@
+from rest_framework.settings import api_settings
+
 from api.models import Batch as Model_Batch
 from api.serializers import Serializer_Batch
 from mturk_db.permissions import IsInstance, AllowOptionsAuthentication
-from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -17,11 +18,17 @@ class Batches(APIView):
 
     @add_database_object_project
     def get(self, request, slug_project, database_object_project, use_sandbox, format=None):
-        querset_batches = Manager_Batches.get_all(database_object_project, use_sandbox)
-        # queryset_projects = m_Project.objects.all()
-        # serializer = Serializer_Project(queryset_projects, many=True, context={'request': request})
-        serializer = Serializer_Batch(querset_batches, many=True)
-        return Response(serializer.data)
+        queryset_batches = Manager_Batches.get(database_object_project, use_sandbox, request)
+
+        paginator = api_settings.DEFAULT_PAGINATION_CLASS()
+        batches_paginated = paginator.paginate_queryset(queryset_batches, request)
+
+        serializer = Serializer_Batch(batches_paginated, many=True)
+
+        return Response({
+            'items_total': queryset_batches.count(),
+            'data': serializer.data,
+        })
 
     @add_database_object_project
     def post(self, request, slug_project, database_object_project, use_sandbox, format=None):

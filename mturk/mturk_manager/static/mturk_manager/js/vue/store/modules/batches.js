@@ -18,6 +18,10 @@ export const moduleBatches = {
 	state: {
         object_batches: null,
 		object_batches_sandbox: null,
+
+        array_batches: null,
+        array_batches_sandbox: null,
+
         url_api_assignments_real_approved: undefined,
 
         url_api_projects_batches: undefined,
@@ -48,20 +52,15 @@ export const moduleBatches = {
         get_object_csv_parsed: (state) => {
             return state.object_csv_parsed;
         },
+        get_array_batches: (state) => {
+            return state.array_batches
+        },
+        get_array_batches_sandbox: (state) => {
+            return state.array_batches_sandbox
+        },
         // get_object_batches: (state, getters, rootState) => {
         //     return rootState.use_sandbox ? state.object_batches_sandbox : state.object_batches;
         // },
-
-        list_batches: (state, getters, rootState) => {
-            const object_batches = getters.get_object_batches();
-            if(object_batches == null)
-            {
-                return [];
-            }
-            // const foo = {3:object_batches[3]};
-            // return _.orderBy(foo, ['datetime_creation'], ['desc']);
-            return _.orderBy(object_batches, ['datetime_creation'], ['desc']);
-        },
 
         list_hits_for_csv: state => {
             const list_hits = [];
@@ -202,19 +201,20 @@ export const moduleBatches = {
         //     state.object_batches = dict_batches;
         // },
         set_batches(state, {data_batches, use_sandbox}) {
-            let object_batches = null;
+            let array_batches = null;
             if(use_sandbox)
             {
-                state.object_batches_sandbox = {};
-                object_batches = state.object_batches_sandbox;
+                state.array_batches_sandbox = [];
+                array_batches = state.array_batches_sandbox;
             } else {
-                state.object_batches = {};
-                object_batches = state.object_batches;
+                state.array_batches = [];
+                array_batches = state.array_batches;
             }
 
             _.forEach(data_batches, function(data_batch){
                 const batch = new Batch(data_batch);
-                Vue.set(object_batches, batch.id, batch);
+                Vue.set(array_batches, array_batches.length, batch);
+                // Vue.set(object_batches, batch.id, batch);
             });
         },
         set_batches_selected(state, value) {

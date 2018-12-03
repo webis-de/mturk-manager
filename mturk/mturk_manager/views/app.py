@@ -31,6 +31,8 @@ def app(request):
             'url_api_projects_templates_hit': get_url_absolute('projects/{}/templates_hit'.format(placeholder_slug_project)),
             'url_api_projects_templates_global': get_url_absolute('projects/{}/templates_global'.format(placeholder_slug_project)),
             'url_api_projects_batches': get_url_absolute('projects/{}/batches'.format(placeholder_slug_project)),
+            'url_api_projects_hits': get_url_absolute('projects/{}/hits'.format(placeholder_slug_project)),
+            'url_api_projects_assignments': get_url_absolute('projects/{}/assignments'.format(placeholder_slug_project)),
             'url_api_projects_clear_sandbox': get_url_absolute('projects/{}/clear_sandbox'.format(placeholder_slug_project)),
             'url_api_ping': get_url_absolute('projects/{}/ping'.format(placeholder_slug_project)),
             

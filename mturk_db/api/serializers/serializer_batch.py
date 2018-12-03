@@ -14,54 +14,26 @@ from api.serializers import Serializer_HIT, Serializer_Settings_Batch, Serialize
 class Serializer_Batch(serializers.ModelSerializer):
     def __init__(self, *args, **kwargs):
         super(Serializer_Batch, self).__init__(*args, **kwargs)
-        # print(kwargs['context'])
         if 'context' in kwargs:
             self.fields['settings_batch'] = Serializer_Settings_Batch(context=kwargs['context'])
             self.fields.pop('hits')
-            # self.fields['hits'] = serializers.PrimaryKeyRelatedField(read_only=True, many=True)
 
-            # if kwargs['context'].get('include_settings_batch', False):
-            #     self.fields['settings_batch'] = Serializer_Settings_Batch(context=kwargs['context'])
-            # else:
-
-# class Serializer_Batch(serializers.Serializer):
-    # workers = serializers.HyperlinkedRelatedField(
-    #     many=True,
-    #     read_only=True,
-    #     view_name='mturk_manager:worker',
-    #     lookup_field='name',
-    # )
     settings_batch = Serializer_Settings_Batch()
 
-    # settings = serializers.DictField(required=False)
     data_csv = serializers.ListField(required=False)
-    # keywords = Serializer_Keyword(many=True)
-    # template = Serializer_Template_Worker()
-    # qualification_locale = serializers.JSONField()
-    # url = serializers.HyperlinkedIdentityField(view_name='mturk_manager:project_api_tmp', lookup_field='name')
-    hits = Serializer_HIT(many=True, read_only=True)
-
-    # name_database = serializers.CharField(max_length=255, required=False)
-    # description_database = serializers.CharField(required=False)
-
-    # id_mturk = serializers.CharField(max_length=255, source='QualificationTypeId', required=False)
-    # created_at = serializers.DateTimeField(source='CreationTime', required=False)
-    # name_mturk = serializers.CharField(max_length=255, source='Name', required=False)
-    # description_mturk = serializers.CharField(source='Description', required=False)
-    # keywords = serializers.CharField(source='Keywords', required=False)
-    # # is_active = IsActiveField(source='QualificationTypeStatus', required=False)
-    # is_requestable = serializers.NullBooleanField(source='IsRequestable', required=False)
-    # is_auto_granted = serializers.NullBooleanField(source='AutoGranted', required=False)
+    # hits = Serializer_HIT(many=True, read_only=True)
+    count_hits = serializers.IntegerField(required=False)
 
     class Meta:
         model = Batch
         fields = (
             'id', 
-            'name', 
-
+            'name',
+            'count_hits',
+            'datetime_creation',
             'project',
             'use_sandbox',
-            'hits',
+            # 'hits',
             'data_csv',
             'settings_batch',
         )
@@ -70,15 +42,6 @@ class Serializer_Batch(serializers.ModelSerializer):
             #     'source': 'template_worker',
             # },
             'name': {'required': False},
-            # 'title': {'required': False},
-            # 'description': {'required': False},
-            # 'keywords': {'required': False},
-            # 'count_assignments': {'required': False},
-            # 'use_sandbox': {'required': False},
-            # 'reward': {'required': False},
-            # 'lifetime': {'required': False},
-            # 'duration': {'required': False},
-            # 'fk_template': {'required': False},
         }
 
     def create(self, validated_data):
@@ -100,19 +63,5 @@ class Serializer_Batch(serializers.ModelSerializer):
         print(validated_data)
         print('validated_data')
 
-        # dictionary_qualification = Manager_Qualifications.update(
-        #     database_object_project=validated_data.get('database_object_project'), 
-        #     use_sandbox=validated_data.get('use_sandbox'), 
-        #     id_mturk=validated_data.get('id_mturk'), 
-        #     validated_data=validated_data
-        # )
-        
         return dictionary_qualification
-
-    # def get_is_active(self, obj):
-    #     try:
-    #         return True if obj['QualificationTypeStatus'] == 'Active' else False
-    #     except KeyError:
-    #         return None
-
 

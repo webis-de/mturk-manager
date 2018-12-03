@@ -93,7 +93,7 @@ export const store = new Vuex.Store({
         async init({state, commit, dispatch}) {
             const configElement = document.getElementById( 'config' );
             const config = JSON.parse( configElement.innerHTML );
-            // console.log(config);
+            console.log(config);
 
             commit('set_token_instance', config.token_instance);
             commit('set_token_csrf', config.token_csrf);
@@ -123,7 +123,8 @@ export const store = new Vuex.Store({
             // commit('moduleProjects/set_slug_project_current', config.slug_project_current);
 
             commit('moduleBatches/set_urls', config);
-            
+            commit('moduleHITs/set_urls', config);
+
             commit('moduleKeywords/set_urls', config);
             commit('moduleMessagesReject/set_urls', config);
 

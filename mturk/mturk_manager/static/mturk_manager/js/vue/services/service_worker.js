@@ -156,7 +156,7 @@ class Class_Service_Workers {
         });
     }
 
-    async load_page(pagination, instance) {
+    async load_page(pagination) {
 		const use_sandbox = store.getters["get_use_sandbox"];
 
         const response = await Service_Endpoint.make_request({
@@ -172,17 +172,11 @@ class Class_Service_Workers {
             }
         });
 
-
         store.commit('moduleWorkers/set_workers', {
             data_workers: response.data.data,
             use_sandbox,
         });
-        // console.log('instance', instance.pagination);
-        // console.log('response', response);
-        // console.log('response.items_total', response.data.items_total);
-        // Vue.set(pagination, 'totalItems', response.data.items_total);
-        // instance.$set(instance.pagination, 'totalItems', response.data.items_total);
-        console.log('page loaded');
+
         return response.data.items_total;
     }
 }

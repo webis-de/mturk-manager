@@ -21,7 +21,7 @@
         v-on:click="foo()"
             class="text-xs-center"
         >
-            {{ Object.keys(batch.object_hits).length }}
+            {{ batch.count_hits }}
         </td>
 
         <td 

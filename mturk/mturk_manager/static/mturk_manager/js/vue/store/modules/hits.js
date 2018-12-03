@@ -7,6 +7,7 @@ import _ from 'lodash';
 import HIT from '../../classes/hit.js';
 
 import VueCookies from 'vue-cookies'
+import Batch from "../../classes/batch";
 Vue.use(Vuex)
 Vue.use(VueCookies)
 Vue.use(VueAxios, axios)
@@ -16,8 +17,18 @@ export const moduleHITs = {
 	state: {
         object_hits: {},
 		object_hits_sandbox: {},
+
+        array_hits: null,
+        array_hits_sandbox: null,
+        url_api_projects_hits: undefined,
 	},
     getters: {
+        get_array_hits: (state) => {
+            return state.array_hits
+        },
+        get_array_hits_sandbox: (state) => {
+            return state.array_hits_sandbox
+        },
         get_object_hits: (state, getters, rootState) => (use_sandbox=undefined) => {
             if(use_sandbox == undefined)
             {
@@ -35,36 +46,55 @@ export const moduleHITs = {
         },
     },
 	mutations: {
-		set_hits(state, {object_batches, data_batches, use_sandbox}) {
-            let object_hits = null;
+        set_hits(state, {data, use_sandbox}) {
+            let array_hits = null;
             if(use_sandbox)
             {
-                object_hits = state.object_hits_sandbox;
+                state.array_hits_sandbox = [];
+                array_hits = state.array_hits_sandbox;
             } else {
-                object_hits = state.object_hits;
+                state.array_hits = [];
+                array_hits = state.array_hits;
             }
 
-            _.forEach(data_batches, function(data_batch) {
-            	const id_batch = data_batch.id;
-            	const batch = object_batches[id_batch];
-
-                _.forEach(data_batch.hits, function(data_hit) {
-                	data_hit.batch = batch;
-		            const hit = new HIT(data_hit);
-
-		            Vue.set(object_hits, hit.id, hit);
-
-		            Vue.set(batch.object_hits, hit.id, hit);
-                });
+            _.forEach(data, function(data){
+                const hit = new HIT(data);
+                Vue.set(array_hits, array_hits.length, hit);
             });
-		},
+        },
+		// set_hits(state, {object_batches, data_batches, use_sandbox}) {
+        //     let object_hits = null;
+        //     if(use_sandbox)
+        //     {
+        //         object_hits = state.object_hits_sandbox;
+        //     } else {
+        //         object_hits = state.object_hits;
+        //     }
+        //
+        //     _.forEach(data_batches, function(data_batch) {
+        //     	const id_batch = data_batch.id;
+        //     	const batch = object_batches[id_batch];
+        //
+        //         _.forEach(data_batch.hits, function(data_hit) {
+        //         	data_hit.batch = batch;
+		//             const hit = new HIT(data_hit);
+        //
+		//             Vue.set(object_hits, hit.id, hit);
+        //
+		//             Vue.set(batch.object_hits, hit.id, hit);
+        //         });
+        //     });
+		// },
         clear_sandbox(state) {
             state.object_hits_sandbox = {}; 
         },
         reset: (state) => {
             state.object_hits = {};
             state.object_hits_sandbox = {};
-        }
+        },
+        set_urls(state, config) {
+            state.url_api_projects_hits = config.url_api_projects_hits;
+        },
 	},
 	actions: {
 	},
