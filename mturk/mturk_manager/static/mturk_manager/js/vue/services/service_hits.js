@@ -3,7 +3,7 @@ import {Service_Assignments} from "./service_assignments";
 import {Service_Endpoint} from "./service_endpoint";
 
 class Class_Service_HITs {
-    async load_page(pagination) {
+    async load_page(pagination, filters) {
 		const use_sandbox = store.getters["get_use_sandbox"];
 
         const response = await Service_Endpoint.make_request({
@@ -18,6 +18,7 @@ class Class_Service_HITs {
                 page_size: pagination.rowsPerPage,
                 sort_by: pagination.sortBy,
                 descending: pagination.descending,
+                ...filters,
             }
         });
 

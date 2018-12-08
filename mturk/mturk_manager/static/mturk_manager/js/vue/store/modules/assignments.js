@@ -7,6 +7,7 @@ import _ from 'lodash';
 import Assignment from '../../classes/assignment.js';
 
 import VueCookies from 'vue-cookies'
+import HIT from "../../classes/hit";
 Vue.use(Vuex)
 Vue.use(VueCookies)
 Vue.use(VueAxios, axios)
@@ -16,10 +17,21 @@ export const moduleAssignments = {
 	state: {
         object_assignments: {},
 		object_assignments_sandbox: {},
+
+        array_assignments: null,
+        array_assignments_sandbox: null,
+        url_api_projects_assignments: undefined,
+
 		set_ids_worker: null,
 		assignments_selected: [],
 	},
     getters: {
+        get_array_assignments: (state) => {
+            return state.array_assignments
+        },
+        get_array_assignments_sandbox: (state) => {
+            return state.array_assignments_sandbox
+        },
         get_object_assignments: (state, getters, rootState) => (use_sandbox=undefined) => {
             if(use_sandbox == undefined)
             {
@@ -40,40 +52,56 @@ export const moduleAssignments = {
         },
     },
 	mutations: {
-		set_assignments(state, {data_batches, object_hits, use_sandbox}) {
-            let object_assignments = null;
+        set_assignments(state, {data, use_sandbox}) {
+            let array_assignments = null;
             if(use_sandbox)
             {
-                object_assignments = state.object_assignments_sandbox;
+                state.array_assignments_sandbox = [];
+                array_assignments = state.array_assignments_sandbox;
             } else {
-                object_assignments = state.object_assignments;
+                state.array_assignments = [];
+                array_assignments = state.array_assignments;
             }
-            // console.log('########')
-            state.set_ids_worker = new Set(); 
 
-            _.forEach(data_batches, function(data_batch) {
-                _.forEach(data_batch.hits, function(data_hit) {
-	            	const id_hit = data_hit.id;
-	            	const hit = object_hits[id_hit];
-
-
-	                _.forEach(data_hit.assignments, function(data_assignment) {
-	                	state.set_ids_worker.add(data_assignment.worker);
-	                	data_assignment.hit = hit;
-	                	// console.log(hit)
-			            const assignment = new Assignment(data_assignment);
-	                	// console.log(assignment)
-
-			            Vue.set(object_assignments, assignment.id, assignment);
-
-			            Vue.set(hit.object_assignments, assignment.id, assignment);
-		            });
-                });
+            _.forEach(data, function(data){
+                const assignment = new Assignment(data);
+                Vue.set(array_assignments, array_assignments.length, assignment);
             });
-            // console.log('########')
-
-            // console.log(state.set_ids_worker);
-		},
+        },
+		// set_assignments(state, {data_assignments, object_hits, use_sandbox}) {
+        //     let object_assignments = null;
+        //     if(use_sandbox)
+        //     {
+        //         object_assignments = state.object_assignments_sandbox;
+        //     } else {
+        //         object_assignments = state.object_assignments;
+        //     }
+        //     // console.log('########')
+        //     state.set_ids_worker = new Set();
+        //
+        //     _.forEach(data_batches, function(data_batch) {
+        //         _.forEach(data_batch.hits, function(data_hit) {
+	    //         	const id_hit = data_hit.id;
+	    //         	const hit = object_hits[id_hit];
+        //
+        //
+	    //             _.forEach(data_hit.assignments, function(data_assignment) {
+	    //             	state.set_ids_worker.add(data_assignment.worker);
+	    //             	data_assignment.hit = hit;
+	    //             	// console.log(hit)
+		// 	            const assignment = new Assignment(data_assignment);
+	    //             	// console.log(assignment)
+        //
+		// 	            Vue.set(object_assignments, assignment.id, assignment);
+        //
+		// 	            Vue.set(hit.object_assignments, assignment.id, assignment);
+		//             });
+        //         });
+        //     });
+        //     // console.log('########')
+        //
+        //     // console.log(state.set_ids_worker);
+		// },
         clear_sandbox(state) {
             state.object_assignments_sandbox = {}; 
         },
@@ -119,7 +147,10 @@ export const moduleAssignments = {
             state.object_assignments_sandbox = {};
             state.set_ids_worker = null;
             state.assignments_selected = [];
-        }
+        },
+        set_urls(state, config) {
+            state.url_api_projects_assignments = config.url_api_projects_assignments;
+        },
 	},
 	actions: {
 	},

@@ -1,4 +1,7 @@
 import json
+
+from rest_framework.settings import api_settings
+
 from api.serializers import Serializer_Assignment
 from mturk_db.permissions import IsInstance, AllowOptionsAuthentication
 from django.http import Http404
@@ -17,13 +20,30 @@ class Assignments(APIView):
 
     @add_database_object_project
     def get(self, request, slug_project, database_object_project, use_sandbox, format=None):
-        list_ids = json.loads(request.query_params.get('list_ids', '[]'))
+        queryset_batches = Manager_Assignments.get(
+            database_object_project=database_object_project,
+            use_sandbox=use_sandbox,
+            request=request
+        )
 
-        queryset_assignments = Manager_Assignments.get_all(database_object_project=database_object_project, use_sandbox=use_sandbox, list_ids=list_ids)
-        # queryset_projects = m_Project.objects.all()
-        # serializer = Serializer_Project(queryset_projects, many=True, context={'request': request})
-        serializer = Serializer_Assignment(queryset_assignments, many=True)
-        return Response(serializer.data)
+        paginator = api_settings.DEFAULT_PAGINATION_CLASS()
+        batches_paginated = paginator.paginate_queryset(queryset_batches, request)
+
+        serializer = Serializer_Assignment(batches_paginated, many=True)
+
+        return Response({
+            'items_total': queryset_batches.count(),
+            'data': serializer.data,
+        })
+    # @add_database_object_project
+    # def get(self, request, slug_project, database_object_project, use_sandbox, format=None):
+    #     list_ids = json.loads(request.query_params.get('list_ids', '[]'))
+    #
+    #     queryset_assignments = Manager_Assignments.get_all(database_object_project=database_object_project, use_sandbox=use_sandbox, list_ids=list_ids)
+    #     # queryset_projects = m_Project.objects.all()
+    #     # serializer = Serializer_Project(queryset_projects, many=True, context={'request': request})
+    #     serializer = Serializer_Assignment(queryset_assignments, many=True)
+    #     return Response(serializer.data)
 
     @add_database_object_project
     def put(self, request, slug_project, database_object_project, use_sandbox, format=None):

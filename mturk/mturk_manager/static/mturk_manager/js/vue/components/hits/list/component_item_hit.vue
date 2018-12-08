@@ -15,16 +15,16 @@
             {{ hit.id_hit }}
         </td>
         <td class="text-xs-center">
-            {{ hit.batch.name }}
+            {{ hit.batch.name.toUpperCase() }}
             <v-btn
-                slot="activator" 
+                slot="activator"
                 class="my-0"
                 icon
                 small
                 v-bind:to="{
                     name: 'batch',
                     params: {
-                        slug_project: $route.params.slug_project, 
+                        slug_project: $route.params.slug_project,
                         id_batch: hit.batch.id,
                     }
                 }"
@@ -35,28 +35,28 @@
         <td 
             class="text-xs-center"
         >
-            <!--<component-progress-->
-                <!--slot="activator"-->
-                <!--v-bind:progress="hit.progress"-->
-            <!--&gt;-->
-                <!--{{ hit.count_assignments_available }}/{{hit.count_assignments_total}} assignment{{hit.count_assignments_total > 1 ? 's' : ''}}-->
-            <!--</component-progress>-->
+            <component-progress
+                slot="activator"
+                v-bind:progress="hit.progress"
+            >
+                {{ hit.count_assignments_available }}/{{hit.count_assignments_total}} assignment{{hit.count_assignments_total > 1 ? 's' : ''}}
+            </component-progress>
         </td>
         <td 
             class="text-xs-center"
             v-if="show_links == true"
         >
             <v-btn
-                slot="activator" 
+                slot="activator"
                 class="my-0"
                 icon
                 small
                 v-bind:to="{
-                    name: 'hit', 
-                    params: { 
-                        slug_project: $route.params.slug_project, 
-                        id_hit: hit.id, 
-                    } 
+                    name: 'hit',
+                    params: {
+                        slug_project: $route.params.slug_project,
+                        id_hit: hit.id,
+                    }
                 }"
             >
                 <v-icon>info</v-icon>

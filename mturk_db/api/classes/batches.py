@@ -1,3 +1,5 @@
+from django.db.models.functions import Coalesce
+
 from api.classes.projects import Manager_Projects
 from api.models import Batch, Template_Worker, HIT, Assignment, Settings_Batch, Worker
 # from viewer.models import m_Tag
@@ -406,6 +408,9 @@ class Manager_Batches(object):
             use_sandbox=use_sandbox,
         ).annotate(
             count_hits=Count('hits')
+        ).annotate(
+            count_assignments_available=Coalesce(Count('hits__assignments', distinct=True), 0),
+            count_assignments_total=F('count_hits') * F('settings_batch__count_assignments')
         )
 
         sort_by = request.query_params.get('sort_by')

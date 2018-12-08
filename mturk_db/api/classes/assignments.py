@@ -1,4 +1,6 @@
 # from api.classes.projects import Manager_Projects
+import json
+
 from api.enums import assignments
 from api.classes.projects import Manager_Projects
 from api.models import Assignment
@@ -12,6 +14,41 @@ from api.models import Assignment
 # from django.conf import settings as settings_django
 
 class Manager_Assignments(object):
+    @staticmethod
+    def get(database_object_project, use_sandbox, request):
+        queryset = Assignment.objects.filter(
+            hit__batch__project=database_object_project,
+            hit__batch__use_sandbox=use_sandbox,
+        )
+
+        id_batch = request.query_params.get('id_batch')
+        if id_batch is not None:
+            queryset = queryset.filter(hit__batch__id=id_batch)
+
+        id_hit = request.query_params.get('id_hit')
+        if id_hit is not None:
+            queryset = queryset.filter(hit__id=id_hit)
+
+        show_only_submitted_assignments = json.loads(request.query_params.get('show_only_submitted_assignments', False))
+        if show_only_submitted_assignments == True:
+            queryset = queryset.filter(status_external__isnull=True)
+
+        filter_worker = request.query_params.get('worker', '')
+        if filter_worker != '':
+            queryset = queryset.filter(worker__id_worker__icontains=filter_worker)
+
+        queryset = queryset.annotate(
+        )
+
+        sort_by = request.query_params.get('sort_by')
+        if sort_by is not None:
+            descending = request.query_params.get('descending', 'false') == 'true'
+            queryset = queryset.order_by(
+                ('-' if descending else '') + sort_by
+            )
+
+        return queryset
+
     @classmethod
     def get_all(cls, database_object_project, list_ids, use_sandbox=True):
         # import time

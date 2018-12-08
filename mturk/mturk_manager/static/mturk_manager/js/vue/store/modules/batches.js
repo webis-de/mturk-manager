@@ -200,7 +200,7 @@ export const moduleBatches = {
         //     };
         //     state.object_batches = dict_batches;
         // },
-        set_batches(state, {data_batches, use_sandbox}) {
+        set_batches(state, {data, use_sandbox}) {
             let array_batches = null;
             if(use_sandbox)
             {
@@ -211,7 +211,7 @@ export const moduleBatches = {
                 array_batches = state.array_batches;
             }
 
-            _.forEach(data_batches, function(data_batch){
+            _.forEach(data, function(data_batch){
                 const batch = new Batch(data_batch);
                 Vue.set(array_batches, array_batches.length, batch);
                 // Vue.set(object_batches, batch.id, batch);

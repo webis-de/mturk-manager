@@ -124,6 +124,7 @@ export const store = new Vuex.Store({
 
             commit('moduleBatches/set_urls', config);
             commit('moduleHITs/set_urls', config);
+            commit('moduleAssignments/set_urls', config);
 
             commit('moduleKeywords/set_urls', config);
             commit('moduleMessagesReject/set_urls', config);

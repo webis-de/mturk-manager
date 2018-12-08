@@ -112,13 +112,16 @@ class Class_Service_Batches {
         });
 
         store.commit('moduleBatches/set_batches', {
-            data_batches: response.data.data,
+            data: response.data.data,
             use_sandbox
         });
 
         return response.data.items_total;
     }
 
+    get_batch(id_batch) {
+        console.log('id_batch', id_batch);
+    }
 }
 
 

@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from api.models import HIT
-from api.serializers import Serializer_Assignment
+from api.serializers import Serializer_Batch
+
 
 # from mturk_manager.classes import Manager_HITs
 
@@ -32,7 +33,11 @@ class Serializer_HIT(serializers.ModelSerializer):
     # # is_active = IsActiveField(source='QualificationTypeStatus', required=False)
     # is_requestable = serializers.NullBooleanField(source='IsRequestable', required=False)
     # is_auto_granted = serializers.NullBooleanField(source='AutoGranted', required=False)
-    assignments = Serializer_Assignment(many=True, read_only=True)
+    # assignments = Serializer_Assignment(many=True, read_only=True)
+    batch = Serializer_Batch(read_only=True)
+    count_assignments_available = serializers.IntegerField(required=False)
+    count_assignments_total = serializers.IntegerField(required=False)
+
 
     class Meta:
         model = HIT
@@ -44,7 +49,9 @@ class Serializer_HIT(serializers.ModelSerializer):
             'datetime_expiration',
             'parameters',
             'count_assignments_additional',
-            'assignments',
+            'count_assignments_available',
+            'count_assignments_total'
+            # 'assignments',
         )
         extra_kwargs = {
         }

@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from api.models import Batch
 from api.classes import Manager_Batches
-from api.serializers import Serializer_HIT, Serializer_Settings_Batch, Serializer_Keyword, Serializer_Template_Worker
+from api.serializers import Serializer_Settings_Batch, Serializer_Keyword, Serializer_Template_Worker
 
 # class IsActiveField(serializers.Field):
 #     def to_representation(self, obj):
@@ -23,6 +23,8 @@ class Serializer_Batch(serializers.ModelSerializer):
     data_csv = serializers.ListField(required=False)
     # hits = Serializer_HIT(many=True, read_only=True)
     count_hits = serializers.IntegerField(required=False)
+    count_assignments_available = serializers.IntegerField(required=False)
+    count_assignments_total = serializers.IntegerField(required=False)
 
     class Meta:
         model = Batch
@@ -36,6 +38,8 @@ class Serializer_Batch(serializers.ModelSerializer):
             # 'hits',
             'data_csv',
             'settings_batch',
+            'count_assignments_available',
+            'count_assignments_total'
         )
         extra_kwargs = {
             # 'template': {

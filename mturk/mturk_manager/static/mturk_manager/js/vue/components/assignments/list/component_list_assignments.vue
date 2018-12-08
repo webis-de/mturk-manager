@@ -9,14 +9,14 @@
         </v-layout>
         <v-layout>
             <v-flex class="shrink" mr-3>
-                <v-switch label="Only Submitted" v-model="show_only_submitted_assignments"></v-switch>
+                <v-switch label="Only Submitted" v-model="filters.show_only_submitted_assignments"></v-switch>
             </v-flex>
             <v-flex>
                 <v-text-field
-                    v-model="search"
                     append-icon="search"
                     label="Filter by worker"
                     hide-details
+                    v-model="filters.worker"
                     class="mb-2"
                 ></v-text-field>
             </v-flex>
@@ -25,12 +25,12 @@
             <v-flex>
                 <v-data-table
                     select-all
-                    v-bind:pagination.sync="pagination"
                     v-bind:headers="list_headers"
-                    v-bind:items="list_assignments_processed"
-                    v-bind:search="search"
-                    v-bind:custom-filter="custom_filter"
+                    v-bind:items="array_assignments_prepared"
+                    v-bind:pagination.sync="pagination"
+                    v-bind:total-items="items_total"
                     v-model="assignments_selected_local"
+                    v-bind:loading="loading"
                     item-key="id"
                     class="my-3"
                 >
@@ -86,15 +86,20 @@
     // import ComponentShowBatches from './component-show-batches.vue';
     import table from '../../../mixins/table';
     import {STATUS_EXTERNAL} from "../../../classes/enums";
+    import {update_sandbox} from "../../../mixins/update_sandbox";
+    import {external_pagination} from "../../../mixins/external_pagination";
+    import {Service_Assignments} from "../../../services/service_assignments";
 export default {
     mixins: [
         table,
+        update_sandbox,
+        external_pagination,
     ],
     name: 'component-list-assignments',
     props: {
-        list_assignments: {
+        id_hit: {
             required: false,
-            type: Array|undefined,
+            type: Number,
         },
         show_links: {
             required: false,
@@ -106,9 +111,12 @@ export default {
         return {
             // assignments_selected: [],
             pagination: { rowsPerPage: 25 },
-            show_only_submitted_assignments: false,
-            search: '',
-
+            filters: {
+                show_only_submitted_assignments: false,
+                worker: '',
+            },
+            items_total: undefined,
+            loading: false,
             // search: 'A10BOAO1EONNS7',
             // policy_new: new Policy({
             //     QualificationTypeStatus: 'Active',
@@ -125,6 +133,25 @@ export default {
     			this.set_assignments_selected(value);
     		},
     	},
+        array_assignments_prepared() {
+            let array_assignments_prepared = undefined;
+            if(this.use_sandbox === true)
+            {
+                array_assignments_prepared = this.array_assignments_sandbox;
+            } else {
+                array_assignments_prepared = this.array_assignments;
+            }
+
+            if(array_assignments_prepared === null) {
+                return [];
+            }
+            console.log('array_assignments_prepared', array_assignments_prepared);
+            return array_assignments_prepared;
+        },
+        ...mapGetters('moduleAssignments', {
+            'array_assignments': 'get_array_assignments',
+            'array_assignments_sandbox': 'get_array_assignments_sandbox',
+        }),
         list_headers() {
             const list_headers = [
                 {
@@ -176,21 +203,28 @@ export default {
             'assignments_selected': 'assignments_selected',
         }),
     },
+    watch: {
+        filters: {
+            handler() {
+                this.pagination_updated(this.pagination);
+            },
+            deep: true,
+        }
+    },
     methods: {
-        custom_filter(items, search, filter) {
-            if(this.show_only_submitted_assignments)
-            {
-                items = items.filter(e => e.status_external === null);
-            }
-
-            search = search.trim()
-            if(search != '')
-            {
-                items = items.filter(e => filter(e.worker.id_worker, search));
-
-            }
-            // console.log(filter)
-            return items
+        pagination_updated(pagination) {
+            this.loading = true;
+            console.log('this.id_hit', this.id_hit);
+            Service_Assignments.load_page(pagination, {
+                id_hit: this.id_hit,
+                ...this.filters,
+            }).then((items_total) => {
+                this.items_total = items_total;
+                this.loading = false;
+            });
+        },
+        sandbox_updated() {
+            this.pagination_updated(this.pagination);
         },
         ...mapMutations('moduleAssignments', {
             'set_assignments_selected': 'set_assignments_selected',

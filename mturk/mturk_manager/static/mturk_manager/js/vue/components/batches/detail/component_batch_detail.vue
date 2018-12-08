@@ -18,7 +18,7 @@
         </h2>
         <v-divider class="my-3"></v-divider>
         <component-list-hits
-            v-bind:list_hits="list_hits"
+            v-bind:id_batch="id_batch"
         ></component-list-hits>
 	</v-flex>
 </v-layout>
@@ -28,6 +28,7 @@
     import { mapState, mapActions, mapGetters } from 'vuex';
     import ComponentListHits from '../../hits/list/component_list_hits.vue';
     import _ from 'lodash';
+    import {Service_Batches} from "../../../services/service_batches";
 
 export default {
     name: 'component-batch-detail',
@@ -110,6 +111,9 @@ export default {
             'get_object_batches': 'get_object_batches',
         }),
         ...mapGetters(['get_show_progress_indicator']),
+    },
+    created: function () {
+        Service_Batches.get_batch(this.id_batch);
     },
     methods: {
     },

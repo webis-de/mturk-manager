@@ -9,9 +9,11 @@
             v-bind:headers="list_headers"
             v-bind:items="array_hits_prepared"
             v-bind:search="search"
+            v-bind:total-items="items_total"
             v-model="hits_selected"
             item-key="id"
             class="my-3"
+            v-bind:loading="loading"
         >
             <template slot="headers" slot-scope="props">
                 <tr id="row_header">
@@ -66,6 +68,7 @@
     import {update_sandbox} from "../../../mixins/update_sandbox";
     import {external_pagination} from "../../../mixins/external_pagination";
     import {Service_HITs} from "../../../services/service_hits";
+    import Batch from "../../../classes/batch";
 export default {
     mixins: [
         // table,
@@ -74,9 +77,9 @@ export default {
     ],
     name: 'component-list-hits',
     props: {
-        list_hits: {
+        id_batch: {
             required: false,
-            type: Array,
+            type: Number,
         },
         show_links: {
             required: false,
@@ -90,6 +93,10 @@ export default {
             pagination: { rowsPerPage: 25 },
 
             search: '',
+
+            items_total: undefined,
+
+            loading: false,
 
             // search: 'A10BOAO1EONNS7',
             // policy_new: new Policy({
@@ -111,13 +118,13 @@ export default {
             if(array_hits_current === null) {
                 return [];
             }
-
+            console.log('array_hits_current', array_hits_current);
             return array_hits_current;
         },
         list_headers() {
             const list_headers = [
                 {
-                    text: 'Name',
+                    text: 'ID',
                     value: 'id_hit',
                 },
                 {
@@ -141,12 +148,7 @@ export default {
             return list_headers;
         },
         list_hits_processed() {
-            if(this.list_hits != undefined)
-            {
-                return this.list_hits;
-            } else {
-                return this.list_hits_all;
-            }
+            return [];
         },
         // ...mapGetters('moduleProjects', {
         //     'project_current': 'get_project_current',
@@ -159,8 +161,12 @@ export default {
     },
     methods: {
         pagination_updated(pagination) {
-            Service_HITs.load_page(pagination).then((items_total) => {
+            this.loading = true;
+            Service_HITs.load_page(pagination,{
+                id_batch: this.id_batch,
+            }).then((items_total) => {
                 this.items_total = items_total;
+                this.loading = false;
             });
         },
         sandbox_updated() {

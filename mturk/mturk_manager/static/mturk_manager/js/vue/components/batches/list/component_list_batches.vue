@@ -3,7 +3,6 @@
             <h1 class="headline">Batches</h1>
             <!-- {{list_batches}} -->
                 <!--v-bind:search="search"-->
-            {{pagination}}
             <v-data-table
                 select-all
                 v-bind:headers="list_headers"
@@ -89,6 +88,7 @@ export default {
             pagination: { rowsPerPage: 25, sortBy: 'datetime_creation', descending: true },
 
             search: '',
+            items_total: undefined,
 
             // search: 'A10BOAO1EONNS7',
             // policy_new: new Policy({

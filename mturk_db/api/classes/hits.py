@@ -1,4 +1,6 @@
 # from api.classes.projects import Manager_Projects
+from django.db.models import Count, F
+
 from api.models import HIT
 # # from viewer.models import m_Tag
 # # from api.views import code_shared, project
@@ -27,6 +29,17 @@ class Manager_HITs(object):
         queryset = HIT.objects.filter(
             batch__project=database_object_project,
             batch__use_sandbox=use_sandbox,
+        )
+
+        id_batch = request.query_params.get('id_batch')
+        if id_batch is not None:
+            queryset = queryset.filter(
+                batch__id=id_batch,
+            )
+
+        queryset = queryset.annotate(
+            count_assignments_available=Count('assignments'),
+            count_assignments_total=F('batch__settings_batch__count_assignments'),
         )
 
         sort_by = request.query_params.get('sort_by')

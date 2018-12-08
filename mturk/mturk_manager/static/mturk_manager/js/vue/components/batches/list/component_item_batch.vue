@@ -14,7 +14,7 @@
         <td 
             class="text-xs-center"
         >
-            {{ batch.name }}
+            {{ batch.name.toUpperCase() }}
         </td>
 
         <td 

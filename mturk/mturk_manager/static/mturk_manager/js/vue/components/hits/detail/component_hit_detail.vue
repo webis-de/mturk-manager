@@ -18,7 +18,7 @@
         </h2>
         <v-divider class="my-3"></v-divider>
         <component-list-assignments
-            v-bind:list_assignments="list_assignments"
+                v-bind:id_hit="id_hit"
         ></component-list-assignments>
     </v-flex>
 </v-layout>

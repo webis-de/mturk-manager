@@ -10,6 +10,8 @@ from api.models import Assignment
 #     def to_internal_value(self, data):
 #         data = True if data == 'true' else False
 #         return 'Active' if data == True else 'Inactive'
+from api.serializers import Serializer_HIT, Serializer_Worker
+
 
 class Serializer_Assignment(serializers.ModelSerializer):
 # class Serializer_Batch(serializers.Serializer):
@@ -32,6 +34,8 @@ class Serializer_Assignment(serializers.ModelSerializer):
     # is_requestable = serializers.NullBooleanField(source='IsRequestable', required=False)
     # is_auto_granted = serializers.NullBooleanField(source='AutoGranted', required=False)
     answer = serializers.JSONField()
+    hit = Serializer_HIT(read_only=True)
+    worker = Serializer_Worker(read_only=True)
 
     class Meta:
         model = Assignment
@@ -44,6 +48,8 @@ class Serializer_Assignment(serializers.ModelSerializer):
             'status_external',
             'status_internal',
             'datetime_update',
+            'hit',
+            'worker',
             # 'batch',
             # 'datetime_creation',
             # 'datetime_expiration',

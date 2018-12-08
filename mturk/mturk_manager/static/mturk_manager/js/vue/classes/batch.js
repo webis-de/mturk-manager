@@ -9,36 +9,17 @@ export default class Batch
 		this.name = data.name;
 		this.id_project = data.id_project;
 		this.use_sandbox = data.use_sandbox;
-		this.object_hits = {};
+		// this.object_hits = {};
 		this.settings_batch = data.settings_batch;
 		this.count_hits = data.count_hits;
 		this.datetime_creation = new Date(data.datetime_creation);
+		this.count_assignments_available= data.count_assignments_available;
+		this.count_assignments_total= data.count_assignments_total;
 		// this._count_assignments_total = null;
 		// this._count_assignments_available = null;
 		// this._progress = null;
 		// this._datetime_creation = null;
 	}
-
-    get count_assignments_total() {
-    	// if(this._count_assignments_total != null) return this._count_assignments_total;
-
-    	const count_assignments_total = this.settings_batch.count_assignments * _.size(this.object_hits);
-    	// this._count_assignments_total = count_assignments_total;
-        return count_assignments_total;
-    }
-
-    get count_assignments_available() {
-    	// if(this._count_assignments_available != null) return this._count_assignments_available;
-
-        let count_assignments_available = 0;
-        // console.log('EXPENSIVE1')
-        _.forEach(this.object_hits, (hit) => {
-            count_assignments_available += _.size(hit.object_assignments);
-        });
-
-    	// this._count_assignments_available = count_assignments_available;
-        return count_assignments_available;
-    }
 
     get progress() {
     	// if(this._progress != null) return this._progress;
