@@ -2,9 +2,6 @@ import { mapState, mapActions } from 'vuex';
 
 export const update_sandbox =  {
 	methods: {
-	    sandbox_updated(use_sandbox) {
-
-        },
         ...mapActions(['set_show_progress_indicator']),
 	},
 	computed: {

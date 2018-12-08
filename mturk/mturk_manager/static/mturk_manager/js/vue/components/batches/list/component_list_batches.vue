@@ -73,15 +73,15 @@
     import ComponentItemBatch from './component_item_batch.vue';
     // import ComponentShowMoneySpent from './component-show-money-spent.vue';
     // import ComponentShowBatches from './component-show-batches.vue';
-    import table from '../../../mixins/table';
+    import {table} from '../../../mixins/table';
     import {update_sandbox} from "../../../mixins/update_sandbox";
     import {external_pagination} from "../../../mixins/external_pagination";
     import {Service_Batches} from "../../../services/service_batches";
 export default {
     mixins: [
-        // table,
         update_sandbox,
         external_pagination,
+        table,
     ],
     name: 'component-list-batches',
     data () {
@@ -166,16 +166,24 @@ export default {
         }),
     },
     methods: {
-        pagination_updated(pagination) {
+        load_page() {
             this.loading = true;
-            Service_Batches.load_page(pagination).then((items_total) => {
+            Service_Batches.load_page(this.pagination, {
+            }).then((items_total) => {
                 this.items_total = items_total;
                 this.loading = false;
             });
         },
-        sandbox_updated() {
-            this.pagination_updated(this.pagination);
-        },
+        // pagination_updated(pagination) {
+        //     this.loading = true;
+        //     Service_Batches.load_page(pagination).then((items_total) => {
+        //         this.items_total = items_total;
+        //         this.loading = false;
+        //     });
+        // },
+        // sandbox_updated() {
+        //     this.pagination_updated(this.pagination);
+        // },
         // ...mapActions('moduleWorkers', {
             // 'update_status_block': 'update_status_block',
         // }),

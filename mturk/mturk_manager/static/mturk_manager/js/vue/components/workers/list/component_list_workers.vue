@@ -126,12 +126,14 @@
     import {Service_Workers} from "../../../services/service_worker";
     import {update_sandbox} from "../../../mixins/update_sandbox";
     import {external_pagination} from "../../../mixins/external_pagination";
+    import {table} from "../../../mixins/table";
     // import ComponentShowMoneySpent from './component-show-money-spent.vue';
     // import ComponentShowBatches from './component-show-batches.vue';
 export default {
     mixins: [
         update_sandbox,
         external_pagination,
+        table,
     ],
     name: 'component-list-workers',
     data () {
@@ -142,6 +144,8 @@ export default {
             show_dialog_policy: false,
             policy_to_be_edited: null,
 
+
+            items_total: undefined,
             // items_per_page: [12, 24],
 
             filters: {
@@ -236,24 +240,15 @@ export default {
             'project_current': 'get_project_current',
         }),
     },
-    watch: {
-        filters: {
-            handler() {
-                this.pagination_updated(this.pagination);
-            },
-            deep: true,
-        }
-    },
     methods: {
-        pagination_updated(pagination) {
-            Service_Workers.load_page(pagination, {
+        load_page() {
+            this.loading = true;
+            Service_Workers.load_page(this.pagination, {
                 ...this.filters,
             }).then((items_total) => {
                 this.items_total = items_total;
+                this.loading = false;
             });
-        },
-        sandbox_updated() {
-            this.pagination_updated(this.pagination);
         },
         // custom_filter(items, search, filter) {
         //     if(!this.show_workers_blocked_none)

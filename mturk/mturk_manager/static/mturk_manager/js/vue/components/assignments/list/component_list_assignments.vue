@@ -84,16 +84,16 @@
     import ComponentItemAssignment from './component_item_assignment.vue';
     // import ComponentShowMoneySpent from './component-show-money-spent.vue';
     // import ComponentShowBatches from './component-show-batches.vue';
-    import table from '../../../mixins/table';
+    import {table} from '../../../mixins/table';
     import {STATUS_EXTERNAL} from "../../../classes/enums";
     import {update_sandbox} from "../../../mixins/update_sandbox";
     import {external_pagination} from "../../../mixins/external_pagination";
     import {Service_Assignments} from "../../../services/service_assignments";
 export default {
     mixins: [
-        table,
         update_sandbox,
         external_pagination,
+        table,
     ],
     name: 'component-list-assignments',
     props: {
@@ -145,7 +145,7 @@ export default {
             if(array_assignments_prepared === null) {
                 return [];
             }
-            console.log('array_assignments_prepared', array_assignments_prepared);
+
             return array_assignments_prepared;
         },
         ...mapGetters('moduleAssignments', {
@@ -203,28 +203,16 @@ export default {
             'assignments_selected': 'assignments_selected',
         }),
     },
-    watch: {
-        filters: {
-            handler() {
-                this.pagination_updated(this.pagination);
-            },
-            deep: true,
-        }
-    },
     methods: {
-        pagination_updated(pagination) {
+        load_page() {
             this.loading = true;
-            console.log('this.id_hit', this.id_hit);
-            Service_Assignments.load_page(pagination, {
+            Service_Assignments.load_page(this.pagination, {
                 id_hit: this.id_hit,
                 ...this.filters,
             }).then((items_total) => {
                 this.items_total = items_total;
                 this.loading = false;
             });
-        },
-        sandbox_updated() {
-            this.pagination_updated(this.pagination);
         },
         ...mapMutations('moduleAssignments', {
             'set_assignments_selected': 'set_assignments_selected',

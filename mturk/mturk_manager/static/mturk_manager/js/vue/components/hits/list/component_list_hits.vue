@@ -64,16 +64,16 @@
     import ComponentItemHit from './component_item_hit.vue';
     // import ComponentShowMoneySpent from './component-show-money-spent.vue';
     // import ComponentShowBatches from './component-show-batches.vue';
-    import table from '../../../mixins/table';
+    import {table} from '../../../mixins/table';
     import {update_sandbox} from "../../../mixins/update_sandbox";
     import {external_pagination} from "../../../mixins/external_pagination";
     import {Service_HITs} from "../../../services/service_hits";
     import Batch from "../../../classes/batch";
 export default {
     mixins: [
-        // table,
         update_sandbox,
         external_pagination,
+        table,
     ],
     name: 'component-list-hits',
     props: {
@@ -118,7 +118,7 @@ export default {
             if(array_hits_current === null) {
                 return [];
             }
-            console.log('array_hits_current', array_hits_current);
+
             return array_hits_current;
         },
         list_headers() {
@@ -160,17 +160,14 @@ export default {
         }),
     },
     methods: {
-        pagination_updated(pagination) {
+        load_page() {
             this.loading = true;
-            Service_HITs.load_page(pagination,{
+            Service_HITs.load_page(this.pagination, {
                 id_batch: this.id_batch,
             }).then((items_total) => {
                 this.items_total = items_total;
                 this.loading = false;
             });
-        },
-        sandbox_updated() {
-            this.pagination_updated(this.pagination);
         },
         // ...mapActions('moduleWorkers', {
             // 'update_status_block': 'update_status_block',
