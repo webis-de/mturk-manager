@@ -29,7 +29,7 @@ class Manager_Assignments(object):
         if id_hit is not None:
             queryset = queryset.filter(hit__id=id_hit)
 
-        show_only_submitted_assignments = json.loads(request.query_params.get('show_only_submitted_assignments', False))
+        show_only_submitted_assignments = json.loads(request.query_params.get('show_only_submitted_assignments', 'false'))
         if show_only_submitted_assignments == True:
             queryset = queryset.filter(status_external__isnull=True)
 

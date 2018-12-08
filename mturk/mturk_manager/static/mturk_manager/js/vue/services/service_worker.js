@@ -3,6 +3,7 @@ import _ from "lodash";
 import {Service_Endpoint} from "./service_endpoint";
 import {Service_Batches} from "./service_batches";
 import Vue from 'vue';
+import load_data from "../mixins/load_data";
 
 class Class_Service_Workers {
     async load_workers({list_ids, use_sandbox, append})
@@ -156,7 +157,7 @@ class Class_Service_Workers {
         });
     }
 
-    async load_page(pagination) {
+    async load_page(pagination, filters) {
 		const use_sandbox = store.getters["get_use_sandbox"];
 
         const response = await Service_Endpoint.make_request({
@@ -169,12 +170,33 @@ class Class_Service_Workers {
             params: {
                 page: pagination.page,
                 page_size: pagination.rowsPerPage,
+                ...filters,
             }
         });
 
         store.commit('moduleWorkers/set_workers', {
-            data_workers: response.data.data,
+            data: response.data.data,
             use_sandbox,
+        });
+
+        // fetch worker blocks asynchronously
+        Service_Endpoint.make_request({
+            method: 'patch',
+            url: {
+                url: store.getters["get_url"]('url_api_workers_get_blocks_hard', 'moduleWorkers'),
+                use_sandbox,
+                project: store.getters['moduleProjects/get_project_current'],
+            },
+            params: {
+                // page: pagination.page,
+                // page_size: pagination.rowsPerPage,
+                // ...filters,
+            }
+        }).then((data) => {
+            store.commit('moduleWorkers/set_blocks_hard', {
+                data: data.data,
+                use_sandbox,
+            });
         });
 
         return response.data.items_total;

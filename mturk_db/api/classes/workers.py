@@ -1,3 +1,5 @@
+import json
+
 from api.models import Worker, Worker_Block_Project, Count_Assignments_Worker_Project, Assignment_Worker
 from api.classes.projects import Manager_Projects
 from api.enums import STATUS_BLOCK
@@ -35,16 +37,23 @@ class Manager_Workers(object):
     #     )
 
     @staticmethod
-    def get(database_object_project, use_sandbox):
+    def get(database_object_project, use_sandbox, request):
         foo = Count_Assignments_Worker_Project.objects.filter(
             worker=OuterRef('pk'),
             # project=database_object_project,
         )
 
-        workers = Worker.objects.filter(
+        queryset = Worker.objects.filter(
             assignments__hit__batch__project=database_object_project,
             assignments__hit__batch__use_sandbox=use_sandbox,
-        ).distinct().annotate(
+        ).distinct()
+
+        filter_worker = request.query_params.get('id_worker', '')
+        if filter_worker != '':
+            queryset = queryset.filter(id_worker__icontains=filter_worker)
+
+
+        queryset = queryset.annotate(
             count_worker_blocks=Coalesce(
                 Count(
                     'worker_blocks_project',
@@ -67,9 +76,22 @@ class Manager_Workers(object):
             #     default=Value(None),
             #     output_field=IntegerField(),
             # )
+
         )
 
-        return workers
+        show_workers_blocked_none = json.loads(request.query_params.get('show_workers_blocked_none', 'true'))
+        # if show_workers_blocked_none == False:
+        #     queryset = queryset.exclude(count_assignments_limit=True)
+
+        show_workers_blocked_limit = json.loads(request.query_params.get('show_workers_blocked_limit', 'true'))
+        if show_workers_blocked_limit == False:
+            queryset = queryset.exclude(count_assignments_limit__gt=database_object_project.count_assignments_max_per_worker)
+
+        show_workers_blocked_soft = json.loads(request.query_params.get('show_workers_blocked_soft', 'true'))
+        if show_workers_blocked_soft == False:
+            queryset = queryset.exclude(is_blocked_soft=True)
+
+        return queryset
 
     @classmethod
     def update(cls, validated_data, instance):

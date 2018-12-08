@@ -11,6 +11,9 @@ export const moduleWorkers = {
         url_api_workers: undefined,
         object_workers: {},
         object_workers_sandbox: {},
+
+        array_workers: null,
+        array_workers_sandbox: null,
         
         url_api_global_db: undefined,
         // loaded_status_block: false,
@@ -26,6 +29,12 @@ export const moduleWorkers = {
     			return use_sandbox ? state.object_workers_sandbox : state.object_workers;
     		}
     	},
+        get_array_workers: (state) => {
+            return state.array_workers
+        },
+        get_array_workers_sandbox: (state) => {
+            return state.array_workers_sandbox
+        },
     	list_workers: (state, getters, rootState) => {
     		// console.log('done')
     		// const object_current = rootState.use_sandbox ? state.object_workers_sandbox : state.object_workers;
@@ -84,18 +93,18 @@ export const moduleWorkers = {
 				object_workers = state.object_workers;
 			}
 
-			Vue.set(object_workers[worker.id], 'is_blocked_soft', data.is_blocked_soft);
+			Vue.set(worker, 'is_blocked_soft', data.is_blocked_soft);
 		},
 		update_status_block_hard(state, {worker, data, use_sandbox}) {
-			let object_workers = null;
+			let array_workers = null;
 			if(use_sandbox)
 			{
-				object_workers = state.object_workers_sandbox;
+				array_workers = state.array_workers_sandbox;
 			} else {
-				object_workers = state.object_workers;
+				array_workers = state.array_workers;
 			}
 
-			Vue.set(object_workers[worker.id], 'is_blocked_hard', data.is_blocked_hard);
+			Vue.set(worker, 'is_blocked_hard', data.is_blocked_hard);
 		},
 		update_status_block_global(state, {worker, data, use_sandbox}) {
 			let object_workers = null;
@@ -106,26 +115,26 @@ export const moduleWorkers = {
 				object_workers = state.object_workers;
 			}
 
-			Vue.set(object_workers[worker.id], 'is_blocked_global', data.is_blocked_global);
+			Vue.set(worker, 'is_blocked_global', data.is_blocked_global);
 		},
 		// update_worker_sandbox(state, data_worker) {
 		// 	const obj_worker = new Worker(data_worker);
 		// 	Vue.set(state.object_workers_sandbox, obj_worker.name, obj_worker);
 		// },
-		set_workers(state, {data_workers, use_sandbox}) {
-			let object_workers = null;
+		set_workers(state, {data, use_sandbox}) {
+			let array_workers = null;
 			if(use_sandbox)
 			{
-				state.object_workers_sandbox = {};
-				object_workers = state.object_workers_sandbox;
+				state.array_workers_sandbox = [];
+				array_workers = state.array_workers_sandbox;
 			} else {
-				state.object_workers = {};
-				object_workers = state.object_workers;
+				state.array_workers = [];
+				array_workers = state.array_workers;
 			}
 
-        	_.forEach(data_workers, function(data_worker){
+        	_.forEach(data, function(data_worker){
     			const obj_worker = new Worker(data_worker);
-    			Vue.set(object_workers, obj_worker.id, obj_worker);
+    			Vue.set(array_workers, array_workers.length, obj_worker);
         	});
 		},
 		append_workers(state, {data_workers, use_sandbox}) {
@@ -158,24 +167,19 @@ export const moduleWorkers = {
   //   			Vue.set(object_workers, obj_worker.name, obj_worker);
   //       	});
 		// },
-		set_blocks_hard(state, {array_blocks_hard, use_sandbox}) {
-			const set_blocked_hard = new Set(array_blocks_hard);
+		set_blocks_hard(state, {data, use_sandbox}) {
+        	const set_workers_blocked = new Set(data);
 
-			let object_workers = null;
+			let array_workers = null;
 			if(use_sandbox)
 			{
-				object_workers = state.object_workers_sandbox;
+				array_workers = state.array_workers_sandbox;
 			} else {
-				object_workers = state.object_workers;
+				array_workers = state.array_workers;
 			}
-
-			_.forEach(object_workers, (worker) => {
-				if(set_blocked_hard.has(worker.id)) {
-					Vue.set(worker, 'is_blocked_hard', true);
-				} else {
-					Vue.set(worker, 'is_blocked_hard', false);
-				}
-			});
+        	_.forEach(array_workers, function(worker){
+    			Vue.set(worker, 'is_blocked_hard', set_workers_blocked.has(worker.id));
+        	});
 		},
 		set_data_global_db(state, {data, use_sandbox}) {
 			const data_status_block = data.blocks;

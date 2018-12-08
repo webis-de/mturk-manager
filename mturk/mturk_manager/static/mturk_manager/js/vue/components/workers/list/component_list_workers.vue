@@ -3,18 +3,18 @@
             <v-layout>
                 <v-flex>
                     <v-layout>
-                        <v-flex class="shrink" mr-3>
-                            <v-switch label="Not Blocked" v-model="show_workers_blocked_none"></v-switch>
-                        </v-flex>
-                        <v-flex class="shrink" mr-3>
-                            <v-switch label="Limit Blocked" v-model="show_workers_blocked_limit"></v-switch>
-                        </v-flex>
-                        <v-flex class="shrink" mr-3>
-                            <v-switch label="Project Blocked" v-model="show_workers_blocked_soft"></v-switch>
-                        </v-flex>
-                        <v-flex class="shrink" mr-3>
-                            <v-switch label="Global Blocked" v-model="show_workers_blocked_hard"></v-switch>
-                        </v-flex>
+                        <!--<v-flex class="shrink" mr-3>-->
+                            <!--<v-switch label="Not Blocked" v-model="filters.show_workers_blocked_none"></v-switch>-->
+                        <!--</v-flex>-->
+                        <!--<v-flex class="shrink" mr-3>-->
+                            <!--<v-switch label="Limit Blocked" v-model="filters.show_workers_blocked_limit"></v-switch>-->
+                        <!--</v-flex>-->
+                        <!--<v-flex class="shrink" mr-3>-->
+                            <!--<v-switch label="Project Blocked" v-model="filters.show_workers_blocked_soft"></v-switch>-->
+                        <!--</v-flex>-->
+                        <!--<v-flex class="shrink" mr-3>-->
+                            <!--<v-switch label="Global Blocked" v-model="filters.show_workers_blocked_hard"></v-switch>-->
+                        <!--</v-flex>-->
                     </v-layout>
                 </v-flex>
                 
@@ -22,7 +22,7 @@
                     <v-layout>
                         <v-flex>
                             <v-text-field
-                                v-model="search"
+                                v-model="filters.id_worker"
                                 append-icon="search"
                                 label="Search for name"
                                 hide-details
@@ -33,19 +33,16 @@
                 </v-flex>
 
             </v-layout>
-            {{pagination}}
-
                 <!-- select-all -->
                 <!-- v-bind:rows-per-page-items="items_per_page" -->
                 <!--v-bind:search="search"-->
             <v-data-table
                     select-all
                 v-bind:headers="list_headers"
-                v-bind:items="list_workers"
+                v-bind:items="array_workers_prepared"
                 v-bind:pagination.sync="pagination"
                 v-bind:total-items="items_total"
                 v-model="workers_selected"
-                v-bind:custom-filter="custom_filter"
             >
                 <template slot="headers" slot-scope="props">
                     <tr class="row_header">
@@ -147,12 +144,13 @@ export default {
 
             // items_per_page: [12, 24],
 
-            search: '',
-
-            show_workers_blocked_none: true,
-            show_workers_blocked_limit: true,
-            show_workers_blocked_soft: true,
-            show_workers_blocked_hard: true,
+            filters: {
+                id_worker: '',
+                show_workers_blocked_none: true,
+                show_workers_blocked_limit: true,
+                show_workers_blocked_soft: true,
+                show_workers_blocked_hard: true,
+            },
 
             // search: 'A10BOAO1EONNS7',
             // policy_new: new Policy({
@@ -203,6 +201,25 @@ export default {
         }
     },
     computed: {
+        array_workers_prepared() {
+            let array_workers_prepared = undefined;
+            if(this.use_sandbox === true)
+            {
+                array_workers_prepared = this.array_workers_sandbox;
+            } else {
+                array_workers_prepared = this.array_workers;
+            }
+
+            if(array_workers_prepared === null) {
+                return [];
+            }
+
+            return array_workers_prepared;
+        },
+        ...mapGetters('moduleWorkers', {
+            'array_workers': 'get_array_workers',
+            'array_workers_sandbox': 'get_array_workers_sandbox',
+        }),
         list_workers() {
             return this.list_workers_processed.slice(0, 5)
         },
@@ -219,90 +236,51 @@ export default {
             'project_current': 'get_project_current',
         }),
     },
+    watch: {
+        filters: {
+            handler() {
+                this.pagination_updated(this.pagination);
+            },
+            deep: true,
+        }
+    },
     methods: {
         pagination_updated(pagination) {
-            Service_Workers.load_page(pagination).then((items_total) => {
+            Service_Workers.load_page(pagination, {
+                ...this.filters,
+            }).then((items_total) => {
                 this.items_total = items_total;
             });
         },
         sandbox_updated() {
             this.pagination_updated(this.pagination);
         },
-        // toggleAll () {
-        //     if (this.workers_selected.length) this.workers_selected = []
-        //     else this.workers_selected = this.list_workers.slice()
-        // },
-        // changeSort (column) {
-        //     if (this.pagination.sortBy === column) 
+        // custom_filter(items, search, filter) {
+        //     if(!this.show_workers_blocked_none)
         //     {
-        //         this.pagination.descending = !this.pagination.descending;
-        //     } else {
-        //         this.pagination.sortBy = column;
-        //         this.pagination.descending = false;
+        //         items = items.filter(e => !e.is_blocked_soft && !e.is_blocked_hard);
         //     }
-        // },
-        custom_filter(items, search, filter) {
-            if(!this.show_workers_blocked_none)
-            {
-                items = items.filter(e => !e.is_blocked_soft && !e.is_blocked_hard);
-            }
-            if(!this.show_workers_blocked_limit)
-            {
-                items = items.filter(e => e.count_assignments_limit >= this.project_current.count_assignments_max_per_worker);
-            }
-            if(!this.show_workers_blocked_soft)
-            {
-                items = items.filter(e => e.is_blocked_soft);
-            }
-            if(!this.show_workers_blocked_hard)
-            {
-                items = items.filter(e => e.is_blocked_hard);
-            }
-
-            search = search.trim()
-            if(search != '')
-            {
-                items = items.filter(e => filter(e.id_worker, search));
-                
-            }
-            // console.log(filter)
-            return items
-        },
-        // custom(object, search) {
-        //     console.log(object)
-        //     console.log(search)
-        //     return true
-        // },
-        // add_or_edit_policy() {
-        //     if(this.policy_to_be_edited == null)
+        //     if(!this.show_workers_blocked_limit)
         //     {
-        //         this.add_policy_custom();
-        //     } else {
-        //         this.edit_policy();
+        //         items = items.filter(e => e.count_assignments_limit >= this.project_current.count_assignments_max_per_worker);
         //     }
-        // },
-        // delete_policy(item) {
-        //     if(confirm(`Do you really want to delete the '${item.get_name()}' policy?`))
+        //     if(!this.show_workers_blocked_soft)
         //     {
-
+        //         items = items.filter(e => e.is_blocked_soft);
         //     }
-        // },
-        // init_edit_policy(policy_to_be_edited) {
-        //     this.policy_to_be_edited = policy_to_be_edited;
-        //     this.show_dialog_policy = true;
-        // },
-        // edit_policy() {
-        //     this.update_policy(this.policy_dialog).then(() => {
-        //         this.show_dialog_policy = false;
-        //     });
-        // },
-        // add_policy_custom() {
-        //     this.add_policy(this.policy_dialog).then(() => {
-        //         this.show_dialog_policy = false;
-        //     });
-        // },
-        // cancel() {
-        //     this.show_dialog_policy = false;
+        //     if(!this.show_workers_blocked_hard)
+        //     {
+        //         items = items.filter(e => e.is_blocked_hard);
+        //     }
+        //
+        //     search = search.trim()
+        //     if(search != '')
+        //     {
+        //         items = items.filter(e => filter(e.id_worker, search));
+        //
+        //     }
+        //     // console.log(filter)
+        //     return items
         // },
         ...mapActions('moduleWorkers', {
             'update_status_block': 'update_status_block',
