@@ -10,6 +10,7 @@
                 v-bind:pagination.sync="pagination"
                 v-bind:total-items="items_total"
                 v-model="batches_selected"
+                v-bind:loading="loading"
                 item-key="id"
                 class="my-3"
             >
@@ -87,6 +88,7 @@ export default {
         return {
             pagination: { rowsPerPage: 25, sortBy: 'datetime_creation', descending: true },
 
+            loading: false,
             search: '',
             items_total: undefined,
 
@@ -165,8 +167,10 @@ export default {
     },
     methods: {
         pagination_updated(pagination) {
+            this.loading = true;
             Service_Batches.load_page(pagination).then((items_total) => {
                 this.items_total = items_total;
+                this.loading = false;
             });
         },
         sandbox_updated() {
