@@ -49,6 +49,8 @@ class Serializer_Assignment(serializers.ModelSerializer):
             'status_internal',
             'datetime_update',
             'datetime_creation',
+            'datetime_submit',
+            'datetime_accept',
             'hit',
             'worker',
             # 'batch',

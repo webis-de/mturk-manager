@@ -383,6 +383,8 @@ class Manager_Batches(object):
                             hit=hit,
                             worker=worker,
                             answer=json.dumps(xmltodict.parse(assignment['Answer'])),
+                            datetime_submit=assignment['SubmitTime'],
+                            datetime_accept=assignment['AcceptTime'],
                         )
 
         # print(batches)

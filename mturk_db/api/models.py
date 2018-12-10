@@ -141,6 +141,9 @@ class Assignment(models.Model):
     datetime_creation = models.DateTimeField(auto_now_add=True, null=True)
     datetime_update = models.DateTimeField(auto_now=True, null=True)
 
+    datetime_submit = models.DateTimeField(null=True)
+    datetime_accept = models.DateTimeField(null=True)
+
     answer = models.TextField()
 
 
