@@ -8,7 +8,6 @@
             v-bind:pagination.sync="pagination"
             v-bind:headers="list_headers"
             v-bind:items="array_page"
-            v-bind:search="search"
             v-bind:total-items="items_total"
             item-key="id"
             class="my-3"
