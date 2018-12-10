@@ -116,7 +116,7 @@
     import ComponentDeleteTemplateWorker from './component_delete_template_worker.vue';
     import { mapState, mapActions, mapGetters } from 'vuex';
     import _ from 'lodash';
-    import table from '../../../mixins/table';
+    import {table} from '../../../mixins/table';
 export default {
     mixins: [
         table,

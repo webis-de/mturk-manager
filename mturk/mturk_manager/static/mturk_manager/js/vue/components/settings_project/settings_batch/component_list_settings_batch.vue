@@ -80,7 +80,7 @@
     import ComponentDeleteSettingsBatch from './component_delete_settings_batch.vue';
     import { mapState, mapActions, mapGetters } from 'vuex';
     import _ from 'lodash';
-    import table from '../../../mixins/table';
+    import {table} from '../../../mixins/table';
 export default {
     mixins: [
         table,

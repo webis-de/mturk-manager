@@ -66,7 +66,7 @@
     import { mapState, mapActions, mapGetters } from 'vuex';
     import _ from 'lodash';
     import ComponentDisplayDatetime from '../helpers/component_display_datetime';
-    import table from '../../mixins/table';
+    import {table} from '../../mixins/table';
 export default {
     mixins: [
         table,

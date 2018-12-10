@@ -35,7 +35,7 @@
                             pagination.descending ? 'desc' : 'asc', 
                             header.value === pagination.sortBy ? 'active' : ''
                         ]"
-                        v-on:click="changeSort(header.value)"
+                        v-on="header.sortable != false ? {click: () => {pagination.sortBy = header.value; pagination.descending = !pagination.descending}} : {}"
                     >
                         <v-icon small>arrow_upward</v-icon>
                         {{ header.text }}
@@ -90,7 +90,7 @@ export default {
     data () {
         return {
             hits_selected: [],
-            pagination: { rowsPerPage: 25 },
+            pagination: { rowsPerPage: 25, sortBy: 'datetime_creation', descending: true },
 
             search: '',
 
@@ -130,6 +130,10 @@ export default {
                 {
                     text: 'Batch',
                     value: 'batch',
+                },
+                {
+                    text: 'Creation',
+                    value: 'datetime_creation',
                 },
                 {
                     text: 'Progress',

@@ -42,12 +42,12 @@
         <td 
             class="text-xs-center"
         >
-            <component-progress
+            <component-batch-progress
                 slot="activator"
                 v-bind:progress="batch.progress"
             >
                 {{ batch.count_assignments_available }}/{{batch.count_assignments_total}} assignment{{batch.count_assignments_total > 1 ? 's' : ''}}
-            </component-progress>
+            </component-batch-progress>
         </td>
         
         <td 
@@ -74,7 +74,7 @@
 <script>
     import { mapState, mapActions, mapMutations, mapGetters } from 'vuex';
     import _ from 'lodash';
-    import ComponentProgress from './component_progress.vue';
+    import ComponentBatchProgress from './component_batch_progress.vue';
     import ComponentDisplayDatetime from '../../helpers/component_display_datetime.vue';
     import Batch from '../../../classes/batch.js';
 export default {
@@ -99,7 +99,7 @@ export default {
     mounted(){
     },
     components: {
-        ComponentProgress,
+        ComponentBatchProgress,
         ComponentDisplayDatetime,
     },
 }

@@ -46,6 +46,7 @@
     import validations from '../../../mixins/validations';
     import {Service_Projects} from "../../../services/service_projects";
 export default {
+    name: 'component-block-limit',
     mixins: [
         validations,
     ],

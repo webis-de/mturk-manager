@@ -47,42 +47,42 @@ class Class_Service_Batches {
             data: data,
         });
 
-        store.commit('moduleBatches/add_batch', {
-            data_batch: response.data,
-            use_sandbox,
-        });
+        // store.commit('moduleBatches/add_batch', {
+        //     data_batch: response.data,
+        //     use_sandbox,
+        // });
 
-        store.commit('moduleHITs/set_hits', {
-            'object_batches': store.getters['moduleBatches/get_object_batches'](use_sandbox),
-            'data_batches': [response.data],
-            use_sandbox
-        });
+        // store.commit('moduleHITs/set_hits', {
+        //     'object_batches': store.getters['moduleBatches/get_object_batches'](use_sandbox),
+        //     'data_batches': [response.data],
+        //     use_sandbox
+        // });
     }
 
-    // async sync_mturk() {
-	// 	const use_sandbox = store.getters["get_use_sandbox"];
-	// 	const project = store.getters['moduleProjects/get_project_current'];
-    //
-    //     store.commit('moduleBatches/set_is_syncing_mturk', true);
-    //     const response = await Service_Endpoint.make_request({
-    //         method: 'patch',
-    //         url: {
-    //             url: store.getters["get_url"]('url_api_projects_batches', 'moduleBatches'),
-    //             project,
-    //             use_sandbox,
-    //         },
-    //      });
-    //
-    //     const data_batches = response.data;
-    //
-    //     await Service_HITs.append_hits({
-    //         data_batches,
-    //         use_sandbox
-    //
-    //     });
-    //
-    //     store.commit('moduleBatches/set_is_syncing_mturk', false);
-    // }
+    async sync_mturk() {
+		const use_sandbox = store.getters["get_use_sandbox"];
+		const project = store.getters['moduleProjects/get_project_current'];
+
+        store.commit('moduleBatches/set_is_syncing_mturk', true);
+        const response = await Service_Endpoint.make_request({
+            method: 'patch',
+            url: {
+                url: store.getters["get_url"]('url_api_projects_batches', 'moduleBatches'),
+                project,
+                use_sandbox,
+            },
+         });
+
+        const data_batches = response.data;
+
+        // await Service_HITs.append_hits({
+        //     data_batches,
+        //     use_sandbox
+        //
+        // });
+
+        store.commit('moduleBatches/set_is_syncing_mturk', false);
+    }
 
     // add_workers({object_workers, use_sandbox})
     // {

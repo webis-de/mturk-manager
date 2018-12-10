@@ -1,7 +1,7 @@
 <template>
 <div>
 		<!-- v-bind:action="`/view/${this.project_current.slug}`" -->
-	<form 
+	<form
 	 	v-on:submit.prevent="submit"
 	>
 		<input type="hidden" name="list_ids[]" value="1">
@@ -9,9 +9,9 @@
 	    <v-btn 
 	    	type="submit"
 	        color="primary"
-	        v-bind:disabled="assignments_selected.length == 0"
+	        v-bind:disabled="count_assignments_selected === 0"
 	    >
-	    	Annotate {{ assignments_selected.length }} assignment(s)
+	    	Annotate {{ count_assignments_selected }} assignment(s)
 		</v-btn>
 	</form>
 </div>
@@ -32,15 +32,17 @@ export default {
     	}
     },
     computed: {
+	    count_assignments_selected() {
+			return _.size(this.object_assignments_selected);
+		},
     	url() {
     		let url = `/view/${this.project_current.slug}?list_ids=[`;
-    		
-    		url += _.join(_.map(this.assignments_selected, (assignment) => assignment.id), ',');
-
+    		url += _.join(_.map(this.object_assignments_selected), ',');
+    		// url += _.join(_.map(this.object_assignments_selected, (assignment) => assignment.id), ',');
     		return url + ']';
     	},
-        ...mapState('moduleAssignments', {
-            'assignments_selected': 'assignments_selected',
+        ...mapGetters('moduleAssignments', {
+            'object_assignments_selected': 'get_object_assignments_selected',
         }),
         ...mapGetters('moduleProjects', {
             'project_current': 'get_project_current',

@@ -6,7 +6,7 @@
     >
         <td>
             <v-checkbox
-                v-model="props.selected"
+                v-model="is_selected"
                 primary
                 hide-details
             ></v-checkbox>
@@ -73,7 +73,7 @@
     </tr>
 </template>
 <script>
-    import { mapState, mapActions, mapGetters } from 'vuex';
+    import { mapState, mapActions, mapMutations, mapGetters } from 'vuex';
     import _ from 'lodash';
     import ComponentDisplayDatetime from "../../helpers/component_display_datetime";
     import ComponentStatusAssignment from "./component-status-assignment";
@@ -101,45 +101,29 @@ export default {
     //     },
     // },
     computed: {
+        is_selected: {
+            get() {
+                return _.has(this.object_assignments_selected, this.assignment.id);
+            },
+            set(is_selected) {
+                this.set_assignments_selected({
+                    array_items: [this.assignment],
+                    add: is_selected,
+                });
+            }
+        },
         assignment() {
             return this.props.item;
         },
-
-        // status_block() {
-        //     if(this.worker.is_blocked == undefined)
-        //     {
-        //         return {
-        //             description: 'Loading',
-        //             color: 'success',
-        //             icon: '',
-        //         };
-        //     }
-
-        //     switch(this.worker.is_blocked)
-        //     {
-        //         case STATUS_BLOCK.NONE:
-        //             return {
-        //                 description: 'Not Blocked',
-        //                 color: 'success',
-        //                 icon: 'check',
-        //             };
-        //         case STATUS_BLOCK.SOFT:
-        //             return {
-        //                 description: 'Soft Blocked',
-        //                 color: 'warning',
-        //                 icon: 'block',
-        //             };
-        //         case STATUS_BLOCK.HARD:
-        //             return {
-        //                 description: 'Hard Blocked',
-        //                 color: 'error',
-        //                 icon: 'block',
-        //             };
-        //     }
-        // },
+        ...mapGetters('moduleAssignments', {
+            'object_assignments_selected': 'get_object_assignments_selected',
+        }),
         ...mapGetters(['get_show_progress_indicator']),
     },
     methods: {
+        ...mapMutations('moduleAssignments', {
+            'set_assignments_selected': 'set_assignments_selected',
+        }),
     },
     components: {
         ComponentStatusAssignment,

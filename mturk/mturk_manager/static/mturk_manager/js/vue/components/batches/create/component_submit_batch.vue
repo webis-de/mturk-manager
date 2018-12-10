@@ -58,7 +58,7 @@ export default {
 			}).then(() => {
                 this.is_uploading_batch = false;
 				this.$emit('update:is_creating_batch', false);
-				console.log('done')
+				Service_Batches.load_page({page: 1, rowsPerPage: 25, sortBy: 'datetime_creation'})
             });
 		},
 	},

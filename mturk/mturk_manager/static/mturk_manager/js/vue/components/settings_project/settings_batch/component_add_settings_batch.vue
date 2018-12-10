@@ -53,6 +53,7 @@
 	import validations from '../../../mixins/validations';
     import {Service_Settings_Batch} from "../../../services/service_settings_batch";
  export default {
+     name: 'component-add-settings-batch',
     mixins: [
         validations,
         settings_batch,

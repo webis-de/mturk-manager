@@ -80,7 +80,7 @@
     import ComponentEditTemplateGlobal from './component_edit_template_global.vue';
     import { mapState, mapActions, mapGetters } from 'vuex';
     import _ from 'lodash';
-    import table from '../../../mixins/table';
+    import {table} from '../../../mixins/table';
 export default {
     mixins: [
         table,

@@ -92,6 +92,7 @@
 	import Template_Assignment from '../../../classes/template_assignment';
     import {Service_Templates} from "../../../services/service_templates";
 export default {
+    name: 'component-edit-template-assignment',
     mixins: [
         helpers,
         validations,

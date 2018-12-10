@@ -56,6 +56,7 @@
     import {Service_Projects} from "../../../services/service_projects";
     import {Service_Messages_Reject} from "../../../services/Service_Messages_Reject";
 export default {
+    name: 'component-messages-reject-default',
     mixins: [
         validations,
     ],

@@ -42,7 +42,7 @@
     import { mapState, mapMutations, mapActions, mapGetters } from 'vuex';
     import {Service_Projects} from "../../../services/service_projects";
 export default {
-	name: 'component_clear_sandbox',
+	name: 'component-clear-sandbox',
     data() {
         return {
         	dialog: false,

@@ -92,6 +92,7 @@
 	import Template_HIT from '../../../classes/template_hit';
     import {Service_Templates} from "../../../services/service_templates";
 export default {
+    name: 'component-edit-template-hit',
     mixins: [
         helpers,
         validations,

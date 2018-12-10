@@ -92,6 +92,7 @@
 	import Template_Global from '../../../classes/template_global';
     import {Service_Templates} from "../../../services/service_templates";
 export default {
+    name: 'component-edit-template-global',
     mixins: [
         helpers,
         validations,

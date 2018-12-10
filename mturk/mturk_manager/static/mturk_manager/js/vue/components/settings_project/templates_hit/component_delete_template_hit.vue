@@ -40,6 +40,7 @@
     import { mapState, mapMutations, mapActions, mapGetters } from 'vuex';
     import {Service_Templates} from "../../../services/service_templates";
 export default {
+    name: 'component-delete-template-hit',
     props: {
         template_hit: {
         }

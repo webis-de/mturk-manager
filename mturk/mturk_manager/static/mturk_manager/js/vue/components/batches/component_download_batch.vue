@@ -18,6 +18,7 @@
     import Papa from 'papaparse';
     import {STATUS_EXTERNAL, STATUS_INTERNAL} from "../../classes/enums";
 export default {
+    name: 'component-download-batch',
     data() {
         return {
         	is_downloading_csv: false,

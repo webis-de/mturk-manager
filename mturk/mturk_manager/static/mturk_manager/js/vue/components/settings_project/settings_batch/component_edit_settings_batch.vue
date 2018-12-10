@@ -70,6 +70,7 @@
     import { required, minValue, maxValue } from 'vuelidate/lib/validators'
     import {Service_Settings_Batch} from "../../../services/service_settings_batch";
 export default {
+    name: 'component-edit-settings-batch',
     mixins: [
         validations,
         settings_batch,

@@ -40,6 +40,7 @@
     import { mapState, mapMutations, mapActions, mapGetters } from 'vuex';
     import {Service_Settings_Batch} from "../../../services/service_settings_batch";
 export default {
+    name: 'component-delete-settings-batch',
     props: {
         settings_batch_current: {
         }

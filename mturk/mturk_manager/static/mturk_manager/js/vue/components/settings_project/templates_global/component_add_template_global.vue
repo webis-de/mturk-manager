@@ -57,6 +57,7 @@
 	import validations from '../../../mixins/validations';
     import {Service_Templates} from "../../../services/service_templates";
 export default {
+    name: 'component-add-template-global',
     mixins: [
         validations,
     ],

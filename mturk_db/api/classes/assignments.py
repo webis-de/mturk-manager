@@ -46,7 +46,6 @@ class Manager_Assignments(object):
             queryset = queryset.order_by(
                 ('-' if descending else '') + sort_by
             )
-
         return queryset
 
     @classmethod

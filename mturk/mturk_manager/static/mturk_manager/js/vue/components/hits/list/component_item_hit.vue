@@ -32,15 +32,20 @@
                 <v-icon>info</v-icon>
             </v-btn>
         </td>
+        <td class="text-xs-center">
+            <component-display-datetime
+                v-bind:datetime="hit.datetime_creation"
+            ></component-display-datetime>
+        </td>
         <td 
             class="text-xs-center"
         >
-            <component-progress
+            <component-batch-progress
                 slot="activator"
                 v-bind:progress="hit.progress"
             >
                 {{ hit.count_assignments_available }}/{{hit.count_assignments_total}} assignment{{hit.count_assignments_total > 1 ? 's' : ''}}
-            </component-progress>
+            </component-batch-progress>
         </td>
         <td 
             class="text-xs-center"
@@ -72,8 +77,9 @@
 </template>
 <script>
     import { mapState, mapActions, mapGetters } from 'vuex';
-    import ComponentProgress from '../../batches/list/component_progress.vue';
+    import ComponentBatchProgress from '../../batches/list/component_batch_progress.vue';
     import _ from 'lodash';
+    import ComponentDisplayDatetime from "../../helpers/component_display_datetime";
 
 export default {
     name: 'component-item-hit',
@@ -149,7 +155,8 @@ export default {
     methods: {
     },
     components: {
-        ComponentProgress,
+        ComponentDisplayDatetime,
+        ComponentBatchProgress,
     },
 }
 </script>

@@ -23,9 +23,15 @@ export const moduleAssignments = {
         url_api_projects_assignments: undefined,
 
 		set_ids_worker: null,
-		assignments_selected: [],
+		object_assignments_selected: {},
 	},
     getters: {
+	    get_array_assignments_selected: (state) => {
+	        return _.orderBy(state.object_assignments_selected)
+        },
+	    get_object_assignments_selected: (state) => {
+	        return state.object_assignments_selected
+        },
         get_array_assignments: (state) => {
             return state.array_assignments
         },
@@ -139,14 +145,25 @@ export const moduleAssignments = {
 
   //           console.log(state.set_ids_worker);
 		// },
-		set_assignments_selected(state, assignments_selected) {
-			state.assignments_selected = assignments_selected;
+        clear_assignments_selected(state) {
+            state.object_assignments_selected = {};
+        },
+		set_assignments_selected(state, {array_items, add}) {
+            if(add === true) {
+                _.forEach(array_items, (item) => {
+                    Vue.set(state.object_assignments_selected, item.id, item.id);
+                })
+            } else {
+                _.forEach(array_items, (item) => {
+                    Vue.delete(state.object_assignments_selected, item.id);
+                })
+            }
 		},
         reset: (state) => {
             state.object_assignments = {};
             state.object_assignments_sandbox = {};
             state.set_ids_worker = null;
-            state.assignments_selected = [];
+            state.object_assignments_selected = {};
         },
         set_urls(state, config) {
             state.url_api_projects_assignments = config.url_api_projects_assignments;

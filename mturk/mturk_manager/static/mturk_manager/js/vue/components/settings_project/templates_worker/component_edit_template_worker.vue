@@ -112,6 +112,7 @@
 	import Template_Worker from '../../../classes/template_worker';
     import {Service_Templates} from "../../../services/service_templates";
 export default {
+    name: 'component-edit-template-worker',
     mixins: [
         helpers,
         validations,

@@ -17,7 +17,7 @@
     import { mapState, mapActions, mapGetters } from 'vuex';
     import _ from 'lodash';
 export default {
-    name: 'component-progress',
+    name: 'component-batch-progress',
     props: {
     	progress: {
     		required: true,

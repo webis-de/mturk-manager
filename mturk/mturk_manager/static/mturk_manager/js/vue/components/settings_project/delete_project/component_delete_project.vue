@@ -42,7 +42,7 @@
     import { mapState, mapMutations, mapActions, mapGetters } from 'vuex';
     import {Service_Projects} from "../../../services/service_projects";
 export default {
-	name: 'component_delete_project',
+	name: 'component-delete-project',
     data() {
         return {
         	dialog: false,

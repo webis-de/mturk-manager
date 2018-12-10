@@ -192,7 +192,7 @@
     import _ from 'lodash';
     import helpers from '../../../mixins/helpers';
 export default {
-	name: 'component-form-batch',
+	name: 'component-form-settings-batch',
     mixins: [
         helpers,
     ],

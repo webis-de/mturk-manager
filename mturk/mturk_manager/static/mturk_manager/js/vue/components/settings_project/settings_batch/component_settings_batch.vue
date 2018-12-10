@@ -10,7 +10,7 @@
     import { mapState, mapMutations, mapActions, mapGetters } from 'vuex';
     import _ from 'lodash';
 export default {
-	name: 'component_settings_batch',
+	name: 'component-settings-batch',
 	data () {
 		return {
 			// search: undefined,

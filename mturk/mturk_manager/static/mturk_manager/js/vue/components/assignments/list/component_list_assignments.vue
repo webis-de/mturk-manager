@@ -29,7 +29,7 @@
                     v-bind:items="array_assignments_prepared"
                     v-bind:pagination.sync="pagination"
                     v-bind:total-items="items_total"
-                    v-model="assignments_selected_local"
+                    v-bind:input="assignments_selected_local"
                     v-bind:loading="loading"
                     item-key="id"
                     class="my-3"
@@ -37,12 +37,17 @@
                     <template slot="headers" slot-scope="props">
                         <tr id="row_header">
                             <th>
+                                    <!--v-bind:input-value="props.all"-->
+                                    <!--v-bind:indeterminate="props.indeterminate"-->
                                 <v-checkbox
-                                    v-bind:input-value="props.all"
-                                    v-bind:indeterminate="props.indeterminate"
+                                    v-bind:input-value="is_page_selected(array_assignments_prepared, object_assignments_selected)"
                                     primary
                                     hide-details
-                                    v-on:click.native="assignments_selected_local = toggleAll(assignments_selected_local, list_assignments_processed, pagination, props, show_only_submitted_assignments)"
+                                    v-on:click.native="batches_selected = toggle_all(
+                                        array_assignments_prepared,
+                                        set_assignments_selected,
+                                        object_assignments_selected
+                                    )"
                                 ></v-checkbox>
                             </th>
                             <th
@@ -55,7 +60,7 @@
                                     pagination.descending ? 'desc' : 'asc',
                                     header.value === pagination.sortBy ? 'active' : ''
                                 ]"
-                                v-on:click="changeSort(header.value)"
+                                v-on="header.sortable != false ? {click: () => {pagination.sortBy = header.value; pagination.descending = !pagination.descending}} : {}"
                             >
                                 <v-icon small>arrow_upward</v-icon>
                                 {{ header.text }}
@@ -110,7 +115,7 @@ export default {
     data () {
         return {
             // assignments_selected: [],
-            pagination: { rowsPerPage: 25 },
+            pagination: { rowsPerPage: 25, sortBy: 'datetime_creation', descending: true },
             filters: {
                 show_only_submitted_assignments: false,
                 worker: '',
@@ -123,6 +128,9 @@ export default {
             // }),
 
         }
+    },
+    beforeDestroy() {
+        this.clear_assignments_selected();
     },
     computed: {
     	assignments_selected_local: {
@@ -151,6 +159,7 @@ export default {
         ...mapGetters('moduleAssignments', {
             'array_assignments': 'get_array_assignments',
             'array_assignments_sandbox': 'get_array_assignments_sandbox',
+            'object_assignments_selected': 'get_object_assignments_selected',
         }),
         list_headers() {
             const list_headers = [
@@ -198,9 +207,7 @@ export default {
         // }),
         ...mapGetters('moduleAssignments', {
             'list_assignments_all': 'list_assignments',
-        }),
-        ...mapState('moduleAssignments', {
-            'assignments_selected': 'assignments_selected',
+            'assignments_selected': 'get_array_assignments_selected',
         }),
     },
     methods: {
@@ -216,18 +223,10 @@ export default {
         },
         ...mapMutations('moduleAssignments', {
             'set_assignments_selected': 'set_assignments_selected',
+            'clear_assignments_selected': 'clear_assignments_selected',
         }),
-        // ...mapActions('moduleWorkers', {
-            // 'update_status_block': 'update_status_block',
-        // }),
     },
     created: function() {
-
-            // this.update_status_block({
-            //     worker: {name: 'A7W013PM199BS'},
-            //     status_block_new: 1,
-            //     status_block_old: 2,
-            // });
     },
 
     components: {
