@@ -10,20 +10,28 @@ export const table = {
             deep: true,
         },
     },
-	methods: {
-	    is_page_selected(array_page, object_selected) {
+    computed: {
+        array_page() {
+            let array_items = this.array_items();
+
+            return array_items === null ? [] : array_items;
+        },
+	    is_page_selected() {
 	        let is_page_selected = true;
 
-	        if(_.size(array_page) === 0) {return false;}
+	        if(_.size(this.array_page) === 0) {return false;}
 
-	        _.forEach(array_page, (item) => {
-                if(!_.has(object_selected, item.id)) {
+	        _.forEach(this.array_page, (item) => {
+                if(!_.has(this.object_items_selected, item.id)) {
                     is_page_selected = false;
                     return false;
                 }
             });
+
 	        return is_page_selected;
         },
+    },
+	methods: {
         sandbox_updated() {
             if(this.pagination.page !== 1) {
                 this.pagination.page = 1;
@@ -31,11 +39,11 @@ export const table = {
                 this.load_page();
             }
         },
-        toggle_all(array_items, set_selected, object_selected) {
-            set_selected({
-                add: !this.is_page_selected(array_items, object_selected),
-                array_items: array_items,
+        toggle_all() {
+            this.set_items_selected({
+                add: !this.is_page_selected,
+                array_items: this.array_page,
             });
-        }
+        },
 	},
 };

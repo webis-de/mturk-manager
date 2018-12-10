@@ -32,11 +32,13 @@ export const moduleAssignments = {
 	    get_object_assignments_selected: (state) => {
 	        return state.object_assignments_selected
         },
-        get_array_assignments: (state) => {
-            return state.array_assignments
-        },
-        get_array_assignments_sandbox: (state) => {
-            return state.array_assignments_sandbox
+        get_array_assignments: (state, getters, rootState) => (use_sandbox=undefined) => {
+            if(use_sandbox == undefined)
+            {
+                return rootState.use_sandbox ? state.array_assignments_sandbox : state.array_assignments;
+            } else {
+                return use_sandbox ? state.array_assignments_sandbox : state.array_assignments;
+            }
         },
         get_object_assignments: (state, getters, rootState) => (use_sandbox=undefined) => {
             if(use_sandbox == undefined)

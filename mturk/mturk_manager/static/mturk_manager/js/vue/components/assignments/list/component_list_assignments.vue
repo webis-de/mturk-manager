@@ -26,7 +26,7 @@
                 <v-data-table
                     select-all
                     v-bind:headers="list_headers"
-                    v-bind:items="array_assignments_prepared"
+                    v-bind:items="array_page"
                     v-bind:pagination.sync="pagination"
                     v-bind:total-items="items_total"
                     v-bind:input="assignments_selected_local"
@@ -40,14 +40,10 @@
                                     <!--v-bind:input-value="props.all"-->
                                     <!--v-bind:indeterminate="props.indeterminate"-->
                                 <v-checkbox
-                                    v-bind:input-value="is_page_selected(array_assignments_prepared, object_assignments_selected)"
+                                    v-bind:input-value="is_page_selected"
                                     primary
                                     hide-details
-                                    v-on:click.native="batches_selected = toggle_all(
-                                        array_assignments_prepared,
-                                        set_assignments_selected,
-                                        object_assignments_selected
-                                    )"
+                                    v-on:click.native="batches_selected = toggle_all()"
                                 ></v-checkbox>
                             </th>
                             <th
@@ -141,25 +137,9 @@ export default {
     			this.set_assignments_selected(value);
     		},
     	},
-        array_assignments_prepared() {
-            let array_assignments_prepared = undefined;
-            if(this.use_sandbox === true)
-            {
-                array_assignments_prepared = this.array_assignments_sandbox;
-            } else {
-                array_assignments_prepared = this.array_assignments;
-            }
-
-            if(array_assignments_prepared === null) {
-                return [];
-            }
-
-            return array_assignments_prepared;
-        },
         ...mapGetters('moduleAssignments', {
-            'array_assignments': 'get_array_assignments',
-            'array_assignments_sandbox': 'get_array_assignments_sandbox',
-            'object_assignments_selected': 'get_object_assignments_selected',
+            'array_items': 'get_array_assignments',
+            'object_items_selected': 'get_object_assignments_selected',
         }),
         list_headers() {
             const list_headers = [
@@ -207,7 +187,7 @@ export default {
         // }),
         ...mapGetters('moduleAssignments', {
             'list_assignments_all': 'list_assignments',
-            'assignments_selected': 'get_array_assignments_selected',
+            'items_selected': 'get_array_assignments_selected',
         }),
     },
     methods: {
@@ -222,7 +202,7 @@ export default {
             });
         },
         ...mapMutations('moduleAssignments', {
-            'set_assignments_selected': 'set_assignments_selected',
+            'set_items_selected': 'set_assignments_selected',
             'clear_assignments_selected': 'clear_assignments_selected',
         }),
     },
