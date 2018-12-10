@@ -20,11 +20,22 @@ export const moduleHITs = {
 
         array_hits: null,
         array_hits_sandbox: null,
+
+        object_hits_selected: {},
+
         url_api_projects_hits: undefined,
 	},
     getters: {
-        get_array_hits: (state) => {
-            return state.array_hits
+	    get_object_hits_selected: (state) => {
+	        return state.object_hits_selected;
+        },
+        get_array_hits: (state, getters, rootState) => (use_sandbox=undefined) => {
+            if(use_sandbox == undefined)
+            {
+                return rootState.use_sandbox ? state.array_hits_sandbox : state.array_hits;
+            } else {
+                return use_sandbox ? state.array_hits_sandbox : state.array_hits;
+            }
         },
         get_array_hits_sandbox: (state) => {
             return state.array_hits_sandbox
@@ -62,6 +73,20 @@ export const moduleHITs = {
                 Vue.set(array_hits, array_hits.length, hit);
             });
         },
+        clear_hits_selected(state) {
+            state.object_hits_selected = {};
+        },
+		set_hits_selected(state, {array_items, add}) {
+            if(add === true) {
+                _.forEach(array_items, (item) => {
+                    Vue.set(state.object_hits_selected, item.id, item.id);
+                })
+            } else {
+                _.forEach(array_items, (item) => {
+                    Vue.delete(state.object_hits_selected, item.id);
+                })
+            }
+		},
 		// set_hits(state, {object_batches, data_batches, use_sandbox}) {
         //     let object_hits = null;
         //     if(use_sandbox)

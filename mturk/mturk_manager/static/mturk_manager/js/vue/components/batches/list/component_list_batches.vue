@@ -6,10 +6,9 @@
             <v-data-table
                 select-all
                 v-bind:headers="list_headers"
-                v-bind:items="array_batches_prepared"
+                v-bind:items="array_page"
                 v-bind:pagination.sync="pagination"
                 v-bind:total-items="items_total"
-                v-model="batches_selected"
                 v-bind:loading="loading"
                 item-key="id"
                 class="my-3"
@@ -18,11 +17,11 @@
                     <tr id="row_header">
                         <th>
                             <v-checkbox
-                                v-bind:input-value="props.all"
+                                v-bind:input-value="is_page_selected"
                                 v-bind:indeterminate="props.indeterminate"
                                 primary
                                 hide-details
-                                v-on:click.native="batches_selected = toggleAll(batches_selected, list_batches)"
+                                v-on:click.native="toggle_all()"
                             ></v-checkbox>
                         </th>
                         <th
@@ -133,36 +132,9 @@ export default {
         }
     },
     computed: {
-        batches_selected: {
-            get() {
-                return this.array_batches_selected;
-            },
-            set(value) {
-                this.set_batches_selected(value);
-                // this.$store.commit('set_batches_selected', value);
-            }
-        },
-        array_batches_prepared() {
-            let array_batches_current = undefined;
-            if(this.use_sandbox === true)
-            {
-                array_batches_current = this.array_batches_sandbox;
-            } else {
-                array_batches_current = this.array_batches;
-            }
-
-            if(array_batches_current === null) {
-                return [];
-            }
-
-            return array_batches_current;
-        },
         ...mapGetters('moduleBatches', {
-            'array_batches': 'get_array_batches',
-            'array_batches_sandbox': 'get_array_batches_sandbox',
-        }),
-        ...mapState('moduleBatches', {
-            'array_batches_selected': 'array_batches_selected',
+            'array_items': 'get_array_batches',
+            'object_items_selected': 'get_object_batches_selected',
         }),
     },
     methods: {
@@ -188,7 +160,8 @@ export default {
             // 'update_status_block': 'update_status_block',
         // }),
         ...mapMutations('moduleBatches', {
-            'set_batches_selected': 'set_batches_selected',
+            'set_items_selected': 'set_batches_selected',
+            'clear_batches_selected': 'clear_batches_selected',
         }),
     },
     created: function() {
@@ -199,7 +172,9 @@ export default {
             //     status_block_old: 2,
             // });
     },
-
+    beforeDestroy() {
+        this.clear_batches_selected();
+    },
     components: {
         ComponentItemBatch,
     },

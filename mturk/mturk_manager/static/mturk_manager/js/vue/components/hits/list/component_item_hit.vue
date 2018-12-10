@@ -6,7 +6,7 @@
     >
         <td>
             <v-checkbox
-                v-model="props.selected"
+                v-model="is_selected"
                 primary
                 hide-details
             ></v-checkbox>
@@ -76,7 +76,7 @@
     </tr>
 </template>
 <script>
-    import { mapState, mapActions, mapGetters } from 'vuex';
+    import { mapState, mapActions, mapMutations, mapGetters } from 'vuex';
     import ComponentBatchProgress from '../../batches/list/component_batch_progress.vue';
     import _ from 'lodash';
     import ComponentDisplayDatetime from "../../helpers/component_display_datetime";
@@ -104,6 +104,20 @@ export default {
     //     },
     // },
     computed: {
+        is_selected: {
+            get() {
+                return _.has(this.object_hits_selected, this.hit.id);
+            },
+            set(is_selected) {
+                this.set_hits_selected({
+                    array_items: [this.hit],
+                    add: is_selected,
+                });
+            }
+        },
+        ...mapGetters('moduleHITs', {
+            'object_hits_selected': 'get_object_hits_selected',
+        }),
         // count_assignments_total() {
         //     return this.hit.batch.settings_batch.count_assignments;
         // },
@@ -153,6 +167,9 @@ export default {
         ...mapGetters(['get_show_progress_indicator']),
     },
     methods: {
+        ...mapMutations('moduleHITs', {
+            'set_hits_selected': 'set_hits_selected',
+        }),
     },
     components: {
         ComponentDisplayDatetime,

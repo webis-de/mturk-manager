@@ -5,7 +5,7 @@
     >
         <td>
             <v-checkbox
-                v-model="props.selected"
+                v-model="is_selected"
                 primary
                 hide-details
             ></v-checkbox>
@@ -89,12 +89,29 @@ export default {
         }
     },
     computed: {
+        is_selected: {
+            get() {
+                return _.has(this.object_batches_selected, this.batch.id);
+            },
+            set(is_selected) {
+                this.set_batches_selected({
+                    array_items: [this.batch],
+                    add: is_selected,
+                });
+            }
+        },
         batch() {
             return this.props.item;
         },
         ...mapGetters(['get_show_progress_indicator']),
+        ...mapGetters('moduleBatches', {
+            'object_batches_selected': 'get_object_batches_selected',
+        }),
     },
     methods: {
+        ...mapMutations('moduleBatches', {
+            'set_batches_selected': 'set_batches_selected',
+        }),
     },
     mounted(){
     },

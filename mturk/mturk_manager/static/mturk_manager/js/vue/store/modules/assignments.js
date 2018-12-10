@@ -26,11 +26,8 @@ export const moduleAssignments = {
 		object_assignments_selected: {},
 	},
     getters: {
-	    get_array_assignments_selected: (state) => {
-	        return _.orderBy(state.object_assignments_selected)
-        },
 	    get_object_assignments_selected: (state) => {
-	        return state.object_assignments_selected
+	        return state.object_assignments_selected;
         },
         get_array_assignments: (state, getters, rootState) => (use_sandbox=undefined) => {
             if(use_sandbox == undefined)

@@ -7,10 +7,9 @@
             select-all
             v-bind:pagination.sync="pagination"
             v-bind:headers="list_headers"
-            v-bind:items="array_hits_prepared"
+            v-bind:items="array_page"
             v-bind:search="search"
             v-bind:total-items="items_total"
-            v-model="hits_selected"
             item-key="id"
             class="my-3"
             v-bind:loading="loading"
@@ -19,11 +18,11 @@
                 <tr id="row_header">
                     <th>
                         <v-checkbox
-                            v-bind:input-value="props.all"
+                            v-bind:input-value="is_page_selected"
                             v-bind:indeterminate="props.indeterminate"
                             primary
                             hide-details
-                            v-on:click.native="hits_selected = toggleAll(hits_selected, list_hits_processed)"
+                            v-on:click.native="toggle_all()"
                         ></v-checkbox>
                     </th>
                     <th
@@ -59,7 +58,7 @@
 </v-layout>
 </template>
 <script>
-    import { mapState, mapActions, mapGetters } from 'vuex';
+    import { mapState, mapActions, mapMutations, mapGetters } from 'vuex';
     // import { Policy } from '../../store/modules/policies.js';
     import ComponentItemHit from './component_item_hit.vue';
     // import ComponentShowMoneySpent from './component-show-money-spent.vue';
@@ -151,16 +150,12 @@ export default {
 
             return list_headers;
         },
-        list_hits_processed() {
-            return [];
-        },
         // ...mapGetters('moduleProjects', {
         //     'project_current': 'get_project_current',
         // }),
         ...mapGetters('moduleHITs', {
-            'list_hits_all': 'list_hits',
-            'array_hits': 'get_array_hits',
-            'array_hits_sandbox': 'get_array_hits_sandbox',
+            'array_items': 'get_array_hits',
+            'object_items_selected': 'get_object_hits_selected',
         }),
     },
     methods: {
@@ -173,9 +168,10 @@ export default {
                 this.loading = false;
             });
         },
-        // ...mapActions('moduleWorkers', {
-            // 'update_status_block': 'update_status_block',
-        // }),
+        ...mapMutations('moduleHITs', {
+            'set_items_selected': 'set_hits_selected',
+            'clear_batches_selected': 'clear_hits_selected',
+        }),
     },
     created: function() {
 

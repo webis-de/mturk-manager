@@ -29,7 +29,6 @@
                     v-bind:items="array_page"
                     v-bind:pagination.sync="pagination"
                     v-bind:total-items="items_total"
-                    v-bind:input="assignments_selected_local"
                     v-bind:loading="loading"
                     item-key="id"
                     class="my-3"
@@ -43,7 +42,7 @@
                                     v-bind:input-value="is_page_selected"
                                     primary
                                     hide-details
-                                    v-on:click.native="batches_selected = toggle_all()"
+                                    v-on:click.native="toggle_all()"
                                 ></v-checkbox>
                             </th>
                             <th
@@ -129,14 +128,6 @@ export default {
         this.clear_assignments_selected();
     },
     computed: {
-    	assignments_selected_local: {
-    		get() {
-    			return this.assignments_selected;
-    		},
-    		set(value) {
-    			this.set_assignments_selected(value);
-    		},
-    	},
         ...mapGetters('moduleAssignments', {
             'array_items': 'get_array_assignments',
             'object_items_selected': 'get_object_assignments_selected',
@@ -185,10 +176,6 @@ export default {
         // ...mapGetters('moduleProjects', {
         //     'project_current': 'get_project_current',
         // }),
-        ...mapGetters('moduleAssignments', {
-            'list_assignments_all': 'list_assignments',
-            'items_selected': 'get_array_assignments_selected',
-        }),
     },
     methods: {
         load_page() {

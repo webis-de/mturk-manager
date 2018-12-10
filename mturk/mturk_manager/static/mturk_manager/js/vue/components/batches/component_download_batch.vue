@@ -46,7 +46,7 @@ export default {
     		const status_external_inverted = _.invert(STATUS_EXTERNAL);
     		const status_internal_inverted = _.invert(STATUS_INTERNAL);
 
-    		_.forEach(this.array_batches_selected, (batch) => {
+    		_.forEach(this.object_batches_selected, (batch) => {
     			console.log(batch)
     			_.forEach(batch.object_hits, (hit) => {
     				const parameters = JSON.parse(hit.parameters);
@@ -127,12 +127,12 @@ export default {
     		// if(_.size(this.array_batches_selected) == 0) {
     		// 	return 'all';
     		// } else {
-        	return _.size(this.array_batches_selected);
+        	return _.size(this.object_batches_selected);
             	// return _.sumBy(this.batches_selected, 'hits.length');
     		// }
     	},
-        ...mapState('moduleBatches', {
-            'array_batches_selected': 'array_batches_selected',
+        ...mapGetters('moduleBatches', {
+            'object_batches_selected': 'get_object_batches_selected',
         }),
 
     },

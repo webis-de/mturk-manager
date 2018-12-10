@@ -26,19 +26,21 @@ export const moduleBatches = {
 
         url_api_projects_batches: undefined,
 
-        array_batches_selected: [],
+        object_batches_selected: {},
 
         object_csv_parsed: undefined,
         is_syncing_mturk: false,
 	},
     getters: {
-        get_object_batches: (state, getters, rootState) => (use_sandbox=undefined) => {
+	    get_object_batches_selected: (state) => {
+	        return state.object_batches_selected;
+        },
+        get_array_batches: (state, getters, rootState) => (use_sandbox=undefined) => {
             if(use_sandbox == undefined)
             {
-                // console.log(rootState.use_sandbox)
-                return rootState.use_sandbox ? state.object_batches_sandbox : state.object_batches;
+                return rootState.use_sandbox ? state.array_batches_sandbox : state.array_batches;
             } else {
-                return use_sandbox ? state.object_batches_sandbox : state.object_batches;
+                return use_sandbox ? state.array_batches_sandbox : state.array_batches;
             }
         },
         is_valid_csv: (state) => {
@@ -51,12 +53,6 @@ export const moduleBatches = {
         },
         get_object_csv_parsed: (state) => {
             return state.object_csv_parsed;
-        },
-        get_array_batches: (state) => {
-            return state.array_batches
-        },
-        get_array_batches_sandbox: (state) => {
-            return state.array_batches_sandbox
         },
         // get_object_batches: (state, getters, rootState) => {
         //     return rootState.use_sandbox ? state.object_batches_sandbox : state.object_batches;
@@ -217,9 +213,20 @@ export const moduleBatches = {
                 // Vue.set(object_batches, batch.id, batch);
             });
         },
-        set_batches_selected(state, value) {
-            state.array_batches_selected = value;
+        clear_batches_selected(state) {
+            state.object_batches_selected = {};
         },
+		set_batches_selected(state, {array_items, add}) {
+            if(add === true) {
+                _.forEach(array_items, (item) => {
+                    Vue.set(state.object_batches_selected, item.id, item.id);
+                })
+            } else {
+                _.forEach(array_items, (item) => {
+                    Vue.delete(state.object_batches_selected, item.id);
+                })
+            }
+		},
         // append_batches(state, {data_batches, use_sandbox}) {
         //     let object_batches = null;
         //     if(use_sandbox)
