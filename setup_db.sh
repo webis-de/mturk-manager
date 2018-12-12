@@ -12,5 +12,5 @@ pip3 install psycopg2
 
 # pip3 install -r requirements.txt
 
-cd ./mturk_db
-python3 manage.py migrate
+#cd ./mturk_db
+#python3 manage.py migrate
