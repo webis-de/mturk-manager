@@ -27,7 +27,7 @@ export default class Loader
 		await this.load_assignments();
     	await this.load_hits();
 		await this.load_batches()
-		await this.load_workers();
+		// await this.load_workers();
 		await this.load_messages_reject();
 	}
 
@@ -84,7 +84,8 @@ export default class Loader
 	    });
 
 		_.forEach(result, (assignment) => {
-			this.set_ids_worker.add(assignment.worker);
+    		this.object_workers[assignment.worker.id] = assignment.worker;
+			// this.set_ids_worker.add(assignment.worker);
 			assignment.answer = normalize_answer(assignment.answer);
     		this.object_assignments[assignment.id] = assignment;
 		});
@@ -166,28 +167,28 @@ export default class Loader
 		});
 	}
 
-	async load_workers() {
-		const url = this.context.url_api_workers;
-
-		const result = await $.ajax({
-	        url: url,
-	        method: 'PATCH',
-	        data: JSON.stringify(_.toArray(this.set_ids_worker)),
-	        contentType: 'application/json',
-	        headers: {
-	            Authorization: 'Token ' + this.context.token_instance,
-	            "Content-Type": 'application/json',
-	        },
-	    });
-
-		_.forEach(result, (worker) => {
-    		this.object_workers[worker.id] = worker;
-		});
-
-		_.forEach(this.object_assignments, (assignment) => {
-			assignment.worker = this.object_workers[assignment.worker];
-		});
-	}
+	// async load_workers() {
+	// 	const url = this.context.url_api_workers;
+	//
+	// 	const result = await $.ajax({
+	//         url: url,
+	//         method: 'PATCH',
+	//         data: JSON.stringify(_.toArray(this.set_ids_worker)),
+	//         contentType: 'application/json',
+	//         headers: {
+	//             Authorization: 'Token ' + this.context.token_instance,
+	//             "Content-Type": 'application/json',
+	//         },
+	//     });
+	//
+	// 	_.forEach(result, (worker) => {
+    // 		this.object_workers[worker.id] = worker;
+	// 	});
+	//
+	// 	_.forEach(this.object_assignments, (assignment) => {
+	// 		assignment.worker = this.object_workers[assignment.worker];
+	// 	});
+	// }
 
 	init() {
 		_.forEach(this.context, (value, key) => {

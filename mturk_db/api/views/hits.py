@@ -45,3 +45,15 @@ class HITs(APIView):
     #     # serializer = Serializer_Project(queryset_projects, many=True, context={'request': request})
     #     serializer = Serializer_HIT(queryset_hits, many=True)
     #     return Response(serializer.data)
+@api_view(['GET'])
+@permission_classes(PERMISSIONS_INSTANCE_ONLY)
+@add_database_object_project
+def get_hits_by_id(request, slug_project, database_object_project, use_sandbox, format=None):
+    list_ids = json.loads(request.query_params.get('list_ids', '[]'))
+
+    queryset_hits = Manager_HITs.get_all(database_object_project=database_object_project, use_sandbox=use_sandbox, list_ids=list_ids)
+    serializer = Serializer_HIT(queryset_hits,
+    context={
+        'detailed': False
+    }, many=True)
+    return Response(serializer.data)

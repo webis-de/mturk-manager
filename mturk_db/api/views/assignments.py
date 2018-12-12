@@ -77,6 +77,18 @@ class Assignments(APIView):
     #     # serializer = Serializer_Batch(data=request.data)
     #     return Response(serializer.data)
 
+@api_view(['GET'])
+@permission_classes(PERMISSIONS_INSTANCE_ONLY)
+@add_database_object_project
+def get_assignments_by_id(request, slug_project, database_object_project, use_sandbox, format=None):
+    list_ids = json.loads(request.query_params.get('list_ids', '[]'))
+    queryset_assignments = Manager_Assignments.get_all(database_object_project=database_object_project, use_sandbox=use_sandbox, list_ids=list_ids)
+    serializer = Serializer_Assignment(queryset_assignments,
+        context={
+            'detailed': False
+        },  many=True)
+    return Response(serializer.data)
+
 # @api_view(['PUT'])
 # @permission_classes(PERMISSIONS_INSTANCE_ONLY)
 # @add_database_object_project

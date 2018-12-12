@@ -16,7 +16,7 @@ class Serializer_Batch(serializers.ModelSerializer):
         super(Serializer_Batch, self).__init__(*args, **kwargs)
         if 'context' in kwargs:
             self.fields['settings_batch'] = Serializer_Settings_Batch(context=kwargs['context'])
-            self.fields.pop('hits')
+            # self.fields.pop('hits')
 
     settings_batch = Serializer_Settings_Batch()
 

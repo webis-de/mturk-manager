@@ -30,13 +30,13 @@ class Workers(APIView):
             'data': serializer.data,
         })
 
-    # @add_database_object_project
-    # def patch(self, request, slug_project, database_object_project, use_sandbox, format=None):
-    #     queryset_workers = Manager_Workers.sync_workers_by_ids(database_object_project, request.data, use_sandbox)
-    #     serializer = Serializer_Worker(queryset_workers, many=True)
-    #
-    #     # serializer = Serializer_Batch(data=request.data)
-    #     return Response(serializer.data)
+    @add_database_object_project
+    def patch(self, request, slug_project, database_object_project, use_sandbox, format=None):
+        queryset_workers = Manager_Workers.sync_workers_by_ids(database_object_project, request.data, use_sandbox)
+        serializer = Serializer_Worker(queryset_workers, many=True)
+
+        # serializer = Serializer_Batch(data=request.data)
+        return Response(serializer.data)
 
 
 class Worker(APIView):

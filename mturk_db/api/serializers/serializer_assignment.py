@@ -14,6 +14,11 @@ from api.serializers import Serializer_HIT, Serializer_Worker
 
 
 class Serializer_Assignment(serializers.ModelSerializer):
+    def __init__(self, *args, **kwargs):
+        super(Serializer_Assignment, self).__init__(*args, **kwargs)
+        if 'context' in kwargs:
+            self.fields['hit'] = serializers.PrimaryKeyRelatedField(read_only=True)
+
 # class Serializer_Batch(serializers.Serializer):
     # workers = serializers.HyperlinkedRelatedField(
     #     many=True,
@@ -47,7 +52,7 @@ class Serializer_Assignment(serializers.ModelSerializer):
             'answer',
             'status_external',
             'status_internal',
-            'datetime_update',
+            # 'datetime_update',
             'datetime_creation',
             'datetime_submit',
             'datetime_accept',

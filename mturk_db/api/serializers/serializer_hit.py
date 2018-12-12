@@ -14,6 +14,10 @@ from api.serializers import Serializer_Batch
 #         return 'Active' if data == True else 'Inactive'
 
 class Serializer_HIT(serializers.ModelSerializer):
+    def __init__(self, *args, **kwargs):
+        super(Serializer_HIT, self).__init__(*args, **kwargs)
+        if 'context' in kwargs:
+            self.fields['batch'] = serializers.PrimaryKeyRelatedField(read_only=True)
 # class Serializer_Batch(serializers.Serializer):
     # workers = serializers.HyperlinkedRelatedField(
     #     many=True,
