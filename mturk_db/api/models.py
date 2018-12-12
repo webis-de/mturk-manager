@@ -1,6 +1,7 @@
 from django.db import models
 from api.enums import assignments
 from datetime import datetime
+from django.utils import timezone
 
 class Account_Mturk(models.Model):
     name = models.CharField(max_length=200, unique=True)
@@ -18,9 +19,9 @@ class Project(models.Model):
     name = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200, unique=True)
     fk_account_mturk = models.ForeignKey('Account_Mturk', on_delete=models.SET_NULL, null=True, related_name='projects')
-    datetime_visited = models.DateTimeField(default=datetime.now)
+    datetime_visited = models.DateTimeField(default=timezone.now)
     count_assignments_max_per_worker = models.IntegerField(null=True)
-    datetime_creation = models.DateTimeField(auto_now_add=True, null=True)
+    datetime_creation = models.DateTimeField(default=timezone.now)
 
     settings_batch_default = models.OneToOneField('Settings_Batch', on_delete=models.SET_NULL, null=True, related_name='project_default')
     
@@ -82,8 +83,7 @@ class Template(models.Model):
     project = models.ForeignKey('Project', on_delete=models.CASCADE, related_name='%(app_label)s_%(class)s_related')
     template = models.TextField()
     is_active = models.BooleanField(default=True)
-    datetime_creation = models.DateTimeField(auto_now_add=True, null=True)
-    datetime_update = models.DateTimeField(auto_now=True, null=True)
+    datetime_creation = models.DateTimeField(default=timezone.now)
     
     class Meta:
         unique_together = ('project', 'name')
@@ -105,6 +105,7 @@ class Template_Worker(Template):
 class Template_Assignment(Template):
     pass
 
+# class Template_HIT():
 class Template_HIT(Template):
     pass
 
@@ -116,8 +117,7 @@ class Batch(models.Model):
     project = models.ForeignKey('Project', on_delete=models.CASCADE, null=True, related_name='batch')
     name = models.CharField(max_length=200)
     use_sandbox = models.BooleanField()
-    datetime_creation = models.DateTimeField(auto_now_add=True, null=True)
-    datetime_update = models.DateTimeField(auto_now=True, null=True)
+    datetime_creation = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.name
@@ -136,10 +136,9 @@ class Assignment(models.Model):
     hit = models.ForeignKey('HIT', on_delete=models.CASCADE, related_name='assignments')
     worker = models.ForeignKey('Worker', on_delete=models.CASCADE, null=True, related_name='assignments')
 
-    status_external = models.IntegerField(null=True, choices=[(status.value, status.name) for status in assignments.STATUS_EXTERNAL])
-    status_internal = models.IntegerField(null=True, choices=[(status.value, status.name) for status in assignments.STATUS_INTERNAL])
-    datetime_creation = models.DateTimeField(auto_now_add=True, null=True)
-    datetime_update = models.DateTimeField(auto_now=True, null=True)
+    status_external = models.IntegerField(null=True, choices=[(status.value, status.name) for status in sorted(assignments.STATUS_EXTERNAL)])
+    status_internal = models.IntegerField(null=True, choices=[(status.value, status.name) for status in sorted(assignments.STATUS_INTERNAL)])
+    datetime_creation = models.DateTimeField(default=timezone.now)
 
     datetime_submit = models.DateTimeField(null=True)
     datetime_accept = models.DateTimeField(null=True)
@@ -174,7 +173,8 @@ class Worker(models.Model):
 
 class Worker_Block_Project(models.Model):
     class Meta:
-        unique_together = ("project", "worker")
+        pass
+        # unique_together = ("project", "worker")
     # is_sandbox = models.BoloeanField()
     project = models.ForeignKey('Project', on_delete=models.CASCADE, related_name='worker_blocks_project')
     worker = models.ForeignKey('Worker', on_delete=models.CASCADE, related_name='worker_blocks_project')
