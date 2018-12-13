@@ -72,7 +72,7 @@ export default class Controller
 
 				const loader = event.data.loader;
 				const result = await $.ajax({
-			        url: event.data.loader.context.url_api_assignments,
+			        url: event.data.loader.context.url_api_assignments_update_stati,
 			        method: 'PUT',
 			        contentType: 'application/json',
 			        data: JSON.stringify(data),
