@@ -423,3 +423,8 @@ class Manager_Batches(object):
             )
 
         return queryset
+
+    @classmethod
+    def download(cls, database_object_project, request):
+        print(request.query_params.get('batches'))
+        return {'test': 4}
