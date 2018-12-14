@@ -25,6 +25,7 @@ export const moduleBatches = {
         url_api_assignments_real_approved: undefined,
 
         url_api_projects_batches: undefined,
+        url_api_projects_batches_download: undefined,
 
         object_batches_selected: {},
 
@@ -288,6 +289,7 @@ export const moduleBatches = {
         },
         set_urls(state, config) {
             state.url_api_projects_batches = config.url_api_projects_batches;
+            state.url_api_projects_batches_download = config.url_api_projects_batches_download;
         },
         set_csv_parsed(state, csv_parsed) {
             state.object_csv_parsed = csv_parsed;

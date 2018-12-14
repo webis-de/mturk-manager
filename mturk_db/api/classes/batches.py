@@ -1,4 +1,8 @@
+import collections
+import csv
+
 from django.db.models.functions import Coalesce
+from django.http import HttpResponse
 
 from api.classes.projects import Manager_Projects
 from api.models import Batch, Template_Worker, HIT, Assignment, Settings_Batch, Worker
@@ -424,7 +428,67 @@ class Manager_Batches(object):
 
         return queryset
 
-    @classmethod
-    def download(cls, database_object_project, request):
-        print(request.query_params.get('batches'))
-        return {'test': 4}
+    @staticmethod
+    def download(database_object_project, request):
+        response = HttpResponse(content_type="text/csv")
+        response['Content-Disposition'] = 'attachment; filename=' + 'results.csv'
+
+        list_ids_batch = request.query_params.getlist('batches[]', [])
+        set_values_filtered = request.query_params.getlist('values[]')
+        if set_values_filtered is not None:
+            set_values_filtered = set(set_values_filtered)
+
+        queryset = Assignment.objects.filter(
+            hit__batch__id__in=list_ids_batch
+        ).select_related(
+            'hit__batch__settings_batch__template_worker', 'worker'
+        ).order_by(
+            'hit__batch__settings_batch__template_worker',
+            'hit__batch',
+            'hit',
+        )
+
+        writer = None
+        for index, assignment in enumerate(queryset.iterator()):
+
+            dict_question = json.loads(assignment.hit.parameters)
+
+            dict_answer = json.loads(Manager_Batches.normalize_answer(assignment.answer))
+
+            dict_result = collections.OrderedDict()
+            dict_result['id_assignment'] = assignment.id_assignment
+            dict_result['id_hit'] = assignment.hit.id_hit
+            dict_result['id_worker'] = assignment.worker.id_worker
+            dict_result['sandbox'] = assignment.hit.batch.use_sandbox
+            dict_result['creation'] = assignment.hit.datetime_creation
+            dict_result['expiration'] = assignment.hit.datetime_expiration
+            dict_result.update(dict_question)
+            dict_result.update(dict_answer)
+
+            if set_values_filtered is not None:
+                dict_result = {key: value for key, value in dict_result.items() if key in set_values_filtered}
+
+            if index == 0:
+                writer = csv.DictWriter(response, fieldnames=dict_result.keys())
+                writer.writeheader()
+
+            try:
+                writer.writerow(dict_result)
+            except ValueError:
+                break
+
+        return response
+
+    @staticmethod
+    def normalize_answer(answer):
+        dict_answer = json.loads(answer)
+        normalize_answer = {}
+
+        try:
+            for value in dict_answer['QuestionFormAnswers']['Answer']:
+                normalize_answer[value['QuestionIdentifier']] = value['FreeText']
+        except TypeError:
+            normalize_answer[dict_answer['QuestionFormAnswers']['Answer']['QuestionIdentifier']] = \
+            dict_answer['QuestionFormAnswers']['Answer']['FreeText']
+
+        return json.dumps(normalize_answer)

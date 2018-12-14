@@ -122,6 +122,28 @@ class Class_Service_Batches {
     get_batch(id_batch) {
         console.log('id_batch', id_batch);
     }
+
+    async download(params) {
+        const response = await Service_Endpoint.make_request({
+            method: 'get',
+            url: {
+                url: store.getters["get_url"]('url_api_projects_batches_download', 'moduleBatches'),
+                project: store.getters['moduleProjects/get_project_current'],
+            },
+            params,
+            options: {
+                responseType: 'blob',
+
+            }
+        });
+
+        let a = window.document.createElement("a");
+        a.href = window.URL.createObjectURL(response.data, {type: "text/plain"});
+        a.download = "filename.csv";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    }
 }
 
 

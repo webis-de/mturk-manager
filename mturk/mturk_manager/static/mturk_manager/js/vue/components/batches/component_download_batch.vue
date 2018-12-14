@@ -17,6 +17,7 @@
     import _ from 'lodash';
     import Papa from 'papaparse';
     import {STATUS_EXTERNAL, STATUS_INTERNAL} from "../../classes/enums";
+    import {Service_Batches} from "../../services/service_batches";
 export default {
     name: 'component-download-batch',
     data() {
@@ -26,9 +27,15 @@ export default {
     },
     methods: {
     	download_csv: function() {
+    	    Service_Batches.download({
+                // batches: [3,4,5],
+                batches: Object.keys(this.object_batches_selected),
+                // values: ['id_worker'],
+            });
+
+    	    return;
     		// this.is_downloading_csv = true;
 
-    		console.log
     		let array_header = [
     			'id_assignment',
     			'id_hit',

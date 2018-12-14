@@ -28,15 +28,16 @@ class Class_Service_Endpoint {
 		this.callback_connection_error = callback_connection_error;
 	}
 
-	async make_request({url, method, data, params})
+	async make_request({url, method, data, params, options})
 	{
         let config = {
             method,
             url: this.get_url_api(url),
             data: JSON.stringify(data),
-            params
+            params,
+            ...options
         };
-
+        
         const object_response = {
             success: undefined,
             response: undefined,

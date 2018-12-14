@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from rest_framework.settings import api_settings
 
 from api.models import Batch as Model_Batch
@@ -114,6 +115,6 @@ def batches_for_annotation(request, slug_project, database_object_project, use_s
 @permission_classes(PERMISSIONS_INSTANCE_ONLY)
 @add_database_object_project
 def download_batches(request, slug_project, database_object_project, use_sandbox, format=None):
-    data = Manager_Batches.download(database_object_project, request)
+    response = Manager_Batches.download(database_object_project, request)
 
-    return Response(data)
+    return response
