@@ -27,14 +27,17 @@ export default {
     },
     methods: {
     	download_csv: function() {
+            this.is_downloading_csv = true;
+
     	    Service_Batches.download({
                 // batches: [3,4,5],
                 batches: Object.keys(this.object_batches_selected),
                 // values: ['id_worker'],
+            }).then(() => {
+                this.is_downloading_csv = false;
             });
 
-    	    return;
-    		// this.is_downloading_csv = true;
+            return;
 
     		let array_header = [
     			'id_assignment',
