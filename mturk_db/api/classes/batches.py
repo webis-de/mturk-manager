@@ -433,10 +433,12 @@ class Manager_Batches(object):
         response = HttpResponse(content_type="text/csv")
         response['Content-Disposition'] = 'attachment; filename=' + 'results.csv'
 
-        list_ids_batch = request.query_params.getlist('batches[]', [])
+        list_ids_batch = request.query_params.getlist('batches[]')
         set_values_filtered = request.query_params.getlist('values[]')
-        if set_values_filtered is not None:
+        if len(set_values_filtered) > 0:
             set_values_filtered = set(set_values_filtered)
+        else:
+            set_values_filtered = None
 
         queryset = Assignment.objects.filter(
             hit__batch__id__in=list_ids_batch
