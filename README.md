@@ -23,6 +23,9 @@ The whole tool is built on top of the [Django-Framework](https://www.djangoproje
 2. Run `python3 manage.py runserver` to start the server _([more](https://docs.djangoproject.com/en/2.0/ref/django-admin/#django-admin-runserver) on how to start a django server)_
 3. Visit [localhost:8000](http://localhost:8000)
 
+**Note** You can safely ignore the following message in the terminal: `You have XXX unapplied migration(s)`.  
+You can execute `python manage.py migrate` if the message bothers you.
+
 ## Supported Features
 * Create and manage mechanical turk projects
 * Define **multiple** worker templates per project
