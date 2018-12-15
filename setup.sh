@@ -16,4 +16,4 @@ pip3 install django==2.0
 # fi
 
 # $command manage.py createcachetable
-# $command manage.py migrate
+$command manage.py migrate
