@@ -10,10 +10,15 @@ The whole tool is built on top of the [Django-Framework](https://www.djangoproje
 ## Requirements
 * Python 3.5+
 
-## Installation/Update Frontend
+## Installation Frontend
 **Note:** If you want to use a virtual environment like `virtualenv` switch to the virtual environment before executing the following step!
 
-1. Run `./setup.sh`
+Run `./setup.sh` to pull changes from the repository and install missing dependencies.
+
+Create a file `mturk_settings.ini` (in the root directory) with the content of `mturk_settings.scheme.ini` and replace the corresponding values to enable the frontend to connect to the backend.
+
+## Update Frontend
+Run `./setup.sh` to pull changes from the repository and install missing dependencies.
 
 ## Installation Backend
 1. Run `./setup_db.sh`
