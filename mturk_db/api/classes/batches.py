@@ -450,6 +450,7 @@ class Manager_Batches(object):
             'hit',
         )
 
+        set_header = None
         writer = None
         for index, assignment in enumerate(queryset.iterator()):
 
@@ -467,17 +468,19 @@ class Manager_Batches(object):
             dict_result.update(dict_question)
             dict_result.update(dict_answer)
 
+
             if set_values_filtered is not None:
                 dict_result = {key: value for key, value in dict_result.items() if key in set_values_filtered}
 
             if index == 0:
+                set_header = set(dict_result.keys())
                 writer = csv.DictWriter(response, fieldnames=dict_result.keys())
                 writer.writeheader()
 
             try:
                 writer.writerow(dict_result)
             except ValueError:
-                break
+                writer.writerow({key: dict_result.get(key, None) for key in set_header})
 
         return response
 
