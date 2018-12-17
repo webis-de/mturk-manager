@@ -2,12 +2,17 @@
 <div>
     <v-btn
         v-bind:loading="is_downloading_csv"
-        v-bind:disabled="is_downloading_csv || count_hits_to_download == 0"
+        v-bind:disabled="is_downloading_csv || count_batches_to_download == 0 || !is_valid_selection"
         color="primary"
         v-on:click.native="download_csv"
     >
-        Download data for {{ count_hits_to_download }} Batch(es)
-        <v-icon right>cloud_download</v-icon>
+        <template v-if="is_valid_selection">
+            Download data for {{ count_batches_to_download }} Batch(es)
+            <v-icon right>cloud_download</v-icon>
+        </template>
+        <template v-else>
+            Selected batches have an incompatible Structure
+        </template>
     </v-btn>
 </div>
 </template>
@@ -23,6 +28,7 @@ export default {
     data() {
         return {
         	is_downloading_csv: false,
+            is_valid_selection: true,
         }
     },
     methods: {
@@ -30,7 +36,6 @@ export default {
             this.is_downloading_csv = true;
 
     	    Service_Batches.download({
-                // batches: [3,4,5],
                 batches: Object.keys(this.object_batches_selected),
                 // values: ['id_worker'],
             }).then(() => {
@@ -132,11 +137,30 @@ export default {
 			return answer;
 		}
     },
+    watch: {
+        object_batches_selected() {
+            if(_.size(this.object_batches_selected) === 0) {
+                this.is_valid_selection = true;
+                return;
+            }
+
+            this.is_downloading_csv = true;
+            Service_Batches.get_download_info({
+                batches: Object.keys(this.object_batches_selected),
+            }).then((response) => {
+                this.is_valid_selection = response.data.is_valid;
+
+                this.is_downloading_csv = false;
+            });
+
+        }
+    },
     computed: {
-    	count_hits_to_download: function() {
+    	count_batches_to_download: function() {
     		// if(_.size(this.array_batches_selected) == 0) {
     		// 	return 'all';
     		// } else {
+
         	return _.size(this.object_batches_selected);
             	// return _.sumBy(this.batches_selected, 'hits.length');
     		// }

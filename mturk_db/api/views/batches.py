@@ -118,3 +118,11 @@ def download_batches(request, slug_project, database_object_project, use_sandbox
     response = Manager_Batches.download(database_object_project, request)
 
     return response
+
+@api_view(['GET'])
+@permission_classes(PERMISSIONS_INSTANCE_ONLY)
+@add_database_object_project
+def download_info_batches(request, slug_project, database_object_project, use_sandbox, format=None):
+    dictionary_data = Manager_Batches.download_info(database_object_project, request)
+
+    return Response(dictionary_data)

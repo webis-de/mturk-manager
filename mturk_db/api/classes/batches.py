@@ -494,3 +494,57 @@ class Manager_Batches(object):
             dict_answer['QuestionFormAnswers']['Answer']['FreeText']
 
         return json.dumps(normalize_answer)
+
+    @staticmethod
+    def download_info(database_object_project, request):
+        list_ids_batch = request.query_params.getlist('batches[]')
+        queryset = Batch.objects.filter(
+            id__in=list_ids_batch
+        ).select_related(
+            'settings_batch__template_worker'
+        )
+
+
+        is_valid = True
+        set_parameters_last = None
+        set_answer_last = None
+        for index, batch in enumerate(queryset):
+            # print(batch)
+            dict_parameters = json.loads(batch.settings_batch.template_worker.json_dict_parameters)
+            set_parameters = set(dict_parameters.keys())
+
+            if index > 0:
+                set_difference_parameters = set_parameters.symmetric_difference(set_parameters_last)
+                if len(set_difference_parameters) > 0:
+                    is_valid = False
+                    break
+
+            set_answer = None
+            assignment = Assignment.objects.filter(hit__batch=batch).first()
+            if assignment is not None:
+                dict_answer = json.loads(Manager_Batches.normalize_answer(assignment.answer))
+                set_answer = set(dict_answer.keys())
+                if set_answer_last is not None:
+                    set_difference_answer = set_answer.symmetric_difference(set_answer_last)
+                    if len(set_difference_answer) > 0:
+                        is_valid = False
+                        break
+
+            set_parameters_last = dict_parameters
+            set_answer_last = set_answer
+            # print(dict_parameters)
+
+        set_builtin = set()
+        set_builtin.add('id_assignment')
+        set_builtin.add('id_hit')
+        set_builtin.add('id_worker')
+        set_builtin.add('sandbox')
+        set_builtin.add('creation')
+        set_builtin.add('expiration')
+
+        return {
+            'is_valid': is_valid,
+            'set_parameters': set_parameters_last,
+            'set_answer': set_answer_last,
+            'set_builtin': set_builtin,
+        }

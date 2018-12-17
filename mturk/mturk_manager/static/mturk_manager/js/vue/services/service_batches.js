@@ -144,6 +144,19 @@ class Class_Service_Batches {
         a.click();
         document.body.removeChild(a);
     }
+
+    async get_download_info(params) {
+        const response = await Service_Endpoint.make_request({
+            method: 'get',
+            url: {
+                url: store.getters["get_url"]('url_api_projects_batches_download_info', 'moduleBatches'),
+                project: store.getters['moduleProjects/get_project_current'],
+            },
+            params,
+        });
+        console.log('response', response.data);
+        return response
+    }
 }
 
 
