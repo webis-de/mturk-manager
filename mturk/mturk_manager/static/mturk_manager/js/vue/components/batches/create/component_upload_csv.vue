@@ -2,7 +2,7 @@
 <v-layout>
     <v-flex>
         <v-layout>
-            <v-flex xs3>
+            <v-flex shrink>
                 <upload-btn
                     class="pl-0"
                     :file-changed-callback="file_changed"
@@ -10,7 +10,7 @@
                     v-bind:loading="is_parsing_csv"
                 ></upload-btn>
             </v-flex>
-            <v-flex>
+            <v-flex align-self-center>
                  {{ tmp_name_file }}
             </v-flex>
         </v-layout>
@@ -75,6 +75,7 @@ export default {
                 header: true,
                 skipEmptyLines: true,
                 complete: (results, file) => {
+                    console.log('results', results);
                     this.is_parsing_csv = false;
                     this.set_csv_parsed(results);
                 }
