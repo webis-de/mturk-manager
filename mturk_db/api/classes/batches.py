@@ -450,6 +450,11 @@ class Manager_Batches(object):
             'hit',
         )
 
+        set_answer = set()
+        for index, assignment in enumerate(queryset.iterator()):
+            dict_answer = json.loads(Manager_Batches.normalize_answer(assignment.answer))
+            set_answer = set_answer.union(set(dict_answer.keys()))
+
         set_header = None
         writer = None
         for index, assignment in enumerate(queryset.iterator()):
@@ -473,8 +478,15 @@ class Manager_Batches(object):
                 dict_result = {key: value for key, value in dict_result.items() if key in set_values_filtered}
 
             if index == 0:
-                set_header = set(dict_result.keys())
-                writer = csv.DictWriter(response, fieldnames=dict_result.keys())
+                list_header = list(dict_result.keys())
+                set_header = set(list_header)
+                for answer in set_answer:
+                    if answer not in set_header:
+                        list_header.append(answer)
+
+                # update set_header
+                set_header = set(list_header)
+                writer = csv.DictWriter(response, fieldnames=list_header)
                 writer.writeheader()
 
             try:
