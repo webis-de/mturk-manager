@@ -127,49 +127,52 @@ export default {
                 this.is_valid_selection = response.data.is_valid;
                 this.is_downloading_csv = false;
 
-                const array_headers = [];
-                if(_.size(response.data.set_builtin) > 0) {
-                    array_headers.push({
-					    id: 0,
-					    name: 'builtin',
-						children: [],
-					});
-				}
-                if(_.size(response.data.set_parameters) > 0) {
-                    array_headers.push({
-					    id: 1,
-					    name: 'parameters',
-						children: [],
-					});
-				}
-                if(_.size(response.data.set_answer) > 0) {
-                    array_headers.push({
-					    id: 2,
-					    name: 'answer',
-						children: [],
-					});
-				}
-
+                const array_children_builtin = [];
 				_.forEach(response.data.set_builtin, (value) => {
-				   	array_headers[0].children.push({
+				   	array_children_builtin.push({
 						id: `${0}__${value}`,
 						name: value
 					});
 				});
 
+                const array_children_parameters = [];
 				_.forEach(response.data.set_parameters, (value, index) => {
-				   	array_headers[1].children.push({
+				   	array_children_parameters.push({
 						id: `${1}__${index}`,
 						name: index
 					});
 				});
 
+                const array_children_answer = [];
 				_.forEach(response.data.set_answer, (value) => {
-				   	array_headers[2].children.push({
+				   	array_children_answer.push({
 						id: `${1}__${value}`,
 						name: value
 					});
-				});
+				})
+
+				const array_headers = [];
+                if(_.size(array_children_builtin) > 0) {
+                    array_headers.push({
+					    id: 0,
+					    name: 'builtin',
+						children: array_children_builtin,
+					});
+				}
+                if(_.size(array_children_parameters) > 0) {
+                    array_headers.push({
+					    id: 1,
+					    name: 'parameters',
+						children: array_children_parameters,
+					});
+				}
+                if(_.size(array_children_answer) > 0) {
+                    array_headers.push({
+					    id: 2,
+					    name: 'answer',
+						children: array_children_answer,
+					});
+				}
 
 				this.headers_selected = [0, 1, 2];
 
