@@ -49,10 +49,16 @@ export default {
             list_items_menu: [
                 {
                     name: 'dashboard',
-                    label: 'Dashboard',
-                    icon: 'dashboard',
+                    label: 'Projects',
+                    icon: 'list',
                     // icon: 'ballot',
                 },
+                // {
+                //     name: 'dashboard',
+                //     label: 'Projects',
+                //     icon: 'list',
+                //     // icon: 'ballot',
+                // },
                 {
                     name: 'batches',
                     label: 'Batches',
