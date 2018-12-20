@@ -33,6 +33,8 @@ class Manager_Templates_Worker(object):
     @classmethod
     def update(cls, instance, data):
         for key, value in data.items():
+            if key == 'template':
+                instance.json_dict_parameters = json.dumps(cls.count_parameters_in_template(value))
             setattr(instance, key, value)
 
         instance.save()
