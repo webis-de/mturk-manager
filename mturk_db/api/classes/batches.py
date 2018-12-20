@@ -434,11 +434,14 @@ class Manager_Batches(object):
         response['Content-Disposition'] = 'attachment; filename=' + 'results.csv'
 
         list_ids_batch = request.query_params.getlist('batches[]')
+        # check if all values should be downloaded
         set_values_filtered = request.query_params.getlist('values[]')
         if len(set_values_filtered) > 0:
             set_values_filtered = set(set_values_filtered)
         else:
             set_values_filtered = None
+
+        set_answer = Manager_Batches.get_set_answer(list_ids_batch)
 
         queryset = Assignment.objects.filter(
             hit__batch__id__in=list_ids_batch
@@ -450,16 +453,13 @@ class Manager_Batches(object):
             'hit',
         )
 
-        set_answer = set()
-        for index, assignment in enumerate(queryset.iterator()):
-            dict_answer = json.loads(Manager_Batches.normalize_answer(assignment.answer))
-            set_answer = set_answer.union(set(dict_answer.keys()))
-
         set_header = None
         writer = None
         for index, assignment in enumerate(queryset.iterator()):
+            real_values_in_template = json.loads(assignment.hit.batch.settings_batch.template_worker.json_dict_parameters).keys()
 
             dict_question = json.loads(assignment.hit.parameters)
+            dict_question = {key: dict_question.get(key) for key in real_values_in_template}
 
             dict_answer = json.loads(Manager_Batches.normalize_answer(assignment.answer))
 
@@ -473,28 +473,47 @@ class Manager_Batches(object):
             dict_result.update(dict_question)
             dict_result.update(dict_answer)
 
+            # add missing fields due to possibly different answer-dictionaries (caused by checkboxes, radiobuttons, ...)
+            for value in set_answer:
+                if value not in dict_answer:
+                    dict_result[value] = None
 
             if set_values_filtered is not None:
                 dict_result = {key: value for key, value in dict_result.items() if key in set_values_filtered}
 
+            # print(sorted(dict_result.keys()))
+
             if index == 0:
                 list_header = list(dict_result.keys())
-                set_header = set(list_header)
-                for answer in set_answer:
-                    if answer not in set_header:
-                        list_header.append(answer)
+                # set_header = set(list_header)
+                # for answer in set_answer:
+                #     if answer not in set_header:
+                #         list_header.append(answer)
 
                 # update set_header
                 set_header = set(list_header)
                 writer = csv.DictWriter(response, fieldnames=list_header)
                 writer.writeheader()
 
-            try:
-                writer.writerow(dict_result)
-            except ValueError:
-                writer.writerow({key: dict_result.get(key, None) for key in set_header})
+            # try:
+            writer.writerow(dict_result)
+            # except ValueError:
+                # writer.writerow({key: dict_result.get(key, None) for key in set_header})
 
         return response
+
+    @staticmethod
+    def get_set_answer(list_ids_batch):
+        queryset = Assignment.objects.filter(
+            hit__batch__id__in=list_ids_batch
+        ).values_list('answer', flat=True)
+
+        set_answer = set()
+        for index, answer in enumerate(queryset.iterator()):
+            dict_answer = json.loads(Manager_Batches.normalize_answer(answer))
+            set_answer = set_answer.union(set(dict_answer.keys()))
+
+        return set_answer
 
     @staticmethod
     def normalize_answer(answer):
@@ -513,16 +532,16 @@ class Manager_Batches(object):
     @staticmethod
     def download_info(database_object_project, request):
         list_ids_batch = request.query_params.getlist('batches[]')
+
         queryset = Batch.objects.filter(
             id__in=list_ids_batch
         ).select_related(
             'settings_batch__template_worker'
         )
 
-
         is_valid = True
         set_parameters_last = None
-        set_answer_last = None
+        # set_answer_last = None
         for index, batch in enumerate(queryset):
             # print(batch)
             dict_parameters = json.loads(batch.settings_batch.template_worker.json_dict_parameters)
@@ -534,19 +553,19 @@ class Manager_Batches(object):
                     is_valid = False
                     break
 
-            set_answer = None
-            assignment = Assignment.objects.filter(hit__batch=batch).first()
-            if assignment is not None:
-                dict_answer = json.loads(Manager_Batches.normalize_answer(assignment.answer))
-                set_answer = set(dict_answer.keys())
-                if set_answer_last is not None:
-                    set_difference_answer = set_answer.symmetric_difference(set_answer_last)
-                    if len(set_difference_answer) > 0:
-                        is_valid = False
-                        break
+            # set_answer = None
+            # assignment = Assignment.objects.filter(hit__batch=batch).first()
+            # if assignment is not None:
+            #     dict_answer = json.loads(Manager_Batches.normalize_answer(assignment.answer))
+            #     set_answer = set(dict_answer.keys())
+            #     if set_answer_last is not None:
+            #         set_difference_answer = set_answer.symmetric_difference(set_answer_last)
+            #         if len(set_difference_answer) > 0:
+            #             is_valid = False
+            #             break
 
             set_parameters_last = dict_parameters
-            set_answer_last = set_answer
+            # set_answer_last = set_answer
             # print(dict_parameters)
 
         set_builtin = set()
@@ -557,9 +576,15 @@ class Manager_Batches(object):
         set_builtin.add('creation')
         set_builtin.add('expiration')
 
-        return {
+        result = {
             'is_valid': is_valid,
-            'set_parameters': set_parameters_last,
-            'set_answer': set_answer_last,
-            'set_builtin': set_builtin,
         }
+
+        if is_valid == True:
+            result.update({
+                'set_parameters': set_parameters_last,
+                'set_answer':  Manager_Batches.get_set_answer(list_ids_batch),
+                'set_builtin': set_builtin,
+            })
+
+        return result
