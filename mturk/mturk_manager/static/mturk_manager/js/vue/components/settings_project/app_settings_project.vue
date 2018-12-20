@@ -21,21 +21,26 @@
     </v-layout>
     
     <v-layout wrap>
-        <v-flex xs6 class="pa-1">
+        <v-flex class="pa-1">
             <component-templates-assignment>
             </component-templates-assignment>
         </v-flex>
-        <v-flex xs6 class="pa-1">
+    </v-layout>
+
+    <v-layout wrap>
+        <v-flex class="pa-1">
             <component-templates-hit>
             </component-templates-hit>
         </v-flex>
     </v-layout>
     
     <v-layout wrap>
-        <v-flex xs6 class="pa-1">
+        <v-flex class="pa-1">
             <component-templates-global>
             </component-templates-global>
         </v-flex>
+    </v-layout>
+    <v-layout>
         <v-flex shrink class="pa-1">
             <component-clear-sandbox>
             </component-clear-sandbox>
