@@ -119,7 +119,7 @@ export default {
         },
         name_route_current: function() {
             // return this.$router.currentRoute;
-            return this.$route.name;
+            return this.$route.meta.name;
         },
         ...mapState(['use_sandbox']),
         ...mapGetters('moduleProjects', {
