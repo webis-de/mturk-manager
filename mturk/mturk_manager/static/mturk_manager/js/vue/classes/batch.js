@@ -15,6 +15,9 @@ export default class Batch
 		this.datetime_creation = new Date(data.datetime_creation);
 		this.count_assignments_available= data.count_assignments_available;
 		this.count_assignments_total= data.count_assignments_total;
+		this.count_assignments_approved= data.count_assignments_approved;
+		this.count_assignments_rejected= data.count_assignments_rejected;
+		this.costs_max = data.costs_max;
 		// this._count_assignments_total = null;
 		// this._count_assignments_available = null;
 		// this._progress = null;

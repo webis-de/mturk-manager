@@ -118,6 +118,28 @@ export default {
                     sortable: false,
                 },
                 {
+                    text: 'Reward',
+                    value: 'reward',
+                    align: 'center',
+                },
+        		{
+					text: '#Assignments',
+					value: 'count_assignments_total',
+				},
+        		{
+					text: '#Approved assignments',
+					value: 'count_assignments_approved',
+				},
+        		{
+					text: '#Rejected assignments',
+					value: 'count_assignments_rejected',
+				},
+        		{
+					text: 'Max costs',
+					value: 'money_spent_max_with_fee',
+					align: 'right'
+				},
+                {
                     text: 'Progress',
                     value: 'progress',
                     align: 'center',

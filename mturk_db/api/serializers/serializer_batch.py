@@ -25,6 +25,9 @@ class Serializer_Batch(serializers.ModelSerializer):
     count_hits = serializers.IntegerField(required=False)
     count_assignments_available = serializers.IntegerField(required=False)
     count_assignments_total = serializers.IntegerField(required=False)
+    count_assignments_approved = serializers.IntegerField(required=False)
+    count_assignments_rejected = serializers.IntegerField(required=False)
+    costs_max = serializers.IntegerField(required=False)
 
     class Meta:
         model = Batch
@@ -39,7 +42,10 @@ class Serializer_Batch(serializers.ModelSerializer):
             'data_csv',
             'settings_batch',
             'count_assignments_available',
-            'count_assignments_total'
+            'count_assignments_total',
+            'count_assignments_approved',
+            'count_assignments_rejected',
+            'costs_max',
         )
         extra_kwargs = {
             # 'template': {

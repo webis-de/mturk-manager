@@ -76,11 +76,11 @@ export default {
                     label: 'Assignments',
                     icon: 'notes',
                 },
-                // {
-                //     name: 'finances',
-                //     label: 'Finances',
-                //     icon: 'attach_money',
-                // },
+                {
+                    name: 'finances',
+                    label: 'Finances',
+                    icon: 'attach_money',
+                },
                 {
                     name: 'workers',
                     label: 'Workers',

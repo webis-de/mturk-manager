@@ -33,10 +33,40 @@
             </component-display-datetime>
         </td>
 
-        <td 
+        <td
             class="text-xs-center"
         >
             {{ batch.settings_batch.count_assignments }}
+        </td>
+
+        <td
+            class="text-xs-center"
+        >
+            <component-display-money v-bind:amount="batch.settings_batch.reward"></component-display-money>
+        </td>
+
+        <td
+            class="text-xs-center"
+        >
+            {{ batch.count_assignments_total }}
+        </td>
+
+        <td
+            class="text-xs-center"
+        >
+            {{ batch.count_assignments_approved }}
+        </td>
+
+        <td
+            class="text-xs-center"
+        >
+            {{ batch.count_assignments_rejected }}
+        </td>
+
+        <td
+            class="text-xs-center"
+        >
+            {{ batch.costs_max }}
         </td>
 
         <td 
@@ -77,6 +107,7 @@
     import ComponentBatchProgress from './component_batch_progress.vue';
     import ComponentDisplayDatetime from '../../helpers/component_display_datetime.vue';
     import Batch from '../../../classes/batch.js';
+    import ComponentDisplayMoney from "../../component-display-money";
 export default {
     name: 'component-item-batch',
     props: {
@@ -116,6 +147,7 @@ export default {
     mounted(){
     },
     components: {
+        ComponentDisplayMoney,
         ComponentBatchProgress,
         ComponentDisplayDatetime,
     },

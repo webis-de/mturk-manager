@@ -9,10 +9,11 @@
             <component-show-balance></component-show-balance>
         </v-flex>
     </v-layout> -->
+    finances
     <v-divider class="my-3"></v-divider>
     <div style="max-width: 100%">
         <v-flex>
-            <component-show-batches></component-show-batches>
+            <!--<component-show-batches></component-show-batches>-->
         </v-flex>
     </div>
 </div>
