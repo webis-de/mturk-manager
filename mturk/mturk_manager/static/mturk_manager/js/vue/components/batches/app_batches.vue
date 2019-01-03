@@ -5,6 +5,11 @@
         v-if="$route.name === 'batches'"
     >
         <component-list-batches
+             v-bind:array_columns="array_columns"
+             v-bind:array_columns_selected="array_columns_selected"
+             v-bind:array_columns_selected_initial="array_columns_selected_initial"
+             v-bind:function_reset_array_columns="function_reset_array_columns"
+             v-bind:function_set_array_columns="function_set_array_columns"
         ></component-list-batches>
 
         <component-download-batch
@@ -23,7 +28,7 @@
 </template>
 
 <script>
-    import { mapState, mapActions, mapGetters } from 'vuex';
+    import { mapState, mapMutations, mapActions, mapGetters } from 'vuex';
     
     import ComponentCreateBatch from './create/component_create_batch.vue';
     import ComponentListBatches from './list/component_list_batches.vue';
@@ -49,8 +54,19 @@ export default {
     created() {
     },
     methods: {
+        ...mapActions('moduleBatches', {
+            'function_reset_array_columns': 'reset_array_columns_general',
+        }),
+        ...mapMutations('moduleBatches', {
+            'function_set_array_columns': 'set_array_columns_general'
+        }),
     },
     computed: {
+        ...mapGetters('moduleBatches', {
+            'array_columns': 'get_array_columns_general',
+            'array_columns_selected': 'get_array_columns_selected_general',
+            'array_columns_selected_initial': 'get_array_columns_selected_initial_general',
+        }),
     },
     components: {
      ComponentCreateBatch,

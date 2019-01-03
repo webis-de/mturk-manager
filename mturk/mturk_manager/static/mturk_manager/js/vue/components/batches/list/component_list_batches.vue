@@ -48,18 +48,22 @@
                 >
                     <component-item-batch
                         v-bind:props="props"
+                        v-bind:array_columns_selected="array_columns_selected"
                     >
                     </component-item-batch>
                 </template>
 
                 <template slot="footer">
+                    <tr>
                         <component-settings-table
                              v-bind:colspan="array_headers.length + 1"
                              v-bind:array_columns="array_columns"
                              v-bind:array_columns_selected="array_columns_selected"
                              v-bind:array_columns_selected_initial="array_columns_selected_initial"
-                             v-on:change="set_array_columns($event)"
+                             v-bind:function_reset="function_reset_array_columns"
+                             v-on:change="function_set_array_columns($event)"
                         ></component-settings-table>
+                    </tr>
                 </template>
                 <!-- <template 
                     slot="expand" 
@@ -73,8 +77,6 @@
                     </v-card>
                 </template> -->
             </v-data-table>
-            {{array_columns_selected}}
-            {{array_columns_selected_initial}}
             <!-- {{list_workers}} -->
     </div>
 </template>
@@ -97,6 +99,28 @@ export default {
         table,
     ],
     name: 'component-list-batches',
+    props: {
+        array_columns: {
+            type: Array,
+            required: true,
+        },
+        array_columns_selected: {
+            type: Array,
+            required: true,
+        },
+        array_columns_selected_initial: {
+            type: Array,
+            required: true,
+        },
+        function_reset_array_columns: {
+            type: Function,
+            required: true,
+        },
+        function_set_array_columns: {
+            type: Function,
+            required: true,
+        },
+    },
     data () {
         return {
             pagination: { rowsPerPage: 25, sortBy: 'datetime_creation', descending: true },
@@ -171,9 +195,6 @@ export default {
         ...mapGetters('moduleBatches', {
             'array_items': 'get_array_batches',
             'object_items_selected': 'get_object_batches_selected',
-            'array_columns': 'get_array_columns',
-            'array_columns_selected': 'get_array_columns_selected',
-            'array_columns_selected_initial': 'get_array_columns_selected_initial',
         }),
         array_headers() {
             const set = new Set(this.array_columns_selected);
@@ -199,13 +220,9 @@ export default {
         // sandbox_updated() {
         //     this.pagination_updated(this.pagination);
         // },
-        // ...mapActions('moduleWorkers', {
-            // 'update_status_block': 'update_status_block',
-        // }),
         ...mapMutations('moduleBatches', {
             'set_items_selected': 'set_batches_selected',
             'clear_batches_selected': 'clear_batches_selected',
-            'set_array_columns': 'set_array_columns'
         }),
     },
     created: function() {

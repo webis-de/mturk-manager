@@ -124,6 +124,10 @@ export default {
         props: {
             required: true,
         },
+        array_columns_selected: {
+            type: Array,
+            required: true,
+        },
     },
     data () {
         return {
@@ -150,7 +154,6 @@ export default {
         ...mapGetters(['get_show_progress_indicator']),
         ...mapGetters('moduleBatches', {
             'object_batches_selected': 'get_object_batches_selected',
-            'array_columns_selected': 'get_array_columns_selected',
         }),
     },
     methods: {

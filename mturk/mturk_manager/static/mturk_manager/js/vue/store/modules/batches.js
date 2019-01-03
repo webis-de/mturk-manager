@@ -34,7 +34,7 @@ export const moduleBatches = {
         object_csv_parsed: undefined,
         is_syncing_mturk: false,
 
-        array_columns: [
+        array_columns_general: [
             {
                 value: 'name',
                 text: 'Name',
@@ -87,32 +87,62 @@ export const moduleBatches = {
                     text: '',
                     value: 'actions',
                     sortable: false,
+                    label: 'Details',
                 },
         ],
-        array_columns_selected_initial: [
-            'reward',
+        array_columns_selected_initial_general: [
+            'name',
+            'count_hits',
+            'datetime_creation',
+            'settings_batch.count_assignments',
+            'count_assignments_total',
+            'progress',
+            'actions',
         ],
-        array_columns_selected: null,
+        array_columns_selected_general: null,
+        array_columns_selected_initial_finances: [
+            'name',
+            'count_hits',
+            'datetime_creation',
+            'settings_batch.count_assignments',
+            'reward',
+            'count_assignments_total',
+            'count_assignments_approved',
+            'count_assignments_rejected',
+            'money_spent_max_with_fee',
+        ],
+        array_columns_selected_finances: null,
 	},
     getters: {
-	    get_array_columns: (state) => {
-	        return state.array_columns;
+	    get_array_columns_general: (state) => {
+	        return state.array_columns_general;
         },
-	    get_array_columns_selected: (state) => {
-	        if(state.array_columns_selected === null) {
-	            return state.array_columns_selected_initial;
+	    get_array_columns_selected_general: (state) => {
+	        if(state.array_columns_selected_general === null) {
+	            return state.array_columns_selected_initial_general;
             } else {
-                return state.array_columns_selected;
+                return state.array_columns_selected_general;
             }
         },
-	    get_array_columns_selected_initial: (state) => {
-	        return state.array_columns_selected_initial;
+	    get_array_columns_selected_initial_general: (state) => {
+	        return state.array_columns_selected_initial_general;
         },
+	    get_array_columns_selected_finances: (state) => {
+	        if(state.array_columns_selected_finances === null) {
+	            return state.array_columns_selected_initial_finances;
+            } else {
+                return state.array_columns_selected_finances;
+            }
+        },
+	    get_array_columns_selected_initial_finances: (state) => {
+	        return state.array_columns_selected_initial_finances;
+        },
+
 	    get_object_batches_selected: (state) => {
 	        return state.object_batches_selected;
         },
         get_array_batches: (state, getters, rootState) => (use_sandbox=undefined) => {
-            if(use_sandbox == undefined)
+            if(use_sandbox === undefined)
             {
                 return rootState.use_sandbox ? state.array_batches_sandbox : state.array_batches;
             } else {
@@ -272,10 +302,15 @@ export const moduleBatches = {
         //     };
         //     state.object_batches = dict_batches;
         // },
-        set_array_columns(state, array_columns) {
-            localforage.setItem('array_columns_batches', array_columns);
-            state.array_columns_selected = array_columns;
+        set_array_columns_general(state, array_columns) {
+            localforage.setItem('array_columns_batches_general', array_columns);
+            state.array_columns_selected_general = array_columns;
         },
+        set_array_columns_finances(state, array_columns) {
+            localforage.setItem('array_columns_batches_finances', array_columns);
+            state.array_columns_selected_finances = array_columns;
+        },
+
         set_batches(state, {data, use_sandbox}) {
             let array_batches = null;
             if(use_sandbox)
@@ -389,11 +424,23 @@ export const moduleBatches = {
 	},
 	actions: {
 	    async init({state}) {
-	        let array_columns = await localforage.getItem('array_columns_batches');
+	        let array_columns = await localforage.getItem('array_columns_batches_general');
             if(array_columns !== null)
             {
-                state.array_columns_selected = array_columns;
+                state.array_columns_selected_general = array_columns;
             }
-        }
+
+	        array_columns = await localforage.getItem('array_columns_batches_finances');
+            if(array_columns !== null)
+            {
+                state.array_columns_selected_finances = array_columns;
+            }
+        },
+        reset_array_columns_general({state, commit}) {
+	        commit('set_array_columns_general', state.array_columns_selected_initial_general);
+        },
+        reset_array_columns_finances({state, commit}) {
+	        commit('set_array_columns_finances', state.array_columns_selected_initial_finances);
+        },
 	},
 }

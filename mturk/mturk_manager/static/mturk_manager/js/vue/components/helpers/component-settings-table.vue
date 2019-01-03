@@ -3,6 +3,7 @@
     <v-btn
         color="primary"
         v-on:click="dialog = true"
+		small
     >
         Toggle Columns
     </v-btn>
@@ -12,23 +13,25 @@
         max-width="80%"
 	>
         <v-card>
-          	<v-card-title>
-          		Download Batch(es)
-          	</v-card-title>
           	<v-card-text>
 				<v-layout>
 					<v-flex>
 						<v-checkbox
+							class="ma-0"
 							v-for="column in array_columns"
-							v-bind:label="column.text"
+							v-bind:label="column.label || column.text"
 							v-bind:value="column.value"
 							v-model="intern_array_columns_selected"
 							hide-details
 						></v-checkbox>
 					</v-flex>
 				</v-layout>
-			    <v-layout row>
+			    <v-layout row class="mt-3">
 			        <v-flex>
+						<v-btn
+							color="primary"
+							v-on:click="function_reset(); dialog = false;"
+						>Reset to default</v-btn>
 					</v-flex>
 				</v-layout>
 	            <!-- append-icon="clear"
@@ -55,7 +58,11 @@
 	  		array_columns_selected_initial: {
 	  		    type: Array,
 				required: true,
-			}
+			},
+	  		function_reset: {
+	  		    type: Function,
+				required: true,
+			},
 		},
         data() {
             return {
@@ -71,6 +78,9 @@
 		// 	}
 		// },
 		watch: {
+            array_columns_selected() {
+				this.intern_array_columns_selected = this.array_columns_selected;
+			},
 	  		intern_array_columns_selected() {
 	  		    this.$emit('change', this.intern_array_columns_selected);
 			}
