@@ -91,8 +91,6 @@ export default {
                 this.dialog = false;
                 this.is_downloading_csv = false;
             });
-
-            return;
     	},
     	normalize_answer(answer_raw) {
 			let answer = {};

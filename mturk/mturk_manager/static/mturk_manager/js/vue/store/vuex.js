@@ -129,6 +129,8 @@ export const store = new Vuex.Store({
             commit('moduleKeywords/set_urls', config);
             commit('moduleMessagesReject/set_urls', config);
 
+            dispatch('moduleBatches/init');
+
         },
         async set_show_with_fee({commit, state}, show) {
             commit('set_show_with_fee', show);

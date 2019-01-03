@@ -5,7 +5,7 @@
                 <!--v-bind:search="search"-->
             <v-data-table
                 select-all
-                v-bind:headers="list_headers"
+                v-bind:headers="array_headers"
                 v-bind:items="array_page"
                 v-bind:pagination.sync="pagination"
                 v-bind:total-items="items_total"
@@ -51,6 +51,16 @@
                     >
                     </component-item-batch>
                 </template>
+
+                <template slot="footer">
+                        <component-settings-table
+                             v-bind:colspan="array_headers.length + 1"
+                             v-bind:array_columns="array_columns"
+                             v-bind:array_columns_selected="array_columns_selected"
+                             v-bind:array_columns_selected_initial="array_columns_selected_initial"
+                             v-on:change="set_array_columns($event)"
+                        ></component-settings-table>
+                </template>
                 <!-- <template 
                     slot="expand" 
                     slot-scope="props"
@@ -63,6 +73,8 @@
                     </v-card>
                 </template> -->
             </v-data-table>
+            {{array_columns_selected}}
+            {{array_columns_selected_initial}}
             <!-- {{list_workers}} -->
     </div>
 </template>
@@ -70,8 +82,10 @@
     import { mapState, mapActions, mapMutations, mapGetters } from 'vuex';
     // import { Policy } from '../../store/modules/policies.js';
     import ComponentItemBatch from './component_item_batch.vue';
+    import ComponentSettingsTable from '../../helpers/component-settings-table';
     // import ComponentShowMoneySpent from './component-show-money-spent.vue';
     // import ComponentShowBatches from './component-show-batches.vue';
+    import _ from 'lodash';
     import {table} from '../../../mixins/table';
     import {update_sandbox} from "../../../mixins/update_sandbox";
     import {external_pagination} from "../../../mixins/external_pagination";
@@ -96,68 +110,75 @@ export default {
             //     QualificationTypeStatus: 'Active',
             // }),
 
-            list_headers: [
-                {
-                    text: 'Name',
-                    value: 'name',
-                },
-                {
-                    text: '#HITs',
-                    value: 'count_hits',
-                    align: 'center',
-                },
-                {
-                    text: 'Creation',
-                    value: 'datetime_creation',
-                    align: 'center',
-                },
-                {
-                    text: '#Assignments Per HIT',
-                    value: 'settings_batch.count_assignments',
-                    align: 'center',
-                    sortable: false,
-                },
-                {
-                    text: 'Reward',
-                    value: 'reward',
-                    align: 'center',
-                },
-        		{
-					text: '#Assignments',
-					value: 'count_assignments_total',
-				},
-        		{
-					text: '#Approved assignments',
-					value: 'count_assignments_approved',
-				},
-        		{
-					text: '#Rejected assignments',
-					value: 'count_assignments_rejected',
-				},
-        		{
-					text: 'Max costs',
-					value: 'money_spent_max_with_fee',
-					align: 'right'
-				},
-                {
-                    text: 'Progress',
-                    value: 'progress',
-                    align: 'center',
-                    sortable: false,
-                },
-                {
-                    text: '',
-                    value: 'actions',
-                    sortable: false,
-                },
-            ],
+            // list_headers: [
+            //     {
+            //         text: 'Name',
+            //         value: 'name',
+            //     },
+            //     {
+            //         text: '#HITs',
+            //         value: 'count_hits',
+            //         align: 'center',
+            //     },
+            //     {
+            //         text: 'Creation',
+            //         value: 'datetime_creation',
+            //         align: 'center',
+            //     },
+            //     {
+            //         text: '#Assignments Per HIT',
+            //         value: 'settings_batch.count_assignments',
+            //         align: 'center',
+            //         sortable: false,
+            //     },
+            //     {
+            //         text: 'Reward',
+            //         value: 'reward',
+            //         align: 'center',
+            //     },
+        	// 	{
+			// 		text: '#Assignments',
+			// 		value: 'count_assignments_total',
+			// 	},
+        	// 	{
+			// 		text: '#Approved assignments',
+			// 		value: 'count_assignments_approved',
+			// 	},
+        	// 	{
+			// 		text: '#Rejected assignments',
+			// 		value: 'count_assignments_rejected',
+			// 	},
+        	// 	{
+			// 		text: 'Max costs',
+			// 		value: 'money_spent_max_with_fee',
+			// 		align: 'right'
+			// 	},
+            //     {
+            //         text: 'Progress',
+            //         value: 'progress',
+            //         align: 'center',
+            //         sortable: false,
+            //     },
+            //     {
+            //         text: '',
+            //         value: 'actions',
+            //         sortable: false,
+            //     },
+            // ],
         }
     },
     computed: {
         ...mapGetters('moduleBatches', {
             'array_items': 'get_array_batches',
             'object_items_selected': 'get_object_batches_selected',
+            'array_columns': 'get_array_columns',
+            'array_columns_selected': 'get_array_columns_selected',
+            'array_columns_selected_initial': 'get_array_columns_selected_initial',
         }),
+        array_headers() {
+            const set = new Set(this.array_columns_selected);
+            return _.filter(this.array_columns, (column) => set.has(column.value));
+        },
     },
     methods: {
         load_page() {
@@ -184,6 +205,7 @@ export default {
         ...mapMutations('moduleBatches', {
             'set_items_selected': 'set_batches_selected',
             'clear_batches_selected': 'clear_batches_selected',
+            'set_array_columns': 'set_array_columns'
         }),
     },
     created: function() {
@@ -199,6 +221,7 @@ export default {
     },
     components: {
         ComponentItemBatch,
+        ComponentSettingsTable,
     },
 }
 </script>

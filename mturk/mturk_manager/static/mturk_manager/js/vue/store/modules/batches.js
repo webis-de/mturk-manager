@@ -9,6 +9,7 @@ import HIT from '../../classes/hit.js';
 import {Service_Endpoint} from '../../services/service_endpoint';
 
 import VueCookies from 'vue-cookies'
+import localforage from "localforage";
 Vue.use(Vuex)
 Vue.use(VueCookies)
 Vue.use(VueAxios, axios)
@@ -32,8 +33,81 @@ export const moduleBatches = {
 
         object_csv_parsed: undefined,
         is_syncing_mturk: false,
+
+        array_columns: [
+            {
+                value: 'name',
+                text: 'Name',
+            },
+                {
+                    text: '#HITs',
+                    value: 'count_hits',
+                    align: 'center',
+                },
+                {
+                    text: 'Creation',
+                    value: 'datetime_creation',
+                    align: 'center',
+                },
+                {
+                    text: '#Assignments Per HIT',
+                    value: 'settings_batch.count_assignments',
+                    align: 'center',
+                    sortable: false,
+                },
+                {
+                    text: 'Reward',
+                    value: 'reward',
+                    align: 'center',
+                },
+        		{
+					text: '#Assignments',
+					value: 'count_assignments_total',
+				},
+        		{
+					text: '#Approved assignments',
+					value: 'count_assignments_approved',
+				},
+        		{
+					text: '#Rejected assignments',
+					value: 'count_assignments_rejected',
+				},
+        		{
+					text: 'Max costs',
+					value: 'money_spent_max_with_fee',
+					align: 'right'
+				},
+                {
+                    text: 'Progress',
+                    value: 'progress',
+                    align: 'center',
+                    sortable: false,
+                },
+                {
+                    text: '',
+                    value: 'actions',
+                    sortable: false,
+                },
+        ],
+        array_columns_selected_initial: [
+            'reward',
+        ],
+        array_columns_selected: null,
 	},
     getters: {
+	    get_array_columns: (state) => {
+	        return state.array_columns;
+        },
+	    get_array_columns_selected: (state) => {
+	        if(state.array_columns_selected === null) {
+	            return state.array_columns_selected_initial;
+            } else {
+                return state.array_columns_selected;
+            }
+        },
+	    get_array_columns_selected_initial: (state) => {
+	        return state.array_columns_selected_initial;
+        },
 	    get_object_batches_selected: (state) => {
 	        return state.object_batches_selected;
         },
@@ -198,6 +272,10 @@ export const moduleBatches = {
         //     };
         //     state.object_batches = dict_batches;
         // },
+        set_array_columns(state, array_columns) {
+            localforage.setItem('array_columns_batches', array_columns);
+            state.array_columns_selected = array_columns;
+        },
         set_batches(state, {data, use_sandbox}) {
             let array_batches = null;
             if(use_sandbox)
@@ -310,5 +388,12 @@ export const moduleBatches = {
         }
 	},
 	actions: {
+	    async init({state}) {
+	        let array_columns = await localforage.getItem('array_columns_batches');
+            if(array_columns !== null)
+            {
+                state.array_columns_selected = array_columns;
+            }
+        }
 	},
 }

@@ -11,20 +11,22 @@
             ></v-checkbox>
         </td>
 
-        <td 
+        <td
+            v-if="set_columns_selected.has('name')"
             class="text-xs-center"
         >
             {{ batch.name.toUpperCase() }}
         </td>
 
-        <td 
-        v-on:click="foo()"
+        <td
+            v-if="set_columns_selected.has('count_hits')"
             class="text-xs-center"
         >
             {{ batch.count_hits }}
         </td>
 
-        <td 
+        <td
+            v-if="set_columns_selected.has('datetime_creation')"
             class="text-xs-center"
         >
             <component-display-datetime
@@ -34,42 +36,49 @@
         </td>
 
         <td
+            v-if="set_columns_selected.has('settings_batch.count_assignments')"
             class="text-xs-center"
         >
             {{ batch.settings_batch.count_assignments }}
         </td>
 
         <td
+            v-if="set_columns_selected.has('reward')"
             class="text-xs-center"
         >
             <component-display-money v-bind:amount="batch.settings_batch.reward"></component-display-money>
         </td>
 
         <td
+            v-if="set_columns_selected.has('count_assignments_total')"
             class="text-xs-center"
         >
             {{ batch.count_assignments_total }}
         </td>
 
         <td
+            v-if="set_columns_selected.has('count_assignments_approved')"
             class="text-xs-center"
         >
             {{ batch.count_assignments_approved }}
         </td>
 
         <td
+            v-if="set_columns_selected.has('count_assignments_rejected')"
             class="text-xs-center"
         >
             {{ batch.count_assignments_rejected }}
         </td>
 
         <td
+            v-if="set_columns_selected.has('money_spent_max_with_fee')"
             class="text-xs-center"
         >
             {{ batch.costs_max }}
         </td>
 
-        <td 
+        <td
+            v-if="set_columns_selected.has('progress')"
             class="text-xs-center"
         >
             <component-batch-progress
@@ -80,7 +89,8 @@
             </component-batch-progress>
         </td>
         
-        <td 
+        <td
+            v-if="set_columns_selected.has('actions')"
             class="text-xs-center"
         >
             <v-btn
@@ -131,12 +141,16 @@ export default {
                 });
             }
         },
+        set_columns_selected() {
+            return new Set(this.array_columns_selected);
+        },
         batch() {
             return this.props.item;
         },
         ...mapGetters(['get_show_progress_indicator']),
         ...mapGetters('moduleBatches', {
             'object_batches_selected': 'get_object_batches_selected',
+            'array_columns_selected': 'get_array_columns_selected',
         }),
     },
     methods: {
