@@ -77,6 +77,11 @@ export const moduleBatches = {
 					value: 'money_spent_max_with_fee',
 					align: 'right'
 				},
+        		{
+					text: 'Costs So Far',
+					value: 'money_spent_with_fee',
+					align: 'right'
+				},
                 {
                     text: 'Progress',
                     value: 'progress',
@@ -103,13 +108,13 @@ export const moduleBatches = {
         array_columns_selected_initial_finances: [
             'name',
             'count_hits',
-            'datetime_creation',
             'settings_batch.count_assignments',
             'reward',
             'count_assignments_total',
             'count_assignments_approved',
             'count_assignments_rejected',
             'money_spent_max_with_fee',
+            'money_spent_with_fee',
         ],
         array_columns_selected_finances: null,
 	},

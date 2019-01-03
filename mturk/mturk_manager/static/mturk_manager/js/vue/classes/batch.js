@@ -18,6 +18,7 @@ export default class Batch
 		this.count_assignments_approved= data.count_assignments_approved;
 		this.count_assignments_rejected= data.count_assignments_rejected;
 		this.costs_max = data.costs_max;
+		this.costs_so_far = data.costs_so_far;
 		// this._count_assignments_total = null;
 		// this._count_assignments_available = null;
 		// this._progress = null;

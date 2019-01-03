@@ -78,6 +78,13 @@
         </td>
 
         <td
+            v-if="set_columns_selected.has('money_spent_with_fee')"
+            class="text-xs-center"
+        >
+            <component-display-money v-bind:amount="batch.costs_so_far"></component-display-money>
+        </td>
+
+        <td
             v-if="set_columns_selected.has('progress')"
             class="text-xs-center"
         >
