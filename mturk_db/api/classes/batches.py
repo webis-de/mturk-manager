@@ -5,7 +5,7 @@ from django.db.models.functions import Coalesce
 from django.http import HttpResponse
 
 from api.classes.projects import Manager_Projects
-from api.enums import assignments
+from api.enums import assignments, STATUS_EXTERNAL, STATUS_INTERNAL
 from api.models import Batch, Template_Worker, HIT, Assignment, Settings_Batch, Worker
 # from viewer.models import m_Tag
 # from api.views import code_shared, project
@@ -484,6 +484,8 @@ class Manager_Batches(object):
             dict_result['sandbox'] = assignment.hit.batch.use_sandbox
             dict_result['creation'] = assignment.hit.datetime_creation
             dict_result['expiration'] = assignment.hit.datetime_expiration
+            dict_result['status_external'] = 'SUBMITTED' if assignment.status_external is None else STATUS_EXTERNAL(assignment.status_external).name
+            dict_result['status_internal'] = 'SUBMITTED' if assignment.status_internal is None else STATUS_INTERNAL(assignment.status_internal).name
             dict_result.update(dict_question)
             dict_result.update(dict_answer)
 
@@ -589,6 +591,8 @@ class Manager_Batches(object):
         set_builtin.add('sandbox')
         set_builtin.add('creation')
         set_builtin.add('expiration')
+        set_builtin.add('status_external')
+        set_builtin.add('status_internal')
 
         result = {
             'is_valid': is_valid,
