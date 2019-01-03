@@ -429,7 +429,8 @@ class Manager_Batches(object):
                 filter=Q(hits__assignments__status_external=assignments.STATUS_EXTERNAL.REJECTED)
             ), 0),
         ).annotate(
-            costs_max=F('count_assignments_total') * F('settings_batch__reward')
+            costs_max=F('count_assignments_total') * F('settings_batch__reward'),
+            costs_so_far=F('count_assignments_approved') * F('settings_batch__reward'),
         )
 
         sort_by = request.query_params.get('sort_by')

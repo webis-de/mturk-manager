@@ -28,6 +28,7 @@ class Serializer_Batch(serializers.ModelSerializer):
     count_assignments_approved = serializers.IntegerField(required=False)
     count_assignments_rejected = serializers.IntegerField(required=False)
     costs_max = serializers.IntegerField(required=False)
+    costs_so_far = serializers.IntegerField(required=False)
 
     class Meta:
         model = Batch
@@ -46,6 +47,7 @@ class Serializer_Batch(serializers.ModelSerializer):
             'count_assignments_approved',
             'count_assignments_rejected',
             'costs_max',
+            'costs_so_far',
         )
         extra_kwargs = {
             # 'template': {
