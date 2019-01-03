@@ -74,7 +74,7 @@
             v-if="set_columns_selected.has('money_spent_max_with_fee')"
             class="text-xs-center"
         >
-            {{ batch.costs_max }}
+            <component-display-money v-bind:amount="batch.costs_max"></component-display-money>
         </td>
 
         <td
