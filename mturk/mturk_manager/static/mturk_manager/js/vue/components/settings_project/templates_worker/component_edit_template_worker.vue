@@ -36,13 +36,15 @@
 			            label="Height"
 		        		v-bind:error-messages="validation_errors.template_worker.height_frame"
 			        ></v-text-field>
-					<v-text-field
+
+					<v-textarea
 			            required
+			            rows="20"
 			  			v-bind:value="template_worker.template"
 			            v-on:input="template_worker.template=$event; $v.template_worker.template.$touch()"
 			            label="Template"
 		        		v-bind:error-messages="validation_errors.template_worker.template"
-			        ></v-text-field>
+			        ></v-textarea>
 
 			        <v-select
 			  			v-bind:value="template_worker.template_assignment"
