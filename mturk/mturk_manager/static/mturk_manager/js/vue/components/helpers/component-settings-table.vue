@@ -32,6 +32,10 @@
 							color="primary"
 							v-on:click="function_reset(); dialog = false;"
 						>Reset to default</v-btn>
+						<v-btn
+							flat
+							v-on:click="dialog = false"
+						>Cancel</v-btn>
 					</v-flex>
 				</v-layout>
 	            <!-- append-icon="clear"
