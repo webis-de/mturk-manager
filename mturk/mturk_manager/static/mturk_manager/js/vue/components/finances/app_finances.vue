@@ -10,14 +10,23 @@
         </v-flex>
     </v-layout> -->
 
-    <component-list-batches
-         v-bind:array_columns="array_columns"
-         v-bind:array_columns_selected="array_columns_selected"
-         v-bind:array_columns_selected_initial="array_columns_selected_initial"
-         v-bind:function_reset_array_columns="function_reset_array_columns"
-         v-bind:function_set_array_columns="function_set_array_columns"
-    ></component-list-batches>
-
+<v-layout>
+    <v-flex>
+        <display-expenses></display-expenses>
+    </v-flex>
+</v-layout>
+<v-divider class="my-3"></v-divider>
+<v-layout>
+    <v-flex>
+        <component-list-batches
+             v-bind:array_columns="array_columns"
+             v-bind:array_columns_selected="array_columns_selected"
+             v-bind:array_columns_selected_initial="array_columns_selected_initial"
+             v-bind:function_reset_array_columns="function_reset_array_columns"
+             v-bind:function_set_array_columns="function_set_array_columns"
+        ></component-list-batches>
+    </v-flex>
+</v-layout>
     <!--<v-divider class="my-3"></v-divider>-->
     <!--<div style="max-width: 100%">-->
         <!--<v-flex>-->
@@ -34,6 +43,7 @@
     import ComponentShowMoneySpent from './component-show-money-spent.vue';
     import ComponentShowBatches from './component-show-batches.vue';
     import ComponentListBatches from '../batches/list/component_list_batches.vue';
+    import DisplayExpenses from './display-expenses.vue';
     import slug_project from '../../mixins/slug_project';
 export default {
     mixins: [
@@ -72,6 +82,7 @@ export default {
         ComponentShowMoneySpent,
         ComponentShowBatches,
         ComponentListBatches,
+        DisplayExpenses,
     },
 }
 </script>

@@ -80,6 +80,7 @@ class Class_Service_Projects {
 		// load initial values for project
 		if(project.slug !== undefined)
 		{
+			this.load_data(project);
 			Service_Settings_Batch.load();
 			Service_Templates.load_all();
 
@@ -190,6 +191,40 @@ class Class_Service_Projects {
 			data: response.data,
 		});
 	}
+
+    async load_data(project) {
+		const response = await Service_Endpoint.make_request({
+			method: 'get',
+			url: {
+				url: store.getters["get_url"]('url_api_projects', 'moduleProjects'),
+				project,
+				value: project.slug,
+			},
+		});
+
+		project.sum_costs_max_sandbox = response.data.sum_costs_max_sandbox;
+		project.max_costs_max_sandbox = response.data.max_costs_max_sandbox;
+		project.min_costs_max_sandbox = response.data.min_costs_max_sandbox;
+
+		project.sum_costs_so_far_sandbox = response.data.sum_costs_so_far_sandbox;
+		project.max_costs_so_far_sandbox = response.data.max_costs_so_far_sandbox;
+		project.min_costs_so_far_sandbox = response.data.min_costs_so_far_sandbox;
+
+		project.sum_costs_max = response.data.sum_costs_max;
+		project.max_costs_max = response.data.max_costs_max;
+		project.min_costs_max = response.data.min_costs_max;
+
+		project.sum_costs_so_far = response.data.sum_costs_so_far;
+		project.max_costs_so_far = response.data.max_costs_so_far;
+		project.min_costs_so_far = response.data.min_costs_so_far;
+
+
+		// console.log('response', response.data);
+		// store.commit('moduleProjects/set_ping', {
+		// 	project,
+		// 	data: response.data,
+		// });
+    }
 }
 
 export const Service_Projects = new Class_Service_Projects();

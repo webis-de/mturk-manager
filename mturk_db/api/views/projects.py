@@ -18,15 +18,15 @@ class Projects(APIView):
 
     # @add_database_object_project
     def get(self, request, format=None):
-        list_projects = [
-            # 'real-money-web-page-segmentation-01',
-            # 'real-money-web-page-segmentation-02',
-            # 'real-money-web-page-segmentation-02-rest',
-            # 'real-money-web-page-segmentation-03',
-        ]
-
-        for name_project in list_projects:
-            migrate_project(name_project)
+        # list_projects = [
+        #     # 'real-money-web-page-segmentation-01',
+        #     # 'real-money-web-page-segmentation-02',
+        #     # 'real-money-web-page-segmentation-02-rest',
+        #     # 'real-money-web-page-segmentation-03',
+        # ]
+        #
+        # for name_project in list_projects:
+        #     migrate_project(name_project)
         queryset_projects = Manager_Projects.get_all()
         serializer = Serializer_Project(queryset_projects, many=True, context={'request': request})
         return Response(serializer.data)
@@ -43,7 +43,13 @@ class Project(APIView):
 
     @add_database_object_project
     def get(self, request, slug_project, database_object_project, use_sandbox, format=None):
-        serializer = Serializer_Project(database_object_project)
+        project = Manager_Projects.get(database_object_project)
+        serializer = Serializer_Project(
+            project,
+            context={
+                'detailed': True
+            }
+        )
         # serializer = Serializer_Project(database_object_project, context={'request': request})
         return Response(serializer.data)
 

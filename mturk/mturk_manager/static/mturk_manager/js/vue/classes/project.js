@@ -19,6 +19,21 @@ export default class Project
 
 		this.message_reject_default = data.message_reject_default;
 
+		this.sum_costs_max_sandbox = undefined;
+		this.max_costs_max_sandbox = undefined;
+		this.min_costs_max_sandbox = undefined;
+
+		this.sum_costs_so_far_sandbox = undefined;
+		this.max_costs_so_far_sandbox = undefined;
+		this.min_costs_so_far_sandbox = undefined;
+
+		this.sum_costs_max = undefined;
+		this.max_costs_max = undefined;
+		this.min_costs_max = undefined;
+
+		this.sum_costs_so_far = undefined;
+		this.max_costs_so_far = undefined;
+		this.min_costs_so_far = undefined;
         // this.title = data.title;
         // this.description = data.description;
         // this.keywords = data.keywords;

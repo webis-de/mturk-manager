@@ -51,7 +51,6 @@
             </v-flex>
         </v-layout>
     </v-toolbar>
-
     <v-content>
         <v-container fluid>
             <router-view></router-view>
@@ -128,6 +127,9 @@ export default {
             'object_projects': 'get_object_projects',
         }),
         ...mapGetters(['get_show_progress_indicator']),
+    },
+    created() {
+        console.warn('changed')
     },
     components: {
         ComponentNavigationDrawer,

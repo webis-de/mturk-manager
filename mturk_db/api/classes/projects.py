@@ -1,5 +1,8 @@
-from django.db.models import F, Value, Count, Q, Sum, IntegerField, ExpressionWrapper
-from api.models import Account_Mturk, Project, Message_Reject
+from django.db.models import F, Value, Count, Q, Sum, IntegerField, ExpressionWrapper, Max, Min
+from django.db.models.functions import Coalesce
+
+from api.enums import assignments
+from api.models import Account_Mturk, Project, Message_Reject, Batch
 from mturk_db.settings import URL_MTURK_SANDBOX
 import boto3
 from pytz import timezone
@@ -30,6 +33,109 @@ class Manager_Projects(object):
     @classmethod
     def get_all(cls):
         return Project.objects.all()
+
+    @staticmethod
+    def get(database_object_project):
+        queryset_batches_sandbox = Batch.objects.filter(
+            project=database_object_project,
+            use_sandbox=True,
+        ).annotate(
+            count_hits=Count('hits')
+        ).annotate(
+            count_assignments_available=Coalesce(Count('hits__assignments', distinct=True), 0),
+            count_assignments_total=F('count_hits') * F('settings_batch__count_assignments'),
+            count_assignments_approved=Coalesce(Count(
+                'hits__assignments',
+                distinct=True,
+                filter=Q(hits__assignments__status_external=assignments.STATUS_EXTERNAL.APPROVED)
+            ), 0),
+            count_assignments_rejected=Coalesce(Count(
+                'hits__assignments',
+                distinct=True,
+                filter=Q(hits__assignments__status_external=assignments.STATUS_EXTERNAL.REJECTED)
+            ), 0),
+        ).annotate(
+            costs_max=F('count_assignments_total') * F('settings_batch__reward'),
+            costs_so_far=F('count_assignments_approved') * F('settings_batch__reward'),
+        ).aggregate(
+            sum_costs_max_sandbox=Coalesce(Sum('costs_max'), 0),
+            max_costs_max_sandbox=Coalesce(Max('costs_max'), 0),
+            min_costs_max_sandbox=Coalesce(Min('costs_max'), 0),
+
+            sum_costs_so_far_sandbox=Coalesce(Sum('costs_so_far'), 0),
+            max_costs_so_far_sandbox=Coalesce(Max('costs_so_far'), 0),
+            min_costs_so_far_sandbox=Coalesce(Min('costs_so_far'), 0),
+        )
+
+        queryset_batches = Batch.objects.filter(
+            project=database_object_project,
+            use_sandbox=False,
+        ).annotate(
+            count_hits=Count('hits')
+        ).annotate(
+            count_assignments_available=Coalesce(Count('hits__assignments', distinct=True), 0),
+            count_assignments_total=F('count_hits') * F('settings_batch__count_assignments'),
+            count_assignments_approved=Coalesce(Count(
+                'hits__assignments',
+                distinct=True,
+                filter=Q(hits__assignments__status_external=assignments.STATUS_EXTERNAL.APPROVED)
+            ), 0),
+            count_assignments_rejected=Coalesce(Count(
+                'hits__assignments',
+                distinct=True,
+                filter=Q(hits__assignments__status_external=assignments.STATUS_EXTERNAL.REJECTED)
+            ), 0),
+        ).annotate(
+            costs_max=F('count_assignments_total') * F('settings_batch__reward'),
+            costs_so_far=F('count_assignments_approved') * F('settings_batch__reward'),
+        ).aggregate(
+            sum_costs_max=Coalesce(Sum('costs_max'), 0),
+            max_costs_max=Coalesce(Max('costs_max'), 0),
+            min_costs_max=Coalesce(Min('costs_max'), 0),
+
+            sum_costs_so_far=Coalesce(Sum('costs_so_far'), 0),
+            max_costs_so_far=Coalesce(Max('costs_so_far'), 0),
+            min_costs_so_far=Coalesce(Min('costs_so_far'), 0),
+        )
+
+        queryset_batches_sandbox.update(queryset_batches)
+
+        queryset = Project.objects.filter(
+            pk=database_object_project.pk
+        ).annotate(
+            **{key: Value(value, output_field=IntegerField()) for key, value in queryset_batches_sandbox.items()}
+        ).get()
+        # queryset = Batch.objects.filter(
+        #     project=database_object_project,
+        #     use_sandbox=use_sandbox,
+        # ).annotate(
+        #     count_hits=Count('hits')
+        # ).annotate(
+        #     count_assignments_available=Coalesce(Count('hits__assignments', distinct=True), 0),
+        #     count_assignments_total=F('count_hits') * F('settings_batch__count_assignments'),
+        #     count_assignments_approved=Coalesce(Count(
+        #         'hits__assignments',
+        #         distinct=True,
+        #         filter=Q(hits__assignments__status_external=assignments.STATUS_EXTERNAL.APPROVED)
+        #     ), 0),
+        #     count_assignments_rejected=Coalesce(Count(
+        #         'hits__assignments',
+        #         distinct=True,
+        #         filter=Q(hits__assignments__status_external=assignments.STATUS_EXTERNAL.REJECTED)
+        #     ), 0),
+        # ).annotate(
+        #     costs_max=F('count_assignments_total') * F('settings_batch__reward'),
+        #     costs_so_far=F('count_assignments_approved') * F('settings_batch__reward'),
+        # )
+        #
+        # sort_by = request.query_params.get('sort_by')
+        # if sort_by is not None:
+        #     descending = request.query_params.get('descending', 'false') == 'true'
+        #     queryset = queryset.order_by(
+        #         ('-' if descending else '') + sort_by
+        #     )
+        #
+        return queryset
 
     @classmethod
     def get_mturk_api(cls, use_sandbox=True):

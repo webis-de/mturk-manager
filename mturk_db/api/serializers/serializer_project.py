@@ -41,6 +41,22 @@ class Serializer_Project(serializers.ModelSerializer):
     message_reject = serializers.CharField(required=False)
     message_reject_default = Serializer_Message_Reject(required=False)
 
+    sum_costs_max_sandbox = serializers.IntegerField(required=False)
+    max_costs_max_sandbox = serializers.IntegerField(required=False)
+    min_costs_max_sandbox = serializers.IntegerField(required=False)
+
+    sum_costs_so_far_sandbox = serializers.IntegerField(required=False)
+    max_costs_so_far_sandbox = serializers.IntegerField(required=False)
+    min_costs_so_far_sandbox = serializers.IntegerField(required=False)
+
+    sum_costs_max = serializers.IntegerField(required=False)
+    max_costs_max = serializers.IntegerField(required=False)
+    min_costs_max = serializers.IntegerField(required=False)
+
+    sum_costs_so_far = serializers.IntegerField(required=False)
+    max_costs_so_far = serializers.IntegerField(required=False)
+    min_costs_so_far = serializers.IntegerField(required=False)
+
     class Meta:
         model = Project
         fields = (
@@ -53,6 +69,23 @@ class Serializer_Project(serializers.ModelSerializer):
             'datetime_visited',
             'message_reject_default',
             'message_reject',
+
+            'sum_costs_max_sandbox',
+            'max_costs_max_sandbox',
+            'min_costs_max_sandbox',
+
+            'sum_costs_so_far_sandbox',
+            'max_costs_so_far_sandbox',
+            'min_costs_so_far_sandbox',
+
+            'sum_costs_max',
+            'max_costs_max',
+            'min_costs_max',
+
+            'sum_costs_so_far',
+            'max_costs_so_far',
+            'min_costs_so_far',
+
             # 'workers',
             # 'title',
             # 'description',
