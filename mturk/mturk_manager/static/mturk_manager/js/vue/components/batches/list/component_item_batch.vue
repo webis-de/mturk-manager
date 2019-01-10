@@ -36,14 +36,14 @@
         </td>
 
         <td
-            v-if="set_columns_selected.has('settings_batch.count_assignments')"
+            v-if="set_columns_selected.has('settings_batch__count_assignments')"
             class="text-xs-center"
         >
             {{ batch.settings_batch.count_assignments }}
         </td>
 
         <td
-            v-if="set_columns_selected.has('reward')"
+            v-if="set_columns_selected.has('settings_batch__reward')"
             class="text-xs-center"
         >
             <component-display-money v-bind:amount="batch.settings_batch.reward"></component-display-money>
@@ -71,14 +71,14 @@
         </td>
 
         <td
-            v-if="set_columns_selected.has('money_spent_max_with_fee')"
+            v-if="set_columns_selected.has('costs_max')"
             class="text-xs-center"
         >
             <component-display-money v-bind:amount="batch.costs_max"></component-display-money>
         </td>
 
         <td
-            v-if="set_columns_selected.has('money_spent_with_fee')"
+            v-if="set_columns_selected.has('costs_so_far')"
             class="text-xs-center"
         >
             <component-display-money v-bind:amount="batch.costs_so_far"></component-display-money>
@@ -101,16 +101,16 @@
             class="text-xs-center"
         >
             <v-btn
-                slot="activator" 
+                slot="activator"
                 class="my-0"
                 icon
                 small
                 v-bind:to="{
-                    name: 'batch', 
-                    params: { 
-                        slug_project: $route.params.slug_project, 
+                    name: 'batch',
+                    params: {
+                        slug_project: $route.params.slug_project,
                         id_batch: batch.id
-                    } 
+                    }
                 }"
             >
                 <v-icon>info</v-icon>

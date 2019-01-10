@@ -51,13 +51,12 @@ export const moduleBatches = {
                 },
                 {
                     text: '#Assignments Per HIT',
-                    value: 'settings_batch.count_assignments',
+                    value: 'settings_batch__count_assignments',
                     align: 'center',
-                    sortable: false,
                 },
                 {
                     text: 'Reward',
-                    value: 'reward',
+                    value: 'settings_batch__reward',
                     align: 'center',
                 },
         		{
@@ -74,12 +73,12 @@ export const moduleBatches = {
 				},
         		{
 					text: 'Max costs',
-					value: 'money_spent_max_with_fee',
+					value: 'costs_max',
 					align: 'right'
 				},
         		{
 					text: 'Costs So Far',
-					value: 'money_spent_with_fee',
+					value: 'costs_so_far',
 					align: 'right'
 				},
                 {
@@ -99,7 +98,7 @@ export const moduleBatches = {
             'name',
             'count_hits',
             'datetime_creation',
-            'settings_batch.count_assignments',
+            'settings_batch__count_assignments',
             'count_assignments_total',
             'progress',
             'actions',
@@ -108,13 +107,13 @@ export const moduleBatches = {
         array_columns_selected_initial_finances: [
             'name',
             'count_hits',
-            'settings_batch.count_assignments',
-            'reward',
+            'settings_batch__count_assignments',
+            'settings_batch__reward',
             'count_assignments_total',
             'count_assignments_approved',
             'count_assignments_rejected',
-            'money_spent_max_with_fee',
-            'money_spent_with_fee',
+            'costs_max',
+            'costs_so_far',
         ],
         array_columns_selected_finances: null,
 	},
