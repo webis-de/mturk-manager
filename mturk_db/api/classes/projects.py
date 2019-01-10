@@ -174,7 +174,7 @@ class Manager_Projects(object):
             if key == 'message_reject':
                 message_reject = Message_Reject.objects.get_or_create(message=value)[0]
                 instance.message_reject_default = message_reject
-
+                instance.save()
                 messages_reject_deleted = Message_Reject.objects.all().annotate(
                     count_usage=Count('project')
                 ).filter(count_usage=0).delete()
