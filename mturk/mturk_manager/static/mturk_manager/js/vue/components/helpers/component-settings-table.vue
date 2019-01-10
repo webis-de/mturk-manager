@@ -18,7 +18,19 @@
 					<v-flex>
 						<v-checkbox
 							class="ma-0"
+							label="Toggle all"
+							v-model="is_toggled_all"
+							v-bind:indeterminate="is_indeterminate"
+							hide-details
+						></v-checkbox>
+					</v-flex>
+				</v-layout>
+				<v-layout>
+					<v-flex>
+						<v-checkbox
+							class="ma-0"
 							v-for="column in array_columns"
+							v-bind:key="column.value"
 							v-bind:label="column.label || column.text"
 							v-bind:value="column.value"
 							v-model="intern_array_columns_selected"
@@ -48,6 +60,7 @@
 
 <script>
     import { mapState, mapMutations, mapActions, mapGetters } from 'vuex';
+    import _ from 'lodash';
     export default {
         name: "component-settings-table",
 		props: {
@@ -74,18 +87,41 @@
 				intern_array_columns_selected: this.array_columns_selected,
             }
         },
-		// computed: {
+		computed: {
+            is_toggled_all: {
+                get() {
+                    return _.size(this.array_columns) === _.size(this.intern_array_columns_selected)
+                },
+				set(is_checked) {
+                    if(is_checked === true)
+					{
+						this.intern_array_columns_selected = _.map(this.array_columns, column => column.value);
+					} else {
+						this.intern_array_columns_selected = [];
+					}
+				}
+			},
+			is_indeterminate() {
+                return !this.is_toggled_all && _.size(this.intern_array_columns_selected) !== 0;
+			}
         //     intern_array_columns_selected: {
         //         get() {
         //             return
 		// 		},
 		// 	}
-		// },
+		},
 		watch: {
             array_columns_selected() {
 				this.intern_array_columns_selected = this.array_columns_selected;
 			},
 	  		intern_array_columns_selected() {
+                // console.log('_.size(this.array_columns_selected)', _.size(this.array_columns_selected));
+                // console.log('_.size(this.intern_array_columns_selected)', _.size(this.intern_array_columns_selected));
+                // if(_.size(this.array_columns) === _.size(this.intern_array_columns_selected)) {
+                //     this.is_toggled_all = true;
+				// } else if(_.size(this.intern_array_columns_selected) === 0) {
+                //     this.is_toggled_all = false;
+				// }
 	  		    this.$emit('change', this.intern_array_columns_selected);
 			}
 		},
