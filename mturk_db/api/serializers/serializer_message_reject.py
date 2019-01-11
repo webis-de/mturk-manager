@@ -9,7 +9,8 @@ class Serializer_Message_Reject(serializers.ModelSerializer):
         fields = (
             'id', 
             'message', 
-            'count_usage', 
+            'message_lowercase',
+            'count_usage',
         )
         extra_kwargs = {
             'id': {

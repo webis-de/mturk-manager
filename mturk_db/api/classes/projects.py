@@ -172,12 +172,19 @@ class Manager_Projects(object):
     def update(instance, validated_data):
         for key, value in validated_data.items():
             if key == 'message_reject':
-                message_reject = Message_Reject.objects.get_or_create(message=value)[0]
+                message_reject, was_created = Message_Reject.objects.get_or_create(message_lowercase=value.lower(), defaults={
+                    'message': value
+                })
+
+                if not was_created:
+                    message_reject.message = value
+                    message_reject.save()
+
                 instance.message_reject_default = message_reject
                 instance.save()
-                messages_reject_deleted = Message_Reject.objects.all().annotate(
-                    count_usage=Count('project')
-                ).filter(count_usage=0).delete()
+                # messages_reject_deleted = Message_Reject.objects.all().annotate(
+                #     count_usage=Count('project')
+                # ).filter(count_usage=0).delete()
             else:
                 setattr(instance, key, value)
 

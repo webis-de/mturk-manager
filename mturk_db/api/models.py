@@ -149,8 +149,9 @@ class Assignment(models.Model):
 
 class Message_Reject(models.Model):
     # project = models.ForeignKey('Project', on_delete=models.CASCADE, related_name='messages_reject')
-    message = models.CharField(max_length=1024, unique=True)
-    
+    message = models.CharField(max_length=1024)
+    message_lowercase = models.CharField(max_length=1024, unique=True)
+
     def __str__(self):
         return self.message
 

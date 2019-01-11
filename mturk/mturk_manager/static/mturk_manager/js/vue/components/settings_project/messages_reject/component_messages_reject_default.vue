@@ -12,6 +12,8 @@
                 v-bind:search-input.sync="search"
                 label="Enter your default reject message"
                 item-text="message"
+                item-value="message_lowercase"
+                dense
             >
                 <template slot="no-data">
                     <v-list-tile>
