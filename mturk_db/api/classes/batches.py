@@ -609,3 +609,11 @@ class Manager_Batches(object):
             })
 
         return result
+
+    @classmethod
+    def get_by_id(cls, id_batch):
+        batch = Batch.objects.get(
+            pk=id_batch
+        )
+
+        return batch

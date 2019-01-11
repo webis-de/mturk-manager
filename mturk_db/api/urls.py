@@ -44,6 +44,7 @@ urlpatterns = format_suffix_patterns([
     path('projects/<str:slug_project>/count_assignments_max_per_worker/<negint:value>', views.set_count_assignments_max_per_worker),
 
     path('projects/<str:slug_project>/batches', views.Batches.as_view(), name='batches_for_project'),
+    path('projects/<str:slug_project>/batches/<int:id_batch>', views.Batch.as_view(), name='batch_for_project'),
     path('projects/<str:slug_project>/batches_for_annotation', views.batches_for_annotation, name='batches_for_annotation'),
     path('projects/<str:slug_project>/download_batches', views.download_batches, name='download_batches'),
     path('projects/<str:slug_project>/download_info_batches', views.download_info_batches, name='download_info_batches'),

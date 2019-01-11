@@ -156,11 +156,11 @@ export const moduleBatches = {
             }
         },
         is_valid_csv: (state) => {
-            if(state.object_csv_parsed == undefined) 
+            if(state.object_csv_parsed === undefined)
             {
                 return false;
             } else {
-                return state.object_csv_parsed.errors.length == 0;
+                return state.object_csv_parsed.errors.length === 0;
             }
         },
         get_object_csv_parsed: (state) => {

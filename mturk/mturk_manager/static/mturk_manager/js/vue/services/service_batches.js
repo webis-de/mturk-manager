@@ -1,6 +1,7 @@
 import {Service_Endpoint} from "./service_endpoint";
 import {store} from "../store/vuex";
 import {Service_HITs} from "./service_hits";
+import Batch from "../classes/batch";
 
 class Class_Service_Batches {
 	// async load_batches(force=false)
@@ -119,8 +120,17 @@ class Class_Service_Batches {
         return response.data.items_total;
     }
 
-    get_batch(id_batch) {
-        console.log('id_batch', id_batch);
+    async get_batch(id_batch) {
+        const response = await Service_Endpoint.make_request({
+            method: 'get',
+            url: {
+                url: store.getters["get_url"]('url_api_projects_batches', 'moduleBatches'),
+                project: store.getters['moduleProjects/get_project_current'],
+                value: id_batch
+            },
+        });
+
+        return new Batch(response.data);
     }
 
     async download(params) {

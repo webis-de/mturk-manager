@@ -52,8 +52,6 @@ export default {
             'function_set_array_columns': 'set_array_columns_general'
         }),
     },
-    watch: {
-    },
     computed: {
         ...mapGetters('moduleHITs', {
             'array_columns_selected': 'get_array_columns_selected_general',

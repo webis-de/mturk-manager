@@ -19,13 +19,18 @@
         <v-divider class="my-3"></v-divider>
         <component-list-hits
             v-bind:id_batch="id_batch"
+
+            v-bind:array_columns_selected="array_columns_selected"
+            v-bind:array_columns_selected_initial="array_columns_selected_initial"
+            v-bind:function_reset_array_columns="function_reset_array_columns"
+            v-bind:function_set_array_columns="function_set_array_columns"
         ></component-list-hits>
 	</v-flex>
 </v-layout>
     
 </template>
 <script>
-    import { mapState, mapActions, mapGetters } from 'vuex';
+    import { mapState, mapMutations, mapActions, mapGetters } from 'vuex';
     import ComponentListHits from '../../hits/list/component_list_hits.vue';
     import _ from 'lodash';
     import {Service_Batches} from "../../../services/service_batches";
@@ -45,6 +50,7 @@ export default {
     },
     data () {
         return {
+            batch_intern: undefined,
         }
     },
     // watch: {
@@ -53,26 +59,16 @@ export default {
     //     },
     // },
     computed: {
-        list_hits() {
-            if(this.batch.object_hits == undefined)
-            {
-                return [];
-            } else {
-                return _.orderBy(this.batch.object_hits);
-            }
-        },
+        // list_hits() {
+        //     if(this.batch.object_hits == undefined)
+        //     {
+        //         return [];
+        //     } else {
+        //         return _.orderBy(this.batch.object_hits);
+        //     }
+        // },
     	batch() {
-    		const object_batches = this.get_object_batches();
-    		if(object_batches == null) {
-    			return {}
-    		} else {
-                if(object_batches[this.id_batch] == undefined)
-                {
-                    return {};
-                } else {
-                    return object_batches[this.id_batch];
-                }
-    		}
+    	    return this.batch_intern === undefined ? {} : this.batch_intern;
     	},
 
         // status_block() {
@@ -107,15 +103,27 @@ export default {
         //             };
         //     }
         // },
-        ...mapGetters('moduleBatches', {
-            'get_object_batches': 'get_object_batches',
+        // ...mapGetters('moduleBatches', {
+        //     'get_object_batches': 'get_object_batches',
+        // }),
+        ...mapGetters('moduleHITs', {
+            'array_columns_selected': 'get_array_columns_selected_general',
+            'array_columns_selected_initial': 'get_array_columns_selected_initial_general',
         }),
         ...mapGetters(['get_show_progress_indicator']),
     },
     created: function () {
-        Service_Batches.get_batch(this.id_batch);
+        Service_Batches.get_batch(this.id_batch).then((batch) => {
+            this.batch_intern = batch;
+        });
     },
     methods: {
+        ...mapActions('moduleHITs', {
+            'function_reset_array_columns': 'reset_array_columns_general',
+        }),
+        ...mapMutations('moduleHITs', {
+            'function_set_array_columns': 'set_array_columns_general'
+        }),
     },
     components: {
         ComponentListHits,

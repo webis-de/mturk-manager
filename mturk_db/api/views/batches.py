@@ -1,7 +1,6 @@
 from django.http import HttpResponse
 from rest_framework.settings import api_settings
 
-from api.models import Batch as Model_Batch
 from api.serializers import Serializer_Batch
 from mturk_db.permissions import IsInstance, AllowOptionsAuthentication
 from rest_framework.views import APIView
@@ -10,6 +9,7 @@ from rest_framework import status
 from api.helpers import add_database_object_project
 from api.classes import Manager_Batches
 from rest_framework.decorators import api_view, permission_classes
+from api.models import Batch as Model_Batch
 import json
 
 PERMISSIONS_INSTANCE_ONLY = (AllowOptionsAuthentication, IsInstance,)
@@ -57,17 +57,24 @@ class Batches(APIView):
 #     # return Response(True)
 #     return Response(dictionary_data)
 
-# class Batch(APIView):
-#     def get_object(self, slug):
-#         try:
-#             return m_Project.objects.get(slug=slug)
-#         except m_Project.DoesNotExist:
-#             raise Http404
+class Batch(APIView):
+    def get_object(self, id_batch):
+        try:
+            return Model_Batch.objects.get(pk=id_batch)
+        except Model_Batch.DoesNotExist:
+            raise Http404
 
-#     # def get(self, request, name, format=None):
-#     #     project = self.get_object(name)
-#     #     serializer = Serializer_Project(project, context={'request': request})
-#     #     return Response(serializer.data)
+    @add_database_object_project
+    def get(self, request, slug_project, database_object_project, use_sandbox, id_batch, format=None):
+        batch = Manager_Batches.get_by_id(id_batch=id_batch)
+        serializer = Serializer_Batch(
+            batch,
+            context={
+                'detailed': True
+            }
+        )
+        # serializer = Serializer_Project(database_object_project, context={'request': request})
+        return Response(serializer.data)
 
 #     @add_database_object_project
 #     def put(self, request, slug_project, database_object_project, use_sandbox, format=None):
