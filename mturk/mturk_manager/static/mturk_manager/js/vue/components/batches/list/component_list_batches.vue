@@ -100,10 +100,6 @@ export default {
     ],
     name: 'component-list-batches',
     props: {
-        array_columns: {
-            type: Array,
-            required: true,
-        },
         array_columns_selected: {
             type: Array,
             required: true,
@@ -128,78 +124,18 @@ export default {
             loading: false,
             search: '',
             items_total: undefined,
-
-            // search: 'A10BOAO1EONNS7',
-            // policy_new: new Policy({
-            //     QualificationTypeStatus: 'Active',
-            // }),
-
-            // list_headers: [
-            //     {
-            //         text: 'Name',
-            //         value: 'name',
-            //     },
-            //     {
-            //         text: '#HITs',
-            //         value: 'count_hits',
-            //         align: 'center',
-            //     },
-            //     {
-            //         text: 'Creation',
-            //         value: 'datetime_creation',
-            //         align: 'center',
-            //     },
-            //     {
-            //         text: '#Assignments Per HIT',
-            //         value: 'settings_batch.count_assignments',
-            //         align: 'center',
-            //         sortable: false,
-            //     },
-            //     {
-            //         text: 'Reward',
-            //         value: 'reward',
-            //         align: 'center',
-            //     },
-        	// 	{
-			// 		text: '#Assignments',
-			// 		value: 'count_assignments_total',
-			// 	},
-        	// 	{
-			// 		text: '#Approved assignments',
-			// 		value: 'count_assignments_approved',
-			// 	},
-        	// 	{
-			// 		text: '#Rejected assignments',
-			// 		value: 'count_assignments_rejected',
-			// 	},
-        	// 	{
-			// 		text: 'Max costs',
-			// 		value: 'money_spent_max_with_fee',
-			// 		align: 'right'
-			// 	},
-            //     {
-            //         text: 'Progress',
-            //         value: 'progress',
-            //         align: 'center',
-            //         sortable: false,
-            //     },
-            //     {
-            //         text: '',
-            //         value: 'actions',
-            //         sortable: false,
-            //     },
-            // ],
         }
     },
     computed: {
-        ...mapGetters('moduleBatches', {
-            'array_items': 'get_array_batches',
-            'object_items_selected': 'get_object_batches_selected',
-        }),
         array_headers() {
             const set = new Set(this.array_columns_selected);
             return _.filter(this.array_columns, (column) => set.has(column.value));
         },
+        ...mapGetters('moduleBatches', {
+            'array_columns': 'get_array_columns_general',
+            'array_items': 'get_array_batches',
+            'object_items_selected': 'get_object_batches_selected',
+        }),
     },
     methods: {
         load_page() {

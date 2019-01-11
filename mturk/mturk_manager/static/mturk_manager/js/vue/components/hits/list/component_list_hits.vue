@@ -6,7 +6,7 @@
         <v-data-table
             select-all
             v-bind:pagination.sync="pagination"
-            v-bind:headers="list_headers"
+            v-bind:headers="array_headers"
             v-bind:items="array_page"
             v-bind:total-items="items_total"
             item-key="id"
@@ -48,8 +48,22 @@
                 <component-item-hit
                     v-bind:props="props"
                     v-bind:show_links="show_links"
+                    v-bind:array_columns_selected="array_columns_selected"
                 >
                 </component-item-hit>
+            </template>
+
+            <template slot="footer">
+                <tr>
+                    <component-settings-table
+                         v-bind:colspan="array_headers.length + 1"
+                         v-bind:array_columns="array_columns"
+                         v-bind:array_columns_selected="array_columns_selected"
+                         v-bind:array_columns_selected_initial="array_columns_selected_initial"
+                         v-bind:function_reset="function_reset_array_columns"
+                         v-on:change="function_set_array_columns($event)"
+                    ></component-settings-table>
+                </tr>
             </template>
         </v-data-table>
         <!-- {{list_workers}} -->
@@ -60,6 +74,7 @@
     import { mapState, mapActions, mapMutations, mapGetters } from 'vuex';
     // import { Policy } from '../../store/modules/policies.js';
     import ComponentItemHit from './component_item_hit.vue';
+    import ComponentSettingsTable from '../../helpers/component-settings-table';
     // import ComponentShowMoneySpent from './component-show-money-spent.vue';
     // import ComponentShowBatches from './component-show-batches.vue';
     import {table} from '../../../mixins/table';
@@ -67,6 +82,7 @@
     import {external_pagination} from "../../../mixins/external_pagination";
     import {Service_HITs} from "../../../services/service_hits";
     import Batch from "../../../classes/batch";
+    import _ from 'lodash';
 export default {
     mixins: [
         update_sandbox,
@@ -84,6 +100,22 @@ export default {
             type: Boolean,
             default: true,
         },
+        array_columns_selected: {
+            type: Array,
+            required: true,
+        },
+        array_columns_selected_initial: {
+            type: Array,
+            required: true,
+        },
+        function_reset_array_columns: {
+            type: Function,
+            required: true,
+        },
+        function_set_array_columns: {
+            type: Function,
+            required: true,
+        },
     },
     data () {
         return {
@@ -96,63 +128,15 @@ export default {
 
             loading: false,
 
-            // search: 'A10BOAO1EONNS7',
-            // policy_new: new Policy({
-            //     QualificationTypeStatus: 'Active',
-            // }),
-
         }
     },
     computed: {
-        array_hits_prepared() {
-            let array_hits_current = undefined;
-            if(this.use_sandbox === true)
-            {
-                array_hits_current = this.array_hits_sandbox;
-            } else {
-                array_hits_current = this.array_hits;
-            }
-
-            if(array_hits_current === null) {
-                return [];
-            }
-
-            return array_hits_current;
+        array_headers() {
+            const set = new Set(this.array_columns_selected);
+            return _.filter(this.array_columns, (column) => set.has(column.value));
         },
-        list_headers() {
-            const list_headers = [
-                {
-                    text: 'ID',
-                    value: 'id_hit',
-                },
-                {
-                    text: 'Batch',
-                    value: 'batch',
-                },
-                {
-                    text: 'Creation',
-                    value: 'datetime_creation',
-                },
-                {
-                    text: 'Progress',
-                    value: 'progress',
-                    align: 'center',
-                },
-            ];
-
-            if(this.show_links == true) {
-                list_headers.push({
-                    text: '',
-                    value: '',
-                });
-            }
-
-            return list_headers;
-        },
-        // ...mapGetters('moduleProjects', {
-        //     'project_current': 'get_project_current',
-        // }),
         ...mapGetters('moduleHITs', {
+            'array_columns': 'get_array_columns_general',
             'array_items': 'get_array_hits',
             'object_items_selected': 'get_object_hits_selected',
         }),
@@ -183,6 +167,7 @@ export default {
 
     components: {
         ComponentItemHit,
+        ComponentSettingsTable,
     },
 }
 </script>

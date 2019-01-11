@@ -8,6 +8,7 @@ import HIT from '../../classes/hit.js';
 
 import VueCookies from 'vue-cookies'
 import Batch from "../../classes/batch";
+import localforage from "localforage";
 Vue.use(Vuex)
 Vue.use(VueCookies)
 Vue.use(VueAxios, axios)
@@ -23,9 +24,51 @@ export const moduleHITs = {
 
         object_hits_selected: {},
 
+        array_columns_general: [
+            {
+                text: 'ID',
+                value: 'id_hit',
+            },
+            {
+                text: 'Batch',
+                value: 'batch',
+            },
+            {
+                text: 'Creation',
+                value: 'datetime_creation',
+            },
+            {
+                text: 'Progress',
+                value: 'progress',
+                align: 'center',
+                sortable: false,
+            },
+        ],
+        array_columns_selected_initial_general: [
+            'id_hit',
+            'batch',
+            'datetime_creation',
+            'progress',
+        ],
+        array_columns_selected_general: null,
+
         url_api_projects_hits: undefined,
 	},
     getters: {
+	    get_array_columns_general: (state) => {
+	        return state.array_columns_general;
+        },
+	    get_array_columns_selected_general: (state) => {
+	        if(state.array_columns_selected_general === null) {
+	            return state.array_columns_selected_initial_general;
+            } else {
+                return state.array_columns_selected_general;
+            }
+        },
+	    get_array_columns_selected_initial_general: (state) => {
+	        return state.array_columns_selected_initial_general;
+        },
+
 	    get_object_hits_selected: (state) => {
 	        return state.object_hits_selected;
         },
@@ -57,6 +100,11 @@ export const moduleHITs = {
         },
     },
 	mutations: {
+        set_array_columns_general(state, array_columns) {
+            localforage.setItem('array_columns_hits_general', array_columns);
+            state.array_columns_selected_general = array_columns;
+        },
+
         set_hits(state, {data, use_sandbox}) {
             let array_hits = null;
             if(use_sandbox)
@@ -122,5 +170,21 @@ export const moduleHITs = {
         },
 	},
 	actions: {
+	    async init({state}) {
+	        let array_columns = await localforage.getItem('array_columns_hits_general');
+            if(array_columns !== null)
+            {
+                state.array_columns_selected_general = array_columns;
+            }
+
+	        // array_columns = await localforage.getItem('array_columns_hits_finances');
+            // if(array_columns !== null)
+            // {
+            //     state.array_columns_selected_finances = array_columns;
+            // }
+        },
+        reset_array_columns_general({state, commit}) {
+	        commit('set_array_columns_general', state.array_columns_selected_initial_general);
+        },
 	},
 }

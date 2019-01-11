@@ -39,60 +39,60 @@ export const moduleBatches = {
                 value: 'name',
                 text: 'Name',
             },
-                {
-                    text: '#HITs',
-                    value: 'count_hits',
-                    align: 'center',
-                },
-                {
-                    text: 'Creation',
-                    value: 'datetime_creation',
-                    align: 'center',
-                },
-                {
-                    text: '#Assignments Per HIT',
-                    value: 'settings_batch__count_assignments',
-                    align: 'center',
-                },
-                {
-                    text: 'Reward',
-                    value: 'settings_batch__reward',
-                    align: 'center',
-                },
-        		{
-					text: '#Assignments',
-					value: 'count_assignments_total',
-				},
-        		{
-					text: '#Approved assignments',
-					value: 'count_assignments_approved',
-				},
-        		{
-					text: '#Rejected assignments',
-					value: 'count_assignments_rejected',
-				},
-        		{
-					text: 'Max costs',
-					value: 'costs_max',
-					align: 'right'
-				},
-        		{
-					text: 'Costs So Far',
-					value: 'costs_so_far',
-					align: 'right'
-				},
-                {
-                    text: 'Progress',
-                    value: 'progress',
-                    align: 'center',
-                    sortable: false,
-                },
-                {
-                    text: '',
-                    value: 'actions',
-                    sortable: false,
-                    label: 'Details',
-                },
+            {
+                text: '#HITs',
+                value: 'count_hits',
+                align: 'center',
+            },
+            {
+                text: 'Creation',
+                value: 'datetime_creation',
+                align: 'center',
+            },
+            {
+                text: '#Assignments Per HIT',
+                value: 'settings_batch__count_assignments',
+                align: 'center',
+            },
+            {
+                text: 'Reward',
+                value: 'settings_batch__reward',
+                align: 'center',
+            },
+            {
+                text: '#Assignments',
+                value: 'count_assignments_total',
+            },
+            {
+                text: '#Approved assignments',
+                value: 'count_assignments_approved',
+            },
+            {
+                text: '#Rejected assignments',
+                value: 'count_assignments_rejected',
+            },
+            {
+                text: 'Max costs',
+                value: 'costs_max',
+                align: 'right'
+            },
+            {
+                text: 'Costs So Far',
+                value: 'costs_so_far',
+                align: 'right'
+            },
+            {
+                text: 'Progress',
+                value: 'progress',
+                align: 'center',
+                sortable: false,
+            },
+            {
+                text: '',
+                value: 'actions',
+                sortable: false,
+                label: 'Details',
+            },
         ],
         array_columns_selected_initial_general: [
             'name',
@@ -121,6 +121,7 @@ export const moduleBatches = {
 	    get_array_columns_general: (state) => {
 	        return state.array_columns_general;
         },
+
 	    get_array_columns_selected_general: (state) => {
 	        if(state.array_columns_selected_general === null) {
 	            return state.array_columns_selected_initial_general;
@@ -131,6 +132,7 @@ export const moduleBatches = {
 	    get_array_columns_selected_initial_general: (state) => {
 	        return state.array_columns_selected_initial_general;
         },
+
 	    get_array_columns_selected_finances: (state) => {
 	        if(state.array_columns_selected_finances === null) {
 	            return state.array_columns_selected_initial_finances;

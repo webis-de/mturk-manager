@@ -11,10 +11,16 @@
                 hide-details
             ></v-checkbox>
         </td>
-        <td class="text-xs-center">
+        <td
+            v-if="set_columns_selected.has('id_hit')"
+            class="text-xs-center"
+        >
             {{ hit.id_hit }}
         </td>
-        <td class="text-xs-center">
+        <td
+            v-if="set_columns_selected.has('batch')"
+            class="text-xs-center"
+        >
             {{ hit.batch.name.toUpperCase() }}
             <v-btn
                 slot="activator"
@@ -32,12 +38,16 @@
                 <v-icon>info</v-icon>
             </v-btn>
         </td>
-        <td class="text-xs-center">
+        <td
+            v-if="set_columns_selected.has('datetime_creation')"
+            class="text-xs-center"
+        >
             <component-display-datetime
                 v-bind:datetime="hit.datetime_creation"
             ></component-display-datetime>
         </td>
-        <td 
+        <td
+            v-if="set_columns_selected.has('progress')"
             class="text-xs-center"
         >
             <component-batch-progress
@@ -47,7 +57,8 @@
                 {{ hit.count_assignments_available }}/{{hit.count_assignments_total}} assignment{{hit.count_assignments_total > 1 ? 's' : ''}}
             </component-batch-progress>
         </td>
-        <td 
+        <td
+            v-if="set_columns_selected.has('name')"
             class="text-xs-center"
             v-if="show_links == true"
         >
@@ -93,6 +104,10 @@ export default {
             type: Boolean,
             default: true,
         },
+        array_columns_selected: {
+            type: Array,
+            required: true,
+        },
     },
     data () {
         return {
@@ -104,6 +119,9 @@ export default {
     //     },
     // },
     computed: {
+        set_columns_selected() {
+            return new Set(this.array_columns_selected);
+        },
         is_selected: {
             get() {
                 return _.has(this.object_hits_selected, this.hit.id);

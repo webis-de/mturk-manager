@@ -5,7 +5,6 @@
         v-if="$route.name === 'batches'"
     >
         <component-list-batches
-             v-bind:array_columns="array_columns"
              v-bind:array_columns_selected="array_columns_selected"
              v-bind:array_columns_selected_initial="array_columns_selected_initial"
              v-bind:function_reset_array_columns="function_reset_array_columns"
@@ -63,7 +62,6 @@ export default {
     },
     computed: {
         ...mapGetters('moduleBatches', {
-            'array_columns': 'get_array_columns_general',
             'array_columns_selected': 'get_array_columns_selected_general',
             'array_columns_selected_initial': 'get_array_columns_selected_initial_general',
         }),

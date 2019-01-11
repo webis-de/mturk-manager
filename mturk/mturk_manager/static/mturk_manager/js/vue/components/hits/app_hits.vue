@@ -5,6 +5,11 @@
     >
         <component-list-hits
             v-bind:show_links="true"
+
+            v-bind:array_columns_selected="array_columns_selected"
+            v-bind:array_columns_selected_initial="array_columns_selected_initial"
+            v-bind:function_reset_array_columns="function_reset_array_columns"
+            v-bind:function_set_array_columns="function_set_array_columns"
         ></component-list-hits>
     </template>
     <template 
@@ -18,7 +23,7 @@
 </template>
 
 <script>
-    import { mapState, mapActions, mapGetters } from 'vuex';
+    import { mapState, mapMutations, mapActions, mapGetters } from 'vuex';
     
     // import ComponentCreateBatch from './create/component_create_batch.vue';
     import ComponentListHits from './list/component_list_hits.vue';
@@ -40,10 +45,20 @@ export default {
         }
     },
     methods: {
+        ...mapActions('moduleHITs', {
+            'function_reset_array_columns': 'reset_array_columns_general',
+        }),
+        ...mapMutations('moduleHITs', {
+            'function_set_array_columns': 'set_array_columns_general'
+        }),
     },
     watch: {
     },
     computed: {
+        ...mapGetters('moduleHITs', {
+            'array_columns_selected': 'get_array_columns_selected_general',
+            'array_columns_selected_initial': 'get_array_columns_selected_initial_general',
+        }),
     },
     created: function() {
     },
