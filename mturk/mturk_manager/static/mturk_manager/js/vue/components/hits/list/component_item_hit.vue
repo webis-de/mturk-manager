@@ -3,6 +3,7 @@
     <tr 
         v-bind:key="hit.id"
         v-on:click="props.expanded = !props.expanded"
+        class="text-no-wrap"
     >
         <td>
             <v-checkbox

@@ -1,17 +1,30 @@
 <template>
 <v-layout align-center>
 	<v-flex xs6>
-	    <v-progress-linear 
-	    	class="my-0" 
+	    <v-progress-linear
+	    	class="my-0"
 	    	v-model="progress"
 	    	v-bind:color="progress >= 100 ? 'success': 'primary'"
 		></v-progress-linear>
 	</v-flex>
-	<v-flex class="px-2 text-no-wrap" shrink >
+	<v-flex xs6 class="px-2">
 		<slot></slot>
+
 	</v-flex>
 </v-layout>
-</span>
+<!--<div align-center>-->
+	<!--<v-flex xs6>-->
+	    <!--<v-progress-linear-->
+	    	<!--class="my-0"-->
+	    	<!--v-model="progress"-->
+	    	<!--v-bind:color="progress >= 100 ? 'success': 'primary'"-->
+		<!--&gt;</v-progress-linear>-->
+	<!--</v-flex>-->
+	<!--<v-flex xs6 class="px-2">-->
+		<!--<slot></slot>-->
+
+	<!--</v-flex>-->
+<!--</div>-->
 </template>
 <script>
     import { mapState, mapActions, mapGetters } from 'vuex';

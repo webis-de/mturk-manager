@@ -2,6 +2,7 @@
     <!-- <div>wda</div> -->
     <tr
         v-bind:key="batch.id"
+        class="text-no-wrap"
     >
         <td>
             <v-checkbox
