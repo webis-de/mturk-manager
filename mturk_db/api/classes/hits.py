@@ -44,6 +44,9 @@ class Manager_HITs(object):
 
         sort_by = request.query_params.get('sort_by')
         if sort_by is not None:
+            if sort_by == 'batch':
+                sort_by = 'batch__name'
+
             descending = request.query_params.get('descending', 'false') == 'true'
             queryset = queryset.order_by(
                 ('-' if descending else '') + sort_by
