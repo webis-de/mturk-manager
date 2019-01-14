@@ -8,6 +8,7 @@ import Assignment from '../../classes/assignment.js';
 
 import VueCookies from 'vue-cookies'
 import HIT from "../../classes/hit";
+import localforage from "localforage";
 Vue.use(Vuex)
 Vue.use(VueCookies)
 Vue.use(VueAxios, axios)
@@ -169,5 +170,15 @@ export const moduleAssignments = {
         },
 	},
 	actions: {
+	    async init({state}) {
+	        let array_columns = await localforage.getItem('array_columns_assignments_general');
+            if(array_columns !== null)
+            {
+                state.array_columns_selected_general = array_columns;
+            }
+        },
+        reset_array_columns_general({state, commit}) {
+	        commit('set_array_columns_general', state.array_columns_selected_initial_general);
+        },
 	},
 }

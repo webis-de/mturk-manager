@@ -176,12 +176,6 @@ export const moduleHITs = {
             {
                 state.array_columns_selected_general = array_columns;
             }
-
-	        // array_columns = await localforage.getItem('array_columns_hits_finances');
-            // if(array_columns !== null)
-            // {
-            //     state.array_columns_selected_finances = array_columns;
-            // }
         },
         reset_array_columns_general({state, commit}) {
 	        commit('set_array_columns_general', state.array_columns_selected_initial_general);
