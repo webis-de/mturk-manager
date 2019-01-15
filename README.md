@@ -48,4 +48,4 @@ You can execute `python manage.py migrate` if the message bothers you.
 
 ## Contact
 Did you find a bug or do you have questions/requests?  
-Write me a mail: kristof.komlossy@uni-weimar.de
+Write me a mail: mturk@kritten.org
