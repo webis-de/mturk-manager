@@ -45,7 +45,7 @@
 
         <td
             v-if="set_columns_selected.has('settings_batch__reward')"
-            class="text-xs-center"
+            class="text-xs-right"
         >
             <component-display-money v-bind:amount="batch.settings_batch.reward"></component-display-money>
         </td>
@@ -73,14 +73,14 @@
 
         <td
             v-if="set_columns_selected.has('costs_max')"
-            class="text-xs-center"
+            class="text-xs-right"
         >
             <component-display-money v-bind:amount="batch.costs_max"></component-display-money>
         </td>
 
         <td
             v-if="set_columns_selected.has('costs_so_far')"
-            class="text-xs-center"
+            class="text-xs-right"
         >
             <component-display-money v-bind:amount="batch.costs_so_far"></component-display-money>
         </td>
