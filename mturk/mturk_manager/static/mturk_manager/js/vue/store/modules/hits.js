@@ -175,6 +175,8 @@ export const moduleHITs = {
             if(array_columns !== null)
             {
                 state.array_columns_selected_general = array_columns;
+            } else {
+                state.array_columns_selected_general = state.array_columns_selected_initial_general;
             }
         },
         reset_array_columns_general({state, commit}) {

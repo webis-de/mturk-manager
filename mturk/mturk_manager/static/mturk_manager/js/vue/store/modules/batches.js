@@ -434,12 +434,16 @@ export const moduleBatches = {
             if(array_columns !== null)
             {
                 state.array_columns_selected_general = array_columns;
+            } else {
+                state.array_columns_selected_general = state.array_columns_selected_initial_general;
             }
 
 	        array_columns = await localforage.getItem('array_columns_batches_finances');
             if(array_columns !== null)
             {
                 state.array_columns_selected_finances = array_columns;
+            } else {
+                state.array_columns_selected_finances = state.array_columns_selected_initial_finances;
             }
         },
         reset_array_columns_general({state, commit}) {
