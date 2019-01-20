@@ -3,6 +3,7 @@
     <tr 
         v-bind:key="assignment.id"
         v-on:click="props.expanded = !props.expanded"
+        class="text-no-wrap"
     >
         <td>
             <v-checkbox
@@ -11,23 +12,37 @@
                 hide-details
             ></v-checkbox>
         </td>
-        <td class="text-xs-center">
+        <td
+            v-if="set_columns_selected.has('id_assignment')"
+            class="text-xs-center"
+        >
             {{ assignment.id_assignment }}
         </td>
-        <td class="text-xs-center">
+        <td
+            v-if="set_columns_selected.has('datetime_creation')"
+            class="text-xs-center"
+        >
             <component-display-datetime v-bind:datetime="assignment.datetime_creation"></component-display-datetime>
         </td>
-        <td 
+        <td
+            v-if="set_columns_selected.has('worker')"
             class="text-xs-center"
         >
             {{ assignment.worker.id_worker }}
         </td>
-        <td class="text-xs-center">
+        <td
+            v-if="set_columns_selected.has('status')"
+            class="text-xs-center"
+        >
             <component-status-assignment
                 v-bind:assignment="assignment"
             ></component-status-assignment>
         </td>
-        <td class="text-xs-center">{{ assignment.hit.id_hit }}
+        <td
+            v-if="set_columns_selected.has('hit')"
+            class="right"
+        >
+            {{ assignment.hit.id_hit }}
             <v-btn
                 slot="activator" 
                 class="my-0"
@@ -90,6 +105,10 @@ export default {
             type: Boolean,
             default: true,
         },
+        array_columns_selected: {
+            type: Array,
+            required: true,
+        },
     },
     data () {
         return {
@@ -101,6 +120,9 @@ export default {
     //     },
     // },
     computed: {
+        set_columns_selected() {
+            return new Set(this.array_columns_selected);
+        },
         is_selected: {
             get() {
                 return _.has(this.object_assignments_selected, this.assignment.id);

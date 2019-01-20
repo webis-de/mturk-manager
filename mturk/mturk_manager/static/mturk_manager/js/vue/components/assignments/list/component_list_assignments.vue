@@ -25,7 +25,7 @@
             <v-flex>
                 <v-data-table
                     select-all
-                    v-bind:headers="list_headers"
+                    v-bind:headers="array_headers"
                     v-bind:items="array_page"
                     v-bind:pagination.sync="pagination"
                     v-bind:total-items="items_total"
@@ -70,7 +70,21 @@
                         <component-item-assignment
                             v-bind:props="props"
                             v-bind:show_links="show_links"
+                            v-bind:array_columns_selected="array_columns_selected"
                         ></component-item-assignment>
+                    </template>
+
+                    <template slot="footer">
+                        <tr>
+                            <component-settings-table
+                                 v-bind:colspan="array_headers.length + 1"
+                                 v-bind:array_columns="array_columns"
+                                 v-bind:array_columns_selected="array_columns_selected"
+                                 v-bind:array_columns_selected_initial="array_columns_selected_initial"
+                                 v-bind:function_reset="function_reset_array_columns"
+                                 v-on:change="function_set_array_columns($event)"
+                            ></component-settings-table>
+                        </tr>
                     </template>
                 </v-data-table>
             </v-flex>
@@ -84,8 +98,10 @@
     import ComponentItemAssignment from './component_item_assignment.vue';
     // import ComponentShowMoneySpent from './component-show-money-spent.vue';
     // import ComponentShowBatches from './component-show-batches.vue';
+    import _ from 'lodash';
     import {table} from '../../../mixins/table';
     import {STATUS_EXTERNAL} from "../../../classes/enums";
+    import ComponentSettingsTable from '../../helpers/component-settings-table';
     import {update_sandbox} from "../../../mixins/update_sandbox";
     import {external_pagination} from "../../../mixins/external_pagination";
     import {Service_Assignments} from "../../../services/service_assignments";
@@ -105,6 +121,22 @@ export default {
             required: false,
             type: Boolean,
             default: true,
+        },
+        array_columns_selected: {
+            type: Array,
+            required: true,
+        },
+        array_columns_selected_initial: {
+            type: Array,
+            required: true,
+        },
+        function_reset_array_columns: {
+            type: Function,
+            required: true,
+        },
+        function_set_array_columns: {
+            type: Function,
+            required: true,
         },
     },
     data () {
@@ -128,33 +160,38 @@ export default {
         this.clear_assignments_selected();
     },
     computed: {
+        array_headers() {
+            const set = new Set(this.array_columns_selected);
+            return _.filter(this.array_columns, (column) => set.has(column.value));
+        },
         ...mapGetters('moduleAssignments', {
+            'array_columns': 'get_array_columns_general',
             'array_items': 'get_array_assignments',
             'object_items_selected': 'get_object_assignments_selected',
         }),
         list_headers() {
-            const list_headers = [
-                {
-                    text: 'Name',
-                    value: 'id_assignment',
-                },
-                {
-                    text: 'Creation',
-                    value: 'datetime_creation',
-                },
-                {
-                    text: 'Worker',
-                    value: 'worker',
-                    align: 'center',
-                },
-                {
-                    text: 'Status',
-                },
-                {
-                    text: 'HIT',
-                    value: 'hit',
-                },
-            ];
+            // const list_headers = [
+            //     {
+            //         text: 'Name',
+            //         value: 'id_assignment',
+            //     },
+            //     {
+            //         text: 'Creation',
+            //         value: 'datetime_creation',
+            //     },
+            //     {
+            //         text: 'Worker',
+            //         value: 'worker',
+            //         align: 'center',
+            //     },
+            //     {
+            //         text: 'Status',
+            //     },
+            //     {
+            //         text: 'HIT',
+            //         value: 'hit',
+            //     },
+            // ];
 
             // if(this.show_links == true) {
             //     list_headers.push({
@@ -198,6 +235,7 @@ export default {
 
     components: {
         ComponentItemAssignment,
+        ComponentSettingsTable,
     },
 }
 </script>

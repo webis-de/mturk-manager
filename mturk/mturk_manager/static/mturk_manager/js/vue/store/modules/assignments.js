@@ -25,8 +25,54 @@ export const moduleAssignments = {
 
 		set_ids_worker: null,
 		object_assignments_selected: {},
+
+        array_columns_general: [
+            {
+                text: 'Name',
+                value: 'id_assignment',
+            },
+            {
+                text: 'Creation',
+                value: 'datetime_creation',
+            },
+            {
+                text: 'Worker',
+                value: 'worker',
+                align: 'center',
+            },
+            {
+                text: 'Status',
+                value: 'status',
+            },
+            {
+                text: 'HIT',
+                value: 'hit',
+            },
+        ],
+        array_columns_selected_initial_general: [
+            'id_assignment',
+            'datetime_creation',
+            'worker',
+            'status',
+            'hit',
+        ],
+        array_columns_selected_general: null,
 	},
     getters: {
+	    get_array_columns_general: (state) => {
+	        return state.array_columns_general;
+        },
+	    get_array_columns_selected_general: (state) => {
+	        if(state.array_columns_selected_general === null) {
+	            return state.array_columns_selected_initial_general;
+            } else {
+                return state.array_columns_selected_general;
+            }
+        },
+	    get_array_columns_selected_initial_general: (state) => {
+	        return state.array_columns_selected_initial_general;
+        },
+
 	    get_object_assignments_selected: (state) => {
 	        return state.object_assignments_selected;
         },
@@ -58,6 +104,10 @@ export const moduleAssignments = {
         },
     },
 	mutations: {
+        set_array_columns_general(state, array_columns) {
+            localforage.setItem('array_columns_assignments_general', array_columns);
+            state.array_columns_selected_general = array_columns;
+        },
         set_assignments(state, {data, use_sandbox}) {
             let array_assignments = null;
             if(use_sandbox)
@@ -175,6 +225,8 @@ export const moduleAssignments = {
             if(array_columns !== null)
             {
                 state.array_columns_selected_general = array_columns;
+            } else {
+                state.array_columns_selected_general = state.array_columns_selected_initial_general;
             }
         },
         reset_array_columns_general({state, commit}) {

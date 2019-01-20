@@ -131,6 +131,7 @@ export const store = new Vuex.Store({
 
             dispatch('moduleBatches/init');
             dispatch('moduleHITs/init');
+            dispatch('moduleAssignments/init');
 
         },
         async set_show_with_fee({commit, state}, show) {
