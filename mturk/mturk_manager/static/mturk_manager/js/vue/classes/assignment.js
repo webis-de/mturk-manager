@@ -10,5 +10,7 @@ export default class Assignment
 		this.status_external = data.status_external;
 		this.status_internal = data.status_internal;
 		this.datetime_creation = new Date(data.datetime_creation);
+        this.datetime_accept = new Date(data.datetime_accept);
+        this.datetime_submit = new Date(data.datetime_submit);
 	}
 }

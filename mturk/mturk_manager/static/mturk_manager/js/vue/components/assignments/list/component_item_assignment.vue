@@ -25,6 +25,18 @@
             <component-display-datetime v-bind:datetime="assignment.datetime_creation"></component-display-datetime>
         </td>
         <td
+            v-if="set_columns_selected.has('datetime_accept')"
+            class="text-xs-center"
+        >
+            <component-display-datetime v-bind:datetime="assignment.datetime_accept"></component-display-datetime>
+        </td>
+        <td
+            v-if="set_columns_selected.has('datetime_submit')"
+            class="text-xs-center"
+        >
+            <component-display-datetime v-bind:datetime="assignment.datetime_submit"></component-display-datetime>
+        </td>
+        <td
             v-if="set_columns_selected.has('worker')"
             class="text-xs-center"
         >

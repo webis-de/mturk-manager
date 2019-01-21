@@ -36,6 +36,14 @@ export const moduleAssignments = {
                 value: 'datetime_creation',
             },
             {
+                text: 'Accepted',
+                value: 'datetime_accept',
+            },
+            {
+                text: 'Submitted',
+                value: 'datetime_submit',
+            },
+            {
                 text: 'Worker',
                 value: 'worker',
                 align: 'center',
@@ -52,6 +60,8 @@ export const moduleAssignments = {
         array_columns_selected_initial_general: [
             'id_assignment',
             'datetime_creation',
+            'datetime_accept',
+            'datetime_submit',
             'worker',
             'status',
             'hit',
