@@ -3,6 +3,7 @@ from django.db.models import Q
 
 from api.classes import Manager_Projects
 from api.models import Account_Mturk, Assignment
+from api.enums import assignments
 
 
 class Command(BaseCommand):
@@ -28,6 +29,13 @@ class Command(BaseCommand):
 
             assignment_db.datetime_accept = assignment_mturk['AcceptTime']
             assignment_db.datetime_submit = assignment_mturk['SubmitTime']
+
+            status = assignment_mturk['AssignmentStatus']
+            if status == 'Approved':
+                assignment_db.status_external = assignments.STATUS_EXTERNAL.APPROVED
+            elif status == 'Rejected':
+                assignment_db.status_external = assignments.STATUS_EXTERNAL.REJECTED
+
             assignment_db.save()
             count += 1
             if index % 100 == 0:
