@@ -37,6 +37,13 @@
             <component-display-datetime v-bind:datetime="assignment.datetime_submit"></component-display-datetime>
         </td>
         <td
+            v-if="set_columns_selected.has('duration')"
+            class="text-xs-center"
+        >
+             {{assignment.duration}}
+            <!--<component-display-datetime v-bind:datetime="assignment.duration"></component-display-datetime>-->
+        </td>
+        <td
             v-if="set_columns_selected.has('worker')"
             class="text-xs-center"
         >

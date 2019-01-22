@@ -12,5 +12,8 @@ export default class Assignment
 		this.datetime_creation = new Date(data.datetime_creation);
         this.datetime_accept = new Date(data.datetime_accept);
         this.datetime_submit = new Date(data.datetime_submit);
+        // this.duration = new Date(data.duration);
+        this.duration = data.duration;
+        // this.duration = Date.parse(data.duration);
 	}
 }

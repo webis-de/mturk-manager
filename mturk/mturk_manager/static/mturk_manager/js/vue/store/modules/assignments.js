@@ -44,6 +44,10 @@ export const moduleAssignments = {
                 value: 'datetime_submit',
             },
             {
+                text: 'Duration',
+                value: 'duration',
+            },
+            {
                 text: 'Worker',
                 value: 'worker',
                 align: 'center',
