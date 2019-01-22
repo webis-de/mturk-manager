@@ -1,6 +1,9 @@
 # from api.classes.projects import Manager_Projects
 import json
 
+from django.db.models import F, ExpressionWrapper, DurationField
+from django.db.models.functions import Coalesce
+
 from api.enums import assignments
 from api.classes.projects import Manager_Projects
 from api.models import Assignment
@@ -38,6 +41,7 @@ class Manager_Assignments(object):
             queryset = queryset.filter(worker__id_worker__icontains=filter_worker)
 
         queryset = queryset.annotate(
+            duration=ExpressionWrapper(F('datetime_submit') - F('datetime_accept'), output_field=DurationField())
         )
 
         sort_by = request.query_params.get('sort_by')

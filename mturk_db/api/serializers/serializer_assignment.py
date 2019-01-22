@@ -41,6 +41,7 @@ class Serializer_Assignment(serializers.ModelSerializer):
     answer = serializers.JSONField()
     hit = Serializer_HIT(read_only=True)
     worker = Serializer_Worker(read_only=True)
+    duration = serializers.DurationField()
 
     class Meta:
         model = Assignment
@@ -58,6 +59,7 @@ class Serializer_Assignment(serializers.ModelSerializer):
             'datetime_accept',
             'hit',
             'worker',
+            'duration',
             # 'batch',
             # 'datetime_creation',
             # 'datetime_expiration',
