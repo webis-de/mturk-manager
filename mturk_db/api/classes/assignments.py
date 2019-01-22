@@ -40,9 +40,7 @@ class Manager_Assignments(object):
         if filter_worker != '':
             queryset = queryset.filter(worker__id_worker__icontains=filter_worker)
 
-        queryset = queryset.annotate(
-            duration=ExpressionWrapper(F('datetime_submit') - F('datetime_accept'), output_field=DurationField())
-        )
+        queryset = Manager_Assignments.add_annotations(queryset)
 
         sort_by = request.query_params.get('sort_by')
         if sort_by is not None:
@@ -57,13 +55,20 @@ class Manager_Assignments(object):
         # import time
         # time.sleep(2)
         if len(list_ids) > 0:
-            queryset_batch = Assignment.objects.filter(
+            queryset = Assignment.objects.filter(
                 hit__batch__project=database_object_project, 
                 id__in=list_ids
             )
+            queryset = Manager_Assignments.add_annotations(queryset)
         else:
-            queryset_batch = Assignment.objects.filter(hit__batch__project=database_object_project)
-        return queryset_batch
+            queryset = Assignment.objects.filter(hit__batch__project=database_object_project)
+        return queryset
+
+    @staticmethod
+    def add_annotations(queryset):
+        return queryset.annotate(
+            duration=ExpressionWrapper(F('datetime_submit') - F('datetime_accept'), output_field=DurationField())
+        )
 
     @staticmethod
     def update_stati_assignments(database_object_project, data):
