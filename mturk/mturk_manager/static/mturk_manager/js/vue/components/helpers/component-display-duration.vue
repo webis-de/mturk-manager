@@ -1,7 +1,7 @@
 <template>
 <v-tooltip top>
-    <span slot="activator">{{ datetime_formatted }}</span>
-    {{ datetime.format() }}
+    <span slot="activator">{{ duration_formatted }}</span>
+    {{ duration.toISOString() }}
 </v-tooltip>
 </template>
 
@@ -11,23 +11,23 @@ export default {
     // mixins: [
     //     // helpers,
     // ],
-    name: 'component-display-datetime',
+    name: 'component-display-duration',
     props: {
-    	datetime: {
+    	duration: {
     		required: true,
     		type: Date|undefined,
     	}
     },
     computed: {
-    	datetime_formatted: function() {
-    		if(this.datetime == undefined)
+    	duration_formatted: function() {
+    		if(this.duration === undefined)
     		{
     			return undefined;
     		} else{
     			// return this.datetime;
     			// console.log(typeof this.datetime)
     			// console.log(this.datetime)
-    			return this.datetime.format('LLL');
+    			return this.duration.humanize();
     			// return this.datetime.toLocaleString();
     		}
       //       return this.amount_formatted(this.amount);

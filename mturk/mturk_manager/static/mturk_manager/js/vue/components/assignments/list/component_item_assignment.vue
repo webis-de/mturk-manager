@@ -40,8 +40,7 @@
             v-if="set_columns_selected.has('duration')"
             class="text-xs-center"
         >
-             {{assignment.duration}}
-            <!--<component-display-datetime v-bind:datetime="assignment.duration"></component-display-datetime>-->
+            <component-display-duration v-bind:duration="assignment.duration"></component-display-duration>
         </td>
         <td
             v-if="set_columns_selected.has('worker')"
@@ -111,6 +110,7 @@
     import _ from 'lodash';
     import ComponentDisplayDatetime from "../../helpers/component_display_datetime";
     import ComponentStatusAssignment from "./component-status-assignment";
+    import ComponentDisplayDuration from "../../helpers/component-display-duration";
 
 export default {
     name: 'component-item-assignment',
@@ -167,6 +167,7 @@ export default {
         }),
     },
     components: {
+        ComponentDisplayDuration,
         ComponentStatusAssignment,
         ComponentDisplayDatetime
     },
