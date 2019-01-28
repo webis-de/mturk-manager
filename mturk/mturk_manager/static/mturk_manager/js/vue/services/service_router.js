@@ -1,17 +1,17 @@
 import VueRouter from 'vue-router';
-import {store} from '../store/vuex.js';
 
 import app_dashboard from '../components/dashboard/app_dashboard.vue';
+import add_credentials from '../views/add-credentials/add-credentials.vue';
 import app_connection_error from '../components/connection_error/app_connection_error.vue';
 import app_project from '../components/project/app_project.vue';
 import app_batches from '../components/batches/app_batches.vue';
 import app_hits from '../components/hits/app_hits.vue';
 import app_assignments from '../components/assignments/app_assignments.vue';
 import app_finances from '../components/finances/app_finances.vue';
-import AppQualifications from '../components/qualifications/AppQualifications.vue';
 import app_workers from '../components/workers/app_workers.vue';
 import AppSettingsProject from '../components/settings_project/app_settings_project.vue';
 import {Service_Projects} from "./service_projects";
+import {store} from "../store/vuex";
 
 function parse_params(route)
 {
@@ -36,6 +36,11 @@ const routes = [
 		path: '/', 
 		name: 'dashboard',
 		component: app_dashboard,
+	},
+	{
+		path: '/add_credentials',
+		name: 'add_credentials',
+		component: add_credentials,
 	},
 	{ 
 		path: '/projects', 

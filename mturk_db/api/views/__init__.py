@@ -1,3 +1,4 @@
+from .config import *
 from .keywords import *
 from .messages_reject import *
 from .workers import *

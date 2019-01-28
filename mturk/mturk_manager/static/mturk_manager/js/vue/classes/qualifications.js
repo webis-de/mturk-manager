@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-export default class Qualification {
+export class Qualification {
 	constructor(data={}) {
 		this.id_mturk = data.id_mturk;
 		this.created_at = data.created_at != undefined ? new Date(data.created_at) : undefined;

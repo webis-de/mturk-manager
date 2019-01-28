@@ -32,16 +32,26 @@
     "vuex": "^3.1.0"
   },
   "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.3.0",
+    "@vue/cli-plugin-eslint": "^3.3.0",
+    "@vue/cli-service": "^3.3.0",
     "@babel/core": "^7.0.0-0",
     "@babel/plugin-transform-runtime": "^7.1.0",
     "@babel/polyfill": "^7.0.0",
     "@babel/preset-env": "^7.2.0",
     "@vue/component-compiler-utils": "^1.2.1",
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.8.0",
+    "eslint-plugin-vue": "^5.0.0",
     "node-sass": "^4.9.3",
     "parcel-bundler": "^1.10.3",
+    "sass-loader": "^7.0.1",
     "vue-template-compiler": "^2.5.22"
   },
   "scripts": {
+    "serve": "vue-cli-service serve mturk_manager/static/mturk_manager/js/vue/index.js",
+    "build": "vue-cli-service build mturk_manager/static/mturk_manager/js/vue/index.js",
+    "lint": "vue-cli-service lint mturk_manager/static/mturk_manager/js/vue/index.js",
     "parcel": "./node_modules/.bin/parcel watch --public-url /static/mturk_manager/js/dist ./mturk_manager/static/mturk_manager/js/vue/index.js -d ./mturk_manager/static/mturk_manager/js/dist",
     "parcel_build": "./node_modules/.bin/parcel build --public-url /static/mturk_manager/js/dist ./mturk_manager/static/mturk_manager/js/vue/index.js -d ./mturk_manager/static/mturk_manager/js/dist",
     "parcel_annotate": "./node_modules/.bin/parcel watch --public-url /static/mturk_manager/js/dist --no-hmr ./mturk_manager/static/mturk_manager/js/annotate/index_annotate.js -d ./mturk_manager/static/mturk_manager/js/dist",

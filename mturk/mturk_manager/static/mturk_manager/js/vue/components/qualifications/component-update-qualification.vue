@@ -59,7 +59,7 @@
 </template>
 
 <script>
-    import { mapState, mapActions, mapGetters } from 'vuex';
+    import { mapActions } from 'vuex';
     // import { Policy } from '../../store/modules/policies.js';
     import { Qualification } from '../../classes/qualifications.js';
     

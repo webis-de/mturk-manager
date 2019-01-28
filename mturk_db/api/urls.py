@@ -22,6 +22,7 @@ register_converter(NegativeIntConverter, 'negint')
 
 app_name = 'api'
 urlpatterns = format_suffix_patterns([
+    path('config', views.Config.as_view(), name='config'),
     path('info_projects/uniqueness/<str:name_project>', views.projects_check_uniqueness, name='projects_check_uniqueness'),
     path('projects', views.Projects.as_view(), name='projects'),
     path('projects/<str:slug_project>', views.Project.as_view(), name='project'),

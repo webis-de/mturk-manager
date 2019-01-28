@@ -1,16 +1,17 @@
 import axios from 'axios';
+import {router} from "./service_router";
+import {store} from "../store/vuex";
 
 class Class_Service_Endpoint {
-	constructor(token) 
+	constructor()
 	{
 		this.is_initialized = false;
 		this.axios = undefined;
-		this.callback_connection_error = undefined;
 	}
 
-	init(token_instance, callback_connection_error)
+	init(token_instance)
 	{
-		if(this.is_initialized == true)
+		if(this.is_initialized === true)
 		{
 	 		console.error('Service Endpoint is already initialized!');
 			return;
@@ -24,8 +25,6 @@ class Class_Service_Endpoint {
                 'Content-Type': 'application/json',
             }
 		});
-
-		this.callback_connection_error = callback_connection_error;
 	}
 
 	async make_request({url, method, data, params, options})
@@ -47,6 +46,7 @@ class Class_Service_Endpoint {
 
         try {
             object_response.response = await this.axios.request(config);
+
             object_response.success = true;
             object_response.data = object_response.response.data;
         } catch(exception) {
@@ -54,34 +54,32 @@ class Class_Service_Endpoint {
             object_response.success = false;
         } 
 
-        if(object_response.success == false)
+        if(object_response.success === false)
         {
-            if(object_response.exception.message == 'Network Error') {
-            	this.callback_connection_error();
+            if(object_response.exception.message === 'Network Error') {
+                // router.push({name: 'connection_error'});
             }
         }
 
         return object_response;
 	}
 
-    get_url_api({url, use_sandbox, value, project, params}) {
-        if(value != undefined)
-        {
-            url += `/${value}`;
-        }
+    get_url_api({path = '', use_sandbox, value, project}) {
+        let url = new URL(path, store.state['module_app'].url_api);
+
+        const params = new URLSearchParams();
 
         if(use_sandbox === false) {
-            url += '?use_sandbox=false&';
-        } else {
-            url += '?';
+            params.append('use_sandbox', 'false');
         }
+
+        url += `?${params.toString()}`;
 
         if(project)
         {
             url = url.replace('PLACEHOLDER_SLUG_PROJECT',  project.slug);
         }
         // url = url.replace('PLACEHOLDER_SLUG_PROJECT',  getters['moduleProjects/get_project_current'].slug);
-
         return url;
     }
  }

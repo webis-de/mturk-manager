@@ -20,10 +20,12 @@ import { moduleAssignments } from './modules/assignments.js';
 import { moduleKeywords } from './modules/keywords.js';
 import { moduleMessagesReject } from './modules/messages_reject.js';
 import {Service_Endpoint} from "../services/service_endpoint";
+import {module_app} from "./modules/app";
 // import { router } from './index.js';
 
 export const store = new Vuex.Store({
     modules: {
+        module_app,
         moduleProjects,
         moduleMoney,
         moduleQualifications,
@@ -35,7 +37,7 @@ export const store = new Vuex.Store({
         moduleMessagesReject,
     },
     state: {
-        token_instance: undefined,
+
         token_csrf: undefined,
         show_with_fee: true,
         show_progress_indicator: 0,
@@ -43,25 +45,32 @@ export const store = new Vuex.Store({
         use_sandbox: true,
     },
     getters: {
+        get_url_api(state) {
+            return state.url_api;
+        },
+        get_token_instance(state) {
+            return state.token_instance;
+        },
+
         get_show_progress_indicator(state, getters, rootState) {
             return state.show_progress_indicator > 0 ? true : false;
         },
-        get_url_api: (state, getters) => ({url, use_sandbox, value}) => {
-            if(value !== undefined)
-            {
-                url += `/${value}`;
-            }
-
-            if(use_sandbox === false) {
-                url += '?use_sandbox=false&';
-            } else {
-                url += '?';
-            }
-
-            url = url.replace('PLACEHOLDER_SLUG_PROJECT', getters['moduleProjects/get_project_current'].slug);
-
-            return url;
-        },
+        // get_url_api: (state, getters) => ({url, use_sandbox, value}) => {
+        //     if(value !== undefined)
+        //     {
+        //         url += `/${value}`;
+        //     }
+        //
+        //     if(use_sandbox === false) {
+        //         url += '?use_sandbox=false&';
+        //     } else {
+        //         url += '?';
+        //     }
+        //
+        //     url = url.replace('PLACEHOLDER_SLUG_PROJECT', getters['moduleProjects/get_project_current'].slug);
+        //
+        //     return url;
+        // },
         get_url: (state) => (url, module) => {
             return state[module][url];
         },
@@ -91,6 +100,11 @@ export const store = new Vuex.Store({
     },
     actions: {
         async init({state, commit, dispatch}) {
+            state.url_api = await localforage.getItem('url_api');
+            state.token_instance = await localforage.getItem('token_instance');
+
+
+
             const configElement = document.getElementById( 'config' );
             const config = JSON.parse( configElement.innerHTML );
             console.log(config);

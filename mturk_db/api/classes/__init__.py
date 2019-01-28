@@ -1,3 +1,4 @@
+from .config import Manager_Config
 from .keywords import Manager_Keywords
 from .messages_reject import Manager_Messages_Reject
 from .batches import Manager_Batches
