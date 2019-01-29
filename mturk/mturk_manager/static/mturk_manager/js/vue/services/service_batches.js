@@ -6,7 +6,7 @@ import Batch from "../classes/batch";
 class Class_Service_Batches {
 	// async load_batches(force=false)
     // {
-	// 	const use_sandbox = store.getters["get_use_sandbox"];
+	// 	const use_sandbox = store.state['module_app']["use_sandbox"];
     //
 	// 	if(store.getters['moduleBatches/get_object_batches'](use_sandbox) == null || force) {
     //         const response = await Service_Endpoint.make_request({
@@ -35,13 +35,13 @@ class Class_Service_Batches {
 
     async create(data)
     {
-		const use_sandbox = store.getters["get_use_sandbox"];
+		const use_sandbox = store.state['module_app']["use_sandbox"];
 		const project = store.getters['moduleProjects/get_project_current'];
 
         const response = await Service_Endpoint.make_request({
             method: 'post',
             url: {
-                url: store.getters["get_url"]('url_api_projects_batches', 'moduleBatches'),
+                path: store.getters["get_url"]('url_api_projects_batches', 'moduleBatches'),
                 use_sandbox,
                 project,
             },
@@ -61,14 +61,14 @@ class Class_Service_Batches {
     }
 
     async sync_mturk() {
-		const use_sandbox = store.getters["get_use_sandbox"];
+		const use_sandbox = store.state['module_app']["use_sandbox"];
 		const project = store.getters['moduleProjects/get_project_current'];
 
         store.commit('moduleBatches/set_is_syncing_mturk', true);
         const response = await Service_Endpoint.make_request({
             method: 'patch',
             url: {
-                url: store.getters["get_url"]('url_api_projects_batches', 'moduleBatches'),
+                path: store.getters["get_url"]('url_api_projects_batches', 'moduleBatches'),
                 project,
                 use_sandbox,
             },
@@ -95,12 +95,12 @@ class Class_Service_Batches {
 
 
     async load_page(pagination) {
-		const use_sandbox = store.getters["get_use_sandbox"];
+		const use_sandbox = store.state['module_app']["use_sandbox"];
 
         const response = await Service_Endpoint.make_request({
             method: 'get',
             url: {
-                url: store.getters["get_url"]('url_api_projects_batches', 'moduleBatches'),
+                path: store.getters["get_url"]('url_api_projects_batches', 'moduleBatches'),
                 use_sandbox,
                 project: store.getters['moduleProjects/get_project_current'],
             },
@@ -124,7 +124,7 @@ class Class_Service_Batches {
         const response = await Service_Endpoint.make_request({
             method: 'get',
             url: {
-                url: store.getters["get_url"]('url_api_projects_batches', 'moduleBatches'),
+                path: store.getters["get_url"]('url_api_projects_batches', 'moduleBatches'),
                 project: store.getters['moduleProjects/get_project_current'],
                 value: id_batch
             },
@@ -137,7 +137,7 @@ class Class_Service_Batches {
         const response = await Service_Endpoint.make_request({
             method: 'get',
             url: {
-                url: store.getters["get_url"]('url_api_projects_batches_download', 'moduleBatches'),
+                path: store.getters["get_url"]('url_api_projects_batches_download', 'moduleBatches'),
                 project: store.getters['moduleProjects/get_project_current'],
             },
             params,
@@ -159,7 +159,7 @@ class Class_Service_Batches {
         const response = await Service_Endpoint.make_request({
             method: 'get',
             url: {
-                url: store.getters["get_url"]('url_api_projects_batches_download_info', 'moduleBatches'),
+                path: store.getters["get_url"]('url_api_projects_batches_download_info', 'moduleBatches'),
                 project: store.getters['moduleProjects/get_project_current'],
             },
             params,

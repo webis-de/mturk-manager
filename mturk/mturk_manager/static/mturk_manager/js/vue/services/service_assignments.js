@@ -33,11 +33,11 @@ class Class_Service_Assignments {
     }
 
     async load_page(pagination, filters) {
-		const use_sandbox = store.getters["get_use_sandbox"];
+		const use_sandbox = store.state['module_app']["use_sandbox"];
         const response = await Service_Endpoint.make_request({
             method: 'get',
             url: {
-                url: store.getters["get_url"]('url_api_projects_assignments', 'moduleAssignments'),
+                path: store.getters["get_url"]('url_api_projects_assignments', 'moduleAssignments'),
                 use_sandbox,
                 project: store.getters['moduleProjects/get_project_current'],
             },

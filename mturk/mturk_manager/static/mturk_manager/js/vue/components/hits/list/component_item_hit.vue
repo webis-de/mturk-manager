@@ -59,7 +59,6 @@
             </component-batch-progress>
         </td>
         <td
-            v-if="set_columns_selected.has('name')"
             class="text-xs-center"
             v-if="show_links == true"
         >

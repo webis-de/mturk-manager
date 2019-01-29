@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import moment from "moment";
 
 export default class HIT
 {
@@ -8,8 +9,8 @@ export default class HIT
 		this.id_hit = data.id_hit;
 		this.batch = data.batch;
 		this.count_assignments_additional = data.count_assignments_additional;
-		this.datetime_creation = new Date(data.datetime_creation);
-		this.datetime_expiration = new Date(data.datetime_expiration);
+		this.datetime_creation = moment(data.datetime_creation);
+		this.datetime_expiration = moment(data.datetime_expiration);
 		this.parameters = data.parameters;
 		this.count_assignments_available= data.count_assignments_available;
 		this.count_assignments_total= data.count_assignments_total;

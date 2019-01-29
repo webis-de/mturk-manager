@@ -13,7 +13,7 @@ export const moduleQualifications = {
 	},  
     getters: {
     	list_policies: (state, getters, rootState) => {
-    		const object_current = rootState.use_sandbox ? state.object_policies_sandbox : state.object_policies;
+    		const object_current = rootState.module_app.use_sandbox ? state.object_policies_sandbox : state.object_policies;
 
     		if(object_current == null)
     		{
@@ -61,12 +61,12 @@ export const moduleQualifications = {
 	},
 	actions: { 
 		async sync_qualifications({commit, state, rootGetters, rootState}, force=false) {
-    		const object_current = rootState.use_sandbox ? state.object_policies_sandbox : state.object_policies;
+    		const object_current = rootState.module_app.use_sandbox ? state.object_policies_sandbox : state.object_policies;
 
             if(object_current == null || force) {
 				await axios.get(rootGetters.get_url_api(state.url_api_qualifications))
 			    .then(response => {
-			    	if(rootState.use_sandbox) {
+			    	if(rootState.module_app.use_sandbox) {
 	                	commit('set_qualificiations_sandbox', response.data);
 			    	} else {
 	                	commit('set_qualificiations', response.data);
@@ -82,7 +82,7 @@ export const moduleQualifications = {
 					headers: {"X-CSRFToken": rootState.token_csrf}
 				},
 			).then(response => {
-		    	if(rootState.use_sandbox) {
+		    	if(rootState.module_app.use_sandbox) {
                 	commit('add_qualification_sandbox', new Qualification(response.data));
 		    	} else {
                 	commit('add_qualification', new Qualification(response.data));
@@ -98,7 +98,7 @@ export const moduleQualifications = {
 					headers: {"X-CSRFToken": rootState.token_csrf}
 				},
 			).then(response => {
-		    	if(rootState.use_sandbox) {
+		    	if(rootState.module_app.use_sandbox) {
                 	commit('add_qualification_sandbox', new Qualification(response.data));
 		    	} else {
                 	commit('add_qualification', new Qualification(response.data));
@@ -119,7 +119,7 @@ export const moduleQualifications = {
 						
 				},
 			).then(response => {
-		    	if(rootState.use_sandbox) {
+		    	if(rootState.module_app.use_sandbox) {
 					commit('delete_qualifications_sandbox', list_ids);
 		    	} else {
 					commit('delete_qualifications', list_ids);

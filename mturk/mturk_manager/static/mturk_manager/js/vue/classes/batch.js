@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import Vue from 'vue';
+import moment from "moment";
 
 export default class Batch
 {
@@ -12,7 +13,7 @@ export default class Batch
 		// this.object_hits = {};
 		this.settings_batch = data.settings_batch;
 		this.count_hits = data.count_hits;
-		this.datetime_creation = new Date(data.datetime_creation);
+		this.datetime_creation = moment(data.datetime_creation);
 		this.count_assignments_available= data.count_assignments_available;
 		this.count_assignments_total= data.count_assignments_total;
 		this.count_assignments_approved= data.count_assignments_approved;

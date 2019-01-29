@@ -194,7 +194,7 @@ export default {
         // step_current: function() {
         //     return this.list_steps[this.number_step_current - 1];
         // },
-    //     ...mapState(['use_sandbox']),
+    //     ...mapState('module_app', ['use_sandbox']),
         ...mapGetters('moduleBatches', {
             // 'get_object_csv_parsed': 'get_object_csv_parsed',
             'is_valid_csv': 'is_valid_csv',

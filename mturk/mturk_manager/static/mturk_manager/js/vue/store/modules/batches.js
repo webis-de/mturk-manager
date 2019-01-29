@@ -150,7 +150,7 @@ export const moduleBatches = {
         get_array_batches: (state, getters, rootState) => (use_sandbox=undefined) => {
             if(use_sandbox === undefined)
             {
-                return rootState.use_sandbox ? state.array_batches_sandbox : state.array_batches;
+                return rootState.module_app.use_sandbox ? state.array_batches_sandbox : state.array_batches;
             } else {
                 return use_sandbox ? state.array_batches_sandbox : state.array_batches;
             }
@@ -167,7 +167,7 @@ export const moduleBatches = {
             return state.object_csv_parsed;
         },
         // get_object_batches: (state, getters, rootState) => {
-        //     return rootState.use_sandbox ? state.object_batches_sandbox : state.object_batches;
+        //     return rootState.module_app.use_sandbox ? state.object_batches_sandbox : state.object_batches;
         // },
 
         list_hits_for_csv: state => {

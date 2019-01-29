@@ -29,7 +29,7 @@
             ...mapGetters('moduleProjects', {
                 'project_current': 'get_project_current',
             }),
-            ...mapState(['use_sandbox']),
+            ...mapState('module_app', ['use_sandbox']),
         },
         components: {
             ComponentDisplayMoney,

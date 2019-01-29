@@ -9,7 +9,7 @@ export const moduleMoney = {
 	},
 	getters: {
     	get_balance: (state, getters, rootState) => {
-    		return rootState.use_sandbox ? state.balance_sandbox : state.balance;
+    		return rootState.module_app.use_sandbox ? state.balance_sandbox : state.balance;
     	},
 	},
 	mutations: {
@@ -28,7 +28,7 @@ export const moduleMoney = {
             if(state.balance == null || force) {
 				await axios.get(rootGetters.get_url_api(state.url_api_get_balance))
 			    .then(response => {
-			    	if(rootState.use_sandbox) {
+			    	if(rootState.module_app.use_sandbox) {
 	                	commit('set_balance_sandbox', response.data.balance);
 			    	} else {
 	                	commit('set_balance', response.data.balance);

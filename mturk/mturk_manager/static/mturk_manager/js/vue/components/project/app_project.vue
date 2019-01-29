@@ -85,7 +85,7 @@ export default {
         toggle_use_sandbox: function() {
             this.set_use_sandbox(!this.use_sandbox);
         },
-        ...mapActions([
+        ...mapActions('module_app', [
             'set_use_sandbox',
         ]),
     },
@@ -120,7 +120,7 @@ export default {
             // return this.$router.currentRoute;
             return this.$route.meta.name;
         },
-        ...mapState(['use_sandbox']),
+        ...mapState('module_app', ['use_sandbox']),
         ...mapGetters('moduleProjects', {
             'project_current': 'get_project_current',
             'slug_project_current': 'get_slug_project_current',

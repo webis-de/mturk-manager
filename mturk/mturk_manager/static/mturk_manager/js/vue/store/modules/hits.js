@@ -75,7 +75,7 @@ export const moduleHITs = {
         get_array_hits: (state, getters, rootState) => (use_sandbox=undefined) => {
             if(use_sandbox == undefined)
             {
-                return rootState.use_sandbox ? state.array_hits_sandbox : state.array_hits;
+                return rootState.module_app.use_sandbox ? state.array_hits_sandbox : state.array_hits;
             } else {
                 return use_sandbox ? state.array_hits_sandbox : state.array_hits;
             }
@@ -86,7 +86,7 @@ export const moduleHITs = {
         get_object_hits: (state, getters, rootState) => (use_sandbox=undefined) => {
             if(use_sandbox == undefined)
             {
-                return rootState.use_sandbox ? state.object_hits_sandbox : state.object_hits;
+                return rootState.module_app.use_sandbox ? state.object_hits_sandbox : state.object_hits;
             } else {
                 return use_sandbox ? state.object_hits_sandbox : state.object_hits;
             }

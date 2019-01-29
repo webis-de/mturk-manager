@@ -10,7 +10,7 @@ class Class_Settings_Batch
         const response = await Service_Endpoint.make_request({
             method: 'get',
             url: {
-                url: store.getters["get_url"]('url_api_projects_settings_batch', 'moduleProjects'),
+                path: store.getters["get_url"]('url_api_projects_settings_batch', 'moduleProjects'),
                 project
             },
         });
@@ -26,7 +26,7 @@ class Class_Settings_Batch
         const response = await Service_Endpoint.make_request({
             method: 'post',
             url: {
-                url: store.getters["get_url"]('url_api_projects_settings_batch', 'moduleProjects'),
+                path: store.getters["get_url"]('url_api_projects_settings_batch', 'moduleProjects'),
                 project
             },
             data: settings_batch,
@@ -47,7 +47,7 @@ class Class_Settings_Batch
         const response = await Service_Endpoint.make_request({
             method: 'put',
             url: {
-                url: store.getters["get_url"]('url_api_projects_settings_batch', 'moduleProjects'),
+                path: store.getters["get_url"]('url_api_projects_settings_batch', 'moduleProjects'),
                 value: settings_batch_current.id,
                 project
             },
@@ -67,7 +67,7 @@ class Class_Settings_Batch
         const response = await Service_Endpoint.make_request({
             method: 'delete',
             url: {
-                url: store.getters["get_url"]('url_api_projects_settings_batch', 'moduleProjects'),
+                path: store.getters["get_url"]('url_api_projects_settings_batch', 'moduleProjects'),
                 project,
                 value: settings_batch.id
             },

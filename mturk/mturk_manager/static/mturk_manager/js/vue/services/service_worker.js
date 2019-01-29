@@ -16,7 +16,7 @@ class Class_Service_Workers {
         const response = await Service_Endpoint.make_request({
             method: 'patch',
             url: {
-                url: store.getters["get_url"]('url_api_workers', 'moduleWorkers'),
+                path: store.getters["get_url"]('url_api_workers', 'moduleWorkers'),
                 use_sandbox,
                 project: store.getters['moduleProjects/get_project_current'],
             },
@@ -46,7 +46,7 @@ class Class_Service_Workers {
         const blocks_hard = await Service_Endpoint.make_request({
             method: 'patch',
             url: {
-                url: store.getters["get_url"]('url_api_workers_get_blocks_hard', 'moduleWorkers'),
+                path: store.getters["get_url"]('url_api_workers_get_blocks_hard', 'moduleWorkers'),
                 use_sandbox,
                 project: store.getters['moduleProjects/get_project_current'],
             },
@@ -61,13 +61,13 @@ class Class_Service_Workers {
     }
 
     async update_status_block_soft({worker, is_blocked}) {
-		const use_sandbox = store.getters["get_use_sandbox"];
+		const use_sandbox = store.state['module_app']["use_sandbox"];
 		const project = store.getters['moduleProjects/get_project_current'];
 
         const response = await Service_Endpoint.make_request({
             method: 'put',
             url: {
-                url: store.getters["get_url"]('url_api_workers', 'moduleWorkers'),
+                path: store.getters["get_url"]('url_api_workers', 'moduleWorkers'),
                 value: worker.id,
                 use_sandbox,
                 project,
@@ -86,13 +86,13 @@ class Class_Service_Workers {
     }
 
     async update_status_block_hard({worker, is_blocked}) {
-		const use_sandbox = store.getters["get_use_sandbox"];
+		const use_sandbox = store.state['module_app']["use_sandbox"];
 		const project = store.getters['moduleProjects/get_project_current'];
 
         const response = await Service_Endpoint.make_request({
             method: 'put',
             url: {
-                url: store.getters["get_url"]('url_api_workers', 'moduleWorkers'),
+                path: store.getters["get_url"]('url_api_workers', 'moduleWorkers'),
                 value: worker.id,
                 use_sandbox,
                 project,
@@ -110,13 +110,13 @@ class Class_Service_Workers {
     }
 
     async update_status_block_global({worker, is_blocked}) {
-		const use_sandbox = store.getters["get_use_sandbox"];
+		const use_sandbox = store.state['module_app']["use_sandbox"];
 		const project = store.getters['moduleProjects/get_project_current'];
 
         const response = await Service_Endpoint.make_request({
             method: 'put',
             url: {
-                url: store.getters["get_url"]('url_api_workers', 'moduleWorkers'),
+                path: store.getters["get_url"]('url_api_workers', 'moduleWorkers'),
                 value: worker.id,
                 use_sandbox,
                 project,
@@ -134,13 +134,13 @@ class Class_Service_Workers {
     }
 
     async update_count_assignments_limit({worker, value}) {
-		const use_sandbox = store.getters["get_use_sandbox"];
+		const use_sandbox = store.state['module_app']["use_sandbox"];
 		const project = store.getters['moduleProjects/get_project_current'];
 
         const response = await Service_Endpoint.make_request({
             method: 'put',
             url: {
-                url: store.getters["get_url"]('url_api_workers', 'moduleWorkers'),
+                path: store.getters["get_url"]('url_api_workers', 'moduleWorkers'),
                 value: worker.id,
                 use_sandbox,
                 project,
@@ -158,12 +158,12 @@ class Class_Service_Workers {
     }
 
     async load_page(pagination, filters) {
-		const use_sandbox = store.getters["get_use_sandbox"];
+		const use_sandbox = store.state['module_app']["use_sandbox"];
 
         const response = await Service_Endpoint.make_request({
             method: 'get',
             url: {
-                url: store.getters["get_url"]('url_api_workers', 'moduleWorkers'),
+                path: store.getters["get_url"]('url_api_workers', 'moduleWorkers'),
                 use_sandbox,
                 project: store.getters['moduleProjects/get_project_current'],
             },
@@ -183,7 +183,7 @@ class Class_Service_Workers {
         Service_Endpoint.make_request({
             method: 'patch',
             url: {
-                url: store.getters["get_url"]('url_api_workers_get_blocks_hard', 'moduleWorkers'),
+                path: store.getters["get_url"]('url_api_workers_get_blocks_hard', 'moduleWorkers'),
                 use_sandbox,
                 project: store.getters['moduleProjects/get_project_current'],
             },

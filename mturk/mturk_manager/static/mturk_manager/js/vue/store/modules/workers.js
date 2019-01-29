@@ -24,7 +24,7 @@ export const moduleWorkers = {
     	get_object_workers: (state, getters, rootState) => (use_sandbox=undefined) => {
     		if(use_sandbox == undefined)
     		{
-    			return rootState.use_sandbox ? state.object_workers_sandbox : state.object_workers;
+    			return rootState.module_app.use_sandbox ? state.object_workers_sandbox : state.object_workers;
     		} else {
     			return use_sandbox ? state.object_workers_sandbox : state.object_workers;
     		}
@@ -37,7 +37,7 @@ export const moduleWorkers = {
         },
     	list_workers: (state, getters, rootState) => {
     		// console.log('done')
-    		// const object_current = rootState.use_sandbox ? state.object_workers_sandbox : state.object_workers;
+    		// const object_current = rootState.module_app.use_sandbox ? state.object_workers_sandbox : state.object_workers;
     		// console.log(state.object_workers_sandbox)
     		if(getters.get_object_workers() == null)
     		{
@@ -49,9 +49,9 @@ export const moduleWorkers = {
     	},
 	},
 	mutations: {
-        set_urls(state, config) {
-            state.url_api_workers = config.url_api_workers;
-            state.url_api_workers_get_blocks_hard = config.url_api_workers_get_blocks_hard;
+        set_urls(state, paths) {
+            state.url_api_workers = paths.url_api_workers;
+            state.url_api_workers_get_blocks_hard = paths.url_api_workers_get_blocks_hard;
         },
         // set_url_api_global_db(state, url_new) {
         //     state.url_api_global_db = url_new;
@@ -228,7 +228,7 @@ export const moduleWorkers = {
 	},
 	actions: {
 		// async sync_workers({commit, state, getters, rootState, rootGetters}, force=false) {
-		// 	const use_sandbox = rootState.use_sandbox;
+		// 	const use_sandbox = rootState.module_app.use_sandbox;
 
   //           if(getters.get_object_workers(use_sandbox) == null || force) {
 		// 		await axios.get(rootGetters.get_url_api(state.url_api_workers, use_sandbox))
@@ -243,7 +243,7 @@ export const moduleWorkers = {
 		// 	}
 		// },
 		// async update_status_block({commit, state, getters, rootState, rootGetters}, {worker, status_block_new, status_block_old}) {
-		// 	const use_sandbox = rootState.use_sandbox;
+		// 	const use_sandbox = rootState.module_app.use_sandbox;
 
 
   //           const response = await dispatch('make_request', {
@@ -269,7 +269,7 @@ export const moduleWorkers = {
 		// 		},
 		// 	)
 		//     .then(response => {
-		//     	// if(rootState.use_sandbox) {
+		//     	// if(rootState.module_app.use_sandbox) {
   //      //      		commit('update_worker_sandbox', response.data);
 		//     	// } else {
   //           	commit('update_worker_status_block', {worker, status_block_new, use_sandbox});

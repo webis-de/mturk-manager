@@ -5,7 +5,7 @@ export const update_sandbox =  {
         ...mapActions(['set_show_progress_indicator']),
 	},
 	computed: {
-        ...mapState(['use_sandbox']),
+        ...mapState('module_app', ['use_sandbox']),
 	},
     watch: {
         use_sandbox: function(use_sandbox) {

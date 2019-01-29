@@ -8,7 +8,7 @@ class Class_Service_Keywords {
             const response = await Service_Endpoint.make_request({
                 method: 'get',
                 url: {
-                    url: store.getters["get_url"]('url_api_keywords', 'moduleKeywords'),
+                    path: store.getters["get_url"]('url_api_keywords', 'moduleKeywords'),
                 },
             });
 

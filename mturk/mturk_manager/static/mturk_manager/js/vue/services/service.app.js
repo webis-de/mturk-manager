@@ -2,11 +2,12 @@ import {router} from "./service_router";
 import {store} from "../store/vuex";
 import localforage from "localforage";
 import {Service_Endpoint} from "./service_endpoint";
+import {Service_Projects} from "./service_projects";
 
 class Class_Service_App {
     async init() {
         console.warn('init app');
-        const is_success = await store.dispatch('module_app/init');
+        const is_success = await store.dispatch('module_app/load_credentials');
 
         if(is_success === false) {
             // router.push({name: 'add_credentials'});
@@ -15,7 +16,10 @@ class Class_Service_App {
 
         Service_Endpoint.init(store.state['module_app'].token_instance);
 
-        this.load_config();
+        await this.load_config();
+
+        await Service_Projects.load_projects();
+
     }
 
     async load_config() {
@@ -26,8 +30,11 @@ class Class_Service_App {
            method: 'get',
         });
        
-       console.log('response', response);
-       return response
+       console.log('config', response.data);
+
+       await store.dispatch('module_app/init', response.data);
+
+       return response.data
     }
 }
 

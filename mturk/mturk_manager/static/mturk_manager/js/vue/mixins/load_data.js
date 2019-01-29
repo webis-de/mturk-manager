@@ -22,7 +22,7 @@ export default {
         ...mapActions(['set_show_progress_indicator']),
 	},
 	computed: {
-        ...mapState(['use_sandbox']),
+        ...mapState('module_app', ['use_sandbox']),
 	},
  	created() {
         this.refresh_data(false);

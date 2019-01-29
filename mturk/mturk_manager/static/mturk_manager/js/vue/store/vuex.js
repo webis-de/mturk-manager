@@ -41,8 +41,6 @@ export const store = new Vuex.Store({
         token_csrf: undefined,
         show_with_fee: true,
         show_progress_indicator: 0,
-        // use_sandbox: false,
-        use_sandbox: true,
     },
     getters: {
         get_url_api(state) {
@@ -74,9 +72,6 @@ export const store = new Vuex.Store({
         get_url: (state) => (url, module) => {
             return state[module][url];
         },
-        get_use_sandbox(state) {
-            return state.use_sandbox;
-        },
     },
     mutations: {
         set_token_csrf(state, token_csrf) {
@@ -87,10 +82,6 @@ export const store = new Vuex.Store({
         },
         set_show_with_fee(state, show) {
             state.show_with_fee = show;
-        },
-        set_use_sandbox(state, use_sandbox) {
-            state.use_sandbox = use_sandbox;
-            localforage.setItem('use_sandbox', use_sandbox);
         },
         set_show_progress_indicator(state, show) {
             state.show_progress_indicator += show === true ? 1 : -1;
@@ -111,13 +102,6 @@ export const store = new Vuex.Store({
 
             commit('set_token_instance', config.token_instance);
             commit('set_token_csrf', config.token_csrf);
-
-            let use_sandbox = await localforage.getItem('use_sandbox');
-            if(use_sandbox === null)
-            {
-                use_sandbox = true;
-            }
-            commit('set_use_sandbox', use_sandbox);
 
             // commit('setUrlProject', config.url_project);
 
@@ -153,9 +137,6 @@ export const store = new Vuex.Store({
         },
         async set_show_progress_indicator({commit, state}, show) {
             commit('set_show_progress_indicator', show);
-        },
-        async set_use_sandbox({commit, state}, use_sandbox) {
-            commit('set_use_sandbox', use_sandbox);
         },
     }
 })

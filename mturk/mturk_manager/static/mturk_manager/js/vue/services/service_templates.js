@@ -15,7 +15,7 @@ class Class_Service_Templates {
         const response_templates = await Service_Endpoint.make_request({
             method: 'get',
             url: {
-                url: store.getters["get_url"](`url_api_projects_templates_${type_template}`, 'moduleProjects'),
+                path: store.getters["get_url"](`url_api_projects_templates_${type_template}`, 'moduleProjects'),
                 project,
             },
         });
@@ -30,7 +30,7 @@ class Class_Service_Templates {
         const response = await Service_Endpoint.make_request({
             method: 'post',
             url: {
-                url: store.getters["get_url"](`url_api_projects_templates_${type_template}`, 'moduleProjects'),
+                path: store.getters["get_url"](`url_api_projects_templates_${type_template}`, 'moduleProjects'),
                 project
             },
             data: template,
@@ -51,7 +51,7 @@ class Class_Service_Templates {
         const response = await Service_Endpoint.make_request({
             method: 'put',
             url: {
-                url: store.getters["get_url"](`url_api_projects_templates_${type_template}`, 'moduleProjects'),
+                path: store.getters["get_url"](`url_api_projects_templates_${type_template}`, 'moduleProjects'),
                 project,
                 value: template_current.id
             },
@@ -68,7 +68,7 @@ class Class_Service_Templates {
         await Service_Endpoint.make_request({
             method: 'delete',
             url: {
-                url: store.getters["get_url"](`url_api_projects_templates_${type_template}`, 'moduleProjects'),
+                path: store.getters["get_url"](`url_api_projects_templates_${type_template}`, 'moduleProjects'),
                 project,
                 value: template.id
             },

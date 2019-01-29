@@ -93,7 +93,7 @@ export const moduleAssignments = {
         get_array_assignments: (state, getters, rootState) => (use_sandbox=undefined) => {
             if(use_sandbox == undefined)
             {
-                return rootState.use_sandbox ? state.array_assignments_sandbox : state.array_assignments;
+                return rootState.module_app.use_sandbox ? state.array_assignments_sandbox : state.array_assignments;
             } else {
                 return use_sandbox ? state.array_assignments_sandbox : state.array_assignments;
             }
@@ -101,7 +101,7 @@ export const moduleAssignments = {
         get_object_assignments: (state, getters, rootState) => (use_sandbox=undefined) => {
             if(use_sandbox == undefined)
             {
-                return rootState.use_sandbox ? state.object_assignments_sandbox : state.object_assignments;
+                return rootState.module_app.use_sandbox ? state.object_assignments_sandbox : state.object_assignments;
             } else {
                 return use_sandbox ? state.object_assignments_sandbox : state.object_assignments;
             }

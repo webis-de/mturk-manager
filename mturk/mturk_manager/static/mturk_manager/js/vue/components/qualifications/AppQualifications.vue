@@ -113,7 +113,6 @@ export default {
         ...mapGetters('moduleQualifications', {
             list_policies: 'list_policies',
         }),
-        ...mapState(['use_sandbox']),
     },
     methods: {
         refresh_data() {

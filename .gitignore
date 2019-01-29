@@ -13,3 +13,4 @@ cache
 #comment the following lines out to add the dynamic content to the version control
 db.sqlite3
 settings
+.idea

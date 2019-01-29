@@ -89,7 +89,8 @@ export default {
                 {
                     text: '',
                     value: '',
-                    align: ''
+                    align: '',
+                    sortable: false,
                 },
             ],
             pagination: {
