@@ -4,8 +4,10 @@ from api.models import Message_Reject
 
 class Serializer_Config(serializers.Serializer):
     version_api = serializers.IntegerField()
+    paths = serializers.DictField()
 
     class Meta:
         fields = (
             'version_api',
+            'paths',
         )

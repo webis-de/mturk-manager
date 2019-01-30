@@ -6,6 +6,8 @@ export const module_app = {
         url_api: null,
         token_instance: null,
         use_sandbox: true,
+        version_api: null,
+        version_app: 1,
     },
     getters: {
         has_credentials(state) {
@@ -18,6 +20,9 @@ export const module_app = {
         set_use_sandbox(state, use_sandbox) {
             state.use_sandbox = use_sandbox;
         },
+        version_api(state, version_api) {
+            state.version_api = version_api;
+        }
     },
     actions: {
         async load_credentials({commit}) {
@@ -39,7 +44,9 @@ export const module_app = {
             {
                 use_sandbox = true;
             }
-            commit('set_use_sandbox', use_sandbox)
+            commit('set_use_sandbox', use_sandbox);
+
+            commit('version_api', config.version_api);
 
             commit('moduleAssignments/set_urls', config.paths, {root : true});
             commit('moduleBatches/set_urls', config.paths, {root : true});

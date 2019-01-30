@@ -21,6 +21,7 @@
             <!--<v-spacer></v-spacer>-->
         <!--</template>-->
     <!--</template>-->
+    <the-update-notification></the-update-notification>
 </v-app>
 </template>
 
@@ -31,6 +32,7 @@
     import {Service_Projects} from "./services/service_projects";
     import AddCredentials from "./views/add-credentials/add-credentials";
     import {Service_App} from "./services/service.app";
+    import TheUpdateNotification from "./components/the-update-notification";
     // import ComponentToolbarWorkers from './components/workers/component_toolbar_workers.vue';
 export default {
     name: 'app',
@@ -62,13 +64,8 @@ export default {
         }
     },
     computed: {
-        ...mapState(['token_instance']),
         ...mapGetters('moduleProjects', {
             'slug_project_current': 'get_slug_project_current',
-        }),
-        ...mapGetters({
-            'url_api': 'get_url_api',
-            'token_instance': 'get_token_instance',
         }),
     },
     methods: {
@@ -77,6 +74,7 @@ export default {
         ]),
     },
     components: {
+        TheUpdateNotification,
         AddCredentials
     }
 }
