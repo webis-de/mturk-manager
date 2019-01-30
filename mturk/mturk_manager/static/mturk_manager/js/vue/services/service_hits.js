@@ -4,7 +4,7 @@ import {Service_Endpoint} from "./service_endpoint";
 
 class Class_Service_HITs {
     async load_page(pagination, filters) {
-		const use_sandbox = store.state['module_app']["use_sandbox"];
+		const use_sandbox = store.state.module_app.use_sandbox;
 
         const response = await Service_Endpoint.make_request({
             method: 'get',

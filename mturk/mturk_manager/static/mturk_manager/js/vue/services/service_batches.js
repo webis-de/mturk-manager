@@ -6,7 +6,7 @@ import Batch from "../classes/batch";
 class Class_Service_Batches {
 	// async load_batches(force=false)
     // {
-	// 	const use_sandbox = store.state['module_app']["use_sandbox"];
+	// 	const use_sandbox = store.state.module_app.use_sandbox;
     //
 	// 	if(store.getters['moduleBatches/get_object_batches'](use_sandbox) == null || force) {
     //         const response = await Service_Endpoint.make_request({
@@ -35,7 +35,7 @@ class Class_Service_Batches {
 
     async create(data)
     {
-		const use_sandbox = store.state['module_app']["use_sandbox"];
+		const use_sandbox = store.state.module_app.use_sandbox;
 		const project = store.getters['moduleProjects/get_project_current'];
 
         const response = await Service_Endpoint.make_request({
@@ -61,7 +61,7 @@ class Class_Service_Batches {
     }
 
     async sync_mturk() {
-		const use_sandbox = store.state['module_app']["use_sandbox"];
+		const use_sandbox = store.state.module_app.use_sandbox;
 		const project = store.getters['moduleProjects/get_project_current'];
 
         store.commit('moduleBatches/set_is_syncing_mturk', true);
@@ -95,7 +95,7 @@ class Class_Service_Batches {
 
 
     async load_page(pagination) {
-		const use_sandbox = store.state['module_app']["use_sandbox"];
+		const use_sandbox = store.state.module_app.use_sandbox;
 
         const response = await Service_Endpoint.make_request({
             method: 'get',

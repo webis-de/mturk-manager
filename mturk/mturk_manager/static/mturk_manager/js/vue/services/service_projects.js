@@ -12,7 +12,7 @@ class Class_Service_Projects {
 
 	async load_projects()
 	{
-		const use_sandbox = store.state['module_app']["use_sandbox"];
+		const use_sandbox = store.state.module_app.use_sandbox;
 
 		if(store.getters['moduleProjects/get_object_projects'] == null) {
             const response = await Service_Endpoint.make_request({
@@ -36,7 +36,7 @@ class Class_Service_Projects {
 
 	async create_project(name)
 	{
-		const use_sandbox = store.state['module_app']["use_sandbox"];
+		const use_sandbox = store.state.module_app.use_sandbox;
 		const response = await Service_Endpoint.make_request({
 			method: 'post',
 			url: {

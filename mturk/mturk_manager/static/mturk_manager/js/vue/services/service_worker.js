@@ -61,7 +61,7 @@ class Class_Service_Workers {
     }
 
     async update_status_block_soft({worker, is_blocked}) {
-		const use_sandbox = store.state['module_app']["use_sandbox"];
+		const use_sandbox = store.state.module_app.use_sandbox;
 		const project = store.getters['moduleProjects/get_project_current'];
 
         const response = await Service_Endpoint.make_request({
@@ -86,7 +86,7 @@ class Class_Service_Workers {
     }
 
     async update_status_block_hard({worker, is_blocked}) {
-		const use_sandbox = store.state['module_app']["use_sandbox"];
+		const use_sandbox = store.state.module_app.use_sandbox;
 		const project = store.getters['moduleProjects/get_project_current'];
 
         const response = await Service_Endpoint.make_request({
@@ -110,7 +110,7 @@ class Class_Service_Workers {
     }
 
     async update_status_block_global({worker, is_blocked}) {
-		const use_sandbox = store.state['module_app']["use_sandbox"];
+		const use_sandbox = store.state.module_app.use_sandbox;
 		const project = store.getters['moduleProjects/get_project_current'];
 
         const response = await Service_Endpoint.make_request({
@@ -134,7 +134,7 @@ class Class_Service_Workers {
     }
 
     async update_count_assignments_limit({worker, value}) {
-		const use_sandbox = store.state['module_app']["use_sandbox"];
+		const use_sandbox = store.state.module_app.use_sandbox;
 		const project = store.getters['moduleProjects/get_project_current'];
 
         const response = await Service_Endpoint.make_request({
@@ -158,7 +158,7 @@ class Class_Service_Workers {
     }
 
     async load_page(pagination, filters) {
-		const use_sandbox = store.state['module_app']["use_sandbox"];
+		const use_sandbox = store.state.module_app.use_sandbox;
 
         const response = await Service_Endpoint.make_request({
             method: 'get',

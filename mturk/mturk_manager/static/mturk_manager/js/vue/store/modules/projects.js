@@ -9,6 +9,7 @@ import Template_HIT from '../../classes/template_hit';
 import Template_Global from '../../classes/template_global';
 import { router } from '../..//index.js';
 import {Service_Endpoint} from '../../services/service_endpoint';
+import moment from 'moment';
 
 export const moduleProjects = {
 	namespaced: true,
@@ -28,7 +29,9 @@ export const moduleProjects = {
 	},
 	getters: {
 		get_project_current(state) {
-            if(state.slug_project_current == undefined) return {};
+            if(state.slug_project_current == undefined) {
+                return {};
+            }
 			return state.object_projects[state.slug_project_current];
 		},
    //  	get_object_project: (state, getters, rootState) => {
@@ -216,7 +219,7 @@ export const moduleProjects = {
             Vue.delete(project.settings_batch, settings_batch.id);
         },
         set_ping(state, {project, data}) {
-            Vue.set(project, 'datetime_visited', new Date(data.datetime));
+            Vue.set(project, 'datetime_visited', moment(data.datetime));
             console.log('project', project.slug, project.datetime_visited);
         },
         delete_project(state, { project }) {

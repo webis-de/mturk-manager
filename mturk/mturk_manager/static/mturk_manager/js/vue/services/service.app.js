@@ -14,7 +14,7 @@ class Class_Service_App {
             return false;
         }
 
-        Service_Endpoint.init(store.state['module_app'].token_instance);
+        Service_Endpoint.init(store.state.module_app.token_instance);
 
         await this.load_config();
 
@@ -39,7 +39,6 @@ class Class_Service_App {
 }
 
 export const Service_App = new Class_Service_App();
-
 //go to add_credentials if there are no credentials stored and the target route is not already add_credentials
 router.beforeEach(async (to, from, next) => {
     if (store.getters['module_app/has_credentials'] === false && to.name !== 'add_credentials') {

@@ -11,7 +11,6 @@ import app_finances from '../components/finances/app_finances.vue';
 import app_workers from '../components/workers/app_workers.vue';
 import AppSettingsProject from '../components/settings_project/app_settings_project.vue';
 import {Service_Projects} from "./service_projects";
-import {store} from "../store/vuex";
 
 function parse_params(route)
 {
@@ -157,16 +156,17 @@ const routes = [
 	},
 ];
 
-const router = new VueRouter({
+export const router = new VueRouter({
   routes // short for `routes: routes`
 });
 
 router.beforeEach((to, from, next) => {
 	// console.log('from', from)
 	// console.log('to', to)
+	if(to.matched[0].name !== 'projects') {
+		Service_Projects.ping();
+	}
 
 	Service_Projects.set_slug_current(to.params.slug_project);
 	next();
 });
-
-export {router};

@@ -33,7 +33,7 @@ class Class_Service_Assignments {
     }
 
     async load_page(pagination, filters) {
-		const use_sandbox = store.state['module_app']["use_sandbox"];
+		const use_sandbox = store.state.module_app.use_sandbox;
         const response = await Service_Endpoint.make_request({
             method: 'get',
             url: {

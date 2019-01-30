@@ -65,7 +65,7 @@ class Class_Service_Endpoint {
 	}
 
     get_url_api({path = '', use_sandbox, value, project}) {
-        let url = new URL(path, store.state['module_app'].url_api);
+        let url = new URL(path, store.state.module_app.url_api);
 
         const params = new URLSearchParams();
 
