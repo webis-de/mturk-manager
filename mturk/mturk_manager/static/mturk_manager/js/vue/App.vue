@@ -26,14 +26,10 @@
 </template>
 
 <script>
-    import { mapState, mapActions, mapGetters } from 'vuex';
-    import {Service_Endpoint} from "./services/service_endpoint";
-    import {router} from "./services/service_router";
+    import { mapActions, mapGetters } from 'vuex';
     import {Service_Projects} from "./services/service_projects";
     import AddCredentials from "./views/add-credentials/add-credentials";
-    import {Service_App} from "./services/service.app";
     import TheUpdateNotification from "./components/the-update-notification";
-    // import ComponentToolbarWorkers from './components/workers/component_toolbar_workers.vue';
 export default {
     name: 'app',
     data() {

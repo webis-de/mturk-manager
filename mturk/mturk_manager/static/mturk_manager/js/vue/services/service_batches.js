@@ -1,6 +1,5 @@
 import {Service_Endpoint} from "./service_endpoint";
 import {store} from "../store/vuex";
-import {Service_HITs} from "./service_hits";
 import Batch from "../classes/batch";
 
 class Class_Service_Batches {

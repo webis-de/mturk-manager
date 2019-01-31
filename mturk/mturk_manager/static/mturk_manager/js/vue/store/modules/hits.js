@@ -1,17 +1,9 @@
-import Vuex from 'vuex';
-// import Vue from 'vue/dist/vue.common';
 import Vue from 'vue';
-import axios from 'axios';
-import VueAxios from 'vue-axios';
 import _ from 'lodash';
 import HIT from '../../classes/hit.js';
 
-import VueCookies from 'vue-cookies'
 import Batch from "../../classes/batch";
 import localforage from "localforage";
-Vue.use(Vuex)
-Vue.use(VueCookies)
-Vue.use(VueAxios, axios)
 
 export const moduleHITs = {
 	namespaced: true,

@@ -1,17 +1,9 @@
-import Vuex from 'vuex';
-// import Vue from 'vue/dist/vue.common';
 import Vue from 'vue';
-import axios from 'axios';
-import VueAxios from 'vue-axios';
 import _ from 'lodash';
 import Assignment from '../../classes/assignment.js';
 
-import VueCookies from 'vue-cookies'
 import HIT from "../../classes/hit";
 import localforage from "localforage";
-Vue.use(Vuex)
-Vue.use(VueCookies)
-Vue.use(VueAxios, axios)
 
 export const moduleAssignments = {
 	namespaced: true,

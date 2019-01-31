@@ -1,18 +1,8 @@
-import Vuex from 'vuex';
-// import Vue from 'vue/dist/vue.common';
 import Vue from 'vue';
-import axios from 'axios';
-import VueAxios from 'vue-axios';
 import _ from 'lodash';
 import Batch from '../../classes/batch.js';
-import HIT from '../../classes/hit.js';
-import {Service_Endpoint} from '../../services/service_endpoint';
 
-import VueCookies from 'vue-cookies'
 import localforage from "localforage";
-Vue.use(Vuex)
-Vue.use(VueCookies)
-Vue.use(VueAxios, axios)
 
 export const moduleBatches = {
 	namespaced: true,

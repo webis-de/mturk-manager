@@ -3,6 +3,7 @@ import {store} from '../store/vuex';
 import {Service_Endpoint} from "./service_endpoint";
 import {Service_Settings_Batch} from "./service_settings_batch";
 import {Service_Templates} from "./service_templates";
+// import {router} from "./service_router.js";
 
 class Class_Service_Projects {
 	constructor()

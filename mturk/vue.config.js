@@ -1,4 +1,6 @@
 const webpack = require('webpack');
+const CircularDependencyPlugin = require('circular-dependency-plugin')
+const VuetifyLoaderPlugin = require('vuetify-loader/lib/plugin')
 
 module.exports = {
     runtimeCompiler: true,
@@ -7,6 +9,20 @@ module.exports = {
     configureWebpack: {
         plugins: [
             new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /en-gb/),
+            new CircularDependencyPlugin({
+                // exclude detection of files based on a RegExp
+                exclude: /a\.js|node_modules/,
+                // add errors to webpack instead of warnings
+                failOnError: true,
+                // set the current working directory for displaying module paths
+                cwd: process.cwd(),
+            }),
+            new VuetifyLoaderPlugin()
         ]
+    },
+    pluginOptions: {
+        webpackBundleAnalyzer: {
+            openAnalyzer: false
+        }
     }
-}
+};

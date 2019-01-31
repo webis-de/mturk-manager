@@ -2,7 +2,6 @@ import Vuex from 'vuex';
 import Vue from 'vue';
 import axios from 'axios';
 import VueAxios from 'vue-axios';
-import _ from 'lodash';
 import localforage from 'localforage';
 
 import VueCookies from 'vue-cookies'
@@ -19,9 +18,7 @@ import { moduleHITs } from './modules/hits.js';
 import { moduleAssignments } from './modules/assignments.js';
 import { moduleKeywords } from './modules/keywords.js';
 import { moduleMessagesReject } from './modules/messages_reject.js';
-import {Service_Endpoint} from "../services/service_endpoint";
 import {module_app} from "./modules/app";
-// import { router } from './index.js';
 
 export const store = new Vuex.Store({
     modules: {

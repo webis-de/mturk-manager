@@ -1,9 +1,7 @@
-import {router} from "./service_router";
 import {store} from "../store/vuex";
-import localforage from "localforage";
 import {Service_Endpoint} from "./service_endpoint";
 import {Service_Projects} from "./service_projects";
-
+console.log('1', 1);
 class Class_Service_App {
     async init() {
         console.warn('init app');
@@ -39,17 +37,3 @@ class Class_Service_App {
 }
 
 export const Service_App = new Class_Service_App();
-//go to add_credentials if there are no credentials stored and the target route is not already add_credentials
-router.beforeEach(async (to, from, next) => {
-    if (store.getters['module_app/has_credentials'] === false && to.name !== 'add_credentials') {
-        const is_success = await Service_App.init();
-        if(is_success === false) {
-            next({name: 'add_credentials'});
-            return;
-        }
-    }
-
-    // console.log('to', to);
-    // console.log('from', from);
-    next();
-});

@@ -1,5 +1,4 @@
 import {store} from "../store/vuex";
-import {Service_Assignments} from "./service_assignments";
 import {Service_Endpoint} from "./service_endpoint";
 
 class Class_Service_HITs {

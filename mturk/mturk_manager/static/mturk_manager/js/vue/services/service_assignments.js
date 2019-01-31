@@ -1,5 +1,4 @@
 import {store} from "../store/vuex";
-import {Service_Workers} from "./service_worker";
 import {Service_Endpoint} from "./service_endpoint";
 
 class Class_Service_Assignments {

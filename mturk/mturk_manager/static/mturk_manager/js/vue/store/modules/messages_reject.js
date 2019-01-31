@@ -1,7 +1,5 @@
-import axios from 'axios';
 import _ from 'lodash';
 import Vue from 'vue';
-import {Service_Endpoint} from '../../services/service_endpoint';
 
 export const moduleMessagesReject = {
 	namespaced: true,

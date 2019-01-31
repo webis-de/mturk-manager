@@ -1,5 +1,4 @@
 import axios from 'axios';
-import {router} from "./service_router";
 import {store} from "../store/vuex";
 
 class Class_Service_Endpoint {

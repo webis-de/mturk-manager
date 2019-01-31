@@ -1,5 +1,4 @@
 import Vue from 'vue';
-import axios from 'axios';
 import _ from 'lodash';
 import Project from '../../classes/project';
 import Settings_Batch from '../../classes/settings_batch';
@@ -7,8 +6,6 @@ import Template_Worker from '../../classes/template_worker';
 import Template_Assignment from '../../classes/template_assignment';
 import Template_HIT from '../../classes/template_hit';
 import Template_Global from '../../classes/template_global';
-import { router } from '../..//index.js';
-import {Service_Endpoint} from '../../services/service_endpoint';
 import moment from 'moment';
 
 export const moduleProjects = {
