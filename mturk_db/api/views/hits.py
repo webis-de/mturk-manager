@@ -13,6 +13,8 @@ from api.helpers import add_database_object_project
 from api.classes import Manager_HITs
 from rest_framework.decorators import api_view, permission_classes
 
+from mturk_db.settings import REST_FRAMEWORK
+
 PERMISSIONS_INSTANCE_ONLY = (AllowOptionsAuthentication, IsInstance,)
 
 class HITs(APIView):
@@ -20,19 +22,22 @@ class HITs(APIView):
 
     @add_database_object_project
     def get(self, request, slug_project, database_object_project, use_sandbox, format=None):
-        queryset_batches = Manager_HITs.get(
+        queryset = Manager_HITs.get(
             database_object_project=database_object_project,
             use_sandbox=use_sandbox,
             request=request
         )
 
-        paginator = api_settings.DEFAULT_PAGINATION_CLASS()
-        batches_paginated = paginator.paginate_queryset(queryset_batches, request)
+        queryset_paginated = queryset
 
-        serializer = Serializer_HIT(batches_paginated, many=True)
+        if request.query_params.get(REST_FRAMEWORK['PAGE_SIZE_QUERY_PARAM']) is not None:
+            paginator = api_settings.DEFAULT_PAGINATION_CLASS()
+            queryset_paginated = paginator.paginate_queryset(queryset, request)
+
+        serializer = Serializer_HIT(queryset_paginated, many=True)
 
         return Response({
-            'items_total': queryset_batches.count(),
+            'items_total': queryset.count(),
             'data': serializer.data,
         })
 

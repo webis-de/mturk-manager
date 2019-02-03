@@ -138,7 +138,8 @@ REST_FRAMEWORK = {
     'DEFAULT_METADATA_CLASS': 'rest_framework.metadata.SimpleMetadata',
 
     'DEFAULT_PAGINATION_CLASS': 'api.helpers.CustomPagination',
-    'PAGE_SIZE': 25
+    'PAGE_SIZE': 25,
+    'PAGE_SIZE_QUERY_PARAM': 'page_size',
 }
 
 VERSION_PROJECT = 15

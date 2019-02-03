@@ -6,7 +6,7 @@ from mturk_db.settings import REST_FRAMEWORK
 
 class CustomPagination(PageNumberPagination):
     page_size = REST_FRAMEWORK['PAGE_SIZE']
-    page_size_query_param = 'page_size'
+    page_size_query_param = REST_FRAMEWORK['PAGE_SIZE_QUERY_PARAM']
     # max_page_size = 10000
 
 
