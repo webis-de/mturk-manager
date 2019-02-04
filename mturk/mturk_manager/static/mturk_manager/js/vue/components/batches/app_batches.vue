@@ -4,12 +4,20 @@
     <template 
         v-if="$route.name === 'batches'"
     >
-        <component-list-batches
+
+        <h1 class="headline">Batches</h1>
+        <data-table
              v-bind:array_columns_selected="array_columns_selected"
              v-bind:array_columns_selected_initial="array_columns_selected_initial"
              v-bind:function_reset_array_columns="function_reset_array_columns"
              v-bind:function_set_array_columns="function_set_array_columns"
-        ></component-list-batches>
+        >
+            <component-item-batch
+                slot-scope="{props, array_columns_selected}"
+                v-bind:props="props"
+                v-bind:array_columns_selected="array_columns_selected"
+            ></component-item-batch>
+        </data-table>
 
         <component-download-batch
         ></component-download-batch>
@@ -36,6 +44,8 @@
     // import ComponentShowMoneySpent from './component-show-money-spent.vue';
     // import ComponentShowBatches from './component-show-batches.vue';
     import slug_project from '../../mixins/slug_project';
+    import DataTable from "../data-table";
+    import ComponentItemBatch from "./list/component_item_batch";
 export default {
     mixins: [
         slug_project,
@@ -67,10 +77,12 @@ export default {
         }),
     },
     components: {
-     ComponentCreateBatch,
-     ComponentListBatches,
-     ComponentBatchDetail,
-     ComponentDownloadBatch,
+        ComponentItemBatch,
+        DataTable,
+        ComponentCreateBatch,
+        ComponentListBatches,
+        ComponentBatchDetail,
+        ComponentDownloadBatch,
     },
 }
 </script>
