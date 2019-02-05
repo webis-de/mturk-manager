@@ -18,6 +18,8 @@ class Class_Service_App {
 
         await Service_Projects.load_projects();
 
+        await Service_Projects.load_project_data();
+
     }
 
     async load_config() {
