@@ -1,11 +1,23 @@
 import _ from 'lodash';
 import { normalize_answer } from './helpers';
+import localforage from "localforage";
 
 export default class Loader
 {
 	constructor()
 	{
-		this.context = JSON.parse($('#context').html());
+		this.url_api = null;
+		this.token_instance = null;
+		this.PLACEHOLDER_SLUG_PROJECT = 'PLACEHOLDER_SLUG_PROJECT';
+		this.context = {
+			'url_api_project':  `projects/${this.PLACEHOLDER_SLUG_PROJECT}`,
+			'url_api_assignments':  `projects/${this.PLACEHOLDER_SLUG_PROJECT}/assignments_by_id`,
+			'url_api_assignments_update_stati':  `projects/${this.PLACEHOLDER_SLUG_PROJECT}/assignments`,
+			'url_api_hits':  `projects/${this.PLACEHOLDER_SLUG_PROJECT}/hits_by_id`,
+			'url_api_batches':  `projects/${this.PLACEHOLDER_SLUG_PROJECT}/batches_for_annotation`,
+			'url_api_workers':  `projects/${this.PLACEHOLDER_SLUG_PROJECT}/workers`,
+			'url_api_messages_reject':  `api/messages_reject`,
+		};
 		this.project = {};
 		this.message_reject_default = '';
 		this.object_assignments = {};
@@ -17,8 +29,6 @@ export default class Loader
 
 		this.object_assignments_selected = {};
 		console.log(this.context)
-
-		this.init()
 	}
 
 	async sync_data()
@@ -39,7 +49,7 @@ export default class Loader
 	        method: 'GET',
 	        contentType: 'application/json',
 	        headers: {
-	            Authorization: 'Token ' + this.context.token_instance,
+	            Authorization: 'Token ' + this.token_instance,
 	            "Content-Type": 'application/json',
 	        },
 	    });
@@ -56,13 +66,13 @@ export default class Loader
 	        data: JSON.stringify(_.toArray(this.set_ids_worker)),
 	        contentType: 'application/json',
 	        headers: {
-	            Authorization: 'Token ' + this.context.token_instance,
+	            Authorization: 'Token ' + this.token_instance,
 	            "Content-Type": 'application/json',
 	        },
 	    });
 
 		this.project = result;
-		if(this.project.message_reject_default != undefined)
+		if(this.project.message_reject_default !== undefined)
 		{
 			this.message_reject_default = this.project.message_reject_default.message			
 		}
@@ -71,14 +81,14 @@ export default class Loader
 	async load_assignments()
 	{
 		let url = this.context.url_api_assignments;
-		url += '?list_ids=['+this.context.list_ids.join(',')+']';
+		url += '?list_ids='+new URL(location.href).searchParams.get('list_ids');
 
 		const result = await $.ajax({
 	        url: url,
 	        method: 'GET',
 	        contentType: 'application/json',
 	        headers: {
-	            Authorization: 'Token ' + this.context.token_instance,
+	            Authorization: 'Token ' + this.token_instance,
 	            "Content-Type": 'application/json',
 	        },
 	    });
@@ -107,7 +117,7 @@ export default class Loader
 	        method: 'GET',
 	        contentType: 'application/json',
 	        headers: {
-	            Authorization: 'Token ' + this.context.token_instance,
+	            Authorization: 'Token ' + this.token_instance,
 	            'Content-Type': 'application/json',
 	        },
 	    });
@@ -145,7 +155,7 @@ export default class Loader
 	        method: 'GET',
 	        contentType: 'application/json',
 	        headers: {
-	            Authorization: 'Token ' + this.context.token_instance,
+	            Authorization: 'Token ' + this.token_instance,
 	            'Content-Type': 'application/json',
 	        },
 	    });
@@ -176,7 +186,7 @@ export default class Loader
 	//         data: JSON.stringify(_.toArray(this.set_ids_worker)),
 	//         contentType: 'application/json',
 	//         headers: {
-	//             Authorization: 'Token ' + this.context.token_instance,
+	//             Authorization: 'Token ' + this.token_instance,
 	//             "Content-Type": 'application/json',
 	//         },
 	//     });
@@ -190,14 +200,20 @@ export default class Loader
 	// 	});
 	// }
 
-	init() {
+	async init() {
+		this.slug_project = location.pathname.substring(6);
+
+		this.url_api = await localforage.getItem('url_api');
+		this.token_instance = await localforage.getItem('token_instance');
+
 		_.forEach(this.context, (value, key) => {
 			if(key.startsWith('url_'))
 			{
-				this.context[key] = value.replace('PLACEHOLDER_SLUG_PROJECT', this.context.slug_project);
+				this.context[key] = this.url_api + '/' + value.replace('PLACEHOLDER_SLUG_PROJECT', this.slug_project);
 			}
 			// console.log(key)
 			// console.log(property)
-		})
+		});
+		console.log('this', this);
 	}
 }

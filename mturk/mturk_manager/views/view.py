@@ -26,26 +26,7 @@ def get_url_absolute(path='', use_sandbox=True):
     return url
 
 def view(request, name):
-    placeholder_slug_project = 'PLACEHOLDER_SLUG_PROJECT'
-    list_ids = json.loads(request.GET.get('list_ids', '[]'))
-
-    context = {
-        'token_instance': settings_django.TOKEN_INSTANCE,
-        'token_csrf': get_token(request),
-        'url_api_project':  get_url_absolute('projects/{}'.format(placeholder_slug_project)),
-        'url_api_assignments':  get_url_absolute('projects/{}/assignments_by_id'.format(placeholder_slug_project)),
-        'url_api_assignments_update_stati':  get_url_absolute('projects/{}/assignments'.format(placeholder_slug_project)),
-        'url_api_hits':  get_url_absolute('projects/{}/hits_by_id'.format(placeholder_slug_project)),
-        'url_api_batches':  get_url_absolute('projects/{}/batches_for_annotation'.format(placeholder_slug_project)),
-        'url_api_workers':  get_url_absolute('projects/{}/workers'.format(placeholder_slug_project)),
-        'url_api_messages_reject':  get_url_absolute('api/messages_reject'.format(placeholder_slug_project)),
-
-        'slug_project': name,
-        'list_ids': list_ids,
-    }
-    context['context'] = json.dumps(context)
-
-    return render(request, 'mturk_manager/view.html', context=context)
+    return render(request, 'mturk_manager/view.html')
     ############
     context = {}
     name_quoted = name

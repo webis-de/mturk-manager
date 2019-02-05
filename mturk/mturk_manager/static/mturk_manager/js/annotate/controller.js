@@ -15,6 +15,10 @@ export default class Controller
 	{
 		this.init_events();
 
+		await this.loader.init();
+
+		$('#link_back_to_project').attr('href', `/#/projects/${this.loader.slug_project}/assignments`);
+
 		await this.loader.sync_data();
 		this.view.update();
 	}
@@ -77,7 +81,7 @@ export default class Controller
 			        contentType: 'application/json',
 			        data: JSON.stringify(data),
 			        headers: {
-			            Authorization: 'Token ' + event.data.loader.context.token_instance,
+			            Authorization: 'Token ' + event.data.loader.token_instance,
 			            "Content-Type": 'application/json',
 			        },
 			    }).done(() => {
@@ -142,6 +146,28 @@ export default class Controller
 			{
 		    	return 'You have unsaved changes!';
 			}
-		}
+		};
+
+		// $(document).on(
+		// 	'click',
+		// 	'#link_back_to_project',
+		// 	{
+		// 		loader: this.loader,
+		// 		view: this.view
+		// 	},
+		// 	function(event)
+		// 	{
+		// 		const elem_link = $(this);
+		// 		const id_assignment = elem_link.data('id_assignment');
+		// 		const message = elem_link.text();
+		//
+		// 		add_to_object_assignments_selected(event.data.loader, id_assignment, 'reject', message)
+		//
+		// 		$('.reject_assignment[data-id_assignment="'+id_assignment+'"]').addClass('active');
+		//
+		// 		event.data.view.update_info();
+		// 		event.data.view.check_submit_button();
+		// 	}
+		// );
 	}
 }
