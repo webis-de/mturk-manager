@@ -1,6 +1,4 @@
-import { mapState, mapMutations, mapActions, mapGetters } from 'vuex';
 import _ from 'lodash';
-import {external_pagination} from "./external_pagination";
 export const table = {
     watch: {
         filters: {
@@ -40,7 +38,7 @@ export const table = {
             }
         },
         toggle_all() {
-            this.set_items_selected({
+            this.function_set_items_selected({
                 add: !this.is_page_selected,
                 array_items: this.array_page,
             });

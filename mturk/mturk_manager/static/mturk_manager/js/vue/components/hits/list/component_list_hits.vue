@@ -153,7 +153,7 @@ export default {
             });
         },
         ...mapMutations('moduleHITs', {
-            'set_items_selected': 'set_hits_selected',
+            'function_set_items_selected': 'set_hits_selected',
             'clear_batches_selected': 'clear_hits_selected',
         }),
     },

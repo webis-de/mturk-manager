@@ -227,7 +227,7 @@ export default {
             });
         },
         ...mapMutations('moduleAssignments', {
-            'set_items_selected': 'set_assignments_selected',
+            'function_set_items_selected': 'set_assignments_selected',
             'clear_assignments_selected': 'clear_assignments_selected',
         }),
     },

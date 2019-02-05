@@ -71,7 +71,6 @@
     import {external_pagination} from "../mixins/external_pagination";
     import {table} from "../mixins/table";
     import {mapGetters, mapMutations} from "vuex";
-    import {Service_Batches} from "../services/service_batches";
     import ComponentSettingsTable from "./helpers/component-settings-table";
 
     export default {
@@ -83,6 +82,15 @@
             table,
         ],
         props: {
+            array_items: {
+                type: Function,
+                required: true,
+            },
+
+            array_columns: {
+                type: Array,
+                required: true,
+            },
             array_columns_selected: {
                 type: Array,
                 required: true,
@@ -91,11 +99,29 @@
                 type: Array,
                 required: true,
             },
+
             function_reset_array_columns: {
                 type: Function,
                 required: true,
             },
             function_set_array_columns: {
+                type: Function,
+                required: true,
+            },
+            function_load_page: {
+                type: Function,
+                required: true,
+            },
+
+            object_items_selected: {
+                type: Object,
+                required: true,
+            },
+            function_set_items_selected: {
+                type: Function,
+                required: true,
+            },
+            function_clear_items_selected: {
                 type: Function,
                 required: true,
             },
@@ -114,28 +140,19 @@
                 const set = new Set(this.array_columns_selected);
                 return _.filter(this.array_columns, (column) => set.has(column.value));
             },
-            ...mapGetters('moduleBatches', {
-                'array_columns': 'get_array_columns_general',
-                'array_items': 'get_array_batches',
-                'object_items_selected': 'get_object_batches_selected',
-            }),
         },
         methods: {
             load_page() {
                 this.loading = true;
-                Service_Batches.load_page(this.pagination, {
+                this.function_load_page(this.pagination, {
                 }).then((items_total) => {
                     this.items_total = items_total;
                     this.loading = false;
                 });
             },
-            ...mapMutations('moduleBatches', {
-                'set_items_selected': 'set_batches_selected',
-                'clear_batches_selected': 'clear_batches_selected',
-            }),
         },
         beforeDestroy() {
-            this.clear_batches_selected();
+            this.function_clear_items_selected();
         },
     }
 </script>
