@@ -15,8 +15,6 @@ The whole tool is built on top of the [Django-Framework](https://www.djangoproje
 
 Run `./setup.sh` to pull changes from the repository and install missing dependencies.
 
-Create a file `mturk_settings.ini` (in the root directory) with the content of `mturk_settings.scheme.ini` and replace the corresponding values to enable the frontend to connect to the backend.
-
 ## Update Frontend
 Run `./setup.sh` to pull changes from the repository and install missing dependencies.
 
