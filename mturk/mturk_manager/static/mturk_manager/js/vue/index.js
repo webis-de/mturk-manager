@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Vuetify from 'vuetify/lib';
+import { Ripple } from 'vuetify/lib/directives'
 import 'vuetify/src/stylus/app.styl'
 import Vuelidate from 'vuelidate'
 import axios from 'axios';
@@ -14,7 +15,7 @@ import 'vuetify/src/stylus/app.styl';
 // import 'vuetify/dist/vuetify.min.css';
 import 'material-design-icons-iconfont/dist/material-design-icons.css';
 
-Vue.use(Vuetify)
+Vue.use(Vuetify, { directives: { Ripple } })
 Vue.use(VueRouter)
 Vue.use(UploadButton);
 Vue.use(Vuelidate);

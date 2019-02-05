@@ -4,7 +4,6 @@
         <v-layout>
             <v-flex shrink>
                 <upload-btn
-                    v-bind:ripple="false"
                     class="pl-0"
                     :file-changed-callback="file_changed"
                     title="Upload CSV"
