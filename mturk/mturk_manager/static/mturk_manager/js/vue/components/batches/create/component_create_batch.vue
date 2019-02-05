@@ -13,7 +13,6 @@
             bottom
             fixed
             large
-            v-on:click="is_creating_batch = true"
         >
             <v-icon>add</v-icon>
         </v-btn>
