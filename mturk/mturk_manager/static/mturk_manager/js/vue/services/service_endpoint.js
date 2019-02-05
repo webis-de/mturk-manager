@@ -64,11 +64,15 @@ class Class_Service_Endpoint {
 	}
 
     get_url_api({path = '', use_sandbox, value, project}) {
-        let url = new URL(path, store.state.module_app.url_api);
+	    //TODO: Fix this approach
+        // let url = new URL(path, store.state.module_app.url_api);
+
+        let url = store.state.module_app.url_api+ '/' + path;
 
         if(value !== undefined) {
             url += `/${value}`
         }
+
 
         const params = new URLSearchParams();
 
