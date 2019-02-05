@@ -34,6 +34,7 @@
     import validations from "../../mixins/validations";
     import required from "vuelidate/src/validators/required";
     import {mapActions} from "vuex";
+    import {Service_App} from "../../services/service.app";
 
     export default {
         name: "add-credentials",
@@ -56,6 +57,8 @@
                     url: this.url,
                     token: this.token,
                 });
+
+                await Service_App.init();
 
                 this.$router.push({name: 'dashboard'})
             },
