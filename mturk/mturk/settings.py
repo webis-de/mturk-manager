@@ -113,12 +113,12 @@ WSGI_APPLICATION = 'mturk.wsgi.application'
 VERSION_PROJECT = 14
 # MESSAGE_BLOCK_DEFAULT = 'Some default block message'
 
-# config = configparser.ConfigParser()
-# dataset = config.read('../mturk_settings.ini')
-# TOKEN_INSTANCE = config.get('MTurk', 'token_instance', fallback=None)
-# URL_GLOBAL_DB = config.get('MTurk', 'url_global_db', fallback=None)
-# if len(dataset) == 0:
-#     raise FileNotFoundError('You have to provide an .ini-file containing the database credentials!')
+config = configparser.ConfigParser()
+dataset = config.read('../mturk_settings.ini')
+TOKEN_INSTANCE = config.get('MTurk', 'token_instance', fallback=None)
+URL_GLOBAL_DB = config.get('MTurk', 'url_global_db', fallback=None)
+if len(dataset) == 0:
+    raise FileNotFoundError('You have to provide an .ini-file containing the database credentials!')
 
 # # URL_GLOBAL_DB = 'https://webis18.medien.uni-weimar.de/mturk-manager'
 # URL_GLOBAL_DB = 'http://localhost:8002'
