@@ -72,10 +72,6 @@
 	  		    type: Array,
 				required: true,
 			},
-	  		array_columns_selected_initial: {
-	  		    type: Array,
-				required: true,
-			},
 	  		function_reset: {
 	  		    type: Function,
 				required: true,

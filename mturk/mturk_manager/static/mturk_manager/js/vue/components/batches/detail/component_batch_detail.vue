@@ -17,23 +17,17 @@
             </v-btn>
         </h2>
         <v-divider class="my-3"></v-divider>
-        <component-list-hits
+        <list-hits
             v-bind:id_batch="id_batch"
-
-            v-bind:array_columns_selected="array_columns_selected"
-            v-bind:array_columns_selected_initial="array_columns_selected_initial"
-            v-bind:function_reset_array_columns="function_reset_array_columns"
-            v-bind:function_set_array_columns="function_set_array_columns"
-        ></component-list-hits>
+        ></list-hits>
 	</v-flex>
 </v-layout>
     
 </template>
 <script>
     import { mapState, mapMutations, mapActions, mapGetters } from 'vuex';
-    import ComponentListHits from '../../hits/list/component_list_hits.vue';
-    import _ from 'lodash';
     import {Service_Batches} from "../../../services/service_batches";
+    import ListHits from "../../hits/list/list-hits";
 
 export default {
     name: 'component-batch-detail',
@@ -108,7 +102,6 @@ export default {
         // }),
         ...mapGetters('moduleHITs', {
             'array_columns_selected': 'get_array_columns_selected_general',
-            'array_columns_selected_initial': 'get_array_columns_selected_initial_general',
         }),
         ...mapGetters(['get_show_progress_indicator']),
     },
@@ -126,7 +119,7 @@ export default {
         }),
     },
     components: {
-        ComponentListHits,
+        ListHits,
     },
 }
 </script>

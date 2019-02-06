@@ -35,6 +35,12 @@ export const moduleHITs = {
                 align: 'center',
                 sortable: false,
             },
+            {
+                text: '',
+                value: 'actions',
+                sortable: false,
+                label: 'Details',
+            },
         ],
         array_columns_selected_initial_general: [
             'id_hit',

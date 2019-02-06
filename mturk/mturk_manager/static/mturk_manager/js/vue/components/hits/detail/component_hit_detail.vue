@@ -17,22 +17,17 @@
             </v-btn>
         </h2>
         <v-divider class="my-3"></v-divider>
-        <component-list-assignments
+        <list-assignments
                 v-bind:id_hit="id_hit"
-
-                v-bind:array_columns_selected="array_columns_selected"
-                v-bind:array_columns_selected_initial="array_columns_selected_initial"
-                v-bind:function_reset_array_columns="function_reset_array_columns"
-                v-bind:function_set_array_columns="function_set_array_columns"
-        ></component-list-assignments>
+        ></list-assignments>
     </v-flex>
 </v-layout>
     
 </template>
 <script>
     import { mapState, mapMutations, mapActions, mapGetters } from 'vuex';
-    import ComponentListAssignments from '../../assignments/list/component_list_assignments.vue';
     import _ from 'lodash';
+    import ListAssignments from "../../assignments/list/list-assignments";
 export default {
     name: 'component-hit-detail',
     // props: {
@@ -79,7 +74,6 @@ export default {
         },
         ...mapGetters('moduleAssignments', {
             'array_columns_selected': 'get_array_columns_selected_general',
-            'array_columns_selected_initial': 'get_array_columns_selected_initial_general',
         }),
         ...mapGetters('moduleHITs', {
             'get_object_hits': 'get_object_hits',
@@ -95,7 +89,7 @@ export default {
         }),
     },
     components: {
-        ComponentListAssignments,
+        ListAssignments,
     },
 }
 </script>

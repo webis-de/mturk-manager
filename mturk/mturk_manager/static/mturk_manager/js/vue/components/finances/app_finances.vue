@@ -18,12 +18,11 @@
 <v-divider class="my-3"></v-divider>
 <v-layout>
     <v-flex>
-        <component-list-batches
-             v-bind:array_columns_selected="array_columns_selected"
-             v-bind:array_columns_selected_initial="array_columns_selected_initial"
-             v-bind:function_reset_array_columns="function_reset_array_columns"
-             v-bind:function_set_array_columns="function_set_array_columns"
-        ></component-list-batches>
+        <list-batches
+            v-bind:function_reset_array_columns="function_reset_array_columns"
+            v-bind:function_set_array_columns="function_set_array_columns"
+            v-bind:array_columns_selected="array_columns_selected"
+        ></list-batches>
     </v-flex>
 </v-layout>
     <!--<v-divider class="my-3"></v-divider>-->
@@ -41,9 +40,10 @@
     import ComponentShowBalance from './component-show-balance.vue';
     import ComponentShowMoneySpent from './component-show-money-spent.vue';
     import ComponentShowBatches from './component-show-batches.vue';
-    import ComponentListBatches from '../batches/list/component_list_batches.vue';
+    // import ComponentListBatches from '../batches/list/component_list_batches.vue';
     import DisplayExpenses from './display-expenses.vue';
     import slug_project from '../../mixins/slug_project';
+    import ListBatches from "../batches/list/list-batches";
 export default {
     mixins: [
         slug_project,
@@ -71,15 +71,15 @@ export default {
     computed: {
         ...mapGetters('moduleBatches', {
             'array_columns_selected': 'get_array_columns_selected_finances',
-            'array_columns_selected_initial': 'get_array_columns_selected_initial_finances',
         }),
     },
 
     components: {
+        ListBatches,
         ComponentShowBalance,
         ComponentShowMoneySpent,
         ComponentShowBatches,
-        ComponentListBatches,
+        // ComponentListBatches,
         DisplayExpenses,
     },
 }

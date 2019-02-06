@@ -56,7 +56,6 @@
                          v-bind:colspan="array_headers.length + 1"
                          v-bind:array_columns="array_columns"
                          v-bind:array_columns_selected="array_columns_selected"
-                         v-bind:array_columns_selected_initial="array_columns_selected_initial"
                          v-bind:function_reset="function_reset_array_columns"
                          v-on:change="function_set_array_columns($event)"
                     ></component-settings-table>
@@ -70,7 +69,6 @@
     import {update_sandbox} from "../mixins/update_sandbox";
     import {external_pagination} from "../mixins/external_pagination";
     import {table} from "../mixins/table";
-    import {mapGetters, mapMutations} from "vuex";
     import ComponentSettingsTable from "./helpers/component-settings-table";
 
     export default {
@@ -92,10 +90,6 @@
                 required: true,
             },
             array_columns_selected: {
-                type: Array,
-                required: true,
-            },
-            array_columns_selected_initial: {
                 type: Array,
                 required: true,
             },
@@ -125,6 +119,12 @@
                 type: Function,
                 required: true,
             },
+
+            filters: {
+                required: false,
+                type: Object,
+                default: () => { return {}},
+            },
         },
         data () {
             return {
@@ -140,14 +140,37 @@
                 const set = new Set(this.array_columns_selected);
                 return _.filter(this.array_columns, (column) => set.has(column.value));
             },
+            is_page_selected() {
+                let is_page_selected = true;
+
+                if(_.size(this.array_page) === 0) {return false;}
+
+                _.forEach(this.array_page, (item) => {
+                    if(!_.has(this.object_items_selected, item.id)) {
+                        is_page_selected = false;
+                        return false;
+                    }
+                });
+
+                return is_page_selected;
+            },
+            array_page() {
+                let array_items = this.array_items();
+                return array_items === null ? [] : array_items;
+            },
         },
         methods: {
             load_page() {
                 this.loading = true;
-                this.function_load_page(this.pagination, {
-                }).then((items_total) => {
+                this.function_load_page(this.pagination, this.filters).then((items_total) => {
                     this.items_total = items_total;
                     this.loading = false;
+                });
+            },
+            toggle_all() {
+                this.function_set_items_selected({
+                    add: !this.is_page_selected,
+                    array_items: this.array_page,
                 });
             },
         },

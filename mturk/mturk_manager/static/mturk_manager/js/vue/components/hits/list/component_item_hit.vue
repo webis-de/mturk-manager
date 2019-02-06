@@ -1,6 +1,5 @@
 <template>
-    <!-- <div>wda</div> -->
-    <tr 
+    <tr
         v-bind:key="hit.id"
         v-on:click="props.expanded = !props.expanded"
         class="text-no-wrap"
@@ -60,7 +59,7 @@
         </td>
         <td
             class="text-xs-center"
-            v-if="show_links == true"
+            v-if="show_links === true && set_columns_selected.has('actions')"
         >
             <v-btn
                 slot="activator"
