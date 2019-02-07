@@ -1,13 +1,16 @@
 <template>
 <div class="headline">
 	Current balance:
-	<component-display-money v-if="get_balance != undefined" v-bind:amount="get_balance"></component-display-money>
-	<v-tooltip top>
-        <v-btn flat icon small v-bind:loading="show_spinner" v-on:click="update_balance_custom" slot="activator" class="ma-0">
-          <v-icon>refresh</v-icon>
-        </v-btn>
-      	<span>Refresh current balance</span>
-    </v-tooltip>
+	<component-display-money
+        v-if="get_balance !== null"
+        v-bind:amount="get_balance() * 100"
+    ></component-display-money>
+	<!--<v-tooltip top>-->
+        <!--<v-btn flat icon small v-bind:loading="show_spinner" v-on:click="update_balance_custom" slot="activator" class="ma-0">-->
+          <!--<v-icon>refresh</v-icon>-->
+        <!--</v-btn>-->
+      	<!--<span>Refresh current balance</span>-->
+    <!--</v-tooltip>-->
 </div>
 </template>
 
@@ -23,43 +26,24 @@ export default {
     },
     computed: {
     	show_spinner: function() {
-    		return this.updating || this.get_balance == undefined;
+    		return this.updating || this.get_balance === undefined;
     	},
-        ...mapGetters('moduleMoney', {
+        ...mapGetters('module_finances', {
             'get_balance': 'get_balance',
         }),
-        // ...mapGetters('moduleMoney', ['balance']),
-        // ...mapState('moduleMoney', ['balance']),
     },
     methods: {
-    	update_balance_custom: function() {
-    		this.updating = true;
-    		
-    		this.update_balance(true).then((result) => {
-    			this.updating = false;
-    		});
-    	},
-        ...mapActions('moduleMoney', {
-        	'update_balance': 'update_balance',
-        }),
-    //     load_config: function() {
-    //         const configElement = document.getElementById( 'config' );
-    //         const config = JSON.parse( configElement.innerHTML );
-    //         console.log(config);
-    //         this.url_api_get_balance = config.url_api_get_balance;
-    //     },
+    	// update_balance_custom: function() {
+    	// 	this.updating = true;
+    	//
+    	// 	this.update_balance(true).then((result) => {
+    	// 		this.updating = false;
+    	// 	});
+    	// },
+        // ...mapActions('module_finances', {
+        // 	'update_balance': 'update_balance',
+        // }),
     },
-    // watch: {
-    // 	balance: function() {
-    // 		this.updating = false;
-    // 	}
-    // },
-    // created: function() {
-    //     this.load_config();
-    //     console.log(this.balance);
-    //     // this.store.dispatch('refresh_balance');
-    //     this.update_balance();
-    // },
     components: {
     	ComponentDisplayMoney,
     },

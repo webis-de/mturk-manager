@@ -1,4 +1,5 @@
 from .config import *
+from .finances import *
 from .keywords import *
 from .messages_reject import *
 from .workers import *

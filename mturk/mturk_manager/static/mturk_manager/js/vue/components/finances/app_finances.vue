@@ -6,12 +6,12 @@
         </v-flex>
 
         <v-flex xs12 md6 text-md-right>
-            <component-show-balance></component-show-balance>
         </v-flex>
     </v-layout> -->
 
 <v-layout>
     <v-flex>
+        <component-show-balance></component-show-balance>
         <display-expenses></display-expenses>
     </v-flex>
 </v-layout>
@@ -44,9 +44,12 @@
     import DisplayExpenses from './display-expenses.vue';
     import slug_project from '../../mixins/slug_project';
     import ListBatches from "../batches/list/list-batches";
+    import {Service_App} from "../../services/service.app";
+    import {update_sandbox} from "../../mixins/update_sandbox";
 export default {
     mixins: [
         slug_project,
+        update_sandbox,
         // load_data,
     ],
     name: 'app-finances',
@@ -61,6 +64,9 @@ export default {
         }
     },
     methods: {
+        sandbox_updated() {
+            Service_App.load_balance();
+        },
         ...mapActions('moduleBatches', {
             'function_reset_array_columns': 'reset_array_columns_finances',
         }),
@@ -72,6 +78,9 @@ export default {
         ...mapGetters('moduleBatches', {
             'array_columns_selected': 'get_array_columns_selected_finances',
         }),
+    },
+    created() {
+        Service_App.load_balance();
     },
 
     components: {

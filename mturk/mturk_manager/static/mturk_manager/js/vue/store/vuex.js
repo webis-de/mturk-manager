@@ -10,7 +10,6 @@ Vue.use(VueCookies)
 Vue.use(VueAxios, axios)
 
 import { moduleProjects } from './modules/projects.js';
-import { moduleMoney } from './modules/money.js';
 import { moduleQualifications } from './modules/qualifications.js';
 import { moduleWorkers } from './modules/workers.js';
 import { moduleBatches } from './modules/batches.js';
@@ -19,12 +18,13 @@ import { moduleAssignments } from './modules/assignments.js';
 import { moduleKeywords } from './modules/keywords.js';
 import { moduleMessagesReject } from './modules/messages_reject.js';
 import {module_app} from "./modules/app";
+import {module_finances} from "./modules/finances";
 
 export const store = new Vuex.Store({
     modules: {
         module_app,
         moduleProjects,
-        moduleMoney,
+        module_finances,
         moduleQualifications,
         moduleWorkers,
         moduleBatches,
@@ -102,7 +102,7 @@ export const store = new Vuex.Store({
 
             // commit('setUrlProject', config.url_project);
 
-            commit('moduleMoney/setUrlApiGetBalance', config.url_api_get_balance);
+            commit('module_finances/set_urls', config);
             
             commit('moduleQualifications/set_url_api_qualifications', config.url_api_qualifications);
             // commit('moduleQualifications/set_url_api_qualification', config.url_api_qualification);

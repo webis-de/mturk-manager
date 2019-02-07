@@ -27,6 +27,7 @@ urlpatterns = format_suffix_patterns([
     path('projects', views.Projects.as_view(), name='projects'),
     path('projects/<str:slug_project>', views.Project.as_view(), name='project'),
 
+    path('projects/<str:slug_project>/balance', views.get_balance, name='get_balance'),
 
     path('projects/<str:slug_project>/settings_batch', views.Settings_Batch.as_view(), name='settings_batch_for_project'),
     path('projects/<str:slug_project>/settings_batch/<int:id_settings_batch>', views.Setting_Batch.as_view(), name='setting_batch_for_project'),
@@ -77,3 +78,5 @@ urlpatterns = format_suffix_patterns([
 
     # path('projects/<str:slug_project>/workers/<str:id_worker>/count_assignments', views.set_count_assignments),
 ])
+
+
