@@ -7,7 +7,6 @@
         slot="activator" 
         icon
         small
-        v-on:click="dialog = true"
     >
         <v-icon color="error">delete</v-icon>
     </v-btn>

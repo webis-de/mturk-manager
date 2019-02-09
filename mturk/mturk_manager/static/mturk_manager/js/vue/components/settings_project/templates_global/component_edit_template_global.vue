@@ -8,7 +8,6 @@
             slot="activator" 
             icon
             small
-            v-on:click="dialog = true"
         >
             <v-icon color="warning">edit</v-icon>
         </v-btn>
