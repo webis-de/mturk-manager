@@ -1,8 +1,8 @@
 <template>
 <div>
-    <component-navigation-drawer    
+    <the-navigation-drawer
         v-bind:show_drawer.sync="show_drawer"
-    ></component-navigation-drawer>
+    ></the-navigation-drawer>
     
     <v-progress-linear 
         v-bind:active="get_show_progress_indicator" 
@@ -61,7 +61,7 @@
 
 <script>
     import { mapState, mapActions, mapGetters } from 'vuex';
-    import ComponentNavigationDrawer from '../component-navigation-drawer.vue';
+    import TheNavigationDrawer from '../the-navigation-drawer.vue';
     import ComponentToolbarBatches from '../batches/component_toolbar_batches.vue';
     import ComponentToolbarQualifications from '../qualifications/component-toolbar-qualifications.vue';
     import slug_project from '../../mixins/slug_project';
@@ -132,7 +132,7 @@ export default {
         console.warn('changed')
     },
     components: {
-        ComponentNavigationDrawer,
+        TheNavigationDrawer,
     },
 }
 </script>

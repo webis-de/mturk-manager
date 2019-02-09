@@ -72,7 +72,7 @@
     import ComponentSettingsTable from "./helpers/component-settings-table";
 
     export default {
-        name: "data-table",
+        name: "base-table",
         components: {ComponentSettingsTable},
         mixins: [
             update_sandbox,

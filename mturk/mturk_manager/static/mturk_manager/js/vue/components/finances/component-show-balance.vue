@@ -1,10 +1,10 @@
 <template>
 <div class="headline">
 	Current balance:
-	<component-display-money
+	<base-display-amount
         v-if="get_balance !== null"
         v-bind:amount="get_balance() * 100"
-    ></component-display-money>
+    ></base-display-amount>
 	<!--<v-tooltip top>-->
         <!--<v-btn flat icon small v-bind:loading="show_spinner" v-on:click="update_balance_custom" slot="activator" class="ma-0">-->
           <!--<v-icon>refresh</v-icon>-->
@@ -15,7 +15,7 @@
 </template>
 
 <script>
-    import ComponentDisplayMoney from './../component-display-money.vue';
+    import BaseDisplayAmount from '../base-display-amount.vue';
     import { mapState, mapActions, mapGetters } from 'vuex';
 export default {
     name: 'component-show-balance',
@@ -45,7 +45,7 @@ export default {
         // }),
     },
     components: {
-    	ComponentDisplayMoney,
+    	BaseDisplayAmount,
     },
 }
 </script>

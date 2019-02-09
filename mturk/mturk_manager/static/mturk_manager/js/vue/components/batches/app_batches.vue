@@ -30,7 +30,6 @@
     import ComponentBatchDetail from './detail/component_batch_detail.vue';
     import ComponentDownloadBatch from './component_download_batch.vue';
     import slug_project from '../../mixins/slug_project';
-    import DataTable from "../data-table";
     import ComponentItemBatch from "./list/component_item_batch";
     import {Service_Batches} from "../../services/service_batches";
     import ListBatches from "./list/list-batches";
@@ -47,7 +46,6 @@ export default {
     components: {
         ListBatches,
         ComponentItemBatch,
-        DataTable,
         ComponentCreateBatch,
         ComponentBatchDetail,
         ComponentDownloadBatch,

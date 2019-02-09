@@ -79,8 +79,8 @@
                     </v-flex>
                     <v-flex>
                         <template v-if="is_valid">
-                            <component-display-money v-bind:amount="costs_total_with_fee"></component-display-money> 
-                            (without Amazon's fees: <component-display-money v-bind:amount="costs_total_without_fee"></component-display-money>) 
+                            <base-display-amount v-bind:amount="costs_total_with_fee"></base-display-amount>
+                            (without Amazon's fees: <base-display-amount v-bind:amount="costs_total_without_fee"></base-display-amount>)
                         </template>
                         <template v-else>
                             None
@@ -96,7 +96,7 @@
 <script>
     import { mapState, mapActions, mapGetters } from 'vuex';
     import Settings_Batch from '../../../classes/settings_batch';
-    import ComponentDisplayMoney from '../../component-display-money.vue';
+    import BaseDisplayAmount from '../../base-display-amount.vue';
     import humanizeDuration from 'humanize-duration';
 
     // import ComponentStepUploadCSV from './component_step_upload_csv.vue';
@@ -194,7 +194,7 @@ export default {
         setInterval(() => {this.current_time_ms = Date.now()}, 1000);
     },
     components: {
-      ComponentDisplayMoney,
+      BaseDisplayAmount,
     }
 }
 </script>

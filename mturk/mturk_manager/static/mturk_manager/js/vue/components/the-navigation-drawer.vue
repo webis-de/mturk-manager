@@ -37,7 +37,7 @@
 <script>
     import { mapState, mapActions } from 'vuex';
 export default {
-    name: 'component-navigation-drawer',
+    name: 'the-navigation-drawer',
     props: {
     	show_drawer: {
     		required: true,

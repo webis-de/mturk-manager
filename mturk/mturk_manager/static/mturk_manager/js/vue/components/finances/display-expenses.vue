@@ -3,11 +3,11 @@
     <v-flex>
         <v-layout>
             <v-flex sm1>Max costs</v-flex>
-            <v-flex><component-display-money v-bind:amount="sum_costs_max"></component-display-money></v-flex>
+            <v-flex><base-display-amount v-bind:amount="sum_costs_max"></base-display-amount></v-flex>
         </v-layout>
         <v-layout>
             <v-flex sm1>Costs so far</v-flex>
-            <v-flex><component-display-money v-bind:amount="sum_costs_so_far"></component-display-money></v-flex>
+            <v-flex><base-display-amount v-bind:amount="sum_costs_so_far"></base-display-amount></v-flex>
         </v-layout>
     </v-flex>
 </v-layout>
@@ -16,7 +16,7 @@
 
 <script>
     import { mapState, mapGetters, mapMutations, mapActions } from 'vuex';
-    import ComponentDisplayMoney from '../component-display-money.vue';
+    import BaseDisplayAmount from '../base-display-amount.vue';
     export default {
         name: "display-expenses",
         computed: {
@@ -32,7 +32,7 @@
             ...mapState('module_app', ['use_sandbox']),
         },
         components: {
-            ComponentDisplayMoney,
+            BaseDisplayAmount,
         }
     }
 </script>

@@ -62,7 +62,7 @@
 
 <script> 
     import { mapState, mapGetters, mapActions } from 'vuex';
-    import ComponentDisplayMoney from './../component-display-money.vue';
+    import ComponentDisplayMoney from '../base-display-amount.vue';
 	import axios from 'axios';
 	import Papa from 'papaparse';
 	import _ from 'lodash';

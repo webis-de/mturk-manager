@@ -1,5 +1,5 @@
 <template>
-    <data-table
+    <base-table
          v-bind:array_items="array_items"
 
          v-bind:array_columns="array_columns"
@@ -24,18 +24,18 @@
             v-bind:array_columns_selected="array_columns_selected"
             v-bind:show_links="show_links"
         ></component-item-assignment>
-    </data-table>
+    </base-table>
 </template>
 
 <script>
     import {mapActions, mapGetters, mapMutations} from "vuex";
     import {Service_Assignments} from "../../../services/service_assignments";
-    import DataTable from "../../data-table";
+    import BaseTable from "../../base-table";
     import ComponentItemAssignment from "./component_item_assignment";
 
     export default {
         name: "list-assignments",
-        components: {ComponentItemAssignment, DataTable},
+        components: {ComponentItemAssignment, BaseTable},
         props: {
             id_hit: {
                 required: false,

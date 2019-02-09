@@ -8,7 +8,7 @@ export default {
     mixins: [
         helpers,
     ],
-    name: 'component-display-money',
+    name: 'base-display-amount',
     props: {
     	amount: {
     		required: true,

@@ -2,16 +2,16 @@
 <span>
     <span class="headline">
         Max costs:
-        <component-display-money v-bind:amount="money_spent_max"></component-display-money>
+        <base-display-amount v-bind:amount="money_spent_max"></base-display-amount>
     </span>
     <!-- <v-runtime-template :template="template"></v-runtime-template> -->
     <span class="subheading">
         (costs so far:
-        <component-display-money v-bind:amount="money_spent"></component-display-money>)
+        <base-display-amount v-bind:amount="money_spent"></base-display-amount>)
     </span>
     <span class="subheading">
         (money not spent:
-        <component-display-money v-bind:amount="money_not_spent"></component-display-money>)
+        <base-display-amount v-bind:amount="money_not_spent"></base-display-amount>)
     </span>
 </span>
 </template>
@@ -20,7 +20,7 @@
     import Vue from 'vue';
     import VRuntimeTemplate from "v-runtime-template";
     import { mapState, mapGetters, mapActions } from 'vuex';
-    import ComponentDisplayMoney from './../component-display-money.vue';
+    import BaseDisplayAmount from '../base-display-amount.vue';
     import _ from 'lodash';
 export default {
     name: 'component-show-money-spent',
@@ -84,7 +84,7 @@ export default {
     //     this.update_balance();
     // },
     components: {
-        ComponentDisplayMoney,
+        ComponentDisplayMoney: BaseDisplayAmount,
         VRuntimeTemplate,
     },
 }

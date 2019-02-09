@@ -1,5 +1,5 @@
 <template>
-    <data-table
+    <base-table
          v-bind:array_items="array_items"
 
          v-bind:array_columns="array_columns"
@@ -20,18 +20,18 @@
             v-bind:array_columns_selected="array_columns_selected"
             v-bind:show_links="show_links"
         ></component-item-batch>
-    </data-table>
+    </base-table>
 </template>
 
 <script>
     import {mapActions, mapGetters, mapMutations} from "vuex";
     import {Service_Batches} from "../../../services/service_batches";
-    import DataTable from "../../data-table";
+    import BaseTable from "../../base-table";
     import ComponentItemBatch from "./component_item_batch";
 
     export default {
         name: "list-batches",
-        components: {ComponentItemBatch, DataTable},
+        components: {ComponentItemBatch, BaseTable},
         props: {
             show_links: {
                 required: false,

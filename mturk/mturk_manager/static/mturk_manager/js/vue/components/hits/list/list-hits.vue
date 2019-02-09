@@ -1,5 +1,5 @@
 <template>
-    <data-table
+    <base-table
          v-bind:array_items="array_items"
 
          v-bind:array_columns="array_columns"
@@ -24,18 +24,18 @@
             v-bind:array_columns_selected="array_columns_selected"
             v-bind:show_links="show_links"
         ></component-item-hit>
-    </data-table>
+    </base-table>
 </template>
 
 <script>
     import {mapActions, mapGetters, mapMutations} from "vuex";
     import {Service_HITs} from "../../../services/service_hits";
-    import DataTable from "../../data-table";
+    import BaseTable from "../../base-table";
     import ComponentItemHit from "./component_item_hit";
 
     export default {
         name: "list-hits",
-        components: {ComponentItemHit, DataTable},
+        components: {ComponentItemHit, BaseTable},
         props: {
             id_batch: {
                 required: false,

@@ -47,7 +47,7 @@
             v-if="set_columns_selected.has('settings_batch__reward')"
             class="text-xs-right"
         >
-            <component-display-money v-bind:amount="batch.settings_batch.reward"></component-display-money>
+            <base-display-amount v-bind:amount="batch.settings_batch.reward"></base-display-amount>
         </td>
 
         <td
@@ -75,14 +75,14 @@
             v-if="set_columns_selected.has('costs_max')"
             class="text-xs-right"
         >
-            <component-display-money v-bind:amount="batch.costs_max"></component-display-money>
+            <base-display-amount v-bind:amount="batch.costs_max"></base-display-amount>
         </td>
 
         <td
             v-if="set_columns_selected.has('costs_so_far')"
             class="text-xs-right"
         >
-            <component-display-money v-bind:amount="batch.costs_so_far"></component-display-money>
+            <base-display-amount v-bind:amount="batch.costs_so_far"></base-display-amount>
         </td>
 
         <td
@@ -124,8 +124,7 @@
     import _ from 'lodash';
     import ComponentBatchProgress from './component_batch_progress.vue';
     import ComponentDisplayDatetime from '../../helpers/component_display_datetime.vue';
-    import Batch from '../../../classes/batch.js';
-    import ComponentDisplayMoney from "../../component-display-money";
+    import BaseDisplayAmount from "../../base-display-amount";
 export default {
     name: 'component-item-batch',
     props: {
@@ -172,7 +171,7 @@ export default {
     mounted(){
     },
     components: {
-        ComponentDisplayMoney,
+        BaseDisplayAmount,
         ComponentBatchProgress,
         ComponentDisplayDatetime,
     },
