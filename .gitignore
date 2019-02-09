@@ -4,6 +4,7 @@ mturk_settings.ini
 .directory
 
 venv
+misc
 __pycache__
 mturk/thesis
 *.csv
@@ -15,3 +16,4 @@ db.sqlite3
 settings
 .idea
 /mturk/mturk_manager/static/mturk_manager/js/dist/report.html
+/mturk/yarn-error.log
