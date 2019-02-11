@@ -1,5 +1,5 @@
 <template>
-<td class="text-xs-center"> 
+<span>
 		<!-- v-bind:return-value.sync="worker.count_assignments_limit" -->
 	<v-dialog 
 		v-model="dialog" 
@@ -82,7 +82,7 @@
             Close
         </v-btn>
     </v-snackbar>  
-</td>
+</span>
 </template>
 
 <script>

@@ -13,7 +13,7 @@
     import { mapState, mapActions, mapGetters } from 'vuex';
     // import { Policy } from '../../store/modules/policies.js';
 	
-    import ComponentListWorkers from './list/component_list_workers.vue';
+    import ComponentListWorkers from './list/list-workers.vue';
     // import ComponentShowMoneySpent from './component-show-money-spent.vue';
     // import ComponentShowBatches from './component-show-batches.vue';
     import slug_project from '../../mixins/slug_project';

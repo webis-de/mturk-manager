@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import _ from 'lodash';
 import Worker from '../../classes/workers.js';
+import localforage from "localforage";
 
 export const moduleWorkers = {
 	namespaced: true,
@@ -11,12 +12,59 @@ export const moduleWorkers = {
 
         array_workers: null,
         array_workers_sandbox: null,
+
+        object_workers_selected: {},
         
         url_api_global_db: undefined,
         // loaded_status_block: false,
         // loaded_status_block_sandbox: false,
+		array_columns_general: [
+			{
+				text: 'Name',
+				value: 'name',
+			},
+			{
+				text: 'Assignment Limit',
+				value: 'counter_assignments',
+				align: 'center',
+				width: '1px'
+			},
+			{
+				text: 'Project Block',
+				value: 'block_soft',
+				width: '1px'
+			},
+			{
+				text: 'Soft MTurk Block',
+				value: 'block_soft_hard',
+				width: '1px'
+			},
+			{
+				text: 'Hard MTurk Block',
+				value: 'block_hard',
+				width: '1px'
+			},
+		],
+        array_columns_selected_general: null,
+        array_columns_selected_initial_general: [
+            'name',
+            'counter_assignments',
+        ],
 	},  
     getters: {
+	    get_object_workers_selected: (state) => {
+	        return state.object_workers_selected;
+        },
+	    get_array_columns_general: (state) => {
+	        return state.array_columns_general;
+        },
+	    get_array_columns_selected_general: (state) => {
+	        if(state.array_columns_selected_general === null) {
+	            return state.array_columns_selected_initial_general;
+            } else {
+                return state.array_columns_selected_general;
+            }
+        },
     	// get_object_workers: (state, getters, rootState) => {
     	get_object_workers: (state, getters, rootState) => (use_sandbox=undefined) => {
     		if(use_sandbox == undefined)
@@ -26,11 +74,13 @@ export const moduleWorkers = {
     			return use_sandbox ? state.object_workers_sandbox : state.object_workers;
     		}
     	},
-        get_array_workers: (state) => {
-            return state.array_workers
-        },
-        get_array_workers_sandbox: (state) => {
-            return state.array_workers_sandbox
+        get_array_workers: (state, getters, rootState) => (use_sandbox=undefined) => {
+            if(use_sandbox === undefined)
+            {
+                return rootState.module_app.use_sandbox ? state.array_workers_sandbox : state.array_workers;
+            } else {
+                return use_sandbox ? state.array_workers_sandbox : state.array_workers;
+            }
         },
     	list_workers: (state, getters, rootState) => {
     		// console.log('done')
@@ -46,6 +96,24 @@ export const moduleWorkers = {
     	},
 	},
 	mutations: {
+        set_array_columns_general(state, array_columns) {
+            localforage.setItem('array_columns_workers_general', array_columns);
+            state.array_columns_selected_general = array_columns;
+        },
+        clear_workers_selected(state) {
+            state.object_workers_selected = {};
+        },
+		set_workers_selected(state, {array_items, add}) {
+            if(add === true) {
+                _.forEach(array_items, (item) => {
+                    Vue.set(state.object_workers_selected, item.id, item.id);
+                })
+            } else {
+                _.forEach(array_items, (item) => {
+                    Vue.delete(state.object_workers_selected, item.id);
+                })
+            }
+		},
         set_urls(state, paths) {
             state.url_api_workers = paths.url_api_workers;
             state.url_api_workers_get_blocks_hard = paths.url_api_workers_get_blocks_hard;
@@ -224,6 +292,18 @@ export const moduleWorkers = {
         }
 	},
 	actions: {
+	    async init({state}) {
+	        let array_columns = await localforage.getItem('array_columns_workers_general');
+            if(array_columns !== null)
+            {
+                state.array_columns_selected_general = array_columns;
+            } else {
+                state.array_columns_selected_general = state.array_columns_selected_initial_general;
+            }
+        },
+        reset_array_columns_general({state, commit}) {
+	        commit('set_array_columns_general', state.array_columns_selected_initial_general);
+        },
 		// async sync_workers({commit, state, getters, rootState, rootGetters}, force=false) {
 		// 	const use_sandbox = rootState.module_app.use_sandbox;
 

@@ -8,30 +8,47 @@
                 hide-details
             ></v-checkbox>
         </td>
-        <td class="text-xs-left">
+        <td
+            v-if="set_columns_selected.has('name')"
+            class="text-xs-left"
+        >
             {{ props.item.id_worker }}
         </td>
         <!--<td>-->
         <!--</td>-->
         <!--<td>-->
         <!--</td>-->
-        <component-limit-assignments
-            v-bind:key="`component_limit_assignments_${props.item.name}`"
-            v-bind:worker="worker"
-        ></component-limit-assignments>
-        <td class="text-xs-center">
+        <td
+            v-if="set_columns_selected.has('counter_assignments')"
+            class="text-xs-center"
+        >
+            <component-limit-assignments
+                v-bind:key="`component_limit_assignments_${props.item.name}`"
+                v-bind:worker="worker"
+            ></component-limit-assignments>
+        </td>
+        <td
+            v-if="set_columns_selected.has('block_soft')"
+            class="text-xs-center"
+        >
             <component-block-soft-worker
                 v-bind:key="`component_block_soft_worker_${worker.name}`"
                 v-bind:worker="worker"
             ></component-block-soft-worker>
         </td>
-        <td class="text-xs-center">
+        <td
+            v-if="set_columns_selected.has('block_soft_hard')"
+            class="text-xs-center"
+        >
             <component-block-global-worker
                 v-bind:key="`component_block_global_worker_${worker.name}`"
                 v-bind:worker="worker"
             ></component-block-global-worker>
         </td>
-        <td class="text-xs-center">
+        <td
+            v-if="set_columns_selected.has('block_hard')"
+            class="text-xs-center"
+        >
             <component-block-hard-worker
                 v-bind:key="`component_block_hard_worker_${worker.name}`"
                 v-bind:worker="worker"
@@ -131,7 +148,11 @@ export default {
         props: {
             type: Object,
             required: true,
-        }
+        },
+        array_columns_selected: {
+            type: Array,
+            required: true,
+        },
     },
     data () {
         return {
@@ -144,6 +165,9 @@ export default {
     //     },
     // },
     computed: {
+        set_columns_selected() {
+            return new Set(this.array_columns_selected);
+        },
         worker() {
             return this.props.item;
         },

@@ -71,7 +71,7 @@ export const moduleHITs = {
 	        return state.object_hits_selected;
         },
         get_array_hits: (state, getters, rootState) => (use_sandbox=undefined) => {
-            if(use_sandbox == undefined)
+            if(use_sandbox === undefined)
             {
                 return rootState.module_app.use_sandbox ? state.array_hits_sandbox : state.array_hits;
             } else {
