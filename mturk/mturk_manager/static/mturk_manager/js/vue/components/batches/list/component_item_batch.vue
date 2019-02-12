@@ -90,7 +90,6 @@
             class="text-xs-center"
         >
             <component-batch-progress
-                slot="activator"
                 v-bind:progress="batch.progress"
             >
                 {{ batch.count_assignments_available }}/{{batch.count_assignments_total}} assignment{{batch.count_assignments_total > 1 ? 's' : ''}}

@@ -1,17 +1,26 @@
 <template>
-<v-layout align-center>
-	<v-flex xs6>
-	    <v-progress-linear
-	    	class="my-0"
-	    	v-model="progress"
-	    	v-bind:color="progress >= 100 ? 'success': 'primary'"
-		></v-progress-linear>
-	</v-flex>
-	<v-flex xs6 class="px-2">
+	<v-progress-linear
+		height="20"
+		class="my-0 mx-auto"
+		v-model="progress"
+		v-bind:color="progress >= 100 ? 'success': 'primary'"
+	>
 		<slot></slot>
+	</v-progress-linear>
 
-	</v-flex>
-</v-layout>
+<!--<v-layout align-center>-->
+	<!--<v-flex xs6>-->
+	    <!--<v-progress-linear-->
+	    	<!--class="my-0"-->
+	    	<!--v-model="progress"-->
+	    	<!--v-bind:color="progress >= 100 ? 'success': 'primary'"-->
+		<!--&gt;</v-progress-linear>-->
+	<!--</v-flex>-->
+	<!--<v-flex xs6 class="px-2">-->
+		<!--<slot></slot>-->
+	<!--</v-flex>-->
+<!--</v-layout>-->
+
 <!--<div align-center>-->
 	<!--<v-flex xs6>-->
 	    <!--<v-progress-linear-->
@@ -50,3 +59,9 @@ export default {
     },
 }
 </script>
+
+<style lang="scss" scoped>
+.v-progress-linear {
+	width: 200px;
+}
+</style>
