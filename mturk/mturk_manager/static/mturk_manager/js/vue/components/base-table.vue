@@ -180,6 +180,12 @@
     }
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+    $header-padding: 5px;
+    #row_header {
+        height: unset;
+        th {
+            padding: $header-padding 5px;
+        }
+    }
 </style>

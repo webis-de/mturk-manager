@@ -219,8 +219,7 @@ export default {
 <style lang="scss" scoped>
     td {
         height: unset !important;
-    }
-    td .v-input--selection-controls {
-        padding: unset;
+        padding-left: 5px !important;
+        padding-right: 5px !important;
     }
 </style>
