@@ -47,6 +47,7 @@ export const moduleHITs = {
             'batch',
             'datetime_creation',
             'progress',
+            'actions',
         ],
         array_columns_selected_general: null,
 
