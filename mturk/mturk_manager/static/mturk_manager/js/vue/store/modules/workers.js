@@ -49,6 +49,9 @@ export const moduleWorkers = {
         array_columns_selected_initial_general: [
             'name',
             'counter_assignments',
+            'block_soft',
+            'block_soft_hard',
+            'block_hard',
         ],
 	},  
     getters: {
