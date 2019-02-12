@@ -18,6 +18,7 @@
 <v-divider class="my-3"></v-divider>
 <v-layout>
     <v-flex>
+        <h1 class="headline">Batches</h1>
         <list-batches
             v-bind:function_reset_array_columns="function_reset_array_columns"
             v-bind:function_set_array_columns="function_set_array_columns"

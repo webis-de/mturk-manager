@@ -3,6 +3,7 @@
     <template 
         v-if="$route.name == 'assignments'"
     >
+        <h1 class="headline">Assignments</h1>
         <list-assignments></list-assignments>
         <component-annotate></component-annotate>
     </template>

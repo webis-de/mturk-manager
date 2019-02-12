@@ -3,6 +3,7 @@
     <template 
         v-if="$route.name == 'hits'"
     >
+        <h1 class="headline">HITs</h1>
         <list-hits></list-hits>
     </template>
     <template
