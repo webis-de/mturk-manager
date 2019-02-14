@@ -5,7 +5,7 @@
         v-on:click="props.expanded = !props.expanded"
         class="text-no-wrap"
     >
-        <td>
+        <td v-bind:style="stylesCell">
             <v-checkbox
                 v-model="is_selected"
                 primary
@@ -15,42 +15,49 @@
         <td
             v-if="set_columns_selected.has('id_assignment')"
             class="text-xs-center"
+            v-bind:style="stylesCell"
         >
             {{ assignment.id_assignment }}
         </td>
         <td
             v-if="set_columns_selected.has('datetime_creation')"
             class="text-xs-center"
+            v-bind:style="stylesCell"
         >
             <component-display-datetime v-bind:datetime="assignment.datetime_creation"></component-display-datetime>
         </td>
         <td
             v-if="set_columns_selected.has('datetime_accept')"
             class="text-xs-center"
+            v-bind:style="stylesCell"
         >
             <component-display-datetime v-bind:datetime="assignment.datetime_accept"></component-display-datetime>
         </td>
         <td
             v-if="set_columns_selected.has('datetime_submit')"
             class="text-xs-center"
+            v-bind:style="stylesCell"
         >
             <component-display-datetime v-bind:datetime="assignment.datetime_submit"></component-display-datetime>
         </td>
         <td
             v-if="set_columns_selected.has('duration')"
             class="text-xs-center"
+            v-bind:style="stylesCell"
         >
             <component-display-duration v-bind:duration="assignment.duration"></component-display-duration>
         </td>
         <td
             v-if="set_columns_selected.has('worker')"
             class="text-xs-center"
+            v-bind:style="stylesCell"
         >
             {{ assignment.worker.id_worker }}
         </td>
         <td
             v-if="set_columns_selected.has('status')"
             class="text-xs-center"
+            v-bind:style="stylesCell"
         >
             <component-status-assignment
                 v-bind:assignment="assignment"
@@ -58,18 +65,19 @@
         </td>
         <td
             v-if="set_columns_selected.has('hit')"
-            class="right"
+            class="text-xs-right"
+            v-bind:style="stylesCell"
         >
             {{ assignment.hit.id_hit }}
             <v-btn
-                slot="activator" 
+                slot="activator"
                 class="my-0"
                 icon
                 small
                 v-bind:to="{
                     name: 'hit',
                     params: {
-                        slug_project: $route.params.slug_project, 
+                        slug_project: $route.params.slug_project,
                         id_hit: assignment.hit.id,
                     }
                 }"
@@ -79,7 +87,8 @@
         </td>
         <td 
             class="text-xs-center"
-            v-if="show_links == false"
+            v-if="show_links === false"
+            v-bind:style="stylesCell"
         >
             <v-btn
                 slot="activator" 
@@ -128,6 +137,11 @@ export default {
             type: Array,
             required: true,
         },
+
+        isCondensed: {
+            required: true,
+            type: Boolean,
+        },
     },
     data () {
         return {
@@ -156,6 +170,17 @@ export default {
         assignment() {
             return this.props.item;
         },
+        stylesCell() {
+            if(this.isCondensed) {
+                return {
+                    height: 'unset !important',
+                    paddingLeft: '5px !important',
+                    paddingRight: '5px !important',
+                }
+            } else {
+                return {}
+            }
+        },
         ...mapGetters('moduleAssignments', {
             'object_assignments_selected': 'get_object_assignments_selected',
         }),
@@ -175,9 +200,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    td {
-        height: unset !important;
-        padding-left: 5px !important;
-        padding-right: 5px !important;
-    }
 </style>

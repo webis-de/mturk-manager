@@ -12,8 +12,12 @@
             v-bind:rows-per-page-items="[5,10,25,30,{text: 'All', value: null}]"
         >
             <template slot="headers" slot-scope="props">
-                <tr id="row_header">
-                    <th>
+                <tr
+                    v-bind:style="stylesHeaderRow"
+                >
+                    <th
+                        v-bind:style="stylesHeaderCell"
+                    >
                         <v-checkbox
                             v-bind:input-value="is_page_selected"
                             v-bind:indeterminate="props.indeterminate"
@@ -33,6 +37,7 @@
                             header.value === pagination.sortBy ? 'active' : ''
                         ]"
                         v-on="header.sortable != false ? {click: () => {pagination.sortBy = header.value; pagination.descending = !pagination.descending}} : {}"
+                        v-bind:style="stylesHeaderCell"
                     >
                         <v-icon small v-if="header.sortable != false">arrow_upward</v-icon>
                         {{ header.text }}
@@ -47,6 +52,7 @@
                 <slot
                     v-bind:props="props"
                     v-bind:array_columns_selected="array_columns_selected"
+                    v-bind:is-condensed="isCondensed"
                 ></slot>
             </template>
 
@@ -125,6 +131,12 @@
                 type: Object,
                 default: () => { return {}},
             },
+
+            isCondensed: {
+                required: false,
+                type: Boolean,
+                default: true,
+            }
         },
         data () {
             return {
@@ -158,6 +170,16 @@
                 let array_items = this.array_items();
                 return array_items === null ? [] : array_items;
             },
+            stylesHeaderRow() {
+                return {
+                    height: this.isCondensed ? 'unset' : null,
+                };
+            },
+            stylesHeaderCell() {
+                return {
+                    padding: this.isCondensed ? '5px' : null,
+                };
+            },
         },
         methods: {
             load_page() {
@@ -181,11 +203,4 @@
 </script>
 
 <style lang="scss" scoped>
-    $header-padding: 5px;
-    #row_header {
-        height: unset;
-        th {
-            padding: $header-padding 5px;
-        }
-    }
 </style>

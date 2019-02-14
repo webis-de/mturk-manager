@@ -1,7 +1,7 @@
 <template>
     <!-- <div>wda</div> -->
     <tr>
-        <td>
+        <td v-bind:style="stylesCell">
             <v-checkbox
                 v-model="props.selected"
                 primary
@@ -11,6 +11,7 @@
         <td
             v-if="set_columns_selected.has('name')"
             class="text-xs-left"
+            v-bind:style="stylesCell"
         >
             {{ props.item.id_worker }}
         </td>
@@ -21,6 +22,7 @@
         <td
             v-if="set_columns_selected.has('counter_assignments')"
             class="text-xs-center"
+            v-bind:style="stylesCell"
         >
             <component-limit-assignments
                 v-bind:key="`component_limit_assignments_${props.item.name}`"
@@ -30,6 +32,7 @@
         <td
             v-if="set_columns_selected.has('block_soft')"
             class="text-xs-center"
+            v-bind:style="stylesCell"
         >
             <component-block-soft-worker
                 v-bind:key="`component_block_soft_worker_${worker.name}`"
@@ -39,6 +42,7 @@
         <td
             v-if="set_columns_selected.has('block_soft_hard')"
             class="text-xs-center"
+            v-bind:style="stylesCell"
         >
             <component-block-global-worker
                 v-bind:key="`component_block_global_worker_${worker.name}`"
@@ -48,6 +52,7 @@
         <td
             v-if="set_columns_selected.has('block_hard')"
             class="text-xs-center"
+            v-bind:style="stylesCell"
         >
             <component-block-hard-worker
                 v-bind:key="`component_block_hard_worker_${worker.name}`"
@@ -153,6 +158,11 @@ export default {
             type: Array,
             required: true,
         },
+
+        isCondensed: {
+            required: true,
+            type: Boolean,
+        },
     },
     data () {
         return {
@@ -170,6 +180,17 @@ export default {
         },
         worker() {
             return this.props.item;
+        },
+        stylesCell() {
+            if(this.isCondensed) {
+                return {
+                    height: 'unset !important',
+                    paddingLeft: '5px !important',
+                    paddingRight: '5px !important',
+                }
+            } else {
+                return {}
+            }
         },
         // status_block() {
         //     if(this.worker.is_blocked == undefined)
@@ -217,9 +238,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    td {
-        height: unset !important;
-        padding-left: 5px !important;
-        padding-right: 5px !important;
-    }
 </style>

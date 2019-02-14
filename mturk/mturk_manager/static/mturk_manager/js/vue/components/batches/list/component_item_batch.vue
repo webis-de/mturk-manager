@@ -4,7 +4,7 @@
         v-bind:key="batch.id"
         class="text-no-wrap"
     >
-        <td>
+        <td v-bind:style="stylesCell">
             <v-checkbox
                 v-model="is_selected"
                 primary
@@ -15,6 +15,7 @@
         <td
             v-if="set_columns_selected.has('name')"
             class="text-xs-center"
+            v-bind:style="stylesCell"
         >
             {{ batch.name.toUpperCase() }}
         </td>
@@ -22,6 +23,7 @@
         <td
             v-if="set_columns_selected.has('count_hits')"
             class="text-xs-center"
+            v-bind:style="stylesCell"
         >
             {{ batch.count_hits }}
         </td>
@@ -29,6 +31,7 @@
         <td
             v-if="set_columns_selected.has('datetime_creation')"
             class="text-xs-center"
+            v-bind:style="stylesCell"
         >
             <component-display-datetime
                 v-bind:datetime="batch.datetime_creation"
@@ -39,6 +42,7 @@
         <td
             v-if="set_columns_selected.has('settings_batch__count_assignments')"
             class="text-xs-center"
+            v-bind:style="stylesCell"
         >
             {{ batch.settings_batch.count_assignments }}
         </td>
@@ -46,6 +50,7 @@
         <td
             v-if="set_columns_selected.has('settings_batch__reward')"
             class="text-xs-right"
+            v-bind:style="stylesCell"
         >
             <base-display-amount v-bind:amount="batch.settings_batch.reward"></base-display-amount>
         </td>
@@ -53,6 +58,7 @@
         <td
             v-if="set_columns_selected.has('count_assignments_total')"
             class="text-xs-center"
+            v-bind:style="stylesCell"
         >
             {{ batch.count_assignments_total }}
         </td>
@@ -60,6 +66,7 @@
         <td
             v-if="set_columns_selected.has('count_assignments_approved')"
             class="text-xs-center"
+            v-bind:style="stylesCell"
         >
             {{ batch.count_assignments_approved }}
         </td>
@@ -67,6 +74,7 @@
         <td
             v-if="set_columns_selected.has('count_assignments_rejected')"
             class="text-xs-center"
+            v-bind:style="stylesCell"
         >
             {{ batch.count_assignments_rejected }}
         </td>
@@ -74,6 +82,7 @@
         <td
             v-if="set_columns_selected.has('costs_max')"
             class="text-xs-right"
+            v-bind:style="stylesCell"
         >
             <base-display-amount v-bind:amount="batch.costs_max"></base-display-amount>
         </td>
@@ -81,6 +90,7 @@
         <td
             v-if="set_columns_selected.has('costs_so_far')"
             class="text-xs-right"
+            v-bind:style="stylesCell"
         >
             <base-display-amount v-bind:amount="batch.costs_so_far"></base-display-amount>
         </td>
@@ -88,6 +98,7 @@
         <td
             v-if="set_columns_selected.has('progress')"
             class="text-xs-center"
+            v-bind:style="stylesCell"
         >
             <component-batch-progress
                 v-bind:progress="batch.progress"
@@ -99,6 +110,7 @@
         <td
             v-if="set_columns_selected.has('actions')"
             class="text-xs-center"
+            v-bind:style="stylesCell"
         >
             <v-btn
                 slot="activator"
@@ -134,6 +146,11 @@ export default {
             type: Array,
             required: true,
         },
+
+        isCondensed: {
+            required: true,
+            type: Boolean,
+        },
     },
     data () {
         return {
@@ -157,6 +174,17 @@ export default {
         batch() {
             return this.props.item;
         },
+        stylesCell() {
+            if(this.isCondensed) {
+                return {
+                    height: 'unset !important',
+                    paddingLeft: '5px !important',
+                    paddingRight: '5px !important',
+                }
+            } else {
+                return {}
+            }
+        },
         ...mapGetters(['get_show_progress_indicator']),
         ...mapGetters('moduleBatches', {
             'object_batches_selected': 'get_object_batches_selected',
@@ -178,9 +206,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    td {
-        height: unset !important;
-        padding-left: 5px !important;
-        padding-right: 5px !important;
-    }
 </style>

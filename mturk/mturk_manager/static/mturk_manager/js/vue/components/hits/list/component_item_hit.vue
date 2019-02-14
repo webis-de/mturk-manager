@@ -4,7 +4,7 @@
         v-on:click="props.expanded = !props.expanded"
         class="text-no-wrap"
     >
-        <td>
+        <td v-bind:style="stylesCell">
             <v-checkbox
                 v-model="is_selected"
                 primary
@@ -14,12 +14,14 @@
         <td
             v-if="set_columns_selected.has('id_hit')"
             class="text-xs-center"
+            v-bind:style="stylesCell"
         >
             {{ hit.id_hit }}
         </td>
         <td
             v-if="set_columns_selected.has('batch')"
             class="text-xs-center"
+            v-bind:style="stylesCell"
         >
             {{ hit.batch.name.toUpperCase() }}
             <v-btn
@@ -41,6 +43,7 @@
         <td
             v-if="set_columns_selected.has('datetime_creation')"
             class="text-xs-center"
+            v-bind:style="stylesCell"
         >
             <component-display-datetime
                 v-bind:datetime="hit.datetime_creation"
@@ -49,6 +52,7 @@
         <td
             v-if="set_columns_selected.has('progress')"
             class="text-xs-center"
+            v-bind:style="stylesCell"
         >
             <component-batch-progress
                 v-bind:progress="hit.progress"
@@ -59,6 +63,7 @@
         <td
             class="text-xs-center"
             v-if="show_links === true && set_columns_selected.has('actions')"
+            v-bind:style="stylesCell"
         >
             <v-btn
                 slot="activator"
@@ -106,6 +111,11 @@ export default {
             type: Array,
             required: true,
         },
+
+        isCondensed: {
+            required: true,
+            type: Boolean,
+        },
     },
     data () {
         return {
@@ -146,6 +156,17 @@ export default {
         // },
         hit() {
             return this.props.item;
+        },
+        stylesCell() {
+            if(this.isCondensed) {
+                return {
+                    height: 'unset !important',
+                    paddingLeft: '5px !important',
+                    paddingRight: '5px !important',
+                }
+            } else {
+                return {}
+            }
         },
 
         // status_block() {
@@ -195,9 +216,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    td {
-        height: unset !important;
-        padding-left: 5px !important;
-        padding-right: 5px !important;
-    }
 </style>

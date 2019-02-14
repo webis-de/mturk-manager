@@ -17,12 +17,13 @@
             id_batch
          }"
 
-         v-slot="{props, array_columns_selected}"
+         v-slot="{props, array_columns_selected, isCondensed}"
     >
         <component-item-hit
             v-bind:props="props"
             v-bind:array_columns_selected="array_columns_selected"
             v-bind:show_links="show_links"
+            v-bind:is-condensed="isCondensed"
         ></component-item-hit>
     </base-table>
 </template>
