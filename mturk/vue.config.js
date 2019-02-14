@@ -1,12 +1,12 @@
-const webpack = require('webpack');
-const CircularDependencyPlugin = require('circular-dependency-plugin');
-const VuetifyLoaderPlugin = require('vuetify-loader/lib/plugin');
+const webpack = require("webpack");
+const CircularDependencyPlugin = require("circular-dependency-plugin");
+const VuetifyLoaderPlugin = require("vuetify-loader/lib/plugin");
 
 module.exports = {
   runtimeCompiler: true,
-  publicPath: '/static/mturk_manager/js/dist',
-  outputDir: 'mturk_manager/static/mturk_manager/js/dist',
-  indexPath: '../../../../../mturk_manager/templates/mturk_manager/app.html',
+  publicPath: "/static/mturk_manager/js/dist",
+  outputDir: "mturk_manager/static/mturk_manager/js/dist",
+  indexPath: "../../../../../mturk_manager/templates/mturk_manager/app.html",
   configureWebpack: {
     plugins: [
       new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /en-gb/),
@@ -16,14 +16,14 @@ module.exports = {
         // add errors to webpack instead of warnings
         failOnError: true,
         // set the current working directory for displaying module paths
-        cwd: process.cwd(),
+        cwd: process.cwd()
       }),
-      new VuetifyLoaderPlugin(),
-    ],
+      new VuetifyLoaderPlugin()
+    ]
   },
   pluginOptions: {
     webpackBundleAnalyzer: {
-      openAnalyzer: false,
-    },
+      openAnalyzer: false
+    }
   },
 };

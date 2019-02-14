@@ -1,38 +1,37 @@
 <template>
-<v-tooltip top>
+  <v-tooltip top>
     <span slot="activator">{{ datetime_formatted }}</span>
     {{ datetime.format() }}
-</v-tooltip>
+  </v-tooltip>
 </template>
 
 <script>
-    // import helpers from '../mixins/helpers';
+// import helpers from '../mixins/helpers';
 export default {
-    // mixins: [
-    //     // helpers,
-    // ],
-    name: 'component-display-datetime',
-    props: {
-    	datetime: {
-    		required: true,
-    		type: Date|undefined,
-    	}
-    },
-    computed: {
-    	datetime_formatted: function() {
-    		if(this.datetime == undefined)
-    		{
-    			return undefined;
-    		} else{
-    			// return this.datetime;
-    			// console.log(typeof this.datetime)
-    			// console.log(this.datetime)
-    			return this.datetime.format('LLL');
-    			// return this.datetime.toLocaleString();
-    		}
+  // mixins: [
+  //     // helpers,
+  // ],
+  name: "component-display-datetime",
+  props: {
+    datetime: {
+      required: true,
+      type: Date | undefined
+    }
+  },
+  computed: {
+    datetime_formatted: function() {
+      if (this.datetime == undefined) {
+        return undefined;
+      } else {
+        // return this.datetime;
+        // console.log(typeof this.datetime)
+        // console.log(this.datetime)
+        return this.datetime.format("LLL");
+        // return this.datetime.toLocaleString();
+      }
       //       return this.amount_formatted(this.amount);
-    		// return this.amount.toFixed(2) + ' $';
-    	},
-    },
-}
+      // return this.amount.toFixed(2) + ' $';
+    }
+  }
+};
 </script>

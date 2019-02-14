@@ -1,5 +1,5 @@
 <template>
-    <!-- <v-dialog v-model="show_dialog_policy" max-width="800px" persistent>
+  <!-- <v-dialog v-model="show_dialog_policy" max-width="800px" persistent>
         <v-btn slot="activator" v-on:click="policy_to_be_edited = null" color="primary" dark class="mb-2">New Policy</v-btn>
         <v-card>
             <v-card-title>
@@ -33,44 +33,40 @@
 </template>
 
 <script>
-    // import { mapState, mapActions, mapGetters } from 'vuex';
-    // import { Policy } from '../../store/modules/policies.js';
-    
-    // import ComponentShowBalance from './component-show-balance.vue';
-    // import ComponentShowMoneySpent from './component-show-money-spent.vue';
-    // import ComponentShowBatches from './component-show-batches.vue';
+// import { mapState, mapActions, mapGetters } from 'vuex';
+// import { Policy } from '../../store/modules/policies.js';
+
+// import ComponentShowBalance from './component-show-balance.vue';
+// import ComponentShowMoneySpent from './component-show-money-spent.vue';
+// import ComponentShowBatches from './component-show-batches.vue';
 export default {
-    name: 'component-add-qualification',
-    props: {
-        show_dialog_qualification_add: {
-            required: true,
-            type: Boolean,
-        }
-    },
-    data () {
-        return {
-        }
-    },
-    computed: {
-    },
-    methods: {
-        init: function() {
-            console.log('init');
-            setTimeout(() => {
-            this.$emit('finished');
-                
-            }, 1000)
-        },
-    },
-    watch: {
-        show_dialog_qualification_add: function(value_new) {
-            if(value_new == true)
-            {
-                this.init();
-            } else {
-                console.log('called but is false')
-            }
-        }
+  name: "component-add-qualification",
+  props: {
+    show_dialog_qualification_add: {
+      required: true,
+      type: Boolean
     }
-}
+  },
+  data() {
+    return {};
+  },
+  computed: {},
+  methods: {
+    init: function() {
+      console.log("init");
+      setTimeout(() => {
+        this.$emit("finished");
+      }, 1000);
+    }
+  },
+  watch: {
+    show_dialog_qualification_add: function(value_new) {
+      if (value_new == true) {
+        this.init();
+      } else {
+        console.log("called but is false");
+      }
+    }
+  }
+};
 </script>
