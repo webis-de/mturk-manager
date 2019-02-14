@@ -1,5 +1,6 @@
 <template>
 	<v-progress-linear
+		v-bind:style="{width}"
 		height="20"
 		class="my-0 mx-auto"
 		v-model="progress"
@@ -44,7 +45,12 @@ export default {
     	progress: {
     		required: true,
     		type: Number,
-    	}
+    	},
+		width: {
+    	    required: false,
+			type: String,
+			default: '200px',
+		}
     },
     data () {
         return {
@@ -62,6 +68,6 @@ export default {
 
 <style lang="scss" scoped>
 .v-progress-linear {
-	width: 200px;
+	/*width: 200px;*/
 }
 </style>
