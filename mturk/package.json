@@ -70,8 +70,14 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn eslint --fix mturk_manager/static/mturk_manager/js/annotate mturk_manager/static/mturk_manager/js/vue; exit 0;"
+      "pre-commit": "lint-staged"
     }
+  },
+  "lint-staged": {
+    "*.{js,vue}": [
+      "yarn eslint --fix",
+      "git add"
+    ]
   },
   "license": "MIT",
   "main": "index.js"
