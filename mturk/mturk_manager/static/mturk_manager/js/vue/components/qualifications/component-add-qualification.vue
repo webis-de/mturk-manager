@@ -104,15 +104,15 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from "vuex";
+import { mapState, mapActions, mapGetters } from 'vuex';
 // import { Policy } from '../../store/modules/policies.js';
-import { Qualification } from "../../classes/qualifications.js";
+import { Qualification } from '../../classes/qualifications.js';
 
 // import ComponentShowBalance from './component-show-balance.vue';
 // import ComponentShowMoneySpent from './component-show-money-spent.vue';
 // import ComponentShowBatches from './component-show-batches.vue';
 export default {
-  name: "component-add-qualification",
+  name: 'component-add-qualification',
   props: {},
   data() {
     return {
@@ -120,28 +120,28 @@ export default {
       is_creating: false,
       is_form_valid: false,
       add_custom_mturk: false,
-      title_dialog: "Add Qualification",
+      title_dialog: 'Add Qualification',
 
-      object_qualification: new Qualification()
+      object_qualification: new Qualification(),
     };
   },
   computed: {},
   methods: {
-    save: function() {
+    save() {
       this.is_creating = true;
       this.add_qualification(this.object_qualification).then(() => {
         this.clear();
       });
     },
-    clear: function() {
+    clear() {
       this.show_dialog = false;
       this.is_creating = false;
       this.object_qualification = new Qualification();
     },
-    ...mapActions("moduleQualifications", {
-      add_qualification: "add_qualification"
-    })
+    ...mapActions('moduleQualifications', {
+      add_qualification: 'add_qualification',
+    }),
   },
-  watch: {}
+  watch: {},
 };
 </script>

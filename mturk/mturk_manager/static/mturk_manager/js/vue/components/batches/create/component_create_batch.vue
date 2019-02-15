@@ -87,37 +87,37 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from "vuex";
-import { required } from "vuelidate/lib/validators";
-import validations from "../../../mixins/validations";
+import { mapState, mapActions, mapGetters } from 'vuex';
+import { required } from 'vuelidate/lib/validators';
+import validations from '../../../mixins/validations';
 
-import ComponentUploadCsv from "./component_upload_csv.vue";
-import ComponentSettingsBatch from "./component_settings_batch.vue";
-import ComponentOverview from "./component_overview.vue";
-import ComponentSubmitBatch from "./component_submit_batch.vue";
+import ComponentUploadCsv from './component_upload_csv.vue';
+import ComponentSettingsBatch from './component_settings_batch.vue';
+import ComponentOverview from './component_overview.vue';
+import ComponentSubmitBatch from './component_submit_batch.vue';
 // import ComponentStepSettings from './component_step_settings.vue';
 // import ComponentStepOverview from './component_step_overview.vue';
 // import ComponentShowMoneySpent from './component-show-money-spent.vue';
 // import ComponentShowBatches from './component-show-batches.vue';
 export default {
   mixins: [validations],
-  name: "component-create-batch",
+  name: 'component-create-batch',
   data() {
     return {
       is_creating_batch: false,
 
       name: undefined,
       settings_batch_current: undefined,
-      is_invalid_settings_batch: true
+      is_invalid_settings_batch: true,
     };
   },
   watch: {
-    is_creating_batch: function() {
+    is_creating_batch() {
       if (this.is_creating_batch == false) {
         this.$refs.component_settings_batch.update_fields();
         this.$refs.component_upload_csv.reset();
       }
-    }
+    },
   },
   methods: {
     // cancel() {
@@ -197,15 +197,15 @@ export default {
     //     return this.list_steps[this.number_step_current - 1];
     // },
     //     ...mapState('module_app', ['use_sandbox']),
-    ...mapGetters("moduleBatches", {
+    ...mapGetters('moduleBatches', {
       // 'get_object_csv_parsed': 'get_object_csv_parsed',
-      is_valid_csv: "is_valid_csv"
-    })
+      is_valid_csv: 'is_valid_csv',
+    }),
   },
   validations: {
     name: {
       // required
-    }
+    },
   },
   // created: function() {
   //     this.refresh_data();
@@ -215,8 +215,8 @@ export default {
     ComponentUploadCsv,
     ComponentSettingsBatch,
     ComponentOverview,
-    ComponentSubmitBatch
-  }
+    ComponentSubmitBatch,
+  },
 };
 </script>
 

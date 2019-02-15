@@ -13,28 +13,28 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from "vuex";
+import { mapState, mapActions, mapGetters } from 'vuex';
 
 export default {
-  name: "component-toolbar-qualifications",
+  name: 'component-toolbar-qualifications',
   data() {
     return {};
   },
   computed: {
-    ...mapGetters(["get_show_progress_indicator"])
+    ...mapGetters(['get_show_progress_indicator']),
   },
   methods: {
-    refresh_data: function() {
+    refresh_data() {
       this.set_show_progress_indicator(true);
 
       this.sync_qualifications(true).then(() => {
         this.set_show_progress_indicator(false);
       });
     },
-    ...mapActions(["set_show_progress_indicator"]),
-    ...mapActions("moduleQualifications", {
-      sync_qualifications: "sync_qualifications"
-    })
-  }
+    ...mapActions(['set_show_progress_indicator']),
+    ...mapActions('moduleQualifications', {
+      sync_qualifications: 'sync_qualifications',
+    }),
+  },
 };
 </script>

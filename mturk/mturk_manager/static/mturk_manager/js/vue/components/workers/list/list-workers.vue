@@ -137,27 +137,29 @@
     </v-data-table> -->
 </template>
 <script>
-import { mapState, mapActions, mapGetters, mapMutations } from "vuex";
+import {
+  mapState, mapActions, mapGetters, mapMutations,
+} from 'vuex';
 // import { Policy } from '../../store/modules/policies.js';
-import _ from "lodash";
-import { STATUS_BLOCK } from "../../../classes/enums.js";
-import ComponentItemWorker from "./component_item_worker.vue";
-import { Service_Workers } from "../../../services/service_worker";
-import { update_sandbox } from "../../../mixins/update_sandbox";
-import { external_pagination } from "../../../mixins/external_pagination";
-import { table } from "../../../mixins/table";
-import BaseTable from "../../base-table";
+import _ from 'lodash';
+import { STATUS_BLOCK } from '../../../classes/enums.js';
+import ComponentItemWorker from './component_item_worker.vue';
+import { Service_Workers } from '../../../services/service_worker';
+import { update_sandbox } from '../../../mixins/update_sandbox';
+import { external_pagination } from '../../../mixins/external_pagination';
+import { table } from '../../../mixins/table';
+import BaseTable from '../../base-table';
 // import ComponentShowMoneySpent from './component-show-money-spent.vue';
 // import ComponentShowBatches from './component-show-batches.vue';
 export default {
   mixins: [update_sandbox, external_pagination, table],
-  name: "component-list-workers",
+  name: 'component-list-workers',
   props: {
     show_links: {
       required: false,
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
   },
   data() {
     return {
@@ -172,11 +174,11 @@ export default {
       // items_per_page: [12, 24],
 
       filters: {
-        id_worker: "",
+        id_worker: '',
         show_workers_blocked_none: true,
         show_workers_blocked_limit: true,
         show_workers_blocked_soft: true,
-        show_workers_blocked_hard: true
+        show_workers_blocked_hard: true,
       },
 
       // search: 'A10BOAO1EONNS7',
@@ -186,8 +188,8 @@ export default {
 
       list_headers: [
         {
-          text: "Name",
-          value: "name"
+          text: 'Name',
+          value: 'name',
         },
 
         // {
@@ -204,35 +206,35 @@ export default {
         // },
 
         {
-          text: "Assignment Limit",
-          value: "counter_assignments",
-          align: "center",
-          width: "1px"
+          text: 'Assignment Limit',
+          value: 'counter_assignments',
+          align: 'center',
+          width: '1px',
         },
         {
-          text: "Project Block",
-          value: "block_soft",
-          width: "1px"
+          text: 'Project Block',
+          value: 'block_soft',
+          width: '1px',
         },
         {
-          text: "Soft MTurk Block",
-          value: "block_soft_hard",
-          width: "1px"
+          text: 'Soft MTurk Block',
+          value: 'block_soft_hard',
+          width: '1px',
         },
         {
-          text: "Hard MTurk Block",
-          value: "block_hard",
-          width: "1px"
-        }
-      ]
+          text: 'Hard MTurk Block',
+          value: 'block_hard',
+          width: '1px',
+        },
+      ],
     };
   },
   computed: {
-    ...mapGetters("moduleWorkers", {
-      array_items: "get_array_workers",
-      object_items_selected: "get_object_workers_selected",
-      array_columns: "get_array_columns_general",
-      array_columns_selected: "get_array_columns_selected_general"
+    ...mapGetters('moduleWorkers', {
+      array_items: 'get_array_workers',
+      object_items_selected: 'get_object_workers_selected',
+      array_columns: 'get_array_columns_general',
+      array_columns_selected: 'get_array_columns_selected_general',
     }),
     list_workers() {
       return this.list_workers_processed.slice(0, 5);
@@ -243,19 +245,19 @@ export default {
     // title_dialog_policy: function() {
     //     return this.policy_to_be_edited == null ? 'New Policy' : 'Edit Policy';
     // },
-    ...mapGetters("moduleWorkers", {
-      list_workers_processed: "list_workers"
+    ...mapGetters('moduleWorkers', {
+      list_workers_processed: 'list_workers',
     }),
-    ...mapGetters("moduleProjects", {
-      project_current: "get_project_current"
-    })
+    ...mapGetters('moduleProjects', {
+      project_current: 'get_project_current',
+    }),
   },
   methods: {
     load_page() {
       this.loading = true;
       Service_Workers.load_page(this.pagination, {
-        ...this.filters
-      }).then(items_total => {
+        ...this.filters,
+      }).then((items_total) => {
         this.items_total = items_total;
         this.loading = false;
       });
@@ -287,17 +289,17 @@ export default {
     //     // console.log(filter)
     //     return items
     // },
-    ...mapMutations("moduleWorkers", {
-      function_set_items_selected: "set_workers_selected",
-      function_clear_items_selected: "clear_workers_selected",
-      function_set_array_columns: "set_array_columns_general"
+    ...mapMutations('moduleWorkers', {
+      function_set_items_selected: 'set_workers_selected',
+      function_clear_items_selected: 'clear_workers_selected',
+      function_set_array_columns: 'set_array_columns_general',
     }),
-    ...mapActions("moduleWorkers", {
-      update_status_block: "update_status_block",
-      function_reset_array_columns: "reset_array_columns_general"
-    })
+    ...mapActions('moduleWorkers', {
+      update_status_block: 'update_status_block',
+      function_reset_array_columns: 'reset_array_columns_general',
+    }),
   },
-  created: function() {
+  created() {
     // this.update_status_block({
     //     worker: {name: 'A7W013PM199BS'},
     //     status_block_new: 1,
@@ -307,8 +309,8 @@ export default {
 
   components: {
     BaseTable,
-    ComponentItemWorker
-  }
+    ComponentItemWorker,
+  },
 };
 </script>
 

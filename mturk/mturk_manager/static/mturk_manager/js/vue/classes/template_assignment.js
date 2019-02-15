@@ -1,4 +1,4 @@
-import _ from "lodash";
+import _ from 'lodash';
 
 export default class Template_Assignment {
   constructor(data = undefined) {
@@ -19,14 +19,10 @@ export default class Template_Assignment {
       // if(template_assignment[key] != undefined)
       {
         if (this[key] != template_assignment[key]) {
-          if (typeof template_assignment[key] == "object") {
+          if (typeof template_assignment[key] === 'object') {
             if (
-              _.differenceBy(template_assignment[key], this[key], value =>
-                value["text"].toLowerCase()
-              ).length > 0 ||
-              _.differenceBy(this[key], template_assignment[key], value =>
-                value["text"].toLowerCase()
-              ).length > 0
+              _.differenceBy(template_assignment[key], this[key], value => value.text.toLowerCase()).length > 0
+              || _.differenceBy(this[key], template_assignment[key], value => value.text.toLowerCase()).length > 0
             ) {
               object[key] = template_assignment[key];
             }

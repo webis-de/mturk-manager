@@ -32,20 +32,22 @@
 </template>
 
 <script>
-import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
-import UploadButton from "vuetify-upload-button";
-import Papa from "papaparse";
+import {
+  mapState, mapMutations, mapActions, mapGetters,
+} from 'vuex';
+import UploadButton from 'vuetify-upload-button';
+import Papa from 'papaparse';
 
 // import ComponentStepUploadCSV from './component_step_upload_csv.vue';
 // import ComponentShowMoneySpent from './component-show-money-spent.vue';
 // import ComponentShowBatches from './component-show-batches.vue';
 export default {
-  name: "component-upload-csv",
+  name: 'component-upload-csv',
   props: {},
   data() {
     return {
       file_csv: null,
-      is_parsing_csv: false
+      is_parsing_csv: false,
     };
   },
   mounted() {
@@ -65,10 +67,10 @@ export default {
         header: true,
         skipEmptyLines: true,
         complete: (results, file) => {
-          console.log("results", results);
+          console.log('results', results);
           this.is_parsing_csv = false;
           this.set_csv_parsed(results);
-        }
+        },
       });
     },
     reset() {
@@ -76,9 +78,9 @@ export default {
       this.is_parsing_csv = false;
       this.set_csv_parsed(undefined);
     },
-    ...mapMutations("moduleBatches", {
-      set_csv_parsed: "set_csv_parsed"
-    })
+    ...mapMutations('moduleBatches', {
+      set_csv_parsed: 'set_csv_parsed',
+    }),
   },
   computed: {
     tmp_name_file() {
@@ -87,14 +89,14 @@ export default {
       }
       return null;
     },
-    ...mapGetters("moduleBatches", {
-      get_object_csv_parsed: "get_object_csv_parsed",
-      is_valid_csv: "is_valid_csv"
-    })
+    ...mapGetters('moduleBatches', {
+      get_object_csv_parsed: 'get_object_csv_parsed',
+      is_valid_csv: 'is_valid_csv',
+    }),
   },
   components: {
-    "upload-btn": UploadButton
-  }
+    'upload-btn': UploadButton,
+  },
 };
 </script>
 

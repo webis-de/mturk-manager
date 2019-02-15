@@ -31,9 +31,9 @@
         Block:
     </v-flex>
     <v-flex>
-        <v-radio-group 
-            v-bind:disabled="!is_enabled" 
-            v-bind:value="status_block_current" 
+        <v-radio-group
+            v-bind:disabled="!is_enabled"
+            v-bind:value="status_block_current"
             v-on:input="status_block_new = $event"
             row>
             <v-radio
@@ -49,16 +49,16 @@
 </v-layout> -->
 </template>
 <script>
-import { mapState, mapActions, mapGetters } from "vuex";
-import { Service_Workers } from "../../../services/service_worker";
+import { mapState, mapActions, mapGetters } from 'vuex';
+import { Service_Workers } from '../../../services/service_worker';
 // import { STATUS_BLOCK } from '../../classes/enums.js';
 export default {
-  name: "component-block-soft-worker",
+  name: 'component-block-soft-worker',
   props: {
     worker: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
@@ -67,7 +67,7 @@ export default {
       is_updating: false,
       // status_block_current: undefined,
       // status_block_new: undefined,
-      show_snackbar: false
+      show_snackbar: false,
     };
   },
   watch: {
@@ -91,12 +91,12 @@ export default {
   computed: {
     text_tooltip() {
       return this.worker.is_blocked_soft
-        ? "Is blocked project-wide"
-        : "Is not blocked project-wide";
+        ? 'Is blocked project-wide'
+        : 'Is not blocked project-wide';
     },
     color() {
-      return this.worker.is_blocked_soft ? "warning" : "grey";
-    }
+      return this.worker.is_blocked_soft ? 'warning' : 'grey';
+    },
     // is_enabled() {
     //     return !this.is_updating && this.worker.is_blocked != undefined;
     // },
@@ -108,16 +108,16 @@ export default {
 
       Service_Workers.update_status_block_soft({
         worker: this.worker,
-        is_blocked: !this.worker.is_blocked_soft
+        is_blocked: !this.worker.is_blocked_soft,
       }).then(() => {
         this.is_updating = false;
         this.show_snackbar = true;
         this.set_show_progress_indicator(false);
       });
     },
-    ...mapActions(["set_show_progress_indicator"])
+    ...mapActions(['set_show_progress_indicator']),
   },
-  created: function() {},
-  components: {}
+  created() {},
+  components: {},
 };
 </script>

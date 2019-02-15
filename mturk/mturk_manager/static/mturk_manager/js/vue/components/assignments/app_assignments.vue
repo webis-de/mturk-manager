@@ -14,22 +14,22 @@
 </template>
 
 <script>
-import ComponentAssignmentDetail from "./detail/component_assignment_detail.vue";
-import ComponentAnnotate from "./annotate/component_annotate.vue";
-import slug_project from "../../mixins/slug_project";
-import ListAssignments from "./list/list-assignments";
+import ComponentAssignmentDetail from './detail/component_assignment_detail.vue';
+import ComponentAnnotate from './annotate/component_annotate.vue';
+import slug_project from '../../mixins/slug_project';
+import ListAssignments from './list/list-assignments';
 
 export default {
   mixins: [slug_project],
   props: {
-    id_assignment: {}
+    id_assignment: {},
   },
-  name: "app-assignments",
+  name: 'app-assignments',
 
   components: {
     ListAssignments,
     ComponentAssignmentDetail,
-    ComponentAnnotate
-  }
+    ComponentAnnotate,
+  },
 };
 </script>

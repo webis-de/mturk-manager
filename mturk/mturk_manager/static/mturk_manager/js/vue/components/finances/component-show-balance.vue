@@ -15,23 +15,23 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from "vuex";
-import BaseDisplayAmount from "../base-display-amount.vue";
+import { mapState, mapActions, mapGetters } from 'vuex';
+import BaseDisplayAmount from '../base-display-amount.vue';
 
 export default {
-  name: "component-show-balance",
+  name: 'component-show-balance',
   data() {
     return {
-      updating: false
+      updating: false,
     };
   },
   computed: {
-    show_spinner: function() {
+    show_spinner() {
       return this.updating || this.get_balance === undefined;
     },
-    ...mapGetters("module_finances", {
-      get_balance: "get_balance"
-    })
+    ...mapGetters('module_finances', {
+      get_balance: 'get_balance',
+    }),
   },
   methods: {
     // update_balance_custom: function() {
@@ -46,8 +46,8 @@ export default {
     // }),
   },
   components: {
-    BaseDisplayAmount
-  }
+    BaseDisplayAmount,
+  },
 };
 </script>
 

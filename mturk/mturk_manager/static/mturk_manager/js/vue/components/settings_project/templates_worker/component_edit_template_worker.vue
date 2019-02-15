@@ -125,37 +125,39 @@
 	</v-snackbar> -->
 </template>
 <script>
-import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
-import _ from "lodash";
-import { required, minValue, maxValue } from "vuelidate/lib/validators";
-import helpers from "../../../mixins/helpers";
-import validations from "../../../mixins/validations";
-import Template_Worker from "../../../classes/template_worker";
-import { Service_Templates } from "../../../services/service_templates";
+import {
+  mapState, mapMutations, mapActions, mapGetters,
+} from 'vuex';
+import _ from 'lodash';
+import { required, minValue, maxValue } from 'vuelidate/lib/validators';
+import helpers from '../../../mixins/helpers';
+import validations from '../../../mixins/validations';
+import Template_Worker from '../../../classes/template_worker';
+import { Service_Templates } from '../../../services/service_templates';
 
 export default {
-  name: "component-edit-template-worker",
+  name: 'component-edit-template-worker',
   mixins: [helpers, validations],
   props: {
-    template_worker_current: {}
+    template_worker_current: {},
   },
   data() {
     return {
       template_worker: new Template_Worker(this.template_worker_current),
-      dialog: false
+      dialog: false,
     };
   },
   methods: {
     update() {
       if (this.$refs.form.validate()) {
         Service_Templates.edit({
-          type_template: "worker",
+          type_template: 'worker',
           template_current: this.template_worker_current,
           template_new: this.template_worker,
-          project: this.project_current
+          project: this.project_current,
         }).then(() => {
           this.dialog = false;
-          this.$emit("edited");
+          this.$emit('edited');
           this.reset();
         });
       }
@@ -163,63 +165,63 @@ export default {
     },
     reset() {
       (this.template_worker = new Template_Worker(
-        this.template_worker_current
+        this.template_worker_current,
       )),
-        this.$v.$reset();
+      this.$v.$reset();
       this.$v.$touch();
     },
-    ...mapActions("moduleProjects", {
-      edit_template_worker: "edit_template_worker"
-    })
+    ...mapActions('moduleProjects', {
+      edit_template_worker: 'edit_template_worker',
+    }),
   },
   computed: {
     list_templates_assignment() {
       return _.orderBy(
         this.project_current.templates_assignment,
-        template => template.name
+        template => template.name,
       );
     },
     list_templates_hit() {
       return _.orderBy(
         this.project_current.templates_hit,
-        template => template.name
+        template => template.name,
       );
     },
     list_templates_global() {
       return _.orderBy(
         this.project_current.templates_global,
-        template => template.name
+        template => template.name,
       );
     },
-    ...mapGetters("moduleProjects", {
-      project_current: "get_project_current"
-    })
+    ...mapGetters('moduleProjects', {
+      project_current: 'get_project_current',
+    }),
   },
   watch: {
     dialog() {
       this.reset();
-    }
+    },
   },
   validations: {
     template_worker: {
       name: {
-        required
+        required,
       },
       height_frame: {
         required,
-        minValue: minValue(1)
+        minValue: minValue(1),
       },
       template: {
-        required
+        required,
       },
       template_assignment: {},
       template_hit: {},
-      template_global: {}
-    }
+      template_global: {},
+    },
   },
   created() {
     this.$v.$touch();
   },
-  components: {}
+  components: {},
 };
 </script>

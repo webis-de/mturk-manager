@@ -20,10 +20,10 @@
   </v-layout>
 </template>
 <script>
-import { mapState, mapActions, mapGetters } from "vuex";
+import { mapState, mapActions, mapGetters } from 'vuex';
 
 export default {
-  name: "component-assignment-detail",
+  name: 'component-assignment-detail',
   // props: {
   // 	id_batch: {
   // 		required: true,
@@ -32,8 +32,8 @@ export default {
   props: {
     id_assignment: {
       required: true,
-      type: Number
-    }
+      type: Number,
+    },
   },
   data() {
     return {};
@@ -48,9 +48,8 @@ export default {
       const object_assignments = this.get_object_assignments();
       if (object_assignments == null) {
         return {};
-      } else {
-        return object_assignments[this.id_assignment];
       }
+      return object_assignments[this.id_assignment];
     },
 
     // status_block() {
@@ -85,13 +84,13 @@ export default {
     //             };
     //     }
     // },
-    ...mapGetters("moduleAssignments", {
-      get_object_assignments: "get_object_assignments"
+    ...mapGetters('moduleAssignments', {
+      get_object_assignments: 'get_object_assignments',
     }),
-    ...mapGetters(["get_show_progress_indicator"])
+    ...mapGetters(['get_show_progress_indicator']),
   },
   methods: {},
-  components: {}
+  components: {},
 };
 </script>
 

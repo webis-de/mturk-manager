@@ -47,9 +47,9 @@
 	            v-on:click:append="limit = 0" -->
         </v-card-text>
         <!-- <v-card-actions>
-            	<v-btn 
-            		color="primary" 
-            		flat 
+            	<v-btn
+            		color="primary"
+            		flat
             		v-on:click="dialog=false"
         		>Close</v-btn>
           	</v-card-actions> -->
@@ -75,22 +75,22 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from "vuex";
-import { Service_Workers } from "../../../services/service_worker";
+import { mapState, mapActions, mapGetters } from 'vuex';
+import { Service_Workers } from '../../../services/service_worker';
 
 export default {
-  name: "component-limit-assignments",
+  name: 'component-limit-assignments',
   props: {
     worker: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
       limit: this.worker.count_assignments_limit,
       show_snackbar: false,
-      dialog: false
+      dialog: false,
     };
   },
   watch: {
@@ -99,10 +99,10 @@ export default {
         this.limit = this.worker.count_assignments_limit;
       }
     },
-    "worker.count_assignments_limit": function() {
-      console.log("aawd");
+    'worker.count_assignments_limit': function () {
+      console.log('aawd');
       this.limit = this.worker.count_assignments_limit;
-    }
+    },
   },
   computed: {
     has_changed() {
@@ -110,22 +110,21 @@ export default {
     },
     content() {
       if (this.worker.count_assignments_limit == -1) {
-        return "Unlimited";
-      } else {
-        return `${this.worker.count_assignments_limit} of ${
-          this.project_current.count_assignments_max_per_worker
-        } ${this.has_reached_limit_assignments ? "(blocked)" : ""}`;
+        return 'Unlimited';
       }
+      return `${this.worker.count_assignments_limit} of ${
+        this.project_current.count_assignments_max_per_worker
+      } ${this.has_reached_limit_assignments ? '(blocked)' : ''}`;
     },
     has_reached_limit_assignments() {
       return (
-        this.worker.count_assignments_limit >=
-        this.project_current.count_assignments_max_per_worker
+        this.worker.count_assignments_limit
+        >= this.project_current.count_assignments_max_per_worker
       );
     },
-    ...mapGetters("moduleProjects", {
-      project_current: "get_project_current"
-    })
+    ...mapGetters('moduleProjects', {
+      project_current: 'get_project_current',
+    }),
   },
   methods: {
     set(value) {
@@ -133,14 +132,14 @@ export default {
 
       Service_Workers.update_count_assignments_limit({
         worker: this.worker,
-        value
+        value,
       }).then(() => {
         this.show_snackbar = true;
         (this.dialog = false), this.set_show_progress_indicator(false);
       });
     },
-    ...mapActions(["set_show_progress_indicator"])
-  }
+    ...mapActions(['set_show_progress_indicator']),
+  },
 };
 </script>
 

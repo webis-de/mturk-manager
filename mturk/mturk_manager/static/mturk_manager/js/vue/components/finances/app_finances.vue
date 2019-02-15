@@ -36,25 +36,27 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
+import {
+  mapState, mapGetters, mapMutations, mapActions,
+} from 'vuex';
 
-import ComponentShowBalance from "./component-show-balance.vue";
-import ComponentShowMoneySpent from "./component-show-money-spent.vue";
-import ComponentShowBatches from "./component-show-batches.vue";
+import ComponentShowBalance from './component-show-balance.vue';
+import ComponentShowMoneySpent from './component-show-money-spent.vue';
+import ComponentShowBatches from './component-show-batches.vue';
 // import ComponentListBatches from '../batches/list/component_list_batches.vue';
-import DisplayExpenses from "./display-expenses.vue";
-import slug_project from "../../mixins/slug_project";
-import ListBatches from "../batches/list/list-batches";
-import { Service_App } from "../../services/service.app";
-import { update_sandbox } from "../../mixins/update_sandbox";
+import DisplayExpenses from './display-expenses.vue';
+import slug_project from '../../mixins/slug_project';
+import ListBatches from '../batches/list/list-batches';
+import { Service_App } from '../../services/service.app';
+import { update_sandbox } from '../../mixins/update_sandbox';
 
 export default {
   mixins: [
     slug_project,
-    update_sandbox
+    update_sandbox,
     // load_data,
   ],
-  name: "app-finances",
+  name: 'app-finances',
   data() {
     return {
       // dialog: false,
@@ -68,17 +70,17 @@ export default {
     sandbox_updated() {
       Service_App.load_balance();
     },
-    ...mapActions("moduleBatches", {
-      function_reset_array_columns: "reset_array_columns_finances"
+    ...mapActions('moduleBatches', {
+      function_reset_array_columns: 'reset_array_columns_finances',
     }),
-    ...mapMutations("moduleBatches", {
-      function_set_array_columns: "set_array_columns_finances"
-    })
+    ...mapMutations('moduleBatches', {
+      function_set_array_columns: 'set_array_columns_finances',
+    }),
   },
   computed: {
-    ...mapGetters("moduleBatches", {
-      array_columns_selected: "get_array_columns_selected_finances"
-    })
+    ...mapGetters('moduleBatches', {
+      array_columns_selected: 'get_array_columns_selected_finances',
+    }),
   },
   created() {
     Service_App.load_balance();
@@ -90,7 +92,7 @@ export default {
     ComponentShowMoneySpent,
     ComponentShowBatches,
     // ComponentListBatches,
-    DisplayExpenses
-  }
+    DisplayExpenses,
+  },
 };
 </script>

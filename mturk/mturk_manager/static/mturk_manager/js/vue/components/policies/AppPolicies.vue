@@ -47,33 +47,33 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from "vuex";
-import { Policy } from "../../store/modules/policies.js";
+import { mapState, mapActions, mapGetters } from 'vuex';
+import { Policy } from '../../store/modules/policies.js';
 
-import ComponentAddQualification from "./component-add-qualification.vue";
+import ComponentAddQualification from './component-add-qualification.vue';
 // import ComponentShowMoneySpent from './component-show-money-spent.vue';
 // import ComponentShowBatches from './component-show-batches.vue';
 export default {
-  name: "app-qualifications",
+  name: 'app-qualifications',
 
   data() {
     return {
       policies_selected: [],
       list_headers: [
         {
-          text: "Name",
-          value: "name"
+          text: 'Name',
+          value: 'name',
         },
         {
-          text: "Description",
-          value: "description"
+          text: 'Description',
+          value: 'description',
         },
         {
-          text: "Actions",
-          value: "name",
+          text: 'Actions',
+          value: 'name',
           sortable: false,
-          align: "right"
-        }
+          align: 'right',
+        },
       ],
 
       show_dialog_qualification_add: false,
@@ -81,22 +81,22 @@ export default {
       show_dialog_policy: false,
       policy_to_be_edited: null,
       policy_new: new Policy({
-        QualificationTypeStatus: "Active"
-      })
+        QualificationTypeStatus: 'Active',
+      }),
     };
   },
   computed: {
-    policy_dialog: function() {
+    policy_dialog() {
       return this.policy_to_be_edited == null
         ? this.policy_new
         : this.policy_to_be_edited;
     },
-    title_dialog_policy: function() {
-      return this.policy_to_be_edited == null ? "New Policy" : "Edit Policy";
+    title_dialog_policy() {
+      return this.policy_to_be_edited == null ? 'New Policy' : 'Edit Policy';
     },
-    ...mapGetters("modulePolicies", {
-      list_policies: "list_policies"
-    })
+    ...mapGetters('modulePolicies', {
+      list_policies: 'list_policies',
+    }),
   },
   methods: {
     add_or_edit_policy() {
@@ -130,14 +130,14 @@ export default {
     cancel() {
       this.show_dialog_policy = false;
     },
-    ...mapActions("modulePolicies", {
-      sync_policies: "sync_policies",
-      add_policy: "add_policy",
-      update_policy: "update_policy"
+    ...mapActions('modulePolicies', {
+      sync_policies: 'sync_policies',
+      add_policy: 'add_policy',
+      update_policy: 'update_policy',
     }),
-    ...mapActions(["set_show_progress_indicator"])
+    ...mapActions(['set_show_progress_indicator']),
   },
-  created: function() {
+  created() {
     this.set_show_progress_indicator(true);
 
     this.sync_policies().then(() => {
@@ -146,9 +146,9 @@ export default {
   },
 
   components: {
-    ComponentAddQualification
+    ComponentAddQualification,
     // ComponentShowMoneySpent,
     // ComponentShowBatches,
-  }
+  },
 };
 </script>

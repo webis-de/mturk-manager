@@ -29,14 +29,16 @@
 </template>
 
 <script>
-import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
-import { Service_Projects } from "../../../services/service_projects";
+import {
+  mapState, mapMutations, mapActions, mapGetters,
+} from 'vuex';
+import { Service_Projects } from '../../../services/service_projects';
 
 export default {
-  name: "component-clear-sandbox",
+  name: 'component-clear-sandbox',
   data() {
     return {
-      dialog: false
+      dialog: false,
     };
   },
   methods: {
@@ -44,12 +46,12 @@ export default {
       await Service_Projects.clear_sandbox();
       this.dialog = false;
     },
-    ...mapActions("moduleProjects", {
-      clear_sandbox: "clear_sandbox"
-    })
+    ...mapActions('moduleProjects', {
+      clear_sandbox: 'clear_sandbox',
+    }),
   },
   computed: {},
-  components: {}
+  components: {},
 };
 </script>
 

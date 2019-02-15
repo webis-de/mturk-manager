@@ -89,88 +89,89 @@
 	</v-snackbar> -->
 </template>
 <script>
-import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
-import _ from "lodash";
-import { required, minValue, maxValue } from "vuelidate/lib/validators";
-import helpers from "../../../mixins/helpers";
-import validations from "../../../mixins/validations";
-import Template_Assignment from "../../../classes/template_assignment";
-import { Service_Templates } from "../../../services/service_templates";
+import {
+  mapState, mapMutations, mapActions, mapGetters,
+} from 'vuex';
+import _ from 'lodash';
+import { required, minValue, maxValue } from 'vuelidate/lib/validators';
+import helpers from '../../../mixins/helpers';
+import validations from '../../../mixins/validations';
+import Template_Assignment from '../../../classes/template_assignment';
+import { Service_Templates } from '../../../services/service_templates';
 
 export default {
-  name: "component-edit-template-assignment",
+  name: 'component-edit-template-assignment',
   mixins: [helpers, validations],
   props: {
-    template_assignment_current: {}
+    template_assignment_current: {},
   },
   data() {
     return {
       template_assignment: new Template_Assignment(
-        this.template_assignment_current
+        this.template_assignment_current,
       ),
-      dialog: false
+      dialog: false,
     };
   },
   methods: {
     update(close) {
       if (this.$refs.form.validate()) {
         Service_Templates.edit({
-          type_template: "assignment",
+          type_template: 'assignment',
           template_current: this.template_assignment_current,
           template_new: this.template_assignment,
-          project: this.project_current
+          project: this.project_current,
         }).then(() => {
           if (close === true) {
             this.dialog = false;
             this.reset();
           }
-          this.$emit("edited");
+          this.$emit('edited');
         });
       }
       // console.log(this.project_current);
     },
     reset() {
       (this.template_assignment = new Template_Assignment(
-        this.template_assignment_current
+        this.template_assignment_current,
       )),
-        this.$v.$reset();
+      this.$v.$reset();
       this.$v.$touch();
     },
-    ...mapActions("moduleProjects", {
-      edit_template_assignment: "edit_template_assignment"
-    })
+    ...mapActions('moduleProjects', {
+      edit_template_assignment: 'edit_template_assignment',
+    }),
   },
   computed: {
     list_templates_assignment() {
       return _.orderBy(
         this.project_current.templates_assignment,
-        template => template.name
+        template => template.name,
       );
     },
-    ...mapGetters("moduleProjects", {
-      project_current: "get_project_current"
-    })
+    ...mapGetters('moduleProjects', {
+      project_current: 'get_project_current',
+    }),
   },
   watch: {
     dialog() {
       this.reset();
-    }
+    },
   },
   validations: {
     template_assignment: {
       name: {
-        required
+        required,
       },
       template: {
         required,
-        contains_form_injection: value =>
-          value != undefined && value.indexOf(" data-inject_input_forms") >= 0
-      }
-    }
+        contains_form_injection: value => value != undefined && value.indexOf(' data-inject_input_forms') >= 0,
+      },
+    },
   },
   created() {
     this.$v.$touch();
   },
-  components: {}
+  components: {},
 };
 </script>

@@ -26,19 +26,19 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
-import { Service_Projects } from "./services/service_projects";
-import AddCredentials from "./views/add-credentials/add-credentials";
-import TheUpdateNotification from "./components/the-update-notification";
+import { mapActions, mapGetters } from 'vuex';
+import { Service_Projects } from './services/service_projects';
+import AddCredentials from './views/add-credentials/add-credentials';
+import TheUpdateNotification from './components/the-update-notification';
 
 export default {
-  name: "app",
+  name: 'app',
   data() {
     return {
-      has_loaded_projects: false
+      has_loaded_projects: false,
     };
   },
-  created: async function() {
+  async created() {
     // return await Service_App.init();
     // await this.init();
     //
@@ -58,19 +58,19 @@ export default {
   watch: {
     slug_project_current() {
       Service_Projects.load_project_data();
-    }
+    },
   },
   computed: {
-    ...mapGetters("moduleProjects", {
-      slug_project_current: "get_slug_project_current"
-    })
+    ...mapGetters('moduleProjects', {
+      slug_project_current: 'get_slug_project_current',
+    }),
   },
   methods: {
-    ...mapActions(["init"])
+    ...mapActions(['init']),
   },
   components: {
     TheUpdateNotification,
-    AddCredentials
-  }
+    AddCredentials,
+  },
 };
 </script>

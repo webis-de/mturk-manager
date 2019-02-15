@@ -55,36 +55,38 @@
 
 <script>
 // import ComponentFormSettingsBatch from './component_form_settings_batch';
-import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
-import _ from "lodash";
+import {
+  mapState, mapMutations, mapActions, mapGetters,
+} from 'vuex';
+import _ from 'lodash';
 
-import { required, minValue } from "vuelidate/lib/validators";
-import validations from "../../../mixins/validations";
-import { Service_Templates } from "../../../services/service_templates";
+import { required, minValue } from 'vuelidate/lib/validators';
+import validations from '../../../mixins/validations';
+import { Service_Templates } from '../../../services/service_templates';
 
 export default {
-  name: "component-add-template-global",
+  name: 'component-add-template-global',
   mixins: [validations],
   data() {
     return {
       name: undefined,
       template: undefined,
 
-      dialog: false
+      dialog: false,
     };
   },
   watch: {
     dialog() {
       this.reset();
-    }
+    },
   },
   validations: {
     name: {
-      required
+      required,
     },
     template: {
-      required
-    }
+      required,
+    },
   },
   methods: {
     reset() {
@@ -95,28 +97,28 @@ export default {
     create() {
       if (this.$refs.form.validate()) {
         Service_Templates.create({
-          type_template: "global",
+          type_template: 'global',
           template: {
             name: this.name,
-            template: this.template
+            template: this.template,
           },
-          project: this.project_current
+          project: this.project_current,
         }).then(() => {
-          this.$emit("created");
+          this.$emit('created');
           this.dialog = false;
           this.reset();
         });
       }
     },
-    ...mapActions("moduleProjects", {
-      create_template_global: "create_template_global"
-    })
+    ...mapActions('moduleProjects', {
+      create_template_global: 'create_template_global',
+    }),
   },
   computed: {
-    ...mapGetters("moduleProjects", {
-      project_current: "get_project_current"
-    })
+    ...mapGetters('moduleProjects', {
+      project_current: 'get_project_current',
+    }),
   },
-  components: {}
+  components: {},
 };
 </script>

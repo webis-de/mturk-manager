@@ -65,51 +65,51 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from "vuex";
+import { mapState, mapActions, mapGetters } from 'vuex';
 // import { Policy } from '../../store/modules/policies.js';
-import { Qualification } from "../../classes/qualifications.js";
+import { Qualification } from '../../classes/qualifications.js';
 
 // import ComponentShowBalance from './component-show-balance.vue';
 // import ComponentShowMoneySpent from './component-show-money-spent.vue';
 // import ComponentShowBatches from './component-show-batches.vue';
 export default {
-  name: "component-delete-qualification",
+  name: 'component-delete-qualification',
   props: {
     qualifications_selected: {
       type: Array,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
       show_dialog: false,
       is_deleting: false,
-      title_dialog: "Delete Qualification(s)"
+      title_dialog: 'Delete Qualification(s)',
     };
   },
   computed: {
-    is_disabled: function() {
+    is_disabled() {
       return this.qualifications_selected.length == 0;
     },
-    title_button: function() {
+    title_button() {
       return `delete ${this.qualifications_selected.length} Qualification(s)`;
-    }
+    },
   },
   methods: {
-    remove: function() {
+    remove() {
       this.is_deleting = true;
       this.delete_qualifications(this.qualifications_selected).then(() => {
         this.show_dialog = false;
         this.is_deleting = false;
       });
     },
-    cancel: function() {
+    cancel() {
       this.show_dialog = false;
     },
-    ...mapActions("moduleQualifications", {
-      delete_qualifications: "delete_qualifications"
-    })
+    ...mapActions('moduleQualifications', {
+      delete_qualifications: 'delete_qualifications',
+    }),
   },
-  watch: {}
+  watch: {},
 };
 </script>

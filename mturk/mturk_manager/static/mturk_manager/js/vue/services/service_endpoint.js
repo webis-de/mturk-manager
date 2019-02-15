@@ -1,5 +1,5 @@
-import axios from "axios";
-import { store } from "../store/vuex";
+import axios from 'axios';
+import { store } from '../store/vuex';
 
 class Class_Service_Endpoint {
   constructor() {
@@ -9,7 +9,7 @@ class Class_Service_Endpoint {
 
   init(token_instance) {
     if (this.is_initialized === true) {
-      console.error("Service Endpoint is already initialized!");
+      console.error('Service Endpoint is already initialized!');
       return;
     }
 
@@ -18,25 +18,27 @@ class Class_Service_Endpoint {
     this.axios = axios.create({
       headers: {
         Authorization: `Token ${token_instance}`,
-        "Content-Type": "application/json"
-      }
+        'Content-Type': 'application/json',
+      },
     });
   }
 
-  async make_request({ url, method, data, params, options }) {
-    let config = {
+  async make_request({
+    url, method, data, params, options,
+  }) {
+    const config = {
       method,
       url: this.get_url_api(url),
       data: JSON.stringify(data),
       params,
-      ...options
+      ...options,
     };
 
     const object_response = {
       success: undefined,
       response: undefined,
       exception: undefined,
-      data: undefined
+      data: undefined,
     };
 
     try {
@@ -50,7 +52,7 @@ class Class_Service_Endpoint {
     }
 
     if (object_response.success === false) {
-      if (object_response.exception.message === "Network Error") {
+      if (object_response.exception.message === 'Network Error') {
         // router.push({name: 'connection_error'});
       }
     }
@@ -58,11 +60,13 @@ class Class_Service_Endpoint {
     return object_response;
   }
 
-  get_url_api({ path = "", use_sandbox, value, project }) {
-    //TODO: Fix this approach
+  get_url_api({
+    path = '', use_sandbox, value, project,
+  }) {
+    // TODO: Fix this approach
     // let url = new URL(path, store.state.module_app.url_api);
 
-    let url = store.state.module_app.url_api + "/" + path;
+    let url = `${store.state.module_app.url_api}/${path}`;
 
     if (value !== undefined) {
       url += `/${value}`;
@@ -71,13 +75,13 @@ class Class_Service_Endpoint {
     const params = new URLSearchParams();
 
     if (use_sandbox === false) {
-      params.append("use_sandbox", "false");
+      params.append('use_sandbox', 'false');
     }
 
     url += `?${params.toString()}`;
 
     if (project) {
-      url = url.replace("PLACEHOLDER_SLUG_PROJECT", project.slug);
+      url = url.replace('PLACEHOLDER_SLUG_PROJECT', project.slug);
     }
     // url = url.replace('PLACEHOLDER_SLUG_PROJECT',  getters['moduleProjects/get_project_current'].slug);
     return url;

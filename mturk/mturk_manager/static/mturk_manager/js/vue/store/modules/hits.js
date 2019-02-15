@@ -1,9 +1,9 @@
-import Vue from "vue";
-import _ from "lodash";
-import localforage from "localforage";
-import HIT from "../../classes/hit.js";
+import Vue from 'vue';
+import _ from 'lodash';
+import localforage from 'localforage';
+import HIT from '../../classes/hit.js';
 
-import Batch from "../../classes/batch";
+import Batch from '../../classes/batch';
 
 export const moduleHITs = {
   namespaced: true,
@@ -18,83 +18,72 @@ export const moduleHITs = {
 
     array_columns_general: [
       {
-        text: "ID",
-        value: "id_hit"
+        text: 'ID',
+        value: 'id_hit',
       },
       {
-        text: "Batch",
-        value: "batch"
+        text: 'Batch',
+        value: 'batch',
       },
       {
-        text: "Creation",
-        value: "datetime_creation"
+        text: 'Creation',
+        value: 'datetime_creation',
       },
       {
-        text: "Progress",
-        value: "progress",
-        align: "center",
-        sortable: false
-      },
-      {
-        text: "",
-        value: "actions",
+        text: 'Progress',
+        value: 'progress',
+        align: 'center',
         sortable: false,
-        label: "Details"
-      }
+      },
+      {
+        text: '',
+        value: 'actions',
+        sortable: false,
+        label: 'Details',
+      },
     ],
     array_columns_selected_initial_general: [
-      "id_hit",
-      "batch",
-      "datetime_creation",
-      "progress",
-      "actions"
+      'id_hit',
+      'batch',
+      'datetime_creation',
+      'progress',
+      'actions',
     ],
     array_columns_selected_general: null,
 
-    url_api_projects_hits: undefined
+    url_api_projects_hits: undefined,
   },
   getters: {
-    get_array_columns_general: state => {
-      return state.array_columns_general;
-    },
-    get_array_columns_selected_general: state => {
+    get_array_columns_general: state => state.array_columns_general,
+    get_array_columns_selected_general: (state) => {
       if (state.array_columns_selected_general === null) {
         return state.array_columns_selected_initial_general;
-      } else {
-        return state.array_columns_selected_general;
       }
+      return state.array_columns_selected_general;
     },
-    get_array_columns_selected_initial_general: state => {
-      return state.array_columns_selected_initial_general;
-    },
+    get_array_columns_selected_initial_general: state => state.array_columns_selected_initial_general,
 
-    get_object_hits_selected: state => {
-      return state.object_hits_selected;
-    },
+    get_object_hits_selected: state => state.object_hits_selected,
     get_array_hits: (state, getters, rootState) => (
-      use_sandbox = undefined
+      use_sandbox = undefined,
     ) => {
       if (use_sandbox === undefined) {
         return rootState.module_app.use_sandbox
           ? state.array_hits_sandbox
           : state.array_hits;
-      } else {
-        return use_sandbox ? state.array_hits_sandbox : state.array_hits;
       }
+      return use_sandbox ? state.array_hits_sandbox : state.array_hits;
     },
-    get_array_hits_sandbox: state => {
-      return state.array_hits_sandbox;
-    },
+    get_array_hits_sandbox: state => state.array_hits_sandbox,
     get_object_hits: (state, getters, rootState) => (
-      use_sandbox = undefined
+      use_sandbox = undefined,
     ) => {
       if (use_sandbox == undefined) {
         return rootState.module_app.use_sandbox
           ? state.object_hits_sandbox
           : state.object_hits;
-      } else {
-        return use_sandbox ? state.object_hits_sandbox : state.object_hits;
       }
+      return use_sandbox ? state.object_hits_sandbox : state.object_hits;
     },
     list_hits: (state, getters) => {
       if (Object.keys(getters.get_object_hits()).length == 0) {
@@ -102,14 +91,14 @@ export const moduleHITs = {
       }
       return _.orderBy(
         getters.get_object_hits(),
-        ["datetime_creation"],
-        ["desc"]
+        ['datetime_creation'],
+        ['desc'],
       );
-    }
+    },
   },
   mutations: {
     set_array_columns_general(state, array_columns) {
-      localforage.setItem("array_columns_hits_general", array_columns);
+      localforage.setItem('array_columns_hits_general', array_columns);
       state.array_columns_selected_general = array_columns;
     },
 
@@ -123,7 +112,7 @@ export const moduleHITs = {
         array_hits = state.array_hits;
       }
 
-      _.forEach(data, function(data) {
+      _.forEach(data, (data) => {
         const hit = new HIT(data);
         Vue.set(array_hits, array_hits.length, hit);
       });
@@ -133,11 +122,11 @@ export const moduleHITs = {
     },
     set_hits_selected(state, { array_items, add }) {
       if (add === true) {
-        _.forEach(array_items, item => {
+        _.forEach(array_items, (item) => {
           Vue.set(state.object_hits_selected, item.id, item.id);
         });
       } else {
-        _.forEach(array_items, item => {
+        _.forEach(array_items, (item) => {
           Vue.delete(state.object_hits_selected, item.id);
         });
       }
@@ -168,31 +157,30 @@ export const moduleHITs = {
     clear_sandbox(state) {
       state.object_hits_sandbox = {};
     },
-    reset: state => {
+    reset: (state) => {
       state.object_hits = {};
       state.object_hits_sandbox = {};
     },
     set_urls(state, config) {
       state.url_api_projects_hits = config.url_api_projects_hits;
-    }
+    },
   },
   actions: {
     async init({ state }) {
-      let array_columns = await localforage.getItem(
-        "array_columns_hits_general"
+      const array_columns = await localforage.getItem(
+        'array_columns_hits_general',
       );
       if (array_columns !== null) {
         state.array_columns_selected_general = array_columns;
       } else {
-        state.array_columns_selected_general =
-          state.array_columns_selected_initial_general;
+        state.array_columns_selected_general = state.array_columns_selected_initial_general;
       }
     },
     reset_array_columns_general({ state, commit }) {
       commit(
-        "set_array_columns_general",
-        state.array_columns_selected_initial_general
+        'set_array_columns_general',
+        state.array_columns_selected_initial_general,
       );
-    }
-  }
+    },
+  },
 };

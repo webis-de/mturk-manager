@@ -97,29 +97,29 @@
   </v-layout>
 </template>
 <script>
-import { mapState, mapActions, mapGetters } from "vuex";
-import humanizeDuration from "humanize-duration";
-import Settings_Batch from "../../../classes/settings_batch";
-import BaseDisplayAmount from "../../base-display-amount.vue";
+import { mapState, mapActions, mapGetters } from 'vuex';
+import humanizeDuration from 'humanize-duration';
+import Settings_Batch from '../../../classes/settings_batch';
+import BaseDisplayAmount from '../../base-display-amount.vue';
 
 // import ComponentStepUploadCSV from './component_step_upload_csv.vue';
 // import ComponentShowMoneySpent from './component-show-money-spent.vue';
 // import ComponentShowBatches from './component-show-batches.vue';
 export default {
-  name: "component-overview",
+  name: 'component-overview',
   props: {
     settings_batch_current: {
       required: true,
-      type: Settings_Batch | undefined
+      type: Settings_Batch | undefined,
     },
     is_invalid_settings_batch: {
       required: true,
-      type: Boolean
-    }
+      type: Boolean,
+    },
   },
   data() {
     return {
-      current_time_ms: Date.now()
+      current_time_ms: Date.now(),
     };
   },
   methods: {},
@@ -136,16 +136,15 @@ export default {
       const reward = parseFloat(this.settings_batch_current.reward);
       if (this.object_csv_parsed != undefined) {
         return (
-          reward *
-          this.settings_batch_current.count_assignments *
-          this.object_csv_parsed.data.length
+          reward
+          * this.settings_batch_current.count_assignments
+          * this.object_csv_parsed.data.length
         );
-      } else {
-        return reward * this.settings_batch_current.count_assignments;
       }
+      return reward * this.settings_batch_current.count_assignments;
     },
     costs_total_with_fee() {
-      let costs_with_fee = undefined;
+      let costs_with_fee;
 
       if (this.settings_batch_current.count_assignments < 10) {
         costs_with_fee = this.costs_total_without_fee * 1.2;
@@ -158,8 +157,7 @@ export default {
     format_lifetime_absolute() {
       if (this.settings_batch_current == undefined) return undefined;
 
-      const lifetime_absolute =
-        this.current_time_ms + this.settings_batch_current.lifetime * 1000.0;
+      const lifetime_absolute = this.current_time_ms + this.settings_batch_current.lifetime * 1000.0;
       return new Date(lifetime_absolute).toLocaleString();
     },
     count_hits() {
@@ -184,13 +182,13 @@ export default {
     is_valid() {
       return this.is_valid_csv && !this.is_invalid_settings_batch;
     },
-    ...mapGetters("moduleProjects", {
-      project_current: "get_project_current"
+    ...mapGetters('moduleProjects', {
+      project_current: 'get_project_current',
     }),
-    ...mapGetters("moduleBatches", {
-      object_csv_parsed: "get_object_csv_parsed",
-      is_valid_csv: "is_valid_csv"
-    })
+    ...mapGetters('moduleBatches', {
+      object_csv_parsed: 'get_object_csv_parsed',
+      is_valid_csv: 'is_valid_csv',
+    }),
   },
   created() {
     setInterval(() => {
@@ -198,8 +196,8 @@ export default {
     }, 1000);
   },
   components: {
-    BaseDisplayAmount
-  }
+    BaseDisplayAmount,
+  },
 };
 </script>
 

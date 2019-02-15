@@ -68,33 +68,33 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from "vuex";
-import _ from "lodash";
-import ComponentAddTemplateHit from "./component_add_template_hit.vue";
-import ComponentDeleteTemplateHit from "./component_delete_template_hit.vue";
-import ComponentEditTemplateHit from "./component_edit_template_hit.vue";
-import { table } from "../../../mixins/table";
+import { mapState, mapActions, mapGetters } from 'vuex';
+import _ from 'lodash';
+import ComponentAddTemplateHit from './component_add_template_hit.vue';
+import ComponentDeleteTemplateHit from './component_delete_template_hit.vue';
+import ComponentEditTemplateHit from './component_edit_template_hit.vue';
+import { table } from '../../../mixins/table';
 
 export default {
   mixins: [table],
-  name: "component-list-templates-hit",
+  name: 'component-list-templates-hit',
   data() {
     return {
       list_headers: [
         {
-          text: "Name",
-          value: "name"
+          text: 'Name',
+          value: 'name',
         },
         {
-          text: "Actions",
-          value: "",
-          sortable: false
-        }
+          text: 'Actions',
+          value: '',
+          sortable: false,
+        },
       ],
 
       snackbar_deleted: false,
       snackbar_edited: false,
-      snackbar_created: false
+      snackbar_created: false,
     };
   },
   computed: {
@@ -104,19 +104,19 @@ export default {
 
       return _.orderBy(
         this.project_current.templates_hit,
-        template => template.name
+        template => template.name,
       );
     },
-    ...mapGetters("moduleProjects", {
-      project_current: "get_project_current"
-    })
+    ...mapGetters('moduleProjects', {
+      project_current: 'get_project_current',
+    }),
   },
   methods: {},
-  created: function() {},
+  created() {},
   components: {
     ComponentAddTemplateHit,
     ComponentDeleteTemplateHit,
-    ComponentEditTemplateHit
-  }
+    ComponentEditTemplateHit,
+  },
 };
 </script>

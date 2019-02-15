@@ -1,4 +1,4 @@
-import _ from "lodash";
+import _ from 'lodash';
 
 export default class Template_Global {
   constructor(data = undefined) {
@@ -19,14 +19,10 @@ export default class Template_Global {
       // if(template_global[key] != undefined)
       {
         if (this[key] != template_global[key]) {
-          if (typeof template_global[key] == "object") {
+          if (typeof template_global[key] === 'object') {
             if (
-              _.differenceBy(template_global[key], this[key], value =>
-                value["text"].toLowerCase()
-              ).length > 0 ||
-              _.differenceBy(this[key], template_global[key], value =>
-                value["text"].toLowerCase()
-              ).length > 0
+              _.differenceBy(template_global[key], this[key], value => value.text.toLowerCase()).length > 0
+              || _.differenceBy(this[key], template_global[key], value => value.text.toLowerCase()).length > 0
             ) {
               object[key] = template_global[key];
             }

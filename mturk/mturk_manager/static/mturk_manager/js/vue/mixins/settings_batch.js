@@ -1,17 +1,17 @@
-import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
-import { required, minValue, maxValue } from "vuelidate/lib/validators";
-import _ from "lodash";
-import Settings_Batch from "../classes/settings_batch";
-import { DESCRIPTIONS } from "../classes/enums";
-import { Service_Keywords } from "../services/Service_Keywords";
+import {
+  mapState, mapMutations, mapActions, mapGetters,
+} from 'vuex';
+import { required, minValue, maxValue } from 'vuelidate/lib/validators';
+import _ from 'lodash';
+import Settings_Batch from '../classes/settings_batch';
+import { DESCRIPTIONS } from '../classes/enums';
+import { Service_Keywords } from '../services/Service_Keywords';
 
-const foo = (object_settings_batch, settings_batch_current) => value => {
-  if (_.get(settings_batch_current, "name", undefined) == value) return true;
+const foo = (object_settings_batch, settings_batch_current) => (value) => {
+  if (_.get(settings_batch_current, 'name', undefined) == value) return true;
 
   return (
-    _.find(object_settings_batch, settings_batch => {
-      return settings_batch.name == value;
-    }) == undefined
+    _.find(object_settings_batch, settings_batch => settings_batch.name == value) == undefined
   );
 };
 
@@ -19,7 +19,7 @@ export default {
   data() {
     return {
       settings_batch: new Settings_Batch(),
-      DESCRIPTIONS: DESCRIPTIONS
+      DESCRIPTIONS,
     };
   },
   watch: {
@@ -55,16 +55,16 @@ export default {
       } else {
         this.settings_batch = new Settings_Batch();
       }
-    }
+    },
   },
   created() {
     this.update_fields();
     Service_Keywords.load();
   },
   computed: {
-    ...mapGetters("moduleProjects", {
-      project_current: "get_project_current"
-    })
+    ...mapGetters('moduleProjects', {
+      project_current: 'get_project_current',
+    }),
   },
   validations() {
     const validations = {
@@ -73,52 +73,52 @@ export default {
           required,
           is_unique: foo(
             this.project_current.settings_batch,
-            this.settings_batch_current
-          )
+            this.settings_batch_current,
+          ),
         },
         title: {
-          required
+          required,
         },
         description: {
-          required
+          required,
         },
         reward: {
           required,
-          minValue: minValue(0)
+          minValue: minValue(0),
         },
         count_assignments: {
           required,
-          minValue: minValue(0)
+          minValue: minValue(0),
         },
         count_assignments_max_per_worker: {
-          minValue: minValue(0)
+          minValue: minValue(0),
         },
         lifetime: {
           required,
-          minValue: minValue(0)
+          minValue: minValue(0),
         },
         duration: {
           required,
           minValue: minValue(30),
-          maxValue: maxValue(31536000)
+          maxValue: maxValue(31536000),
         },
         template: {
-          required
+          required,
         },
         block_workers: {
-          required
+          required,
         },
         keywords: {},
         has_content_adult: {},
         qualification_assignments_approved: {
           minValue: minValue(0),
-          maxValue: maxValue(100)
+          maxValue: maxValue(100),
         },
         qualification_hits_approved: {
-          minValue: minValue(0)
+          minValue: minValue(0),
         },
-        qualification_locale: {}
-      }
+        qualification_locale: {},
+      },
     };
 
     if (this.name_not_required) {
@@ -126,5 +126,5 @@ export default {
     }
 
     return validations;
-  }
+  },
 };

@@ -121,45 +121,47 @@
 
 <script>
 // import ComponentFormSettingsBatch from './component_form_settings_batch';
-import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
-import _ from "lodash";
+import {
+  mapState, mapMutations, mapActions, mapGetters,
+} from 'vuex';
+import _ from 'lodash';
 
-import { required, minValue } from "vuelidate/lib/validators";
-import validations from "../../../mixins/validations";
-import helpers from "../../../mixins/helpers";
-import Template_Worker from "../../../classes/template_worker";
-import { Service_Templates } from "../../../services/service_templates";
+import { required, minValue } from 'vuelidate/lib/validators';
+import validations from '../../../mixins/validations';
+import helpers from '../../../mixins/helpers';
+import Template_Worker from '../../../classes/template_worker';
+import { Service_Templates } from '../../../services/service_templates';
 
 export default {
-  name: "component-add-template-worker",
+  name: 'component-add-template-worker',
   mixins: [helpers, validations],
   data() {
     return {
       template_worker: new Template_Worker(),
-      dialog: false
+      dialog: false,
     };
   },
   watch: {
     dialog() {
       this.reset();
-    }
+    },
   },
   validations: {
     template_worker: {
       name: {
-        required
+        required,
       },
       height_frame: {
         required,
-        minValue: minValue(1)
+        minValue: minValue(1),
       },
       template: {
-        required
+        required,
       },
       template_assignment: {},
       template_hit: {},
-      template_global: {}
-    }
+      template_global: {},
+    },
   },
   methods: {
     reset() {
@@ -169,40 +171,40 @@ export default {
     create() {
       if (this.$refs.form.validate()) {
         Service_Templates.create({
-          type_template: "worker",
+          type_template: 'worker',
           template: this.template_worker,
-          project: this.project_current
+          project: this.project_current,
         }).then(() => {
-          this.$emit("created");
+          this.$emit('created');
           this.dialog = false;
           this.reset();
         });
       }
-    }
+    },
   },
   computed: {
     list_templates_assignment() {
       return _.orderBy(
         this.project_current.templates_assignment,
-        template => template.name
+        template => template.name,
       );
     },
     list_templates_hit() {
       return _.orderBy(
         this.project_current.templates_hit,
-        template => template.name
+        template => template.name,
       );
     },
     list_templates_global() {
       return _.orderBy(
         this.project_current.templates_global,
-        template => template.name
+        template => template.name,
       );
     },
-    ...mapGetters("moduleProjects", {
-      project_current: "get_project_current"
-    })
+    ...mapGetters('moduleProjects', {
+      project_current: 'get_project_current',
+    }),
   },
-  components: {}
+  components: {},
 };
 </script>

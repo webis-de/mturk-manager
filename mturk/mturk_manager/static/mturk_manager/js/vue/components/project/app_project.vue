@@ -59,78 +59,77 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from "vuex";
-import TheNavigationDrawer from "../the-navigation-drawer.vue";
-import ComponentToolbarBatches from "../batches/component_toolbar_batches.vue";
-import ComponentToolbarQualifications from "../qualifications/component-toolbar-qualifications.vue";
-import slug_project from "../../mixins/slug_project";
+import { mapState, mapActions, mapGetters } from 'vuex';
+import TheNavigationDrawer from '../the-navigation-drawer.vue';
+import ComponentToolbarBatches from '../batches/component_toolbar_batches.vue';
+import ComponentToolbarQualifications from '../qualifications/component-toolbar-qualifications.vue';
+import slug_project from '../../mixins/slug_project';
 
 export default {
   mixins: [
-    slug_project
+    slug_project,
     // load_data,
   ],
   // props: {
   //     // id_batch: {
   //     // },
   // },
-  name: "app-project",
+  name: 'app-project',
   data() {
     return {
       show_drawer: true,
-      id_interval: undefined
+      id_interval: undefined,
     };
   },
   methods: {
-    toggle_use_sandbox: function() {
+    toggle_use_sandbox() {
       this.set_use_sandbox(!this.use_sandbox);
     },
-    ...mapActions("module_app", ["set_use_sandbox"])
+    ...mapActions('module_app', ['set_use_sandbox']),
   },
   computed: {
-    object_styles_toolbar: function() {
+    object_styles_toolbar() {
       if (this.use_sandbox) {
-        return { "background-color": "#dd6e00" };
-      } else {
-        return {};
+        return { 'background-color': '#dd6e00' };
       }
+      return {};
     },
-    currentTabComponent: function() {
-      console.log("this.route", this.$route);
+    currentTabComponent() {
+      console.log('this.route', this.$route);
       switch (this.$route.name) {
-        case "finances":
-        case "batches":
-        case "batch":
-        case "hits":
-        case "hit":
-        case "assignments":
-        case "assignment":
-        case "workers":
+        case 'finances':
+        case 'batches':
+        case 'batch':
+        case 'hits':
+        case 'hit':
+        case 'assignments':
+        case 'assignment':
+        case 'workers':
           return ComponentToolbarBatches;
-        case "qualifications":
+        case 'qualifications':
           return ComponentToolbarQualifications;
         // case 'workers':
         //     return ComponentToolbarWorkers;
       }
     },
-    name_route_current: function() {
+    name_route_current() {
       // return this.$router.currentRoute;
       return this.$route.meta.name;
     },
-    ...mapState("module_app", ["use_sandbox"]),
-    ...mapGetters("moduleProjects", {
-      project_current: "get_project_current",
-      slug_project_current: "get_slug_project_current",
-      object_projects: "get_object_projects"
+    ...mapState('module_app', ['use_sandbox']),
+    ...mapGetters('moduleProjects', {
+      project_current: 'get_project_current',
+      slug_project_current: 'get_slug_project_current',
+      object_projects: 'get_object_projects',
     }),
-    ...mapGetters(["get_show_progress_indicator"])
+    ...mapGetters(['get_show_progress_indicator']),
   },
   created() {
-    console.warn("changed");
+    console.warn('changed');
   },
   components: {
-    TheNavigationDrawer
-  }
+    TheNavigationDrawer,
+  },
 };
 </script>
 

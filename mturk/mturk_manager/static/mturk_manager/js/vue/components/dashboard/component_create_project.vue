@@ -40,23 +40,23 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from "vuex";
-import _ from "lodash";
-import axios from "axios";
+import { mapState, mapActions, mapGetters } from 'vuex';
+import _ from 'lodash';
+import axios from 'axios';
 
-import { required, minLength, between } from "vuelidate/lib/validators";
-import { Service_Projects } from "../../services/service_projects";
+import { required, minLength, between } from 'vuelidate/lib/validators';
+import { Service_Projects } from '../../services/service_projects';
 
 export default {
-  name: "component-create-project",
+  name: 'component-create-project',
   data() {
     return {
       snackbar_created: false,
-      name: "",
+      name: '',
       // name: undefined,
       is_creating: false,
-      name_instant: "",
-      disabled: true
+      name_instant: '',
+      disabled: true,
       // rules: [
       // 	this.check_uniqueness,
       // ],
@@ -70,62 +70,62 @@ export default {
       }
 
       if (this.$v.name.required == false) {
-        errors.push("Required!");
+        errors.push('Required!');
       }
       if (this.$v.name.is_unique == false) {
-        errors.push("Name has to be unique!");
+        errors.push('Name has to be unique!');
       }
 
       return errors;
-    }
+    },
   },
   watch: {
     name_instant() {
       this.disabled = true;
       this.is_creating = true;
-    }
+    },
   },
   methods: {
     save(name) {
       this.is_creating = true;
-      Service_Projects.create_project(name).then(project => {
-        this.name = "";
+      Service_Projects.create_project(name).then((project) => {
+        this.name = '';
         this.$v.$reset();
         this.is_creating = false;
         this.$router.push({
-          name: "project",
-          params: { slug_project: project.slug }
+          name: 'project',
+          params: { slug_project: project.slug },
         });
       });
     },
-    update_name: _.debounce(function(value) {
+    update_name: _.debounce(function (value) {
       this.name = value.trim();
       this.$v.name.$touch();
     }, 500),
-    ...mapActions("moduleProjects", {
-      validate_name: "validate_name",
-      create_project: "create_project"
-    })
+    ...mapActions('moduleProjects', {
+      validate_name: 'validate_name',
+      create_project: 'create_project',
+    }),
   },
   validations: {
     name: {
       required,
       async is_unique(name) {
         this.is_creating = false;
-        if (name === "" || name === undefined) {
+        if (name === '' || name === undefined) {
           this.disabled = false;
           return true;
         }
 
-        let response = await Service_Projects.validate_name(name);
+        const response = await Service_Projects.validate_name(name);
         if (response.data === true) {
           this.disabled = false;
         }
         return response.data;
-      }
-    }
+      },
+    },
   },
-  created: function() {},
-  components: {}
+  created() {},
+  components: {},
 };
 </script>

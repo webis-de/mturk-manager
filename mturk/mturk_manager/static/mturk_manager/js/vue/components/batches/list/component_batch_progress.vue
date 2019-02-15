@@ -37,28 +37,28 @@
   <!--</div>-->
 </template>
 <script>
-import { mapState, mapActions, mapGetters } from "vuex";
-import _ from "lodash";
+import { mapState, mapActions, mapGetters } from 'vuex';
+import _ from 'lodash';
 
 export default {
-  name: "component-batch-progress",
+  name: 'component-batch-progress',
   props: {
     progress: {
       required: true,
-      type: Number
+      type: Number,
     },
     width: {
       required: false,
       type: String,
-      default: "200px"
-    }
+      default: '200px',
+    },
   },
   data() {
     return {};
   },
   computed: {},
   methods: {},
-  components: {}
+  components: {},
 };
 </script>
 

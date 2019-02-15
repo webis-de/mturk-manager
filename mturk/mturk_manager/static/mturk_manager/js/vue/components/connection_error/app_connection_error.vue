@@ -15,14 +15,14 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from "vuex";
-import _ from "lodash";
-import axios from "axios";
+import { mapState, mapActions, mapGetters } from 'vuex';
+import _ from 'lodash';
+import axios from 'axios';
 
-import { required, minLength, between } from "vuelidate/lib/validators";
+import { required, minLength, between } from 'vuelidate/lib/validators';
 
 export default {
-  name: "component-connection-error",
+  name: 'component-connection-error',
   data() {
     return {};
   },
@@ -30,17 +30,17 @@ export default {
     async retry() {
       this.set_show_progress_indicator(true);
       if (await this.init()) {
-        this.$router.push({ name: "dashboard" });
+        this.$router.push({ name: 'dashboard' });
       } else {
-        console.log("still error");
+        console.log('still error');
       }
       // this.set_show_progress_indicator(false);
       // console.log('dwad')
     },
-    ...mapActions(["init", "set_show_progress_indicator"])
+    ...mapActions(['init', 'set_show_progress_indicator']),
   },
   computed: {},
-  created: function() {},
-  components: {}
+  created() {},
+  components: {},
 };
 </script>

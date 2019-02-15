@@ -44,46 +44,48 @@
 </template>
 
 <script>
-import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
-import { required, minValue, maxValue } from "vuelidate/lib/validators";
-import validations from "../../../mixins/validations";
-import { Service_Projects } from "../../../services/service_projects";
+import {
+  mapState, mapMutations, mapActions, mapGetters,
+} from 'vuex';
+import { required, minValue, maxValue } from 'vuelidate/lib/validators';
+import validations from '../../../mixins/validations';
+import { Service_Projects } from '../../../services/service_projects';
 
 export default {
-  name: "component-block-limit",
+  name: 'component-block-limit',
   mixins: [validations],
   data() {
     return {
       count_assignments_max_per_worker: null,
-      snackbar_updated: false
+      snackbar_updated: false,
     };
   },
   methods: {
     save() {
       Service_Projects.set_count_assignments_max_per_worker({
         project: this.project_current,
-        count_assignments_max_per_worker: this.count_assignments_max_per_worker
+        count_assignments_max_per_worker: this.count_assignments_max_per_worker,
       }).then(() => {
         this.snackbar_updated = true;
       });
     },
-    ...mapActions("moduleProjects", {
+    ...mapActions('moduleProjects', {
       set_count_assignments_max_per_worker:
-        "set_count_assignments_max_per_worker"
-    })
+        'set_count_assignments_max_per_worker',
+    }),
   },
   computed: {
     changed() {},
-    ...mapGetters("moduleProjects", {
-      project_current: "get_project_current"
-    })
+    ...mapGetters('moduleProjects', {
+      project_current: 'get_project_current',
+    }),
   },
   components: {},
   validations: {
     count_assignments_max_per_worker: {
-      minValue: minValue(1)
-    }
-  }
+      minValue: minValue(1),
+    },
+  },
 };
 </script>
 

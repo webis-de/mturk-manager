@@ -77,27 +77,27 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from "vuex";
-import axios from "axios";
-import Papa from "papaparse";
-import _ from "lodash";
-import ComponentDisplayMoney from "../base-display-amount.vue";
+import { mapState, mapGetters, mapActions } from 'vuex';
+import axios from 'axios';
+import Papa from 'papaparse';
+import _ from 'lodash';
+import ComponentDisplayMoney from '../base-display-amount.vue';
 
 export default {
-  name: "component-show-batches",
+  name: 'component-show-batches',
   data() {
     return {
       // set initial number of rows per page
       pagination: {
-        rowsPerPage: 10
+        rowsPerPage: 10,
       },
       batches_selected: [],
       is_downloading_csv: false,
-      search: "",
+      search: '',
       list_headers: [
         {
-          text: "ID",
-          value: "id"
+          text: 'ID',
+          value: 'id',
         },
         //     		{
         // 	text: 'HIT',
@@ -108,93 +108,89 @@ export default {
         // 	value: 'id_assignment',
         // },
         {
-          text: "Created at",
-          value: "datetime_creation"
+          text: 'Created at',
+          value: 'datetime_creation',
         },
         {
-          text: "Reward",
-          value: "reward"
+          text: 'Reward',
+          value: 'reward',
         },
         {
-          text: "#HITs",
-          value: "hits.length"
+          text: '#HITs',
+          value: 'hits.length',
         },
         {
-          text: "#Assignments per HIT",
-          value: "count_assignments_per_hit"
+          text: '#Assignments per HIT',
+          value: 'count_assignments_per_hit',
         },
         {
-          text: "#Assignments",
-          value: "count_assignments_total"
+          text: '#Assignments',
+          value: 'count_assignments_total',
         },
         {
-          text: "#Approved assignments",
-          value: "count_assignments_approved"
+          text: '#Approved assignments',
+          value: 'count_assignments_approved',
         },
         {
-          text: "#Rejected assignments",
-          value: "count_assignments_rejected"
+          text: '#Rejected assignments',
+          value: 'count_assignments_rejected',
         },
         {
-          text: "Max costs",
-          value: "money_spent_max_with_fee",
-          align: "right"
+          text: 'Max costs',
+          value: 'money_spent_max_with_fee',
+          align: 'right',
         },
         {
-          text: "Costs so far",
-          value: "money_spent_with_fee",
-          align: "right"
-        }
-      ]
+          text: 'Costs so far',
+          value: 'money_spent_with_fee',
+          align: 'right',
+        },
+      ],
     };
   },
   computed: {
-    set_batches_selected: function() {
+    set_batches_selected() {
       if (this.batches_selected.length == 0) {
         return new Set(_.map(this.list_batches, o => o.id));
-      } else {
-        return new Set(_.map(this.batches_selected, o => o.id));
       }
+      return new Set(_.map(this.batches_selected, o => o.id));
     },
-    count_hits_to_download: function() {
+    count_hits_to_download() {
       if (this.batches_selected.length == 0) {
-        return "all";
-      } else {
-        return _.sumBy(this.batches_selected, "hits.length");
+        return 'all';
       }
+      return _.sumBy(this.batches_selected, 'hits.length');
     },
-    ...mapGetters("moduleBatches", {
-      list_batches: "list_batches",
-      list_hits_for_csv: "list_hits_for_csv"
+    ...mapGetters('moduleBatches', {
+      list_batches: 'list_batches',
+      list_hits_for_csv: 'list_hits_for_csv',
     }),
-    ...mapState(["show_with_fee"])
+    ...mapState(['show_with_fee']),
   },
   methods: {
-    download_csv: function() {
+    download_csv() {
       this.is_downloading_csv = true;
 
       // filter the selected hits
-      const hits_selected = _.filter(this.list_hits_for_csv, hit =>
-        this.set_batches_selected.has(hit[2])
-      );
+      const hits_selected = _.filter(this.list_hits_for_csv, hit => this.set_batches_selected.has(hit[2]));
       console.log(hits_selected);
       const csv_string = Papa.unparse({
-        fields: ["id_hit", "costs", "id_batch"],
-        data: _.map(hits_selected, o => _.slice(o, 0, 2))
+        fields: ['id_hit', 'costs', 'id_batch'],
+        data: _.map(hits_selected, o => _.slice(o, 0, 2)),
       });
-      var blob = new Blob([csv_string]);
-      var a = window.document.createElement("a");
-      a.href = window.URL.createObjectURL(blob, { type: "text/plain" });
-      a.download = "filename.csv";
+      const blob = new Blob([csv_string]);
+      const a = window.document.createElement('a');
+      a.href = window.URL.createObjectURL(blob, { type: 'text/plain' });
+      a.download = 'filename.csv';
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
       this.is_downloading_csv = false;
-    }
+    },
   },
   components: {
-    ComponentDisplayMoney
-  }
+    ComponentDisplayMoney,
+  },
 };
 </script>
 

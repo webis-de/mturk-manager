@@ -22,11 +22,13 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
-import BaseDisplayAmount from "../base-display-amount.vue";
+import {
+  mapState, mapGetters, mapMutations, mapActions,
+} from 'vuex';
+import BaseDisplayAmount from '../base-display-amount.vue';
 
 export default {
-  name: "display-expenses",
+  name: 'display-expenses',
   computed: {
     sum_costs_max() {
       return (
@@ -42,14 +44,14 @@ export default {
           : this.project_current.sum_costs_so_far) || 0
       );
     },
-    ...mapGetters("moduleProjects", {
-      project_current: "get_project_current"
+    ...mapGetters('moduleProjects', {
+      project_current: 'get_project_current',
     }),
-    ...mapState("module_app", ["use_sandbox"])
+    ...mapState('module_app', ['use_sandbox']),
   },
   components: {
-    BaseDisplayAmount
-  }
+    BaseDisplayAmount,
+  },
 };
 </script>
 

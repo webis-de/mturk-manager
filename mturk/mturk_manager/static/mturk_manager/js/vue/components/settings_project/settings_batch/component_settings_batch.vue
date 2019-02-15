@@ -6,12 +6,14 @@
 </template>
 
 <script>
-import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
-import _ from "lodash";
-import ComponentListSettingsBatch from "./component_list_settings_batch.vue";
+import {
+  mapState, mapMutations, mapActions, mapGetters,
+} from 'vuex';
+import _ from 'lodash';
+import ComponentListSettingsBatch from './component_list_settings_batch.vue';
 
 export default {
-  name: "component-settings-batch",
+  name: 'component-settings-batch',
   data() {
     return {
       // search: undefined,
@@ -20,8 +22,8 @@ export default {
   methods: {},
   computed: {},
   components: {
-    ComponentListSettingsBatch
-  }
+    ComponentListSettingsBatch,
+  },
 };
 </script>
 

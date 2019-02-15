@@ -21,25 +21,25 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from "vuex";
+import { mapState, mapActions, mapGetters } from 'vuex';
 
-import ComponentCreateProject from "./component_create_project.vue";
-import ComponentOpenProject from "./component_open_project.vue";
-import slug_project from "../../mixins/slug_project";
+import ComponentCreateProject from './component_create_project.vue';
+import ComponentOpenProject from './component_open_project.vue';
+import slug_project from '../../mixins/slug_project';
 
 export default {
   mixins: [slug_project],
-  name: "app-dashboard",
+  name: 'app-dashboard',
 
   data() {
     return {};
   },
   computed: {},
   methods: {},
-  created: function() {},
+  created() {},
   components: {
     ComponentCreateProject,
-    ComponentOpenProject
-  }
+    ComponentOpenProject,
+  },
 };
 </script>

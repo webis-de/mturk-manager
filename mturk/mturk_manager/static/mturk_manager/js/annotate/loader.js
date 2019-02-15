@@ -1,12 +1,12 @@
-import _ from "lodash";
-import localforage from "localforage";
-import { normalize_answer } from "./helpers";
+import _ from 'lodash';
+import localforage from 'localforage';
+import { normalize_answer } from './helpers';
 
 export default class Loader {
   constructor() {
     this.url_api = null;
     this.token_instance = null;
-    this.PLACEHOLDER_SLUG_PROJECT = "PLACEHOLDER_SLUG_PROJECT";
+    this.PLACEHOLDER_SLUG_PROJECT = 'PLACEHOLDER_SLUG_PROJECT';
     this.context = {
       url_api_project: `projects/${this.PLACEHOLDER_SLUG_PROJECT}`,
       url_api_assignments: `projects/${
@@ -20,10 +20,10 @@ export default class Loader {
         this.PLACEHOLDER_SLUG_PROJECT
       }/batches_for_annotation`,
       url_api_workers: `projects/${this.PLACEHOLDER_SLUG_PROJECT}/workers`,
-      url_api_messages_reject: `api/messages_reject`
+      url_api_messages_reject: 'api/messages_reject',
     };
     this.project = {};
-    this.message_reject_default = "";
+    this.message_reject_default = '';
     this.object_assignments = {};
     this.object_hits = {};
     this.object_batches = {};
@@ -48,30 +48,30 @@ export default class Loader {
     const url = this.context.url_api_messages_reject;
 
     const result = await $.ajax({
-      url: url,
-      method: "GET",
-      contentType: "application/json",
+      url,
+      method: 'GET',
+      contentType: 'application/json',
       headers: {
-        Authorization: "Token " + this.token_instance,
-        "Content-Type": "application/json"
-      }
+        Authorization: `Token ${this.token_instance}`,
+        'Content-Type': 'application/json',
+      },
     });
 
-    this.array_messages_reject = _.orderBy(result, "usage_count", "desc");
+    this.array_messages_reject = _.orderBy(result, 'usage_count', 'desc');
   }
 
   async load_project() {
     const url = this.context.url_api_project;
 
     const result = await $.ajax({
-      url: url,
-      method: "GET",
+      url,
+      method: 'GET',
       data: JSON.stringify(_.toArray(this.set_ids_worker)),
-      contentType: "application/json",
+      contentType: 'application/json',
       headers: {
-        Authorization: "Token " + this.token_instance,
-        "Content-Type": "application/json"
-      }
+        Authorization: `Token ${this.token_instance}`,
+        'Content-Type': 'application/json',
+      },
     });
 
     this.project = result;
@@ -82,19 +82,19 @@ export default class Loader {
 
   async load_assignments() {
     let url = this.context.url_api_assignments;
-    url += "?list_ids=" + new URL(location.href).searchParams.get("list_ids");
+    url += `?list_ids=${new URL(location.href).searchParams.get('list_ids')}`;
 
     const result = await $.ajax({
-      url: url,
-      method: "GET",
-      contentType: "application/json",
+      url,
+      method: 'GET',
+      contentType: 'application/json',
       headers: {
-        Authorization: "Token " + this.token_instance,
-        "Content-Type": "application/json"
-      }
+        Authorization: `Token ${this.token_instance}`,
+        'Content-Type': 'application/json',
+      },
     });
 
-    _.forEach(result, assignment => {
+    _.forEach(result, (assignment) => {
       this.object_workers[assignment.worker.id] = assignment.worker;
       // this.set_ids_worker.add(assignment.worker);
       assignment.answer = normalize_answer(assignment.answer);
@@ -104,29 +104,29 @@ export default class Loader {
 
   async load_hits() {
     const set_ids_hit = new Set();
-    _.forEach(this.object_assignments, assignment => {
+    _.forEach(this.object_assignments, (assignment) => {
       set_ids_hit.add(assignment.hit);
     });
 
     let url = this.context.url_api_hits;
-    url += "?list_ids=[" + _.toArray(set_ids_hit).join(",") + "]";
+    url += `?list_ids=[${_.toArray(set_ids_hit).join(',')}]`;
 
     const result = await $.ajax({
-      url: url,
-      method: "GET",
-      contentType: "application/json",
+      url,
+      method: 'GET',
+      contentType: 'application/json',
       headers: {
-        Authorization: "Token " + this.token_instance,
-        "Content-Type": "application/json"
-      }
+        Authorization: `Token ${this.token_instance}`,
+        'Content-Type': 'application/json',
+      },
     });
 
-    _.forEach(result, hit => {
+    _.forEach(result, (hit) => {
       hit.parameters = JSON.parse(hit.parameters);
       this.object_hits[hit.id] = hit;
     });
 
-    _.forEach(this.object_assignments, assignment => {
+    _.forEach(this.object_assignments, (assignment) => {
       const hit = this.object_hits[assignment.hit];
       assignment.hit = hit;
 
@@ -140,28 +140,28 @@ export default class Loader {
 
   async load_batches() {
     const set_ids_batch = new Set();
-    _.forEach(this.object_hits, hit => {
+    _.forEach(this.object_hits, (hit) => {
       set_ids_batch.add(hit.batch);
     });
 
     let url = this.context.url_api_batches;
-    url += "?list_ids=[" + _.toArray(set_ids_batch).join(",") + "]";
+    url += `?list_ids=[${_.toArray(set_ids_batch).join(',')}]`;
 
     const result = await $.ajax({
-      url: url,
-      method: "GET",
-      contentType: "application/json",
+      url,
+      method: 'GET',
+      contentType: 'application/json',
       headers: {
-        Authorization: "Token " + this.token_instance,
-        "Content-Type": "application/json"
-      }
+        Authorization: `Token ${this.token_instance}`,
+        'Content-Type': 'application/json',
+      },
     });
 
-    _.forEach(result, batch => {
+    _.forEach(result, (batch) => {
       this.object_batches[batch.id] = batch;
     });
 
-    _.forEach(this.object_hits, hit => {
+    _.forEach(this.object_hits, (hit) => {
       const batch = this.object_batches[hit.batch];
       hit.batch = batch;
 
@@ -199,19 +199,18 @@ export default class Loader {
   async init() {
     this.slug_project = location.pathname.substring(6);
 
-    this.url_api = await localforage.getItem("url_api");
-    this.token_instance = await localforage.getItem("token_instance");
+    this.url_api = await localforage.getItem('url_api');
+    this.token_instance = await localforage.getItem('token_instance');
 
     _.forEach(this.context, (value, key) => {
-      if (key.startsWith("url_")) {
-        this.context[key] =
-          this.url_api +
-          "/" +
-          value.replace("PLACEHOLDER_SLUG_PROJECT", this.slug_project);
+      if (key.startsWith('url_')) {
+        this.context[key] = `${this.url_api
+        }/${
+          value.replace('PLACEHOLDER_SLUG_PROJECT', this.slug_project)}`;
       }
       // console.log(key)
       // console.log(property)
     });
-    console.log("this", this);
+    console.log('this', this);
   }
 }

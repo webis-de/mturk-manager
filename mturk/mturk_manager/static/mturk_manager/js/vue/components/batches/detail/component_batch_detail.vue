@@ -22,12 +22,14 @@
   </v-layout>
 </template>
 <script>
-import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
-import { Service_Batches } from "../../../services/service_batches";
-import ListHits from "../../hits/list/list-hits";
+import {
+  mapState, mapMutations, mapActions, mapGetters,
+} from 'vuex';
+import { Service_Batches } from '../../../services/service_batches';
+import ListHits from '../../hits/list/list-hits';
 
 export default {
-  name: "component-batch-detail",
+  name: 'component-batch-detail',
   // props: {
   // 	id_batch: {
   // 		required: true,
@@ -36,12 +38,12 @@ export default {
   props: {
     id_batch: {
       required: true,
-      type: Number
-    }
+      type: Number,
+    },
   },
   data() {
     return {
-      batch_intern: undefined
+      batch_intern: undefined,
     };
   },
   // watch: {
@@ -97,27 +99,27 @@ export default {
     // ...mapGetters('moduleBatches', {
     //     'get_object_batches': 'get_object_batches',
     // }),
-    ...mapGetters("moduleHITs", {
-      array_columns_selected: "get_array_columns_selected_general"
+    ...mapGetters('moduleHITs', {
+      array_columns_selected: 'get_array_columns_selected_general',
     }),
-    ...mapGetters(["get_show_progress_indicator"])
+    ...mapGetters(['get_show_progress_indicator']),
   },
-  created: function() {
-    Service_Batches.get_batch(this.id_batch).then(batch => {
+  created() {
+    Service_Batches.get_batch(this.id_batch).then((batch) => {
       this.batch_intern = batch;
     });
   },
   methods: {
-    ...mapActions("moduleHITs", {
-      function_reset_array_columns: "reset_array_columns_general"
+    ...mapActions('moduleHITs', {
+      function_reset_array_columns: 'reset_array_columns_general',
     }),
-    ...mapMutations("moduleHITs", {
-      function_set_array_columns: "set_array_columns_general"
-    })
+    ...mapMutations('moduleHITs', {
+      function_set_array_columns: 'set_array_columns_general',
+    }),
   },
   components: {
-    ListHits
-  }
+    ListHits,
+  },
 };
 </script>
 

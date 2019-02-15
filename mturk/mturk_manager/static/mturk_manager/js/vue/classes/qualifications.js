@@ -1,10 +1,9 @@
-import _ from "lodash";
+import _ from 'lodash';
 
 export class Qualification {
   constructor(data = {}) {
     this.id_mturk = data.id_mturk;
-    this.created_at =
-      data.created_at != undefined ? new Date(data.created_at) : undefined;
+    this.created_at = data.created_at != undefined ? new Date(data.created_at) : undefined;
     this.name_mturk = data.name_mturk;
     this.description_mturk = data.description_mturk;
     this.name_database = data.name_database;
@@ -35,7 +34,7 @@ export class Qualification {
     return JSON.stringify({
       id_mturk: this.id_mturk,
       name: this.name_database,
-      description: this.description_database
+      description: this.description_database,
     });
   }
 
@@ -43,14 +42,14 @@ export class Qualification {
     const form_data = new FormData();
 
     const set_updateable_fields = new Set([
-      "name_database",
-      "description_database",
-      "description_mturk"
+      'name_database',
+      'description_database',
+      'description_mturk',
       // 'is_active',
     ]);
     console.log(set_updateable_fields);
 
-    _.forOwn(this, function(value, key) {
+    _.forOwn(this, (value, key) => {
       if (value != undefined) {
         if (only_updateable_fields == true) {
           if (!set_updateable_fields.has(key)) {
@@ -70,7 +69,7 @@ export class Qualification {
   copy() {
     const result = {};
 
-    _.forOwn(this, function(value, key) {
+    _.forOwn(this, (value, key) => {
       result[key] = value;
     });
 

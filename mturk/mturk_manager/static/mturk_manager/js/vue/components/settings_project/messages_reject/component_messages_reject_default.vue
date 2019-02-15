@@ -51,45 +51,47 @@
 </template>
 
 <script>
-import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
-import { required, minValue, maxValue } from "vuelidate/lib/validators";
-import validations from "../../../mixins/validations";
-import { Service_Projects } from "../../../services/service_projects";
-import { Service_Messages_Reject } from "../../../services/Service_Messages_Reject";
+import {
+  mapState, mapMutations, mapActions, mapGetters,
+} from 'vuex';
+import { required, minValue, maxValue } from 'vuelidate/lib/validators';
+import validations from '../../../mixins/validations';
+import { Service_Projects } from '../../../services/service_projects';
+import { Service_Messages_Reject } from '../../../services/Service_Messages_Reject';
 
 export default {
-  name: "component-messages-reject-default",
+  name: 'component-messages-reject-default',
   mixins: [validations],
   data() {
     return {
       // message_reject: null,
       search: null,
-      snackbar_updated: false
+      snackbar_updated: false,
     };
   },
   methods: {
     save() {
       Service_Projects.set_message_reject_default({
         project: this.project_current,
-        message_reject: this.search
+        message_reject: this.search,
       }).then(() => {
         this.snackbar_updated = true;
       });
-    }
+    },
   },
   computed: {
-    ...mapGetters("moduleMessagesReject", {
-      list_messages_reject: "get_list_messages_reject"
+    ...mapGetters('moduleMessagesReject', {
+      list_messages_reject: 'get_list_messages_reject',
     }),
-    ...mapGetters("moduleProjects", {
-      project_current: "get_project_current"
-    })
+    ...mapGetters('moduleProjects', {
+      project_current: 'get_project_current',
+    }),
   },
   created() {
     Service_Messages_Reject.load();
   },
   components: {},
-  validations: {}
+  validations: {},
 };
 </script>
 

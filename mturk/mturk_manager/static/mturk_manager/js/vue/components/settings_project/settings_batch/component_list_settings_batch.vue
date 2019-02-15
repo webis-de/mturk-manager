@@ -68,33 +68,33 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from "vuex";
-import _ from "lodash";
-import ComponentAddSettingsBatch from "./component_add_settings_batch.vue";
-import ComponentEditSettingsBatch from "./component_edit_settings_batch.vue";
-import ComponentDeleteSettingsBatch from "./component_delete_settings_batch.vue";
-import { table } from "../../../mixins/table";
+import { mapState, mapActions, mapGetters } from 'vuex';
+import _ from 'lodash';
+import ComponentAddSettingsBatch from './component_add_settings_batch.vue';
+import ComponentEditSettingsBatch from './component_edit_settings_batch.vue';
+import ComponentDeleteSettingsBatch from './component_delete_settings_batch.vue';
+import { table } from '../../../mixins/table';
 
 export default {
   mixins: [table],
-  name: "component-list-settings-batch",
+  name: 'component-list-settings-batch',
   data() {
     return {
       list_headers: [
         {
-          text: "Name",
-          value: "name"
+          text: 'Name',
+          value: 'name',
         },
         {
-          text: "Actions",
-          value: "",
-          sortable: false
-        }
+          text: 'Actions',
+          value: '',
+          sortable: false,
+        },
       ],
 
       snackbar_deleted: false,
       snackbar_created: false,
-      snackbar_edited: false
+      snackbar_edited: false,
     };
   },
   computed: {
@@ -104,19 +104,19 @@ export default {
 
       return _.orderBy(
         this.project_current.settings_batch,
-        settings => settings.name
+        settings => settings.name,
       );
     },
-    ...mapGetters("moduleProjects", {
-      project_current: "get_project_current"
-    })
+    ...mapGetters('moduleProjects', {
+      project_current: 'get_project_current',
+    }),
   },
   methods: {},
-  created: function() {},
+  created() {},
   components: {
     ComponentAddSettingsBatch,
     ComponentEditSettingsBatch,
-    ComponentDeleteSettingsBatch
-  }
+    ComponentDeleteSettingsBatch,
+  },
 };
 </script>

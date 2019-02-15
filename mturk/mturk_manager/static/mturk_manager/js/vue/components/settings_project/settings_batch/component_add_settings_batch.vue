@@ -48,19 +48,21 @@
   </div>
 </template>
 <script>
-import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
-import _ from "lodash";
-import ComponentFormSettingsBatch from "./component_form_settings_batch";
-import settings_batch from "../../../mixins/settings_batch";
-import validations from "../../../mixins/validations";
-import { Service_Settings_Batch } from "../../../services/service_settings_batch";
+import {
+  mapState, mapMutations, mapActions, mapGetters,
+} from 'vuex';
+import _ from 'lodash';
+import ComponentFormSettingsBatch from './component_form_settings_batch';
+import settings_batch from '../../../mixins/settings_batch';
+import validations from '../../../mixins/validations';
+import { Service_Settings_Batch } from '../../../services/service_settings_batch';
 
 export default {
-  name: "component-add-settings-batch",
+  name: 'component-add-settings-batch',
   mixins: [validations, settings_batch],
   data() {
     return {
-      dialog: false
+      dialog: false,
     };
   },
   methods: {
@@ -68,10 +70,10 @@ export default {
       if (this.$refs.form.validate()) {
         Service_Settings_Batch.create({
           settings_batch: this.settings_batch,
-          project: this.project_current
+          project: this.project_current,
         }).then(() => {
           this.dialog = false;
-          this.$emit("created");
+          this.$emit('created');
           this.reset();
         });
       }
@@ -79,20 +81,20 @@ export default {
     reset() {
       this.update_fields();
       this.$v.$reset();
-    }
+    },
   },
   computed: {
     is_disabled() {
-      return _.size(_.get(this.project_current, "templates_worker", [])) == 0;
-    }
+      return _.size(_.get(this.project_current, 'templates_worker', [])) == 0;
+    },
   },
   watch: {
     dialog() {
       this.reset();
-    }
+    },
   },
   components: {
-    ComponentFormSettingsBatch
-  }
+    ComponentFormSettingsBatch,
+  },
 };
 </script>

@@ -40,33 +40,33 @@
 // import ComponentShowMoneySpent from './component-show-money-spent.vue';
 // import ComponentShowBatches from './component-show-batches.vue';
 export default {
-  name: "component-add-qualification",
+  name: 'component-add-qualification',
   props: {
     show_dialog_qualification_add: {
       required: true,
-      type: Boolean
-    }
+      type: Boolean,
+    },
   },
   data() {
     return {};
   },
   computed: {},
   methods: {
-    init: function() {
-      console.log("init");
+    init() {
+      console.log('init');
       setTimeout(() => {
-        this.$emit("finished");
+        this.$emit('finished');
       }, 1000);
-    }
+    },
   },
   watch: {
-    show_dialog_qualification_add: function(value_new) {
+    show_dialog_qualification_add(value_new) {
       if (value_new == true) {
         this.init();
       } else {
-        console.log("called but is false");
+        console.log('called but is false');
       }
-    }
-  }
+    },
+  },
 };
 </script>

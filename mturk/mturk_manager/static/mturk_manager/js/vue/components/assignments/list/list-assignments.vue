@@ -24,48 +24,48 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapMutations } from "vuex";
-import { Service_Assignments } from "../../../services/service_assignments";
-import BaseTable from "../../base-table";
-import ComponentItemAssignment from "./component_item_assignment";
+import { mapActions, mapGetters, mapMutations } from 'vuex';
+import { Service_Assignments } from '../../../services/service_assignments';
+import BaseTable from '../../base-table';
+import ComponentItemAssignment from './component_item_assignment';
 
 export default {
-  name: "list-assignments",
+  name: 'list-assignments',
   components: { ComponentItemAssignment, BaseTable },
   props: {
     id_hit: {
       required: false,
-      type: Number
+      type: Number,
     },
     show_links: {
       required: false,
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
   },
   data() {
     return {
-      function_load_page: Service_Assignments.load_page
+      function_load_page: Service_Assignments.load_page,
     };
   },
   methods: {
-    ...mapActions("moduleAssignments", {
-      function_reset_array_columns: "reset_array_columns_general"
+    ...mapActions('moduleAssignments', {
+      function_reset_array_columns: 'reset_array_columns_general',
     }),
-    ...mapMutations("moduleAssignments", {
-      function_set_items_selected: "set_assignments_selected",
-      function_clear_items_selected: "clear_assignments_selected",
-      function_set_array_columns: "set_array_columns_general"
-    })
+    ...mapMutations('moduleAssignments', {
+      function_set_items_selected: 'set_assignments_selected',
+      function_clear_items_selected: 'clear_assignments_selected',
+      function_set_array_columns: 'set_array_columns_general',
+    }),
   },
   computed: {
-    ...mapGetters("moduleAssignments", {
-      array_items: "get_array_assignments",
-      object_items_selected: "get_object_assignments_selected",
-      array_columns: "get_array_columns_general",
-      array_columns_selected: "get_array_columns_selected_general"
-    })
-  }
+    ...mapGetters('moduleAssignments', {
+      array_items: 'get_array_assignments',
+      object_items_selected: 'get_object_assignments_selected',
+      array_columns: 'get_array_columns_general',
+      array_columns_selected: 'get_array_columns_selected_general',
+    }),
+  },
 };
 </script>
 

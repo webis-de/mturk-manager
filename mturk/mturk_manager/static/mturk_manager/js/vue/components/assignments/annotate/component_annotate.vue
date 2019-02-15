@@ -16,18 +16,20 @@
 </template>
 
 <script>
-import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
-import _ from "lodash";
+import {
+  mapState, mapMutations, mapActions, mapGetters,
+} from 'vuex';
+import _ from 'lodash';
 
 export default {
-  name: "component_annotate",
+  name: 'component_annotate',
   data() {
     return {};
   },
   methods: {
     submit() {
-      window.open(this.url, "_blank");
-    }
+      window.open(this.url, '_blank');
+    },
   },
   computed: {
     count_assignments_selected() {
@@ -35,18 +37,18 @@ export default {
     },
     url() {
       let url = `/view/${this.project_current.slug}?list_ids=[`;
-      url += _.join(_.map(this.object_assignments_selected), ",");
+      url += _.join(_.map(this.object_assignments_selected), ',');
       // url += _.join(_.map(this.object_assignments_selected, (assignment) => assignment.id), ',');
-      return url + "]";
+      return `${url}]`;
     },
-    ...mapGetters("moduleAssignments", {
-      object_assignments_selected: "get_object_assignments_selected"
+    ...mapGetters('moduleAssignments', {
+      object_assignments_selected: 'get_object_assignments_selected',
     }),
-    ...mapGetters("moduleProjects", {
-      project_current: "get_project_current"
-    })
+    ...mapGetters('moduleProjects', {
+      project_current: 'get_project_current',
+    }),
   },
-  components: {}
+  components: {},
 };
 </script>
 

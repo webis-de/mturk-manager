@@ -1,11 +1,11 @@
-import axios from "axios";
+import axios from 'axios';
 
 export const module_finances = {
   namespaced: true,
   state: {
     balance: null,
     balance_sandbox: null,
-    url_api_projects_balance: undefined
+    url_api_projects_balance: undefined,
   },
   getters: {
     get_balance: (state, getters, rootState) => (use_sandbox = undefined) => {
@@ -13,10 +13,9 @@ export const module_finances = {
         return rootState.module_app.use_sandbox
           ? state.balance_sandbox
           : state.balance;
-      } else {
-        return use_sandbox ? state.balance_sandbox : state.balance;
       }
-    }
+      return use_sandbox ? state.balance_sandbox : state.balance;
+    },
   },
   mutations: {
     set_balance(state, balance_new) {
@@ -27,6 +26,6 @@ export const module_finances = {
     },
     set_urls(state, config) {
       state.url_api_projects_balance = config.url_api_projects_balance;
-    }
-  }
+    },
+  },
 };

@@ -31,9 +31,9 @@
         Block:
     </v-flex>
     <v-flex>
-        <v-radio-group 
-            v-bind:disabled="!is_enabled" 
-            v-bind:value="status_block_current" 
+        <v-radio-group
+            v-bind:disabled="!is_enabled"
+            v-bind:value="status_block_current"
             v-on:input="status_block_new = $event"
             row>
             <v-radio
@@ -49,16 +49,16 @@
 </v-layout> -->
 </template>
 <script>
-import { mapState, mapActions, mapGetters } from "vuex";
-import { Service_Workers } from "../../../services/service_worker";
+import { mapState, mapActions, mapGetters } from 'vuex';
+import { Service_Workers } from '../../../services/service_worker';
 // import { STATUS_BLOCK } from '../../classes/enums.js';
 export default {
-  name: "component-block-hard-worker",
+  name: 'component-block-hard-worker',
   props: {
     worker: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
@@ -67,7 +67,7 @@ export default {
       // is_updating: true,
       // status_block_current: undefined,
       // status_block_new: undefined,
-      show_snackbar: false
+      show_snackbar: false,
     };
   },
   watch: {
@@ -99,12 +99,12 @@ export default {
     },
     text_tooltip() {
       return this.worker.is_blocked_hard
-        ? "Is blocked globally"
-        : "Is not blocked globally";
+        ? 'Is blocked globally'
+        : 'Is not blocked globally';
     },
     color() {
-      return this.worker.is_blocked_hard ? "error" : "grey";
-    }
+      return this.worker.is_blocked_hard ? 'error' : 'grey';
+    },
     // is_enabled() {
     //     return !this.is_updating && this.worker.is_blocked != undefined;
     // },
@@ -116,7 +116,7 @@ export default {
 
       Service_Workers.update_status_block_hard({
         worker: this.worker,
-        is_blocked: !this.worker.is_blocked_hard
+        is_blocked: !this.worker.is_blocked_hard,
       }).then(() => {
         // this.is_updating = false;
         this.show_snackbar = true;
@@ -124,9 +124,9 @@ export default {
       });
       // console.log(this.worker.is_blocked_hard);
     },
-    ...mapActions(["set_show_progress_indicator"])
+    ...mapActions(['set_show_progress_indicator']),
   },
-  created: function() {},
-  components: {}
+  created() {},
+  components: {},
 };
 </script>

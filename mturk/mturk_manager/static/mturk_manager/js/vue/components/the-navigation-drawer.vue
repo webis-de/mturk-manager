@@ -35,23 +35,23 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapState, mapActions } from 'vuex';
 
 export default {
-  name: "the-navigation-drawer",
+  name: 'the-navigation-drawer',
   props: {
     show_drawer: {
       required: true,
-      type: Boolean
-    }
+      type: Boolean,
+    },
   },
   data() {
     return {
       list_items_menu: [
         {
-          name: "dashboard",
-          label: "Projects",
-          icon: "list"
+          name: 'dashboard',
+          label: 'Projects',
+          icon: 'list',
           // icon: 'ballot',
         },
         // {
@@ -61,47 +61,47 @@ export default {
         //     // icon: 'ballot',
         // },
         {
-          name: "batches",
-          label: "Batches",
-          icon: "notes"
+          name: 'batches',
+          label: 'Batches',
+          icon: 'notes',
           // icon: 'ballot',
         },
         {
-          name: "hits",
-          label: "HITs",
-          icon: "notes"
+          name: 'hits',
+          label: 'HITs',
+          icon: 'notes',
           // icon: 'ballot',
         },
         {
-          name: "assignments",
-          label: "Assignments",
-          icon: "notes"
+          name: 'assignments',
+          label: 'Assignments',
+          icon: 'notes',
         },
         {
-          name: "finances",
-          label: "Finances",
-          icon: "attach_money"
+          name: 'finances',
+          label: 'Finances',
+          icon: 'attach_money',
         },
         {
-          name: "workers",
-          label: "Workers",
-          icon: "person"
+          name: 'workers',
+          label: 'Workers',
+          icon: 'person',
         },
         {
-          name: "settings_project",
-          label: "Project Settings",
-          icon: "settings_applications"
-        }
+          name: 'settings_project',
+          label: 'Project Settings',
+          icon: 'settings_applications',
+        },
         // {
         //     name: 'Qualifications',
         //     path: '/qualifications',
         //     icon: 'stars',
         // },
-      ]
+      ],
     };
   },
   computed: {
-    ...mapState(["url_project"])
-  }
+    ...mapState(['url_project']),
+  },
 };
 </script>

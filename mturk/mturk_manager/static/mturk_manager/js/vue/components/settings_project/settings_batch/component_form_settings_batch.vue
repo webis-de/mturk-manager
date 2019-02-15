@@ -237,13 +237,15 @@
 </template>
 
 <script>
-import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
-import humanizeDuration from "humanize-duration";
-import _ from "lodash";
-import helpers from "../../../mixins/helpers";
+import {
+  mapState, mapMutations, mapActions, mapGetters,
+} from 'vuex';
+import humanizeDuration from 'humanize-duration';
+import _ from 'lodash';
+import helpers from '../../../mixins/helpers';
 
 export default {
-  name: "component-form-settings-batch",
+  name: 'component-form-settings-batch',
   mixins: [helpers],
   props: {
     v: {},
@@ -261,7 +263,7 @@ export default {
     has_content_adult: {},
     qualification_assignments_approved: {},
     qualification_hits_approved: {},
-    qualification_locale: {}
+    qualification_locale: {},
   },
   data() {
     return {};
@@ -269,7 +271,7 @@ export default {
   methods: {
     handle_change_combobox(f) {
       f.forEach((element, index) => {
-        if (typeof element == "string") {
+        if (typeof element === 'string') {
           this.$set(f, index, { text: element });
         }
       });
@@ -280,36 +282,35 @@ export default {
     remove_qualification_locale(item) {
       this.qualification_locale.splice(
         this.qualification_locale.indexOf(item),
-        1
+        1,
       );
       // this.qualification_locale = [...this.qualification_locale]
     },
     remove(item) {
       this.keywords.splice(this.keywords.indexOf(item), 1);
       // this.keywords = [...this.keywords]
-    }
+    },
   },
   computed: {
     list_templates() {
       return _.orderBy(
         this.project_current.templates_worker,
-        template => template.name
+        template => template.name,
       );
     },
     list_keywords() {
       if (this.object_keywords == null) {
         return [];
-      } else {
-        return Object.values(this.object_keywords);
       }
+      return Object.values(this.object_keywords);
     },
-    ...mapGetters("moduleProjects", {
-      project_current: "get_project_current"
+    ...mapGetters('moduleProjects', {
+      project_current: 'get_project_current',
     }),
-    ...mapGetters("moduleKeywords", {
-      object_keywords: "get_object_keywords"
-    })
-  }
+    ...mapGetters('moduleKeywords', {
+      object_keywords: 'get_object_keywords',
+    }),
+  },
 };
 </script>
 

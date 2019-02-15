@@ -18,31 +18,33 @@
 </template>
 
 <script>
-import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
+import {
+  mapState, mapMutations, mapActions, mapGetters,
+} from 'vuex';
 
-import ComponentCreateBatch from "./create/component_create_batch.vue";
-import ComponentBatchDetail from "./detail/component_batch_detail.vue";
-import ComponentDownloadBatch from "./component_download_batch.vue";
-import slug_project from "../../mixins/slug_project";
-import ComponentItemBatch from "./list/component_item_batch";
-import { Service_Batches } from "../../services/service_batches";
-import ListBatches from "./list/list-batches";
+import ComponentCreateBatch from './create/component_create_batch.vue';
+import ComponentBatchDetail from './detail/component_batch_detail.vue';
+import ComponentDownloadBatch from './component_download_batch.vue';
+import slug_project from '../../mixins/slug_project';
+import ComponentItemBatch from './list/component_item_batch';
+import { Service_Batches } from '../../services/service_batches';
+import ListBatches from './list/list-batches';
 
 export default {
   mixins: [
-    slug_project
+    slug_project,
     // load_data,
   ],
   props: {
-    id_batch: {}
+    id_batch: {},
   },
-  name: "app-batches",
+  name: 'app-batches',
   components: {
     ListBatches,
     ComponentItemBatch,
     ComponentCreateBatch,
     ComponentBatchDetail,
-    ComponentDownloadBatch
-  }
+    ComponentDownloadBatch,
+  },
 };
 </script>

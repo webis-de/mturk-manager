@@ -1,5 +1,5 @@
-import { mapState, mapActions, mapGetters } from "vuex";
-import { Service_Batches } from "../services/service_batches";
+import { mapState, mapActions, mapGetters } from 'vuex';
+import { Service_Batches } from '../services/service_batches';
 
 export default {
   methods: {
@@ -19,17 +19,17 @@ export default {
       //     this.set_show_progress_indicator(false);
       // });
     },
-    ...mapActions(["set_show_progress_indicator"])
+    ...mapActions(['set_show_progress_indicator']),
   },
   computed: {
-    ...mapState("module_app", ["use_sandbox"])
+    ...mapState('module_app', ['use_sandbox']),
   },
   created() {
     this.refresh_data(false);
   },
   watch: {
-    use_sandbox: function() {
+    use_sandbox() {
       this.refresh_data(false);
-    }
-  }
+    },
+  },
 };

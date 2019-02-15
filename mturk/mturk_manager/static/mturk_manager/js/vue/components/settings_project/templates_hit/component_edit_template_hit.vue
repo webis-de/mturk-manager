@@ -87,84 +87,85 @@
 	</v-snackbar> -->
 </template>
 <script>
-import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
-import _ from "lodash";
-import { required, minValue, maxValue } from "vuelidate/lib/validators";
-import helpers from "../../../mixins/helpers";
-import validations from "../../../mixins/validations";
-import Template_HIT from "../../../classes/template_hit";
-import { Service_Templates } from "../../../services/service_templates";
+import {
+  mapState, mapMutations, mapActions, mapGetters,
+} from 'vuex';
+import _ from 'lodash';
+import { required, minValue, maxValue } from 'vuelidate/lib/validators';
+import helpers from '../../../mixins/helpers';
+import validations from '../../../mixins/validations';
+import Template_HIT from '../../../classes/template_hit';
+import { Service_Templates } from '../../../services/service_templates';
 
 export default {
-  name: "component-edit-template-hit",
+  name: 'component-edit-template-hit',
   mixins: [helpers, validations],
   props: {
-    template_hit_current: {}
+    template_hit_current: {},
   },
   data() {
     return {
       template_hit: new Template_HIT(this.template_hit_current),
-      dialog: false
+      dialog: false,
     };
   },
   methods: {
     update(close) {
       if (this.$refs.form.validate()) {
         Service_Templates.edit({
-          type_template: "hit",
+          type_template: 'hit',
           template_current: this.template_hit_current,
           template_new: this.template_hit,
-          project: this.project_current
+          project: this.project_current,
         }).then(() => {
           if (close == true) {
             this.dialog = false;
             this.reset();
           }
-          this.$emit("edited");
+          this.$emit('edited');
         });
       }
       // console.log(this.project_current);
     },
     reset() {
       (this.template_hit = new Template_HIT(this.template_hit_current)),
-        this.$v.$reset();
+      this.$v.$reset();
       this.$v.$touch();
     },
-    ...mapActions("moduleProjects", {
-      edit_template_hit: "edit_template_hit"
-    })
+    ...mapActions('moduleProjects', {
+      edit_template_hit: 'edit_template_hit',
+    }),
   },
   computed: {
     list_templates_hit() {
       return _.orderBy(
         this.project_current.templates_hit,
-        template => template.name
+        template => template.name,
       );
     },
-    ...mapGetters("moduleProjects", {
-      project_current: "get_project_current"
-    })
+    ...mapGetters('moduleProjects', {
+      project_current: 'get_project_current',
+    }),
   },
   watch: {
     dialog() {
       this.reset();
-    }
+    },
   },
   validations: {
     template_hit: {
       name: {
-        required
+        required,
       },
       template: {
         required,
-        contains_injection_assignments: value =>
-          value != undefined && value.indexOf(" data-inject_assignments") >= 0
-      }
-    }
+        contains_injection_assignments: value => value != undefined && value.indexOf(' data-inject_assignments') >= 0,
+      },
+    },
   },
   created() {
     this.$v.$touch();
   },
-  components: {}
+  components: {},
 };
 </script>

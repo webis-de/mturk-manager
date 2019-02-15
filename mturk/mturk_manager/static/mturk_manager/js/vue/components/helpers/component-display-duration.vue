@@ -11,27 +11,27 @@ export default {
   // mixins: [
   //     // helpers,
   // ],
-  name: "component-display-duration",
+  name: 'component-display-duration',
   props: {
     duration: {
       required: true,
-      type: Date | undefined
-    }
+      type: Date | undefined,
+    },
   },
   computed: {
-    duration_formatted: function() {
+    duration_formatted() {
       if (this.duration === undefined) {
         return undefined;
-      } else {
-        // return this.datetime;
-        // console.log(typeof this.datetime)
-        // console.log(this.datetime)
-        return this.duration.humanize();
-        // return this.datetime.toLocaleString();
       }
+      // return this.datetime;
+      // console.log(typeof this.datetime)
+      // console.log(this.datetime)
+      return this.duration.humanize();
+      // return this.datetime.toLocaleString();
+
       //       return this.amount_formatted(this.amount);
       // return this.amount.toFixed(2) + ' $';
-    }
-  }
+    },
+  },
 };
 </script>

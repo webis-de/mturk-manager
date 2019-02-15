@@ -74,81 +74,79 @@
 </template>
 
 <script>
-import { update_sandbox } from "../mixins/update_sandbox";
-import { external_pagination } from "../mixins/external_pagination";
-import { table } from "../mixins/table";
-import ComponentSettingsTable from "./helpers/component-settings-table";
+import { update_sandbox } from '../mixins/update_sandbox';
+import { external_pagination } from '../mixins/external_pagination';
+import { table } from '../mixins/table';
+import ComponentSettingsTable from './helpers/component-settings-table';
 
 export default {
-  name: "base-table",
+  name: 'base-table',
   components: { ComponentSettingsTable },
   mixins: [update_sandbox, external_pagination, table],
   props: {
     array_items: {
       type: Function,
-      required: true
+      required: true,
     },
 
     array_columns: {
       type: Array,
-      required: true
+      required: true,
     },
     array_columns_selected: {
       type: Array,
-      required: true
+      required: true,
     },
 
     function_reset_array_columns: {
       type: Function,
-      required: true
+      required: true,
     },
     function_set_array_columns: {
       type: Function,
-      required: true
+      required: true,
     },
     function_load_page: {
       type: Function,
-      required: true
+      required: true,
     },
 
     object_items_selected: {
       type: Object,
-      required: true
+      required: true,
     },
     function_set_items_selected: {
       type: Function,
-      required: true
+      required: true,
     },
     function_clear_items_selected: {
       type: Function,
-      required: true
+      required: true,
     },
 
     filters: {
       required: false,
       type: Object,
-      default: () => {
-        return {};
-      }
+      default: () => ({}),
     },
 
     isCondensed: {
       required: false,
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
   },
   data() {
     return {
       pagination: {
         rowsPerPage: 25,
-        sortBy: "datetime_creation",
-        descending: true
+        sortBy: 'datetime_creation',
+        descending: true,
       },
 
       loading: false,
-      search: "",
-      items_total: undefined
+      search: '',
+      items_total: undefined,
     };
   },
   computed: {
@@ -163,7 +161,7 @@ export default {
         return false;
       }
 
-      _.forEach(this.array_page, item => {
+      _.forEach(this.array_page, (item) => {
         if (!_.has(this.object_items_selected, item.id)) {
           is_page_selected = false;
           return false;
@@ -173,40 +171,40 @@ export default {
       return is_page_selected;
     },
     array_page() {
-      let array_items = this.array_items();
+      const array_items = this.array_items();
       return array_items === null ? [] : array_items;
     },
     stylesHeaderRow() {
       return {
-        height: this.isCondensed ? "unset" : null
+        height: this.isCondensed ? 'unset' : null,
       };
     },
     stylesHeaderCell() {
       return {
-        padding: this.isCondensed ? "5px" : null
+        padding: this.isCondensed ? '5px' : null,
       };
-    }
+    },
   },
   methods: {
     load_page() {
       this.loading = true;
       this.function_load_page(this.pagination, this.filters).then(
-        items_total => {
+        (items_total) => {
           this.items_total = items_total;
           this.loading = false;
-        }
+        },
       );
     },
     toggle_all() {
       this.function_set_items_selected({
         add: !this.is_page_selected,
-        array_items: this.array_page
+        array_items: this.array_page,
       });
-    }
+    },
   },
   beforeDestroy() {
     this.function_clear_items_selected();
-  }
+  },
 };
 </script>
 

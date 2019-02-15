@@ -1,6 +1,6 @@
-import _ from "lodash";
-import Vue from "vue";
-import moment from "moment";
+import _ from 'lodash';
+import Vue from 'vue';
+import moment from 'moment';
 
 export default class Batch {
   constructor(data = {}) {
@@ -27,8 +27,7 @@ export default class Batch {
   get progress() {
     // if(this._progress != null) return this._progress;
     //
-    const progress =
-      (this.count_assignments_available / this.count_assignments_total) * 100.0;
+    const progress = (this.count_assignments_available / this.count_assignments_total) * 100.0;
     // console.log('EXECUTED1')
 
     // this._progress = progress;

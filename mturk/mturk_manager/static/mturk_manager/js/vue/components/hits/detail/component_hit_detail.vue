@@ -22,12 +22,14 @@
   </v-layout>
 </template>
 <script>
-import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
-import _ from "lodash";
-import ListAssignments from "../../assignments/list/list-assignments";
+import {
+  mapState, mapMutations, mapActions, mapGetters,
+} from 'vuex';
+import _ from 'lodash';
+import ListAssignments from '../../assignments/list/list-assignments';
 
 export default {
-  name: "component-hit-detail",
+  name: 'component-hit-detail',
   // props: {
   //  id_hit: {
   //      required: true,
@@ -36,8 +38,8 @@ export default {
   props: {
     id_hit: {
       required: true,
-      type: Number
-    }
+      type: Number,
+    },
   },
   data() {
     return {};
@@ -51,41 +53,38 @@ export default {
     list_assignments() {
       if (this.hit.object_assignments == undefined) {
         return [];
-      } else {
-        return _.orderBy(this.hit.object_assignments);
       }
+      return _.orderBy(this.hit.object_assignments);
     },
     hit() {
       const object_hits = this.get_object_hits();
       if (object_hits == null) {
         return {};
-      } else {
-        if (object_hits[this.id_hit] == undefined) {
-          return {};
-        } else {
-          return object_hits[this.id_hit];
-        }
       }
+      if (object_hits[this.id_hit] == undefined) {
+        return {};
+      }
+      return object_hits[this.id_hit];
     },
-    ...mapGetters("moduleAssignments", {
-      array_columns_selected: "get_array_columns_selected_general"
+    ...mapGetters('moduleAssignments', {
+      array_columns_selected: 'get_array_columns_selected_general',
     }),
-    ...mapGetters("moduleHITs", {
-      get_object_hits: "get_object_hits"
+    ...mapGetters('moduleHITs', {
+      get_object_hits: 'get_object_hits',
     }),
-    ...mapGetters(["get_show_progress_indicator"])
+    ...mapGetters(['get_show_progress_indicator']),
   },
   methods: {
-    ...mapActions("moduleAssignments", {
-      function_reset_array_columns: "reset_array_columns_general"
+    ...mapActions('moduleAssignments', {
+      function_reset_array_columns: 'reset_array_columns_general',
     }),
-    ...mapMutations("moduleAssignments", {
-      function_set_array_columns: "set_array_columns_general"
-    })
+    ...mapMutations('moduleAssignments', {
+      function_set_array_columns: 'set_array_columns_general',
+    }),
   },
   components: {
-    ListAssignments
-  }
+    ListAssignments,
+  },
 };
 </script>
 

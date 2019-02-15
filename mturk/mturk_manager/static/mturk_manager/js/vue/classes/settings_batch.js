@@ -1,4 +1,4 @@
-import _ from "lodash";
+import _ from 'lodash';
 
 export default class Settings_Batch {
   constructor(data = undefined) {
@@ -8,26 +8,20 @@ export default class Settings_Batch {
     this.title = data != undefined ? data.title : undefined;
     this.description = data != undefined ? data.description : undefined;
     this.reward = data != undefined ? data.reward : undefined;
-    this.keywords =
-      data != undefined ? JSON.parse(JSON.stringify(data.keywords)) : [];
-    this.count_assignments =
-      data != undefined ? data.count_assignments : undefined;
-    this.count_assignments_max_per_worker =
-      data != undefined ? data.count_assignments_max_per_worker : undefined;
+    this.keywords = data != undefined ? JSON.parse(JSON.stringify(data.keywords)) : [];
+    this.count_assignments = data != undefined ? data.count_assignments : undefined;
+    this.count_assignments_max_per_worker = data != undefined ? data.count_assignments_max_per_worker : undefined;
     this.lifetime = data != undefined ? data.lifetime : undefined;
     this.duration = data != undefined ? data.duration : undefined;
     this.block_workers = data != undefined ? data.block_workers : false;
     this.template = data != undefined ? data.template : undefined;
 
     this.has_content_adult = data != undefined ? data.has_content_adult : false;
-    this.qualification_assignments_approved =
-      data != undefined ? data.qualification_assignments_approved : undefined;
-    this.qualification_hits_approved =
-      data != undefined ? data.qualification_hits_approved : undefined;
-    this.qualification_locale =
-      data != undefined
-        ? JSON.parse(JSON.stringify(data.qualification_locale))
-        : [];
+    this.qualification_assignments_approved = data != undefined ? data.qualification_assignments_approved : undefined;
+    this.qualification_hits_approved = data != undefined ? data.qualification_hits_approved : undefined;
+    this.qualification_locale = data != undefined
+      ? JSON.parse(JSON.stringify(data.qualification_locale))
+      : [];
   }
 
   get_changes(settings_batch) {
@@ -66,14 +60,10 @@ export default class Settings_Batch {
           // 	}
           // }
           // }
-          if (typeof settings_batch[key] == "object") {
+          if (typeof settings_batch[key] === 'object') {
             if (
-              _.differenceBy(settings_batch[key], this[key], value =>
-                value["text"].toLowerCase()
-              ).length > 0 ||
-              _.differenceBy(this[key], settings_batch[key], value =>
-                value["text"].toLowerCase()
-              ).length > 0
+              _.differenceBy(settings_batch[key], this[key], value => value.text.toLowerCase()).length > 0
+              || _.differenceBy(this[key], settings_batch[key], value => value.text.toLowerCase()).length > 0
             ) {
               object[key] = settings_batch[key];
             }

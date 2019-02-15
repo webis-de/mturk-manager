@@ -58,25 +58,27 @@
 	</v-snackbar> -->
 </template>
 <script>
-import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
-import _ from "lodash";
-import { required, minValue, maxValue } from "vuelidate/lib/validators";
-import ComponentFormSettingsBatch from "./component_form_settings_batch";
-import settings_batch from "../../../mixins/settings_batch";
-import validations from "../../../mixins/validations";
-import { Service_Settings_Batch } from "../../../services/service_settings_batch";
+import {
+  mapState, mapMutations, mapActions, mapGetters,
+} from 'vuex';
+import _ from 'lodash';
+import { required, minValue, maxValue } from 'vuelidate/lib/validators';
+import ComponentFormSettingsBatch from './component_form_settings_batch';
+import settings_batch from '../../../mixins/settings_batch';
+import validations from '../../../mixins/validations';
+import { Service_Settings_Batch } from '../../../services/service_settings_batch';
 
 export default {
-  name: "component-edit-settings-batch",
+  name: 'component-edit-settings-batch',
   mixins: [validations, settings_batch],
   props: {
-    settings_batch_current: {}
+    settings_batch_current: {},
   },
   data() {
     return {
       dialog: false,
       disable_unique_name: true,
-      name_not_unique: true
+      name_not_unique: true,
     };
   },
   methods: {
@@ -85,11 +87,11 @@ export default {
         Service_Settings_Batch.edit({
           settings_batch_current: this.settings_batch_current,
           settings_batch_new: this.settings_batch,
-          project: this.project_current
+          project: this.project_current,
         });
 
         this.dialog = false;
-        this.$emit("edited");
+        this.$emit('edited');
         this.reset();
       }
     },
@@ -98,20 +100,20 @@ export default {
       this.$v.$reset();
       this.$v.$touch();
     },
-    ...mapActions("moduleProjects", {
-      edit_settings_batch: "edit_settings_batch"
-    })
+    ...mapActions('moduleProjects', {
+      edit_settings_batch: 'edit_settings_batch',
+    }),
   },
   watch: {
     dialog() {
       this.reset();
-    }
+    },
   },
   created() {
     this.$v.$touch();
   },
   components: {
-    ComponentFormSettingsBatch
-  }
+    ComponentFormSettingsBatch,
+  },
 };
 </script>

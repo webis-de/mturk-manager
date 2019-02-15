@@ -1,5 +1,5 @@
-import _ from "lodash";
-import moment from "moment";
+import _ from 'lodash';
+import moment from 'moment';
 
 export default class HIT {
   constructor(data = {}) {
@@ -22,8 +22,7 @@ export default class HIT {
   get progress() {
     // if(this._progress != null) return this._progress;
 
-    const progress =
-      (this.count_assignments_available / this.count_assignments_total) * 100.0;
+    const progress = (this.count_assignments_available / this.count_assignments_total) * 100.0;
     // this._progress = progress;
     return progress;
   }

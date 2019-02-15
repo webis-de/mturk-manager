@@ -21,45 +21,45 @@
 </template>
 
 <script>
-import required from "vuelidate/src/validators/required";
-import { mapActions } from "vuex";
-import validations from "../../mixins/validations";
-import { Service_App } from "../../services/service.app";
+import required from 'vuelidate/src/validators/required';
+import { mapActions } from 'vuex';
+import validations from '../../mixins/validations';
+import { Service_App } from '../../services/service.app';
 
 export default {
-  name: "add-credentials",
+  name: 'add-credentials',
   mixins: [validations],
   data() {
     return {
-      url: "",
-      token: ""
+      url: '',
+      token: '',
     };
   },
   methods: {
     async save() {
-      if (!this.url.startsWith("http")) {
-        this.url = "http://" + this.url;
+      if (!this.url.startsWith('http')) {
+        this.url = `http://${this.url}`;
       }
 
       await this.set_credentials({
         url: this.url,
-        token: this.token
+        token: this.token,
       });
 
       await Service_App.init();
 
-      this.$router.push({ name: "dashboard" });
+      this.$router.push({ name: 'dashboard' });
     },
-    ...mapActions("module_app", ["set_credentials"])
+    ...mapActions('module_app', ['set_credentials']),
   },
   validations: {
     url: {
-      required
+      required,
     },
     token: {
-      required
-    }
-  }
+      required,
+    },
+  },
 };
 </script>
 

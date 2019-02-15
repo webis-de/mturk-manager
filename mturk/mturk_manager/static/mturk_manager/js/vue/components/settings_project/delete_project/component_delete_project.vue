@@ -29,26 +29,28 @@
 </template>
 
 <script>
-import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
-import { Service_Projects } from "../../../services/service_projects";
+import {
+  mapState, mapMutations, mapActions, mapGetters,
+} from 'vuex';
+import { Service_Projects } from '../../../services/service_projects';
 
 export default {
-  name: "component-delete-project",
+  name: 'component-delete-project',
   data() {
     return {
-      dialog: false
+      dialog: false,
     };
   },
   methods: {
     async confirm() {
       Service_Projects.delete({ router: this.$router });
     },
-    ...mapActions("moduleProjects", {
-      delete_project: "delete_project"
-    })
+    ...mapActions('moduleProjects', {
+      delete_project: 'delete_project',
+    }),
   },
   computed: {},
-  components: {}
+  components: {},
 };
 </script>
 

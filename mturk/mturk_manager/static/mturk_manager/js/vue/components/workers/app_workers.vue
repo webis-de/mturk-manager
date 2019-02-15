@@ -9,20 +9,20 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from "vuex";
+import { mapState, mapActions, mapGetters } from 'vuex';
 // import { Policy } from '../../store/modules/policies.js';
 
-import ComponentListWorkers from "./list/list-workers.vue";
+import ComponentListWorkers from './list/list-workers.vue';
 // import ComponentShowMoneySpent from './component-show-money-spent.vue';
 // import ComponentShowBatches from './component-show-batches.vue';
-import slug_project from "../../mixins/slug_project";
+import slug_project from '../../mixins/slug_project';
 
 export default {
   mixins: [slug_project],
-  name: "app-workers",
+  name: 'app-workers',
   data() {
     return {
-      workers_selected: []
+      workers_selected: [],
     };
   },
   computed: {
@@ -83,9 +83,9 @@ export default {
   // },
 
   components: {
-    ComponentListWorkers
+    ComponentListWorkers,
     // ComponentShowMoneySpent,
     // ComponentShowBatches,
-  }
+  },
 };
 </script>

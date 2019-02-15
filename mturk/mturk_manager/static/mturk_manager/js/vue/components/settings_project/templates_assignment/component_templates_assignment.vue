@@ -7,15 +7,17 @@
 
 <script>
 // import settings_batch from '../../../mixins/settings_batch';
-import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
-import _ from "lodash";
-import ComponentListTemplatesAssignment from "./component_list_templates_assignment.vue";
+import {
+  mapState, mapMutations, mapActions, mapGetters,
+} from 'vuex';
+import _ from 'lodash';
+import ComponentListTemplatesAssignment from './component_list_templates_assignment.vue';
 
 export default {
   // mixins: [
   //     settings_batch,
   // ],
-  name: "component-templates-assignment",
+  name: 'component-templates-assignment',
   data() {
     return {
       // search: undefined,
@@ -24,8 +26,8 @@ export default {
   methods: {},
   computed: {},
   components: {
-    ComponentListTemplatesAssignment
-  }
+    ComponentListTemplatesAssignment,
+  },
 };
 </script>
 

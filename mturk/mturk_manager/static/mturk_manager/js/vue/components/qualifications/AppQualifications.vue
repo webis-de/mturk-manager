@@ -72,55 +72,55 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from "vuex";
-import { Qualification } from "../../classes/qualifications.js";
+import { mapState, mapActions, mapGetters } from 'vuex';
+import { Qualification } from '../../classes/qualifications.js';
 
-import ComponentAddQualification from "./component-add-qualification.vue";
-import ComponentDeleteQualification from "./component-delete-qualification.vue";
-import ComponentUpdateQualification from "./component-update-qualification.vue";
-import ComponentDownloadQualifications from "./component-download-qualifications.vue";
+import ComponentAddQualification from './component-add-qualification.vue';
+import ComponentDeleteQualification from './component-delete-qualification.vue';
+import ComponentUpdateQualification from './component-update-qualification.vue';
+import ComponentDownloadQualifications from './component-download-qualifications.vue';
 // import ComponentShowMoneySpent from './component-show-money-spent.vue';
 // import ComponentShowBatches from './component-show-batches.vue';
 export default {
-  name: "app-qualifications",
+  name: 'app-qualifications',
 
   data() {
     return {
       policies_selected: [],
       list_headers: [
         {
-          text: "Name",
-          value: "name_mturk"
+          text: 'Name',
+          value: 'name_mturk',
         },
         {
-          text: "Description",
-          value: "description_mturk"
+          text: 'Description',
+          value: 'description_mturk',
         },
         {
-          text: "Created At",
-          value: "created_at"
+          text: 'Created At',
+          value: 'created_at',
         },
         {
-          text: "",
+          text: '',
           // text: 'Actions',
-          value: "name",
+          value: 'name',
           sortable: false,
-          align: "right"
-        }
+          align: 'right',
+        },
       ],
 
-      qualification_to_be_edited: undefined
+      qualification_to_be_edited: undefined,
     };
   },
   watch: {
-    use_sandbox: function() {
+    use_sandbox() {
       this.refresh_data();
-    }
+    },
   },
   computed: {
-    ...mapGetters("moduleQualifications", {
-      list_policies: "list_policies"
-    })
+    ...mapGetters('moduleQualifications', {
+      list_policies: 'list_policies',
+    }),
   },
   methods: {
     refresh_data() {
@@ -138,13 +138,13 @@ export default {
     edit_policy() {
       this.update_policy(this.policy_dialog).then(() => {});
     },
-    ...mapActions("moduleQualifications", {
-      sync_qualifications: "sync_qualifications",
-      update_policy: "update_policy"
+    ...mapActions('moduleQualifications', {
+      sync_qualifications: 'sync_qualifications',
+      update_policy: 'update_policy',
     }),
-    ...mapActions(["set_show_progress_indicator"])
+    ...mapActions(['set_show_progress_indicator']),
   },
-  created: function() {
+  created() {
     this.refresh_data();
   },
 
@@ -152,9 +152,9 @@ export default {
     ComponentAddQualification,
     ComponentDeleteQualification,
     ComponentUpdateQualification,
-    ComponentDownloadQualifications
+    ComponentDownloadQualifications,
     // ComponentShowMoneySpent,
     // ComponentShowBatches,
-  }
+  },
 };
 </script>

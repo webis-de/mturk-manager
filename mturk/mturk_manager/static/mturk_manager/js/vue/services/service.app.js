@@ -1,13 +1,13 @@
-import axios from "axios";
-import { store } from "../store/vuex";
-import { Service_Endpoint } from "./service_endpoint";
-import { Service_Projects } from "./service_projects";
+import axios from 'axios';
+import { store } from '../store/vuex';
+import { Service_Endpoint } from './service_endpoint';
+import { Service_Projects } from './service_projects';
 
-console.log("1", 1);
+console.log('1', 1);
 class Class_Service_App {
   async init() {
-    console.warn("init app");
-    const is_success = await store.dispatch("module_app/load_credentials");
+    console.warn('init app');
+    const is_success = await store.dispatch('module_app/load_credentials');
 
     if (is_success === false) {
       // router.push({name: 'add_credentials'});
@@ -26,14 +26,14 @@ class Class_Service_App {
   async load_config() {
     const response = await Service_Endpoint.make_request({
       url: {
-        path: "config"
+        path: 'config',
       },
-      method: "get"
+      method: 'get',
     });
 
-    console.log("config", response.data);
+    console.log('config', response.data);
 
-    await store.dispatch("module_app/init", response.data);
+    await store.dispatch('module_app/init', response.data);
 
     return response.data;
   }
@@ -43,23 +43,23 @@ class Class_Service_App {
 
     const response = await Service_Endpoint.make_request({
       url: {
-        path: store.getters["get_url"](
-          "url_api_projects_balance",
-          "module_finances"
+        path: store.getters.get_url(
+          'url_api_projects_balance',
+          'module_finances',
         ),
         use_sandbox,
-        project: store.getters["moduleProjects/get_project_current"]
+        project: store.getters['moduleProjects/get_project_current'],
       },
-      method: "get"
+      method: 'get',
     });
 
     if (use_sandbox === true) {
       store.commit(
-        "module_finances/set_balance_sandbox",
-        response.data.balance
+        'module_finances/set_balance_sandbox',
+        response.data.balance,
       );
     } else {
-      store.commit("module_finances/set_balance", response.data.balance);
+      store.commit('module_finances/set_balance', response.data.balance);
     }
   }
 }

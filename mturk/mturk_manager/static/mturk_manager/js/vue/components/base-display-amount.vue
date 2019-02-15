@@ -3,22 +3,22 @@
 </template>
 
 <script>
-import helpers from "../mixins/helpers";
+import helpers from '../mixins/helpers';
 
 export default {
   mixins: [helpers],
-  name: "base-display-amount",
+  name: 'base-display-amount',
   props: {
     amount: {
       required: true,
-      type: Number
-    }
+      type: Number,
+    },
   },
   computed: {
-    amount_formatted_: function() {
+    amount_formatted_() {
       return this.amount_formatted(this.amount);
-      return this.amount.toFixed(2) + " $";
-    }
-  }
+      return `${this.amount.toFixed(2)} $`;
+    },
+  },
 };
 </script>

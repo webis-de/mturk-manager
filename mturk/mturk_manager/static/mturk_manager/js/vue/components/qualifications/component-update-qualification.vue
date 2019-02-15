@@ -16,8 +16,8 @@
                 ></v-text-field>
               </v-flex>
               <v-flex xs12 md2>
-                <!-- <v-switch 
-                                        v-bind:label="object_qualification.is_active ? 'Active' : 'Inactive'" 
+                <!-- <v-switch
+                                        v-bind:label="object_qualification.is_active ? 'Active' : 'Inactive'"
                                         v-model="object_qualification.is_active"
                                     ></v-switch> -->
               </v-flex>
@@ -91,19 +91,19 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions } from 'vuex';
 // import { Policy } from '../../store/modules/policies.js';
-import { Qualification } from "../../classes/qualifications.js";
+import { Qualification } from '../../classes/qualifications.js';
 
 // import ComponentShowBalance from './component-show-balance.vue';
 // import ComponentShowMoneySpent from './component-show-money-spent.vue';
 // import ComponentShowBatches from './component-show-batches.vue';
 export default {
-  name: "component-update-qualification",
+  name: 'component-update-qualification',
   props: {
     qualification_to_be_edited: {
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
@@ -111,41 +111,41 @@ export default {
       is_updating: false,
       is_form_valid: false,
       add_custom_mturk: false,
-      title_dialog: "Update Qualification",
+      title_dialog: 'Update Qualification',
 
-      object_qualification: new Qualification()
+      object_qualification: new Qualification(),
     };
   },
   computed: {
-    has_qualification: function() {
+    has_qualification() {
       return this.qualification_to_be_edited != undefined;
-    }
+    },
   },
   methods: {
-    update: function() {
+    update() {
       this.is_updating = true;
       this.update_qualification(this.object_qualification).then(() => {
         this.clear();
       });
     },
-    clear: function() {
+    clear() {
       this.show_dialog = false;
       this.is_updating = false;
-      this.$emit("finished");
+      this.$emit('finished');
     },
-    ...mapActions("moduleQualifications", {
-      update_qualification: "update_qualification"
-    })
+    ...mapActions('moduleQualifications', {
+      update_qualification: 'update_qualification',
+    }),
   },
   watch: {
-    qualification_to_be_edited: function() {
+    qualification_to_be_edited() {
       console.log(this.qualification_to_be_edited);
       if (this.qualification_to_be_edited == undefined) {
         this.object_qualification = new Qualification();
       } else {
         this.object_qualification = this.qualification_to_be_edited.copy();
       }
-    }
-  }
+    },
+  },
 };
 </script>

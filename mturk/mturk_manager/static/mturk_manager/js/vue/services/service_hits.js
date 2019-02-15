@@ -1,29 +1,29 @@
-import { store } from "../store/vuex";
-import { Service_Endpoint } from "./service_endpoint";
+import { store } from '../store/vuex';
+import { Service_Endpoint } from './service_endpoint';
 
 class Class_Service_HITs {
   async load_page(pagination, filters) {
     const use_sandbox = store.state.module_app.use_sandbox;
 
     const response = await Service_Endpoint.make_request({
-      method: "get",
+      method: 'get',
       url: {
-        path: store.getters["get_url"]("url_api_projects_hits", "moduleHITs"),
+        path: store.getters.get_url('url_api_projects_hits', 'moduleHITs'),
         use_sandbox,
-        project: store.getters["moduleProjects/get_project_current"]
+        project: store.getters['moduleProjects/get_project_current'],
       },
       params: {
         page: pagination.page,
         page_size: pagination.rowsPerPage,
         sort_by: pagination.sortBy,
         descending: pagination.descending,
-        ...filters
-      }
+        ...filters,
+      },
     });
 
-    store.commit("moduleHITs/set_hits", {
+    store.commit('moduleHITs/set_hits', {
       data: response.data.data,
-      use_sandbox
+      use_sandbox,
     });
 
     return response.data.items_total;

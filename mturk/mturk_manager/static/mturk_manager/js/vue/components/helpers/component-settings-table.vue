@@ -53,55 +53,57 @@
 </template>
 
 <script>
-import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
-import _ from "lodash";
+import {
+  mapState, mapMutations, mapActions, mapGetters,
+} from 'vuex';
+import _ from 'lodash';
 
 export default {
-  name: "component-settings-table",
+  name: 'component-settings-table',
   props: {
     array_columns: {
       type: Array,
-      required: true
+      required: true,
     },
     array_columns_selected: {
       type: Array,
-      required: true
+      required: true,
     },
     function_reset: {
       type: Function,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
       dialog: false,
-      intern_array_columns_selected: this.array_columns_selected
+      intern_array_columns_selected: this.array_columns_selected,
     };
   },
   computed: {
     is_toggled_all: {
       get() {
         return (
-          _.size(this.array_columns) ===
-          _.size(this.intern_array_columns_selected)
+          _.size(this.array_columns)
+          === _.size(this.intern_array_columns_selected)
         );
       },
       set(is_checked) {
         if (is_checked === true) {
           this.intern_array_columns_selected = _.map(
             this.array_columns,
-            column => column.value
+            column => column.value,
           );
         } else {
           this.intern_array_columns_selected = [];
         }
-      }
+      },
     },
     is_indeterminate() {
       return (
         !this.is_toggled_all && _.size(this.intern_array_columns_selected) !== 0
       );
-    }
+    },
     //     intern_array_columns_selected: {
     //         get() {
     //             return
@@ -120,9 +122,9 @@ export default {
       // } else if(_.size(this.intern_array_columns_selected) === 0) {
       //     this.is_toggled_all = false;
       // }
-      this.$emit("change", this.intern_array_columns_selected);
-    }
-  }
+      this.$emit('change', this.intern_array_columns_selected);
+    },
+  },
 };
 </script>
 

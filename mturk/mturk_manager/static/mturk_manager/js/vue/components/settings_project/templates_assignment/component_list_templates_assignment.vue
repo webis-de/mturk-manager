@@ -70,33 +70,33 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from "vuex";
-import _ from "lodash";
-import ComponentAddTemplateAssignment from "./component_add_template_assignment.vue";
-import ComponentDeleteTemplateAssignment from "./component_delete_template_assignment.vue";
-import ComponentEditTemplateAssignment from "./component_edit_template_assignment.vue";
-import { table } from "../../../mixins/table";
+import { mapState, mapActions, mapGetters } from 'vuex';
+import _ from 'lodash';
+import ComponentAddTemplateAssignment from './component_add_template_assignment.vue';
+import ComponentDeleteTemplateAssignment from './component_delete_template_assignment.vue';
+import ComponentEditTemplateAssignment from './component_edit_template_assignment.vue';
+import { table } from '../../../mixins/table';
 
 export default {
   mixins: [table],
-  name: "component-list-templates-assignment",
+  name: 'component-list-templates-assignment',
   data() {
     return {
       list_headers: [
         {
-          text: "Name",
-          value: "name"
+          text: 'Name',
+          value: 'name',
         },
         {
-          text: "Actions",
-          value: "",
-          sortable: false
-        }
+          text: 'Actions',
+          value: '',
+          sortable: false,
+        },
       ],
 
       snackbar_deleted: false,
       snackbar_edited: false,
-      snackbar_created: false
+      snackbar_created: false,
     };
   },
   computed: {
@@ -106,19 +106,19 @@ export default {
 
       return _.orderBy(
         this.project_current.templates_assignment,
-        template => template.name
+        template => template.name,
       );
     },
-    ...mapGetters("moduleProjects", {
-      project_current: "get_project_current"
-    })
+    ...mapGetters('moduleProjects', {
+      project_current: 'get_project_current',
+    }),
   },
   methods: {},
-  created: function() {},
+  created() {},
   components: {
     ComponentAddTemplateAssignment,
     ComponentDeleteTemplateAssignment,
-    ComponentEditTemplateAssignment
-  }
+    ComponentEditTemplateAssignment,
+  },
 };
 </script>

@@ -21,47 +21,47 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapMutations } from "vuex";
-import { Service_Batches } from "../../../services/service_batches";
-import BaseTable from "../../base-table";
-import ComponentItemBatch from "./component_item_batch";
+import { mapActions, mapGetters, mapMutations } from 'vuex';
+import { Service_Batches } from '../../../services/service_batches';
+import BaseTable from '../../base-table';
+import ComponentItemBatch from './component_item_batch';
 
 export default {
-  name: "list-batches",
+  name: 'list-batches',
   components: { ComponentItemBatch, BaseTable },
   props: {
     show_links: {
       required: false,
       type: Boolean,
-      default: true
+      default: true,
     },
     function_reset_array_columns: {
       required: false,
-      type: Function
+      type: Function,
     },
     function_set_array_columns: {
       required: false,
-      type: Function
+      type: Function,
     },
     array_columns_selected: {
       required: false,
-      type: Array
-    }
+      type: Array,
+    },
   },
   data() {
     return {
-      function_load_page: Service_Batches.load_page
+      function_load_page: Service_Batches.load_page,
     };
   },
   methods: {
-    ...mapActions("moduleBatches", {
-      function_reset_array_columns_general: "reset_array_columns_general"
+    ...mapActions('moduleBatches', {
+      function_reset_array_columns_general: 'reset_array_columns_general',
     }),
-    ...mapMutations("moduleBatches", {
-      function_set_items_selected: "set_batches_selected",
-      function_clear_items_selected: "clear_batches_selected",
-      function_set_array_columns_general: "set_array_columns_general"
-    })
+    ...mapMutations('moduleBatches', {
+      function_set_items_selected: 'set_batches_selected',
+      function_clear_items_selected: 'clear_batches_selected',
+      function_set_array_columns_general: 'set_array_columns_general',
+    }),
   },
   computed: {
     function_reset_array_columns_computed() {
@@ -79,13 +79,13 @@ export default {
         ? this.array_columns_selected
         : this.array_columns_selected_general;
     },
-    ...mapGetters("moduleBatches", {
-      array_items: "get_array_batches",
-      object_items_selected: "get_object_batches_selected",
-      array_columns: "get_array_columns_general",
-      array_columns_selected_general: "get_array_columns_selected_general"
-    })
-  }
+    ...mapGetters('moduleBatches', {
+      array_items: 'get_array_batches',
+      object_items_selected: 'get_object_batches_selected',
+      array_columns: 'get_array_columns_general',
+      array_columns_selected_general: 'get_array_columns_selected_general',
+    }),
+  },
 };
 </script>
 

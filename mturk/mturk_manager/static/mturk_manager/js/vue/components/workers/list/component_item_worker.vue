@@ -62,8 +62,8 @@
         >
             <h4>{{ worker.name }}</h4>
             <v-spacer></v-spacer>
-            <v-menu 
-                bottom 
+            <v-menu
+                bottom
                 left
                 v-bind:close-on-content-click="false"
 
@@ -134,34 +134,34 @@
     </v-card> -->
 </template>
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters } from 'vuex';
 
 // import ComponentBlockSoftWorker from './component_block_worker.vue';
-import ComponentBlockSoftWorker from "./component_block_soft_worker.vue";
-import ComponentBlockGlobalWorker from "./component_block_global_worker.vue";
-import ComponentBlockHardWorker from "./component_block_hard_worker.vue";
-import ComponentLimitAssignments from "./component_limit_assignments.vue";
+import ComponentBlockSoftWorker from './component_block_soft_worker.vue';
+import ComponentBlockGlobalWorker from './component_block_global_worker.vue';
+import ComponentBlockHardWorker from './component_block_hard_worker.vue';
+import ComponentLimitAssignments from './component_limit_assignments.vue';
 
 export default {
-  name: "component-item-worker",
+  name: 'component-item-worker',
   props: {
     props: {
       type: Object,
-      required: true
+      required: true,
     },
     array_columns_selected: {
       type: Array,
-      required: true
+      required: true,
     },
 
     isCondensed: {
       required: true,
-      type: Boolean
-    }
+      type: Boolean,
+    },
   },
   data() {
     return {
-      show_snackbar: false
+      show_snackbar: false,
     };
   },
   // watch: {
@@ -179,13 +179,12 @@ export default {
     stylesCell() {
       if (this.isCondensed) {
         return {
-          height: "unset !important",
-          paddingLeft: "5px !important",
-          paddingRight: "5px !important"
+          height: 'unset !important',
+          paddingLeft: '5px !important',
+          paddingRight: '5px !important',
         };
-      } else {
-        return {};
       }
+      return {};
     },
     // status_block() {
     //     if(this.worker.is_blocked == undefined)
@@ -219,15 +218,15 @@ export default {
     //             };
     //     }
     // },
-    ...mapGetters(["get_show_progress_indicator"])
+    ...mapGetters(['get_show_progress_indicator']),
   },
   methods: {},
   components: {
     ComponentBlockSoftWorker,
     ComponentBlockGlobalWorker,
     ComponentBlockHardWorker,
-    ComponentLimitAssignments
-  }
+    ComponentLimitAssignments,
+  },
 };
 </script>
 

@@ -27,41 +27,43 @@
 </template>
 
 <script>
-import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
-import { Service_Templates } from "../../../services/service_templates";
+import {
+  mapState, mapMutations, mapActions, mapGetters,
+} from 'vuex';
+import { Service_Templates } from '../../../services/service_templates';
 
 export default {
-  name: "component-delete-template-global",
+  name: 'component-delete-template-global',
   props: {
-    template_global: {}
+    template_global: {},
   },
   data() {
     return {
-      dialog: false
+      dialog: false,
     };
   },
   methods: {
     remove() {
       Service_Templates.delete({
-        type_template: "global",
+        type_template: 'global',
         project: this.project_current,
         template: this.template_global,
         callback: () => {
-          this.$emit("deleted");
+          this.$emit('deleted');
           this.dialog = false;
-        }
+        },
       });
     },
-    ...mapActions("moduleProjects", {
-      delete_template_global: "delete_template_global"
-    })
+    ...mapActions('moduleProjects', {
+      delete_template_global: 'delete_template_global',
+    }),
   },
   computed: {
-    ...mapGetters("moduleProjects", {
-      project_current: "get_project_current"
-    })
+    ...mapGetters('moduleProjects', {
+      project_current: 'get_project_current',
+    }),
   },
-  components: {}
+  components: {},
 };
 </script>
 

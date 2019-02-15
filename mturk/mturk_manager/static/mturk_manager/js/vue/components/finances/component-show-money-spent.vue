@@ -20,59 +20,56 @@
 </template>
 
 <script>
-import Vue from "vue";
-import VRuntimeTemplate from "v-runtime-template";
-import { mapState, mapGetters, mapActions } from "vuex";
-import _ from "lodash";
-import BaseDisplayAmount from "../base-display-amount.vue";
+import Vue from 'vue';
+import VRuntimeTemplate from 'v-runtime-template';
+import { mapState, mapGetters, mapActions } from 'vuex';
+import _ from 'lodash';
+import BaseDisplayAmount from '../base-display-amount.vue';
 
 export default {
-  name: "component-show-money-spent",
+  name: 'component-show-money-spent',
   data() {
     return {
       updating: true,
-      template: `<div><div>Hello {{ updating }}!</div><div>Hello {{ updating }}!</div></div>`
+      template: '<div><div>Hello {{ updating }}!</div><div>Hello {{ updating }}!</div></div>',
     };
   },
-  created: function() {},
-  mounted: function() {
-    console.log("started");
-    console.log("finished");
+  created() {},
+  mounted() {
+    console.log('started');
+    console.log('finished');
   },
   computed: {
-    tmp: function() {
+    tmp() {
       this.list_batches;
     },
-    money_spent: function() {
+    money_spent() {
       if (this.show_with_fee) {
-        return _.sumBy(this.list_batches, "money_spent_with_fee");
-      } else {
-        return _.sumBy(this.list_batches, "money_spent_without_fee");
+        return _.sumBy(this.list_batches, 'money_spent_with_fee');
       }
+      return _.sumBy(this.list_batches, 'money_spent_without_fee');
     },
-    money_not_spent: function() {
+    money_not_spent() {
       if (this.show_with_fee) {
-        return _.sumBy(this.list_batches, "money_not_spent_with_fee");
-      } else {
-        return _.sumBy(this.list_batches, "money_not_spent_without_fee");
+        return _.sumBy(this.list_batches, 'money_not_spent_with_fee');
       }
+      return _.sumBy(this.list_batches, 'money_not_spent_without_fee');
     },
-    money_spent_max: function() {
+    money_spent_max() {
       if (this.show_with_fee) {
-        return _.sumBy(this.list_batches, "money_spent_max_with_fee");
-      } else {
-        return _.sumBy(this.list_batches, "money_spent_max_without_fee");
+        return _.sumBy(this.list_batches, 'money_spent_max_with_fee');
       }
+      return _.sumBy(this.list_batches, 'money_spent_max_without_fee');
     },
-    ...mapGetters("moduleBatches", {
-      list_batches: "list_batches"
+    ...mapGetters('moduleBatches', {
+      list_batches: 'list_batches',
     }),
-    ...mapState(["show_with_fee"])
+    ...mapState(['show_with_fee']),
   },
   methods: {
-    ...mapActions("moduleMoney", {
-      update_balance: "update_balance"
-    })
+    ...mapActions('moduleMoney', {
+      update_balance: 'update_balance',
+    }),
     //     load_config: function() {
     //         const configElement = document.getElementById( 'config' );
     //         const config = JSON.parse( configElement.innerHTML );
@@ -88,8 +85,8 @@ export default {
   // },
   components: {
     ComponentDisplayMoney: BaseDisplayAmount,
-    VRuntimeTemplate
-  }
+    VRuntimeTemplate,
+  },
 };
 </script>
 

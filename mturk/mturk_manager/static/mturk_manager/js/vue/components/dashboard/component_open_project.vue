@@ -61,53 +61,53 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from "vuex";
-import _ from "lodash";
-import ComponentDisplayDatetime from "../helpers/component_display_datetime";
-import { table } from "../../mixins/table";
+import { mapState, mapActions, mapGetters } from 'vuex';
+import _ from 'lodash';
+import ComponentDisplayDatetime from '../helpers/component_display_datetime';
+import { table } from '../../mixins/table';
 
 export default {
   mixins: [table],
-  name: "component-open-project",
+  name: 'component-open-project',
   data() {
     return {
-      search: "",
+      search: '',
       list_headers: [
         {
-          text: "Name",
-          value: "name",
-          align: "left"
+          text: 'Name',
+          value: 'name',
+          align: 'left',
         },
         {
-          text: "Last Usage",
-          value: "datetime_visited",
-          align: "left"
+          text: 'Last Usage',
+          value: 'datetime_visited',
+          align: 'left',
         },
         {
-          text: "",
-          value: "",
-          align: "",
-          sortable: false
-        }
+          text: '',
+          value: '',
+          align: '',
+          sortable: false,
+        },
       ],
       pagination: {
-        sortBy: "datetime_visited",
-        descending: true
-      }
+        sortBy: 'datetime_visited',
+        descending: true,
+      },
     };
   },
   computed: {
     list_projects() {
-      return _.orderBy(this.object_projects, ["datetime_visited"], ["desc"]);
+      return _.orderBy(this.object_projects, ['datetime_visited'], ['desc']);
     },
-    ...mapGetters("moduleProjects", {
-      object_projects: "get_object_projects"
-    })
+    ...mapGetters('moduleProjects', {
+      object_projects: 'get_object_projects',
+    }),
   },
   methods: {},
-  created: function() {},
+  created() {},
   components: {
-    ComponentDisplayDatetime
-  }
+    ComponentDisplayDatetime,
+  },
 };
 </script>

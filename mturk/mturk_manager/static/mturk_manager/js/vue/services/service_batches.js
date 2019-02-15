@@ -1,6 +1,6 @@
-import { Service_Endpoint } from "./service_endpoint";
-import { store } from "../store/vuex";
-import Batch from "../classes/batch";
+import { Service_Endpoint } from './service_endpoint';
+import { store } from '../store/vuex';
+import Batch from '../classes/batch';
 
 class Class_Service_Batches {
   // async load_batches(force=false)
@@ -34,19 +34,19 @@ class Class_Service_Batches {
 
   async create(data) {
     const use_sandbox = store.state.module_app.use_sandbox;
-    const project = store.getters["moduleProjects/get_project_current"];
+    const project = store.getters['moduleProjects/get_project_current'];
 
     const response = await Service_Endpoint.make_request({
-      method: "post",
+      method: 'post',
       url: {
-        path: store.getters["get_url"](
-          "url_api_projects_batches",
-          "moduleBatches"
+        path: store.getters.get_url(
+          'url_api_projects_batches',
+          'moduleBatches',
         ),
         use_sandbox,
-        project
+        project,
       },
-      data: data
+      data,
     });
 
     // store.commit('moduleBatches/add_batch', {
@@ -63,19 +63,19 @@ class Class_Service_Batches {
 
   async sync_mturk() {
     const use_sandbox = store.state.module_app.use_sandbox;
-    const project = store.getters["moduleProjects/get_project_current"];
+    const project = store.getters['moduleProjects/get_project_current'];
 
-    store.commit("moduleBatches/set_is_syncing_mturk", true);
+    store.commit('moduleBatches/set_is_syncing_mturk', true);
     const response = await Service_Endpoint.make_request({
-      method: "patch",
+      method: 'patch',
       url: {
-        path: store.getters["get_url"](
-          "url_api_projects_batches",
-          "moduleBatches"
+        path: store.getters.get_url(
+          'url_api_projects_batches',
+          'moduleBatches',
         ),
         project,
-        use_sandbox
-      }
+        use_sandbox,
+      },
     });
 
     const data_batches = response.data;
@@ -86,7 +86,7 @@ class Class_Service_Batches {
     //
     // });
 
-    store.commit("moduleBatches/set_is_syncing_mturk", false);
+    store.commit('moduleBatches/set_is_syncing_mturk', false);
   }
 
   // add_workers({object_workers, use_sandbox})
@@ -101,26 +101,26 @@ class Class_Service_Batches {
     const use_sandbox = store.state.module_app.use_sandbox;
 
     const response = await Service_Endpoint.make_request({
-      method: "get",
+      method: 'get',
       url: {
-        path: store.getters["get_url"](
-          "url_api_projects_batches",
-          "moduleBatches"
+        path: store.getters.get_url(
+          'url_api_projects_batches',
+          'moduleBatches',
         ),
         use_sandbox,
-        project: store.getters["moduleProjects/get_project_current"]
+        project: store.getters['moduleProjects/get_project_current'],
       },
       params: {
         page: pagination.page,
         page_size: pagination.rowsPerPage,
         sort_by: pagination.sortBy,
-        descending: pagination.descending
-      }
+        descending: pagination.descending,
+      },
     });
 
-    store.commit("moduleBatches/set_batches", {
+    store.commit('moduleBatches/set_batches', {
       data: response.data.data,
-      use_sandbox
+      use_sandbox,
     });
 
     return response.data.items_total;
@@ -128,15 +128,15 @@ class Class_Service_Batches {
 
   async get_batch(id_batch) {
     const response = await Service_Endpoint.make_request({
-      method: "get",
+      method: 'get',
       url: {
-        path: store.getters["get_url"](
-          "url_api_projects_batches",
-          "moduleBatches"
+        path: store.getters.get_url(
+          'url_api_projects_batches',
+          'moduleBatches',
         ),
-        project: store.getters["moduleProjects/get_project_current"],
-        value: id_batch
-      }
+        project: store.getters['moduleProjects/get_project_current'],
+        value: id_batch,
+      },
     });
 
     return new Batch(response.data);
@@ -144,23 +144,23 @@ class Class_Service_Batches {
 
   async download(params) {
     const response = await Service_Endpoint.make_request({
-      method: "get",
+      method: 'get',
       url: {
-        path: store.getters["get_url"](
-          "url_api_projects_batches_download",
-          "moduleBatches"
+        path: store.getters.get_url(
+          'url_api_projects_batches_download',
+          'moduleBatches',
         ),
-        project: store.getters["moduleProjects/get_project_current"]
+        project: store.getters['moduleProjects/get_project_current'],
       },
       params,
       options: {
-        responseType: "blob"
-      }
+        responseType: 'blob',
+      },
     });
 
-    let a = window.document.createElement("a");
-    a.href = window.URL.createObjectURL(response.data, { type: "text/plain" });
-    a.download = "filename.csv";
+    const a = window.document.createElement('a');
+    a.href = window.URL.createObjectURL(response.data, { type: 'text/plain' });
+    a.download = 'filename.csv';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -168,17 +168,17 @@ class Class_Service_Batches {
 
   async get_download_info(params) {
     const response = await Service_Endpoint.make_request({
-      method: "get",
+      method: 'get',
       url: {
-        path: store.getters["get_url"](
-          "url_api_projects_batches_download_info",
-          "moduleBatches"
+        path: store.getters.get_url(
+          'url_api_projects_batches_download_info',
+          'moduleBatches',
         ),
-        project: store.getters["moduleProjects/get_project_current"]
+        project: store.getters['moduleProjects/get_project_current'],
       },
-      params
+      params,
     });
-    console.log("response", response.data);
+    console.log('response', response.data);
     return response;
   }
 }

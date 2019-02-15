@@ -4,7 +4,7 @@ export const external_pagination = {
       handler() {
         this.load_page();
       },
-      deep: true
-    }
-  }
+      deep: true,
+    },
+  },
 };

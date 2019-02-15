@@ -11,21 +11,21 @@
 </template>
 
 <script>
-import ComponentHitDetail from "./detail/component_hit_detail.vue";
-import slug_project from "../../mixins/slug_project";
-import ComponentItemHit from "./list/component_item_hit";
-import ListHits from "./list/list-hits";
+import ComponentHitDetail from './detail/component_hit_detail.vue';
+import slug_project from '../../mixins/slug_project';
+import ComponentItemHit from './list/component_item_hit';
+import ListHits from './list/list-hits';
 
 export default {
   mixins: [slug_project],
   props: {
-    id_hit: {}
+    id_hit: {},
   },
-  name: "app-hits",
+  name: 'app-hits',
   components: {
     ListHits,
     ComponentItemHit,
-    ComponentHitDetail
-  }
+    ComponentHitDetail,
+  },
 };
 </script>

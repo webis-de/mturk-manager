@@ -1,7 +1,7 @@
-import _ from "lodash";
-import Loader from "./loader";
-import View from "./view";
-import { add_to_object_assignments_selected } from "./helpers";
+import _ from 'lodash';
+import Loader from './loader';
+import View from './view';
+import { add_to_object_assignments_selected } from './helpers';
 
 export default class Controller {
   constructor() {
@@ -14,9 +14,9 @@ export default class Controller {
 
     await this.loader.init();
 
-    $("#link_back_to_project").attr(
-      "href",
-      `/#/projects/${this.loader.slug_project}/assignments`
+    $('#link_back_to_project').attr(
+      'href',
+      `/#/projects/${this.loader.slug_project}/assignments`,
     );
 
     await this.loader.sync_data();
@@ -25,144 +25,144 @@ export default class Controller {
 
   init_events() {
     $(document).on(
-      "click",
-      ".approve_assignment, .reject_assignment, .reject_internally_assignment, .approve_internally_assignment",
+      'click',
+      '.approve_assignment, .reject_assignment, .reject_internally_assignment, .approve_internally_assignment',
       {
         loader: this.loader,
-        view: this.view
+        view: this.view,
       },
-      function(event) {
+      function (event) {
         const elem_button = $(this);
-        const id_assignment = elem_button.data("id_assignment");
+        const id_assignment = elem_button.data('id_assignment');
 
-        if (elem_button.hasClass("active")) {
+        if (elem_button.hasClass('active')) {
           delete event.data.loader.object_assignments_selected[id_assignment];
-          elem_button.removeClass("active");
+          elem_button.removeClass('active');
         } else {
-          if (elem_button.hasClass("approve_assignment")) {
+          if (elem_button.hasClass('approve_assignment')) {
             add_to_object_assignments_selected(
               event.data.loader,
               id_assignment,
-              "approve",
-              undefined
+              'approve',
+              undefined,
             );
-          } else if (elem_button.hasClass("reject_assignment")) {
+          } else if (elem_button.hasClass('reject_assignment')) {
             add_to_object_assignments_selected(
               event.data.loader,
               id_assignment,
-              "reject",
-              undefined
+              'reject',
+              undefined,
             );
-          } else if (elem_button.hasClass("reject_internally_assignment")) {
+          } else if (elem_button.hasClass('reject_internally_assignment')) {
             add_to_object_assignments_selected(
               event.data.loader,
               id_assignment,
-              "reject_internally",
-              undefined
+              'reject_internally',
+              undefined,
             );
-          } else if (elem_button.hasClass("approve_internally_assignment")) {
+          } else if (elem_button.hasClass('approve_internally_assignment')) {
             add_to_object_assignments_selected(
               event.data.loader,
               id_assignment,
-              "approve_internally",
-              undefined
+              'approve_internally',
+              undefined,
             );
           }
-          elem_button.addClass("active");
+          elem_button.addClass('active');
         }
 
         event.data.view.update_info();
         event.data.view.check_submit_button();
-      }
+      },
     );
 
     $(document).on(
-      "click",
+      'click',
       '[data-task="submit_annotations"]',
       {
         loader: this.loader,
-        view: this.view
+        view: this.view,
       },
-      async function(event) {
+      async (event) => {
         const data = {
           message_reject_default: event.data.loader.message_reject_default,
-          assignments: event.data.loader.object_assignments_selected
+          assignments: event.data.loader.object_assignments_selected,
         };
 
         const loader = event.data.loader;
         const result = await $.ajax({
           url: event.data.loader.context.url_api_assignments_update_stati,
-          method: "PUT",
-          contentType: "application/json",
+          method: 'PUT',
+          contentType: 'application/json',
           data: JSON.stringify(data),
           headers: {
-            Authorization: "Token " + event.data.loader.token_instance,
-            "Content-Type": "application/json"
-          }
+            Authorization: `Token ${event.data.loader.token_instance}`,
+            'Content-Type': 'application/json',
+          },
         }).done(() => {
           loader.object_assignments_selected = {};
           location.reload();
         });
-      }
+      },
     );
 
     $(document).on(
-      "change",
-      "#input_select_groupby",
+      'change',
+      '#input_select_groupby',
       {
         loader: this.loader,
-        view: this.view
+        view: this.view,
       },
-      async function(event) {
+      async function (event) {
         event.data.view.group_by = $(this).val();
         event.data.view.inject_templates();
-      }
+      },
     );
 
     $(document).on(
-      "click",
-      ".dropdown_reject_assignment a",
+      'click',
+      '.dropdown_reject_assignment a',
       {
         loader: this.loader,
-        view: this.view
+        view: this.view,
       },
-      function(event) {
+      function (event) {
         const elem_link = $(this);
-        const id_assignment = elem_link.data("id_assignment");
+        const id_assignment = elem_link.data('id_assignment');
         const message = elem_link.text();
 
         add_to_object_assignments_selected(
           event.data.loader,
           id_assignment,
-          "reject",
-          message
+          'reject',
+          message,
         );
 
         $(
-          '.reject_assignment[data-id_assignment="' + id_assignment + '"]'
-        ).addClass("active");
+          `.reject_assignment[data-id_assignment="${id_assignment}"]`,
+        ).addClass('active');
 
         event.data.view.update_info();
         event.data.view.check_submit_button();
-      }
+      },
     );
     // changes of default reject message
     $(document).on(
-      "input",
-      "#message_reject_default",
+      'input',
+      '#message_reject_default',
       {
         loader: this.loader,
-        view: this.view
+        view: this.view,
       },
-      async function(event) {
+      async function (event) {
         event.data.loader.message_reject_default = $(this).val();
         event.data.view.check_submit_button();
-      }
+      },
     );
     // prevent data loss
     window.onbeforeunload = () => {
       if (_.size(this.loader.object_assignments_selected) > 0) {
-        return "You have unsaved changes!";
+        return 'You have unsaved changes!';
       }
     };
 

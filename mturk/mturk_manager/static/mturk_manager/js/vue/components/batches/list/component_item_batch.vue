@@ -129,27 +129,29 @@
   </tr>
 </template>
 <script>
-import { mapState, mapActions, mapMutations, mapGetters } from "vuex";
-import _ from "lodash";
-import ComponentBatchProgress from "./component_batch_progress.vue";
-import ComponentDisplayDatetime from "../../helpers/component_display_datetime.vue";
-import BaseDisplayAmount from "../../base-display-amount";
+import {
+  mapState, mapActions, mapMutations, mapGetters,
+} from 'vuex';
+import _ from 'lodash';
+import ComponentBatchProgress from './component_batch_progress.vue';
+import ComponentDisplayDatetime from '../../helpers/component_display_datetime.vue';
+import BaseDisplayAmount from '../../base-display-amount';
 
 export default {
-  name: "component-item-batch",
+  name: 'component-item-batch',
   props: {
     props: {
-      required: true
+      required: true,
     },
     array_columns_selected: {
       type: Array,
-      required: true
+      required: true,
     },
 
     isCondensed: {
       required: true,
-      type: Boolean
-    }
+      type: Boolean,
+    },
   },
   data() {
     return {};
@@ -162,9 +164,9 @@ export default {
       set(is_selected) {
         this.set_batches_selected({
           array_items: [this.batch],
-          add: is_selected
+          add: is_selected,
         });
-      }
+      },
     },
     set_columns_selected() {
       return new Set(this.array_columns_selected);
@@ -175,30 +177,29 @@ export default {
     stylesCell() {
       if (this.isCondensed) {
         return {
-          height: "unset !important",
-          paddingLeft: "5px !important",
-          paddingRight: "5px !important"
+          height: 'unset !important',
+          paddingLeft: '5px !important',
+          paddingRight: '5px !important',
         };
-      } else {
-        return {};
       }
+      return {};
     },
-    ...mapGetters(["get_show_progress_indicator"]),
-    ...mapGetters("moduleBatches", {
-      object_batches_selected: "get_object_batches_selected"
-    })
+    ...mapGetters(['get_show_progress_indicator']),
+    ...mapGetters('moduleBatches', {
+      object_batches_selected: 'get_object_batches_selected',
+    }),
   },
   methods: {
-    ...mapMutations("moduleBatches", {
-      set_batches_selected: "set_batches_selected"
-    })
+    ...mapMutations('moduleBatches', {
+      set_batches_selected: 'set_batches_selected',
+    }),
   },
   mounted() {},
   components: {
     BaseDisplayAmount,
     ComponentBatchProgress,
-    ComponentDisplayDatetime
-  }
+    ComponentDisplayDatetime,
+  },
 };
 </script>
 

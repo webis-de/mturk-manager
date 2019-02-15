@@ -17,18 +17,18 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-import HelpIcon from "./help-icon";
+import { mapState } from 'vuex';
+import HelpIcon from './help-icon';
 
 export default {
-  name: "the-update-notification",
+  name: 'the-update-notification',
   components: { HelpIcon },
   data() {
     return {};
   },
   computed: {
-    ...mapState("module_app", ["version_api", "version_app"])
-  }
+    ...mapState('module_app', ['version_api', 'version_app']),
+  },
 };
 </script>
 

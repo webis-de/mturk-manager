@@ -96,53 +96,53 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from "vuex";
-import _ from "lodash";
-import ComponentAddTemplateWorker from "./component_add_template_worker.vue";
-import ComponentEditTemplateWorker from "./component_edit_template_worker.vue";
-import ComponentDeleteTemplateWorker from "./component_delete_template_worker.vue";
-import { table } from "../../../mixins/table";
+import { mapState, mapActions, mapGetters } from 'vuex';
+import _ from 'lodash';
+import ComponentAddTemplateWorker from './component_add_template_worker.vue';
+import ComponentEditTemplateWorker from './component_edit_template_worker.vue';
+import ComponentDeleteTemplateWorker from './component_delete_template_worker.vue';
+import { table } from '../../../mixins/table';
 
 export default {
   mixins: [table],
-  name: "component-list-templates-worker",
+  name: 'component-list-templates-worker',
   data() {
     return {
       list_headers: [
         {
-          text: "Name",
-          value: "name"
+          text: 'Name',
+          value: 'name',
         },
         {
-          text: "Height",
-          value: "height_frame"
+          text: 'Height',
+          value: 'height_frame',
         },
         {
-          text: "#Variables",
-          value: "count_parameters"
+          text: '#Variables',
+          value: 'count_parameters',
         },
         {
-          text: "Assignment Template",
-          value: "template_assigmnent"
+          text: 'Assignment Template',
+          value: 'template_assigmnent',
         },
         {
-          text: "Assignment HIT",
-          value: "template_hit"
+          text: 'Assignment HIT',
+          value: 'template_hit',
         },
         {
-          text: "Assignment Global",
-          value: "template_global"
+          text: 'Assignment Global',
+          value: 'template_global',
         },
         {
-          text: "Actions",
-          value: "",
-          sortable: false
-        }
+          text: 'Actions',
+          value: '',
+          sortable: false,
+        },
       ],
 
       snackbar_deleted: false,
       snackbar_edited: false,
-      snackbar_created: false
+      snackbar_created: false,
     };
   },
   computed: {
@@ -152,19 +152,19 @@ export default {
 
       return _.orderBy(
         this.project_current.templates_worker,
-        template => template.name
+        template => template.name,
       );
     },
-    ...mapGetters("moduleProjects", {
-      project_current: "get_project_current"
-    })
+    ...mapGetters('moduleProjects', {
+      project_current: 'get_project_current',
+    }),
   },
   methods: {},
-  created: function() {},
+  created() {},
   components: {
     ComponentAddTemplateWorker,
     ComponentEditTemplateWorker,
-    ComponentDeleteTemplateWorker
-  }
+    ComponentDeleteTemplateWorker,
+  },
 };
 </script>

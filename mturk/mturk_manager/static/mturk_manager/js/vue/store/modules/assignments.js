@@ -1,9 +1,9 @@
-import Vue from "vue";
-import _ from "lodash";
-import localforage from "localforage";
-import Assignment from "../../classes/assignment.js";
+import Vue from 'vue';
+import _ from 'lodash';
+import localforage from 'localforage';
+import Assignment from '../../classes/assignment.js';
 
-import HIT from "../../classes/hit";
+import HIT from '../../classes/hit';
 
 export const moduleAssignments = {
   namespaced: true,
@@ -20,93 +20,84 @@ export const moduleAssignments = {
 
     array_columns_general: [
       {
-        text: "Name",
-        value: "id_assignment"
+        text: 'Name',
+        value: 'id_assignment',
       },
       {
-        text: "Creation",
-        value: "datetime_creation"
+        text: 'Creation',
+        value: 'datetime_creation',
       },
       {
-        text: "Accepted",
-        value: "datetime_accept"
+        text: 'Accepted',
+        value: 'datetime_accept',
       },
       {
-        text: "Submitted",
-        value: "datetime_submit"
+        text: 'Submitted',
+        value: 'datetime_submit',
       },
       {
-        text: "Duration",
-        value: "duration"
+        text: 'Duration',
+        value: 'duration',
       },
       {
-        text: "Worker",
-        value: "worker",
-        align: "center"
+        text: 'Worker',
+        value: 'worker',
+        align: 'center',
       },
       {
-        text: "Status",
-        value: "status"
+        text: 'Status',
+        value: 'status',
       },
       {
-        text: "HIT",
-        value: "hit"
-      }
+        text: 'HIT',
+        value: 'hit',
+      },
     ],
     array_columns_selected_initial_general: [
-      "id_assignment",
-      "datetime_creation",
-      "datetime_accept",
-      "datetime_submit",
-      "worker",
-      "status",
-      "hit"
+      'id_assignment',
+      'datetime_creation',
+      'datetime_accept',
+      'datetime_submit',
+      'worker',
+      'status',
+      'hit',
     ],
-    array_columns_selected_general: null
+    array_columns_selected_general: null,
   },
   getters: {
-    get_array_columns_general: state => {
-      return state.array_columns_general;
-    },
-    get_array_columns_selected_general: state => {
+    get_array_columns_general: state => state.array_columns_general,
+    get_array_columns_selected_general: (state) => {
       if (state.array_columns_selected_general === null) {
         return state.array_columns_selected_initial_general;
-      } else {
-        return state.array_columns_selected_general;
       }
+      return state.array_columns_selected_general;
     },
-    get_array_columns_selected_initial_general: state => {
-      return state.array_columns_selected_initial_general;
-    },
+    get_array_columns_selected_initial_general: state => state.array_columns_selected_initial_general,
 
-    get_object_assignments_selected: state => {
-      return state.object_assignments_selected;
-    },
+    get_object_assignments_selected: state => state.object_assignments_selected,
     get_array_assignments: (state, getters, rootState) => (
-      use_sandbox = undefined
+      use_sandbox = undefined,
     ) => {
       if (use_sandbox == undefined) {
         return rootState.module_app.use_sandbox
           ? state.array_assignments_sandbox
           : state.array_assignments;
-      } else {
-        return use_sandbox
-          ? state.array_assignments_sandbox
-          : state.array_assignments;
       }
+      return use_sandbox
+        ? state.array_assignments_sandbox
+        : state.array_assignments;
     },
     get_object_assignments: (state, getters, rootState) => (
-      use_sandbox = undefined
+      use_sandbox = undefined,
     ) => {
       if (use_sandbox == undefined) {
         return rootState.module_app.use_sandbox
           ? state.object_assignments_sandbox
           : state.object_assignments;
-      } else {
-        return use_sandbox
-          ? state.object_assignments_sandbox
-          : state.object_assignments;
       }
+      return use_sandbox
+        ? state.object_assignments_sandbox
+        : state.object_assignments;
     },
     list_assignments: (state, getters) => {
       if (Object.keys(getters.get_object_assignments()).length == 0) {
@@ -114,17 +105,15 @@ export const moduleAssignments = {
       }
       return _.orderBy(
         getters.get_object_assignments(),
-        ["datetime_creation"],
-        ["desc"]
+        ['datetime_creation'],
+        ['desc'],
       );
     },
-    set_ids_worker: state => {
-      return state.set_ids_worker;
-    }
+    set_ids_worker: state => state.set_ids_worker,
   },
   mutations: {
     set_array_columns_general(state, array_columns) {
-      localforage.setItem("array_columns_assignments_general", array_columns);
+      localforage.setItem('array_columns_assignments_general', array_columns);
       state.array_columns_selected_general = array_columns;
     },
     set_assignments(state, { data, use_sandbox }) {
@@ -137,7 +126,7 @@ export const moduleAssignments = {
         array_assignments = state.array_assignments;
       }
 
-      _.forEach(data, function(data) {
+      _.forEach(data, (data) => {
         const assignment = new Assignment(data);
         Vue.set(array_assignments, array_assignments.length, assignment);
       });
@@ -217,16 +206,16 @@ export const moduleAssignments = {
     },
     set_assignments_selected(state, { array_items, add }) {
       if (add === true) {
-        _.forEach(array_items, item => {
+        _.forEach(array_items, (item) => {
           Vue.set(state.object_assignments_selected, item.id, item.id);
         });
       } else {
-        _.forEach(array_items, item => {
+        _.forEach(array_items, (item) => {
           Vue.delete(state.object_assignments_selected, item.id);
         });
       }
     },
-    reset: state => {
+    reset: (state) => {
       state.object_assignments = {};
       state.object_assignments_sandbox = {};
       state.set_ids_worker = null;
@@ -234,25 +223,24 @@ export const moduleAssignments = {
     },
     set_urls(state, config) {
       state.url_api_projects_assignments = config.url_api_projects_assignments;
-    }
+    },
   },
   actions: {
     async init({ state }) {
-      let array_columns = await localforage.getItem(
-        "array_columns_assignments_general"
+      const array_columns = await localforage.getItem(
+        'array_columns_assignments_general',
       );
       if (array_columns !== null) {
         state.array_columns_selected_general = array_columns;
       } else {
-        state.array_columns_selected_general =
-          state.array_columns_selected_initial_general;
+        state.array_columns_selected_general = state.array_columns_selected_initial_general;
       }
     },
     reset_array_columns_general({ state, commit }) {
       commit(
-        "set_array_columns_general",
-        state.array_columns_selected_initial_general
+        'set_array_columns_general',
+        state.array_columns_selected_initial_general,
       );
-    }
-  }
+    },
+  },
 };

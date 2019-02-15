@@ -1,4 +1,4 @@
-import _ from "lodash";
+import _ from 'lodash';
 
 export default class Template_HIT {
   constructor(data = undefined) {
@@ -19,14 +19,10 @@ export default class Template_HIT {
       // if(template_hit[key] != undefined)
       {
         if (this[key] != template_hit[key]) {
-          if (typeof template_hit[key] == "object") {
+          if (typeof template_hit[key] === 'object') {
             if (
-              _.differenceBy(template_hit[key], this[key], value =>
-                value["text"].toLowerCase()
-              ).length > 0 ||
-              _.differenceBy(this[key], template_hit[key], value =>
-                value["text"].toLowerCase()
-              ).length > 0
+              _.differenceBy(template_hit[key], this[key], value => value.text.toLowerCase()).length > 0
+              || _.differenceBy(this[key], template_hit[key], value => value.text.toLowerCase()).length > 0
             ) {
               object[key] = template_hit[key];
             }

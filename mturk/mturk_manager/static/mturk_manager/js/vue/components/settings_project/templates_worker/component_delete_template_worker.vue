@@ -27,41 +27,43 @@
 </template>
 
 <script>
-import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
-import { Service_Templates } from "../../../services/service_templates";
+import {
+  mapState, mapMutations, mapActions, mapGetters,
+} from 'vuex';
+import { Service_Templates } from '../../../services/service_templates';
 
 export default {
-  name: "compoent-delete-template-worker",
+  name: 'compoent-delete-template-worker',
   props: {
-    template_worker: {}
+    template_worker: {},
   },
   data() {
     return {
-      dialog: false
+      dialog: false,
     };
   },
   methods: {
     remove() {
       Service_Templates.delete({
-        type_template: "worker",
+        type_template: 'worker',
         project: this.project_current,
         template: this.template_worker,
         callback: () => {
-          this.$emit("deleted");
+          this.$emit('deleted');
           this.dialog = false;
-        }
+        },
       });
     },
-    ...mapActions("moduleProjects", {
-      delete_template_worker: "delete_template_worker"
-    })
+    ...mapActions('moduleProjects', {
+      delete_template_worker: 'delete_template_worker',
+    }),
   },
   computed: {
-    ...mapGetters("moduleProjects", {
-      project_current: "get_project_current"
-    })
+    ...mapGetters('moduleProjects', {
+      project_current: 'get_project_current',
+    }),
   },
-  components: {}
+  components: {},
 };
 </script>
 

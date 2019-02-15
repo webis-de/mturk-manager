@@ -119,33 +119,35 @@
   </tr>
 </template>
 <script>
-import { mapState, mapActions, mapMutations, mapGetters } from "vuex";
-import _ from "lodash";
-import ComponentDisplayDatetime from "../../helpers/component_display_datetime";
-import ComponentStatusAssignment from "./component-status-assignment";
-import ComponentDisplayDuration from "../../helpers/component-display-duration";
+import {
+  mapState, mapActions, mapMutations, mapGetters,
+} from 'vuex';
+import _ from 'lodash';
+import ComponentDisplayDatetime from '../../helpers/component_display_datetime';
+import ComponentStatusAssignment from './component-status-assignment';
+import ComponentDisplayDuration from '../../helpers/component-display-duration';
 
 export default {
-  name: "component-item-assignment",
+  name: 'component-item-assignment',
   props: {
     props: {
       type: Object,
-      required: true
+      required: true,
     },
     show_links: {
       required: false,
       type: Boolean,
-      default: true
+      default: true,
     },
     array_columns_selected: {
       type: Array,
-      required: true
+      required: true,
     },
 
     isCondensed: {
       required: true,
-      type: Boolean
-    }
+      type: Boolean,
+    },
   },
   data() {
     return {};
@@ -166,9 +168,9 @@ export default {
       set(is_selected) {
         this.set_assignments_selected({
           array_items: [this.assignment],
-          add: is_selected
+          add: is_selected,
         });
-      }
+      },
     },
     assignment() {
       return this.props.item;
@@ -176,29 +178,28 @@ export default {
     stylesCell() {
       if (this.isCondensed) {
         return {
-          height: "unset !important",
-          paddingLeft: "5px !important",
-          paddingRight: "5px !important"
+          height: 'unset !important',
+          paddingLeft: '5px !important',
+          paddingRight: '5px !important',
         };
-      } else {
-        return {};
       }
+      return {};
     },
-    ...mapGetters("moduleAssignments", {
-      object_assignments_selected: "get_object_assignments_selected"
+    ...mapGetters('moduleAssignments', {
+      object_assignments_selected: 'get_object_assignments_selected',
     }),
-    ...mapGetters(["get_show_progress_indicator"])
+    ...mapGetters(['get_show_progress_indicator']),
   },
   methods: {
-    ...mapMutations("moduleAssignments", {
-      set_assignments_selected: "set_assignments_selected"
-    })
+    ...mapMutations('moduleAssignments', {
+      set_assignments_selected: 'set_assignments_selected',
+    }),
   },
   components: {
     ComponentDisplayDuration,
     ComponentStatusAssignment,
-    ComponentDisplayDatetime
-  }
+    ComponentDisplayDatetime,
+  },
 };
 </script>
 

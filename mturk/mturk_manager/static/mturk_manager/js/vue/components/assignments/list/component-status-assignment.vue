@@ -3,31 +3,29 @@
 </template>
 
 <script>
-import { STATUS_EXTERNAL, STATUS_INTERNAL } from "../../../classes/enums";
+import { STATUS_EXTERNAL, STATUS_INTERNAL } from '../../../classes/enums';
 
 export default {
-  name: "component-status-assignment",
+  name: 'component-status-assignment',
   props: {
     assignment: {
-      required: true
-    }
+      required: true,
+    },
   },
   computed: {
     status_formatted() {
       if (this.status_external === STATUS_EXTERNAL.APPROVED) {
         if (this.status_internal === null) {
           return '<span class="success--text">Approved</span>';
-        } else {
-          return '<span class="success--text">Approved (i)</span>';
         }
-      } else if (this.status_external === STATUS_EXTERNAL.REJECTED) {
+        return '<span class="success--text">Approved (i)</span>';
+      } if (this.status_external === STATUS_EXTERNAL.REJECTED) {
         if (this.status_internal === null) {
           return '<span class="error--text">Rejected</span>';
-        } else {
-          return '<span class="error--text">Rejected (i)</span>';
         }
-      } else if (this.status_external === null) {
-        return "<span >Submitted</span>";
+        return '<span class="error--text">Rejected (i)</span>';
+      } if (this.status_external === null) {
+        return '<span >Submitted</span>';
       }
     },
     status_external() {
@@ -35,8 +33,8 @@ export default {
     },
     status_internal() {
       return this.assignment.status_internal;
-    }
-  }
+    },
+  },
 };
 </script>
 

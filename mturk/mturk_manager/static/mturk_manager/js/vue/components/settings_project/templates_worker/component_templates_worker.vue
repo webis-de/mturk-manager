@@ -7,15 +7,17 @@
 
 <script>
 // import settings_batch from '../../../mixins/settings_batch';
-import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
-import _ from "lodash";
-import ComponentListTemplatesWorker from "./component_list_templates_worker.vue";
+import {
+  mapState, mapMutations, mapActions, mapGetters,
+} from 'vuex';
+import _ from 'lodash';
+import ComponentListTemplatesWorker from './component_list_templates_worker.vue';
 
 export default {
   // mixins: [
   //     settings_batch,
   // ],
-  name: "component-templates-worker",
+  name: 'component-templates-worker',
   data() {
     return {
       // search: undefined,
@@ -24,8 +26,8 @@ export default {
   methods: {},
   computed: {},
   components: {
-    ComponentListTemplatesWorker
-  }
+    ComponentListTemplatesWorker,
+  },
 };
 </script>
 

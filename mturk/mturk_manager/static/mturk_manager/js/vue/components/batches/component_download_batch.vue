@@ -54,14 +54,16 @@
 </template>
 
 <script>
-import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
-import _ from "lodash";
-import Papa from "papaparse";
-import { STATUS_EXTERNAL, STATUS_INTERNAL } from "../../classes/enums";
-import { Service_Batches } from "../../services/service_batches";
+import {
+  mapState, mapMutations, mapActions, mapGetters,
+} from 'vuex';
+import _ from 'lodash';
+import Papa from 'papaparse';
+import { STATUS_EXTERNAL, STATUS_INTERNAL } from '../../classes/enums';
+import { Service_Batches } from '../../services/service_batches';
 
 export default {
-  name: "component-download-batch",
+  name: 'component-download-batch',
   data() {
     return {
       dialog: false,
@@ -69,24 +71,24 @@ export default {
       is_valid_selection: true,
 
       array_headers: [],
-      headers_selected: []
+      headers_selected: [],
     };
   },
   methods: {
-    download_csv: function() {
+    download_csv() {
       this.is_downloading_csv = true;
 
       const headers_selected = [];
-      console.log("this.headers_selected", this.headers_selected);
-      _.forEach(this.headers_selected, value => {
+      console.log('this.headers_selected', this.headers_selected);
+      _.forEach(this.headers_selected, (value) => {
         if (_.isNumber(value)) return true;
 
-        headers_selected.push(value.split("__")[1]);
+        headers_selected.push(value.split('__')[1]);
       });
 
       Service_Batches.download({
         batches: Object.keys(this.object_batches_selected),
-        values: headers_selected
+        values: headers_selected,
       }).then(() => {
         this.headers_selected = [0, 1, 2];
         this.dialog = false;
@@ -94,19 +96,19 @@ export default {
       });
     },
     normalize_answer(answer_raw) {
-      let answer = {};
-      if (Array.isArray(answer_raw["QuestionFormAnswers"]["Answer"])) {
-        _.forEach(answer_raw["QuestionFormAnswers"]["Answer"], function(value) {
-          answer[value["QuestionIdentifier"]] = value["FreeText"];
+      const answer = {};
+      if (Array.isArray(answer_raw.QuestionFormAnswers.Answer)) {
+        _.forEach(answer_raw.QuestionFormAnswers.Answer, (value) => {
+          answer[value.QuestionIdentifier] = value.FreeText;
         });
       } else {
         answer[
-          answer_raw["QuestionFormAnswers"]["Answer"]["QuestionIdentifier"]
-        ] = answer_raw["QuestionFormAnswers"]["Answer"]["FreeText"];
+          answer_raw.QuestionFormAnswers.Answer.QuestionIdentifier
+        ] = answer_raw.QuestionFormAnswers.Answer.FreeText;
       }
 
       return answer;
-    }
+    },
   },
   watch: {
     dialog() {
@@ -122,16 +124,16 @@ export default {
 
       this.is_downloading_csv = true;
       Service_Batches.get_download_info({
-        batches: Object.keys(this.object_batches_selected)
-      }).then(response => {
+        batches: Object.keys(this.object_batches_selected),
+      }).then((response) => {
         this.is_valid_selection = response.data.is_valid;
         this.is_downloading_csv = false;
 
         const array_children_builtin = [];
-        _.forEach(response.data.set_builtin, value => {
+        _.forEach(response.data.set_builtin, (value) => {
           array_children_builtin.push({
             id: `${0}__${value}`,
-            name: value
+            name: value,
           });
         });
 
@@ -139,15 +141,15 @@ export default {
         _.forEach(response.data.set_parameters, (value, index) => {
           array_children_parameters.push({
             id: `${1}__${index}`,
-            name: index
+            name: index,
           });
         });
 
         const array_children_answer = [];
-        _.forEach(response.data.set_answer, value => {
+        _.forEach(response.data.set_answer, (value) => {
           array_children_answer.push({
             id: `${1}__${value}`,
-            name: value
+            name: value,
           });
         });
 
@@ -155,22 +157,22 @@ export default {
         if (_.size(array_children_builtin) > 0) {
           array_headers.push({
             id: 0,
-            name: "builtin",
-            children: array_children_builtin
+            name: 'builtin',
+            children: array_children_builtin,
           });
         }
         if (_.size(array_children_parameters) > 0) {
           array_headers.push({
             id: 1,
-            name: "parameters",
-            children: array_children_parameters
+            name: 'parameters',
+            children: array_children_parameters,
           });
         }
         if (_.size(array_children_answer) > 0) {
           array_headers.push({
             id: 2,
-            name: "answer",
-            children: array_children_answer
+            name: 'answer',
+            children: array_children_answer,
           });
         }
 
@@ -178,10 +180,10 @@ export default {
 
         this.array_headers = array_headers;
       });
-    }
+    },
   },
   computed: {
-    count_batches_to_download: function() {
+    count_batches_to_download() {
       // if(_.size(this.array_batches_selected) == 0) {
       // 	return 'all';
       // } else {
@@ -190,11 +192,11 @@ export default {
       // return _.sumBy(this.batches_selected, 'hits.length');
       // }
     },
-    ...mapGetters("moduleBatches", {
-      object_batches_selected: "get_object_batches_selected"
-    })
+    ...mapGetters('moduleBatches', {
+      object_batches_selected: 'get_object_batches_selected',
+    }),
   },
-  components: {}
+  components: {},
 };
 </script>
 

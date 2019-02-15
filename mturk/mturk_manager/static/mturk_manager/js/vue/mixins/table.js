@@ -1,4 +1,4 @@
-import _ from "lodash";
+import _ from 'lodash';
 
 export const table = {
   watch: {
@@ -6,8 +6,8 @@ export const table = {
       handler() {
         this.load_page();
       },
-      deep: true
-    }
+      deep: true,
+    },
   },
   methods: {
     // Reset pagination/load page if the sandbox status was changed
@@ -17,6 +17,6 @@ export const table = {
       } else {
         this.load_page();
       }
-    }
-  }
+    },
+  },
 };

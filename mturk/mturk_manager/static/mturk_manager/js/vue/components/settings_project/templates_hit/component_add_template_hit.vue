@@ -55,38 +55,39 @@
 
 <script>
 // import ComponentFormSettingsBatch from './component_form_settings_batch';
-import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
-import _ from "lodash";
+import {
+  mapState, mapMutations, mapActions, mapGetters,
+} from 'vuex';
+import _ from 'lodash';
 
-import { required, minValue } from "vuelidate/lib/validators";
-import validations from "../../../mixins/validations";
-import { Service_Templates } from "../../../services/service_templates";
+import { required, minValue } from 'vuelidate/lib/validators';
+import validations from '../../../mixins/validations';
+import { Service_Templates } from '../../../services/service_templates';
 
 export default {
-  name: "component-add-template-hit",
+  name: 'component-add-template-hit',
   mixins: [validations],
   data() {
     return {
       name: undefined,
       template: undefined,
 
-      dialog: false
+      dialog: false,
     };
   },
   watch: {
     dialog() {
       this.reset();
-    }
+    },
   },
   validations: {
     name: {
-      required
+      required,
     },
     template: {
       required,
-      contains_injection_assignments: value =>
-        value != undefined && value.indexOf(" data-inject_assignments") >= 0
-    }
+      contains_injection_assignments: value => value != undefined && value.indexOf(' data-inject_assignments') >= 0,
+    },
   },
   methods: {
     reset() {
@@ -97,28 +98,28 @@ export default {
     create() {
       if (this.$refs.form.validate()) {
         Service_Templates.create({
-          type_template: "hit",
+          type_template: 'hit',
           template: {
             name: this.name,
-            template: this.template
+            template: this.template,
           },
-          project: this.project_current
+          project: this.project_current,
         }).then(() => {
-          this.$emit("created");
+          this.$emit('created');
           this.dialog = false;
           this.reset();
         });
       }
     },
-    ...mapActions("moduleProjects", {
-      create_template_hit: "create_template_hit"
-    })
+    ...mapActions('moduleProjects', {
+      create_template_hit: 'create_template_hit',
+    }),
   },
   computed: {
-    ...mapGetters("moduleProjects", {
-      project_current: "get_project_current"
-    })
+    ...mapGetters('moduleProjects', {
+      project_current: 'get_project_current',
+    }),
   },
-  components: {}
+  components: {},
 };
 </script>

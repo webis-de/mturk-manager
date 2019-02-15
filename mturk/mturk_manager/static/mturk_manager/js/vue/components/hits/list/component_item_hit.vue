@@ -87,32 +87,34 @@
   </tr>
 </template>
 <script>
-import { mapState, mapActions, mapMutations, mapGetters } from "vuex";
-import _ from "lodash";
-import ComponentBatchProgress from "../../batches/list/component_batch_progress.vue";
-import ComponentDisplayDatetime from "../../helpers/component_display_datetime";
+import {
+  mapState, mapActions, mapMutations, mapGetters,
+} from 'vuex';
+import _ from 'lodash';
+import ComponentBatchProgress from '../../batches/list/component_batch_progress.vue';
+import ComponentDisplayDatetime from '../../helpers/component_display_datetime';
 
 export default {
-  name: "component-item-hit",
+  name: 'component-item-hit',
   props: {
     props: {
       type: Object,
-      required: true
+      required: true,
     },
     show_links: {
       required: false,
       type: Boolean,
-      default: true
+      default: true,
     },
     array_columns_selected: {
       type: Array,
-      required: true
+      required: true,
     },
 
     isCondensed: {
       required: true,
-      type: Boolean
-    }
+      type: Boolean,
+    },
   },
   data() {
     return {};
@@ -133,12 +135,12 @@ export default {
       set(is_selected) {
         this.set_hits_selected({
           array_items: [this.hit],
-          add: is_selected
+          add: is_selected,
         });
-      }
+      },
     },
-    ...mapGetters("moduleHITs", {
-      object_hits_selected: "get_object_hits_selected"
+    ...mapGetters('moduleHITs', {
+      object_hits_selected: 'get_object_hits_selected',
     }),
     // count_assignments_total() {
     //     return this.hit.batch.settings_batch.count_assignments;
@@ -156,13 +158,12 @@ export default {
     stylesCell() {
       if (this.isCondensed) {
         return {
-          height: "unset !important",
-          paddingLeft: "5px !important",
-          paddingRight: "5px !important"
+          height: 'unset !important',
+          paddingLeft: '5px !important',
+          paddingRight: '5px !important',
         };
-      } else {
-        return {};
       }
+      return {};
     },
 
     // status_block() {
@@ -197,17 +198,17 @@ export default {
     //             };
     //     }
     // },
-    ...mapGetters(["get_show_progress_indicator"])
+    ...mapGetters(['get_show_progress_indicator']),
   },
   methods: {
-    ...mapMutations("moduleHITs", {
-      set_hits_selected: "set_hits_selected"
-    })
+    ...mapMutations('moduleHITs', {
+      set_hits_selected: 'set_hits_selected',
+    }),
   },
   components: {
     ComponentDisplayDatetime,
-    ComponentBatchProgress
-  }
+    ComponentBatchProgress,
+  },
 };
 </script>
 
