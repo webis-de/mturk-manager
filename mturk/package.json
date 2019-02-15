@@ -74,10 +74,10 @@
     }
   },
   "lint-staged": {
-    "*.{js,vue}": [
-      "yarn eslint --fix",
-      "git add"
-    ]
+    "linters": {
+      "*.{js,vue}": ["yarn eslint --fix", "git add"]
+    },
+    "ignore": ["**/dist"]
   },
   "license": "MIT",
   "main": "index.js"
