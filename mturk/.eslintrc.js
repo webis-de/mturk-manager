@@ -9,6 +9,24 @@ module.exports = {
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    // own vue style fix
+    'vue/v-bind-style': ['error', 'longform'],
+    'vue/v-on-style': ['error', 'longform'],
+    // import fix
+    'import/extensions': ['error', 'always', {
+      'js': 'never',
+      'vue': 'never'
+    }],
+    // vuex fix
+    'no-param-reassign': [
+      'error',
+      {
+        'props': true,
+        'ignorePropertyModificationsFor': [
+          'state',
+        ]
+      }
+    ],
   },
 
   parserOptions: {
