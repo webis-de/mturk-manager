@@ -1,43 +1,44 @@
 <template>
   <base-table
-    v-bind:array_items="array_items"
-    v-bind:array_columns="array_columns"
-    v-bind:array_columns_selected="array_columns_selected"
-    v-bind:function_reset_array_columns="function_reset_array_columns"
-    v-bind:function_set_array_columns="function_set_array_columns"
-    v-bind:function_load_page="function_load_page"
-    v-bind:object_items_selected="object_items_selected"
-    v-bind:function_set_items_selected="function_set_items_selected"
-    v-bind:function_clear_items_selected="function_clear_items_selected"
-    v-bind:filters="{
-      id_hit
-    }"
     v-slot="{ props, array_columns_selectedm, isCondensed }"
+    v-bind:array-items="array_items"
+    v-bind:array-columns="array_columns"
+    v-bind:array-columns-selected="array_columns_selected"
+    v-bind:function-reset-array-columns="function_reset_array_columns"
+    v-bind:function-set-array-columns="function_set_array_columns"
+    v-bind:function-load-page="function_load_page"
+    v-bind:object-items-selected="object_items_selected"
+    v-bind:function-set-items-selected="function_set_items_selected"
+    v-bind:function-clear-items-selected="function_clear_items_selected"
+    v-bind:filters="{
+      id_hit: idHit
+    }"
   >
     <component-item-assignment
       v-bind:props="props"
       v-bind:array_columns_selected="array_columns_selected"
-      v-bind:show_links="show_links"
+      v-bind:show_links="showLinks"
       v-bind:is-condensed="isCondensed"
-    ></component-item-assignment>
+    />
   </base-table>
 </template>
 
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex';
-import { Service_Assignments } from '../../../services/service_assignments';
+import { Service_Assignments as ServiceAssignments } from '../../../services/service_assignments';
 import BaseTable from '../../base-table';
 import ComponentItemAssignment from './component_item_assignment';
 
 export default {
-  name: 'list-assignments',
+  name: 'ListAssignments',
   components: { ComponentItemAssignment, BaseTable },
   props: {
-    id_hit: {
+    idHit: {
       required: false,
       type: Number,
+      default: undefined,
     },
-    show_links: {
+    showLinks: {
       required: false,
       type: Boolean,
       default: true,
@@ -45,8 +46,16 @@ export default {
   },
   data() {
     return {
-      function_load_page: Service_Assignments.load_page,
+      function_load_page: ServiceAssignments.load_page,
     };
+  },
+  computed: {
+    ...mapGetters('moduleAssignments', {
+      array_items: 'get_array_assignments',
+      object_items_selected: 'get_object_assignments_selected',
+      array_columns: 'get_array_columns_general',
+      array_columns_selected: 'get_array_columns_selected_general',
+    }),
   },
   methods: {
     ...mapActions('moduleAssignments', {
@@ -56,14 +65,6 @@ export default {
       function_set_items_selected: 'set_assignments_selected',
       function_clear_items_selected: 'clear_assignments_selected',
       function_set_array_columns: 'set_array_columns_general',
-    }),
-  },
-  computed: {
-    ...mapGetters('moduleAssignments', {
-      array_items: 'get_array_assignments',
-      object_items_selected: 'get_object_assignments_selected',
-      array_columns: 'get_array_columns_general',
-      array_columns_selected: 'get_array_columns_selected_general',
     }),
   },
 };

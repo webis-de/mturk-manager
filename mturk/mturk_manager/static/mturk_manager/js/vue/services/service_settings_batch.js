@@ -2,7 +2,7 @@ import { Service_Endpoint } from './service_endpoint';
 import { store } from '../store/vuex';
 
 class Class_Settings_Batch {
-  async load() {
+  async loadPage(pagination) {
     const project = store.getters['moduleProjects/get_project_current'];
 
     const response = await Service_Endpoint.make_request({
@@ -14,12 +14,20 @@ class Class_Settings_Batch {
         ),
         project,
       },
+      params: {
+        page: pagination.page,
+        page_size: pagination.rowsPerPage,
+        sort_by: pagination.sortBy,
+        descending: pagination.descending,
+      },
     });
 
-    store.commit('moduleProjects/set_settings_batch', {
+    store.commit('moduleSettingsBatch/setItems', {
       data: response.data,
       project,
     });
+
+    return response.data.items_total;
   }
 
   async create({ settings_batch, project }) {
@@ -35,9 +43,8 @@ class Class_Settings_Batch {
       data: settings_batch,
     });
 
-    store.commit('moduleProjects/add_settings_batch', {
+    store.commit('moduleSettingsBatch/add', {
       data: response.data,
-      project,
     });
   }
 
@@ -59,9 +66,8 @@ class Class_Settings_Batch {
       data: data_changed,
     });
 
-    store.commit('moduleProjects/update_settings_batch', {
+    store.commit('moduleSettingsBatch/update', {
       data: response.data,
-      project,
     });
   }
 
@@ -79,11 +85,10 @@ class Class_Settings_Batch {
     });
 
     callback();
-    store.commit('moduleProjects/remove_settings_batch', {
-      settings_batch,
-      project,
+    store.commit('moduleSettingsBatch/delete', {
+      settingsBatch: settings_batch,
     });
   }
 }
 
-export const Service_Settings_Batch = new Class_Settings_Batch();
+export const ServiceSettingsBatch = new Class_Settings_Batch();

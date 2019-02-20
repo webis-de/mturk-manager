@@ -7,8 +7,8 @@ import Settings_Batch from '../classes/settings_batch';
 import { DESCRIPTIONS } from '../classes/enums';
 import { Service_Keywords } from '../services/Service_Keywords';
 
-const foo = (object_settings_batch, settings_batch_current) => (value) => {
-  if (_.get(settings_batch_current, 'name', undefined) == value) return true;
+const foo = (object_settings_batch, settingsBatchCurrent) => (value) => {
+  if (_.get(settingsBatchCurrent, 'name', undefined) == value) return true;
 
   return (
     _.find(object_settings_batch, settings_batch => settings_batch.name == value) == undefined
@@ -32,8 +32,8 @@ export default {
   },
   methods: {
     update_fields() {
-      if (this.settings_batch_current != undefined) {
-        this.settings_batch = new Settings_Batch(this.settings_batch_current);
+      if (this.settingsBatchCurrent !== undefined) {
+        this.settings_batch = new Settings_Batch(this.settingsBatchCurrent);
 
         // this.settings_batch.name = this.settings_batch_current.name;
 
@@ -73,7 +73,7 @@ export default {
           required,
           is_unique: foo(
             this.project_current.settings_batch,
-            this.settings_batch_current,
+            this.settingsBatchCurrent,
           ),
         },
         title: {

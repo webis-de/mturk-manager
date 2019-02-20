@@ -1,7 +1,7 @@
 import Project from '../classes/project';
 import { store } from '../store/vuex';
 import { Service_Endpoint } from './service_endpoint';
-import { Service_Settings_Batch } from './service_settings_batch';
+import { ServiceSettingsBatch } from './service_settings_batch';
 import { Service_Templates } from './service_templates';
 // import {router} from "./service_router.js";
 
@@ -20,7 +20,7 @@ class Class_Service_Projects {
           path: store.getters.get_url('url_api_projects', 'moduleProjects'),
         },
       });
-
+      console.log('loaded', 33333333333333333333333333333);
       if (response.success === true) {
         // store.commit('moduleProjects/set_response_data_projects', response.data);
         store.commit('moduleProjects/set_projects', response.data);
@@ -79,7 +79,7 @@ class Class_Service_Projects {
     // load initial values for project
     if (project.slug !== undefined) {
       this.load_data(project);
-      Service_Settings_Batch.load();
+      // ServiceSettingsBatch.load();
       Service_Templates.load_all();
 
       this.ping();

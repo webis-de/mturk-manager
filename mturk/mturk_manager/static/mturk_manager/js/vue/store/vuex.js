@@ -16,6 +16,7 @@ import { moduleKeywords } from './modules/keywords.js';
 import { moduleMessagesReject } from './modules/messages_reject.js';
 import { module_app } from './modules/app';
 import { module_finances } from './modules/finances';
+import { moduleSettingsBatch } from './modules/settings-batch';
 
 Vue.use(Vuex);
 Vue.use(VueCookies);
@@ -33,6 +34,7 @@ export const store = new Vuex.Store({
     moduleAssignments,
     moduleKeywords,
     moduleMessagesReject,
+    moduleSettingsBatch,
   },
   state: {
     token_csrf: undefined,

@@ -1,56 +1,23 @@
 <template>
   <base-table
-    v-bind:array_items="array_items"
-    v-bind:array_columns="array_columns"
-    v-bind:array_columns_selected="array_columns_selected"
-    v-bind:function_reset_array_columns="function_reset_array_columns"
-    v-bind:function_set_array_columns="function_set_array_columns"
-    v-bind:function_load_page="function_load_page"
-    v-bind:object_items_selected="object_items_selected"
-    v-bind:function_set_items_selected="function_set_items_selected"
-    v-bind:function_clear_items_selected="function_clear_items_selected"
     v-slot="{ props, array_columns_selected, isCondensed }"
+    v-bind:array-items="array_items"
+    v-bind:array-columns="array_columns"
+    v-bind:array-columns-selected="array_columns_selected"
+    v-bind:function-reset-array-columns="function_reset_array_columns"
+    v-bind:function-set-array-columns="function_set_array_columns"
+    v-bind:function-load-page="function_load_page"
+    v-bind:object-items-selected="object_items_selected"
+    v-bind:function-set-items-selected="function_set_items_selected"
+    v-bind:function-clear-items-selected="function_clear_items_selected"
   >
     <component-item-worker
       v-bind:props="props"
       v-bind:array_columns_selected="array_columns_selected"
-      v-bind:show_links="show_links"
+      v-bind:show_links="showLinks"
       v-bind:is-condensed="isCondensed"
-    ></component-item-worker>
+    />
   </base-table>
-
-  <!--<span>-->
-  <!--<v-layout>-->
-  <!--<v-flex>-->
-  <!--<v-layout>-->
-  <!--&lt;!&ndash;<v-flex class="shrink" mr-3>&ndash;&gt;-->
-  <!--&lt;!&ndash;<v-switch label="Not Blocked" v-model="filters.show_workers_blocked_none"></v-switch>&ndash;&gt;-->
-  <!--&lt;!&ndash;</v-flex>&ndash;&gt;-->
-  <!--&lt;!&ndash;<v-flex class="shrink" mr-3>&ndash;&gt;-->
-  <!--&lt;!&ndash;<v-switch label="Limit Blocked" v-model="filters.show_workers_blocked_limit"></v-switch>&ndash;&gt;-->
-  <!--&lt;!&ndash;</v-flex>&ndash;&gt;-->
-  <!--&lt;!&ndash;<v-flex class="shrink" mr-3>&ndash;&gt;-->
-  <!--&lt;!&ndash;<v-switch label="Project Blocked" v-model="filters.show_workers_blocked_soft"></v-switch>&ndash;&gt;-->
-  <!--&lt;!&ndash;</v-flex>&ndash;&gt;-->
-  <!--&lt;!&ndash;<v-flex class="shrink" mr-3>&ndash;&gt;-->
-  <!--&lt;!&ndash;<v-switch label="Global Blocked" v-model="filters.show_workers_blocked_hard"></v-switch>&ndash;&gt;-->
-  <!--&lt;!&ndash;</v-flex>&ndash;&gt;-->
-  <!--</v-layout>-->
-  <!--</v-flex>-->
-  <!---->
-  <!--<v-flex>-->
-  <!--<v-layout>-->
-  <!--<v-flex>-->
-  <!--<v-text-field-->
-  <!--v-model="filters.id_worker"-->
-  <!--append-icon="search"-->
-  <!--label="Search for name"-->
-  <!--hide-details-->
-  <!--class="mb-2"-->
-  <!--&gt;</v-text-field>-->
-  <!--</v-flex>-->
-  <!--</v-layout>-->
-  <!--</v-flex>-->
 
   <!--</v-layout>-->
   <!--&lt;!&ndash; select-all &ndash;&gt;-->
@@ -138,24 +105,26 @@
 </template>
 <script>
 import {
-  mapState, mapActions, mapGetters, mapMutations,
+  mapActions, mapGetters, mapMutations,
 } from 'vuex';
 // import { Policy } from '../../store/modules/policies.js';
-import _ from 'lodash';
-import { STATUS_BLOCK } from '../../../classes/enums.js';
-import ComponentItemWorker from './component_item_worker.vue';
-import { Service_Workers } from '../../../services/service_worker';
-import { update_sandbox } from '../../../mixins/update_sandbox';
-import { external_pagination } from '../../../mixins/external_pagination';
+import ComponentItemWorker from './component_item_worker';
+import { Service_Workers as ServiceWorkers } from '../../../services/service_worker';
+import { update_sandbox as updateSandbox } from '../../../mixins/update_sandbox';
+import { external_pagination as externalPagination } from '../../../mixins/external_pagination';
 import { table } from '../../../mixins/table';
 import BaseTable from '../../base-table';
 // import ComponentShowMoneySpent from './component-show-money-spent.vue';
 // import ComponentShowBatches from './component-show-batches.vue';
 export default {
-  mixins: [update_sandbox, external_pagination, table],
-  name: 'component-list-workers',
+  name: 'ComponentListWorkers',
+  components: {
+    BaseTable,
+    ComponentItemWorker,
+  },
+  mixins: [updateSandbox, externalPagination, table],
   props: {
-    show_links: {
+    showLinks: {
       required: false,
       type: Boolean,
       default: true,
@@ -163,7 +132,7 @@ export default {
   },
   data() {
     return {
-      function_load_page: Service_Workers.load_page,
+      function_load_page: ServiceWorkers.load_page,
       workers_selected: [],
       pagination: { rowsPerPage: 5 },
       // pagination: { rowsPerPage: 5, totalItems: 30 },
@@ -255,40 +224,13 @@ export default {
   methods: {
     load_page() {
       this.loading = true;
-      Service_Workers.load_page(this.pagination, {
+      ServiceWorkers.load_page(this.pagination, {
         ...this.filters,
-      }).then((items_total) => {
-        this.items_total = items_total;
+      }).then((itemsTotal) => {
+        this.items_total = itemsTotal;
         this.loading = false;
       });
     },
-    // custom_filter(items, search, filter) {
-    //     if(!this.show_workers_blocked_none)
-    //     {
-    //         items = items.filter(e => !e.is_blocked_soft && !e.is_blocked_hard);
-    //     }
-    //     if(!this.show_workers_blocked_limit)
-    //     {
-    //         items = items.filter(e => e.count_assignments_limit >= this.project_current.count_assignments_max_per_worker);
-    //     }
-    //     if(!this.show_workers_blocked_soft)
-    //     {
-    //         items = items.filter(e => e.is_blocked_soft);
-    //     }
-    //     if(!this.show_workers_blocked_hard)
-    //     {
-    //         items = items.filter(e => e.is_blocked_hard);
-    //     }
-    //
-    //     search = search.trim()
-    //     if(search != '')
-    //     {
-    //         items = items.filter(e => filter(e.id_worker, search));
-    //
-    //     }
-    //     // console.log(filter)
-    //     return items
-    // },
     ...mapMutations('moduleWorkers', {
       function_set_items_selected: 'set_workers_selected',
       function_clear_items_selected: 'clear_workers_selected',
@@ -299,18 +241,7 @@ export default {
       function_reset_array_columns: 'reset_array_columns_general',
     }),
   },
-  created() {
-    // this.update_status_block({
-    //     worker: {name: 'A7W013PM199BS'},
-    //     status_block_new: 1,
-    //     status_block_old: 2,
-    // });
-  },
 
-  components: {
-    BaseTable,
-    ComponentItemWorker,
-  },
 };
 </script>
 

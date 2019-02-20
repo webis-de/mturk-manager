@@ -26,9 +26,14 @@ export const moduleProjects = {
   },
   getters: {
     get_project_current(state) {
-      if (state.slug_project_current == undefined) {
+      if (
+        state.slug_project_current === null
+        || state.slug_project_current === undefined
+        || state.object_projects === null
+      ) {
         return {};
       }
+
       return state.object_projects[state.slug_project_current];
     },
     //  	get_object_project: (state, getters, rootState) => {
@@ -173,14 +178,6 @@ export const moduleProjects = {
         Vue.set(project, name_field, project_new[name_field]);
       });
     },
-    update_settings_batch(state, { data, project }) {
-      const object_settings_batch = new Settings_Batch(data);
-      Vue.set(
-        project.settings_batch,
-        object_settings_batch.id,
-        object_settings_batch,
-      );
-    },
     update_template_worker(state, { data, project }) {
       const template_worker = new Template_Worker(data);
       Vue.set(project.templates_worker, template_worker.id, template_worker);
@@ -223,14 +220,6 @@ export const moduleProjects = {
       project.templates_global[data.id].update(data);
       // const template_global = new Template_Global(data);
       // Vue.set(project.templates_global, template_global.id, template_global);
-    },
-    add_settings_batch(state, { data, project }) {
-      const object_settings_batch = new Settings_Batch(data);
-      Vue.set(
-        project.settings_batch,
-        object_settings_batch.id,
-        object_settings_batch,
-      );
     },
     add_template_worker(state, { data, project }) {
       const object_template_worker = new Template_Worker(data);
@@ -284,9 +273,6 @@ export const moduleProjects = {
     },
     remove_template_global(state, { template, project }) {
       Vue.delete(project.templates_global, template.id);
-    },
-    remove_settings_batch(state, { settings_batch, project }) {
-      Vue.delete(project.settings_batch, settings_batch.id);
     },
     set_ping(state, { project, data }) {
       Vue.set(project, 'datetime_visited', moment(data.datetime));

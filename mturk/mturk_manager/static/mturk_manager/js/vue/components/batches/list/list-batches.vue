@@ -1,83 +1,86 @@
 <template>
   <base-table
-    v-bind:array_items="array_items"
-    v-bind:array_columns="array_columns"
-    v-bind:array_columns_selected="array_columns_selected_computed"
-    v-bind:function_reset_array_columns="function_reset_array_columns_computed"
-    v-bind:function_set_array_columns="function_set_array_columns_computed"
-    v-bind:function_load_page="function_load_page"
-    v-bind:object_items_selected="object_items_selected"
-    v-bind:function_set_items_selected="function_set_items_selected"
-    v-bind:function_clear_items_selected="function_clear_items_selected"
     v-slot="{ props, array_columns_selected, isCondensed }"
+    v-bind:array-items="array_items"
+    v-bind:array-columns="array_columns"
+    v-bind:array-columns-selected="array_columns_selected_computed"
+    v-bind:function-reset-array-columns="function_reset_array_columns_computed"
+    v-bind:function-set-array-columns="function_set_array_columns_computed"
+    v-bind:function-load-page="function_load_page"
+    v-bind:object-items-selected="object_items_selected"
+    v-bind:function-set-items-selected="function_set_items_selected"
+    v-bind:function-clear-items-selected="function_clear_items_selected"
   >
     <component-item-batch
       v-bind:props="props"
       v-bind:array_columns_selected="array_columns_selected"
-      v-bind:show_links="show_links"
+      v-bind:show_links="showLinks"
       v-bind:is-condensed="isCondensed"
-    ></component-item-batch>
+    />
   </base-table>
 </template>
 
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex';
-import { Service_Batches } from '../../../services/service_batches';
+import { Service_Batches as ServiceBatches } from '../../../services/service_batches';
 import BaseTable from '../../base-table';
 import ComponentItemBatch from './component_item_batch';
 
 export default {
-  name: 'list-batches',
+  name: 'ListBatches',
   components: { ComponentItemBatch, BaseTable },
   props: {
-    show_links: {
+    showLinks: {
       required: false,
       type: Boolean,
       default: true,
     },
-    function_reset_array_columns: {
+    functionResetArrayColumns: {
       required: false,
       type: Function,
+      default: undefined,
     },
-    function_set_array_columns: {
+    functionSetArrayColumns: {
       required: false,
       type: Function,
+      default: undefined,
     },
-    array_columns_selected: {
+    arrayColumnsSelected: {
       required: false,
       type: Array,
+      default: undefined,
     },
   },
   data() {
     return {
-      function_load_page: Service_Batches.load_page,
+      function_load_page: ServiceBatches.load_page,
     };
-  },
-  methods: {
-    ...mapActions('moduleBatches', {
-      function_reset_array_columns_general: 'reset_array_columns_general',
-    }),
-    ...mapMutations('moduleBatches', {
-      function_set_items_selected: 'set_batches_selected',
-      function_clear_items_selected: 'clear_batches_selected',
-      function_set_array_columns_general: 'set_array_columns_general',
-    }),
   },
   computed: {
     function_reset_array_columns_computed() {
-      return this.function_reset_array_columns !== undefined
-        ? this.function_reset_array_columns
+      return this.functionResetArrayColumns !== undefined
+        ? this.functionResetArrayColumns
         : this.function_reset_array_columns_general;
     },
     function_set_array_columns_computed() {
-      return this.function_set_array_columns !== undefined
-        ? this.function_set_array_columns
+      return this.functionSetArrayColumns !== undefined
+        ? this.functionSetArrayColumns
         : this.function_set_array_columns_general;
     },
     array_columns_selected_computed() {
-      return this.array_columns_selected !== undefined
-        ? this.array_columns_selected
+      return this.arrayColumnsSelected !== undefined
+        ? this.arrayColumnsSelected
         : this.array_columns_selected_general;
+    },
+    methods: {
+      ...mapActions('moduleBatches', {
+        function_reset_array_columns_general: 'reset_array_columns_general',
+      }),
+      ...mapMutations('moduleBatches', {
+        function_set_items_selected: 'set_batches_selected',
+        function_clear_items_selected: 'clear_batches_selected',
+        function_set_array_columns_general: 'set_array_columns_general',
+      }),
     },
     ...mapGetters('moduleBatches', {
       array_items: 'get_array_batches',

@@ -11,16 +11,22 @@
       class="my-3"
       v-bind:rows-per-page-items="[5, 10, 25, 30, { text: 'All', value: null }]"
     >
-      <template slot="headers" slot-scope="props">
+      <template
+        slot="headers"
+        slot-scope="props"
+      >
         <tr v-bind:style="stylesHeaderRow">
-          <th v-bind:style="stylesHeaderCell">
+          <th
+            v-if="objectItemsSelected !== undefined"
+            v-bind:style="stylesHeaderCell"
+          >
             <v-checkbox
               v-bind:input-value="is_page_selected"
               v-bind:indeterminate="props.indeterminate"
               primary
               hide-details
               v-on:click.native="toggle_all()"
-            ></v-checkbox>
+            />
           </th>
           <th
             v-for="header in props.headers"
@@ -28,45 +34,58 @@
             v-bind:width="header.width"
             v-bind:class="[
               'column',
-              { sortable: header.sortable != false },
+              { sortable: header.sortable !== false },
               pagination.descending ? 'desc' : 'asc',
               header.value === pagination.sortBy ? 'active' : ''
             ]"
+            v-bind:style="stylesHeaderCell"
             v-on="
-              header.sortable != false
+              header.sortable !== false
                 ? {
-                    click: () => {
-                      pagination.sortBy = header.value;
-                      pagination.descending = !pagination.descending;
-                    }
+                  click: () => {
+                    pagination.sortBy = header.value;
+                    pagination.descending = !pagination.descending;
                   }
+                }
                 : {}
             "
-            v-bind:style="stylesHeaderCell"
           >
-            <v-icon small v-if="header.sortable != false">arrow_upward</v-icon>
+            <v-icon
+              v-if="header.sortable !== false"
+              small
+            >
+              arrow_upward
+            </v-icon>
             {{ header.text }}
           </th>
         </tr>
       </template>
 
-      <template slot="items" slot-scope="props">
+      <template
+        slot="items"
+        slot-scope="props"
+      >
         <slot
           v-bind:props="props"
-          v-bind:array_columns_selected="array_columns_selected"
+          v-bind:array_columns_selected="arrayColumnsSelected"
           v-bind:is-condensed="isCondensed"
-        ></slot>
+        />
       </template>
 
-      <template slot="footer">
+      <template
+        v-if="showFooter"
+        slot="footer"
+      >
         <tr>
+          <slot name="footer" />
           <component-settings-table
+            v-if="functionResetArrayColumns !== undefined"
             v-bind:colspan="array_headers.length + 1"
-            v-bind:array_columns="array_columns"
-            v-bind:array_columns_selected="array_columns_selected"
-            v-bind:function_reset="function_reset_array_columns"
-            v-on:change="function_set_array_columns($event)"
-          ></component-settings-table>
+            v-bind:array_columns="arrayColumns"
+            v-bind:array_columns_selected="arrayColumnsSelected"
+            v-bind:function_reset="functionResetArrayColumns"
+            v-on:change="functionSetArrayColumns($event)"
+          />
         </tr>
       </template>
     </v-data-table>
@@ -74,60 +93,66 @@
 </template>
 
 <script>
-import { update_sandbox } from '../mixins/update_sandbox';
-import { external_pagination } from '../mixins/external_pagination';
+import * as _ from 'lodash';
+import { update_sandbox as updateSandbox } from '../mixins/update_sandbox';
+import { external_pagination as externalPagination } from '../mixins/external_pagination';
 import { table } from '../mixins/table';
 import ComponentSettingsTable from './helpers/component-settings-table';
 
 export default {
-  name: 'base-table',
+  name: 'BaseTable',
   components: { ComponentSettingsTable },
-  mixins: [update_sandbox, external_pagination, table],
+  mixins: [updateSandbox, externalPagination, table],
   props: {
-    array_items: {
+    arrayItems: {
+      type: Function,
+      required: true,
+    },
+    functionLoadPage: {
       type: Function,
       required: true,
     },
 
-    array_columns: {
+    arrayColumns: {
       type: Array,
       required: true,
     },
-    array_columns_selected: {
+    arrayColumnsSelected: {
       type: Array,
       required: true,
     },
 
-    function_reset_array_columns: {
+    functionResetArrayColumns: {
       type: Function,
-      required: true,
+      required: false,
+      default: undefined,
     },
-    function_set_array_columns: {
+    functionSetArrayColumns: {
       type: Function,
-      required: true,
-    },
-    function_load_page: {
-      type: Function,
-      required: true,
+      required: false,
+      default: undefined,
     },
 
-    object_items_selected: {
+    objectItemsSelected: {
       type: Object,
-      required: true,
+      required: false,
+      default: undefined,
     },
-    function_set_items_selected: {
+    functionSetItemsSelected: {
       type: Function,
-      required: true,
+      required: false,
+      default: undefined,
     },
-    function_clear_items_selected: {
+    functionClearItemsSelected: {
       type: Function,
-      required: true,
+      required: false,
+      default: () => {},
     },
 
     filters: {
       required: false,
       type: Object,
-      default: () => ({}),
+      default: () => {},
     },
 
     isCondensed: {
@@ -150,29 +175,34 @@ export default {
     };
   },
   computed: {
+    showFooter() {
+      return this.$scopedSlots.footer !== undefined
+        || this.functionResetArrayColumns !== undefined;
+    },
     array_headers() {
-      const set = new Set(this.array_columns_selected);
-      return _.filter(this.array_columns, column => set.has(column.value));
+      const set = new Set(this.arrayColumnsSelected);
+      return _.filter(this.arrayColumns, column => set.has(column.value));
     },
     is_page_selected() {
-      let is_page_selected = true;
+      let isPageSelected = true;
 
       if (_.size(this.array_page) === 0) {
         return false;
       }
 
       _.forEach(this.array_page, (item) => {
-        if (!_.has(this.object_items_selected, item.id)) {
-          is_page_selected = false;
+        if (!_.has(this.objectItemsSelected, item.id)) {
+          isPageSelected = false;
           return false;
         }
+        return true;
       });
 
-      return is_page_selected;
+      return isPageSelected;
     },
     array_page() {
-      const array_items = this.array_items();
-      return array_items === null ? [] : array_items;
+      const arrayItems = this.arrayItems();
+      return arrayItems === null ? [] : arrayItems;
     },
     stylesHeaderRow() {
       return {
@@ -185,25 +215,25 @@ export default {
       };
     },
   },
+  beforeDestroy() {
+    this.functionClearItemsSelected();
+  },
   methods: {
     load_page() {
       this.loading = true;
-      this.function_load_page(this.pagination, this.filters).then(
-        (items_total) => {
-          this.items_total = items_total;
+      this.functionLoadPage(this.pagination, this.filters).then(
+        (itemsTotal) => {
+          this.items_total = itemsTotal;
           this.loading = false;
         },
       );
     },
     toggle_all() {
-      this.function_set_items_selected({
+      this.functionSetItemsSelected({
         add: !this.is_page_selected,
         array_items: this.array_page,
       });
     },
-  },
-  beforeDestroy() {
-    this.function_clear_items_selected();
   },
 };
 </script>

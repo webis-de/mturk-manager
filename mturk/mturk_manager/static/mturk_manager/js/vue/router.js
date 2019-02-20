@@ -177,8 +177,8 @@ router.beforeEach(async (to, from, next) => {
     store.getters['module_app/has_credentials'] === false
     && to.name !== 'add_credentials'
   ) {
-    const is_success = await Service_App.init();
-    if (is_success === false) {
+    const isSuccess = await Service_App.init();
+    if (isSuccess === false) {
       next({ name: 'add_credentials' });
       return;
     }

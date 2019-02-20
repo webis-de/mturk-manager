@@ -13,11 +13,9 @@ class Class_Service_App {
       // router.push({name: 'add_credentials'});
       return false;
     }
-
     Service_Endpoint.init(store.state.module_app.token_instance);
 
     await this.load_config();
-
     await Service_Projects.load_projects();
 
     await Service_Projects.load_project_data();

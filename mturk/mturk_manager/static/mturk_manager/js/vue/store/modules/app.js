@@ -39,7 +39,6 @@ export const module_app = {
 
       commit('set_url_api', url_api);
       commit('set_token_instance', token_instance);
-
       return true;
     },
     async init({ commit, dispatch }, config) {
