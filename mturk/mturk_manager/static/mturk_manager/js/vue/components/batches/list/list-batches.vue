@@ -72,21 +72,21 @@ export default {
         ? this.arrayColumnsSelected
         : this.array_columns_selected_general;
     },
-    methods: {
-      ...mapActions('moduleBatches', {
-        function_reset_array_columns_general: 'reset_array_columns_general',
-      }),
-      ...mapMutations('moduleBatches', {
-        function_set_items_selected: 'set_batches_selected',
-        function_clear_items_selected: 'clear_batches_selected',
-        function_set_array_columns_general: 'set_array_columns_general',
-      }),
-    },
     ...mapGetters('moduleBatches', {
       array_items: 'get_array_batches',
       object_items_selected: 'get_object_batches_selected',
       array_columns: 'get_array_columns_general',
       array_columns_selected_general: 'get_array_columns_selected_general',
+    }),
+  },
+  methods: {
+    ...mapActions('moduleBatches', {
+      function_reset_array_columns_general: 'reset_array_columns_general',
+    }),
+    ...mapMutations('moduleBatches', {
+      function_set_items_selected: 'set_batches_selected',
+      function_clear_items_selected: 'clear_batches_selected',
+      function_set_array_columns_general: 'set_array_columns_general',
     }),
   },
 };
