@@ -8,7 +8,6 @@
       v-bind:total-items="items_total"
       v-bind:loading="loading"
       item-key="id"
-      class="my-3"
       v-bind:rows-per-page-items="[5, 10, 25, 30, { text: 'All', value: null }]"
     >
       <template
