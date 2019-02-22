@@ -46,6 +46,9 @@ class Serializer_Settings_Batch(serializers.ModelSerializer):
             'count_assignments_max_per_worker',
         )
         extra_kwargs = {
+            'name': {
+                'required': False
+            },
             'template': {
                 'source': 'template_worker',
             },
