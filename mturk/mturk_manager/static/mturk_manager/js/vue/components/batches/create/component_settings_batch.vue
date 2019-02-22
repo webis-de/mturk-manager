@@ -3,7 +3,7 @@
     <v-flex>
       <!-- {{valid}} -->
       <v-select
-        v-model="settings_batch_current"
+        v-model="settingsBatchCurrent"
         v-bind:items="list_settings_batch"
         label="Batch Profile"
         item-text="name"
@@ -45,7 +45,7 @@ export default {
   },
   data() {
     return {
-      settings_batch_current: undefined,
+      settingsBatchCurrent: undefined,
       name_not_required: true,
     };
   },
@@ -63,7 +63,7 @@ export default {
     }),
   },
   watch: {
-    settings_batch_current: {
+    settingsBatchCurrent: {
       handler() {
         this.update_fields();
         this.$v.$touch();
