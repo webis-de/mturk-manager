@@ -23,7 +23,7 @@ class Class_Settings_Batch {
     });
 
     store.commit('moduleSettingsBatch/setItems', {
-      data: response.data,
+      data: response.data.data,
       project,
     });
 

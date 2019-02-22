@@ -11,7 +11,6 @@ from api.classes import Manager_Batches
 from rest_framework.decorators import api_view, permission_classes
 from api.models import Batch as Model_Batch
 import json
-
 from mturk_db.settings import REST_FRAMEWORK
 
 PERMISSIONS_INSTANCE_ONLY = (AllowOptionsAuthentication, IsInstance,)

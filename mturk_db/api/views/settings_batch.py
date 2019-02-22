@@ -9,6 +9,8 @@ from api.serializers import Serializer_Settings_Batch
 from api.models import Settings_Batch as Model_Settings_Batch
 from rest_framework import status
 from django.http import Http404
+from mturk_db.settings import REST_FRAMEWORK
+from rest_framework.settings import api_settings
 
 PERMISSIONS_INSTANCE_ONLY = (AllowOptionsAuthentication, IsInstance,)
 PERMISSIONS_WORKER_ONLY = (AllowOptionsAuthentication, IsWorker,)
@@ -18,6 +20,23 @@ class Settings_Batch(APIView):
 
     @add_database_object_project
     def get(self, request, slug_project, database_object_project, use_sandbox, format=None):
+
+        queryset = Manager_Settings_Batch.get(database_object_project, request)
+
+        queryset_paginated = queryset
+
+        if request.query_params.get(REST_FRAMEWORK['PAGE_SIZE_QUERY_PARAM']) is not None:
+            paginator = api_settings.DEFAULT_PAGINATION_CLASS()
+            queryset_paginated = paginator.paginate_queryset(queryset, request)
+
+        serializer = Serializer_Settings_Batch(queryset_paginated, many=True)
+
+        return Response({
+            'items_total': queryset.count(),
+            'data': serializer.data,
+        })
+
+
         queryset_settings_batch = Manager_Settings_Batch.get_all_for_project(database_object_project.id)
         serializer = Serializer_Settings_Batch(queryset_settings_batch, many=True, context={'request': request})
         return Response(serializer.data)

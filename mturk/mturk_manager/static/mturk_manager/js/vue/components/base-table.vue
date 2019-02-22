@@ -164,7 +164,7 @@ export default {
     return {
       pagination: {
         rowsPerPage: 25,
-        sortBy: 'datetime_creation',
+        // sortBy: 'datetime_creation',
         descending: true,
       },
 

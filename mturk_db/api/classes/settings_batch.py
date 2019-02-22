@@ -93,3 +93,19 @@ class Manager_Settings_Batch(object):
     @staticmethod
     def delete(id_settings_batch):
         Settings_Batch.objects.filter(id=id_settings_batch).delete()
+
+    @staticmethod
+    def get(database_object_project, request):
+        queryset = Settings_Batch.objects.filter(
+            project=database_object_project,
+            batch=None,
+        )
+
+        sort_by = request.query_params.get('sort_by')
+        if sort_by is not None:
+            descending = request.query_params.get('descending', 'false') == 'true'
+            queryset = queryset.order_by(
+                ('-' if descending else '') + sort_by
+            )
+
+        return queryset
