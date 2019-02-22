@@ -18,12 +18,49 @@
     <v-divider class="my-3"></v-divider>
     <v-layout>
       <v-flex>
-        <h1 class="headline">Batches</h1>
-        <list-batches
-          v-bind:function_reset_array_columns="function_reset_array_columns"
-          v-bind:function_set_array_columns="function_set_array_columns"
-          v-bind:array_columns_selected="array_columns_selected"
-        ></list-batches>
+        <v-tabs  >
+          <v-tab key="batch">
+            Batches
+          </v-tab>
+          <v-tab key="hits">
+            HITs
+          </v-tab>
+          <v-tab key="assignments">
+            Assignments
+          </v-tab>
+
+          <v-tabs-items>
+          <v-tab-item
+            key="batches"
+          >
+            <v-card class="pa-1">
+              <list-batches
+                v-bind:function-reset-array-columns="function_reset_array_columns"
+                v-bind:function-set-array-columns="function_set_array_columns"
+                v-bind:array-columns-selected="array_columns_selected"
+              ></list-batches>
+              </v-card>
+          </v-tab-item>
+
+          <v-tab-item
+            key="hits"
+          >
+            <v-card class="pa-1">
+              <list-hits></list-hits>
+            </v-card>
+          </v-tab-item>
+
+          <v-tab-item
+            key="assignment"
+          >
+            <v-card class="pa-1">
+              <list-assignments></list-assignments>
+            </v-card>
+          </v-tab-item>
+            </v-tabs-items>
+        </v-tabs>
+
+
       </v-flex>
     </v-layout>
     <!--<v-divider class="my-3"></v-divider>-->
@@ -49,6 +86,8 @@ import slug_project from '../../mixins/slug_project';
 import ListBatches from '../batches/list/list-batches';
 import { Service_App } from '../../services/service.app';
 import { update_sandbox } from '../../mixins/update_sandbox';
+import ListHits from '../hits/list/list-hits';
+import ListAssignments from '../assignments/list/list-assignments';
 
 export default {
   mixins: [
@@ -87,6 +126,8 @@ export default {
   },
 
   components: {
+    ListAssignments,
+    ListHits,
     ListBatches,
     ComponentShowBalance,
     ComponentShowMoneySpent,
