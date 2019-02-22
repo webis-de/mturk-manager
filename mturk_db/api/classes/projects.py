@@ -40,7 +40,7 @@ class Manager_Projects(object):
             project=database_object_project,
             use_sandbox=True,
         ).annotate(
-            count_hits=Count('hits')
+            count_hits=Count('hits', filter=Q(hits__datetime_expiration__gt=datetime.now()))
         ).annotate(
             count_assignments_available=Coalesce(Count('hits__assignments', distinct=True), 0),
             count_assignments_total=F('count_hits') * F('settings_batch__count_assignments'),
@@ -71,7 +71,7 @@ class Manager_Projects(object):
             project=database_object_project,
             use_sandbox=False,
         ).annotate(
-            count_hits=Count('hits')
+            count_hits=Count('hits', filter=Q(hits__datetime_expiration__gt=datetime.now()))
         ).annotate(
             count_assignments_available=Coalesce(Count('hits__assignments', distinct=True), 0),
             count_assignments_total=F('count_hits') * F('settings_batch__count_assignments'),
