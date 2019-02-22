@@ -66,20 +66,20 @@ class Manager_Batches(object):
             project=database_object_project,
             name='{}__{}__{}'.format(database_object_project.id, name_batch, uuid.uuid4().hex),
 
-            title=dictionary_settings_batch['title'],
-            reward=dictionary_settings_batch['reward'],
-            count_assignments=dictionary_settings_batch['count_assignments'],
-            count_assignments_max_per_worker=dictionary_settings_batch['count_assignments_max_per_worker'],
-            description=dictionary_settings_batch['description'],
-            lifetime=dictionary_settings_batch['lifetime'],
-            duration=dictionary_settings_batch['duration'],
-            block_workers=dictionary_settings_batch['block_workers'],
-            template_worker=dictionary_settings_batch['template_worker'],
+            title=dictionary_settings_batch.get('title'),
+            reward=dictionary_settings_batch.get('reward'),
+            count_assignments=dictionary_settings_batch.get('count_assignments'),
+            count_assignments_max_per_worker=dictionary_settings_batch.get('count_assignments_max_per_worker'),
+            description=dictionary_settings_batch.get('description'),
+            lifetime=dictionary_settings_batch.get('lifetime'),
+            duration=dictionary_settings_batch.get('duration'),
+            block_workers=dictionary_settings_batch.get('block_workers'),
+            template_worker=dictionary_settings_batch.get('template_worker'),
 
-            has_content_adult=dictionary_settings_batch['has_content_adult'],
-            qualification_assignments_approved=dictionary_settings_batch['qualification_assignments_approved'],
-            qualification_hits_approved=dictionary_settings_batch['qualification_hits_approved'],
-            qualification_locale=json.dumps(dictionary_settings_batch['qualification_locale']),
+            has_content_adult=dictionary_settings_batch.get('has_content_adult'),
+            qualification_assignments_approved=dictionary_settings_batch.get('qualification_assignments_approved'),
+            qualification_hits_approved=dictionary_settings_batch.get('qualification_hits_approved'),
+            qualification_locale=json.dumps(dictionary_settings_batch.get('qualification_locale')),
 
         )
         settings_batch.keywords.set([keyword['id'] for keyword in dictionary_settings_batch['keywords']])
