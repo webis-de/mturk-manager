@@ -4,7 +4,7 @@
     height="20"
     class="my-0 mx-auto"
     v-model="progress"
-    v-bind:color="progress >= 100 ? 'success' : 'primary'"
+    v-bind:color="progress >= 100 ? 'green darken-3' : 'primary'"
   >
     <slot></slot>
   </v-progress-linear>
