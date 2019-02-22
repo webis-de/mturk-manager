@@ -17,3 +17,4 @@ settings
 .idea
 /mturk/mturk_manager/static/mturk_manager/js/dist/report.html
 /mturk/yarn-error.log
+/mturk.sublime-workspace
