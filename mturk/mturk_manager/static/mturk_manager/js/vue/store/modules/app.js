@@ -58,6 +58,7 @@ export const module_app = {
       commit('moduleProjects/set_urls', config.paths, { root: true });
       commit('moduleWorkers/set_urls', config.paths, { root: true });
       commit('module_finances/set_urls', config.paths, { root: true });
+      commit('moduleSettingsBatch/setUrls', config.paths, { root: true });
 
       dispatch('moduleBatches/init', null, { root: true });
       dispatch('moduleHITs/init', null, { root: true });

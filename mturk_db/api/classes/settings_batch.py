@@ -6,11 +6,6 @@ from django.conf import settings
 
 class Manager_Settings_Batch(object):
     @classmethod
-    def get_all_for_project(cls, id_project):
-        # return Settings_Batch.objects.filter(project=id_project)
-        return Settings_Batch.objects.filter(project=id_project, batch=None)
-
-    @classmethod
     def create(cls, data):
         dictionary_qualifications = {}
         try:
@@ -95,7 +90,7 @@ class Manager_Settings_Batch(object):
         Settings_Batch.objects.filter(id=id_settings_batch).delete()
 
     @staticmethod
-    def get(database_object_project, request):
+    def get_page(database_object_project, request):
         queryset = Settings_Batch.objects.filter(
             project=database_object_project,
             batch=None,
@@ -106,6 +101,28 @@ class Manager_Settings_Batch(object):
             descending = request.query_params.get('descending', 'false') == 'true'
             queryset = queryset.order_by(
                 ('-' if descending else '') + sort_by
+            )
+
+        return queryset
+
+    @staticmethod
+    def get(id):
+        item = Settings_Batch.objects.get(
+            pk=id
+        )
+
+        return item
+
+    @classmethod
+    def get_all(cls, database_object_project, fields):
+        queryset = Settings_Batch.objects.filter(
+            project=database_object_project,
+            batch=None
+        )
+
+        if fields is not None:
+            queryset = queryset.values(
+                *fields
             )
 
         return queryset

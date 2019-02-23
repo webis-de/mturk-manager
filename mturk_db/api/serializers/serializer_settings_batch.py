@@ -8,10 +8,16 @@ from django.db import IntegrityError
 class Serializer_Settings_Batch(serializers.ModelSerializer):
     def __init__(self, *args, **kwargs):
         super(Serializer_Settings_Batch, self).__init__(*args, **kwargs)
-        print(kwargs)
+
         if 'context' in kwargs:
             if kwargs['context'].get('detailed', False):
                 self.fields['template'] = Serializer_Template_Worker(source='template_worker', context=kwargs['context'])
+
+            if kwargs['context'].get('fields'):
+                allowed = set(kwargs['context'].get('fields'))
+                existing = set(self.fields)
+                for field_name in existing - allowed:
+                    self.fields.pop(field_name)
             
 
     #     # print(self.fields)
@@ -58,7 +64,11 @@ class Serializer_Settings_Batch(serializers.ModelSerializer):
     def to_representation(self, instance):
         data = super(Serializer_Settings_Batch, self).to_representation(instance)
         import json
-        data['qualification_locale'] = json.loads(data['qualification_locale'])
+        try:
+            data['qualification_locale'] = json.loads(data['qualification_locale'])
+        except KeyError:
+            # qualification_locale was excluded from the data
+            pass
 
         return data
 

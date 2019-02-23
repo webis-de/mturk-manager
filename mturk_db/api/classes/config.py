@@ -16,6 +16,7 @@ class Manager_Config(object):
             'url_api_projects_check_uniqueness': 'info_projects/uniqueness',
             'url_api_projects_balance': 'projects/{}/balance'.format(settings.PLACEHOLDER_SLUG_PROJECT),
             'url_api_projects_settings_batch': 'projects/{}/settings_batch'.format(settings.PLACEHOLDER_SLUG_PROJECT),
+            'url_api_projects_settings_batch_all': 'projects/{}/settings_batch_all'.format(settings.PLACEHOLDER_SLUG_PROJECT),
             'url_api_projects_templates_worker': 'projects/{}/templates_worker'.format(settings.PLACEHOLDER_SLUG_PROJECT),
             'url_api_projects_templates_assignment': 'projects/{}/templates_assignment'.format(settings.PLACEHOLDER_SLUG_PROJECT),
             'url_api_projects_templates_hit': 'projects/{}/templates_hit'.format(settings.PLACEHOLDER_SLUG_PROJECT),

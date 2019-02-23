@@ -5,6 +5,8 @@ import Settings_Batch from '../../classes/settings_batch';
 export const moduleSettingsBatch = {
   namespaced: true,
   state: {
+    urlApiProjectsSettingsBatchAll: undefined,
+
     arrayItems: null,
 
     arrayColumns: [
@@ -58,6 +60,9 @@ export const moduleSettingsBatch = {
         state.arrayItems,
         _.findIndex(state.arrayItems, item => settingsBatch.id === item.id),
       );
+    },
+    setUrls(state, config) {
+      state.urlApiProjectsSettingsBatchAll = config.url_api_projects_settings_batch_all;
     },
   },
 };

@@ -1,5 +1,8 @@
 <template>
-  <v-dialog v-model="is_creating_batch" transition="slide-y-transition">
+  <v-dialog
+    v-model="is_creating_batch"
+    transition="slide-y-transition"
+  >
     <!-- persistent -->
     <v-fab-transition slot="activator">
       <v-btn
@@ -17,30 +20,38 @@
 
     <v-card>
       <v-card-title>
-        <span class="headline">Create Batch</span>
-        <v-spacer></v-spacer>
-        <v-btn icon v-on:click="is_creating_batch = false">
+        <span class="headline">
+          Create Batch
+        </span>
+        <v-spacer />
+        <v-btn
+          icon
+          v-on:click="is_creating_batch = false"
+        >
           <v-icon>close</v-icon>
         </v-btn>
       </v-card-title>
       <v-card-text>
         <v-container class="mx-0">
-          <v-layout row wrap>
+          <v-layout
+            row
+            wrap
+          >
             <v-flex xs6>
               <component-upload-csv
                 ref="component_upload_csv"
-              ></component-upload-csv>
-              <v-divider class="my-3"></v-divider>
+              />
+              <v-divider class="my-3" />
 
               <v-text-field
                 required
                 v-bind:value="name"
+                label="Name"
                 v-on:input="
                   name = $event;
                   $v.name.$touch();
                 "
-                label="Name"
-              ></v-text-field>
+              />
               <!-- v-bind:error-messages="validation_errors.name" -->
 
               <component-settings-batch
@@ -49,8 +60,8 @@
                 v-on:updated_is_invalid_settings_batch="
                   is_invalid_settings_batch = $event
                 "
-              ></component-settings-batch>
-              <v-divider class="my-3"></v-divider>
+              />
+              <v-divider class="my-3" />
             </v-flex>
 
             <v-flex xs6>
@@ -58,7 +69,7 @@
               <component-overview
                 v-bind:settings_batch_current="settings_batch_current"
                 v-bind:is_invalid_settings_batch="is_invalid_settings_batch"
-              ></component-overview>
+              />
               <v-layout wrap>
                 <!-- v-if="is_valid_csv" -->
                 <component-submit-batch
@@ -67,15 +78,16 @@
                   v-bind:is_invalid_settings_batch="is_invalid_settings_batch"
                   v-bind:name_batch="name"
                   v-bind:is_creating_batch.sync="is_creating_batch"
-                ></component-submit-batch>
+                />
                 <v-flex>
                   <v-btn
                     class="mx-3"
                     flat
                     large
                     v-on:click="is_creating_batch = false"
-                    >Cancel</v-btn
                   >
+                    Cancel
+                  </v-btn>
                 </v-flex>
               </v-layout>
             </v-flex>
@@ -100,8 +112,8 @@ import ComponentSubmitBatch from './component_submit_batch.vue';
 // import ComponentShowMoneySpent from './component-show-money-spent.vue';
 // import ComponentShowBatches from './component-show-batches.vue';
 export default {
+  name: 'ComponentCreateBatch',
   mixins: [validations],
-  name: 'component-create-batch',
   data() {
     return {
       is_creating_batch: false,
@@ -113,7 +125,7 @@ export default {
   },
   watch: {
     is_creating_batch() {
-      if (this.is_creating_batch == false) {
+      if (this.is_creating_batch === false) {
         this.$refs.component_settings_batch.update_fields();
         this.$refs.component_upload_csv.reset();
       }

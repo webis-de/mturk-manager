@@ -21,7 +21,7 @@ class Settings_Batch(APIView):
     @add_database_object_project
     def get(self, request, slug_project, database_object_project, use_sandbox, format=None):
 
-        queryset = Manager_Settings_Batch.get(database_object_project, request)
+        queryset = Manager_Settings_Batch.get_page(database_object_project, request)
 
         queryset_paginated = queryset
 
@@ -53,21 +53,15 @@ class Settings_Batch(APIView):
 class Setting_Batch(APIView):
     permission_classes = PERMISSIONS_INSTANCE_ONLY
 
-    def get_object(self, id_settings_batch):
-        try:
-            return Model_Settings_Batch.objects.get(id=id_settings_batch)
-        except Model_Settings_Batch.DoesNotExist:
-            raise Http404
-
-#     # def get(self, request, name, format=None):
-#     #     project = self.get_object(name)
-#     #     serializer = Serializer_Settings_Batch(project, context={'request': request})
-#     #     return Response(serializer.data)
+    def get(self, request, slug_project, id_settings_batch):
+        item = Manager_Settings_Batch.get(id_settings_batch)
+        serializer = Serializer_Settings_Batch(item, context={'request': request})
+        return Response(serializer.data)
 
     @add_database_object_project
     def put(self, request, slug_project, database_object_project, use_sandbox, id_settings_batch, format=None):
-        settings_batch = self.get_object(id_settings_batch)
-        serializer = Serializer_Settings_Batch(settings_batch, data=request.data, partial=True)
+        item = Manager_Settings_Batch.get(id_settings_batch)
+        serializer = Serializer_Settings_Batch(item, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -77,3 +71,22 @@ class Setting_Batch(APIView):
     def delete(self, request, slug_project, database_object_project, use_sandbox, id_settings_batch, format=None):
         Manager_Settings_Batch.delete(id_settings_batch)
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+@api_view(['GET'])
+@permission_classes(PERMISSIONS_INSTANCE_ONLY)
+@add_database_object_project
+def settings_batch_all(request, slug_project, database_object_project, use_sandbox, format=None):
+    list_fields = request.query_params.getlist('fields[]')
+    if len(list_fields) == 0:
+        list_fields = None
+
+    queryset = Manager_Settings_Batch.get_all(
+        database_object_project=database_object_project,
+        fields=list_fields,
+    )
+
+    serializer = Serializer_Settings_Batch(queryset, many=True, context={
+        'fields': list_fields,
+    })
+
+    return Response(serializer.data)

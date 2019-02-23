@@ -1,5 +1,6 @@
 import { Service_Endpoint } from './service_endpoint';
 import { store } from '../store/vuex';
+import Settings_Batch from '../classes/settings_batch';
 
 class Class_Settings_Batch {
   async loadPage(pagination) {
@@ -28,6 +29,47 @@ class Class_Settings_Batch {
     });
 
     return response.data.items_total;
+  }
+
+  async getAll() {
+    const project = store.getters['moduleProjects/get_project_current'];
+
+    const response = await Service_Endpoint.make_request({
+      method: 'get',
+      url: {
+        path: store.getters.get_url(
+          'urlApiProjectsSettingsBatchAll',
+          'moduleSettingsBatch',
+        ),
+        project,
+      },
+      params: {
+        fields: [
+          'id',
+          'name',
+        ],
+      },
+    });
+
+    return response.data;
+  }
+
+  async get(idSettingsBatch) {
+    const project = store.getters['moduleProjects/get_project_current'];
+
+    const response = await Service_Endpoint.make_request({
+      method: 'get',
+      url: {
+        path: store.getters.get_url(
+          'url_api_projects_settings_batch',
+          'moduleProjects',
+        ),
+        value: idSettingsBatch,
+        project,
+      },
+    });
+
+    return new Settings_Batch(response.data);
   }
 
   async create({ settings_batch, project }) {

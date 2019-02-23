@@ -20,7 +20,6 @@ class NegativeIntConverter:
 
 register_converter(NegativeIntConverter, 'negint')
 
-app_name = 'api'
 urlpatterns = format_suffix_patterns([
     path('config', views.Config.as_view(), name='config'),
     path('info_projects/uniqueness/<str:name_project>', views.projects_check_uniqueness, name='projects_check_uniqueness'),
@@ -29,6 +28,7 @@ urlpatterns = format_suffix_patterns([
 
     path('projects/<str:slug_project>/balance', views.get_balance, name='get_balance'),
 
+    path('projects/<str:slug_project>/settings_batch_all', views.settings_batch_all, name='setting_batch_for_project_all'),
     path('projects/<str:slug_project>/settings_batch', views.Settings_Batch.as_view(), name='settings_batch_for_project'),
     path('projects/<str:slug_project>/settings_batch/<int:id_settings_batch>', views.Setting_Batch.as_view(), name='setting_batch_for_project'),
 
@@ -78,5 +78,6 @@ urlpatterns = format_suffix_patterns([
 
     # path('projects/<str:slug_project>/workers/<str:id_worker>/count_assignments', views.set_count_assignments),
 ])
+app_name = 'api'
 
 

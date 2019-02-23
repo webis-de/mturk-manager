@@ -3,12 +3,11 @@
     <v-flex>
       <!-- {{valid}} -->
       <v-select
-        v-model="settingsBatchCurrent"
+        v-model="idSettingsBatchCurrent"
         v-bind:items="list_settings_batch"
         label="Batch Profile"
         item-text="name"
         item-value="id"
-        return-object
         clearable
       ></v-select>
 
@@ -31,13 +30,17 @@ import _ from 'lodash';
 import settings_batch from '../../../mixins/settings_batch';
 import validations from '../../../mixins/validations';
 import ComponentFormSettingsBatch from '../../settings_project/settings_batch/component_form_settings_batch';
+import { ServiceSettingsBatch } from '../../../services/service_settings_batch';
 
 // import ComponentStepUploadCSV from './component_step_upload_csv.vue';
 // import ComponentShowMoneySpent from './component-show-money-spent.vue';
 // import ComponentShowBatches from './component-show-batches.vue';
 export default {
+  name: 'ComponentSettingsBatch',
+  components: {
+    ComponentFormSettingsBatch,
+  },
   mixins: [validations, settings_batch],
-  name: 'component-settings-batch',
   props: {
     // project: {
     //     required: true,
@@ -45,32 +48,22 @@ export default {
   },
   data() {
     return {
+      idSettingsBatchCurrent: undefined,
       settingsBatchCurrent: undefined,
       name_not_required: true,
+      list_settings_batch: [],
     };
   },
-  methods: {},
-  computed: {
-    list_settings_batch() {
-      if (this.project_current.settings_batch == null) return [];
-      return _.orderBy(
-        this.project_current.settings_batch,
-        settings => settings.name,
-      );
-    },
-    ...mapGetters('moduleProjects', {
-      project_current: 'get_project_current',
-    }),
-  },
   watch: {
-    settingsBatchCurrent: {
+    idSettingsBatchCurrent: {
       handler() {
-        this.update_fields();
-        this.$v.$touch();
-        this.$emit('updated_settings_batch', this.settings_batch);
-        // this.$emit('updated_settings_batch', this.settings_batch_current);
+        ServiceSettingsBatch.get(this.idSettingsBatchCurrent).then((settingsBatchCurrent) => {
+          this.settingsBatchCurrent = settingsBatchCurrent;
+          this.update_fields();
+          this.$v.$touch();
+          this.$emit('updated_settings_batch', this.settings_batch);
+        });
       },
-      // deep: true,
     },
     '$v.$invalid': function (v) {
       this.$emit('updated_is_invalid_settings_batch', v);
@@ -78,10 +71,13 @@ export default {
   },
   created() {
     this.$emit('updated_settings_batch', this.settings_batch);
-  },
-  mounted() {},
-  components: {
-    ComponentFormSettingsBatch,
+
+    ServiceSettingsBatch.getAll().then((listSettingsBatch) => {
+      this.list_settings_batch = _.orderBy(
+        listSettingsBatch,
+        settings => settings.name,
+      );
+    });
   },
 };
 </script>
