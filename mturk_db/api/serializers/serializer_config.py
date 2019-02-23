@@ -3,7 +3,7 @@ from api.models import Message_Reject
 
 
 class Serializer_Config(serializers.Serializer):
-    version_api = serializers.IntegerField()
+    version_api = serializers.FloatField()
     paths = serializers.DictField()
 
     class Meta:

@@ -7,7 +7,7 @@ export const module_app = {
     token_instance: null,
     use_sandbox: true,
     version_api: null,
-    version_app: 1,
+    version_app: 1.01,
   },
   getters: {
     has_credentials(state) {

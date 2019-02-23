@@ -147,5 +147,5 @@ VERSION_PROJECT = 15
 URL_GLOBAL_DB = 'https://webis18.medien.uni-weimar.de/mturk-manager'
 # URL_GLOBAL_DB = 'http://localhost:8002'
 
-VERSION_API = 1
+VERSION_API = 1.01
 PLACEHOLDER_SLUG_PROJECT = 'PLACEHOLDER_SLUG_PROJECT'
