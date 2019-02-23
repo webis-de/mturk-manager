@@ -1,8 +1,17 @@
 <template>
   <span>
     <template v-if="$route.name == 'assignments'">
+
       <h1 class="headline">Assignments</h1>
-      <list-assignments></list-assignments>
+
+      <v-switch label="Only Submitted" v-model="show_only_submitted_assignments"></v-switch>
+
+      <list-assignments
+        v-bind:filters="{
+          show_only_submitted_assignments,
+        }"
+      ></list-assignments>
+
       <component-annotate></component-annotate>
     </template>
     <template v-else-if="$route.name == 'assignment'">
@@ -20,16 +29,20 @@ import slug_project from '../../mixins/slug_project';
 import ListAssignments from './list/list-assignments';
 
 export default {
-  mixins: [slug_project],
-  props: {
-    id_assignment: {},
-  },
-  name: 'app-assignments',
-
+  name: 'AppAssignments',
   components: {
     ListAssignments,
     ComponentAssignmentDetail,
     ComponentAnnotate,
+  },
+  mixins: [slug_project],
+  props: {
+    id_assignment: {},
+  },
+  data() {
+    return {
+      show_only_submitted_assignments: false,
+    };
   },
 };
 </script>

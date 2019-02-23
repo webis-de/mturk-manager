@@ -17,7 +17,11 @@
         </v-btn>
       </h2>
       <v-divider class="my-3"></v-divider>
-      <list-assignments v-bind:id_hit="id_hit"></list-assignments>
+      <list-assignments
+        v-bind:filters="{
+          id_hit: id_hit
+        }"
+      ></list-assignments>
     </v-flex>
   </v-layout>
 </template>

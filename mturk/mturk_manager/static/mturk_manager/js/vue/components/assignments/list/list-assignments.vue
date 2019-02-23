@@ -10,9 +10,7 @@
     v-bind:object-items-selected="object_items_selected"
     v-bind:function-set-items-selected="function_set_items_selected"
     v-bind:function-clear-items-selected="function_clear_items_selected"
-    v-bind:filters="{
-      id_hit: idHit
-    }"
+    v-bind:filters="filters"
   >
     <component-item-assignment
       v-bind:props="props"
@@ -33,15 +31,16 @@ export default {
   name: 'ListAssignments',
   components: { ComponentItemAssignment, BaseTable },
   props: {
-    idHit: {
-      required: false,
-      type: Number,
-      default: undefined,
-    },
     showLinks: {
       required: false,
       type: Boolean,
       default: true,
+    },
+
+    filters: {
+      required: false,
+      type: Object,
+      default: () => {},
     },
   },
   data() {
