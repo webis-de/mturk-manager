@@ -16,7 +16,6 @@ export default class View {
   }
 
   check_submit_button() {
-    console.log(this.loader.object_assignments_selected);
     if (
       this.loader.message_reject_default.trim() == ''
       && _.find(

@@ -75,7 +75,8 @@ export default class Loader {
     });
 
     this.project = result;
-    if (this.project.message_reject_default !== undefined) {
+
+    if (this.project.message_reject_default !== undefined && this.project.message_reject_default !== null) {
       this.message_reject_default = this.project.message_reject_default.message;
     }
   }
@@ -208,9 +209,6 @@ export default class Loader {
         }/${
           value.replace('PLACEHOLDER_SLUG_PROJECT', this.slug_project)}`;
       }
-      // console.log(key)
-      // console.log(property)
     });
-    console.log('this', this);
   }
 }
