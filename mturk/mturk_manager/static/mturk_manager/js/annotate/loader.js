@@ -9,16 +9,10 @@ export default class Loader {
     this.PLACEHOLDER_SLUG_PROJECT = 'PLACEHOLDER_SLUG_PROJECT';
     this.context = {
       url_api_project: `projects/${this.PLACEHOLDER_SLUG_PROJECT}`,
-      url_api_assignments: `projects/${
-        this.PLACEHOLDER_SLUG_PROJECT
-      }/assignments_by_id`,
-      url_api_assignments_update_stati: `projects/${
-        this.PLACEHOLDER_SLUG_PROJECT
-      }/assignments`,
-      url_api_hits: `projects/${this.PLACEHOLDER_SLUG_PROJECT}/hits_by_id`,
-      url_api_batches: `projects/${
-        this.PLACEHOLDER_SLUG_PROJECT
-      }/batches_for_annotation`,
+      url_api_assignments: `projects/${this.PLACEHOLDER_SLUG_PROJECT}/assignments_by_id`,
+      url_api_assignments_update_stati: `projects/${this.PLACEHOLDER_SLUG_PROJECT}/assignments`,
+      url_api_hits: `projects/${this.PLACEHOLDER_SLUG_PROJECT}/hits_for_annotation`,
+      url_api_batches: `projects/${this.PLACEHOLDER_SLUG_PROJECT}/batches_for_annotation`,
       url_api_workers: `projects/${this.PLACEHOLDER_SLUG_PROJECT}/workers`,
       url_api_messages_reject: 'api/messages_reject',
     };
