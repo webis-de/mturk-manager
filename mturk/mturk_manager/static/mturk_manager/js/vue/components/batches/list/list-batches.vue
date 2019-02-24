@@ -50,6 +50,12 @@ export default {
       type: Array,
       default: undefined,
     },
+
+    filters: {
+      required: false,
+      type: Object,
+      default: () => {},
+    },
   },
   data() {
     return {

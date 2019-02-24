@@ -17,7 +17,11 @@
         </v-btn>
       </h2>
       <v-divider class="my-3"></v-divider>
-      <list-hits v-bind:id_batch="id_batch"></list-hits>
+      <list-hits
+        v-bind:filters="{
+          id_batch: id_batch
+        }"
+      />
     </v-flex>
   </v-layout>
 </template>

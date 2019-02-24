@@ -10,9 +10,7 @@
     v-bind:object-items-selected="object_items_selected"
     v-bind:function-set-items-selected="function_set_items_selected"
     v-bind:function-clear-items-selected="function_clear_items_selected"
-    v-bind:filters="{
-      id_batch: idBatch
-    }"
+    v-bind:filters="filters"
   >
     <component-item-hit
       v-bind:props="props"
@@ -33,15 +31,16 @@ export default {
   name: 'ListHits',
   components: { ComponentItemHit, BaseTable },
   props: {
-    idBatch: {
-      required: false,
-      type: Number,
-      default: undefined,
-    },
     showLinks: {
       required: false,
       type: Boolean,
       default: true,
+    },
+
+    filters: {
+      required: false,
+      type: Object,
+      default: () => {},
     },
   },
   data() {
