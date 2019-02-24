@@ -343,7 +343,7 @@ class Manager_Batches(object):
         ids_batch_changed = set();
 
         for hit in HIT.objects.annotate(
-            count_assignments_current=Count('assignments')
+            count_assignments_current=Count('assignments', distinct=True)
         ).filter(
             batch__use_sandbox=use_sandbox,
             batch__project=database_object_project,
@@ -414,7 +414,7 @@ class Manager_Batches(object):
             project=database_object_project,
             use_sandbox=use_sandbox,
         ).annotate(
-            count_hits=Count('hits')
+            count_hits=Count('hits', distinct=True)
         ).annotate(
             count_assignments_available=Coalesce(Count('hits__assignments', distinct=True), 0),
             count_assignments_total=F('count_hits') * F('settings_batch__count_assignments'),

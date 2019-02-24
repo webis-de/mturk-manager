@@ -38,7 +38,7 @@ class Manager_HITs(object):
             )
 
         queryset = queryset.annotate(
-            count_assignments_available=Count('assignments'),
+            count_assignments_available=Count('assignments', distint=True),
             count_assignments_total=F('batch__settings_batch__count_assignments'),
         )
 

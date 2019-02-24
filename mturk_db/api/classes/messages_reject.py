@@ -10,5 +10,5 @@ class Manager_Messages_Reject(object):
     @classmethod
     def get_all(cls):
         return Message_Reject.objects.all().annotate(
-            count_usage=Count('project')
+            count_usage=Count('project', distinct=True)
         )
