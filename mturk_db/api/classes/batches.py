@@ -1,27 +1,75 @@
 import collections
 import csv
+import json
+import uuid
+import xmltodict
 
+from botocore.exceptions import ClientError
+from django.conf import settings as settings_django
+from django.db.models import F, Count, Q
 from django.db.models.functions import Coalesce
 from django.http import HttpResponse
 
 from api.classes.projects import Manager_Projects
 from api.enums import assignments, STATUS_EXTERNAL, STATUS_INTERNAL
-from api.models import Batch, Template_Worker, HIT, Assignment, Settings_Batch, Worker
-# from viewer.models import m_Tag
-# from api.views import code_shared, project
-# from api.views.project import glob_prefix_name_tag_batch, glob_prefix_name_tag_worker, glob_prefix_name_tag_hit
-import uuid, json, datetime, xmltodict
-from botocore.exceptions import ClientError
-from django.db.models import F, Value, Count, Q, Sum, IntegerField, ExpressionWrapper
-from django.conf import settings as settings_django
+from api.models import Batch, HIT, Assignment, Settings_Batch, Worker
+
 
 class Manager_Batches(object):
-    # @classmethod
-    # def get_all(cls, database_object_project, use_sandbox=True):
-    #     # import time
-    #     # time.sleep(2)
-    #     queryset_batch = Batch.objects.filter(project=database_object_project, use_sandbox=use_sandbox)
-    #     return queryset_batch
+    @staticmethod
+    def get_all(database_object_project, use_sandbox, request, fields=None):
+        list_ids = json.loads(request.query_params.get('list_ids', '[]'))
+
+        queryset = Batch.objects.filter(
+            project=database_object_project,
+            use_sandbox=use_sandbox,
+        )
+
+        if len(list_ids) > 0:
+            queryset = Batch.objects.filter(
+                id__in=list_ids
+            )
+
+        queryset = queryset.annotate(
+            count_hits=Count('hits', distinct=True)
+        ).annotate(
+            count_assignments_available=Coalesce(Count('hits__assignments', distinct=True), 0),
+            count_assignments_total=F('count_hits') * F('settings_batch__count_assignments'),
+            count_assignments_approved=Coalesce(Count(
+                'hits__assignments',
+                distinct=True,
+                filter=Q(hits__assignments__status_external=assignments.STATUS_EXTERNAL.APPROVED)
+            ), 0),
+            count_assignments_rejected=Coalesce(Count(
+                'hits__assignments',
+                distinct=True,
+                filter=Q(hits__assignments__status_external=assignments.STATUS_EXTERNAL.REJECTED)
+            ), 0),
+        ).annotate(
+            costs_max=F('count_assignments_total') * F('settings_batch__reward'),
+            costs_so_far=F('count_assignments_approved') * F('settings_batch__reward'),
+        )
+
+        sort_by = request.query_params.get('sort_by')
+        if sort_by is not None:
+            descending = request.query_params.get('descending', 'false') == 'true'
+            queryset = queryset.order_by(
+                ('-' if descending else '') + sort_by
+            )
+
+        if fields is not None:
+            queryset = queryset.values(
+                *fields
+            )
+        return queryset
+
+    @classmethod
+    def get(cls, id_batch):
+        batch = Batch.objects.get(
+            pk=id_batch
+        )
+
+        return batch
 
     @classmethod
     def create(cls, database_object_project, data, use_sandbox=True):
@@ -409,40 +457,6 @@ class Manager_Batches(object):
         queryset_batches.delete()
 
     @staticmethod
-    def get(database_object_project, use_sandbox, request):
-        queryset = Batch.objects.filter(
-            project=database_object_project,
-            use_sandbox=use_sandbox,
-        ).annotate(
-            count_hits=Count('hits', distinct=True)
-        ).annotate(
-            count_assignments_available=Coalesce(Count('hits__assignments', distinct=True), 0),
-            count_assignments_total=F('count_hits') * F('settings_batch__count_assignments'),
-            count_assignments_approved=Coalesce(Count(
-                'hits__assignments',
-                distinct=True,
-                filter=Q(hits__assignments__status_external=assignments.STATUS_EXTERNAL.APPROVED)
-            ), 0),
-            count_assignments_rejected=Coalesce(Count(
-                'hits__assignments',
-                distinct=True,
-                filter=Q(hits__assignments__status_external=assignments.STATUS_EXTERNAL.REJECTED)
-            ), 0),
-        ).annotate(
-            costs_max=F('count_assignments_total') * F('settings_batch__reward'),
-            costs_so_far=F('count_assignments_approved') * F('settings_batch__reward'),
-        )
-
-        sort_by = request.query_params.get('sort_by')
-        if sort_by is not None:
-            descending = request.query_params.get('descending', 'false') == 'true'
-            queryset = queryset.order_by(
-                ('-' if descending else '') + sort_by
-            )
-
-        return queryset
-
-    @staticmethod
     def download(database_object_project, request):
         response = HttpResponse(content_type="text/csv")
         response['Content-Disposition'] = 'attachment; filename=' + 'results.csv'
@@ -609,11 +623,3 @@ class Manager_Batches(object):
             })
 
         return result
-
-    @classmethod
-    def get_by_id(cls, id_batch):
-        batch = Batch.objects.get(
-            pk=id_batch
-        )
-
-        return batch

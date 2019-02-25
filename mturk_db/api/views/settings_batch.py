@@ -1,19 +1,18 @@
-from api.models import Settings_Batch as foo
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from mturk_db.permissions import IsInstance, IsWorker, AllowOptionsAuthentication
-from api.classes import Manager_Settings_Batch
+from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
+from rest_framework.response import Response
+from rest_framework.settings import api_settings
+from rest_framework.views import APIView
+
+from api.classes import Manager_Settings_Batch
 from api.helpers import add_database_object_project
 from api.serializers import Serializer_Settings_Batch
-from api.models import Settings_Batch as Model_Settings_Batch
-from rest_framework import status
-from django.http import Http404
+from mturk_db.permissions import IsInstance, IsWorker, AllowOptionsAuthentication
 from mturk_db.settings import REST_FRAMEWORK
-from rest_framework.settings import api_settings
 
 PERMISSIONS_INSTANCE_ONLY = (AllowOptionsAuthentication, IsInstance,)
 PERMISSIONS_WORKER_ONLY = (AllowOptionsAuthentication, IsWorker,)
+
 
 class Settings_Batch(APIView):
     permission_classes = PERMISSIONS_INSTANCE_ONLY
@@ -21,7 +20,10 @@ class Settings_Batch(APIView):
     @add_database_object_project
     def get(self, request, slug_project, database_object_project, use_sandbox, format=None):
 
-        queryset = Manager_Settings_Batch.get_page(database_object_project, request)
+        queryset = Manager_Settings_Batch.get_all(
+            database_object_project=database_object_project,
+            request=request,
+        )
 
         queryset_paginated = queryset
 
@@ -35,11 +37,6 @@ class Settings_Batch(APIView):
             'items_total': queryset.count(),
             'data': serializer.data,
         })
-
-
-        queryset_settings_batch = Manager_Settings_Batch.get_all_for_project(database_object_project.id)
-        serializer = Serializer_Settings_Batch(queryset_settings_batch, many=True, context={'request': request})
-        return Response(serializer.data)
 
     @add_database_object_project
     def post(self, request, slug_project, database_object_project, use_sandbox, format=None):
@@ -82,6 +79,7 @@ def settings_batch_all(request, slug_project, database_object_project, use_sandb
 
     queryset = Manager_Settings_Batch.get_all(
         database_object_project=database_object_project,
+        request=request,
         fields=list_fields,
     )
 
