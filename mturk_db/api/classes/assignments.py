@@ -4,6 +4,7 @@ import json
 from django.db.models import F, ExpressionWrapper, DurationField
 from django.db.models.functions import Coalesce
 
+from api.classes import Interface_Manager_Items
 from api.enums import assignments
 from api.classes.projects import Manager_Projects
 from api.models import Assignment
@@ -16,13 +17,22 @@ from api.models import Assignment
 # from django.db.models import F, Value, Count, Q, Sum, IntegerField, ExpressionWrapper
 # from django.conf import settings as settings_django
 
-class Manager_Assignments(object):
+
+class Manager_Assignments(Interface_Manager_Items):
     @staticmethod
-    def get(database_object_project, use_sandbox, request):
+    def get_all(database_object_project, request, fields=None, use_sandbox=True):
+        list_ids = json.loads(request.query_params.get('list_ids', '[]'))
+
         queryset = Assignment.objects.filter(
             hit__batch__project=database_object_project,
             hit__batch__use_sandbox=use_sandbox,
         )
+
+        if len(list_ids) > 0:
+            queryset = Assignment.objects.filter(
+                hit__batch__project=database_object_project,
+                id__in=list_ids
+            )
 
         id_batch = request.query_params.get('id_batch')
         if id_batch is not None:
@@ -48,20 +58,12 @@ class Manager_Assignments(object):
             queryset = queryset.order_by(
                 ('-' if descending else '') + sort_by
             )
-        return queryset
 
-    @classmethod
-    def get_all(cls, database_object_project, list_ids, use_sandbox=True):
-        # import time
-        # time.sleep(2)
-        if len(list_ids) > 0:
-            queryset = Assignment.objects.filter(
-                hit__batch__project=database_object_project, 
-                id__in=list_ids
+        if fields is not None:
+            queryset = queryset.values(
+                *fields
             )
-            queryset = Manager_Assignments.add_annotations(queryset)
-        else:
-            queryset = Assignment.objects.filter(hit__batch__project=database_object_project)
+
         return queryset
 
     @staticmethod

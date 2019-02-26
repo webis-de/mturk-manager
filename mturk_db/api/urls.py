@@ -52,11 +52,10 @@ urlpatterns = format_suffix_patterns([
     path('projects/<str:slug_project>/download_info_batches', views.download_info_batches, name='download_info_batches'),
 
     path('projects/<str:slug_project>/hits', views.HITs.as_view(), name='hits_for_project'),
-    # used in annotaton
     path('projects/<str:slug_project>/hits_for_annotation', views.hits_for_annotation, name='hits_for_annotation'),
 
     path('projects/<str:slug_project>/assignments', views.Assignments.as_view(), name='assignments_for_project'),
-    path('projects/<str:slug_project>/assignments_by_id', views.get_assignments_by_id, name='get_by_id'),
+    path('projects/<str:slug_project>/assignments_for_annotation', views.assignments_for_annotation, name='assignments_for_annotation'),
 
     # path('projects/<str:slug_project>/assignments/<int:id_assignment>', views.Assignment.as_view(), name='assignment_for_project'),
     path('projects/<str:slug_project>/clear_sandbox', views.clear_sandbox, name='clear_sandbox'),

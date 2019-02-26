@@ -1,5 +1,6 @@
 import json
 
+from api.classes import Interface_Manager_Items
 from api.models import Worker, Worker_Block_Project, Count_Assignments_Worker_Project, Assignment_Worker
 from api.classes.projects import Manager_Projects
 from api.enums import STATUS_BLOCK
@@ -9,7 +10,7 @@ from django.db.models.functions import Coalesce
 # from django.db.models import F, Value, Count, Q, Sum, IntegerField, ExpressionWrapper
 # from mturk_manager.classes import Manager_Qualifications
 
-class Manager_Workers(object):
+class Manager_Workers(Interface_Manager_Items):
     # @classmethod
     # def sync_workers_by_ids(cls, database_object_project, data, use_sandbox=True):
     #     foo = Count_Assignments_Worker_Project.objects.filter(
@@ -37,7 +38,7 @@ class Manager_Workers(object):
     #     )
 
     @staticmethod
-    def get(database_object_project, use_sandbox, request):
+    def get_all(database_object_project, request, fields=None, use_sandbox=True):
         foo = Count_Assignments_Worker_Project.objects.filter(
             worker=OuterRef('pk'),
             # project=database_object_project,
@@ -91,32 +92,37 @@ class Manager_Workers(object):
         if show_workers_blocked_soft == False:
             queryset = queryset.exclude(is_blocked_soft=True)
 
+        if fields is not None:
+            queryset = queryset.values(
+                *fields
+            )
+
         return queryset
 
-    @classmethod
-    def update(cls, validated_data, instance):
-        for key, value in validated_data.items():
+    @staticmethod
+    def update(instance, data):
+        for key, value in data.items():
             print(key)
             if key == 'is_blocked_soft':
-                instance.is_blocked_soft = cls.update_status_block_soft(
+                instance.is_blocked_soft = Manager_Workers.update_status_block_soft(
                     is_blocked=value, 
                     instance=instance, 
-                    database_object_project=validated_data['database_object_project'], 
-                    use_sandbox=validated_data['use_sandbox'],
+                    database_object_project=data['database_object_project'],
+                    use_sandbox=data['use_sandbox'],
                 )
             elif key == 'is_blocked_hard':
-                instance.is_blocked_hard = cls.update_status_block_hard(
+                instance.is_blocked_hard = Manager_Workers.update_status_block_hard(
                     is_blocked=value, 
                     instance=instance, 
-                    database_object_project=validated_data['database_object_project'], 
-                    use_sandbox=validated_data['use_sandbox'],
+                    database_object_project=data['database_object_project'],
+                    use_sandbox=data['use_sandbox'],
                 )
             elif key == 'count_assignments_limit':
-                instance.count_assignments_limit = cls.update_count_assignments(
+                instance.count_assignments_limit = Manager_Workers.update_count_assignments(
                     count_assignments_limit=value, 
                     instance=instance, 
-                    database_object_project=validated_data['database_object_project'], 
-                    use_sandbox=validated_data['use_sandbox'],
+                    database_object_project=data['database_object_project'],
+                    use_sandbox=data['use_sandbox'],
                 )
             elif hasattr(instance, key):
                 setattr(instance, key, value)

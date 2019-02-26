@@ -2,12 +2,13 @@ import json
 
 from django.db.models import Count, F
 
+from api.classes import Interface_Manager_Items
 from api.models import HIT
 
 
-class Manager_HITs(object):
+class Manager_HITs(Interface_Manager_Items):
     @staticmethod
-    def get_all(database_object_project, use_sandbox, request):
+    def get_all(database_object_project, request, fields=None, use_sandbox=None):
         list_ids = json.loads(request.query_params.get('list_ids', '[]'))
 
         queryset = HIT.objects.filter(
@@ -17,6 +18,7 @@ class Manager_HITs(object):
 
         if len(list_ids) > 0:
             queryset = HIT.objects.filter(
+                batch__project=database_object_project,
                 id__in=list_ids
             )
 
@@ -39,6 +41,11 @@ class Manager_HITs(object):
             descending = request.query_params.get('descending', 'false') == 'true'
             queryset = queryset.order_by(
                 ('-' if descending else '') + sort_by
+            )
+
+        if fields is not None:
+            queryset = queryset.values(
+                *fields
             )
 
         return queryset

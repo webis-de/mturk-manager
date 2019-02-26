@@ -18,7 +18,11 @@ class Workers(APIView):
 
     @add_database_object_project
     def get(self, request, slug_project, database_object_project, use_sandbox, format=None):
-        queryset_workers = Manager_Workers.get(database_object_project, use_sandbox, request)
+        queryset_workers = Manager_Workers.get_all(
+            database_object_project=database_object_project,
+            use_sandbox=use_sandbox,
+            request=request
+        )
 
         paginator = api_settings.DEFAULT_PAGINATION_CLASS()
         workers_paginated = paginator.paginate_queryset(queryset_workers, request)

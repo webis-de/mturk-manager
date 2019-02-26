@@ -1,10 +1,11 @@
+from api.classes import Interface_Manager_Items
 from api.models import Account_Mturk, Settings_Batch, Keyword
 from mturk_db.settings import URL_MTURK_SANDBOX
 import boto3, json
 from django.utils.text import slugify
 from django.conf import settings
 
-class Manager_Settings_Batch(object):
+class Manager_Settings_Batch(Interface_Manager_Items):
     @staticmethod
     def get_all(database_object_project, request, fields=None):
         queryset = Settings_Batch.objects.filter(
@@ -27,15 +28,15 @@ class Manager_Settings_Batch(object):
         return queryset
 
     @staticmethod
-    def get(id_settings_batch):
+    def get(id_item):
         item = Settings_Batch.objects.get(
-            pk=id_settings_batch
+            pk=id_item
         )
 
         return item
 
-    @classmethod
-    def create(cls, data):
+    @staticmethod
+    def create(data):
         dictionary_qualifications = {}
         try:
             dictionary_qualifications['qualification_assignments_approved'] = data['qualification_assignments_approved']
@@ -57,7 +58,7 @@ class Manager_Settings_Batch(object):
             pass
 
         settings_batch = Settings_Batch.objects.create(
-            project = data['database_object_project'],
+            project=data['database_object_project'],
             name=data['name'],
 
             title=data['title'],
@@ -88,8 +89,8 @@ class Manager_Settings_Batch(object):
 
         return settings_batch
 
-    @classmethod
-    def update(cls, instance, data):
+    @staticmethod
+    def update(instance, data):
         for key, value in data.items():
             if key == 'keywords':
                 instance.keywords.clear()
@@ -115,5 +116,5 @@ class Manager_Settings_Batch(object):
         return instance
 
     @staticmethod
-    def delete(id_settings_batch):
-        Settings_Batch.objects.filter(id=id_settings_batch).delete()
+    def delete(id_item):
+        Settings_Batch.objects.filter(id=id_item).delete()

@@ -38,6 +38,10 @@ def add_database_object_project(some_function):
         return some_function(*args, **kwargs)
 
     return wrapper
+
+def raise_not_implemented_exception(name_method, cls):
+    raise Exception('{} not implemented in {}'.format(name_method, cls.__name__))
+
 def migrate_project(name_project):
     import api.models as models 
     import uuid, json, datetime, xmltodict

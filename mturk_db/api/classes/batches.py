@@ -10,14 +10,15 @@ from django.db.models import F, Count, Q
 from django.db.models.functions import Coalesce
 from django.http import HttpResponse
 
+from api.classes import Interface_Manager_Items
 from api.classes.projects import Manager_Projects
 from api.enums import assignments, STATUS_EXTERNAL, STATUS_INTERNAL
 from api.models import Batch, HIT, Assignment, Settings_Batch, Worker
 
 
-class Manager_Batches(object):
+class Manager_Batches(Interface_Manager_Items):
     @staticmethod
-    def get_all(database_object_project, use_sandbox, request, fields=None):
+    def get_all(database_object_project, request, fields=None, use_sandbox=None):
         list_ids = json.loads(request.query_params.get('list_ids', '[]'))
 
         queryset = Batch.objects.filter(
@@ -27,6 +28,7 @@ class Manager_Batches(object):
 
         if len(list_ids) > 0:
             queryset = Batch.objects.filter(
+                project=database_object_project,
                 id__in=list_ids
             )
 
@@ -63,22 +65,19 @@ class Manager_Batches(object):
             )
         return queryset
 
-    @classmethod
-    def get(cls, id_batch):
+    @staticmethod
+    def get(id_batch):
         batch = Batch.objects.get(
             pk=id_batch
         )
 
         return batch
 
-    @classmethod
-    def create(cls, database_object_project, data, use_sandbox=True):
+    @staticmethod
+    def create(data, database_object_project=None, use_sandbox=True):
 
         client = Manager_Projects.get_mturk_api(use_sandbox)
         # client = Manager_Projects.get_mturk_api(database_object_project, use_sandbox)
-        print(use_sandbox)
-        print(database_object_project)
-        print(data)
         dictionary_settings_batch = data['settings_batch']
 
         # print('+++++++++++++++++++++++++++')

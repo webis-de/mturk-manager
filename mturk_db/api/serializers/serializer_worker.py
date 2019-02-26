@@ -74,7 +74,7 @@ class Serializer_Worker(serializers.ModelSerializer):
         print(validated_data)
         print('validated_data')
         dictionary_worker = Manager_Workers.update(
-            validated_data=validated_data,
+            data=validated_data,
             instance=instance,
         )
         
