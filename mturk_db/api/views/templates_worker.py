@@ -17,7 +17,10 @@ class Templates_Worker(APIView):
 
     @add_database_object_project
     def get(self, request, slug_project, database_object_project, use_sandbox, format=None):
-        queryset_settings_batch = Manager_Templates_Worker.get_all_for_project(database_object_project.id)
+        queryset_settings_batch = Manager_Templates_Worker.get_all(
+            database_object_project=database_object_project,
+            request=request,
+        )
         serializer = Serializer_Template_Worker(queryset_settings_batch, many=True, context={'request': request})
         return Response(serializer.data)
 

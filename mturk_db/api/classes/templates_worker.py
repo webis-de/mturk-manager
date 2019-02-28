@@ -1,18 +1,19 @@
-from api.models import Account_Mturk, Template_Worker
-from mturk_db.settings import URL_MTURK_SANDBOX
-import boto3, re, json
-from django.utils.text import slugify
+import json
+import re
 from collections import Counter
-from django.conf import settings
 
-class Manager_Templates_Worker(object):
-    @classmethod
-    def get_all_for_project(cls, id_project):
-        return Template_Worker.objects.filter(project=id_project)
+from django.db.models import Model
+
+from api.classes import Manager_Templates
+from api.models import Template_Worker
+
+
+class Manager_Templates_Worker(Manager_Templates):
+    model = Template_Worker
 
     @classmethod
-    def create(cls, data):
-        template_worker = Template_Worker.objects.create(
+    def create(cls, data: dict) -> Template_Worker:
+        template = Template_Worker.objects.create(
             project = data['database_object_project'],
             name=data['name'],
             height_frame=data['height_frame'],
@@ -20,18 +21,19 @@ class Manager_Templates_Worker(object):
             json_dict_parameters=json.dumps(cls.count_parameters_in_template(data['template'])),
             template_assignment=data.get('template_assignment', None),
             template_hit=data.get('template_hit', None),
+            template_global=data.get('template_global', None),
         )
 
-        return template_worker
+        return template
 
     @staticmethod
     def count_parameters_in_template(string_template):
         list_matches = re.findall('\$\{([a-zA-Z0-9_-]+)\}', string_template)
         counter = Counter(list_matches)
         return counter
-        
+
     @classmethod
-    def update(cls, instance, data):
+    def update(cls, instance: Model, data: dict) -> Template_Worker:
         for key, value in data.items():
             if key == 'template':
                 instance.json_dict_parameters = json.dumps(cls.count_parameters_in_template(value))
@@ -40,8 +42,3 @@ class Manager_Templates_Worker(object):
         instance.save()
 
         return instance
-
-    @staticmethod
-    def delete(id_template):
-        Template_Worker.objects.filter(id=id_template).delete()
-

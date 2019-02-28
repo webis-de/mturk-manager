@@ -15,7 +15,10 @@ class Keywords(APIView):
     permission_classes = PERMISSIONS_INSTANCE_ONLY
 
     def get(self, request, format=None):
-        queryset_keywords = Manager_Keywords.get_all()
+        queryset_keywords = Manager_Keywords.get_all(
+            database_object_project=None,
+            request=request,
+        )
         serializer = Serializer_Keyword(queryset_keywords, many=True, context={'request': request})
         return Response(serializer.data)
 

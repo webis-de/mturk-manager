@@ -1,11 +1,8 @@
+from api.classes import Interface_Manager_Items
 from api.models import Keyword
-from mturk_db.settings import URL_MTURK_SANDBOX
-import boto3, re, json
-from django.utils.text import slugify
-from collections import Counter
-from django.conf import settings
 
-class Manager_Keywords(object):
-    @classmethod
-    def get_all(cls):
+
+class Manager_Keywords(Interface_Manager_Items):
+    @staticmethod
+    def get_all(database_object_project, request, fields=None):
         return Keyword.objects.all()

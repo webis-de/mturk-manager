@@ -15,7 +15,10 @@ class Messages_Reject(APIView):
     permission_classes = PERMISSIONS_INSTANCE_ONLY
 
     def get(self, request, format=None):
-        queryset_messages_reject = Manager_Messages_Reject.get_all()
+        queryset_messages_reject = Manager_Messages_Reject.get_all(
+            database_object_project=None,
+            request=request,
+        )
         serializer = Serializer_Message_Reject(queryset_messages_reject, many=True, context={'request': request})
         return Response(serializer.data)
 

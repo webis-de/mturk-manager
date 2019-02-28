@@ -6,6 +6,7 @@ from .batches import Manager_Batches
 from .workers import Manager_Workers
 from .projects import Manager_Projects
 from .settings_batch import Manager_Settings_Batch
+from .templates import Manager_Templates
 from .templates_worker import Manager_Templates_Worker
 from .templates_assignment import Manager_Templates_Assignment
 from .templates_hit import Manager_Templates_HIT
