@@ -35,21 +35,10 @@ class Templates_Worker(APIView):
 class Template_Worker(APIView):
     permission_classes = PERMISSIONS_INSTANCE_ONLY
 
-    def get_object(self, id_template):
-        try:
-            return Model_Template_Worker.objects.get(id=id_template)
-        except Model_Template_Worker.DoesNotExist:
-            raise Http404
-
-#     # def get(self, request, name, format=None):
-#     #     project = self.get_object(name)
-#     #     serializer = Serializer_Template_Worker(project, context={'request': request})
-#     #     return Response(serializer.data)
-
     @add_database_object_project
     def put(self, request, slug_project, database_object_project, use_sandbox, id_template, format=None):
-        project = self.get_object(id_template)
-        serializer = Serializer_Template_Worker(project, data=request.data, partial=True)
+        template = Manager_Templates_Worker.get(id_template)
+        serializer = Serializer_Template_Worker(template, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)

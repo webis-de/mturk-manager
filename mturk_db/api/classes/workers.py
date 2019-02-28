@@ -38,6 +38,14 @@ class Manager_Workers(Interface_Manager_Items):
     #     )
 
     @staticmethod
+    def get(id_item):
+        item = Worker.objects.get(
+            pk=id_item
+        )
+
+        return item
+
+    @staticmethod
     def get_all(database_object_project, request, fields=None, use_sandbox=True):
         foo = Count_Assignments_Worker_Project.objects.filter(
             worker=OuterRef('pk'),

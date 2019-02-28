@@ -44,15 +44,10 @@ class Workers(APIView):
 
 
 class Worker(APIView):
-    def get_object(self, id_worker):
-        try:
-            return Model_Worker.objects.get(id=id_worker)
-        except Model_Worker.DoesNotExist:
-            raise Http404
 
     @add_database_object_project
     def put(self, request, slug_project, database_object_project, use_sandbox, id_worker, format=None):
-        worker = self.get_object(id_worker)
+        worker = Manager_Workers.get(id_worker)
         serializer = Serializer_Worker(worker, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save(database_object_project=database_object_project, use_sandbox=use_sandbox)

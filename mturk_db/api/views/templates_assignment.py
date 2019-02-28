@@ -37,8 +37,8 @@ class Template_Assignment(APIView):
 
     @add_database_object_project
     def put(self, request, slug_project, database_object_project, use_sandbox, id_template, format=None):
-        item = Manager_Templates_Assignment.get(id_template)
-        serializer = Serializer_Template_Assignment(item, data=request.data, partial=True)
+        template = Manager_Templates_Assignment.get(id_template)
+        serializer = Serializer_Template_Assignment(template, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)

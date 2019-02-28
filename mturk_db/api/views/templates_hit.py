@@ -36,16 +36,10 @@ class Templates_HIT(APIView):
 class Template_HIT(APIView):
     permission_classes = PERMISSIONS_INSTANCE_ONLY
 
-    def get_object(self, id_template):
-        try:
-            return Model_Template_HIT.objects.get(id=id_template)
-        except Model_Template_HIT.DoesNotExist:
-            raise Http404
-
     @add_database_object_project
     def put(self, request, slug_project, database_object_project, use_sandbox, id_template, format=None):
-        project = self.get_object(id_template)
-        serializer = Serializer_Template_HIT(project, data=request.data, partial=True)
+        template = Manager_Templates_HIT.get(id_template)
+        serializer = Serializer_Template_HIT(template, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
