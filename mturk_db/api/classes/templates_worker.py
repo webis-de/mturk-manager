@@ -33,7 +33,7 @@ class Manager_Templates_Worker(Manager_Templates):
         return counter
 
     @classmethod
-    def update(cls, instance: Model, data: dict) -> Template_Worker:
+    def update(cls, instance: Template_Worker, data: dict) -> Template_Worker:
         for key, value in data.items():
             if key == 'template':
                 instance.json_dict_parameters = json.dumps(cls.count_parameters_in_template(value))
