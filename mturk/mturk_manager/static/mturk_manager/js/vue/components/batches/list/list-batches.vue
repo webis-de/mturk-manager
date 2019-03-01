@@ -10,6 +10,9 @@
     v-bind:object-items-selected="object_items_selected"
     v-bind:function-set-items-selected="function_set_items_selected"
     v-bind:function-clear-items-selected="function_clear_items_selected"
+
+    v-bind:pagination-computed="paginationComputed"
+    v-bind:function-set-pagination="functionSetPagination"
   >
     <component-item-batch
       v-bind:props="props"

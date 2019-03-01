@@ -8,7 +8,7 @@
       v-bind:total-items="items_total"
       v-bind:loading="loading"
       item-key="id"
-      v-bind:rows-per-page-items="[5, 10, 25, 30, { text: 'All', value: null }]"
+      v-bind:rows-per-page-items="[5, 10, 25, { text: 'All', value: null }]"
     >
       <template
         slot="headers"
@@ -94,7 +94,7 @@
 <script>
 import * as _ from 'lodash';
 import { update_sandbox as updateSandbox } from '../mixins/update_sandbox';
-import { external_pagination as externalPagination } from '../mixins/external_pagination';
+import externalPagination from '../mixins/external_pagination';
 import { table } from '../mixins/table';
 import ComponentSettingsTable from './helpers/component-settings-table';
 
@@ -159,14 +159,22 @@ export default {
       type: Boolean,
       default: true,
     },
+
+    paginationComputed: {
+      type: Function,
+      required: true,
+    },
+    functionSetPagination: {
+      type: Function,
+      required: true,
+    },
   },
   data() {
     return {
-      pagination: {
-        rowsPerPage: 25,
-        // sortBy: 'datetime_creation',
-        descending: true,
-      },
+      // pagination: {
+      //   rowsPerPage: 25,
+      //   descending: true,
+      // },
 
       loading: false,
       search: '',
@@ -174,6 +182,15 @@ export default {
     };
   },
   computed: {
+    pagination: {
+      get() {
+        return this.paginationComputed;
+      },
+      set(value) {
+        console.log('value', value);
+        this.functionSetPagination(value);
+      },
+    },
     showFooter() {
       return this.$scopedSlots.footer !== undefined
         || this.functionResetArrayColumns !== undefined;

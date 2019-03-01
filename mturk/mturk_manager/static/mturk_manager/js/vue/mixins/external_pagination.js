@@ -1,4 +1,4 @@
-export const external_pagination = {
+export default {
   watch: {
     pagination: {
       handler() {
