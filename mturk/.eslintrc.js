@@ -27,6 +27,7 @@ module.exports = {
         ]
       }
     ],
+    'linebreak-style': 0
   },
 
   parserOptions: {
