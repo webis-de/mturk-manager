@@ -2,6 +2,8 @@
   <div>
     <!-- <v-layout wrap> -->
     <!-- <v-flex> -->
+
+    <h1 class="headline">Workers</h1>
     <component-list-workers> </component-list-workers>
     <!-- </v-flex> -->
     <!-- </v-layout> -->

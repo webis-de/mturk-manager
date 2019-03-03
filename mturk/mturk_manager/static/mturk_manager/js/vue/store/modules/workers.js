@@ -2,6 +2,7 @@ import Vue from 'vue';
 import _ from 'lodash';
 import localforage from 'localforage';
 import Worker from '../../classes/workers.js';
+import {initPagination, setPagination} from '../../helpers';
 
 export const moduleWorkers = {
   namespaced: true,
@@ -18,6 +19,13 @@ export const moduleWorkers = {
     url_api_global_db: undefined,
     // loaded_status_block: false,
     // loaded_status_block_sandbox: false,
+
+    paginationGeneral: {
+      rowsPerPage: 25,
+      sortBy: 'name',
+      descending: true,
+    },
+
     array_columns_general: [
       {
         text: 'Name',
@@ -99,6 +107,15 @@ export const moduleWorkers = {
     },
   },
   mutations: {
+    setPaginationGeneral(state, { pagination, setPageTo1 }) {
+      setPagination({
+        pagination,
+        setPageTo1,
+        namePagination: 'paginationGeneral',
+        nameLocalStorage: 'pagination_workers_general',
+        state,
+      });
+    },
     set_array_columns_general(state, array_columns) {
       localforage.setItem('array_columns_workers_general', array_columns);
       state.array_columns_selected_general = array_columns;
@@ -289,7 +306,7 @@ export const moduleWorkers = {
     },
   },
   actions: {
-    async init({ state }) {
+    async init({ state, commit }) {
       const array_columns = await localforage.getItem(
         'array_columns_workers_general',
       );
@@ -298,6 +315,12 @@ export const moduleWorkers = {
       } else {
         state.array_columns_selected_general = state.array_columns_selected_initial_general;
       }
+
+      initPagination({
+        commit,
+        nameLocalStorage: 'pagination_workers_general',
+        nameMutation: 'setPaginationGeneral',
+      });
     },
     reset_array_columns_general({ state, commit }) {
       commit(

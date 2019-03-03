@@ -18,6 +18,9 @@
       </h2>
       <v-divider class="my-3"></v-divider>
       <list-hits
+        v-bind:pagination-computed="paginationComputed"
+        v-bind:function-set-pagination="functionSetPagination"
+
         v-bind:filters="{
           id_batch: id_batch
         }"
@@ -107,6 +110,9 @@ export default {
       array_columns_selected: 'get_array_columns_selected_general',
     }),
     ...mapGetters(['get_show_progress_indicator']),
+    ...mapState('moduleHITs', {
+      paginationComputed: 'paginationGeneral',
+    }),
   },
   created() {
     Service_Batches.get_batch(this.id_batch).then((batch) => {
@@ -119,6 +125,7 @@ export default {
     }),
     ...mapMutations('moduleHITs', {
       function_set_array_columns: 'set_array_columns_general',
+      functionSetPagination: 'setPaginationGeneral',
     }),
   },
   components: {

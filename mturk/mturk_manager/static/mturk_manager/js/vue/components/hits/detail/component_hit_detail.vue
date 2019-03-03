@@ -18,6 +18,9 @@
       </h2>
       <v-divider class="my-3"></v-divider>
       <list-assignments
+        v-bind:function-set-pagination="functionSetPagination"
+        v-bind:pagination-computed="paginationComputed"
+
         v-bind:filters="{
           id_hit: id_hit
         }"
@@ -77,6 +80,9 @@ export default {
       get_object_hits: 'get_object_hits',
     }),
     ...mapGetters(['get_show_progress_indicator']),
+    ...mapState('moduleAssignments', {
+      paginationComputed: 'paginationGeneral',
+    }),
   },
   methods: {
     ...mapActions('moduleAssignments', {
@@ -84,6 +90,7 @@ export default {
     }),
     ...mapMutations('moduleAssignments', {
       function_set_array_columns: 'set_array_columns_general',
+      functionSetPagination: 'setPaginationGeneral',
     }),
   },
   components: {

@@ -4,6 +4,7 @@ import localforage from 'localforage';
 import Assignment from '../../classes/assignment.js';
 
 import HIT from '../../classes/hit';
+import {initPagination, setPagination} from '../../helpers';
 
 export const moduleAssignments = {
   namespaced: true,
@@ -17,6 +18,18 @@ export const moduleAssignments = {
 
     set_ids_worker: null,
     object_assignments_selected: {},
+
+    paginationGeneral: {
+      rowsPerPage: 25,
+      sortBy: 'datetime_creation',
+      descending: true,
+    },
+
+    paginationFinances: {
+      rowsPerPage: 25,
+      sortBy: 'datetime_creation',
+      descending: true,
+    },
 
     array_columns_general: [
       {
@@ -112,6 +125,24 @@ export const moduleAssignments = {
     set_ids_worker: state => state.set_ids_worker,
   },
   mutations: {
+    setPaginationGeneral(state, { pagination, setPageTo1 }) {
+      setPagination({
+        pagination,
+        setPageTo1,
+        namePagination: 'paginationGeneral',
+        nameLocalStorage: 'pagination_assignments_general',
+        state,
+      });
+    },
+    setPaginationFinances(state, { pagination, setPageTo1 }) {
+      setPagination({
+        pagination,
+        setPageTo1,
+        namePagination: 'paginationFinances',
+        nameLocalStorage: 'pagination_assignments_finances',
+        state,
+      });
+    },
     set_array_columns_general(state, array_columns) {
       localforage.setItem('array_columns_assignments_general', array_columns);
       state.array_columns_selected_general = array_columns;
@@ -226,7 +257,7 @@ export const moduleAssignments = {
     },
   },
   actions: {
-    async init({ state }) {
+    async init({ state, commit }) {
       const array_columns = await localforage.getItem(
         'array_columns_assignments_general',
       );
@@ -235,6 +266,18 @@ export const moduleAssignments = {
       } else {
         state.array_columns_selected_general = state.array_columns_selected_initial_general;
       }
+
+      initPagination({
+        commit,
+        nameLocalStorage: 'pagination_assignments_general',
+        nameMutation: 'setPaginationGeneral',
+      });
+
+      initPagination({
+        commit,
+        nameLocalStorage: 'pagination_assignments_finances',
+        nameMutation: 'setPaginationFinances',
+      });
     },
     reset_array_columns_general({ state, commit }) {
       commit(

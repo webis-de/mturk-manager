@@ -1,6 +1,8 @@
 import _ from 'lodash';
 import Vue from 'vue';
 import Settings_Batch from '../../classes/settings_batch';
+import {initPagination, setPagination} from '../../helpers';
+import localforage from "localforage";
 
 export const moduleSettingsBatch = {
   namespaced: true,
@@ -8,6 +10,12 @@ export const moduleSettingsBatch = {
     urlApiProjectsSettingsBatchAll: undefined,
 
     arrayItems: null,
+
+    paginationGeneral: {
+      rowsPerPage: 5,
+      sortBy: 'name',
+      descending: true,
+    },
 
     arrayColumns: [
       {
@@ -29,6 +37,15 @@ export const moduleSettingsBatch = {
     arrayItems: state => () => state.arrayItems,
   },
   mutations: {
+    setPaginationGeneral(state, { pagination, setPageTo1 }) {
+      setPagination({
+        pagination,
+        setPageTo1,
+        namePagination: 'paginationGeneral',
+        nameLocalStorage: 'pagination_settings_batch_general',
+        state,
+      });
+    },
     setItems(state, { data }) {
       state.arrayItems = [];
 
@@ -63,6 +80,15 @@ export const moduleSettingsBatch = {
     },
     setUrls(state, config) {
       state.urlApiProjectsSettingsBatchAll = config.url_api_projects_settings_batch_all;
+    },
+  },
+  actions: {
+    async init({ commit }) {
+      initPagination({
+        commit,
+        nameLocalStorage: 'pagination_settings_batch_general',
+        nameMutation: 'setPaginationGeneral',
+      });
     },
   },
 };

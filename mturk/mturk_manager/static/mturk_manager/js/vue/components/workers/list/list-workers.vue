@@ -10,6 +10,9 @@
     v-bind:object-items-selected="object_items_selected"
     v-bind:function-set-items-selected="function_set_items_selected"
     v-bind:function-clear-items-selected="function_clear_items_selected"
+
+    v-bind:function-set-pagination="functionSetPagination"
+    v-bind:pagination-computed="paginationComputed"
   >
     <component-item-worker
       v-bind:props="props"
@@ -104,9 +107,9 @@
     </v-data-table> -->
 </template>
 <script>
-import {
-  mapActions, mapGetters, mapMutations,
-} from 'vuex';
+  import {
+    mapActions, mapGetters, mapMutations, mapState,
+  } from 'vuex';
 // import { Policy } from '../../store/modules/policies.js';
 import ComponentItemWorker from './component_item_worker';
 import { Service_Workers as ServiceWorkers } from '../../../services/service_worker';
@@ -220,6 +223,9 @@ export default {
     ...mapGetters('moduleProjects', {
       project_current: 'get_project_current',
     }),
+    ...mapState('moduleWorkers', {
+      paginationComputed: 'paginationGeneral',
+    }),
   },
   methods: {
     load_page() {
@@ -235,6 +241,7 @@ export default {
       function_set_items_selected: 'set_workers_selected',
       function_clear_items_selected: 'clear_workers_selected',
       function_set_array_columns: 'set_array_columns_general',
+      functionSetPagination: 'setPaginationGeneral',
     }),
     ...mapActions('moduleWorkers', {
       update_status_block: 'update_status_block',

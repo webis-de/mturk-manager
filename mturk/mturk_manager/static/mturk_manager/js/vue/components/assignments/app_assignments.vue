@@ -7,6 +7,9 @@
       <v-switch label="Only Submitted" v-model="show_only_submitted_assignments"></v-switch>
 
       <list-assignments
+        v-bind:function-set-pagination="functionSetPagination"
+        v-bind:pagination-computed="paginationComputed"
+
         v-bind:filters="{
           show_only_submitted_assignments,
         }"
@@ -27,6 +30,7 @@ import ComponentAssignmentDetail from './detail/component_assignment_detail.vue'
 import ComponentAnnotate from './annotate/component_annotate.vue';
 import slug_project from '../../mixins/slug_project';
 import ListAssignments from './list/list-assignments';
+import {mapMutations, mapState} from 'vuex';
 
 export default {
   name: 'AppAssignments',
@@ -43,6 +47,16 @@ export default {
     return {
       show_only_submitted_assignments: false,
     };
+  },
+  computed: {
+    ...mapState('moduleAssignments', {
+      paginationComputed: 'paginationGeneral',
+    }),
+  },
+  methods: {
+    ...mapMutations('moduleAssignments', {
+      functionSetPagination: 'setPaginationGeneral',
+    }),
   },
 };
 </script>

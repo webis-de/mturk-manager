@@ -20,7 +20,7 @@ class Class_Service_Projects {
           path: store.getters.get_url('url_api_projects', 'moduleProjects'),
         },
       });
-      console.log('loaded', 33333333333333333333333333333);
+
       if (response.success === true) {
         // store.commit('moduleProjects/set_response_data_projects', response.data);
         store.commit('moduleProjects/set_projects', response.data);

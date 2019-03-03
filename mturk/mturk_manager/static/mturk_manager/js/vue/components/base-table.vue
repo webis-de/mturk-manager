@@ -4,11 +4,12 @@
       select-all
       v-bind:headers="array_headers"
       v-bind:items="array_page"
-      v-bind:pagination.sync="pagination"
       v-bind:total-items="items_total"
       v-bind:loading="loading"
       item-key="id"
       v-bind:rows-per-page-items="[5, 10, 25, { text: 'All', value: null }]"
+      v-bind:pagination="pagination"
+      v-on:update:pagination="updatedPagination($event)"
     >
       <template
         slot="headers"
@@ -42,8 +43,12 @@
               header.sortable !== false
                 ? {
                   click: () => {
-                    pagination.sortBy = header.value;
-                    pagination.descending = !pagination.descending;
+                    updatedPagination({
+                      sortBy: header.value,
+                      descending: !pagination.descending,
+                      page: 1,
+                      rowsPerPage: pagination.rowsPerPage,
+                    });
                   }
                 }
                 : {}
@@ -94,14 +99,13 @@
 <script>
 import * as _ from 'lodash';
 import { update_sandbox as updateSandbox } from '../mixins/update_sandbox';
-import externalPagination from '../mixins/external_pagination';
 import { table } from '../mixins/table';
 import ComponentSettingsTable from './helpers/component-settings-table';
 
 export default {
   name: 'BaseTable',
   components: { ComponentSettingsTable },
-  mixins: [updateSandbox, externalPagination, table],
+  mixins: [updateSandbox, table],
   props: {
     arrayItems: {
       type: Function,
@@ -161,7 +165,7 @@ export default {
     },
 
     paginationComputed: {
-      type: Function,
+      type: Object,
       required: true,
     },
     functionSetPagination: {
@@ -184,12 +188,12 @@ export default {
   computed: {
     pagination: {
       get() {
-        return this.paginationComputed;
+        return _.assign({}, this.paginationComputed, {totalItems: 0});
       },
-      set(value) {
-        console.log('value', value);
-        this.functionSetPagination(value);
-      },
+      // set(value) {
+      //     console.warn('computed');
+      //   this.functionSetPagination(value);
+      // },
     },
     showFooter() {
       return this.$scopedSlots.footer !== undefined
@@ -233,8 +237,27 @@ export default {
   },
   beforeDestroy() {
     this.functionClearItemsSelected();
+    this.functionSetPagination({
+      undefined,
+      setPageTo1: true,
+    });
   },
   methods: {
+    updatedPagination(pagination) {
+      // only update if pagination changed
+      if (!_.isEqual(
+        _.pick(pagination, ['page', 'rowsPerPage', 'sortBy', 'descending']),
+        _.pick(this.pagination, ['page', 'rowsPerPage', 'sortBy', 'descending']),
+      )) {
+        this.functionSetPagination({
+          pagination,
+        });
+      }
+
+      this.$nextTick(() => {
+        this.load_page();
+      });
+    },
     load_page() {
       this.loading = true;
       this.functionLoadPage(this.pagination, this.filters).then(

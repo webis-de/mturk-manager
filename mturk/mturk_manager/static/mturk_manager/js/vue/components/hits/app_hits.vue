@@ -2,7 +2,10 @@
   <span>
     <template v-if="$route.name == 'hits'">
       <h1 class="headline">HITs</h1>
-      <list-hits></list-hits>
+      <list-hits
+        v-bind:function-set-pagination="functionSetPagination"
+        v-bind:pagination-computed="paginationComputed"
+      ></list-hits>
     </template>
     <template v-else-if="$route.name == 'hit'">
       <component-hit-detail v-bind:id_hit="id_hit"></component-hit-detail>
@@ -15,6 +18,7 @@ import ComponentHitDetail from './detail/component_hit_detail.vue';
 import slug_project from '../../mixins/slug_project';
 import ComponentItemHit from './list/component_item_hit';
 import ListHits from './list/list-hits';
+import {mapMutations, mapState} from 'vuex';
 
 export default {
   mixins: [slug_project],
@@ -26,6 +30,16 @@ export default {
     ListHits,
     ComponentItemHit,
     ComponentHitDetail,
+  },
+  computed: {
+    ...mapState('moduleHITs', {
+      paginationComputed: 'paginationGeneral',
+    }),
+  },
+  methods: {
+    ...mapMutations('moduleHITs', {
+      functionSetPagination: 'setPaginationGeneral',
+    }),
   },
 };
 </script>

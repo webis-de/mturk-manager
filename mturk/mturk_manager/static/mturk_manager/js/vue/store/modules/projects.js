@@ -276,7 +276,6 @@ export const moduleProjects = {
     },
     set_ping(state, { project, data }) {
       Vue.set(project, 'datetime_visited', moment(data.datetime));
-      console.log('project', project.slug, project.datetime_visited);
     },
     delete_project(state, { project }) {
       Vue.delete(state.object_projects, project.slug);

@@ -124,9 +124,6 @@ export default {
     }),
     ...mapGetters(['get_show_progress_indicator']),
   },
-  created() {
-    console.warn('changed');
-  },
   components: {
     TheNavigationDrawer,
   },

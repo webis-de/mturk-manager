@@ -6,6 +6,9 @@
       v-bind:array-columns-selected="['name', 'actions']"
       v-bind:function-load-page="function_load_page"
       v-bind:is-condensed="false"
+
+      v-bind:pagination-computed="paginationComputed"
+      v-bind:function-set-pagination="functionSetPagination"
     >
       <template
         v-slot:default="{ props, array_columns_selected, isCondensed }"
@@ -66,7 +69,7 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from 'vuex';
+  import {mapGetters, mapMutations, mapState} from 'vuex';
 import ComponentAddSettingsBatch from './component_add_settings_batch';
 import { table } from '../../../mixins/table';
 import BaseTable from '../../base-table';
@@ -95,6 +98,14 @@ export default {
     ...mapGetters('moduleSettingsBatch', ['arrayItems']),
     ...mapGetters('moduleProjects', {
       project_current: 'get_project_current',
+    }),
+    ...mapState('moduleSettingsBatch', {
+      paginationComputed: 'paginationGeneral',
+    }),
+  },
+  methods: {
+    ...mapMutations('moduleSettingsBatch', {
+      functionSetPagination: 'setPaginationGeneral',
     }),
   },
 };

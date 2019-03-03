@@ -38,6 +38,9 @@
                 v-bind:function-reset-array-columns="function_reset_array_columns"
                 v-bind:function-set-array-columns="function_set_array_columns"
                 v-bind:array-columns-selected="array_columns_selected"
+
+                v-bind:function-set-pagination="functionSetPagination"
+                v-bind:pagination-computed="paginationComputed"
               ></list-batches>
               </v-card>
           </v-tab-item>
@@ -46,7 +49,7 @@
             key="hits"
           >
             <v-card class="pa-1">
-              <list-hits></list-hits>
+              <!--<list-hits></list-hits>-->
             </v-card>
           </v-tab-item>
 
@@ -54,7 +57,7 @@
             key="assignment"
           >
             <v-card class="pa-1">
-              <list-assignments></list-assignments>
+              <!--<list-assignments></list-assignments>-->
             </v-card>
           </v-tab-item>
             </v-tabs-items>
@@ -114,11 +117,15 @@ export default {
     }),
     ...mapMutations('moduleBatches', {
       function_set_array_columns: 'set_array_columns_finances',
+      functionSetPagination: 'setPaginationFinances',
     }),
   },
   computed: {
     ...mapGetters('moduleBatches', {
       array_columns_selected: 'get_array_columns_selected_finances',
+    }),
+    ...mapState('moduleBatches', {
+      paginationComputed: 'paginationFinances',
     }),
   },
   created() {

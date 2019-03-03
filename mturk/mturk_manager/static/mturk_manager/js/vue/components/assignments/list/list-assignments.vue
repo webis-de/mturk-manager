@@ -10,6 +10,10 @@
     v-bind:object-items-selected="object_items_selected"
     v-bind:function-set-items-selected="function_set_items_selected"
     v-bind:function-clear-items-selected="function_clear_items_selected"
+
+    v-bind:pagination-computed="paginationComputed"
+    v-bind:function-set-pagination="functionSetPagination"
+
     v-bind:filters="filters"
   >
     <component-item-assignment
@@ -35,6 +39,15 @@ export default {
       required: false,
       type: Boolean,
       default: true,
+    },
+
+    paginationComputed: {
+      type: Object,
+      required: true,
+    },
+    functionSetPagination: {
+      type: Function,
+      required: true,
     },
 
     filters: {

@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapMutations } from 'vuex';
+import {mapActions, mapGetters, mapMutations, mapState} from 'vuex';
 import { Service_Batches as ServiceBatches } from '../../../services/service_batches';
 import BaseTable from '../../base-table';
 import ComponentItemBatch from './component_item_batch';
@@ -52,6 +52,15 @@ export default {
       required: false,
       type: Array,
       default: undefined,
+    },
+
+    paginationComputed: {
+      type: Object,
+      required: true,
+    },
+    functionSetPagination: {
+      type: Function,
+      required: true,
     },
 
     filters: {

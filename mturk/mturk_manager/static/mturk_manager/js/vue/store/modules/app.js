@@ -64,6 +64,7 @@ export const module_app = {
       dispatch('moduleHITs/init', null, { root: true });
       dispatch('moduleAssignments/init', null, { root: true });
       dispatch('moduleWorkers/init', null, { root: true });
+      dispatch('moduleSettingsBatch/init', null, { root: true });
     },
     async set_credentials({ commit }, { url, token }) {
       commit('set_url_api', url);

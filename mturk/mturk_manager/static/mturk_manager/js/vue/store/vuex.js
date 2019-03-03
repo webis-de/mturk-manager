@@ -87,48 +87,48 @@ export const store = new Vuex.Store({
     // },
   },
   actions: {
-    async init({ state, commit, dispatch }) {
-      state.url_api = await localforage.getItem('url_api');
-      state.token_instance = await localforage.getItem('token_instance');
-
-      const configElement = document.getElementById('config');
-      const config = JSON.parse(configElement.innerHTML);
-      console.log(config);
-
-      commit('set_token_instance', config.token_instance);
-      commit('set_token_csrf', config.token_csrf);
-
-      // commit('setUrlProject', config.url_project);
-
-      commit('module_finances/set_urls', config);
-
-      commit(
-        'moduleQualifications/set_url_api_qualifications',
-        config.url_api_qualifications,
-      );
-      // commit('moduleQualifications/set_url_api_qualification', config.url_api_qualification);
-
-      // commit('set_urls', config);
-
-      commit('moduleWorkers/set_urls', config);
-      // commit('moduleWorkers/set_url_api_global_db', config.url_api_global_db);
-
-      commit('moduleProjects/set_urls', config);
-
-      // commit('moduleProjects/set_url_api_projects', config.url_api_projects);
-      // commit('moduleProjects/set_slug_project_current', config.slug_project_current);
-
-      commit('moduleBatches/set_urls', config);
-      commit('moduleHITs/set_urls', config);
-      commit('moduleAssignments/set_urls', config);
-
-      commit('moduleKeywords/set_urls', config);
-      commit('moduleMessagesReject/set_urls', config);
-
-      dispatch('moduleBatches/init');
-      dispatch('moduleHITs/init');
-      dispatch('moduleAssignments/init');
-    },
+    // async init({ state, commit, dispatch }) {
+    //   state.url_api = await localforage.getItem('url_api');
+    //   state.token_instance = await localforage.getItem('token_instance');
+    //
+    //   const configElement = document.getElementById('config');
+    //   const config = JSON.parse(configElement.innerHTML);
+    //   console.log(config);
+    //
+    //   commit('set_token_instance', config.token_instance);
+    //   commit('set_token_csrf', config.token_csrf);
+    //
+    //   // commit('setUrlProject', config.url_project);
+    //
+    //   commit('module_finances/set_urls', config);
+    //
+    //   commit(
+    //     'moduleQualifications/set_url_api_qualifications',
+    //     config.url_api_qualifications,
+    //   );
+    //   // commit('moduleQualifications/set_url_api_qualification', config.url_api_qualification);
+    //
+    //   // commit('set_urls', config);
+    //
+    //   commit('moduleWorkers/set_urls', config);
+    //   // commit('moduleWorkers/set_url_api_global_db', config.url_api_global_db);
+    //
+    //   commit('moduleProjects/set_urls', config);
+    //
+    //   // commit('moduleProjects/set_url_api_projects', config.url_api_projects);
+    //   // commit('moduleProjects/set_slug_project_current', config.slug_project_current);
+    //
+    //   commit('moduleBatches/set_urls', config);
+    //   commit('moduleHITs/set_urls', config);
+    //   commit('moduleAssignments/set_urls', config);
+    //
+    //   commit('moduleKeywords/set_urls', config);
+    //   commit('moduleMessagesReject/set_urls', config);
+    //
+    //   dispatch('moduleBatches/init');
+    //   dispatch('moduleHITs/init');
+    //   dispatch('moduleAssignments/init');
+    // },
     async set_show_with_fee({ commit, state }, show) {
       commit('set_show_with_fee', show);
     },

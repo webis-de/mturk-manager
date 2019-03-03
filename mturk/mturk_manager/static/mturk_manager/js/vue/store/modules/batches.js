@@ -1,7 +1,8 @@
 import Vue from 'vue';
 import _ from 'lodash';
 import localforage from 'localforage';
-import Batch from '../../classes/batch.js';
+import Batch from '../../classes/batch';
+import {initPagination, setPagination} from '../../helpers';
 
 export const moduleBatches = {
   namespaced: true,
@@ -22,6 +23,18 @@ export const moduleBatches = {
 
     object_csv_parsed: undefined,
     is_syncing_mturk: false,
+
+    paginationGeneral: {
+      rowsPerPage: 25,
+      sortBy: 'datetime_creation',
+      descending: true,
+    },
+
+    paginationFinances: {
+      rowsPerPage: 25,
+      sortBy: 'datetime_creation',
+      descending: true,
+    },
 
     array_columns_general: [
       {
@@ -281,6 +294,24 @@ export const moduleBatches = {
     //     };
     //     state.object_batches = dict_batches;
     // },
+    setPaginationGeneral(state, { pagination, setPageTo1 }) {
+      setPagination({
+        pagination,
+        setPageTo1,
+        namePagination: 'paginationGeneral',
+        nameLocalStorage: 'pagination_batches_general',
+        state,
+      });
+    },
+    setPaginationFinances(state, { pagination, setPageTo1 }) {
+      setPagination({
+        pagination,
+        setPageTo1,
+        namePagination: 'paginationFinances',
+        nameLocalStorage: 'pagination_batches_finances',
+        state,
+      });
+    },
     set_array_columns_general(state, array_columns) {
       localforage.setItem('array_columns_batches_general', array_columns);
       state.array_columns_selected_general = array_columns;
@@ -398,24 +429,36 @@ export const moduleBatches = {
     },
   },
   actions: {
-    async init({ state }) {
-      let array_columns = await localforage.getItem(
+    async init({ state, commit }) {
+      let arrayColumns = await localforage.getItem(
         'array_columns_batches_general',
       );
-      if (array_columns !== null) {
-        state.array_columns_selected_general = array_columns;
+      if (arrayColumns !== null) {
+        state.array_columns_selected_general = arrayColumns;
       } else {
         state.array_columns_selected_general = state.array_columns_selected_initial_general;
       }
 
-      array_columns = await localforage.getItem(
+      arrayColumns = await localforage.getItem(
         'array_columns_batches_finances',
       );
-      if (array_columns !== null) {
-        state.array_columns_selected_finances = array_columns;
+      if (arrayColumns !== null) {
+        state.array_columns_selected_finances = arrayColumns;
       } else {
         state.array_columns_selected_finances = state.array_columns_selected_initial_finances;
       }
+
+      initPagination({
+        commit,
+        nameLocalStorage: 'pagination_batches_general',
+        nameMutation: 'setPaginationGeneral',
+      });
+
+      initPagination({
+        commit,
+        nameLocalStorage: 'pagination_batches_finances',
+        nameMutation: 'setPaginationFinances',
+      });
     },
     reset_array_columns_general({ state, commit }) {
       commit(
