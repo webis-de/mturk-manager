@@ -34,6 +34,10 @@ export default {
       required: true,
       type: String | undefined,
     },
+    costs: {
+      required: true,
+      type: Number | undefined,
+    },
     is_creating_batch: {},
   },
   data() {
@@ -42,16 +46,27 @@ export default {
     };
   },
   computed: {
+    isInBudget() {
+      let isInBudget = true;
+
+      if (this.project_current.amount_budget_max !== null) {
+        const sumCosts = this.use_sandbox ? this.project_current.sum_costs_max_sandbox : this.project_current.sum_costs_max;
+        isInBudget = this.project_current.amount_budget_max >= this.costs + sumCosts;
+      }
+      this.$emit('is_in_budget', isInBudget);
+      return isInBudget;
+    },
     is_valid() {
-      return this.is_valid_csv && !this.is_invalid_settings_batch;
+      return this.is_valid_csv && !this.is_invalid_settings_batch && this.isInBudget;
     },
     ...mapGetters('moduleProjects', {
-      // 'project_current': 'get_project_current',
+      project_current: 'get_project_current',
     }),
     ...mapGetters('moduleBatches', {
       object_csv_parsed: 'get_object_csv_parsed',
       is_valid_csv: 'is_valid_csv',
     }),
+    ...mapState('module_app', ['use_sandbox']),
   },
   methods: {
     submit() {

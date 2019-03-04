@@ -33,7 +33,7 @@ class Project(models.Model):
     # fk_template_global_main = models.OneToOneField('m_Template_Global', on_delete=models.SET_NULL, null=True, related_name='project')
     message_reject_default = models.ForeignKey('Message_Reject', on_delete=models.SET_NULL, null=True, related_name='project')
     # fk_message_block_default = models.OneToOneField('m_Message_Block', on_delete=models.SET_NULL, null=True, related_name='project')
-    
+    amount_budget_max = models.IntegerField(null=True)
 
     def __str__(self):
         return self.name

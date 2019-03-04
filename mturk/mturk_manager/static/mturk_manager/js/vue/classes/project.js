@@ -10,6 +10,7 @@ export default class Project {
     this.settings_batch_default = data.settings_batch_default;
     this.datetime_visited = moment(data.datetime_visited);
     this.count_assignments_max_per_worker = data.count_assignments_max_per_worker;
+    this.amount_budget_max = data.amount_budget_max;
 
     this.templates_worker = null;
     this.templates_assignment = null;

@@ -69,8 +69,21 @@
               <component-overview
                 v-bind:settings_batch_current="settings_batch_current"
                 v-bind:is_invalid_settings_batch="is_invalid_settings_batch"
+                v-on:updated_costs_with_fee="costs = $event"
               />
+              <v-layout>
+                <v-flex shrink>
+                  <v-alert
+                    class="ml-3"
+                    type="error"
+                    v-bind:value="isInBudget === false"
+                  >
+                    This batch exceeds your budget!
+                  </v-alert>
+                </v-flex>
+              </v-layout>
               <v-layout wrap>
+
                 <!-- v-if="is_valid_csv" -->
                 <component-submit-batch
                   class="shrink"
@@ -78,6 +91,8 @@
                   v-bind:is_invalid_settings_batch="is_invalid_settings_batch"
                   v-bind:name_batch="name"
                   v-bind:is_creating_batch.sync="is_creating_batch"
+                  v-bind:costs="costs"
+                  v-on:is_in_budget="isInBudget = $event"
                 />
                 <v-flex>
                   <v-btn
@@ -121,6 +136,9 @@ export default {
       name: undefined,
       settings_batch_current: undefined,
       is_invalid_settings_batch: true,
+
+      isInBudget: true,
+      costs: undefined,
     };
   },
   watch: {

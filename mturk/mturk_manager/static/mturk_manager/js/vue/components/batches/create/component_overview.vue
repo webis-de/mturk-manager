@@ -144,15 +144,17 @@ export default {
       return reward * this.settings_batch_current.count_assignments;
     },
     costs_total_with_fee() {
-      let costs_with_fee;
+      let costsWithFee;
 
       if (this.settings_batch_current.count_assignments < 10) {
-        costs_with_fee = this.costs_total_without_fee * 1.2;
+        costsWithFee = this.costs_total_without_fee * 1.2;
       } else {
-        costs_with_fee = this.costs_total_without_fee * 1.4;
+        costsWithFee = this.costs_total_without_fee * 1.4;
       }
 
-      return costs_with_fee;
+      this.$emit('updated_costs_with_fee', costsWithFee);
+
+      return costsWithFee;
     },
     format_lifetime_absolute() {
       if (this.settings_batch_current == undefined) return undefined;

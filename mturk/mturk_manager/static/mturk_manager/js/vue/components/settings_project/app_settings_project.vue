@@ -5,6 +5,7 @@
         <component-settings-batch> </component-settings-batch>
       </v-flex>
       <v-flex xs6 class="pa-1">
+        <budget></budget>
         <component-block-limit> </component-block-limit>
         <component-messages-reject-default> </component-messages-reject-default>
       </v-flex>
@@ -56,6 +57,7 @@ import ComponentTemplatesHit from './templates_hit/component_templates_hit.vue';
 import ComponentClearSandbox from './clear_sandbox/component_clear_sandbox.vue';
 import ComponentDeleteProject from './delete_project/component_delete_project.vue';
 import slug_project from '../../mixins/slug_project';
+import Budget from '../finances/budget';
 
 export default {
   mixins: [slug_project],
@@ -65,6 +67,7 @@ export default {
     return {};
   },
   components: {
+    Budget,
     ComponentBlockLimit,
     ComponentMessagesRejectDefault,
     ComponentSettingsBatch,

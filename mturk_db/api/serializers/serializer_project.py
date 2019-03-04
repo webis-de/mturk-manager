@@ -86,6 +86,8 @@ class Serializer_Project(serializers.ModelSerializer):
             'max_costs_so_far',
             'min_costs_so_far',
 
+            'amount_budget_max',
+
             # 'workers',
             # 'title',
             # 'description',

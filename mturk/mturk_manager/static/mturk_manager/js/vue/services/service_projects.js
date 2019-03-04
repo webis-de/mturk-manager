@@ -171,6 +171,29 @@ class Class_Service_Projects {
     });
   }
 
+  async setAmountBudgetProject({
+    project,
+    amountBudgetProject,
+  }) {
+    const response = await Service_Endpoint.make_request({
+      method: 'put',
+      url: {
+        path: store.getters.get_url('url_api_projects', 'moduleProjects'),
+        project,
+        value: project.slug,
+      },
+      data: {
+        amount_budget_max: amountBudgetProject,
+      },
+    });
+
+    store.commit('moduleProjects/set_project', {
+      project,
+      project_new: response.data,
+      array_fields: ['amount_budget_max'],
+    });
+  }
+
   async ping() {
     const project = store.getters['moduleProjects/get_project_current'];
 
