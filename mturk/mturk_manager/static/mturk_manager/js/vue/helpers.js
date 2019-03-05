@@ -1,6 +1,7 @@
 import localforage from 'localforage';
 import _ from 'lodash';
 
+// Saves the pagination information of a given table to vuex and localforage
 export function setPagination({ pagination, setPageTo1, state, namePagination, nameLocalStorage }) {
   if (setPageTo1 === true) {
     // necessary to prevent duplicated requests
@@ -14,6 +15,7 @@ export function setPagination({ pagination, setPageTo1, state, namePagination, n
   state[namePagination] = objectToBeStored;
 }
 
+// loads the pagination information for a given table from localforage and saves it to vuex
 export async function initPagination({ commit, nameLocalStorage, nameMutation }) {
   const objectPagination = await localforage.getItem(nameLocalStorage);
 
