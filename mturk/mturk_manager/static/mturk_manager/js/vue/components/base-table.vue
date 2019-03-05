@@ -78,19 +78,23 @@
 
       <template
         v-if="showFooter"
-        slot="footer"
+        slot="actions-prepend"
       >
-        <tr>
-          <slot name="footer" />
-          <component-settings-table
-            v-if="functionResetArrayColumns !== undefined"
-            v-bind:colspan="array_headers.length + 1"
-            v-bind:array_columns="arrayColumns"
-            v-bind:array_columns_selected="arrayColumnsSelected"
-            v-bind:function_reset="functionResetArrayColumns"
-            v-on:change="functionSetArrayColumns($event)"
-          />
-        </tr>
+        <v-layout>
+          <v-flex>
+            <slot name="actions" />
+          </v-flex>
+          <v-flex>
+            <component-settings-table
+              v-if="functionResetArrayColumns !== undefined"
+              v-bind:colspan="array_headers.length + 1"
+              v-bind:array_columns="arrayColumns"
+              v-bind:array_columns_selected="arrayColumnsSelected"
+              v-bind:function_reset="functionResetArrayColumns"
+              v-on:change="functionSetArrayColumns($event)"
+            />
+            </v-flex>
+          </v-layout>
       </template>
     </v-data-table>
   </div>
@@ -196,7 +200,7 @@ export default {
       // },
     },
     showFooter() {
-      return this.$scopedSlots.footer !== undefined
+      return this.$scopedSlots.actions !== undefined
         || this.functionResetArrayColumns !== undefined;
     },
     array_headers() {

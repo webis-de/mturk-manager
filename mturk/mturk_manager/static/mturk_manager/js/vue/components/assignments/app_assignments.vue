@@ -13,9 +13,12 @@
         v-bind:filters="{
           show_only_submitted_assignments,
         }"
-      ></list-assignments>
+      >
+        <template v-slot:actions>
+          <component-annotate></component-annotate>
+        </template>
+      </list-assignments>
 
-      <component-annotate></component-annotate>
     </template>
     <template v-else-if="$route.name == 'assignment'">
       <component-assignment-detail

@@ -1,6 +1,5 @@
 <template>
   <base-table
-    v-slot="{ props, array_columns_selected, isCondensed }"
     v-bind:array-items="array_items"
     v-bind:array-columns="array_columns"
     v-bind:array-columns-selected="array_columns_selected"
@@ -16,12 +15,19 @@
 
     v-bind:filters="filters"
   >
-    <component-item-hit
-      v-bind:props="props"
-      v-bind:array_columns_selected="array_columns_selected"
-      v-bind:show_links="showLinks"
-      v-bind:is-condensed="isCondensed"
-    />
+    <template v-slot="{ props, array_columns_selected, isCondensed }">
+      <component-item-hit
+        v-bind:props="props"
+        v-bind:array_columns_selected="array_columns_selected"
+        v-bind:show_links="showLinks"
+        v-bind:is-condensed="isCondensed"
+      />
+    </template>
+
+    <template v-slot:actions>
+      <slot name="actions"></slot>
+    </template>
+  </base-table>
   </base-table>
 </template>
 

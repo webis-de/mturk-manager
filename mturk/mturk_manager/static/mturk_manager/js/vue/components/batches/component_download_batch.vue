@@ -3,6 +3,7 @@
     <v-tooltip top v-bind:disabled="is_valid_selection">
       <v-btn
         slot="activator"
+        small
         v-bind:loading="is_downloading_csv"
         v-bind:disabled="
           is_downloading_csv ||
@@ -20,7 +21,7 @@
         <!--Selected batches have an incompatible Structure-->
         <!--</template>-->
       </v-btn>
-      Selected batches have an incompatible Structure
+      Selected batches have an incompatible structure
     </v-tooltip>
     <v-dialog v-model="dialog" max-width="80%">
       <v-card>

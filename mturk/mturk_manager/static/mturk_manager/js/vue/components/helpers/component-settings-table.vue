@@ -1,5 +1,5 @@
 <template>
-  <td>
+  <div>
     <v-btn color="primary" v-on:click="dialog = true" small>
       Toggle Columns
     </v-btn>
@@ -49,7 +49,7 @@
         </v-card-text>
       </v-card>
     </v-dialog>
-  </td>
+  </div>
 </template>
 
 <script>

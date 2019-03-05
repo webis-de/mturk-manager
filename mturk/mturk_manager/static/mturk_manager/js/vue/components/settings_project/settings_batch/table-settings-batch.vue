@@ -22,12 +22,10 @@
         />
       </template>
 
-      <template v-slot:footer>
-        <td colspan="2">
-          <component-add-settings-batch
-            v-on:created="snackbar_created = true"
-          />
-        </td>
+      <template v-slot:actions>
+        <component-add-settings-batch
+          v-on:created="snackbar_created = true"
+        />
       </template>
     </base-table>
 

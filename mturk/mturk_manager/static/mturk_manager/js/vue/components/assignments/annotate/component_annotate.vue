@@ -7,6 +7,7 @@
       <v-btn
         type="submit"
         color="primary"
+        small
         v-bind:disabled="count_assignments_selected === 0"
       >
         Annotate {{ count_assignments_selected }} assignment(s)

@@ -1,6 +1,5 @@
 <template>
   <base-table
-    v-slot="{ props, array_columns_selected, isCondensed }"
     v-bind:array-items="array_items"
     v-bind:array-columns="array_columns"
     v-bind:array-columns-selected="array_columns_selected_computed"
@@ -14,12 +13,18 @@
     v-bind:pagination-computed="paginationComputed"
     v-bind:function-set-pagination="functionSetPagination"
   >
-    <component-item-batch
-      v-bind:props="props"
-      v-bind:array_columns_selected="array_columns_selected"
-      v-bind:show_links="showLinks"
-      v-bind:is-condensed="isCondensed"
-    />
+    <template v-slot:default="{ props, array_columns_selected, isCondensed }">
+      <component-item-batch
+        v-bind:props="props"
+        v-bind:array_columns_selected="array_columns_selected"
+        v-bind:show_links="showLinks"
+        v-bind:is-condensed="isCondensed"
+      />
+    </template>
+
+    <template v-slot:actions>
+      <slot name="actions"></slot>
+    </template>
   </base-table>
 </template>
 
