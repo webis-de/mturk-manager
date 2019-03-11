@@ -33,7 +33,13 @@ class Batches(APIView):
             paginator = api_settings.DEFAULT_PAGINATION_CLASS()
             queryset_paginated = paginator.paginate_queryset(queryset, request)
 
-        serializer = Serializer_Batch(queryset_paginated, many=True)
+        serializer = Serializer_Batch(
+            queryset_paginated,
+            many=True,
+            context={
+                'usecase': 'list_batches',
+            }
+        )
 
         return Response({
             'items_total': queryset.count(),
@@ -93,7 +99,7 @@ def batches_for_annotation(request, slug_project, database_object_project, use_s
     serializer = Serializer_Batch(
         queryset,
         context={
-            'detailed': False
+            'usecase': 'annotation',
         },
         many=True
     )

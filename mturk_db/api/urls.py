@@ -32,14 +32,22 @@ urlpatterns = format_suffix_patterns([
     path('projects/<str:slug_project>/settings_batch', views.Settings_Batch.as_view(), name='settings_batch_for_project'),
     path('projects/<str:slug_project>/settings_batch/<int:id_settings_batch>', views.Setting_Batch.as_view(), name='setting_batch_for_project'),
 
+    path('projects/<str:slug_project>/templates_worker_all', views.templates_worker_all, name='templates_worker_for_project_all'),
     path('projects/<str:slug_project>/templates_worker', views.Templates_Worker.as_view(), name='templates_for_project'),
     path('projects/<str:slug_project>/templates_worker/<int:id_template>', views.Template_Worker.as_view(), name='template_for_project'),
+
+    path('projects/<str:slug_project>/templates_assignment_all', views.templates_assignment_all, name='templates_assignment_for_project_all'),
     path('projects/<str:slug_project>/templates_assignment', views.Templates_Assignment.as_view(), name='templates_assignment_for_project'),
     path('projects/<str:slug_project>/templates_assignment/<int:id_template>', views.Template_Assignment.as_view(), name='template_assignment_for_project'),
+
+    path('projects/<str:slug_project>/templates_hit_all', views.templates_hit_all, name='templates_hit_for_project_all'),
     path('projects/<str:slug_project>/templates_hit', views.Templates_HIT.as_view(), name='templates_hit_for_project'),
     path('projects/<str:slug_project>/templates_hit/<int:id_template>', views.Template_HIT.as_view(), name='template_hit_for_project'),
+
+    path('projects/<str:slug_project>/templates_global_all', views.templates_global_all, name='templates_global_for_project_all'),
     path('projects/<str:slug_project>/templates_global', views.Templates_Global.as_view(), name='templates_global_for_project'),
     path('projects/<str:slug_project>/templates_global/<int:id_template>', views.Template_Global.as_view(), name='template_global_for_project'),
+
     # path('projects/<str:slug_project>/settings_batch', views.Settings_Batch.as_view(), name='settings_batch_for_project'),
 
     path('projects/<str:slug_project>/count_assignments_max_per_worker', views.get_count_assignments_max_per_worker),

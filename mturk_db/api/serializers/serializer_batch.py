@@ -14,9 +14,10 @@ from api.serializers import Serializer_Settings_Batch, Serializer_Keyword, Seria
 class Serializer_Batch(serializers.ModelSerializer):
     def __init__(self, *args, **kwargs):
         super(Serializer_Batch, self).__init__(*args, **kwargs)
-        if 'context' in kwargs:
-            self.fields['settings_batch'] = Serializer_Settings_Batch(context=kwargs['context'])
-            # self.fields.pop('hits')
+
+        context = kwargs.get('context', {})
+
+        self.fields['settings_batch'] = Serializer_Settings_Batch(context=context)
 
     settings_batch = Serializer_Settings_Batch()
 

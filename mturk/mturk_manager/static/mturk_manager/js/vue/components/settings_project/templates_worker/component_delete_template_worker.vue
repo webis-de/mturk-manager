@@ -1,6 +1,11 @@
 <template>
   <v-dialog v-model="dialog" max-width="500">
-    <v-btn slot="activator" icon small>
+    <v-btn
+      slot="activator"
+      class="my-0"
+      icon
+      small
+    >
       <v-icon color="error">delete</v-icon>
     </v-btn>
 
@@ -33,7 +38,7 @@ import {
 import { Service_Templates } from '../../../services/service_templates';
 
 export default {
-  name: 'compoent-delete-template-worker',
+  name: 'CompoentDeleteTemplateWorker',
   props: {
     template_worker: {},
   },
@@ -45,12 +50,16 @@ export default {
   methods: {
     remove() {
       Service_Templates.delete({
-        type_template: 'worker',
+        typeTemplate: 'worker',
         project: this.project_current,
         template: this.template_worker,
         callback: () => {
-          this.$emit('deleted');
-          this.dialog = false;
+          Service_Templates.cleanup({
+            typeTemplate: 'workerAll',
+            component: this,
+            nameEvent: 'deleted',
+            template: this.template_assignment,
+          });
         },
       });
     },

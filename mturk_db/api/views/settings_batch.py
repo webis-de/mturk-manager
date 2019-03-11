@@ -31,7 +31,13 @@ class Settings_Batch(APIView):
             paginator = api_settings.DEFAULT_PAGINATION_CLASS()
             queryset_paginated = paginator.paginate_queryset(queryset, request)
 
-        serializer = Serializer_Settings_Batch(queryset_paginated, many=True)
+        serializer = Serializer_Settings_Batch(
+            queryset_paginated,
+            many=True,
+            context={
+                'usecase': 'list_settings_batch',
+            }
+        )
 
         return Response({
             'items_total': queryset.count(),
@@ -83,8 +89,13 @@ def settings_batch_all(request, slug_project, database_object_project, use_sandb
         fields=list_fields,
     )
 
-    serializer = Serializer_Settings_Batch(queryset, many=True, context={
-        'fields': list_fields,
-    })
+    serializer = Serializer_Settings_Batch(
+        queryset,
+        many=True,
+        context={
+            'usecase': 'settings_batch_all',
+            'fields': list_fields,
+        }
+    )
 
     return Response(serializer.data)

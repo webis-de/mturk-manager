@@ -1,4 +1,6 @@
 from rest_framework import serializers
+
+from api.helpers import keep_fields
 from api.models import Settings_Batch
 from api.classes import Manager_Settings_Batch
 from api.serializers import Serializer_Keyword, Serializer_Template_Worker
@@ -9,16 +11,14 @@ class Serializer_Settings_Batch(serializers.ModelSerializer):
     def __init__(self, *args, **kwargs):
         super(Serializer_Settings_Batch, self).__init__(*args, **kwargs)
 
-        if 'context' in kwargs:
-            if kwargs['context'].get('detailed', False):
-                self.fields['template'] = Serializer_Template_Worker(source='template_worker', context=kwargs['context'])
+        context = kwargs.get('context', {})
 
-            if kwargs['context'].get('fields'):
-                allowed = set(kwargs['context'].get('fields'))
-                existing = set(self.fields)
-                for field_name in existing - allowed:
-                    self.fields.pop(field_name)
-            
+        if context.get('usecase') == 'annotation' or context.get('usecase') == 'list_settings_batch':
+            self.fields['template'] = Serializer_Template_Worker(source='template_worker', context=context)
+
+        if context.get('fields'):
+            keep_fields(self, context.get('fields'))
+
 
     #     # print(self.fields)
     #     if foo == 3:

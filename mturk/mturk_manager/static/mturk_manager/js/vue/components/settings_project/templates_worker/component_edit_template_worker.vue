@@ -1,6 +1,11 @@
 <template>
   <v-dialog v-model="dialog" max-width="80%">
-    <v-btn slot="activator" icon small>
+    <v-btn
+      slot="activator"
+      class="my-0"
+      icon
+      small
+    >
       <v-icon color="warning">edit</v-icon>
     </v-btn>
     <v-card>
@@ -55,7 +60,7 @@
               template_worker.template_assignment = $event;
               $v.template_worker.template_assignment.$touch();
             "
-            v-bind:items="list_templates_assignment"
+            v-bind:items="arrayTemplatesAssignment"
             label="Assignment Template"
             item-text="name"
             item-value="id"
@@ -71,7 +76,7 @@
               template_worker.template_hit = $event;
               $v.template_worker.template_hit.$touch();
             "
-            v-bind:items="list_templates_hit"
+            v-bind:items="arrayTemplatesHIT"
             label="HIT Template"
             item-text="name"
             item-value="id"
@@ -87,7 +92,7 @@
               template_worker.template_global = $event;
               $v.template_worker.template_global.$touch();
             "
-            v-bind:items="list_templates_global"
+            v-bind:items="arrayTemplatesGlobal"
             label="Global Template"
             item-text="name"
             item-value="id"
@@ -151,14 +156,17 @@ export default {
     update() {
       if (this.$refs.form.validate()) {
         Service_Templates.edit({
-          type_template: 'worker',
-          template_current: this.template_worker_current,
-          template_new: this.template_worker,
+          typeTemplate: 'worker',
+          templateCurrent: this.template_worker_current,
+          templateNew: this.template_worker,
           project: this.project_current,
         }).then(() => {
-          this.dialog = false;
-          this.$emit('edited');
-          this.reset();
+          Service_Templates.cleanup({
+            typeTemplate: 'workerAll',
+            component: this,
+            nameEvent: 'edited',
+            template: this.template_worker,
+          });
         });
       }
       // console.log(this.project_current);
@@ -175,26 +183,43 @@ export default {
     }),
   },
   computed: {
-    list_templates_assignment() {
+    arrayTemplatesAssignment() {
+      if (this.arrayTemplatesAssignmentAll === null) {
+        return [];
+      }
+
       return _.orderBy(
-        this.project_current.templates_assignment,
+        this.arrayTemplatesAssignmentAll,
         template => template.name,
       );
     },
-    list_templates_hit() {
+    arrayTemplatesHIT() {
+      if (this.arrayTemplatesHITAll === null) {
+        return [];
+      }
+
       return _.orderBy(
-        this.project_current.templates_hit,
+        this.arrayTemplatesHITAll,
         template => template.name,
       );
     },
-    list_templates_global() {
+    arrayTemplatesGlobal() {
+      if (this.arrayTemplatesGlobalAll === null) {
+        return [];
+      }
+
       return _.orderBy(
-        this.project_current.templates_global,
+        this.arrayTemplatesGlobalAll,
         template => template.name,
       );
     },
     ...mapGetters('moduleProjects', {
       project_current: 'get_project_current',
+    }),
+    ...mapState('moduleTemplates', {
+      arrayTemplatesAssignmentAll: 'arrayItemsAssignmentAll',
+      arrayTemplatesHITAll: 'arrayItemsHITAll',
+      arrayTemplatesGlobalAll: 'arrayItemsGlobalAll',
     }),
   },
   watch: {
@@ -221,6 +246,18 @@ export default {
   },
   created() {
     this.$v.$touch();
+
+    Service_Templates.getAll({
+      typeTemplate: 'assignmentAll',
+    });
+
+    Service_Templates.getAll({
+      typeTemplate: 'hitAll',
+    });
+
+    Service_Templates.getAll({
+      typeTemplate: 'globalAll',
+    });
   },
   components: {},
 };

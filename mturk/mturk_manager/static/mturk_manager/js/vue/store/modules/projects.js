@@ -16,9 +16,6 @@ export const moduleProjects = {
 
     url_api_projects: undefined,
     url_api_projects_check_uniqueness: undefined,
-    url_api_projects_settings_batch: undefined,
-    url_api_projects_templates_worker: undefined,
-    url_api_projects_templates_assignment: undefined,
     url_api_projects_clear_sandbox: undefined,
     url_api_ping: null,
 
@@ -56,11 +53,6 @@ export const moduleProjects = {
     set_urls(state, config) {
       state.url_api_projects = config.url_api_projects;
       state.url_api_projects_check_uniqueness = config.url_api_projects_check_uniqueness;
-      state.url_api_projects_settings_batch = config.url_api_projects_settings_batch;
-      state.url_api_projects_templates_worker = config.url_api_projects_templates_worker;
-      state.url_api_projects_templates_assignment = config.url_api_projects_templates_assignment;
-      state.url_api_projects_templates_hit = config.url_api_projects_templates_hit;
-      state.url_api_projects_templates_global = config.url_api_projects_templates_global;
       state.url_api_projects_clear_sandbox = config.url_api_projects_clear_sandbox;
       state.url_api_ping = config.url_api_ping;
     },
@@ -178,49 +170,49 @@ export const moduleProjects = {
         Vue.set(project, name_field, project_new[name_field]);
       });
     },
-    update_template_worker(state, { data, project }) {
-      const template_worker = new Template_Worker(data);
-      Vue.set(project.templates_worker, template_worker.id, template_worker);
-
-      if (template_worker.template_assignment != undefined) {
-        Vue.set(
-          template_worker,
-          'template_assignment',
-          project.templates_assignment[template_worker.template_assignment],
-        );
-      }
-
-      if (template_worker.template_hit != undefined) {
-        Vue.set(
-          template_worker,
-          'template_hit',
-          project.templates_hit[template_worker.template_hit],
-        );
-      }
-
-      if (template_worker.template_global != undefined) {
-        Vue.set(
-          template_worker,
-          'template_global',
-          project.templates_global[template_worker.template_global],
-        );
-      }
-    },
-    update_template_assignment(state, { data, project }) {
-      // const template_assignment = new Template_Assignment(data);
-      // Vue.set(project.templates_assignment, template_assignment.id, template_assignment);
-      project.templates_assignment[data.id].update(data);
-    },
-    update_template_hit(state, { data, project }) {
-      // const template_hit = new Template_HIT(data);
-      // Vue.set(project.templates_hit, template_hit.id, template_hit);
-      project.templates_hit[data.id].update(data);
-    },
-    update_template_global(state, { data, project }) {
-      project.templates_global[data.id].update(data);
-      // const template_global = new Template_Global(data);
-      // Vue.set(project.templates_global, template_global.id, template_global);
-    },
+    // update_template_worker(state, { data, project }) {
+    //   const template_worker = new Template_Worker(data);
+    //   Vue.set(project.templates_worker, template_worker.id, template_worker);
+    //
+    //   if (template_worker.template_assignment != undefined) {
+    //     Vue.set(
+    //       template_worker,
+    //       'template_assignment',
+    //       project.templates_assignment[template_worker.template_assignment],
+    //     );
+    //   }
+    //
+    //   if (template_worker.template_hit != undefined) {
+    //     Vue.set(
+    //       template_worker,
+    //       'template_hit',
+    //       project.templates_hit[template_worker.template_hit],
+    //     );
+    //   }
+    //
+    //   if (template_worker.template_global != undefined) {
+    //     Vue.set(
+    //       template_worker,
+    //       'template_global',
+    //       project.templates_global[template_worker.template_global],
+    //     );
+    //   }
+    // },
+    // update_template_assignment(state, { data, project }) {
+    //   // const template_assignment = new Template_Assignment(data);
+    //   // Vue.set(project.templates_assignment, template_assignment.id, template_assignment);
+    //   project.templates_assignment[data.id].update(data);
+    // },
+    // update_template_hit(state, { data, project }) {
+    //   // const template_hit = new Template_HIT(data);
+    //   // Vue.set(project.templates_hit, template_hit.id, template_hit);
+    //   project.templates_hit[data.id].update(data);
+    // },
+    // update_template_global(state, { data, project }) {
+    //   project.templates_global[data.id].update(data);
+    //   // const template_global = new Template_Global(data);
+    //   // Vue.set(project.templates_global, template_global.id, template_global);
+    // },
     add_template_worker(state, { data, project }) {
       const object_template_worker = new Template_Worker(data);
       Vue.set(

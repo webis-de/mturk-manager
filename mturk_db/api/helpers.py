@@ -10,6 +10,13 @@ class CustomPagination(PageNumberPagination):
     # max_page_size = 10000
 
 
+def keep_fields(serializer, fields):
+    allowed = set(fields)
+    existing = set(serializer.fields)
+    for field_name in existing - allowed:
+        serializer.fields.pop(field_name)
+
+
 def add_database_object_project(some_function):
     def wrapper(*args, **kwargs):
         # import time
@@ -39,8 +46,10 @@ def add_database_object_project(some_function):
 
     return wrapper
 
+
 def raise_not_implemented_exception(name_method, cls):
     raise Exception('{} not implemented in {}'.format(name_method, cls.__name__))
+
 
 def migrate_project(name_project):
     import api.models as models 

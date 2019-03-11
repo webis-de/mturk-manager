@@ -32,7 +32,12 @@ class Assignments(APIView):
             paginator = api_settings.DEFAULT_PAGINATION_CLASS()
             queryset_paginated = paginator.paginate_queryset(queryset, request)
 
-        serializer = Serializer_Assignment(queryset_paginated, many=True)
+        serializer = Serializer_Assignment(
+            queryset_paginated,
+            many=True,
+            context={
+                'usecase': 'list_assignments'
+            })
 
         return Response({
             'items_total': queryset.count(),
@@ -93,7 +98,7 @@ def assignments_for_annotation(request, slug_project, database_object_project, u
     serializer = Serializer_Assignment(
         queryset_assignments,
         context={
-            'detailed': False
+            'usecase': 'annotation'
         },
         many=True
     )

@@ -1,6 +1,8 @@
 from django.http import Http404
 from rest_framework import status
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
+from rest_framework.settings import api_settings
 from rest_framework.views import APIView
 
 from api.classes import Manager_Templates_Assignment
@@ -8,6 +10,7 @@ from api.helpers import add_database_object_project
 from api.models import Template_Assignment as Model_Template_Assignment
 from api.serializers import Serializer_Template_Assignment
 from mturk_db.permissions import IsInstance, IsWorker, AllowOptionsAuthentication
+from mturk_db.settings import REST_FRAMEWORK
 
 PERMISSIONS_INSTANCE_ONLY = (AllowOptionsAuthentication, IsInstance,)
 PERMISSIONS_WORKER_ONLY = (AllowOptionsAuthentication, IsWorker,)
@@ -17,12 +20,30 @@ class Templates_Assignment(APIView):
 
     @add_database_object_project
     def get(self, request, slug_project, database_object_project, use_sandbox, format=None):
-        queryset_settings_batch = Manager_Templates_Assignment.get_all(
+        queryset = Manager_Templates_Assignment.get_all(
             database_object_project=database_object_project,
             request=request,
         )
-        serializer = Serializer_Template_Assignment(queryset_settings_batch, many=True, context={'request': request})
-        return Response(serializer.data)
+
+        queryset_paginated = queryset
+
+        if request.query_params.get(REST_FRAMEWORK['PAGE_SIZE_QUERY_PARAM']) is not None:
+            paginator = api_settings.DEFAULT_PAGINATION_CLASS()
+            queryset_paginated = paginator.paginate_queryset(queryset, request)
+
+        serializer = Serializer_Template_Assignment(
+            queryset_paginated,
+            many=True,
+            context={
+                'request': request,
+                'usecase': 'list_templates_assignment',
+            }
+        )
+
+        return Response({
+            'items_total': queryset.count(),
+            'data': serializer.data,
+        })
 
     @add_database_object_project
     def post(self, request, slug_project, database_object_project, use_sandbox, format=None):
@@ -71,3 +92,28 @@ class Template_Assignment(APIView):
     def delete(self, request, slug_project, database_object_project, use_sandbox, id_template, format=None):
         Manager_Templates_Assignment.delete(id_template)
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+@api_view(['GET'])
+@permission_classes(PERMISSIONS_INSTANCE_ONLY)
+@add_database_object_project
+def templates_assignment_all(request, slug_project, database_object_project, use_sandbox, format=None):
+    list_fields = request.query_params.getlist('fields[]')
+    if len(list_fields) == 0:
+        list_fields = None
+
+    queryset = Manager_Templates_Assignment.get_all(
+        database_object_project=database_object_project,
+        request=request,
+        fields=list_fields,
+    )
+
+    serializer = Serializer_Template_Assignment(
+        queryset,
+        many=True,
+        context={
+            'usecase': 'templates_assignment_all',
+            'fields': list_fields,
+        }
+    )
+
+    return Response(serializer.data)

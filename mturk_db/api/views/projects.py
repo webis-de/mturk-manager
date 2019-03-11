@@ -46,9 +46,6 @@ class Project(APIView):
         project = Manager_Projects.get(database_object_project)
         serializer = Serializer_Project(
             project,
-            context={
-                'detailed': True
-            }
         )
         # serializer = Serializer_Project(database_object_project, context={'request': request})
         return Response(serializer.data)

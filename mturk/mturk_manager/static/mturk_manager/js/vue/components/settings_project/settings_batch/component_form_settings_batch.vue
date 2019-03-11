@@ -105,7 +105,7 @@
         $emit('update:template', $event);
         v.settings_batch.template.$touch();
       "
-      v-bind:items="list_templates"
+      v-bind:items="arrayTemplatesWorker"
       label="Worker Template"
       item-text="name"
       item-value="id"
@@ -243,9 +243,10 @@ import {
 import humanizeDuration from 'humanize-duration';
 import _ from 'lodash';
 import helpers from '../../../mixins/helpers';
+import {Service_Templates} from '../../../services/service_templates';
 
 export default {
-  name: 'component-form-settings-batch',
+  name: 'ComponentFormSettingsBatch',
   mixins: [helpers],
   props: {
     v: {},
@@ -266,7 +267,8 @@ export default {
     qualification_locale: {},
   },
   data() {
-    return {};
+    return {
+    };
   },
   methods: {
     handle_change_combobox(f) {
@@ -292,9 +294,13 @@ export default {
     },
   },
   computed: {
-    list_templates() {
+    arrayTemplatesWorker() {
+      if (this.arrayTemplatesWorkerAll === null) {
+        return [];
+      }
+
       return _.orderBy(
-        this.project_current.templates_worker,
+        this.arrayTemplatesWorkerAll,
         template => template.name,
       );
     },
@@ -310,6 +316,14 @@ export default {
     ...mapGetters('moduleKeywords', {
       object_keywords: 'get_object_keywords',
     }),
+    ...mapState('moduleTemplates', {
+      arrayTemplatesWorkerAll: 'arrayItemsWorkerAll',
+    }),
+  },
+  created() {
+    Service_Templates.getAll({
+      typeTemplate: 'workerAll',
+    });
   },
 };
 </script>

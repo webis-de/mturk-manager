@@ -31,7 +31,13 @@ class HITs(APIView):
             paginator = api_settings.DEFAULT_PAGINATION_CLASS()
             queryset_paginated = paginator.paginate_queryset(queryset, request)
 
-        serializer = Serializer_HIT(queryset_paginated, many=True)
+        serializer = Serializer_HIT(
+            queryset_paginated,
+            many=True,
+            context={
+                'usecase': 'list_hits'
+            }
+        )
 
         return Response({
             'items_total': queryset.count(),
@@ -52,7 +58,7 @@ def hits_for_annotation(request, slug_project, database_object_project, use_sand
     serializer = Serializer_HIT(
         queryset,
         context={
-            'detailed': False
+            'usecase': 'annotation',
         },
         many=True
     )

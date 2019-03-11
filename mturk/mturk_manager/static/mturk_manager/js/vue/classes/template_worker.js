@@ -6,9 +6,9 @@ export default class Template_Worker {
     this.name = data.name;
     this.height_frame = data.height_frame != undefined ? data.height_frame : 800;
     this.template = data.template;
-    this.template_assignment = data.template_assignment;
-    this.template_hit = data.template_hit;
-    this.template_global = data.template_global;
+    this.template_assignment = _.cloneDeep(data.template_assignment);
+    this.template_hit = _.cloneDeep(data.template_hit);
+    this.template_global = _.cloneDeep(data.template_global);
     this.dict_parameters = data.json_dict_parameters != undefined
       ? JSON.parse(data.json_dict_parameters)
       : {};
@@ -25,6 +25,8 @@ export default class Template_Worker {
             if (
               _.differenceBy(template_worker[key], this[key], value => value.text.toLowerCase()).length > 0
               || _.differenceBy(this[key], template_worker[key], value => value.text.toLowerCase()).length > 0
+              || this[key] === null
+              || template_worker[key] === null
             ) {
               object[key] = template_worker[key];
             }

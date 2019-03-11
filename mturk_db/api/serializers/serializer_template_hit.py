@@ -1,4 +1,6 @@
 from rest_framework import serializers
+
+from api.helpers import keep_fields
 from api.models import Template_HIT
 # from api.models import Project, Keyword
 from api.classes import Manager_Templates_HIT
@@ -25,6 +27,19 @@ from django.db import IntegrityError
 
 
 class Serializer_Template_HIT(serializers.ModelSerializer):
+    def __init__(self, *args, **kwargs):
+        super(Serializer_Template_HIT, self).__init__(*args, **kwargs)
+
+        context = kwargs.get('context', {})
+
+        if context.get('usecase') == 'list_templates_worker':
+            keep_fields(
+                serializer=self,
+                fields=['id', 'name']
+            )
+
+        if context.get('fields'):
+            keep_fields(self, context.get('fields'))
     # workers = serializers.HyperlinkedRelatedField(
     #     many=True,
     #     read_only=True,

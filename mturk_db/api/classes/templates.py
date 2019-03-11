@@ -10,9 +10,40 @@ class Manager_Templates(Interface_Manager_Items):
 
     @classmethod
     def get_all(cls, database_object_project: Project, request: Request, fields: list = None) -> QuerySet:
-        return cls.model.objects.filter(
-            project=database_object_project
+        queryset = cls.model.objects.filter(
+            project=database_object_project,
         )
+
+        queryset = cls.annotate(
+            queryset=queryset,
+        )
+
+        queryset = cls.sort_by(
+            queryset=queryset,
+            request=request,
+        )
+
+        if fields is not None:
+            queryset = queryset.values(
+                *fields
+            )
+
+        return queryset
+
+    @staticmethod
+    def annotate(queryset: QuerySet) -> QuerySet:
+        return queryset
+
+    @staticmethod
+    def sort_by(queryset: QuerySet, request: Request) -> QuerySet:
+        sort_by = request.query_params.get('sort_by')
+        if sort_by is not None:
+            descending = request.query_params.get('descending', 'false') == 'true'
+            queryset = queryset.order_by(
+                ('-' if descending else '') + sort_by
+            )
+
+        return queryset
 
     @classmethod
     def get(cls, id_item: object) -> object:

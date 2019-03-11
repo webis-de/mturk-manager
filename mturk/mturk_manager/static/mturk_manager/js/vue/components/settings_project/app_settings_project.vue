@@ -1,37 +1,59 @@
 <template>
   <div>
     <v-layout wrap>
-      <v-flex xs6 class="pa-1">
-        <component-settings-batch> </component-settings-batch>
-      </v-flex>
-      <v-flex xs6 class="pa-1">
+      <v-flex xs class="pa-1">
         <budget></budget>
+      </v-flex>
+      <v-flex xs class="pa-1">
         <component-block-limit> </component-block-limit>
+      </v-flex>
+      <v-flex xs class="pa-1">
         <component-messages-reject-default> </component-messages-reject-default>
       </v-flex>
     </v-layout>
 
     <v-layout wrap>
       <v-flex xs class="pa-1">
-        <component-templates-worker> </component-templates-worker>
+        <h2 class="headline">
+          Batch Profiles
+        </h2>
+        <table-settings-batch></table-settings-batch>
+      </v-flex>
+    </v-layout>
+
+    <v-layout wrap>
+      <v-flex xs class="pa-1">
+        <h2 class="headline">
+          Worker Templates
+        </h2>
+        <table-templates-worker></table-templates-worker>
       </v-flex>
     </v-layout>
 
     <v-layout wrap>
       <v-flex class="pa-1">
-        <component-templates-assignment> </component-templates-assignment>
+        <h2 class="headline">
+          Assignment Templates
+        </h2>
+        <table-templates-assignment> </table-templates-assignment>
       </v-flex>
     </v-layout>
 
     <v-layout wrap>
       <v-flex class="pa-1">
-        <component-templates-hit> </component-templates-hit>
+        <h2 class="headline">
+          HIT Templates
+        </h2>
+        <table-templates-hit></table-templates-hit>
       </v-flex>
     </v-layout>
 
     <v-layout wrap>
       <v-flex class="pa-1">
-        <component-templates-global> </component-templates-global>
+        <h2 class="headline">
+          Global Templates
+        </h2>
+        <table-templates-global></table-templates-global>
       </v-flex>
     </v-layout>
     <v-layout>
@@ -49,15 +71,14 @@
 <script>
 import ComponentBlockLimit from './block_limit/component_block_limit.vue';
 import ComponentMessagesRejectDefault from './messages_reject/component_messages_reject_default.vue';
-import ComponentSettingsBatch from './settings_batch/component_settings_batch.vue';
-import ComponentTemplatesWorker from './templates_worker/component_templates_worker.vue';
-import ComponentTemplatesAssignment from './templates_assignment/component_templates_assignment.vue';
-import ComponentTemplatesGlobal from './templates_global/component_templates_global.vue';
-import ComponentTemplatesHit from './templates_hit/component_templates_hit.vue';
 import ComponentClearSandbox from './clear_sandbox/component_clear_sandbox.vue';
-import ComponentDeleteProject from './delete_project/component_delete_project.vue';
 import slug_project from '../../mixins/slug_project';
 import Budget from '../finances/budget';
+import TableTemplatesWorker from './templates_worker/table-templates-worker';
+import TableTemplatesAssignment from './templates_assignment/table-templates-assignment';
+import TableTemplatesHit from './templates_hit/table-template-hit';
+import TableTemplatesGlobal from './templates_global/table-template-global';
+import TableSettingsBatch from './settings_batch/table-settings-batch';
 
 export default {
   mixins: [slug_project],
@@ -67,16 +88,15 @@ export default {
     return {};
   },
   components: {
+    TableSettingsBatch,
+    TableTemplatesGlobal,
+    TableTemplatesHit,
+    TableTemplatesAssignment,
+    TableTemplatesWorker,
     Budget,
     ComponentBlockLimit,
     ComponentMessagesRejectDefault,
-    ComponentSettingsBatch,
-    ComponentTemplatesWorker,
-    ComponentTemplatesAssignment,
-    ComponentTemplatesGlobal,
-    ComponentTemplatesHit,
     ComponentClearSandbox,
-    ComponentDeleteProject,
   },
 };
 </script>

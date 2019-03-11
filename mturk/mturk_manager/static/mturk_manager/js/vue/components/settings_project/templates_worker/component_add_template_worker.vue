@@ -56,7 +56,7 @@
                 template_worker.template_assignment = $event;
                 $v.template_worker.template_assignment.$touch();
               "
-              v-bind:items="list_templates_assignment"
+              v-bind:items="arrayTemplatesAssignment"
               label="Assignment Template"
               item-text="name"
               item-value="id"
@@ -71,7 +71,7 @@
                 template_worker.template_hit = $event;
                 $v.template_worker.template_hit.$touch();
               "
-              v-bind:items="list_templates_hit"
+              v-bind:items="arrayTemplatesHIT"
               label="HIT Template"
               item-text="name"
               item-value="id"
@@ -86,7 +86,7 @@
                 template_worker.template_global = $event;
                 $v.template_worker.template_global.$touch();
               "
-              v-bind:items="list_templates_global"
+              v-bind:items="arrayTemplatesGlobal"
               label="Global Template"
               item-text="name"
               item-value="id"
@@ -133,13 +133,53 @@ import Template_Worker from '../../../classes/template_worker';
 import { Service_Templates } from '../../../services/service_templates';
 
 export default {
-  name: 'component-add-template-worker',
+  name: 'ComponentAddTemplateWorker',
   mixins: [helpers, validations],
   data() {
     return {
       template_worker: new Template_Worker(),
       dialog: false,
     };
+  },
+  computed: {
+    arrayTemplatesAssignment() {
+      if (this.arrayTemplatesAssignmentAll === null) {
+        return [];
+      }
+
+      return _.orderBy(
+        this.arrayTemplatesAssignmentAll,
+        template => template.name,
+      );
+    },
+    arrayTemplatesHIT() {
+      if (this.arrayTemplatesHITAll === null) {
+        return [];
+      }
+
+      return _.orderBy(
+        this.arrayTemplatesHITAll,
+        template => template.name,
+      );
+    },
+    arrayTemplatesGlobal() {
+      if (this.arrayTemplatesGlobalAll === null) {
+        return [];
+      }
+
+      return _.orderBy(
+        this.arrayTemplatesGlobalAll,
+        template => template.name,
+      );
+    },
+    ...mapGetters('moduleProjects', {
+      project_current: 'get_project_current',
+    }),
+    ...mapState('moduleTemplates', {
+      arrayTemplatesAssignmentAll: 'arrayItemsAssignmentAll',
+      arrayTemplatesHITAll: 'arrayItemsHITAll',
+      arrayTemplatesGlobalAll: 'arrayItemsGlobalAll',
+    }),
   },
   watch: {
     dialog() {
@@ -163,6 +203,19 @@ export default {
       template_global: {},
     },
   },
+  created() {
+    Service_Templates.getAll({
+      typeTemplate: 'assignmentAll',
+    });
+
+    Service_Templates.getAll({
+      typeTemplate: 'hitAll',
+    });
+
+    Service_Templates.getAll({
+      typeTemplate: 'globalAll',
+    });
+  },
   methods: {
     reset() {
       this.template_worker = new Template_Worker();
@@ -171,40 +224,24 @@ export default {
     create() {
       if (this.$refs.form.validate()) {
         Service_Templates.create({
-          type_template: 'worker',
+          typeTemplate: 'worker',
           template: this.template_worker,
           project: this.project_current,
-        }).then(() => {
-          this.$emit('created');
-          this.dialog = false;
-          this.reset();
+        }).then((template) => {
+          Service_Templates.cleanup({
+            typeTemplate: 'workerAll',
+            component: this,
+            nameEvent: 'created',
+            template,
+          });
+
+          // Service_Templates.getAll({
+          //   typeTemplate: 'workerAll',
+          //   force: true,
+          // });
         });
       }
     },
   },
-  computed: {
-    list_templates_assignment() {
-      return _.orderBy(
-        this.project_current.templates_assignment,
-        template => template.name,
-      );
-    },
-    list_templates_hit() {
-      return _.orderBy(
-        this.project_current.templates_hit,
-        template => template.name,
-      );
-    },
-    list_templates_global() {
-      return _.orderBy(
-        this.project_current.templates_global,
-        template => template.name,
-      );
-    },
-    ...mapGetters('moduleProjects', {
-      project_current: 'get_project_current',
-    }),
-  },
-  components: {},
 };
 </script>

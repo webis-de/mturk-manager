@@ -1,13 +1,10 @@
-<template>
+<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <div>
     <base-table
       v-bind:array-items="arrayItems"
       v-bind:array-columns="arrayColumns"
       v-bind:array-columns-selected="[
         'name',
-        'title',
-        'reward',
-        'block_workers',
         'actions',
       ]"
       v-bind:function-load-page="function_load_page"
@@ -19,7 +16,7 @@
       <template
         v-slot:default="{ props, array_columns_selected, isCondensed }"
       >
-        <item-settings-batch
+        <item-templates-hit
           v-bind:props="props"
           v-bind:is-condensed="isCondensed"
 
@@ -29,68 +26,64 @@
       </template>
 
       <template v-slot:actions>
-        <component-add-settings-batch
+        <component-add-template-hit
           v-on:created="snackbarCreated = true"
-        />
+        ></component-add-template-hit>
       </template>
     </base-table>
-
-
-    <!--<v+-->
 
     <v-snackbar
       v-model="snackbarDeleted"
       v-bind:timeout="1500"
+      color="info"
       bottom
     >
-      <v-spacer />
+      <v-spacer></v-spacer>
       Deleted!
-      <v-spacer />
+      <v-spacer></v-spacer>
     </v-snackbar>
 
     <v-snackbar
       v-model="snackbarCreated"
       v-bind:timeout="1500"
       bottom
-      color="success"
+      color="info"
     >
-      <v-spacer />
+      <v-spacer></v-spacer>
       Saved!
-      <v-spacer />
+      <v-spacer></v-spacer>
     </v-snackbar>
 
     <v-snackbar
       v-model="snackbarEdited"
       v-bind:timeout="1500"
       bottom
-      color="success"
+      color="info"
     >
-      <v-spacer />
+      <v-spacer></v-spacer>
       Updated!
-      <v-spacer />
+      <v-spacer></v-spacer>
     </v-snackbar>
   </div>
 </template>
 
 <script>
-  import {mapGetters, mapMutations, mapState} from 'vuex';
-import ComponentAddSettingsBatch from './component_add_settings_batch';
-import { table } from '../../../mixins/table';
+import {Service_Templates} from '../../../services/service_templates';
+import {mapMutations, mapState} from 'vuex';
 import BaseTable from '../../base-table';
-import { ServiceSettingsBatch } from '../../../services/service_settings_batch';
-import ItemSettingsBatch from './item-settings-batch';
+import ComponentAddTemplateHit from './component_add_template_hit';
+import ItemTemplatesHit from './item-templates-hit';
 
 export default {
-  name: 'TableSettingsBatch',
+  name: 'TableTemplatesHit',
   components: {
-    ItemSettingsBatch,
+    ItemTemplatesHit,
+    ComponentAddTemplateHit,
     BaseTable,
-    ComponentAddSettingsBatch,
   },
-  mixins: [table],
   data() {
     return {
-      function_load_page: ServiceSettingsBatch.loadPage,
+      function_load_page: Service_Templates.loadPageHIT,
 
       snackbarDeleted: false,
       snackbarEdited: false,
@@ -98,18 +91,22 @@ export default {
     };
   },
   computed: {
-    ...mapState('moduleSettingsBatch', ['arrayColumns', 'arrayItems']),
-    ...mapGetters('moduleProjects', {
-      project_current: 'get_project_current',
+    ...mapState('moduleTemplates', {
+      arrayItems: 'arrayItemsHIT',
+      arrayColumns: 'arrayColumns',
     }),
-    ...mapState('moduleSettingsBatch', {
-      paginationComputed: 'paginationGeneral',
+    ...mapState('moduleTemplates', {
+      paginationComputed: 'paginationHIT',
     }),
   },
   methods: {
-    ...mapMutations('moduleSettingsBatch', {
-      functionSetPagination: 'setPaginationGeneral',
+    ...mapMutations('moduleTemplates', {
+      functionSetPagination: 'setPaginationHIT',
     }),
   },
 };
 </script>
+
+<style scoped>
+
+</style>

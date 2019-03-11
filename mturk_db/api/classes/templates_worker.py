@@ -2,7 +2,7 @@ import json
 import re
 from collections import Counter
 
-from django.db.models import Model
+from django.db.models import QuerySet
 
 from api.classes import Manager_Templates
 from api.models import Template_Worker
@@ -14,7 +14,7 @@ class Manager_Templates_Worker(Manager_Templates):
     @classmethod
     def create(cls, data: dict) -> Template_Worker:
         template = Template_Worker.objects.create(
-            project = data['database_object_project'],
+            project=data['database_object_project'],
             name=data['name'],
             height_frame=data['height_frame'],
             template=data['template'],

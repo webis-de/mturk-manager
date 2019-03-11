@@ -80,7 +80,7 @@ class Class_Service_Projects {
     if (project.slug !== undefined) {
       this.load_data(project);
       // ServiceSettingsBatch.load();
-      Service_Templates.load_all();
+      // Service_Templates.load_all();
 
       this.ping();
       this.id_interval = setInterval(() => {

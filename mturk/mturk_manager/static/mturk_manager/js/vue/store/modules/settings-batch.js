@@ -7,6 +7,7 @@ import localforage from "localforage";
 export const moduleSettingsBatch = {
   namespaced: true,
   state: {
+    urlApiProjectsSettingsBatch: undefined,
     urlApiProjectsSettingsBatchAll: undefined,
 
     arrayItems: null,
@@ -27,6 +28,18 @@ export const moduleSettingsBatch = {
         value: 'name',
       },
       {
+        text: 'Title',
+        value: 'title',
+      },
+      {
+        text: 'Reward',
+        value: 'reward',
+      },
+      {
+        text: 'Block Workers',
+        value: 'block_workers',
+      },
+      {
         text: 'Actions',
         value: 'actions',
         sortable: false,
@@ -34,7 +47,6 @@ export const moduleSettingsBatch = {
     ],
   },
   getters: {
-    arrayItems: state => () => state.arrayItems,
   },
   mutations: {
     setPaginationGeneral(state, { pagination, setPageTo1 }) {
@@ -79,6 +91,7 @@ export const moduleSettingsBatch = {
       );
     },
     setUrls(state, config) {
+      state.urlApiProjectsSettingsBatch = config.url_api_projects_settings_batch;
       state.urlApiProjectsSettingsBatchAll = config.url_api_projects_settings_batch_all;
     },
   },

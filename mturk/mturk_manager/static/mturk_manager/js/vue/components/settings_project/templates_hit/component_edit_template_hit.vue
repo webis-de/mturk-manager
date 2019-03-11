@@ -1,6 +1,11 @@
 <template>
   <v-dialog v-model="dialog" max-width="80%" persistent>
-    <v-btn slot="activator" icon small>
+    <v-btn
+      slot="activator"
+      class="my-0"
+      icon
+      small
+    >
       <v-icon color="warning">edit</v-icon>
     </v-btn>
     <v-card>
@@ -98,7 +103,7 @@ import Template_HIT from '../../../classes/template_hit';
 import { Service_Templates } from '../../../services/service_templates';
 
 export default {
-  name: 'component-edit-template-hit',
+  name: 'ComponentEditTemplateHit',
   mixins: [helpers, validations],
   props: {
     template_hit_current: {},
@@ -113,16 +118,18 @@ export default {
     update(close) {
       if (this.$refs.form.validate()) {
         Service_Templates.edit({
-          type_template: 'hit',
-          template_current: this.template_hit_current,
-          template_new: this.template_hit,
+          typeTemplate: 'hit',
+          templateCurrent: this.template_hit_current,
+          templateNew: this.template_hit,
           project: this.project_current,
         }).then(() => {
-          if (close == true) {
-            this.dialog = false;
-            this.reset();
-          }
-          this.$emit('edited');
+          Service_Templates.cleanup({
+            typeTemplate: 'hitAll',
+            component: this,
+            nameEvent: 'edited',
+            template: this.template_hit,
+            closeDialog: close === true,
+          });
         });
       }
       // console.log(this.project_current);

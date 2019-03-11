@@ -1,6 +1,11 @@
 <template>
   <v-dialog v-model="dialog" max-width="80%" persistent>
-    <v-btn slot="activator" icon small>
+    <v-btn
+      slot="activator"
+      class="my-0"
+      icon
+      small
+    >
       <v-icon color="warning">edit</v-icon>
     </v-btn>
     <v-card>
@@ -100,7 +105,7 @@ import Template_Assignment from '../../../classes/template_assignment';
 import { Service_Templates } from '../../../services/service_templates';
 
 export default {
-  name: 'component-edit-template-assignment',
+  name: 'ComponentEditTemplateAssignment',
   mixins: [helpers, validations],
   props: {
     template_assignment_current: {},
@@ -117,24 +122,24 @@ export default {
     update(close) {
       if (this.$refs.form.validate()) {
         Service_Templates.edit({
-          type_template: 'assignment',
-          template_current: this.template_assignment_current,
-          template_new: this.template_assignment,
+          typeTemplate: 'assignment',
+          templateCurrent: this.template_assignment_current,
+          templateNew: this.template_assignment,
           project: this.project_current,
         }).then(() => {
-          if (close === true) {
-            this.dialog = false;
-            this.reset();
-          }
-          this.$emit('edited');
+          Service_Templates.cleanup({
+            typeTemplate: 'assignmentAll',
+            component: this,
+            nameEvent: 'edited',
+            template: this.template_assignment,
+            closeDialog: close === true,
+          });
         });
       }
       // console.log(this.project_current);
     },
     reset() {
-      (this.template_assignment = new Template_Assignment(
-        this.template_assignment_current,
-      )),
+      this.template_assignment = new Template_Assignment(this.template_assignment_current);
       this.$v.$reset();
       this.$v.$touch();
     },

@@ -5,6 +5,7 @@
   >
     <v-btn
       slot="activator"
+      class="my-0"
       icon
       small
     >

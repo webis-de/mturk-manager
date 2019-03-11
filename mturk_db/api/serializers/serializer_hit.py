@@ -16,8 +16,11 @@ from api.serializers import Serializer_Batch
 class Serializer_HIT(serializers.ModelSerializer):
     def __init__(self, *args, **kwargs):
         super(Serializer_HIT, self).__init__(*args, **kwargs)
-        if 'context' in kwargs:
-            self.fields['batch'] = serializers.PrimaryKeyRelatedField(read_only=True)
+
+        context = kwargs.get('context', {})
+
+        if context.get('usecase') == 'list_hits':
+            self.fields['batch'] = Serializer_Batch(read_only=True)
 # class Serializer_Batch(serializers.Serializer):
     # workers = serializers.HyperlinkedRelatedField(
     #     many=True,
@@ -38,7 +41,7 @@ class Serializer_HIT(serializers.ModelSerializer):
     # is_requestable = serializers.NullBooleanField(source='IsRequestable', required=False)
     # is_auto_granted = serializers.NullBooleanField(source='AutoGranted', required=False)
     # assignments = Serializer_Assignment(many=True, read_only=True)
-    batch = Serializer_Batch(read_only=True)
+
     count_assignments_available = serializers.IntegerField(required=False)
     count_assignments_total = serializers.IntegerField(required=False)
 

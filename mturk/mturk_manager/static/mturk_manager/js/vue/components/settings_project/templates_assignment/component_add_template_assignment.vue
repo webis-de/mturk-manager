@@ -65,7 +65,7 @@ import validations from '../../../mixins/validations';
 import { Service_Templates } from '../../../services/service_templates';
 
 export default {
-  name: 'component-add-template-assignment',
+  name: 'ComponentAddTemplateAssignment',
   mixins: [validations],
   data() {
     return {
@@ -98,16 +98,19 @@ export default {
     create() {
       if (this.$refs.form.validate()) {
         Service_Templates.create({
-          type_template: 'assignment',
+          typeTemplate: 'assignment',
           template: {
             name: this.name,
             template: this.template,
           },
           project: this.project_current,
-        }).then(() => {
-          this.$emit('created');
-          this.dialog = false;
-          this.reset();
+        }).then((template) => {
+          Service_Templates.cleanup({
+            typeTemplate: 'assignmentAll',
+            component: this,
+            nameEvent: 'created',
+            template,
+          });
         });
       }
     },

@@ -1,6 +1,11 @@
 <template>
   <v-dialog v-model="dialog" max-width="80%" persistent>
-    <v-btn slot="activator" icon small>
+    <v-btn
+      slot="activator"
+      class="my-0"
+      icon
+      small
+    >
       <v-icon color="warning">edit</v-icon>
     </v-btn>
     <v-card>
@@ -98,7 +103,7 @@ import Template_Global from '../../../classes/template_global';
 import { Service_Templates } from '../../../services/service_templates';
 
 export default {
-  name: 'component-edit-template-global',
+  name: 'ComponentEditTemplateGlobal',
   mixins: [helpers, validations],
   props: {
     template_global_current: {},
@@ -113,16 +118,18 @@ export default {
     update(close) {
       if (this.$refs.form.validate()) {
         Service_Templates.edit({
-          type_template: 'global',
-          template_current: this.template_global_current,
-          template_new: this.template_global,
+          typeTemplate: 'global',
+          templateCurrent: this.template_global_current,
+          templateNew: this.template_global,
           project: this.project_current,
         }).then(() => {
-          if (close === true) {
-            this.dialog = false;
-            this.reset();
-          }
-          this.$emit('edited');
+          Service_Templates.cleanup({
+            typeTemplate: 'globalAll',
+            component: this,
+            nameEvent: 'edited',
+            template: this.template_global,
+            closeDialog: close === true,
+          });
         });
       }
       // console.log(this.project_current);

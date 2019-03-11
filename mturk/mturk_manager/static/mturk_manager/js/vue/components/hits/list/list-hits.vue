@@ -28,7 +28,6 @@
       <slot name="actions"></slot>
     </template>
   </base-table>
-  </base-table>
 </template>
 
 <script>

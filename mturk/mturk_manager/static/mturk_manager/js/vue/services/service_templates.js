@@ -2,90 +2,285 @@ import { store } from '../store/vuex';
 import { Service_Endpoint } from './service_endpoint';
 
 class Class_Service_Templates {
-  async load_all(
-    project = store.getters['moduleProjects/get_project_current'],
-  ) {
-    await this.load('assignment', project);
-    await this.load('hit', project);
-    await this.load('global', project);
-    await this.load('worker', project);
+  constructor() {
+    this.isLoadingWorkerAll = false;
+    this.isLoadingAssignmentAll = false;
+    this.isLoadingHITAll = false;
+    this.isLoadingGlobalAll = false;
   }
 
-  async load(
-    type_template,
-    project = store.getters['moduleProjects/get_project_current'],
-  ) {
-    const response_templates = await Service_Endpoint.make_request({
+  async loadPageWorker(pagination, filters) {
+    return Class_Service_Templates.loadPage(pagination, filters, 'worker');
+  }
+
+  async loadPageAssignment(pagination, filters) {
+    return Class_Service_Templates.loadPage(pagination, filters, 'assignment');
+  }
+
+  async loadPageHIT(pagination, filters) {
+    return Class_Service_Templates.loadPage(pagination, filters, 'hit');
+  }
+
+  async loadPageGlobal(pagination, filters) {
+    return Class_Service_Templates.loadPage(pagination, filters, 'global');
+  }
+
+  static async loadPage(pagination, filters, typeTemplate) {
+    const project = store.getters['moduleProjects/get_project_current'];
+
+    let urlTemplate;
+    switch (typeTemplate) {
+      case 'worker':
+        urlTemplate = 'urlApiProjectsTemplatesWorker';
+        break;
+      case 'assignment':
+        urlTemplate = 'urlApiProjectsTemplatesAssignment';
+        break;
+      case 'hit':
+        urlTemplate = 'urlApiProjectsTemplatesHIT';
+        break;
+      case 'global':
+        urlTemplate = 'urlApiProjectsTemplatesGlobal';
+        break;
+      default:
+        break;
+    }
+
+    const response = await Service_Endpoint.make_request({
       method: 'get',
       url: {
         path: store.getters.get_url(
-          `url_api_projects_templates_${type_template}`,
-          'moduleProjects',
+          urlTemplate,
+          'moduleTemplates',
         ),
         project,
       },
+      params: {
+        page: pagination.page,
+        page_size: pagination.rowsPerPage,
+        sort_by: pagination.sortBy,
+        descending: pagination.descending,
+      },
     });
 
-    store.commit(`moduleProjects/set_templates_${type_template}`, {
-      data: response_templates.data,
-      project,
+    store.commit('moduleTemplates/setItems', {
+      data: response.data.data,
+      typeTemplate,
     });
+
+    return response.data.items_total;
   }
 
-  async create({ type_template, template, project }) {
+  async getAll({ typeTemplate, force = true }) {
+    let nameState;
+    let urlTemplate;
+    let nameLoading;
+
+    switch (typeTemplate) {
+      case 'workerAll':
+        nameState = 'arrayItemsWorkerAll';
+        urlTemplate = 'urlApiProjectsTemplatesWorkerAll';
+        nameLoading = 'isLoadingWorkerAll';
+        break;
+      case 'assignmentAll':
+        nameState = 'arrayItemsAssignmentAll';
+        urlTemplate = 'urlApiProjectsTemplatesAssignmentAll';
+        nameLoading = 'isLoadingAssignmentAll';
+        break;
+      case 'hitAll':
+        nameState = 'arrayItemsHITAll';
+        urlTemplate = 'urlApiProjectsTemplatesHITAll';
+        nameLoading = 'isLoadingHITAll';
+        break;
+      case 'globalAll':
+        nameState = 'arrayItemsGlobalAll';
+        urlTemplate = 'urlApiProjectsTemplatesGlobalAll';
+        nameLoading = 'isLoadingGlobalAll';
+        break;
+      default:
+        break;
+    }
+
+    const arrayItems = store.state.moduleTemplates[nameState];
+
+    if (arrayItems !== null && force === false) {
+      return;
+    }
+
+    if (this[nameLoading] === true) {
+      return;
+    }
+
+    this[nameLoading] = true;
+
+    const project = store.getters['moduleProjects/get_project_current'];
+
+    const response = await Service_Endpoint.make_request({
+      method: 'get',
+      url: {
+        path: store.getters.get_url(
+          urlTemplate,
+          'moduleTemplates',
+        ),
+        project,
+      },
+      params: {
+        fields: [
+          'id',
+          'name',
+        ],
+      },
+    });
+
+    store.commit('moduleTemplates/setItems', {
+      data: response.data,
+      typeTemplate,
+    });
+
+    this[nameLoading] = false;
+  }
+
+  // async load_all(
+  //   project = store.getters['moduleProjects/get_project_current'],
+  // ) {
+  //   await this.load('assignment', project);
+  //   await this.load('hit', project);
+  //   await this.load('global', project);
+  //   // await this.load('worker', project);
+  // }
+
+  // async load(
+  //   typeTemplate,
+  //   project = store.getters['moduleProjects/get_project_current'],
+  // ) {
+  //   const response = await Service_Endpoint.make_request({
+  //     method: 'get',
+  //     url: {
+  //       path: store.getters.get_url(
+  //         `url_api_projects_templates_${typeTemplate}`,
+  //         'moduleProjects',
+  //       ),
+  //       project,
+  //     },
+  //   });
+  //
+  //   store.commit(`moduleProjects/set_templates_${typeTemplate}`, {
+  //     data: response.data,
+  //     project,
+  //   });
+  // }
+
+  async create({ typeTemplate, template, project }) {
+    let urlTemplate;
+    switch (typeTemplate) {
+      case 'worker':
+        urlTemplate = 'urlApiProjectsTemplatesWorker';
+        break;
+      case 'assignment':
+        urlTemplate = 'urlApiProjectsTemplatesAssignment';
+        break;
+      case 'hit':
+        urlTemplate = 'urlApiProjectsTemplatesHIT';
+        break;
+      case 'global':
+        urlTemplate = 'urlApiProjectsTemplatesGlobal';
+        break;
+      default:
+        break;
+    }
+
     const response = await Service_Endpoint.make_request({
       method: 'post',
       url: {
         path: store.getters.get_url(
-          `url_api_projects_templates_${type_template}`,
-          'moduleProjects',
+          urlTemplate,
+          'moduleTemplates',
         ),
         project,
       },
       data: template,
     });
 
-    store.commit(`moduleProjects/add_template_${type_template}`, {
+    store.commit(`moduleTemplates/add`, {
       data: response.data,
-      project,
+      typeTemplate,
     });
+
+    return response.data;
   }
 
   async edit({
-    type_template, template_current, template_new, project,
+    typeTemplate, templateCurrent, templateNew, project,
   }) {
-    const data_changed = template_current.get_changes(template_new);
+    let urlTemplate;
+    switch (typeTemplate) {
+      case 'worker':
+        urlTemplate = 'urlApiProjectsTemplatesWorker';
+        break;
+      case 'assignment':
+        urlTemplate = 'urlApiProjectsTemplatesAssignment';
+        break;
+      case 'hit':
+        urlTemplate = 'urlApiProjectsTemplatesHIT';
+        break;
+      case 'global':
+        urlTemplate = 'urlApiProjectsTemplatesGlobal';
+        break;
+      default:
+        break;
+    }
 
-    if (Object.keys(data_changed).length === 0) return;
+
+    const dataChanged = templateCurrent.get_changes(templateNew);
+
+    if (Object.keys(dataChanged).length === 0) return;
 
     const response = await Service_Endpoint.make_request({
       method: 'put',
       url: {
         path: store.getters.get_url(
-          `url_api_projects_templates_${type_template}`,
-          'moduleProjects',
+          urlTemplate,
+          'moduleTemplates',
         ),
         project,
-        value: template_current.id,
+        value: templateCurrent.id,
       },
-      data: data_changed,
+      data: dataChanged,
     });
 
-    store.commit(`moduleProjects/update_template_${type_template}`, {
+    store.commit('moduleTemplates/update', {
       data: response.data,
-      project,
+      typeTemplate,
     });
   }
 
   async delete({
-    type_template, template, project, callback,
+    typeTemplate, template, project, callback,
   }) {
+    let urlTemplate;
+    switch (typeTemplate) {
+      case 'worker':
+        urlTemplate = 'urlApiProjectsTemplatesWorker';
+        break;
+      case 'assignment':
+        urlTemplate = 'urlApiProjectsTemplatesAssignment';
+        break;
+      case 'hit':
+        urlTemplate = 'urlApiProjectsTemplatesHIT';
+        break;
+      case 'global':
+        urlTemplate = 'urlApiProjectsTemplatesGlobal';
+        break;
+      default:
+        break;
+    }
+
     await Service_Endpoint.make_request({
       method: 'delete',
       url: {
         path: store.getters.get_url(
-          `url_api_projects_templates_${type_template}`,
-          'moduleProjects',
+          urlTemplate,
+          'moduleTemplates',
         ),
         project,
         value: template.id,
@@ -93,10 +288,40 @@ class Class_Service_Templates {
     });
 
     callback();
-    store.commit(`moduleProjects/remove_template_${type_template}`, {
-      template,
-      project,
+
+    store.commit('moduleTemplates/delete', {
+      data: template,
+      typeTemplate,
     });
+
+    return template;
+  }
+
+  cleanup({ typeTemplate, nameEvent, component, template, closeDialog = true }) {
+    component.$emit(nameEvent);
+
+    if (closeDialog === true) {
+      component.dialog = false;
+    }
+
+    if (nameEvent === 'created') {
+      component.reset();
+      store.commit('moduleTemplates/setItems', {
+        data: [template],
+        typeTemplate,
+        add: true,
+      });
+    } else if(nameEvent === 'edited') {
+      store.commit('moduleTemplates/update', {
+        data: template,
+        typeTemplate,
+      });
+    } else if(nameEvent === 'deleted') {
+      store.commit('moduleTemplates/delete', {
+        data: template,
+        typeTemplate,
+      });
+    }
   }
 }
 

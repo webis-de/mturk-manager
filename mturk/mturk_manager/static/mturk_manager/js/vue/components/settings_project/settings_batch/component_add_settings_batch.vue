@@ -66,6 +66,7 @@ import ComponentFormSettingsBatch from './component_form_settings_batch';
 import settings_batch from '../../../mixins/settings_batch';
 import validations from '../../../mixins/validations';
 import { ServiceSettingsBatch } from '../../../services/service_settings_batch';
+import {Service_Templates} from '../../../services/service_templates';
 
 export default {
   name: 'ComponentAddSettingsBatch',
@@ -75,13 +76,17 @@ export default {
   mixins: [validations, settings_batch],
   data() {
     return {
+      list_templates_worker: [],
       dialog: false,
     };
   },
   computed: {
     is_disabled() {
-      return _.size(_.get(this.project_current, 'templates_worker', [])) == 0;
+      return _.size(_.defaultTo(this.arrayTemplatesWorkerAll, [])) === 0;
     },
+    ...mapState('moduleTemplates', {
+      arrayTemplatesWorkerAll: 'arrayItemsWorkerAll',
+    }),
   },
   watch: {
     dialog() {

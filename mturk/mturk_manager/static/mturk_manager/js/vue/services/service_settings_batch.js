@@ -10,8 +10,8 @@ class Class_Settings_Batch {
       method: 'get',
       url: {
         path: store.getters.get_url(
-          'url_api_projects_settings_batch',
-          'moduleProjects',
+          'urlApiProjectsSettingsBatch',
+          'moduleSettingsBatch',
         ),
         project,
       },
@@ -61,8 +61,8 @@ class Class_Settings_Batch {
       method: 'get',
       url: {
         path: store.getters.get_url(
-          'url_api_projects_settings_batch',
-          'moduleProjects',
+          'urlApiProjectsSettingsBatch',
+          'moduleSettingsBatch',
         ),
         value: idSettingsBatch,
         project,
@@ -77,8 +77,8 @@ class Class_Settings_Batch {
       method: 'post',
       url: {
         path: store.getters.get_url(
-          'url_api_projects_settings_batch',
-          'moduleProjects',
+          'urlApiProjectsSettingsBatch',
+          'moduleSettingsBatch',
         ),
         project,
       },
@@ -99,8 +99,8 @@ class Class_Settings_Batch {
       method: 'put',
       url: {
         path: store.getters.get_url(
-          'url_api_projects_settings_batch',
-          'moduleProjects',
+          'urlApiProjectsSettingsBatch',
+          'moduleSettingsBatch',
         ),
         value: settings_batch_current.id,
         project,
@@ -118,8 +118,8 @@ class Class_Settings_Batch {
       method: 'delete',
       url: {
         path: store.getters.get_url(
-          'url_api_projects_settings_batch',
-          'moduleProjects',
+          'urlApiProjectsSettingsBatch',
+          'moduleSettingsBatch',
         ),
         project,
         value: settings_batch.id,

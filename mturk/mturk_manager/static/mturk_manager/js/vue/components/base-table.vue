@@ -112,7 +112,7 @@ export default {
   mixins: [updateSandbox, table],
   props: {
     arrayItems: {
-      type: Function,
+      type: Array | Function | null,
       required: true,
     },
     functionLoadPage: {
@@ -225,7 +225,12 @@ export default {
       return isPageSelected;
     },
     array_page() {
-      const arrayItems = this.arrayItems();
+      let arrayItems = this.arrayItems;
+
+      if (_.isFunction(this.arrayItems)) {
+        arrayItems = this.arrayItems();
+      }
+
       return arrayItems === null ? [] : arrayItems;
     },
     stylesHeaderRow() {

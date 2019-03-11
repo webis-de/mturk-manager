@@ -9,6 +9,28 @@
     >
       {{ settingsBatch.name }}
     </td>
+
+    <td
+      v-bind:style="stylesCell"
+      class="text-xs-center"
+    >
+      {{ settingsBatch.title }}
+    </td>
+
+    <td
+      v-bind:style="stylesCell"
+      class="text-xs-center"
+    >
+      <base-display-amount v-bind:amount="settingsBatch.reward"></base-display-amount>
+    </td>
+
+    <td
+      v-bind:style="stylesCell"
+      class="text-xs-center"
+    >
+      {{ settingsBatch.block_workers }}
+    </td>
+
     <td
       v-bind:style="stylesCell"
       class="text-xs-center"
@@ -30,10 +52,11 @@
 <script>
 import ComponentEditSettingsBatch from './component_edit_settings_batch';
 import ComponentDeleteSettingsBatch from './component_delete_settings_batch';
+import BaseDisplayAmount from '../../base-display-amount';
 
 export default {
   name: 'ItemSettingsBatch',
-  components: { ComponentDeleteSettingsBatch, ComponentEditSettingsBatch },
+  components: {BaseDisplayAmount, ComponentDeleteSettingsBatch, ComponentEditSettingsBatch },
   props: {
     props: {
       type: Object,

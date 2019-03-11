@@ -16,8 +16,11 @@ from api.serializers import Serializer_HIT, Serializer_Worker
 class Serializer_Assignment(serializers.ModelSerializer):
     def __init__(self, *args, **kwargs):
         super(Serializer_Assignment, self).__init__(*args, **kwargs)
-        if 'context' in kwargs:
-            self.fields['hit'] = serializers.PrimaryKeyRelatedField(read_only=True)
+
+        context = kwargs.get('context', {})
+
+        if context.get('usecase') == 'list_assignments':
+            self.fields['hit'] = Serializer_HIT(read_only=True)
 
 # class Serializer_Batch(serializers.Serializer):
     # workers = serializers.HyperlinkedRelatedField(
@@ -39,7 +42,6 @@ class Serializer_Assignment(serializers.ModelSerializer):
     # is_requestable = serializers.NullBooleanField(source='IsRequestable', required=False)
     # is_auto_granted = serializers.NullBooleanField(source='AutoGranted', required=False)
     answer = serializers.JSONField()
-    hit = Serializer_HIT(read_only=True)
     worker = Serializer_Worker(read_only=True)
     duration = serializers.DurationField()
 
