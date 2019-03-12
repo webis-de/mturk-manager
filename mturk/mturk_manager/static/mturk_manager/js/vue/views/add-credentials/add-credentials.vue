@@ -37,6 +37,8 @@ export default {
   },
   methods: {
     async save() {
+      this.url = this.url.trim();
+
       if (!this.url.startsWith('http')) {
         this.url = `http://${this.url}`;
       }
