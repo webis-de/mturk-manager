@@ -132,7 +132,7 @@ export default class View {
 
         let object_groups;
         switch (this.group_by) {
-          case 'hit':
+          case 'hits':
             object_groups = _.groupBy(list_assignments, 'hit.id');
             break;
           case 'workers':
