@@ -25,3 +25,20 @@ export async function initPagination({ commit, nameLocalStorage, nameMutation })
     });
   }
 }
+
+export function setState({ state, objectState, nameState, nameLocalStorage }) {
+  const objectStateCloned = _.cloneDeep(objectState);
+
+  localforage.setItem(nameLocalStorage, objectStateCloned);
+  state[nameState] = objectStateCloned;
+}
+
+export async function initState({ commit, nameLocalStorage, nameState, objectStateDefault }) {
+  const objectState = await localforage.getItem(nameLocalStorage);
+
+  commit('setState', {
+    objectState: objectState === null ? _.cloneDeep(objectStateDefault) : objectState,
+    nameState,
+    nameLocalStorage,
+  });
+}

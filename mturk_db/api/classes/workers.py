@@ -57,10 +57,25 @@ class Manager_Workers(Interface_Manager_Items):
             assignments__hit__batch__use_sandbox=use_sandbox,
         ).distinct()
 
-        filter_worker = request.query_params.get('id_worker', '')
-        if filter_worker != '':
-            queryset = queryset.filter(id_worker__icontains=filter_worker)
+        workers_selected = request.query_params.getlist('workersSelected[]')
+        if len(workers_selected) > 0:
+            queryset = queryset.filter(id_worker__in=workers_selected)
 
+        states_block = set(request.query_params.getlist('statesBlock[]'))
+        combine_with_and = json.loads(request.query_params.get('combineWithAnd', 'false'))
+        # if len(states_block) > 0:
+        if combine_with_and == True:
+            print('COMBINE WITH AND')
+            block_soft = 'block_soft' in states_block
+            queryset = queryset.filter(is_blocked_global=block_soft)
+
+            block_project = 'block_project' in states_block
+            if block_project == True:
+                queryset = queryset.filter(worker_blocks_project__project=database_object_project)
+            else:
+                queryset = queryset.exclude(worker_blocks_project__project=database_object_project)
+        else:
+            pass
 
         queryset = queryset.annotate(
             count_worker_blocks=Coalesce(

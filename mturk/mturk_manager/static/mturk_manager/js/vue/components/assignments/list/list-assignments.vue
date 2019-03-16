@@ -12,10 +12,8 @@
 
     v-bind:pagination-computed="paginationComputed"
     v-bind:function-set-pagination="functionSetPagination"
-
-    v-bind:filters="filters"
   >
-    <template v-slot="{ props, array_columns_selectedm, isCondensed }">
+    <template v-slot:default="{ props, array_columns_selectedm, isCondensed }">
       <component-item-assignment
         v-bind:props="props"
         v-bind:array_columns_selected="array_columns_selected"
@@ -24,12 +22,18 @@
       />
     </template>
 
+    <template v-slot:filters="{ filters }">
+      <slot
+        name="filters"
+        v-bind:filters="filters"
+      ></slot>
+    </template>
+
     <template v-slot:actions>
       <slot name="actions"></slot>
     </template>
   </base-table>
 </template>
-
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { Service_Assignments as ServiceAssignments } from '../../../services/service_assignments';
@@ -55,11 +59,11 @@ export default {
       required: true,
     },
 
-    filters: {
-      required: false,
-      type: Object,
-      default: () => {},
-    },
+    // filters: {
+    //   required: false,
+    //   type: Object,
+    //   default: () => {},
+    // },
   },
   data() {
     return {

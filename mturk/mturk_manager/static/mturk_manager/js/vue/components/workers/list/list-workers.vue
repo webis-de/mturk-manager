@@ -1,110 +1,41 @@
 <template>
   <base-table
-    v-slot="{ props, array_columns_selected, isCondensed }"
     v-bind:array-items="array_items"
     v-bind:array-columns="array_columns"
     v-bind:array-columns-selected="array_columns_selected"
     v-bind:function-reset-array-columns="function_reset_array_columns"
     v-bind:function-set-array-columns="function_set_array_columns"
     v-bind:function-load-page="function_load_page"
+
     v-bind:object-items-selected="object_items_selected"
     v-bind:function-set-items-selected="function_set_items_selected"
     v-bind:function-clear-items-selected="function_clear_items_selected"
 
     v-bind:function-set-pagination="functionSetPagination"
     v-bind:pagination-computed="paginationComputed"
+
+    v-bind:filters="filters"
+    v-bind:filters-default="filtersDefault"
+    name-state-filters="objectFiltersGeneral"
+    name-state-filters-default="objectFiltersGeneral"
+    name-local-storage-filters="filtersWorkersGeneral"
   >
-    <component-item-worker
-      v-bind:props="props"
-      v-bind:array_columns_selected="array_columns_selected"
-      v-bind:show_links="showLinks"
-      v-bind:is-condensed="isCondensed"
-    />
+    <template v-slot:default="{ props, array_columns_selected, isCondensed }">
+      <component-item-worker
+        v-bind:props="props"
+        v-bind:array_columns_selected="array_columns_selected"
+        v-bind:show_links="showLinks"
+        v-bind:is-condensed="isCondensed"
+      />
+    </template>
+
+    <template v-slot:filters="{ filters, filtersActive }">
+      <filters-table-workers
+        v-bind:filters="filters"
+        v-bind:filters-active="filtersActive"
+      ></filters-table-workers>
+    </template>
   </base-table>
-
-  <!--</v-layout>-->
-  <!--&lt;!&ndash; select-all &ndash;&gt;-->
-  <!--&lt;!&ndash; v-bind:rows-per-page-items="items_per_page" &ndash;&gt;-->
-  <!--&lt;!&ndash;v-bind:search="search"&ndash;&gt;-->
-  <!--&lt;!&ndash;<v-data-table&ndash;&gt;-->
-  <!--&lt;!&ndash;select-all&ndash;&gt;-->
-  <!--&lt;!&ndash;v-bind:headers="list_headers"&ndash;&gt;-->
-  <!--&lt;!&ndash;v-bind:items="array_workers_prepared"&ndash;&gt;-->
-  <!--&lt;!&ndash;v-bind:pagination.sync="pagination"&ndash;&gt;-->
-  <!--&lt;!&ndash;v-bind:total-items="items_total"&ndash;&gt;-->
-  <!--&lt;!&ndash;v-model="workers_selected"&ndash;&gt;-->
-  <!--&lt;!&ndash;&gt;&ndash;&gt;-->
-  <!--&lt;!&ndash;<template slot="headers" slot-scope="props">&ndash;&gt;-->
-  <!--&lt;!&ndash;<tr class="row_header">&ndash;&gt;-->
-  <!--&lt;!&ndash;<th>&ndash;&gt;-->
-  <!--&lt;!&ndash;<v-checkbox&ndash;&gt;-->
-  <!--&lt;!&ndash;v-bind::input-value="props.all"&ndash;&gt;-->
-  <!--&lt;!&ndash;v-bind::indeterminate="props.indeterminate"&ndash;&gt;-->
-  <!--&lt;!&ndash;primary&ndash;&gt;-->
-  <!--&lt;!&ndash;hide-details&ndash;&gt;-->
-  <!--&lt;!&ndash;v-on:click.native="toggleAll"&ndash;&gt;-->
-  <!--&lt;!&ndash;&gt;</v-checkbox>&ndash;&gt;-->
-  <!--&lt;!&ndash;</th>&ndash;&gt;-->
-  <!--&lt;!&ndash;<th&ndash;&gt;-->
-  <!--&lt;!&ndash;v-for="header in props.headers"&ndash;&gt;-->
-  <!--&lt;!&ndash;v-bind:key="header.value"&ndash;&gt;-->
-  <!--&lt;!&ndash;v-bind:width="header.width"&ndash;&gt;-->
-  <!--&lt;!&ndash;v-bind:class="[&ndash;&gt;-->
-  <!--&lt;!&ndash;'column sortable', &ndash;&gt;-->
-  <!--&lt;!&ndash;pagination.descending ? 'desc' : 'asc', &ndash;&gt;-->
-  <!--&lt;!&ndash;header.value === pagination.sortBy ? 'active' : ''&ndash;&gt;-->
-  <!--&lt;!&ndash;]"&ndash;&gt;-->
-  <!--&lt;!&ndash;v-on:click="changeSort(header.value)"&ndash;&gt;-->
-  <!--&lt;!&ndash;&gt;&ndash;&gt;-->
-  <!--&lt;!&ndash;<v-icon small>arrow_upward</v-icon>&ndash;&gt;-->
-  <!--&lt;!&ndash;{{ header.text }}&ndash;&gt;-->
-  <!--&lt;!&ndash;</th>&ndash;&gt;-->
-  <!--&lt;!&ndash;</tr>&ndash;&gt;-->
-  <!--&lt;!&ndash;</template>&ndash;&gt;-->
-
-  <!--&lt;!&ndash;<template&ndash;&gt;-->
-  <!--&lt;!&ndash;slot="items"&ndash;&gt;-->
-  <!--&lt;!&ndash;slot-scope="props"&ndash;&gt;-->
-  <!--&lt;!&ndash;&gt;&ndash;&gt;-->
-  <!--&lt;!&ndash;<component-item-worker&ndash;&gt;-->
-  <!--&lt;!&ndash;v-bind:props="props"&ndash;&gt;-->
-  <!--&lt;!&ndash;&gt;&ndash;&gt;-->
-  <!--&lt;!&ndash;</component-item-worker>&ndash;&gt;-->
-  <!--&lt;!&ndash;</template>&ndash;&gt;-->
-  <!--&lt;!&ndash;</v-data-table>&ndash;&gt;-->
-  <!--&lt;!&ndash; {{list_workers}} &ndash;&gt;-->
-  <!--</span>-->
-  <!-- </v-layout> -->
-
-  <!-- <v-data-table
-        v-bind:items="list_workers"
-        v-bind:headers="list_headers"
-        disable-initial-sort
-        v-bind:pagination.sync="pagination"
-        v-model="workers_selected"
-        select-all
-        item-key="name"
-        class="elevation-1"
-    >
-         <template slot="items" slot-scope="props">
-            <td>
-                <v-checkbox
-                    v-model="props.selected"
-                    primary
-                    hide-details
-                ></v-checkbox>
-            </td>
-            <td>{{ props.item.name }}</td>
-            <td class="justify-end layout">
-                <v-btn icon class="mx-0" v-on:click="init_edit_policy(props.item)">
-                    <v-icon color="teal">edit</v-icon>
-                </v-btn>
-                <v-btn icon class="mx-0" v-on:click="delete_policy(props.item)">
-                    <v-icon color="pink">delete</v-icon>
-                </v-btn>
-            </td>
-        </template>
-    </v-data-table> -->
 </template>
 <script>
   import {
@@ -117,11 +48,13 @@ import { update_sandbox as updateSandbox } from '../../../mixins/update_sandbox'
 import externalPagination from '../../../mixins/external_pagination';
 import { table } from '../../../mixins/table';
 import BaseTable from '../../base-table';
+  import FiltersTableWorkers from './filters-table-workers';
 // import ComponentShowMoneySpent from './component-show-money-spent.vue';
 // import ComponentShowBatches from './component-show-batches.vue';
 export default {
   name: 'ComponentListWorkers',
   components: {
+    FiltersTableWorkers,
     BaseTable,
     ComponentItemWorker,
   },
@@ -145,13 +78,13 @@ export default {
       items_total: undefined,
       // items_per_page: [12, 24],
 
-      filters: {
-        id_worker: '',
-        show_workers_blocked_none: true,
-        show_workers_blocked_limit: true,
-        show_workers_blocked_soft: true,
-        show_workers_blocked_hard: true,
-      },
+      // filters: {
+      //   id_worker: '',
+      //   show_workers_blocked_none: true,
+      //   show_workers_blocked_limit: true,
+      //   show_workers_blocked_soft: true,
+      //   show_workers_blocked_hard: true,
+      // },
 
       // search: 'A10BOAO1EONNS7',
       // policy_new: new Policy({
@@ -225,6 +158,8 @@ export default {
     }),
     ...mapState('moduleWorkers', {
       paginationComputed: 'paginationGeneral',
+      filters: 'objectFiltersGeneral',
+      filtersDefault: 'objectFiltersDefaultGeneral',
     }),
   },
   methods: {

@@ -1,103 +1,125 @@
 <template>
-  <div>
-    <v-data-table
-      select-all
-      v-bind:headers="array_headers"
-      v-bind:items="array_page"
-      v-bind:total-items="items_total"
-      v-bind:loading="loading"
-      item-key="id"
-      v-bind:rows-per-page-items="[5, 10, 25, { text: 'All', value: null }]"
-      v-bind:pagination="pagination"
-      v-on:update:pagination="updatedPagination($event)"
+  <v-data-table
+    select-all
+    v-bind:headers="array_headers"
+    v-bind:items="array_page"
+    v-bind:total-items="items_total"
+    v-bind:loading="loading"
+    item-key="id"
+    v-bind:rows-per-page-items="[5, 10, 25, { text: 'All', value: null }]"
+    v-bind:pagination="pagination"
+    v-on:update:pagination="updatedPagination($event)"
+  >
+    <template
+      slot="headers"
+      slot-scope="props"
     >
-      <template
-        slot="headers"
-        slot-scope="props"
-      >
-        <tr v-bind:style="stylesHeaderRow">
-          <th
-            v-if="objectItemsSelected !== undefined"
-            v-bind:style="stylesHeaderCell"
-          >
-            <v-checkbox
-              v-bind:input-value="is_page_selected"
-              v-bind:indeterminate="props.indeterminate"
-              primary
-              hide-details
-              v-on:click.native="toggle_all()"
-            />
-          </th>
-          <th
-            v-for="header in props.headers"
-            v-bind:key="header.value"
-            v-bind:width="header.width"
-            v-bind:class="[
-              'column',
-              { sortable: header.sortable !== false },
-              pagination.descending ? 'desc' : 'asc',
-              header.value === pagination.sortBy ? 'active' : ''
-            ]"
-            v-bind:style="stylesHeaderCell"
-            v-on="
-              header.sortable !== false
-                ? {
-                  click: () => {
-                    updatedPagination({
-                      sortBy: header.value,
-                      descending: !pagination.descending,
-                      page: 1,
-                      rowsPerPage: pagination.rowsPerPage,
-                    });
-                  }
+      <tr v-bind:style="stylesHeaderRow">
+        <th
+          v-if="objectItemsSelected !== undefined"
+          v-bind:style="stylesHeaderCell"
+        >
+          <v-checkbox
+            v-bind:input-value="is_page_selected"
+            v-bind:indeterminate="props.indeterminate"
+            primary
+            hide-details
+            v-on:click.native="toggle_all()"
+          />
+        </th>
+        <th
+          v-for="header in props.headers"
+          v-bind:key="header.value"
+          v-bind:width="header.width"
+          v-bind:class="[
+            'column',
+            { sortable: header.sortable !== false },
+            pagination.descending ? 'desc' : 'asc',
+            header.value === pagination.sortBy ? 'active' : ''
+          ]"
+          v-bind:style="stylesHeaderCell"
+          v-on="
+            header.sortable !== false
+              ? {
+                click: () => {
+                  updatedPagination({
+                    sortBy: header.value,
+                    descending: !pagination.descending,
+                    page: 1,
+                    rowsPerPage: pagination.rowsPerPage,
+                  });
                 }
-                : {}
-            "
+              }
+              : {}
+          "
+        >
+          <v-icon
+            v-if="header.sortable !== false"
+            small
           >
-            <v-icon
-              v-if="header.sortable !== false"
-              small
+            arrow_upward
+          </v-icon>
+          {{ header.text }}
+        </th>
+      </tr>
+    </template>
+
+    <template
+      slot="items"
+      slot-scope="props"
+    >
+      <slot
+        v-bind:props="props"
+        v-bind:array_columns_selected="arrayColumnsSelected"
+        v-bind:is-condensed="isCondensed"
+      />
+    </template>
+
+    <template
+      v-if="showFooter"
+      slot="actions-prepend"
+    >
+      <v-layout>
+        <v-flex>
+          <slot name="actions" />
+        </v-flex>
+        <v-flex>
+          <base-table-filters
+            v-if="filters !== undefined"
+
+            v-bind:filters="filters"
+            v-bind:filters-default="filtersDefault"
+            v-bind:name-state-filters="nameStateFilters"
+            v-bind:name-local-storage-filters="nameLocalStorageFilters"
+
+            v-on:filtersChanged="load_page($event)"
+          >
+            <template
+               v-slot:filters="{ filters, filtersActive }"
             >
-              arrow_upward
-            </v-icon>
-            {{ header.text }}
-          </th>
-        </tr>
-      </template>
+              <slot
+                name="filters"
+                v-bind:filters="filters"
+                v-bind:filters-active="filtersActive"
+              >
 
-      <template
-        slot="items"
-        slot-scope="props"
-      >
-        <slot
-          v-bind:props="props"
-          v-bind:array_columns_selected="arrayColumnsSelected"
-          v-bind:is-condensed="isCondensed"
-        />
-      </template>
-
-      <template
-        v-if="showFooter"
-        slot="actions-prepend"
-      >
-        <v-layout>
-          <v-flex>
-            <slot name="actions" />
+              </slot>
+            </template>
+          </base-table-filters>
+        </v-flex>
+        <v-flex>
+          <component-settings-table
+            v-if="functionResetArrayColumns !== undefined"
+            v-bind:colspan="array_headers.length + 1"
+            v-bind:array_columns="arrayColumns"
+            v-bind:array_columns_selected="arrayColumnsSelected"
+            v-bind:function_reset="functionResetArrayColumns"
+            v-on:change="functionSetArrayColumns($event)"
+          />
           </v-flex>
-          <v-flex>
-            <component-settings-table
-              v-if="functionResetArrayColumns !== undefined"
-              v-bind:colspan="array_headers.length + 1"
-              v-bind:array_columns="arrayColumns"
-              v-bind:array_columns_selected="arrayColumnsSelected"
-              v-bind:function_reset="functionResetArrayColumns"
-              v-on:change="functionSetArrayColumns($event)"
-            />
-            </v-flex>
-          </v-layout>
-      </template>
-    </v-data-table>
-  </div>
+        </v-layout>
+    </template>
+  </v-data-table>
 </template>
 
 <script>
@@ -105,10 +127,11 @@ import * as _ from 'lodash';
 import { update_sandbox as updateSandbox } from '../mixins/update_sandbox';
 import { table } from '../mixins/table';
 import ComponentSettingsTable from './helpers/component-settings-table';
+import BaseTableFilters from './base-table-filters';
 
 export default {
   name: 'BaseTable',
-  components: { ComponentSettingsTable },
+  components: {BaseTableFilters, ComponentSettingsTable },
   mixins: [updateSandbox, table],
   props: {
     arrayItems: {
@@ -156,11 +179,11 @@ export default {
       default: () => {},
     },
 
-    filters: {
-      required: false,
-      type: Object,
-      default: () => {},
-    },
+    // filters: {
+    //   required: false,
+    //   type: Object,
+    //   default: () => {},
+    // },
 
     isCondensed: {
       required: false,
@@ -176,6 +199,27 @@ export default {
       type: Function,
       required: true,
     },
+
+    filters: {
+      required: false,
+      type: Object,
+      default: () => {},
+    },
+    filtersDefault: {
+      required: false,
+      type: Object,
+      default: () => {},
+    },
+    nameStateFilters: {
+      required: false,
+      type: String,
+      default: '',
+    },
+    nameLocalStorageFilters: {
+      required: false,
+      type: String,
+      default: '',
+    },
   },
   data() {
     return {
@@ -183,7 +227,6 @@ export default {
       //   rowsPerPage: 25,
       //   descending: true,
       // },
-
       loading: false,
       search: '',
       items_total: undefined,
@@ -264,12 +307,12 @@ export default {
       }
 
       this.$nextTick(() => {
-        this.load_page();
+        this.load_page(this.filters);
       });
     },
-    load_page() {
+    load_page(filters) {
       this.loading = true;
-      this.functionLoadPage(this.pagination, this.filters).then(
+      this.functionLoadPage(this.pagination, filters).then(
         (itemsTotal) => {
           this.items_total = itemsTotal;
           this.loading = false;

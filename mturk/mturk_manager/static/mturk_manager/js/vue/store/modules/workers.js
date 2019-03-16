@@ -2,7 +2,7 @@ import Vue from 'vue';
 import _ from 'lodash';
 import localforage from 'localforage';
 import Worker from '../../classes/workers.js';
-import {initPagination, setPagination} from '../../helpers';
+import {initFilters, initPagination, initState, setPagination, setState} from '../../helpers';
 
 export const moduleWorkers = {
   namespaced: true,
@@ -61,6 +61,11 @@ export const moduleWorkers = {
       'block_soft_hard',
       'block_hard',
     ],
+    objectFiltersGeneral: null,
+    objectFiltersDefaultGeneral: {
+      workersSelected: [],
+      statesBlock: [],
+    },
   },
   getters: {
     get_object_workers_selected: state => state.object_workers_selected,
@@ -114,6 +119,14 @@ export const moduleWorkers = {
         namePagination: 'paginationGeneral',
         nameLocalStorage: 'pagination_workers_general',
         state,
+      });
+    },
+    setState(state, { objectState, nameState, nameLocalStorage }) {
+      setState({
+        state,
+        objectState,
+        nameState,
+        nameLocalStorage,
       });
     },
     set_array_columns_general(state, array_columns) {
@@ -316,11 +329,20 @@ export const moduleWorkers = {
         state.array_columns_selected_general = state.array_columns_selected_initial_general;
       }
 
+      // TODO: without specific mutations
       initPagination({
         commit,
         nameLocalStorage: 'pagination_workers_general',
         nameMutation: 'setPaginationGeneral',
       });
+
+      initState({
+        commit,
+        nameLocalStorage: 'filtersWorkersGeneral',
+        nameState: 'objectFiltersGeneral',
+        objectStateDefault: state.objectFiltersDefaultGeneral,
+      });
+      // state.objectFiltersGeneral = _.cloneDeep(state.objectFiltersDefaultGeneral);
     },
     reset_array_columns_general({ state, commit }) {
       commit(
