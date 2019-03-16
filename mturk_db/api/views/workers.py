@@ -1,14 +1,14 @@
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from mturk_db.permissions import IsInstance, IsWorker, AllowOptionsAuthentication
-from api.classes import Manager_Workers
+from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
+from rest_framework.response import Response
+from rest_framework.settings import api_settings
+from rest_framework.views import APIView
+
+from api.classes import Manager_Workers
 from api.helpers import add_database_object_project
 from api.serializers import Serializer_Worker
-from api.models import Worker as Model_Worker
-from rest_framework import status
-from django.http import Http404
-from rest_framework.settings import api_settings
+from mturk_db.permissions import IsInstance, IsWorker, AllowOptionsAuthentication
+from mturk_db.settings import REST_FRAMEWORK
 
 PERMISSIONS_WORKER_ONLY = (AllowOptionsAuthentication, IsWorker,)
 PERMISSIONS_INSTANCE_ONLY = (AllowOptionsAuthentication, IsInstance,)
@@ -18,19 +18,25 @@ class Workers(APIView):
 
     @add_database_object_project
     def get(self, request, slug_project, database_object_project, use_sandbox, format=None):
-        queryset_workers = Manager_Workers.get_all(
+        queryset = Manager_Workers.get_all(
             database_object_project=database_object_project,
             use_sandbox=use_sandbox,
             request=request
         )
 
-        paginator = api_settings.DEFAULT_PAGINATION_CLASS()
-        workers_paginated = paginator.paginate_queryset(queryset_workers, request)
+        queryset_paginated = queryset
 
-        serializer = Serializer_Worker(workers_paginated, many=True)
+        if request.query_params.get(REST_FRAMEWORK['PAGE_SIZE_QUERY_PARAM']) is not None:
+            paginator = api_settings.DEFAULT_PAGINATION_CLASS()
+            queryset_paginated = paginator.paginate_queryset(queryset, request)
+
+        serializer = Serializer_Worker(
+            queryset_paginated,
+            many=True
+        )
 
         return Response({
-            'items_total': queryset_workers.count(),
+            'items_total': queryset.count(),
             'data': serializer.data,
         })
 
