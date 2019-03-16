@@ -1,4 +1,4 @@
-<template>
+<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <base-table
     v-bind:array-items="array_items"
     v-bind:array-columns="array_columns"
@@ -12,6 +12,11 @@
 
     v-bind:pagination-computed="paginationComputed"
     v-bind:function-set-pagination="functionSetPagination"
+
+    v-bind:filters="filters"
+    v-bind:filters-default="filtersDefault"
+    name-state-filters="objectFiltersGeneral"
+    name-local-storage-filters="filtersAssignmentsGeneral"
   >
     <template v-slot:default="{ props, array_columns_selectedm, isCondensed }">
       <component-item-assignment
@@ -22,27 +27,28 @@
       />
     </template>
 
-    <template v-slot:filters="{ filters }">
-      <slot
-        name="filters"
+    <template v-slot:filters="{ filters, filtersActive }">
+      <filters-table-assignments
         v-bind:filters="filters"
-      ></slot>
+        v-bind:filters-active="filtersActive"
+      ></filters-table-assignments>
     </template>
 
     <template v-slot:actions>
-      <slot name="actions"></slot>
+      <slot name="actions"/>
     </template>
   </base-table>
 </template>
 <script>
-import { mapActions, mapGetters, mapMutations } from 'vuex';
+  import { mapActions, mapGetters, mapMutations, mapState } from 'vuex';
 import { Service_Assignments as ServiceAssignments } from '../../../services/service_assignments';
 import BaseTable from '../../base-table';
 import ComponentItemAssignment from './component_item_assignment';
+import FiltersTableAssignments from './filters-table-assignments';
 
 export default {
   name: 'ListAssignments',
-  components: { ComponentItemAssignment, BaseTable },
+  components: {FiltersTableAssignments, ComponentItemAssignment, BaseTable },
   props: {
     showLinks: {
       required: false,
@@ -76,6 +82,10 @@ export default {
       object_items_selected: 'get_object_assignments_selected',
       array_columns: 'get_array_columns_general',
       array_columns_selected: 'get_array_columns_selected_general',
+    }),
+    ...mapState('moduleAssignments', {
+      filters: 'objectFiltersGeneral',
+      filtersDefault: 'objectFiltersDefaultGeneral',
     }),
   },
   methods: {

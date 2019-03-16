@@ -1,4 +1,4 @@
-<template>
+<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <v-data-table
     select-all
     v-bind:headers="array_headers"
@@ -95,15 +95,13 @@
             v-on:filtersChanged="load_page($event)"
           >
             <template
-               v-slot:filters="{ filters, filtersActive }"
+              v-slot:filters="{ filters, filtersActive }"
             >
               <slot
                 name="filters"
                 v-bind:filters="filters"
                 v-bind:filters-active="filtersActive"
-              >
-
-              </slot>
+              />
             </template>
           </base-table-filters>
         </v-flex>

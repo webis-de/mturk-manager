@@ -342,7 +342,6 @@ export const moduleWorkers = {
         nameState: 'objectFiltersGeneral',
         objectStateDefault: state.objectFiltersDefaultGeneral,
       });
-      // state.objectFiltersGeneral = _.cloneDeep(state.objectFiltersDefaultGeneral);
     },
     reset_array_columns_general({ state, commit }) {
       commit(

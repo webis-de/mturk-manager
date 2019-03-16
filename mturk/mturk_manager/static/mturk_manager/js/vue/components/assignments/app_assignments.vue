@@ -3,17 +3,11 @@
     <template v-if="$route.name == 'assignments'">
 
       <h1 class="headline">Assignments</h1>
-      <!--v-bind:filters="{-->
-      <!--show_only_submitted_assignments,-->
-      <!--}"-->
+
       <list-assignments
         v-bind:function-set-pagination="functionSetPagination"
         v-bind:pagination-computed="paginationComputed"
       >
-        <template v-slot:filters="{ filters }">
-          <v-switch label="Only Submitted" v-model="filters.show_only_submitted_assignments"></v-switch>
-        </template>
-
         <template v-slot:actions>
           <component-annotate></component-annotate>
         </template>

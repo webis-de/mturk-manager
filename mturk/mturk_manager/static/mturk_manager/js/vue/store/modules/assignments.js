@@ -4,7 +4,7 @@ import localforage from 'localforage';
 import Assignment from '../../classes/assignment.js';
 
 import HIT from '../../classes/hit';
-import {initPagination, setPagination} from '../../helpers';
+import { initPagination, initState, setPagination, setState } from '../../helpers';
 
 export const moduleAssignments = {
   namespaced: true,
@@ -76,6 +76,11 @@ export const moduleAssignments = {
       'hit',
     ],
     array_columns_selected_general: null,
+
+    objectFiltersGeneral: null,
+    objectFiltersDefaultGeneral: {
+      show_only_submitted_assignments: false
+    },
   },
   getters: {
     get_array_columns_general: state => state.array_columns_general,
@@ -141,6 +146,14 @@ export const moduleAssignments = {
         namePagination: 'paginationFinances',
         nameLocalStorage: 'pagination_assignments_finances',
         state,
+      });
+    },
+    setState(state, { objectState, nameState, nameLocalStorage }) {
+      setState({
+        state,
+        objectState,
+        nameState,
+        nameLocalStorage,
       });
     },
     set_array_columns_general(state, array_columns) {
@@ -277,6 +290,13 @@ export const moduleAssignments = {
         commit,
         nameLocalStorage: 'pagination_assignments_finances',
         nameMutation: 'setPaginationFinances',
+      });
+
+      initState({
+        commit,
+        nameLocalStorage: 'filtersAssignmentsGeneral',
+        nameState: 'objectFiltersGeneral',
+        objectStateDefault: state.objectFiltersDefaultGeneral,
       });
     },
     reset_array_columns_general({ state, commit }) {

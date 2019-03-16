@@ -17,7 +17,6 @@
     v-bind:filters="filters"
     v-bind:filters-default="filtersDefault"
     name-state-filters="objectFiltersGeneral"
-    name-state-filters-default="objectFiltersGeneral"
     name-local-storage-filters="filtersWorkersGeneral"
   >
     <template v-slot:default="{ props, array_columns_selected, isCondensed }">
