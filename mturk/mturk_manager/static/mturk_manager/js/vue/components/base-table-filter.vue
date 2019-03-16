@@ -3,7 +3,7 @@
     v-bind="breakpoints"
   >
     <v-card
-      v-bind:color="filtersActive.hasOwnProperty(nameFilter) ? 'secondary darken-1' : 'secondary'"
+        v-bind:color="filtersActive.hasOwnProperty(nameFilter) ? 'secondary' : 'secondary'"
     >
       <v-card-title
         class="px-2 py-1"
@@ -12,7 +12,13 @@
           <v-flex
             class="subheading"
           >
-            {{ title }}
+            <span
+              v-bind:class="{
+                'warning--text': filtersActive.hasOwnProperty(nameFilter)
+              }"
+            >
+                {{ title }}
+            </span>
           </v-flex>
           <v-flex
             shrink

@@ -1,9 +1,8 @@
 <template>
-  <span>
   <v-bottom-sheet
+    v-model="showFilters"
     hide-overlay
     inset
-    v-model="showFilters"
   >
     <template v-slot:activator>
       <v-btn
@@ -12,7 +11,6 @@
         small
         color="primary"
       >
-
         Filters
       </v-btn>
       <v-btn
@@ -25,11 +23,12 @@
       </v-btn>
     </template>
 
-      <v-card
+    <v-card
+      color="secondary darken-1"
+    >
+      <v-card-title
+        class="pa-2"
       >
-        <v-card-title
-          class="pa-2"
-        >
         <v-layout>
           <v-flex align-self-center>
             <span class="title">
@@ -57,22 +56,21 @@
             </v-btn>
           </v-flex>
         </v-layout>
-        </v-card-title>
-        <v-card-text>
-      <v-container
-        class="pa-0"
-        grid-list-md
-        fluid
-      >
-        <slot
-          name="filters"
-          v-bind:filters="filtersCloned"
-          v-bind:filters-active="filtersActive"
-        />
-      </v-container>
-          </v-card-text>
-</v-card>
-
+      </v-card-title>
+      <v-card-text>
+        <v-container
+          class="pa-0"
+          grid-list-md
+          fluid
+        >
+          <slot
+            name="filters"
+            v-bind:filters="filtersCloned"
+            v-bind:filters-active="filtersActive"
+          />
+        </v-container>
+      </v-card-text>
+    </v-card>
   </v-bottom-sheet>
 
   <!--<v-expansion-panel-->
@@ -120,7 +118,6 @@
       <!--</v-container>-->
     <!--</v-expansion-panel-content>-->
   <!--</v-expansion-panel>-->
-    </span>
 </template>
 
 <script>
