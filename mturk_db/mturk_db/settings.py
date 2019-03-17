@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 
 import os
 
+from mturk_db import settings_environment
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -23,7 +25,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '++tc!-*2u!k+vkwj0(jx^7=4=lub%4!xr3tp^847f3t%px)gi='
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+try:
+    DEBUG = settings_environment.DEBUG
+except AttributeError:
+    DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -76,8 +81,10 @@ WSGI_APPLICATION = 'mturk_db.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
-
-DATABASES = {
+try:
+    DATABASES = settings_environment.DATABASES
+except AttributeError:
+    DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
@@ -144,8 +151,10 @@ REST_FRAMEWORK = {
 
 VERSION_PROJECT = 15
 
-URL_GLOBAL_DB = 'https://webis18.medien.uni-weimar.de/mturk-manager'
-# URL_GLOBAL_DB = 'http://localhost:8002'
+try:
+    URL_GLOBAL_DB = settings_environment.URL_GLOBAL_DB
+except AttributeError:
+    URL_GLOBAL_DB = 'http://localhost:8004'
 
 VERSION_API = 1.02
 PLACEHOLDER_SLUG_PROJECT = 'PLACEHOLDER_SLUG_PROJECT'
