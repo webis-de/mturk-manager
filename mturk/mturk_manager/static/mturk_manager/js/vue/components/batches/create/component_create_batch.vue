@@ -65,12 +65,12 @@
             </v-flex>
 
             <v-flex xs6>
-              <!-- v-if="is_valid_csv" -->
               <component-overview
                 v-bind:settings_batch_current="settings_batch_current"
                 v-bind:is_invalid_settings_batch="is_invalid_settings_batch"
                 v-on:updated_costs_with_fee="costs = $event"
               />
+
               <v-layout>
                 <v-flex shrink>
                   <v-alert
@@ -131,7 +131,7 @@ export default {
   mixins: [validations],
   data() {
     return {
-      is_creating_batch: false,
+      is_creating_batch: true,
 
       name: undefined,
       settings_batch_current: undefined,

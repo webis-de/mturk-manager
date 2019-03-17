@@ -1,98 +1,99 @@
 <template>
-  <v-layout wrap>
+  <v-layout
+    class="pa-3"
+    wrap
+  >
     <v-flex>
-      <v-list subheader>
-        <v-subheader><h2>Summary</h2></v-subheader>
-        <v-list-tile>
-          <v-layout>
-            <v-flex xs3>
-              Valid CSV:
-            </v-flex>
-            <v-flex>
-              <template v-if="is_valid_csv">
-                <v-icon color="success">check</v-icon>
-              </template>
-              <template v-else>
-                None
-              </template>
-            </v-flex>
-          </v-layout>
-        </v-list-tile>
-        <v-list-tile>
-          <v-layout>
-            <v-flex xs3>
-              Number of variables:
-            </v-flex>
-            <v-flex>
-              <template v-if="is_valid_csv">
-                {{ get_variables.length }}
+      <h1 class="headline">Overview</h1>
+      <v-layout
+        class="my-3"
+      >
+        <v-flex xs3>
+          Valid CSV:
+        </v-flex>
+        <v-flex>
+          <template v-if="is_valid_csv">
+            <v-icon color="success">check</v-icon>
+          </template>
+          <template v-else>
+            None
+          </template>
+        </v-flex>
+      </v-layout>
 
-                <v-tooltip top>
-                  <v-icon slot="activator">info</v-icon>
-                  <span>{{ get_variables.join(", ") }}</span>
-                </v-tooltip>
-              </template>
-              <template v-else>
-                None
-              </template>
-            </v-flex>
-          </v-layout>
-        </v-list-tile>
-        <v-list-tile>
-          <v-layout>
-            <v-flex xs3>
-              Number of HITs:
-            </v-flex>
-            <v-flex>
-              <template v-if="is_valid_csv">
-                {{ count_hits }}
-              </template>
-              <template v-else>
-                None
-              </template>
-            </v-flex>
-          </v-layout>
-        </v-list-tile>
+      <v-layout
+        class="my-3"
+      >
+        <v-flex xs3>
+          Number of variables:
+        </v-flex>
+        <v-flex>
+          <template v-if="is_valid_csv">
+            {{ get_variables.length }}
 
-        <v-list-tile>
-          <v-layout>
-            <v-flex xs3>
-              Available until:
-            </v-flex>
-            <v-flex>
-              <template v-if="is_valid">
-                {{ format_lifetime_absolute }} ({{ lifetime_formatted }})
-              </template>
-              <template v-else>
-                None
-              </template>
-            </v-flex>
-          </v-layout>
-        </v-list-tile>
+            <v-tooltip top>
+              <v-icon slot="activator">info</v-icon>
+              <span>{{ get_variables.join(", ") }}</span>
+            </v-tooltip>
+          </template>
+          <template v-else>
+            None
+          </template>
+        </v-flex>
+      </v-layout>
 
-        <v-list-tile>
-          <v-layout>
-            <v-flex xs3>
-              Costs:
-            </v-flex>
-            <v-flex>
-              <template v-if="is_valid">
-                <base-display-amount
-                  v-bind:amount="costs_total_with_fee"
-                ></base-display-amount>
-                (without Amazon's fees:
-                <base-display-amount
-                  v-bind:amount="costs_total_without_fee"
-                ></base-display-amount
-                >)
-              </template>
-              <template v-else>
-                None
-              </template>
-            </v-flex>
-          </v-layout>
-        </v-list-tile>
-      </v-list>
+      <v-layout
+        class="my-3"
+      >
+        <v-flex xs3>
+          Number of HITs:
+        </v-flex>
+        <v-flex>
+          <template v-if="is_valid_csv">
+            {{ count_hits }}
+          </template>
+          <template v-else>
+            None
+          </template>
+        </v-flex>
+      </v-layout>
+
+      <v-layout
+        class="my-3"
+      >
+        <v-flex xs3>
+          Available until:
+        </v-flex>
+        <v-flex>
+          <template v-if="is_valid">
+            {{ format_lifetime_absolute }} ({{ lifetime_formatted }})
+          </template>
+          <template v-else>
+            None
+          </template>
+        </v-flex>
+      </v-layout>
+
+      <v-layout
+        class="my-2"
+      >
+        <v-flex xs3>
+          Costs:
+        </v-flex>
+        <v-flex>
+          <overview-costs
+            v-if="is_valid"
+
+            v-bind:costs-total-with-fee="costs_total_with_fee"
+            v-bind:costs-total-without-fee="costs_total_without_fee"
+          >test</overview-costs>
+          <template
+            v-else
+          >
+            None
+          </template>
+        </v-flex>
+      </v-layout>
     </v-flex>
   </v-layout>
 </template>
@@ -101,6 +102,7 @@ import { mapState, mapActions, mapGetters } from 'vuex';
 import humanizeDuration from 'humanize-duration';
 import Settings_Batch from '../../../classes/settings_batch';
 import BaseDisplayAmount from '../../base-display-amount.vue';
+import OverviewCosts from './overview-costs';
 
 // import ComponentStepUploadCSV from './component_step_upload_csv.vue';
 // import ComponentShowMoneySpent from './component-show-money-spent.vue';
@@ -198,6 +200,7 @@ export default {
     }, 1000);
   },
   components: {
+    OverviewCosts,
     BaseDisplayAmount,
   },
 };
