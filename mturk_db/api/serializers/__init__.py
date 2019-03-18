@@ -1,4 +1,5 @@
 from .serializer_config import Serializer_Config
+from .serializer_finances import Serializer_Finances
 from .serializer_keyword import Serializer_Keyword
 from .serializer_message_reject import Serializer_Message_Reject
 from .serializer_template_assignment import Serializer_Template_Assignment 

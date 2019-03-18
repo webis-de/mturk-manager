@@ -12,6 +12,11 @@
 
     v-bind:pagination-computed="paginationComputed"
     v-bind:function-set-pagination="functionSetPagination"
+
+    v-bind:filters="filters"
+    v-bind:filters-default="filtersDefault"
+    name-state-filters="objectFiltersGeneral"
+    name-local-storage-filters="filtersBatchesGeneral"
   >
     <template v-slot:default="{ props, array_columns_selected, isCondensed }">
       <component-item-batch
@@ -22,6 +27,13 @@
       />
     </template>
 
+    <!--<template v-slot:filters="{ filters, filtersActive }">-->
+      <!--<filters-table-batches-->
+        <!--v-bind:filters="filters"-->
+        <!--v-bind:filters-active="filtersActive"-->
+      <!--&gt;</filters-table-batches>-->
+    <!--</template>-->
+
     <template v-slot:actions>
       <slot name="actions"></slot>
     </template>
@@ -29,14 +41,15 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapMutations } from 'vuex';
+  import { mapActions, mapGetters, mapMutations, mapState } from 'vuex';
 import { Service_Batches as ServiceBatches } from '../../../services/service_batches';
 import BaseTable from '../../base-table';
 import ComponentItemBatch from './component_item_batch';
+import FiltersTableBatches from './filters-table-batches';
 
 export default {
   name: 'ListBatches',
-  components: { ComponentItemBatch, BaseTable },
+  components: {FiltersTableBatches, ComponentItemBatch, BaseTable },
   props: {
     showLinks: {
       required: false,
@@ -67,12 +80,6 @@ export default {
       type: Function,
       required: true,
     },
-
-    filters: {
-      required: false,
-      type: Object,
-      default: () => {},
-    },
   },
   data() {
     return {
@@ -100,6 +107,10 @@ export default {
       object_items_selected: 'get_object_batches_selected',
       array_columns: 'get_array_columns_general',
       array_columns_selected_general: 'get_array_columns_selected_general',
+    }),
+    ...mapState('moduleBatches', {
+      filters: 'objectFiltersGeneral',
+      filtersDefault: 'objectFiltersDefaultGeneral',
     }),
   },
   methods: {

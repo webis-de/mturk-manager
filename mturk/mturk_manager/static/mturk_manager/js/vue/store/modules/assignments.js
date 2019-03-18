@@ -26,7 +26,7 @@ export const moduleAssignments = {
     },
 
     paginationFinances: {
-      rowsPerPage: 25,
+      rowsPerPage: 5,
       sortBy: 'datetime_creation',
       descending: true,
     },
@@ -79,7 +79,7 @@ export const moduleAssignments = {
 
     objectFiltersGeneral: null,
     objectFiltersDefaultGeneral: {
-      show_only_submitted_assignments: false
+      show_only_submitted_assignments: false,
     },
   },
   getters: {

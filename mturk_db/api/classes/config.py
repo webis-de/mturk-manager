@@ -14,7 +14,10 @@ class Manager_Config(object):
         dictionary_paths = {
             'url_api_projects': 'projects',
             'url_api_projects_check_uniqueness': 'info_projects/uniqueness',
+
             'url_api_projects_balance': 'projects/{}/balance'.format(settings.PLACEHOLDER_SLUG_PROJECT),
+            'url_api_projects_finances': 'projects/{}/finances'.format(settings.PLACEHOLDER_SLUG_PROJECT),
+
             'url_api_projects_settings_batch': 'projects/{}/settings_batch'.format(settings.PLACEHOLDER_SLUG_PROJECT),
             'url_api_projects_settings_batch_all': 'projects/{}/settings_batch_all'.format(settings.PLACEHOLDER_SLUG_PROJECT),
 

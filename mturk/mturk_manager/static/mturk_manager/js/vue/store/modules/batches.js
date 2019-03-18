@@ -2,7 +2,7 @@ import Vue from 'vue';
 import _ from 'lodash';
 import localforage from 'localforage';
 import Batch from '../../classes/batch';
-import {initPagination, setPagination} from '../../helpers';
+import { initPagination, initState, setPagination, setState } from '../../helpers';
 
 export const moduleBatches = {
   namespaced: true,
@@ -31,7 +31,7 @@ export const moduleBatches = {
     },
 
     paginationFinances: {
-      rowsPerPage: 25,
+      rowsPerPage: 5,
       sortBy: 'datetime_creation',
       descending: true,
     },
@@ -118,6 +118,11 @@ export const moduleBatches = {
       'costs_so_far',
     ],
     array_columns_selected_finances: null,
+
+    objectFiltersGeneral: null,
+    objectFiltersDefaultGeneral: {
+      show_only_submitted_assignments: false,
+    },
   },
   getters: {
     get_array_columns_general: state => state.array_columns_general,
@@ -312,6 +317,14 @@ export const moduleBatches = {
         state,
       });
     },
+    setState(state, { objectState, nameState, nameLocalStorage }) {
+      setState({
+        state,
+        objectState,
+        nameState,
+        nameLocalStorage,
+      });
+    },
     set_array_columns_general(state, array_columns) {
       localforage.setItem('array_columns_batches_general', array_columns);
       state.array_columns_selected_general = array_columns;
@@ -459,6 +472,14 @@ export const moduleBatches = {
         nameLocalStorage: 'pagination_batches_finances',
         nameMutation: 'setPaginationFinances',
       });
+      console.warn('3333', 3333);
+      initState({
+        commit,
+        nameLocalStorage: 'filtersBatchesGeneral',
+        nameState: 'objectFiltersGeneral',
+        objectStateDefault: state.objectFiltersDefaultGeneral,
+      });
+      console.warn('state.objectFiltersGeneral', state.objectFiltersGeneral);
     },
     reset_array_columns_general({ state, commit }) {
       commit(

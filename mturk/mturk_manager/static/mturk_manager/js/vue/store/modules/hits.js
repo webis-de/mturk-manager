@@ -24,7 +24,7 @@ export const moduleHITs = {
     },
 
     paginationFinances: {
-      rowsPerPage: 25,
+      rowsPerPage: 5,
       sortBy: 'datetime_creation',
       descending: true,
     },

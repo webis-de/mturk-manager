@@ -13,4 +13,4 @@ from .templates_hit import Manager_Templates_HIT
 from .templates_global import Manager_Templates_Global
 from .assignments import Manager_Assignments
 from .hits import Manager_HITs
-from .finances import Manager_Finances
+from .finances import ManagerFinances

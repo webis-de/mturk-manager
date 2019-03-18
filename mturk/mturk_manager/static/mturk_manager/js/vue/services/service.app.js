@@ -32,31 +32,6 @@ class Class_Service_App {
 
     return response.data;
   }
-
-  async load_balance() {
-    const use_sandbox = store.state.module_app.use_sandbox;
-
-    const response = await Service_Endpoint.make_request({
-      url: {
-        path: store.getters.get_url(
-          'url_api_projects_balance',
-          'module_finances',
-        ),
-        use_sandbox,
-        project: store.getters['moduleProjects/get_project_current'],
-      },
-      method: 'get',
-    });
-
-    if (use_sandbox === true) {
-      store.commit(
-        'module_finances/set_balance_sandbox',
-        response.data.balance,
-      );
-    } else {
-      store.commit('module_finances/set_balance', response.data.balance);
-    }
-  }
 }
 
 export const Service_App = new Class_Service_App();

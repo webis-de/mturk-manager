@@ -8,14 +8,17 @@
         <v-flex xs12 md6 text-md-right>
         </v-flex>
     </v-layout> -->
-
     <v-layout>
       <v-flex>
+        <h1 class="headline">Finances</h1>
+      </v-flex>
+      <v-flex
+        class="text-xs-right"
+      >
         <component-show-balance></component-show-balance>
-        <display-expenses></display-expenses>
       </v-flex>
     </v-layout>
-    <v-divider class="my-3"></v-divider>
+
     <v-layout>
       <v-flex>
         <v-tabs  >
@@ -35,12 +38,12 @@
           >
             <v-card class="pa-1">
               <list-batches
-                v-bind:function-reset-array-columns="function_reset_array_columns"
-                v-bind:function-set-array-columns="function_set_array_columns"
-                v-bind:array-columns-selected="array_columns_selected"
+                v-bind:function-reset-array-columns="functionResetArrayColumnsBatches"
+                v-bind:function-set-array-columns="functionSetArrayColumnsBatches"
+                v-bind:array-columns-selected="arrayColumnsSelectedBatches"
 
-                v-bind:function-set-pagination="functionSetPagination"
-                v-bind:pagination-computed="paginationComputed"
+                v-bind:function-set-pagination="functionSetPaginationBatches"
+                v-bind:pagination-computed="paginationComputedBatches"
               ></list-batches>
               </v-card>
           </v-tab-item>
@@ -49,7 +52,14 @@
             key="hits"
           >
             <v-card class="pa-1">
-              <!--<list-hits></list-hits>-->
+              <list-hits
+                v-bind:function-reset-array-columns="functionResetArrayColumnsHITs"
+                v-bind:function-set-array-columns="functionSetArrayColumnsHITs"
+                v-bind:array-columns-selected="arrayColumnsSelectedHITs"
+
+                v-bind:function-set-pagination="functionSetPaginationHITs"
+                v-bind:pagination-computed="paginationComputedHITs"
+              ></list-hits>
             </v-card>
           </v-tab-item>
 
@@ -57,13 +67,30 @@
             key="assignment"
           >
             <v-card class="pa-1">
-              <!--<list-assignments></list-assignments>-->
+              <list-assignments
+                v-bind:function-reset-array-columns="functionResetArrayColumnsAssignments"
+                v-bind:function-set-array-columns="functionSetArrayColumnsAssignments"
+                v-bind:array-columns-selected="arrayColumnsSelectedAssignments"
+
+                v-bind:function-set-pagination="functionSetPaginationAssignments"
+                v-bind:pagination-computed="paginationComputedAssignments"
+              ></list-assignments>
             </v-card>
           </v-tab-item>
             </v-tabs-items>
         </v-tabs>
 
+      </v-flex>
+    </v-layout>
 
+    <v-divider class="my-3"></v-divider>
+    <v-layout
+      justify-end
+    >
+      <v-flex
+        shrink
+      >
+        <display-expenses></display-expenses>
       </v-flex>
     </v-layout>
     <!--<v-divider class="my-3"></v-divider>-->
@@ -83,22 +110,21 @@ import {
 import ComponentShowBalance from './component-show-balance.vue';
 import ComponentShowMoneySpent from './component-show-money-spent.vue';
 import ComponentShowBatches from './component-show-batches.vue';
-// import ComponentListBatches from '../batches/list/component_list_batches.vue';
 import DisplayExpenses from './display-expenses.vue';
 import slug_project from '../../mixins/slug_project';
 import ListBatches from '../batches/list/list-batches';
-import { Service_App } from '../../services/service.app';
 import { update_sandbox } from '../../mixins/update_sandbox';
 import ListHits from '../hits/list/list-hits';
 import ListAssignments from '../assignments/list/list-assignments';
+import { ServiceFinances } from '../../services/finances.service';
 
 export default {
+  name: 'AppFinances',
   mixins: [
     slug_project,
     update_sandbox,
     // load_data,
   ],
-  name: 'app-finances',
   data() {
     return {
       // dialog: false,
@@ -110,26 +136,57 @@ export default {
   },
   methods: {
     sandbox_updated() {
-      Service_App.load_balance();
+      ServiceFinances.load_balance();
     },
     ...mapActions('moduleBatches', {
-      function_reset_array_columns: 'reset_array_columns_finances',
+      functionResetArrayColumnsBatches: 'reset_array_columns_finances',
     }),
     ...mapMutations('moduleBatches', {
-      function_set_array_columns: 'set_array_columns_finances',
-      functionSetPagination: 'setPaginationFinances',
+      functionSetArrayColumnsBatches: 'set_array_columns_finances',
+      functionSetPaginationBatches: 'setPaginationFinances',
+    }),
+
+    ...mapActions('moduleHITs', {
+      functionResetArrayColumnsHITs: 'reset_array_columns_finances',
+    }),
+    ...mapMutations('moduleHITs', {
+      functionSetArrayColumnsHITs: 'set_array_columns_finances',
+      functionSetPaginationHITs: 'setPaginationFinances',
+    }),
+
+    ...mapActions('moduleAssignments', {
+      functionResetArrayColumnsAssignments: 'reset_array_columns_finances',
+    }),
+    ...mapMutations('moduleAssignments', {
+      functionSetArrayColumnsAssignments: 'set_array_columns_finances',
+      functionSetPaginationAssignments: 'setPaginationFinances',
     }),
   },
   computed: {
     ...mapGetters('moduleBatches', {
-      array_columns_selected: 'get_array_columns_selected_finances',
+      arrayColumnsSelectedBatches: 'get_array_columns_selected_finances',
     }),
     ...mapState('moduleBatches', {
-      paginationComputed: 'paginationFinances',
+      paginationComputedBatches: 'paginationFinances',
+    }),
+
+    ...mapGetters('moduleHITs', {
+      arrayColumnsSelectedHITs: 'get_array_columns_selected_general',
+    }),
+    ...mapState('moduleHITs', {
+      paginationComputedHITs: 'paginationFinances',
+    }),
+
+    ...mapGetters('moduleAssignments', {
+      arrayColumnsSelectedAssignments: 'get_array_columns_selected_general',
+    }),
+    ...mapState('moduleAssignments', {
+      paginationComputedAssignments: 'paginationFinances',
     }),
   },
   created() {
-    Service_App.load_balance();
+    ServiceFinances.load_balance();
+    ServiceFinances.load();
   },
 
   components: {
