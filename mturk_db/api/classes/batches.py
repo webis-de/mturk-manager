@@ -94,7 +94,7 @@ class Manager_Batches(Interface_Manager_Items):
         # print('+++++++++++++++++++++++++++')
 
         if dictionary_settings_batch['block_workers']:
-            dictionary_settings_batch['template_worker'].template = cls.preprocess_template_request(database_object_project, dictionary_settings_batch['template_worker'].template)
+            dictionary_settings_batch['template_worker'].template = Manager_Batches.preprocess_template_request(database_object_project, dictionary_settings_batch['template_worker'].template)
 
         # print(data['template_worker'].template)
         try:
@@ -146,12 +146,12 @@ class Manager_Batches(Interface_Manager_Items):
                     LifetimeInSeconds=dictionary_settings_batch['lifetime'],
                     AssignmentDurationInSeconds=dictionary_settings_batch['duration'],
                     AutoApprovalDelayInSeconds=1209600,
-                    Reward=cls.cent_to_dollar(dictionary_settings_batch['reward']),
+                    Reward=Manager_Batches.cent_to_dollar(dictionary_settings_batch['reward']),
                     Title=title,
                     Description=dictionary_settings_batch['description'],
-                    Question=cls.create_question(dictionary_settings_batch['template_worker'].template, dictionary_settings_batch['template_worker'].height_frame, dictionary_hit),
+                    Question=Manager_Batches.create_question(dictionary_settings_batch['template_worker'].template, dictionary_settings_batch['template_worker'].height_frame, dictionary_hit),
                     QualificationRequirements=[]
-                    # QualificationRequirements=cls.get_qualifications(data)
+                    # QualificationRequirements=Manager_Batches.get_qualifications(data)
                 )
                 pass
             except ClientError as e:
