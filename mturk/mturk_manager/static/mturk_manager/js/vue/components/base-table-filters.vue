@@ -3,6 +3,7 @@
     v-model="showFilters"
     hide-overlay
     inset
+    persistent
   >
     <template v-slot:activator>
       <v-btn
@@ -53,6 +54,13 @@
               v-on:click.stop="resetFilters()"
             >
               Reset
+            </v-btn>
+
+            <v-btn
+              icon
+              v-on:click="showFilters = false"
+            >
+              <v-icon>close</v-icon>
             </v-btn>
           </v-flex>
         </v-layout>
