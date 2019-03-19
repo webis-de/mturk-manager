@@ -97,7 +97,7 @@ class Class_Service_Batches {
   //     });
   // }
 
-  async load_page(pagination) {
+  async load_page(pagination, filters) {
     const use_sandbox = store.state.module_app.use_sandbox;
 
     const response = await Service_Endpoint.make_request({
@@ -115,6 +115,7 @@ class Class_Service_Batches {
         page_size: pagination.rowsPerPage,
         sort_by: pagination.sortBy,
         descending: pagination.descending,
+        ...filters,
       },
     });
 

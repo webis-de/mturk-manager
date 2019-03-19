@@ -27,12 +27,12 @@
       />
     </template>
 
-    <!--<template v-slot:filters="{ filters, filtersActive }">-->
-      <!--<filters-table-batches-->
-        <!--v-bind:filters="filters"-->
-        <!--v-bind:filters-active="filtersActive"-->
-      <!--&gt;</filters-table-batches>-->
-    <!--</template>-->
+    <template v-slot:filters="{ filters, filtersActive }">
+      <filters-table-batches
+        v-bind:filters="filters"
+        v-bind:filters-active="filtersActive"
+      ></filters-table-batches>
+    </template>
 
     <template v-slot:actions>
       <slot name="actions"></slot>
@@ -41,7 +41,7 @@
 </template>
 
 <script>
-  import { mapActions, mapGetters, mapMutations, mapState } from 'vuex';
+import { mapActions, mapGetters, mapMutations, mapState } from 'vuex';
 import { Service_Batches as ServiceBatches } from '../../../services/service_batches';
 import BaseTable from '../../base-table';
 import ComponentItemBatch from './component_item_batch';

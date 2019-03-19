@@ -32,6 +32,10 @@ class Manager_Batches(Interface_Manager_Items):
                 id__in=list_ids
             )
 
+        batches_selected = request.query_params.getlist('batchesSelected[]')
+        if len(batches_selected ) > 0:
+            queryset = queryset.filter(name__in=batches_selected )
+
         queryset = queryset.annotate(
             count_hits=Count('hits', distinct=True)
         ).annotate(

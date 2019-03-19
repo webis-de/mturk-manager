@@ -6,8 +6,6 @@
       <list-batches
         v-bind:function-set-pagination="functionSetPagination"
         v-bind:pagination-computed="paginationComputed"
-
-
       >
         <template v-slot:actions>
           <component-download-batch></component-download-batch>

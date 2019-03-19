@@ -38,8 +38,7 @@ export function setState({ state, objectState, nameState, nameLocalStorage }) {
 
 export async function initState({ commit, nameLocalStorage, nameState, objectStateDefault }) {
   const objectState = await localforage.getItem(nameLocalStorage);
-  console.warn('nameLocalStorage', nameLocalStorage);
-  console.warn('objectState', objectState);
+
   commit('setState', {
     objectState: objectState === null ? _.cloneDeep(objectStateDefault) : objectState,
     nameState,

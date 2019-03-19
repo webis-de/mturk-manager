@@ -1,17 +1,21 @@
 <template>
   <v-layout wrap>
     <base-table-filter
-      title="Show Only Submitted Assignments"
+      title="Batch ID"
       v-bind:filters-active="filtersActive"
       v-bind:breakpoints="{'sm12': true, 'md6': true}"
-      name-filter="show_only_submitted_assignments"
+      name-filter="batchesSelected"
     >
-      <v-switch
-        v-model="filters.show_only_submitted_assignments"
-        label="Only Submitted"
+      <v-combobox
+        v-model="filters.batchesSelected"
+        label="Filters batches by ID"
+        multiple
+        chips
+        deletable-chips
+        clearable
         hide-details
-        class="mt-0"
-      ></v-switch>
+        dense
+      />
       <!--<v-combobox-->
         <!--v-model="filters.show_only_submitted_assignments"-->
         <!--label="Search by Worker ID"-->

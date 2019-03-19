@@ -8,7 +8,7 @@
     >
       <v-combobox
         v-model="filters.workersSelected"
-        label="Search by Worker ID"
+        label="Filter workers by their ID"
         multiple
         chips
         deletable-chips

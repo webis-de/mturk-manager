@@ -121,7 +121,7 @@ export const moduleBatches = {
 
     objectFiltersGeneral: null,
     objectFiltersDefaultGeneral: {
-      show_only_submitted_assignments: false,
+      batchesSelected: [],
     },
   },
   getters: {
@@ -472,14 +472,13 @@ export const moduleBatches = {
         nameLocalStorage: 'pagination_batches_finances',
         nameMutation: 'setPaginationFinances',
       });
-      console.warn('3333', 3333);
+
       initState({
         commit,
         nameLocalStorage: 'filtersBatchesGeneral',
         nameState: 'objectFiltersGeneral',
         objectStateDefault: state.objectFiltersDefaultGeneral,
       });
-      console.warn('state.objectFiltersGeneral', state.objectFiltersGeneral);
     },
     reset_array_columns_general({ state, commit }) {
       commit(
