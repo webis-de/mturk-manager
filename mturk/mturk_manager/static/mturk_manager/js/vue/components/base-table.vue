@@ -91,6 +91,7 @@
             v-bind:filters-default="filtersDefault"
             v-bind:name-state-filters="nameStateFilters"
             v-bind:name-local-storage-filters="nameLocalStorageFilters"
+            v-bind:set-state="setState"
 
             v-on:filtersChanged="load_page($event)"
           >
@@ -217,6 +218,10 @@ export default {
       required: false,
       type: String,
       default: '',
+    },
+    setState: {
+      required: true,
+      type: Function,
     },
   },
   data() {

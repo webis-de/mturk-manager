@@ -152,6 +152,10 @@ export default {
       required: true,
       type: String,
     },
+    setState: {
+      required: true,
+      type: Function,
+    },
   },
   data() {
     return {
@@ -190,7 +194,6 @@ export default {
     resetFilters() {
       this.filtersCloned = _.cloneDeep(this.filtersDefault);
     },
-    ...mapMutations('moduleWorkers', ['setState']),
   },
 };
 </script>

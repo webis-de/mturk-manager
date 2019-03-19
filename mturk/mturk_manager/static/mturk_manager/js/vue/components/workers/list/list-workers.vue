@@ -16,6 +16,7 @@
 
     v-bind:filters="filters"
     v-bind:filters-default="filtersDefault"
+    v-bind:set-state="setState"
     name-state-filters="objectFiltersGeneral"
     name-local-storage-filters="filtersWorkersGeneral"
   >
@@ -176,6 +177,7 @@ export default {
       function_clear_items_selected: 'clear_workers_selected',
       function_set_array_columns: 'set_array_columns_general',
       functionSetPagination: 'setPaginationGeneral',
+      setState: 'setState',
     }),
     ...mapActions('moduleWorkers', {
       update_status_block: 'update_status_block',

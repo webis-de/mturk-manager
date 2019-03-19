@@ -15,6 +15,7 @@
 
     v-bind:filters="filters"
     v-bind:filters-default="filtersDefault"
+    v-bind:set-state="setState"
     name-state-filters="objectFiltersGeneral"
     name-local-storage-filters="filtersAssignmentsGeneral"
   >
@@ -96,6 +97,7 @@ export default {
       function_set_items_selected: 'set_assignments_selected',
       function_clear_items_selected: 'clear_assignments_selected',
       function_set_array_columns: 'set_array_columns_general',
+      setState: 'setState',
     }),
   },
 };
