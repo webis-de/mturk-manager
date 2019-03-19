@@ -220,8 +220,9 @@ export default {
       default: '',
     },
     setState: {
-      required: true,
+      required: false,
       type: Function,
+      default: () => {},
     },
   },
   data() {

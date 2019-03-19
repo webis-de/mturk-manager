@@ -6,9 +6,10 @@ import xmltodict
 
 from botocore.exceptions import ClientError
 from django.conf import settings as settings_django
-from django.db.models import F, Count, Q
+from django.db.models import F, Count, Q, QuerySet
 from django.db.models.functions import Coalesce
 from django.http import HttpResponse
+from rest_framework.request import Request
 
 from api.classes import Interface_Manager_Items
 from api.classes.projects import Manager_Projects
@@ -19,24 +20,48 @@ from api.models import Batch, HIT, Assignment, Settings_Batch, Worker
 class Manager_Batches(Interface_Manager_Items):
     @staticmethod
     def get_all(database_object_project, request, fields=None, use_sandbox=None):
-        list_ids = json.loads(request.query_params.get('list_ids', '[]'))
-
         queryset = Batch.objects.filter(
             project=database_object_project,
             use_sandbox=use_sandbox,
         )
 
+        queryset = Manager_Batches.filter(
+            queryset=queryset,
+            request=request
+        )
+
+        queryset = Manager_Batches.annotate(queryset)
+
+        queryset = Manager_Batches.sort_by(
+            queryset=queryset,
+            request=request
+        )
+
+        if fields is not None:
+            queryset = queryset.values(
+                *fields
+            )
+
+        return queryset
+
+    @staticmethod
+    def filter(queryset: QuerySet, request: Request) -> QuerySet:
+        list_ids = json.loads(request.query_params.get('list_ids', '[]'))
+
         if len(list_ids) > 0:
             queryset = Batch.objects.filter(
-                project=database_object_project,
                 id__in=list_ids
             )
 
         batches_selected = request.query_params.getlist('batchesSelected[]')
-        if len(batches_selected ) > 0:
-            queryset = queryset.filter(name__in=batches_selected )
+        if len(batches_selected) > 0:
+            queryset = queryset.filter(name__in=batches_selected)
 
-        queryset = queryset.annotate(
+        return queryset
+
+    @staticmethod
+    def annotate(queryset: QuerySet) -> QuerySet:
+        return queryset.annotate(
             count_hits=Count('hits', distinct=True)
         ).annotate(
             count_assignments_available=Coalesce(Count('hits__assignments', distinct=True), 0),
@@ -56,17 +81,16 @@ class Manager_Batches(Interface_Manager_Items):
             costs_so_far=F('count_assignments_approved') * F('settings_batch__reward'),
         )
 
+    @staticmethod
+    def sort_by(queryset: QuerySet, request: Request) -> QuerySet:
         sort_by = request.query_params.get('sort_by')
+
         if sort_by is not None:
             descending = request.query_params.get('descending', 'false') == 'true'
             queryset = queryset.order_by(
                 ('-' if descending else '') + sort_by
             )
 
-        if fields is not None:
-            queryset = queryset.values(
-                *fields
-            )
         return queryset
 
     @staticmethod

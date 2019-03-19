@@ -38,7 +38,6 @@
           </v-flex>
           <v-flex
             shrink
-            class="pr-4"
           >
             <span
               v-if="countFiltersActive > 0"
@@ -47,6 +46,7 @@
               {{ countFiltersActive }} active filter(s)
             </span>
             <v-btn
+              v-if="countFiltersActive > 0"
               small
               flat
               class="ma-0"

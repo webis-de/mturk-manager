@@ -1,13 +1,14 @@
 # from api.classes.projects import Manager_Projects
 import json
 
-from django.db.models import F, ExpressionWrapper, DurationField
-from django.db.models.functions import Coalesce
+from django.db.models import F, ExpressionWrapper, DurationField, QuerySet
 
 from api.classes import Interface_Manager_Items
-from api.enums import assignments
 from api.classes.projects import Manager_Projects
-from api.models import Assignment
+from api.enums import assignments
+from api.models import Assignment, Project
+from rest_framework.request import Request
+
 
 # # from viewer.models import m_Tag
 # # from api.views import code_shared, project
@@ -21,16 +22,36 @@ from api.models import Assignment
 class Manager_Assignments(Interface_Manager_Items):
     @staticmethod
     def get_all(database_object_project, request, fields=None, use_sandbox=True):
-        list_ids = json.loads(request.query_params.get('list_ids', '[]'))
-
         queryset = Assignment.objects.filter(
             hit__batch__project=database_object_project,
             hit__batch__use_sandbox=use_sandbox,
         )
 
+        queryset = Manager_Assignments.filter(
+            queryset=queryset,
+            request=request
+        )
+
+        queryset = Manager_Assignments.annotate(queryset)
+
+        queryset = Manager_Assignments.sort_by(
+            queryset=queryset,
+            request=request
+        )
+
+        if fields is not None:
+            queryset = queryset.values(
+                *fields
+            )
+
+        return queryset
+
+    @staticmethod
+    def filter(queryset: QuerySet, request: Request) -> QuerySet:
+        list_ids = json.loads(request.query_params.get('list_ids', '[]'))
+
         if len(list_ids) > 0:
             queryset = Assignment.objects.filter(
-                hit__batch__project=database_object_project,
                 id__in=list_ids
             )
 
@@ -50,27 +71,25 @@ class Manager_Assignments(Interface_Manager_Items):
         if filter_worker != '':
             queryset = queryset.filter(worker__id_worker__icontains=filter_worker)
 
-        queryset = Manager_Assignments.add_annotations(queryset)
+        return queryset
 
+    @staticmethod
+    def annotate(queryset: QuerySet) -> QuerySet:
+        return queryset.annotate(
+            duration=ExpressionWrapper(F('datetime_submit') - F('datetime_accept'), output_field=DurationField())
+        )
+
+    @staticmethod
+    def sort_by(queryset: QuerySet, request: Request) -> QuerySet:
         sort_by = request.query_params.get('sort_by')
+
         if sort_by is not None:
             descending = request.query_params.get('descending', 'false') == 'true'
             queryset = queryset.order_by(
                 ('-' if descending else '') + sort_by
             )
 
-        if fields is not None:
-            queryset = queryset.values(
-                *fields
-            )
-
         return queryset
-
-    @staticmethod
-    def add_annotations(queryset):
-        return queryset.annotate(
-            duration=ExpressionWrapper(F('datetime_submit') - F('datetime_accept'), output_field=DurationField())
-        )
 
     @staticmethod
     def update_stati_assignments(database_object_project, data):

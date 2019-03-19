@@ -12,8 +12,6 @@
 
     v-bind:pagination-computed="paginationComputed"
     v-bind:function-set-pagination="functionSetPagination"
-
-    v-bind:filters="filters"
   >
     <template v-slot="{ props, array_columns_selected, isCondensed }">
       <component-item-hit
@@ -53,12 +51,6 @@ export default {
     functionSetPagination: {
       type: Function,
       required: true,
-    },
-
-    filters: {
-      required: false,
-      type: Object,
-      default: () => {},
     },
   },
   data() {

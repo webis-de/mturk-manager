@@ -17,6 +17,18 @@ class Interface_Manager_Items(object):
         raise_not_implemented_exception('get_all', __class__)
 
     @staticmethod
+    def filter(queryset: QuerySet, request: Request) -> QuerySet:
+        raise_not_implemented_exception('filter', __class__)
+
+    @staticmethod
+    def annotate(queryset: QuerySet) -> QuerySet:
+        raise_not_implemented_exception('annotate', __class__)
+
+    @staticmethod
+    def sort_by(queryset: QuerySet, request: Request) -> QuerySet:
+        raise_not_implemented_exception('sort_by', __class__)
+
+    @staticmethod
     def get(id_item: object) -> object:
         raise_not_implemented_exception('get', __class__)
 
