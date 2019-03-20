@@ -1,6 +1,9 @@
 import localforage from 'localforage';
+import _ from 'lodash';
 
-export const module_app = {
+import baseModule from './base.module';
+
+export const module_app = _.merge(baseModule, {
   namespaced: true,
   state: {
     url_api: null,
@@ -71,6 +74,11 @@ export const module_app = {
       ]);
     },
     async set_credentials({ commit }, { url, token }) {
+      commit('setState', {
+        objectState: url,
+        nameState: 'url_api',
+        nameLocalStorage: 'url_ap1i',
+      });
       commit('set_url_api', url);
       commit('set_token_instance', token);
 
@@ -82,4 +90,4 @@ export const module_app = {
       localforage.setItem('use_sandbox', use_sandbox);
     },
   },
-};
+});
