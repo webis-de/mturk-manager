@@ -84,9 +84,9 @@
           <overview-costs
             v-if="is_valid"
 
-            v-bind:costs-total-with-fee="costs_total_with_fee"
-            v-bind:costs-total-without-fee="costs_total_without_fee"
-          >test</overview-costs>
+            style="margin-left: -13px"
+            v-bind:settings-batch="settings_batch_current"
+          />
           <template
             v-else
           >
@@ -130,33 +130,6 @@ export default {
       if (this.settings_batch_current == undefined) return undefined;
 
       return humanizeDuration(this.settings_batch_current.lifetime * 1000);
-    },
-    costs_total_without_fee() {
-      if (this.settings_batch_current == undefined) return 0;
-
-      console.log(this.object_csv_parsed);
-      const reward = parseFloat(this.settings_batch_current.reward);
-      if (this.object_csv_parsed != undefined) {
-        return (
-          reward
-          * this.settings_batch_current.count_assignments
-          * this.object_csv_parsed.data.length
-        );
-      }
-      return reward * this.settings_batch_current.count_assignments;
-    },
-    costs_total_with_fee() {
-      let costsWithFee;
-
-      if (this.settings_batch_current.count_assignments < 10) {
-        costsWithFee = this.costs_total_without_fee * 1.2;
-      } else {
-        costsWithFee = this.costs_total_without_fee * 1.4;
-      }
-
-      this.$emit('updated_costs_with_fee', costsWithFee);
-
-      return costsWithFee;
     },
     format_lifetime_absolute() {
       if (this.settings_batch_current == undefined) return undefined;

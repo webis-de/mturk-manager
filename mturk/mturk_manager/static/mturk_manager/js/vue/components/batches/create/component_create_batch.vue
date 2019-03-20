@@ -131,7 +131,7 @@ export default {
   mixins: [validations],
   data() {
     return {
-      is_creating_batch: false,
+      is_creating_batch: true,
 
       name: undefined,
       settings_batch_current: undefined,
