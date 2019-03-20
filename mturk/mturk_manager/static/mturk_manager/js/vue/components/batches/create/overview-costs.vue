@@ -90,6 +90,7 @@ export default {
           * this.object_csv_parsed.data.length
         );
       }
+
       return reward * this.settingsBatch.count_assignments;
     },
     costsTotalWithFee() {

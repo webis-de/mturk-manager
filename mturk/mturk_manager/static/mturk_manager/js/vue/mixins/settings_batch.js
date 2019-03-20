@@ -33,7 +33,7 @@ export default {
   methods: {
     update_fields() {
       if (this.settingsBatchCurrent !== undefined) {
-        this.settings_batch = new Settings_Batch(this.settingsBatchCurrent);
+        this.settings_batch = _.cloneDeep(this.settingsBatchCurrent);
       } else {
         this.settings_batch = new Settings_Batch();
       }

@@ -1,10 +1,12 @@
+import Dinero from 'dinero.js';
+
 export default {
   methods: {
     amount_formatted(value) {
       if (isNaN(value)) {
         return 'invalid';
       }
-      return `${(value / 100.0).toFixed(2)} $`;
+      return Dinero({ amount: value }).toFormat('$0,0.00');
     },
     try_money(value) {
       const number = this.try_number(value);

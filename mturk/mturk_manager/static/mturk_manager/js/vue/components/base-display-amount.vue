@@ -6,8 +6,8 @@
 import helpers from '../mixins/helpers';
 
 export default {
+  name: 'BaseDisplayAmount',
   mixins: [helpers],
-  name: 'base-display-amount',
   props: {
     amount: {
       required: true,
@@ -17,7 +17,6 @@ export default {
   computed: {
     amount_formatted_() {
       return this.amount_formatted(this.amount);
-      return `${this.amount.toFixed(2)} $`;
     },
   },
 };
