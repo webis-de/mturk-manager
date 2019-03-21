@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { store } from '../store/vuex';
+import queue from '../queue';
 
 class Class_Service_Endpoint {
   constructor() {
@@ -7,8 +8,8 @@ class Class_Service_Endpoint {
     this.axios = undefined;
   }
 
-  init(token_instance) {
-    if (this.is_initialized === true) {
+  init(force = false) {
+    if (this.is_initialized === true && force === false) {
       console.error('Service Endpoint is already initialized!');
       return;
     }
@@ -17,7 +18,7 @@ class Class_Service_Endpoint {
 
     this.axios = axios.create({
       headers: {
-        Authorization: `Token ${token_instance}`,
+        Authorization: `Token ${store.state.module_app.token_instance}`,
         'Content-Type': 'application/json',
       },
     });
@@ -53,7 +54,9 @@ class Class_Service_Endpoint {
 
     if (object_response.success === false) {
       if (object_response.exception.message === 'Network Error') {
-        // router.push({name: 'connection_error'});
+        queue.notify('router', { name: 'connection_error' });
+      } else {
+        queue.notify('router', { name: 'connection_error' });
       }
     }
 

@@ -4,19 +4,42 @@
       <v-flex shrink>
         <v-layout justify-center>
           <v-flex shrink class="text-xs-center">
-            <v-text-field v-model="url" label="URL" autofocus></v-text-field>
-            <v-text-field v-model="token" label="Token"></v-text-field>
-
-            <v-btn
-              v-on:click="save"
-              v-bind:disabled="$v.pending || $v.$invalid"
-              color="primary"
-              >Save</v-btn
+            <v-form
+              v-on:submit.prevent="save"
             >
+              <v-text-field
+                v-model="url"
+                label="URL"
+                autofocus
+              ></v-text-field>
+
+              <v-text-field
+                v-model="token"
+                label="Token"
+              ></v-text-field>
+
+              <v-btn
+                type="submit"
+                v-bind:disabled="$v.pending || $v.$invalid"
+                color="primary"
+                v-bind:loading="loading"
+              >
+                Save
+              </v-btn>
+            </v-form>
           </v-flex>
         </v-layout>
       </v-flex>
     </v-layout>
+
+    <v-snackbar
+      v-bind:value="false"
+      v-bind:timeout="0"
+      color="error"
+      top
+    >
+      Cannot connect to the database! Please check the credentials
+    </v-snackbar>
   </v-container>
 </template>
 
@@ -27,32 +50,28 @@ import validations from '../../mixins/validations';
 import { Service_App } from '../../services/service.app';
 
 export default {
-  name: 'add-credentials',
+  name: 'AddCredentials',
   mixins: [validations],
   data() {
     return {
-      url: '',
-      token: '',
+      url: this.$store.state.module_app.url_api,
+      token: this.$store.state.module_app.token_instance,
+
+      loading: false,
     };
   },
   methods: {
     async save() {
-      this.url = this.url.trim();
+      this.loading = true;
 
-      if (!this.url.startsWith('http')) {
-        this.url = `http://${this.url}`;
-      }
-
-      await this.set_credentials({
+      await Service_App.updateCredentials({
         url: this.url,
         token: this.token,
+        router: this.$router,
       });
 
-      await Service_App.init();
-
-      this.$router.push({ name: 'dashboard' });
+      // this.loading = false;
     },
-    ...mapActions('module_app', ['set_credentials']),
   },
   validations: {
     url: {

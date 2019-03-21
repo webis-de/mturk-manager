@@ -32,17 +32,18 @@ export const module_app = _.merge(baseModule, {
     },
   },
   actions: {
-    async load_credentials({ commit }) {
-      const url_api = await localforage.getItem('url_api');
-      const token_instance = await localforage.getItem('token_instance');
+    async load_credentials({ getters, dispatch }) {
+      await dispatch('loadState', {
+        nameLocalStorage: 'url_api',
+        nameState: 'url_api',
+      });
 
-      if (url_api === null || token_instance === null) {
-        return false;
-      }
+      await dispatch('loadState', {
+        nameLocalStorage: 'token_instance',
+        nameState: 'token_instance',
+      });
 
-      commit('set_url_api', url_api);
-      commit('set_token_instance', token_instance);
-      return true;
+      return getters.has_credentials;
     },
     async init({ commit, dispatch }, config) {
       let use_sandbox = await localforage.getItem('use_sandbox');
@@ -72,18 +73,6 @@ export const module_app = _.merge(baseModule, {
         dispatch('moduleSettingsBatch/init', null, { root: true }),
         dispatch('moduleTemplates/init', null, { root: true }),
       ]);
-    },
-    async set_credentials({ commit }, { url, token }) {
-      commit('setState', {
-        objectState: url,
-        nameState: 'url_api',
-        nameLocalStorage: 'url_ap1i',
-      });
-      commit('set_url_api', url);
-      commit('set_token_instance', token);
-
-      await localforage.setItem('url_api', url);
-      await localforage.setItem('token_instance', token);
     },
     async set_use_sandbox({ commit, state }, use_sandbox) {
       commit('set_use_sandbox', use_sandbox);

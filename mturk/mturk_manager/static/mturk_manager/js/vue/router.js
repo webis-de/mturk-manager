@@ -12,6 +12,7 @@ import app_workers from './components/workers/app_workers.vue';
 import AppSettingsProject from './components/settings_project/app_settings_project.vue';
 import { store } from './store/vuex';
 import { Service_App } from './services/service.app';
+import queue from './queue';
 
 function parse_params(route) {
   const result = {};
@@ -157,7 +158,11 @@ const routes = [
 ];
 
 export const router = new VueRouter({
-  routes, // short for `routes: routes`
+  routes,
+});
+
+queue.listen('router', (payload) => {
+  router.push(payload);
 });
 
 router.beforeEach((to, from, next) => {
@@ -177,9 +182,12 @@ router.beforeEach(async (to, from, next) => {
     store.getters['module_app/has_credentials'] === false
     && to.name !== 'add_credentials'
   ) {
-    const isSuccess = await Service_App.init();
-    if (isSuccess === false) {
+    const response = await Service_App.init();
+    if (response.reason === 'load_credentials') {
       next({ name: 'add_credentials' });
+      return;
+    } else if(response.exception !== undefined) {
+      //some exception occured fetching data from the server
       return;
     }
   }
