@@ -1,6 +1,14 @@
 <template>
-  <v-menu offset-y offset-x v-bind:close-on-content-click="false">
-    <v-btn icon small slot="activator">
+  <v-menu
+    offset-y
+    offset-x
+    v-bind:close-on-content-click="false"
+  >
+    <v-btn
+      icon
+      small
+      slot="activator"
+    >
       <v-icon>help</v-icon>
     </v-btn>
     <v-card>
@@ -13,12 +21,13 @@
 
 <script>
 export default {
-  name: 'help-icon',
+  name: 'BaseHelp',
 };
 </script>
 
 <style scoped>
 .v-btn {
   padding: 0;
+  margin: 0;
 }
 </style>

@@ -177,11 +177,11 @@ export default {
       function_clear_items_selected: 'clear_workers_selected',
       function_set_array_columns: 'set_array_columns_general',
       functionSetPagination: 'setPaginationGeneral',
-      setState: 'setState',
     }),
     ...mapActions('moduleWorkers', {
       update_status_block: 'update_status_block',
       function_reset_array_columns: 'reset_array_columns_general',
+      setState: 'setState',
     }),
   },
 

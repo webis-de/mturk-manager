@@ -2,10 +2,10 @@ import Vue from 'vue';
 import _ from 'lodash';
 import localforage from 'localforage';
 import Worker from '../../classes/workers.js';
-import {initFilters, initPagination, initState, setPagination, setState} from '../../helpers';
+import {initFilters, initPagination, initState, setPagination} from '../../helpers';
+import baseModule from './base.module';
 
-export const moduleWorkers = {
-  namespaced: true,
+export const moduleWorkers = _.merge({}, baseModule, {
   state: {
     url_api_workers: undefined,
     object_workers: {},
@@ -119,14 +119,6 @@ export const moduleWorkers = {
         namePagination: 'paginationGeneral',
         nameLocalStorage: 'pagination_workers_general',
         state,
-      });
-    },
-    setState(state, { objectState, nameState, nameLocalStorage }) {
-      setState({
-        state,
-        objectState,
-        nameState,
-        nameLocalStorage,
       });
     },
     set_array_columns_general(state, array_columns) {
@@ -398,4 +390,4 @@ export const moduleWorkers = {
     //     })
     // },
   },
-};
+});

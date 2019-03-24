@@ -9,8 +9,9 @@ export const module_finances = {
     url_api_projects_balance: undefined,
     url_api_projects_finances: undefined,
 
-    sum_costs_max: null,
-    sum_costs_so_far: null,
+    // sum_costs_max: null,
+    // sum_costs_so_far: null,
+    // sum_costs_pending: null,
   },
   getters: {
     get_balance: (state, getters, rootState) => (use_sandbox = undefined) => {

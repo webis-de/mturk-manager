@@ -8,9 +8,10 @@
   >
     <v-spacer></v-spacer>
     Update Available!
-    <help-icon
-      >Pull the latest changes of the git repository to update the
-      application.</help-icon
+    <base-help>
+      Pull the latest changes of the git repository to update the
+      application.
+    </base-help
     >
     <v-spacer></v-spacer>
   </v-snackbar>
@@ -18,11 +19,11 @@
 
 <script>
 import { mapState } from 'vuex';
-import HelpIcon from './help-icon';
+import BaseHelp from './base-help';
 
 export default {
   name: 'the-update-notification',
-  components: { HelpIcon },
+  components: {BaseHelp},
   data() {
     return {};
   },

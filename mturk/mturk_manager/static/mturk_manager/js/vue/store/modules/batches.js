@@ -2,10 +2,10 @@ import Vue from 'vue';
 import _ from 'lodash';
 import localforage from 'localforage';
 import Batch from '../../classes/batch';
-import { initPagination, initState, setPagination, setState } from '../../helpers';
+import { initPagination, initState, setPagination } from '../../helpers';
+import baseModule from './base.module';
 
-export const moduleBatches = {
-  namespaced: true,
+export const moduleBatches = _.merge({}, baseModule, {
   state: {
     object_batches: null,
     object_batches_sandbox: null,
@@ -120,6 +120,8 @@ export const moduleBatches = {
     array_columns_selected_finances: null,
 
     objectFiltersGeneral: null,
+    objectFiltersFinances: null,
+
     objectFiltersDefaultGeneral: {
       batchesSelected: [],
     },
@@ -317,14 +319,6 @@ export const moduleBatches = {
         state,
       });
     },
-    setState(state, { objectState, nameState, nameLocalStorage }) {
-      setState({
-        state,
-        objectState,
-        nameState,
-        nameLocalStorage,
-      });
-    },
     set_array_columns_general(state, array_columns) {
       localforage.setItem('array_columns_batches_general', array_columns);
       state.array_columns_selected_general = array_columns;
@@ -442,7 +436,7 @@ export const moduleBatches = {
     },
   },
   actions: {
-    async init({ state, commit }) {
+    async init({ state, commit, dispatch }) {
       let arrayColumns = await localforage.getItem(
         'array_columns_batches_general',
       );
@@ -473,10 +467,15 @@ export const moduleBatches = {
         nameMutation: 'setPaginationFinances',
       });
 
-      initState({
-        commit,
+      dispatch('loadState', {
         nameLocalStorage: 'filtersBatchesGeneral',
         nameState: 'objectFiltersGeneral',
+        objectStateDefault: state.objectFiltersDefaultGeneral,
+      });
+
+      dispatch('loadState', {
+        nameLocalStorage: 'filtersBatchesFinances',
+        nameState: 'objectFiltersFinances',
         objectStateDefault: state.objectFiltersDefaultGeneral,
       });
     },
@@ -493,4 +492,4 @@ export const moduleBatches = {
       );
     },
   },
-};
+});

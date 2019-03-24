@@ -3,8 +3,7 @@ import _ from 'lodash';
 
 import baseModule from './base.module';
 
-export const module_app = _.merge(baseModule, {
-  namespaced: true,
+export const module_app = _.merge({}, baseModule, {
   state: {
     url_api: null,
     token_instance: null,

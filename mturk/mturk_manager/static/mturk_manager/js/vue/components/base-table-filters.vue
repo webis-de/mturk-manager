@@ -3,7 +3,6 @@
     v-model="showFilters"
     hide-overlay
     inset
-    persistent
   >
     <template v-slot:activator>
       <v-btn
@@ -181,6 +180,7 @@ export default {
     filtersCloned: {
       handler() {
         this.$emit('filtersChanged', this.filtersCloned);
+
         this.setState({
           objectState: this.filtersCloned,
           nameState: this.nameStateFilters,

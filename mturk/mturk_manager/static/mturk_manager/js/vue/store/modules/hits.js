@@ -5,8 +5,9 @@ import HIT from '../../classes/hit.js';
 
 import Batch from '../../classes/batch';
 import {initPagination, setPagination} from '../../helpers';
+import baseModule from './base.module';
 
-export const moduleHITs = {
+export const moduleHITs = _.merge({}, baseModule, {
   namespaced: true,
   state: {
     object_hits: {},
@@ -65,6 +66,12 @@ export const moduleHITs = {
     array_columns_selected_general: null,
 
     url_api_projects_hits: undefined,
+
+    objectFiltersGeneral: null,
+    objectFiltersFinances: null,
+    objectFiltersDefaultGeneral: {
+      hitsSelected: [],
+    },
   },
   getters: {
     get_array_columns_general: state => state.array_columns_general,
@@ -197,7 +204,7 @@ export const moduleHITs = {
     },
   },
   actions: {
-    async init({ state, commit }) {
+    async init({ state, commit, dispatch }) {
       const array_columns = await localforage.getItem(
         'array_columns_hits_general',
       );
@@ -218,6 +225,18 @@ export const moduleHITs = {
         nameLocalStorage: 'pagination_hits_finances',
         nameMutation: 'setPaginationFinances',
       });
+
+      dispatch('loadState', {
+        nameLocalStorage: 'filtersHITsGeneral',
+        nameState: 'objectFiltersGeneral',
+        objectStateDefault: state.objectFiltersDefaultGeneral,
+      });
+
+      dispatch('loadState', {
+        nameLocalStorage: 'filtersHITsFinances',
+        nameState: 'objectFiltersFinances',
+        objectStateDefault: state.objectFiltersDefaultGeneral,
+      });
     },
     reset_array_columns_general({ state, commit }) {
       commit(
@@ -226,4 +245,4 @@ export const moduleHITs = {
       );
     },
   },
-};
+});

@@ -2,7 +2,7 @@ import { store } from '../store/vuex';
 import { Service_Endpoint } from './service_endpoint';
 
 class ClassServiceFinances {
-  async load() {
+  async load({filters, typeItem}) {
     const use_sandbox = store.state.module_app.use_sandbox;
 
     const response = await Service_Endpoint.make_request({
@@ -15,17 +15,28 @@ class ClassServiceFinances {
         project: store.getters['moduleProjects/get_project_current'],
       },
       method: 'get',
+      params: {
+        typeItem,
+        ...filters,
+      },
     });
 
-    store.commit('module_finances/setState', {
-      objectState: response.data.sum_costs_max,
-      nameState: 'sum_costs_max',
-    });
+    return response.data;
 
-    store.commit('module_finances/setState', {
-      objectState: response.data.sum_costs_so_far,
-      nameState: 'sum_costs_so_far',
-    });
+    // store.commit('module_finances/setState', {
+    //   objectState: response.data.sum_costs_max,
+    //   nameState: 'sum_costs_max',
+    // });
+    //
+    // store.commit('module_finances/setState', {
+    //   objectState: response.data.sum_costs_so_far,
+    //   nameState: 'sum_costs_so_far',
+    // });
+    //
+    // store.commit('module_finances/setState', {
+    //   objectState: response.data.sum_costs_pending,
+    //   nameState: 'sum_costs_pending',
+    // });
   }
 
   async load_balance() {

@@ -13,11 +13,11 @@
     v-bind:pagination-computed="paginationComputed"
     v-bind:function-set-pagination="functionSetPagination"
 
-    v-bind:filters="filters"
-    v-bind:filters-default="filtersDefault"
+    v-bind:filters="filtersComputed"
+    v-bind:filters-default="filtersDefaultComputed"
     v-bind:set-state="setState"
-    name-state-filters="objectFiltersGeneral"
-    name-local-storage-filters="filtersAssignmentsGeneral"
+    v-bind:name-state-filters="nameStateFilters"
+    v-bind:name-local-storage-filters="nameLocalStorageFilters"
   >
     <template v-slot:default="{ props, array_columns_selectedm, isCondensed }">
       <component-item-assignment
@@ -66,6 +66,27 @@ export default {
       required: true,
     },
 
+    filters: {
+      required: false,
+      type: Object,
+      default: undefined,
+    },
+    filtersDefault: {
+      required: false,
+      type: Object,
+      default: undefined,
+    },
+    nameStateFilters: {
+      required: false,
+      type: String,
+      default: 'objectFiltersGeneral',
+    },
+    nameLocalStorageFilters: {
+      required: false,
+      type: String,
+      default: 'filtersAssignmentsGeneral',
+    },
+
     // filters: {
     //   required: false,
     //   type: Object,
@@ -78,6 +99,12 @@ export default {
     };
   },
   computed: {
+    filtersComputed() {
+      return this.filters !== undefined ? this.filters : this.filtersGeneral;
+    },
+    filtersDefaultComputed() {
+      return this.filtersDefault !== undefined ? this.filtersDefault : this.filtersDefaultGeneral;
+    },
     ...mapGetters('moduleAssignments', {
       array_items: 'get_array_assignments',
       object_items_selected: 'get_object_assignments_selected',
@@ -85,19 +112,19 @@ export default {
       array_columns_selected: 'get_array_columns_selected_general',
     }),
     ...mapState('moduleAssignments', {
-      filters: 'objectFiltersGeneral',
-      filtersDefault: 'objectFiltersDefaultGeneral',
+      filtersGeneral: 'objectFiltersGeneral',
+      filtersDefaultGeneral: 'objectFiltersDefaultGeneral',
     }),
   },
   methods: {
     ...mapActions('moduleAssignments', {
       function_reset_array_columns: 'reset_array_columns_general',
+      setState: 'setState',
     }),
     ...mapMutations('moduleAssignments', {
       function_set_items_selected: 'set_assignments_selected',
       function_clear_items_selected: 'clear_assignments_selected',
       function_set_array_columns: 'set_array_columns_general',
-      setState: 'setState',
     }),
   },
 };

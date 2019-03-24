@@ -13,11 +13,11 @@
     v-bind:pagination-computed="paginationComputed"
     v-bind:function-set-pagination="functionSetPagination"
 
-    v-bind:filters="filters"
-    v-bind:filters-default="filtersDefault"
+    v-bind:filters="filtersComputed"
+    v-bind:filters-default="filtersDefaultComputed"
     v-bind:set-state="setState"
-    name-state-filters="objectFiltersGeneral"
-    name-local-storage-filters="filtersBatchesGeneral"
+    v-bind:name-state-filters="nameStateFilters"
+    v-bind:name-local-storage-filters="nameLocalStorageFilters"
   >
     <template v-slot:default="{ props, array_columns_selected, isCondensed }">
       <component-item-batch
@@ -73,6 +73,27 @@ export default {
       default: undefined,
     },
 
+    filters: {
+      required: false,
+      type: Object,
+      default: undefined,
+    },
+    filtersDefault: {
+      required: false,
+      type: Object,
+      default: undefined,
+    },
+    nameStateFilters: {
+      required: false,
+      type: String,
+      default: 'objectFiltersGeneral',
+    },
+    nameLocalStorageFilters: {
+      required: false,
+      type: String,
+      default: 'filtersBatchesGeneral',
+    },
+
     paginationComputed: {
       type: Object,
       required: true,
@@ -103,6 +124,12 @@ export default {
         ? this.arrayColumnsSelected
         : this.array_columns_selected_general;
     },
+    filtersComputed() {
+      return this.filters !== undefined ? this.filters : this.filtersGeneral;
+    },
+    filtersDefaultComputed() {
+      return this.filtersDefault !== undefined ? this.filtersDefault : this.filtersDefaultGeneral;
+    },
     ...mapGetters('moduleBatches', {
       array_items: 'get_array_batches',
       object_items_selected: 'get_object_batches_selected',
@@ -110,19 +137,19 @@ export default {
       array_columns_selected_general: 'get_array_columns_selected_general',
     }),
     ...mapState('moduleBatches', {
-      filters: 'objectFiltersGeneral',
-      filtersDefault: 'objectFiltersDefaultGeneral',
+      filtersGeneral: 'objectFiltersGeneral',
+      filtersDefaultGeneral: 'objectFiltersDefaultGeneral',
     }),
   },
   methods: {
     ...mapActions('moduleBatches', {
       function_reset_array_columns_general: 'reset_array_columns_general',
+      setState: 'setState',
     }),
     ...mapMutations('moduleBatches', {
       function_set_items_selected: 'set_batches_selected',
       function_clear_items_selected: 'clear_batches_selected',
       function_set_array_columns_general: 'set_array_columns_general',
-      setState: 'setState',
     }),
   },
 };

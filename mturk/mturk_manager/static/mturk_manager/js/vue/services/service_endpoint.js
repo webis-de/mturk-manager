@@ -56,7 +56,8 @@ class Class_Service_Endpoint {
       if (object_response.exception.message === 'Network Error') {
         queue.notify('router', { name: 'connection_error' });
       } else {
-        queue.notify('router', { name: 'connection_error' });
+        console.warn('Error', object_response.exception);
+        // queue.notify('router', { name: 'connection_error' });
       }
     }
 

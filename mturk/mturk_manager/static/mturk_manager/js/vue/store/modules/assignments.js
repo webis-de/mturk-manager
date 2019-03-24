@@ -4,10 +4,10 @@ import localforage from 'localforage';
 import Assignment from '../../classes/assignment.js';
 
 import HIT from '../../classes/hit';
-import { initPagination, initState, setPagination, setState } from '../../helpers';
+import { initPagination, initState, setPagination } from '../../helpers';
+import baseModule from './base.module';
 
-export const moduleAssignments = {
-  namespaced: true,
+export const moduleAssignments = _.merge({}, baseModule, {
   state: {
     object_assignments: {},
     object_assignments_sandbox: {},
@@ -78,8 +78,10 @@ export const moduleAssignments = {
     array_columns_selected_general: null,
 
     objectFiltersGeneral: null,
+    objectFiltersFinances: null,
     objectFiltersDefaultGeneral: {
       show_only_submitted_assignments: false,
+      assignmentsSelected: [],
     },
   },
   getters: {
@@ -146,14 +148,6 @@ export const moduleAssignments = {
         namePagination: 'paginationFinances',
         nameLocalStorage: 'pagination_assignments_finances',
         state,
-      });
-    },
-    setState(state, { objectState, nameState, nameLocalStorage }) {
-      setState({
-        state,
-        objectState,
-        nameState,
-        nameLocalStorage,
       });
     },
     set_array_columns_general(state, array_columns) {
@@ -270,7 +264,7 @@ export const moduleAssignments = {
     },
   },
   actions: {
-    async init({ state, commit }) {
+    async init({ state, commit, dispatch }) {
       const array_columns = await localforage.getItem(
         'array_columns_assignments_general',
       );
@@ -292,10 +286,15 @@ export const moduleAssignments = {
         nameMutation: 'setPaginationFinances',
       });
 
-      initState({
-        commit,
+      dispatch('loadState', {
         nameLocalStorage: 'filtersAssignmentsGeneral',
         nameState: 'objectFiltersGeneral',
+        objectStateDefault: state.objectFiltersDefaultGeneral,
+      });
+
+      dispatch('loadState', {
+        nameLocalStorage: 'filtersAssignmentsFinances',
+        nameState: 'objectFiltersFinances',
         objectStateDefault: state.objectFiltersDefaultGeneral,
       });
     },
@@ -306,4 +305,4 @@ export const moduleAssignments = {
       );
     },
   },
-};
+});
