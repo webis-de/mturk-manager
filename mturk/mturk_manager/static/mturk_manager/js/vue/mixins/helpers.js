@@ -3,7 +3,7 @@ import Dinero from 'dinero.js';
 export default {
   methods: {
     amount_formatted(value) {
-      if (isNaN(value)) {
+      if (Number.isInteger(value) === false) {
         return 'invalid';
       }
       return Dinero({ amount: value }).toFormat('$0,0.00');
@@ -22,6 +22,13 @@ export default {
         return number;
       }
       return number_parsed;
+    },
+    tryInteger(value) {
+      const valueParsed = parseInt(value, 10);
+      if (isNaN(valueParsed)) {
+        return value;
+      }
+      return valueParsed;
     },
   },
 };

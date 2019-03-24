@@ -17,9 +17,9 @@
               v-bind:error-messages="
                 validation_errors.amountBudgetProject
               "
-              v-bind:value="project_current.amount_budget_max"
+              v-bind:value="amountBudgetProject"
               v-on:input="
-                amountBudgetProject = $event;
+                amountBudgetProject = tryInteger($event);
                 $v.amountBudgetProject.$touch();
               "
             ></v-text-field>
@@ -60,10 +60,19 @@
 
 <script>
 import {mapActions, mapGetters} from 'vuex';
-import { minValue } from 'vuelidate/lib/validators';
+import { minValue, required, helpers as helpersValidation } from 'vuelidate/lib/validators';
 import validations from '../../mixins/validations';
 import {Service_Projects} from '../../services/service_projects';
 import helpers from '../../mixins/helpers';
+import or from 'vuelidate/src/validators/or';
+// const mustBeCool = (value) => !helpersValidation.req(value) || value > 1;
+
+const validBudget = helpersValidation.withParams(
+  { type: 'validBudget' },
+  (value) => {
+    return !helpersValidation.req(value) || value > 0;
+  },
+);
 
 export default {
   name: 'Budget',
@@ -79,6 +88,9 @@ export default {
     ...mapGetters('moduleProjects', {
       project_current: 'get_project_current',
     }),
+  },
+  created() {
+    this.amountBudgetProject = this.project_current.amount_budget_max;
   },
   methods: {
     save() {
@@ -96,7 +108,14 @@ export default {
   },
   validations: {
     amountBudgetProject: {
-      minValue: minValue(1),
+      validBudget,
+      // required,
+      // mustBeCool,
+      // minValue: minValue(1),
+
+      // foo: (value) => {
+      //   return false
+      // },
     },
   },
 };

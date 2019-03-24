@@ -5,6 +5,7 @@ const MESSAGES_DEFAULT = {
   contains_form_injection: "'data-inject_input_forms' is missing!",
   contains_injection_assignments: "'data-inject_assignments' is missing!",
   is_unique: 'Has to be unique!',
+  validBudget: 'Invalid Budget',
 };
 
 export default {
@@ -50,14 +51,14 @@ export default {
     },
     v_has_children(foo) {
       // console.log(foo[Object.keys(foo)[0]])
-      return foo[Object.keys(foo)[0]] == null;
+      return foo[Object.keys(foo)[0]] === null;
     },
   },
   created() {
-    // console.log('äääääääääääääääääääääääääääääääääääääääääääää')
     for (const name_field in this.$v.$params) {
       // console.log(name_field)
       // console.log(this.$v[name_field])
+      // console.log(this.$v[name_field].$params)
       if (this.v_has_children(this.$v[name_field].$params)) {
         // console.log('has_children')
         for (const foo in this.$v[name_field].$params) {
