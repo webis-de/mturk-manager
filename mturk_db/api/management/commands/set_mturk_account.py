@@ -11,7 +11,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         Account_Mturk.objects.create(
-            name=options['name'],
+            name=options['name'].lower(),
             key_access=options['access_key'],
             key_secret=options['secret_key'],
         )

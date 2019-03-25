@@ -126,9 +126,9 @@ class Manager_Batches(Interface_Manager_Items):
 
         # print(data['template_worker'].template)
         try:
-            name_batch = data['name']
+            name_batch = data['name'].upper()
         except KeyError:
-            name_batch = uuid.uuid4().hex
+            name_batch = uuid.uuid4().hex.upper()
 
         database_object_batch = Batch.objects.create(
             name=name_batch,
@@ -205,7 +205,7 @@ class Manager_Batches(Interface_Manager_Items):
             # print(mturk_obj_hit)
             db_obj_hit = HIT.objects.create(
                 # id_hit=str(random.randint(0, 9999999)),
-                id_hit=mturk_obj_hit['HIT']['HITId'],
+                id_hit=mturk_obj_hit['HIT']['HITId'].upper(),
                 batch=database_object_batch,
                 parameters=json.dumps(dictionary_hit),
                 datetime_expiration=mturk_obj_hit['HIT']['Expiration'],
@@ -440,8 +440,8 @@ class Manager_Batches(Interface_Manager_Items):
 
             for iterator in response_iterator:
                 for assignment in iterator['Assignments']:
-                    id_assignment = assignment['AssignmentId']
-                    id_worker = assignment['WorkerId']
+                    id_assignment = assignment['AssignmentId'].upper()
+                    id_worker = assignment['WorkerId'].upper()
                     print(id_assignment)
                     # print(id_worker)
                     # print(iterator)

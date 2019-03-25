@@ -202,7 +202,7 @@ class Manager_Workers(Interface_Manager_Items):
 
         for iterator in response_iterator:
             for block in iterator['WorkerBlocks']:
-                set_workers_blocked_hard.add(block['WorkerId'])
+                set_workers_blocked_hard.add(block['WorkerId'].upper())
 
         return Worker.objects.filter(id_worker__in=set_workers_blocked_hard).values_list('id', flat=True)
 
@@ -381,6 +381,7 @@ class Manager_Workers(Interface_Manager_Items):
 
     @classmethod
     def get_status_block_for_worker(cls, database_object_project, id_worker):
+        id_worker = id_worker.upper()
         is_blocked = False
 
         # check if project block is active
@@ -443,8 +444,8 @@ class Manager_Workers(Interface_Manager_Items):
 
     @classmethod
     def increment_counter_for_worker(cls, database_object_project, data):
-        id_worker = data['id_worker']
-        id_assignment = data['id_assignment']
+        id_worker = data['id_worker'].upper()
+        id_assignment = data['id_assignment'].upper()
 
         assignment_worker, was_created_assignment_worker = Assignment_Worker.objects.get_or_create(
             id_worker=id_worker,
@@ -474,6 +475,7 @@ class Manager_Workers(Interface_Manager_Items):
 
     @classmethod
     def set_count_assignments(cls, database_object_project, id_worker, value):
+        id_worker = id_worker.upper()
         worker = Worker.objects.get_or_create(id_worker=id_worker)[0]
 
         count_rows = Count_Assignments_Worker_Project.objects.filter(
