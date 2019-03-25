@@ -1,4 +1,4 @@
-from django.db.models import F, Count, Q, Sum, Max, Min
+from django.db.models import F, Count, Q, Sum, Max, Min, Case, When, Value, IntegerField
 from django.db.models.functions import Coalesce
 import json
 from api.enums import assignments
@@ -44,14 +44,8 @@ class ManagerFinances(object):
     @classmethod
     def aggregate_batches(cls, queryset):
         now = datetime.now()
+
         return queryset.annotate(
-            # # number of living hits of each batch
-            # count_hits_total=Count('hits', distint=True),
-            # count_hits_living=Count('hits', distint=True, filter=Q(hits__datetime_expiration__gt=now)),
-            # count_hits_expired=Count('hits', distint=True, filter=Q(hits__datetime_expiration__lte=now)),
-            #
-            # # number of processed assignments
-            # count_assignments_available=Coalesce(Count('hits__assignments', distinct=True), 0)
             count_assignments_living_total=Coalesce(Count(
                 'hits__assignments',
                 distinct=True,
@@ -60,52 +54,44 @@ class ManagerFinances(object):
             count_assignments_living_available=Coalesce(Count(
                 'hits__assignments',
                 distinct=True,
-                filter=Q(hits__datetime_expiration__gt=now) & Q(hits__assignments__status_external=None)
+                filter=Q(hits__datetime_expiration__gt=now) & Q(hits__assignments__status_external__isnull=False)
             ), 0)
         ).annotate(
             count_assignments_potential=F('count_assignments_living_total') - F('count_assignments_living_available'),
 
-            # count_assignments_living=F('count_hits_living') * F('settings_batch__count_assignments'),
             count_assignments_approved=Coalesce(Count(
                 'hits__assignments',
                 distinct=True,
                 filter=Q(hits__assignments__status_external=assignments.STATUS_EXTERNAL.APPROVED)
             ), 0),
-            # count_assignments_rejected=Coalesce(Count(
-            #     'hits__assignments',
-            #     distinct=True,
-            #     filter=Q(hits__assignments__status_external=assignments.STATUS_EXTERNAL.REJECTED)
-            # ), 0),
-            # count_assignments_potential=F('settings_batch__count_assignments') - Count(
-            #     'assignments',
-            #     distinct=True
-            # )
         ).annotate(
             costs_so_far=F('count_assignments_approved') * F('settings_batch__reward'),
             costs_pending=F('count_assignments_potential') * F('settings_batch__reward')
         ).aggregate(
             sum_costs_so_far=Coalesce(Sum('costs_so_far'), 0),
             sum_costs_pending=Coalesce(Sum('costs_pending'), 0),
-            # max_costs_so_far=Coalesce(Max('costs_so_far'), 0),
-            # min_costs_so_far=Coalesce(Min('costs_so_far'), 0),
         )
 
     @classmethod
     def aggregate_hits(cls, queryset):
+        now = datetime.now()
+
         return queryset.annotate(
             count_assignments_approved=Coalesce(Count(
                 'assignments',
                 distinct=True,
                 filter=Q(assignments__status_external=assignments.STATUS_EXTERNAL.APPROVED)
             ), 0),
-            # count_assignments_submitted=Coalesce(Count(
-            #     'assignments',
-            #     distinct=True,
-            #     filter=Q(assignments__status_external=None)
-            # ), 0),
-            count_assignments_potential=F('batch__settings_batch__count_assignments') - Count(
-                'assignments',
-                distinct=True
+            count_assignments_potential=Case(
+                When(datetime_expiration__gt=now,
+                     then=F('batch__settings_batch__count_assignments') - Count(
+                            'assignments',
+                            filter=Q(assignments__status_external__isnull=False),
+                            distinct=True
+                     )
+                 ),
+                default=Value(0),
+                output_field=IntegerField()
             )
         ).annotate(
             costs_so_far=F('count_assignments_approved') * F('batch__settings_batch__reward'),
