@@ -19,13 +19,20 @@
     v-bind:name-state-filters="nameStateFilters"
     v-bind:name-local-storage-filters="nameLocalStorageFilters"
   >
-    <template v-slot="{ props, array_columns_selected, isCondensed }">
+    <template v-slot:default="{ props, array_columns_selected, isCondensed }">
       <component-item-hit
         v-bind:props="props"
         v-bind:array_columns_selected="array_columns_selected"
         v-bind:show_links="showLinks"
         v-bind:is-condensed="isCondensed"
       />
+    </template>
+
+    <template v-slot:filters="{ filters, filtersActive }">
+      <filters-table-hits
+        v-bind:filters="filters"
+        v-bind:filters-active="filtersActive"
+      ></filters-table-hits>
     </template>
 
     <template v-slot:actions>
@@ -35,14 +42,15 @@
 </template>
 
 <script>
-  import {mapActions, mapGetters, mapMutations, mapState} from 'vuex';
+import {mapActions, mapGetters, mapMutations, mapState} from 'vuex';
 import { Service_HITs as ServiceHits } from '../../../services/service_hits';
 import BaseTable from '../../base-table';
 import ComponentItemHit from './component_item_hit';
+import FiltersTableHits from './filters-table-hits';
 
 export default {
   name: 'ListHits',
-  components: { ComponentItemHit, BaseTable },
+  components: {FiltersTableHits, ComponentItemHit, BaseTable },
   props: {
     showLinks: {
       required: false,

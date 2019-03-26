@@ -49,6 +49,12 @@ class Manager_HITs(Interface_Manager_Items):
                 batch__id=id_batch,
             )
 
+        hits_selected = request.query_params.getlist('hitsSelected[]')
+        hits_selected = [name.upper() for name in hits_selected]
+
+        if len(hits_selected) > 0:
+            queryset = queryset.filter(id_hit__in=hits_selected)
+
         return queryset
 
     @staticmethod
