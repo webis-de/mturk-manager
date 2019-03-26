@@ -4,8 +4,9 @@ from api.classes import Interface_Manager_Items
 from api.models import Worker, Worker_Block_Project, Count_Assignments_Worker_Project, Assignment_Worker
 from api.classes.projects import Manager_Projects
 from api.enums import STATUS_BLOCK
+from rest_framework.request import Request
 import botocore
-from django.db.models import F, Q, When, Case, BooleanField, IntegerField, Count, Value, Subquery, OuterRef
+from django.db.models import F, Q, When, Case, BooleanField, IntegerField, Count, Value, Subquery, OuterRef, QuerySet
 from django.db.models.functions import Coalesce
 # from django.db.models import F, Value, Count, Q, Sum, IntegerField, ExpressionWrapper
 # from mturk_manager.classes import Manager_Qualifications
@@ -46,18 +47,38 @@ class Manager_Workers(Interface_Manager_Items):
         return item
 
     @staticmethod
-    def get_all(database_object_project, request, fields=None, use_sandbox=True):
-        foo = Count_Assignments_Worker_Project.objects.filter(
-            worker=OuterRef('pk'),
-            # project=database_object_project,
-        )
-
+    def get_all(database_object_project, request, fields=None, use_sandbox=None):
         queryset = Worker.objects.filter(
             assignments__hit__batch__project=database_object_project,
             assignments__hit__batch__use_sandbox=use_sandbox,
         ).distinct()
 
+        queryset = Manager_Workers.filter(
+            queryset=queryset,
+            request=request
+        )
+
+        queryset = Manager_Workers.annotate(
+            queryset=queryset,
+            database_object_project=database_object_project
+        )
+
+        queryset = Manager_Workers.sort_by(
+            queryset=queryset,
+            request=request
+        )
+
+        if fields is not None:
+            queryset = queryset.values(
+                *fields
+            )
+
+        return queryset
+
+    @staticmethod
+    def filter(queryset: QuerySet, request: Request) -> QuerySet:
         workers_selected = request.query_params.getlist('workersSelected[]')
+        workers_selected = [name.upper() for name in workers_selected]
         if len(workers_selected) > 0:
             queryset = queryset.filter(id_worker__in=workers_selected)
 
@@ -77,7 +98,16 @@ class Manager_Workers(Interface_Manager_Items):
         else:
             pass
 
-        queryset = queryset.annotate(
+        return queryset
+
+    @staticmethod
+    def annotate(queryset: QuerySet, database_object_project) -> QuerySet:
+        foo = Count_Assignments_Worker_Project.objects.filter(
+            worker=OuterRef('pk'),
+            # project=database_object_project,
+        )
+
+        return queryset.annotate(
             count_worker_blocks=Coalesce(
                 Count(
                     'worker_blocks_project',
@@ -103,24 +133,17 @@ class Manager_Workers(Interface_Manager_Items):
 
         )
 
-        show_workers_blocked_none = json.loads(request.query_params.get('show_workers_blocked_none', 'true'))
+        # show_workers_blocked_none = json.loads(request.query_params.get('show_workers_blocked_none', 'true'))
         # if show_workers_blocked_none == False:
         #     queryset = queryset.exclude(count_assignments_limit=True)
 
-        show_workers_blocked_limit = json.loads(request.query_params.get('show_workers_blocked_limit', 'true'))
-        if show_workers_blocked_limit == False:
-            queryset = queryset.exclude(count_assignments_limit__gt=database_object_project.count_assignments_max_per_worker)
-
-        show_workers_blocked_soft = json.loads(request.query_params.get('show_workers_blocked_soft', 'true'))
-        if show_workers_blocked_soft == False:
-            queryset = queryset.exclude(is_blocked_soft=True)
-
-        if fields is not None:
-            queryset = queryset.values(
-                *fields
-            )
-
-        return queryset
+        # show_workers_blocked_limit = json.loads(request.query_params.get('show_workers_blocked_limit', 'true'))
+        # if show_workers_blocked_limit == False:
+        #     queryset = queryset.exclude(count_assignments_limit__gt=database_object_project.count_assignments_max_per_worker)
+        #
+        # show_workers_blocked_soft = json.loads(request.query_params.get('show_workers_blocked_soft', 'true'))
+        # if show_workers_blocked_soft == False:
+        #     queryset = queryset.exclude(is_blocked_soft=True)
 
     @staticmethod
     def update(instance, data):

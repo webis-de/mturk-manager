@@ -54,6 +54,8 @@ class Manager_Batches(Interface_Manager_Items):
             )
 
         batches_selected = request.query_params.getlist('batchesSelected[]')
+        batches_selected = [name.upper() for name in batches_selected]
+
         if len(batches_selected) > 0:
             queryset = queryset.filter(name__in=batches_selected)
 
@@ -80,18 +82,6 @@ class Manager_Batches(Interface_Manager_Items):
             costs_max=F('count_assignments_total') * F('settings_batch__reward'),
             costs_so_far=F('count_assignments_approved') * F('settings_batch__reward'),
         )
-
-    @staticmethod
-    def sort_by(queryset: QuerySet, request: Request) -> QuerySet:
-        sort_by = request.query_params.get('sort_by')
-
-        if sort_by is not None:
-            descending = request.query_params.get('descending', 'false') == 'true'
-            queryset = queryset.order_by(
-                ('-' if descending else '') + sort_by
-            )
-
-        return queryset
 
     @staticmethod
     def get(id_batch):

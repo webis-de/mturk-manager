@@ -80,18 +80,6 @@ class Manager_Assignments(Interface_Manager_Items):
         )
 
     @staticmethod
-    def sort_by(queryset: QuerySet, request: Request) -> QuerySet:
-        sort_by = request.query_params.get('sort_by')
-
-        if sort_by is not None:
-            descending = request.query_params.get('descending', 'false') == 'true'
-            queryset = queryset.order_by(
-                ('-' if descending else '') + sort_by
-            )
-
-        return queryset
-
-    @staticmethod
     def update_stati_assignments(database_object_project, data):
         object_assignments = data['assignments']
         message_reject_default = data['message_reject_default']

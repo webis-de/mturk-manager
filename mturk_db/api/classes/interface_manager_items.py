@@ -26,7 +26,15 @@ class Interface_Manager_Items(object):
 
     @staticmethod
     def sort_by(queryset: QuerySet, request: Request) -> QuerySet:
-        raise_not_implemented_exception('sort_by', __class__)
+        sort_by = request.query_params.get('sort_by')
+
+        if sort_by is not None:
+            descending = request.query_params.get('descending', 'false') == 'true'
+            queryset = queryset.order_by(
+                ('-' if descending else '') + sort_by
+            )
+
+        return queryset
 
     @staticmethod
     def get(id_item: object) -> object:

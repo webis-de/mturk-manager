@@ -34,17 +34,6 @@ class Manager_Templates(Interface_Manager_Items):
     def annotate(queryset: QuerySet) -> QuerySet:
         return queryset
 
-    @staticmethod
-    def sort_by(queryset: QuerySet, request: Request) -> QuerySet:
-        sort_by = request.query_params.get('sort_by')
-        if sort_by is not None:
-            descending = request.query_params.get('descending', 'false') == 'true'
-            queryset = queryset.order_by(
-                ('-' if descending else '') + sort_by
-            )
-
-        return queryset
-
     @classmethod
     def get(cls, id_item: object) -> object:
         item = cls.model.objects.get(
