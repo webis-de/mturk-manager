@@ -3,7 +3,7 @@
     top
     v-bind:value="version_api > version_app"
     v-bind:timeout="0"
-    color="info"
+    color="warning"
     auto-height
   >
     <v-spacer></v-spacer>
