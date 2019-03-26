@@ -27,6 +27,28 @@
 
           <tr>
             <td>
+              Submitted
+              <base-help>
+                The total costs of the submitted assignments
+              </base-help>
+            </td>
+            <td>
+              <base-display-amount
+                v-if="expenses.sum_costs_submitted !== undefined"
+
+                v-bind:amount="expenses.sum_costs_submitted"
+              />
+              <v-progress-circular
+                v-else
+                indeterminate
+                size="20"
+                width="2"
+              ></v-progress-circular>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
               Pending costs
               <base-help>
                 The remaining costs you would pay if all remaining assignments would be approved
@@ -95,7 +117,7 @@ export default {
   },
   computed: {
     costsTotal() {
-      const costsTotal = this.expenses.sum_costs_so_far + this.expenses.sum_costs_pending;
+      const costsTotal = this.expenses.sum_costs_so_far + this.expenses.sum_costs_submitted + this.expenses.sum_costs_pending;
 
       if(Number.isNaN(costsTotal) === true) {
         return undefined;

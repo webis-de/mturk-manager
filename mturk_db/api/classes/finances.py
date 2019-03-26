@@ -46,29 +46,41 @@ class ManagerFinances(object):
         now = datetime.now()
 
         return queryset.annotate(
-            count_assignments_living_total=Coalesce(Count(
+            count_assignments_approved=Coalesce(Count(
                 'hits__assignments',
+                distinct=True,
+                filter=Q(hits__assignments__status_external=assignments.STATUS_EXTERNAL.APPROVED)
+            ), 0),
+
+        ).annotate(
+            count_assignments_submitted=Coalesce(Count(
+                'hits__assignments',
+                distinct=True,
+                filter=Q(hits__assignments__status_external__isnull=True)
+            ), 0),
+
+        ).annotate(
+            count_assignments_living_total=Coalesce(Sum(
+                'hits__batch__settings_batch__count_assignments',
                 distinct=True,
                 filter=Q(hits__datetime_expiration__gt=now)
             ), 0),
             count_assignments_living_available=Coalesce(Count(
                 'hits__assignments',
                 distinct=True,
-                filter=Q(hits__datetime_expiration__gt=now) & Q(hits__assignments__status_external__isnull=False)
+                filter=Q(hits__datetime_expiration__gt=now)
+                # filter=Q(hits__datetime_expiration__gt=now) & Q(hits__assignments__status_external__isnull=False)
             ), 0)
         ).annotate(
-            count_assignments_potential=F('count_assignments_living_total') - F('count_assignments_living_available'),
+            count_assignments_potential=F('count_assignments_living_total') - F('count_assignments_living_available')
 
-            count_assignments_approved=Coalesce(Count(
-                'hits__assignments',
-                distinct=True,
-                filter=Q(hits__assignments__status_external=assignments.STATUS_EXTERNAL.APPROVED)
-            ), 0),
         ).annotate(
             costs_so_far=F('count_assignments_approved') * F('settings_batch__reward'),
+            costs_submitted=F('count_assignments_submitted') * F('settings_batch__reward'),
             costs_pending=F('count_assignments_potential') * F('settings_batch__reward')
         ).aggregate(
             sum_costs_so_far=Coalesce(Sum('costs_so_far'), 0),
+            sum_costs_submitted=Coalesce(Sum('costs_submitted'), 0),
             sum_costs_pending=Coalesce(Sum('costs_pending'), 0),
         )
 
@@ -82,22 +94,33 @@ class ManagerFinances(object):
                 distinct=True,
                 filter=Q(assignments__status_external=assignments.STATUS_EXTERNAL.APPROVED)
             ), 0),
+
+        ).annotate(
+            count_assignments_submitted=Coalesce(Count(
+                'assignments',
+                distinct=True,
+                filter=Q(assignments__status_external__isnull=True)
+            ), 0),
+
+        ).annotate(
             count_assignments_potential=Case(
                 When(datetime_expiration__gt=now,
                      then=F('batch__settings_batch__count_assignments') - Count(
                             'assignments',
-                            filter=Q(assignments__status_external__isnull=False),
                             distinct=True
                      )
                  ),
                 default=Value(0),
                 output_field=IntegerField()
             )
+
         ).annotate(
             costs_so_far=F('count_assignments_approved') * F('batch__settings_batch__reward'),
+            costs_submitted=F('count_assignments_submitted') * F('batch__settings_batch__reward'),
             costs_pending=F('count_assignments_potential') * F('batch__settings_batch__reward'),
         ).aggregate(
             sum_costs_so_far=Coalesce(Sum('costs_so_far'), 0),
+            sum_costs_submitted=Coalesce(Sum('costs_submitted'), 0),
             sum_costs_pending=Coalesce(Sum('costs_pending'), 0),
         )
 
