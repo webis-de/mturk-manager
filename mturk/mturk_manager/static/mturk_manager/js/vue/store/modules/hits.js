@@ -63,7 +63,15 @@ export const moduleHITs = _.merge({}, baseModule, {
       'progress',
       'actions',
     ],
+    array_columns_selected_initial_finances: [
+      'id_hit',
+      'batch',
+      'datetime_creation',
+      'progress',
+      'actions',
+    ],
     array_columns_selected_general: null,
+    array_columns_selected_finances: null,
 
     url_api_projects_hits: undefined,
 
@@ -205,38 +213,45 @@ export const moduleHITs = _.merge({}, baseModule, {
   },
   actions: {
     async init({ state, commit, dispatch }) {
-      const array_columns = await localforage.getItem(
-        'array_columns_hits_general',
-      );
-      if (array_columns !== null) {
-        state.array_columns_selected_general = array_columns;
-      } else {
-        state.array_columns_selected_general = state.array_columns_selected_initial_general;
-      }
-
-      initPagination({
-        commit,
-        nameLocalStorage: 'pagination_hits_general',
-        nameMutation: 'setPaginationGeneral',
-      });
-
-      initPagination({
-        commit,
-        nameLocalStorage: 'pagination_hits_finances',
-        nameMutation: 'setPaginationFinances',
-      });
-
-      dispatch('loadState', {
-        nameLocalStorage: 'filtersHITsGeneral',
-        nameState: 'objectFiltersGeneral',
-        objectStateDefault: state.objectFiltersDefaultGeneral,
-      });
-
-      dispatch('loadState', {
-        nameLocalStorage: 'filtersHITsFinances',
-        nameState: 'objectFiltersFinances',
-        objectStateDefault: state.objectFiltersDefaultGeneral,
-      });
+      await Promise.all([
+        /**
+         * init columns
+         */
+        dispatch('loadState', {
+          nameLocalStorage: 'array_columns_hits_general',
+          nameState: 'array_columns_selected_general',
+          objectStateDefault: state.array_columns_selected_initial_general,
+        }),
+        dispatch('loadState', {
+          nameLocalStorage: 'array_columns_hits_finances',
+          nameState: 'array_columns_selected_finances',
+          objectStateDefault: state.array_columns_selected_initial_finances,
+        }),
+        /**
+         * init paginations
+         */
+        dispatch('loadState', {
+          nameLocalStorage: 'pagination_hits_general',
+          nameState: 'paginationGeneral',
+        }),
+        dispatch('loadState', {
+          nameLocalStorage: 'pagination_hits_finances',
+          nameState: 'paginationFinances',
+        }),
+        /**
+         * init filters
+         */
+        dispatch('loadState', {
+          nameLocalStorage: 'filtersHITsGeneral',
+          nameState: 'objectFiltersGeneral',
+          objectStateDefault: state.objectFiltersDefaultGeneral,
+        }),
+        dispatch('loadState', {
+          nameLocalStorage: 'filtersHITsFinances',
+          nameState: 'objectFiltersFinances',
+          objectStateDefault: state.objectFiltersDefaultGeneral,
+        }),
+      ]);
     },
     reset_array_columns_general({ state, commit }) {
       commit(

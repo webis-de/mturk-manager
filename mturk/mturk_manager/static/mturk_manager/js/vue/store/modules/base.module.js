@@ -17,10 +17,19 @@ export default {
     async loadState({ commit }, { nameState, nameLocalStorage, objectStateDefault = null }) {
       const objectState = await localforage.getItem(nameLocalStorage);
 
-      commit('setState', {
-        objectState: objectState === null ? _.cloneDeep(objectStateDefault) : objectState,
-        nameState,
-      });
+      if(objectState === null) {
+        if(objectStateDefault !== null) {
+          commit('setState', {
+            objectState: objectStateDefault,
+            nameState,
+          });
+        }
+      } else {
+        commit('setState', {
+          objectState,
+          nameState,
+        });
+      }
     },
     async setState({ commit }, { objectState, nameState, nameLocalStorage }) {
       commit('setState', {
@@ -34,3 +43,13 @@ export default {
     },
   },
 };
+// // loads the pagination information for a given table from localforage and saves it to vuex
+// export async function initPagination({ commit, nameLocalStorage, nameMutation }) {
+//   const objectPagination = await localforage.getItem(nameLocalStorage);
+//
+//   if (objectPagination !== null) {
+//     commit(nameMutation, {
+//       pagination: objectPagination,
+//     });
+//   }
+// }

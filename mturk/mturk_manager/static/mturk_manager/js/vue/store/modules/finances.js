@@ -1,7 +1,9 @@
 import axios from 'axios';
 import { setState } from '../../helpers';
+import _ from 'lodash';
+import baseModule from './base.module';
 
-export const module_finances = {
+export const module_finances = _.merge({}, baseModule, {
   namespaced: true,
   state: {
     balance: null,
@@ -24,14 +26,6 @@ export const module_finances = {
     },
   },
   mutations: {
-    setState(state, { objectState, nameState, nameLocalStorage }) {
-      setState({
-        state,
-        objectState,
-        nameState,
-        nameLocalStorage,
-      });
-    },
     set_balance(state, balance_new) {
       state.balance = balance_new;
     },
@@ -43,4 +37,4 @@ export const module_finances = {
       state.url_api_projects_finances = config.url_api_projects_finances;
     },
   },
-};
+});

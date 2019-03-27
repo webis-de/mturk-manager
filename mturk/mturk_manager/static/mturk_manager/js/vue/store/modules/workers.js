@@ -2,7 +2,7 @@ import Vue from 'vue';
 import _ from 'lodash';
 import localforage from 'localforage';
 import Worker from '../../classes/workers.js';
-import {initFilters, initPagination, initState, setPagination} from '../../helpers';
+import {initFilters, initPagination, setPagination} from '../../helpers';
 import baseModule from './base.module';
 
 export const moduleWorkers = _.merge({}, baseModule, {
@@ -311,29 +311,32 @@ export const moduleWorkers = _.merge({}, baseModule, {
     },
   },
   actions: {
-    async init({ state, commit }) {
-      const array_columns = await localforage.getItem(
-        'array_columns_workers_general',
-      );
-      if (array_columns !== null) {
-        state.array_columns_selected_general = array_columns;
-      } else {
-        state.array_columns_selected_general = state.array_columns_selected_initial_general;
-      }
-
-      // TODO: without specific mutations
-      initPagination({
-        commit,
-        nameLocalStorage: 'pagination_workers_general',
-        nameMutation: 'setPaginationGeneral',
-      });
-
-      initState({
-        commit,
-        nameLocalStorage: 'filtersWorkersGeneral',
-        nameState: 'objectFiltersGeneral',
-        objectStateDefault: state.objectFiltersDefaultGeneral,
-      });
+    async init({ state, commit, dispatch }) {
+      await Promise.all([
+        /**
+         * init columns
+         */
+        dispatch('loadState', {
+          nameLocalStorage: 'array_columns_workers_general',
+          nameState: 'array_columns_selected_general',
+          objectStateDefault: state.array_columns_selected_initial_general,
+        }),
+        /**
+         * init pagination
+         */
+        dispatch('loadState', {
+          nameLocalStorage: 'pagination_workers_general',
+          nameState: 'paginationGeneral',
+        }),
+        /**
+         * init filters
+         */
+        dispatch('loadState', {
+          nameLocalStorage: 'filtersWorkersGeneral',
+          nameState: 'objectFiltersGeneral',
+          objectStateDefault: state.objectFiltersDefaultGeneral,
+        }),
+      ]);
     },
     reset_array_columns_general({ state, commit }) {
       commit(

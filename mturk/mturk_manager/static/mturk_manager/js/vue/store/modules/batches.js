@@ -2,7 +2,7 @@ import Vue from 'vue';
 import _ from 'lodash';
 import localforage from 'localforage';
 import Batch from '../../classes/batch';
-import { initPagination, initState, setPagination } from '../../helpers';
+import { initPagination, setPagination } from '../../helpers';
 import baseModule from './base.module';
 
 export const moduleBatches = _.merge({}, baseModule, {
@@ -183,124 +183,6 @@ export const moduleBatches = _.merge({}, baseModule, {
     get_is_syncing_mturk: state => state.is_syncing_mturk,
   },
   mutations: {
-    // setBatchesAndHits_sandbox(state, {list_hits, dict_batches}) {
-    //     // set batches
-    //     state.object_batches_sandbox = {};
-    //     _.forIn(dict_batches, function(batch, id_batch) {
-    //         state.object_batches_sandbox[id_batch] = batch;
-    //         state.object_batches_sandbox[id_batch]['hits'] = [];
-
-    //     });
-
-    //     // set hits
-    //     _.forEach(list_hits, function(hit){
-    //         // console.log(Date.parse(hit.datetime_creation));
-    //         hit.datetime_creation = new Date(hit.datetime_creation);
-
-    //         state.object_batches_sandbox[hit.id_batch].hits.push(hit);
-    //     });
-
-    //     _.forIn(state.object_batches_sandbox, function(batch, id_batch) {
-    //         // datetime of last hit is created time of batch
-    //         batch.datetime_creation = batch.hits[0].datetime_creation;
-
-    //         batch.count_assignments_approved = _.sumBy(
-    //             batch.hits, 'count_assignments_approved'
-    //         );
-    //         batch.count_assignments_rejected = _.sumBy(
-    //             batch.hits, 'count_assignments_rejected'
-    //         );
-
-    //         batch.count_assignments_total =  batch.hits.length * batch.count_assignments_per_hit;
-
-    //         batch.money_spent_without_fee = batch.count_assignments_approved * batch.reward;
-    //         if(batch.count_assignments_per_hit < 10) {
-    //             batch.money_spent_with_fee = batch.money_spent_without_fee * 1.2;
-    //         } else {
-    //             batch.money_spent_with_fee = batch.money_spent_without_fee * 1.4;
-    //         }
-
-    //         batch.money_spent_max_without_fee = batch.count_assignments_total * batch.reward;
-    //         if(batch.count_assignments_per_hit < 10) {
-    //             batch.money_spent_max_with_fee = batch.money_spent_max_without_fee * 1.2;
-    //         } else {
-    //             batch.money_spent_max_with_fee = batch.money_spent_max_without_fee * 1.4;
-    //         }
-
-    //         batch.money_not_spent_without_fee = batch.count_assignments_rejected * batch.reward;
-    //         if(batch.count_assignments_per_hit < 10) {
-    //             batch.money_not_spent_with_fee = batch.money_not_spent_without_fee * 1.2;
-    //         } else {
-    //             batch.money_not_spent_with_fee = batch.money_not_spent_without_fee * 1.4;
-    //         }
-    //     });
-
-    //     // console.log(state.object_batches_sandbox)
-
-    //     state.object_batches_sandbox = dict_batches;
-    // },
-    // setBatchesAndHits(state, {list_hits, dict_batches}) {
-    //     // set batches
-    //     state.object_batches = {};
-    //     _.forIn(dict_batches, function(batch, id_batch) {
-    //         state.object_batches[id_batch] = batch;
-    //         state.object_batches[id_batch]['hits'] = [];
-
-    //     });
-
-    //     // set hits
-    //     _.forEach(list_hits, function(hit){
-    //         // console.log(Date.parse(hit.datetime_creation));
-    //         hit.datetime_creation = new Date(hit.datetime_creation);
-
-    //         state.object_batches[hit.id_batch].hits.push(hit);
-    //     });
-
-    //     _.forIn(state.object_batches, function(batch, id_batch) {
-    //         // datetime of last hit is created time of batch
-    //         batch.datetime_creation = batch.hits[0].datetime_creation;
-
-    //         batch.count_assignments_approved = _.sumBy(
-    //             batch.hits, 'count_assignments_approved'
-    //         );
-    //         batch.count_assignments_rejected = _.sumBy(
-    //             batch.hits, 'count_assignments_rejected'
-    //         );
-
-    //         batch.count_assignments_total =  batch.hits.length * batch.count_assignments_per_hit;
-
-    //         batch.money_spent_without_fee = batch.count_assignments_approved * batch.reward;
-    //         if(batch.count_assignments_per_hit < 10) {
-    //             batch.money_spent_with_fee = batch.money_spent_without_fee * 1.2;
-    //         } else {
-    //             batch.money_spent_with_fee = batch.money_spent_without_fee * 1.4;
-    //         }
-
-    //         batch.money_spent_max_without_fee = batch.count_assignments_total * batch.reward;
-    //         if(batch.count_assignments_per_hit < 10) {
-    //             batch.money_spent_max_with_fee = batch.money_spent_max_without_fee * 1.2;
-    //         } else {
-    //             batch.money_spent_max_with_fee = batch.money_spent_max_without_fee * 1.4;
-    //         }
-
-    //         batch.money_not_spent_without_fee = batch.count_assignments_rejected * batch.reward;
-    //         if(batch.count_assignments_per_hit < 10) {
-    //             batch.money_not_spent_with_fee = batch.money_not_spent_without_fee * 1.2;
-    //         } else {
-    //             batch.money_not_spent_with_fee = batch.money_not_spent_without_fee * 1.4;
-    //         }
-    //     });
-
-    //     console.log(state.object_batches)
-
-    //     state.object_batches = dict_batches;
-    // },
-    // setObjectBatches(state, dict_batches) {
-    //     for(let id_batch in dict_batches) {
-    //         state.object_batches[id_batch] = dict_batches[id_batch];
-    //     };
-    //     state.object_batches = dict_batches;
-    // },
     setPaginationGeneral(state, { pagination, setPageTo1 }) {
       setPagination({
         pagination,
@@ -436,48 +318,46 @@ export const moduleBatches = _.merge({}, baseModule, {
     },
   },
   actions: {
-    async init({ state, commit, dispatch }) {
-      let arrayColumns = await localforage.getItem(
-        'array_columns_batches_general',
-      );
-      if (arrayColumns !== null) {
-        state.array_columns_selected_general = arrayColumns;
-      } else {
-        state.array_columns_selected_general = state.array_columns_selected_initial_general;
-      }
-
-      arrayColumns = await localforage.getItem(
-        'array_columns_batches_finances',
-      );
-      if (arrayColumns !== null) {
-        state.array_columns_selected_finances = arrayColumns;
-      } else {
-        state.array_columns_selected_finances = state.array_columns_selected_initial_finances;
-      }
-
-      initPagination({
-        commit,
-        nameLocalStorage: 'pagination_batches_general',
-        nameMutation: 'setPaginationGeneral',
-      });
-
-      initPagination({
-        commit,
-        nameLocalStorage: 'pagination_batches_finances',
-        nameMutation: 'setPaginationFinances',
-      });
-
-      dispatch('loadState', {
-        nameLocalStorage: 'filtersBatchesGeneral',
-        nameState: 'objectFiltersGeneral',
-        objectStateDefault: state.objectFiltersDefaultGeneral,
-      });
-
-      dispatch('loadState', {
-        nameLocalStorage: 'filtersBatchesFinances',
-        nameState: 'objectFiltersFinances',
-        objectStateDefault: state.objectFiltersDefaultGeneral,
-      });
+    async init({ state, dispatch }) {
+      await Promise.all([
+        /**
+         * init columns
+         */
+        dispatch('loadState', {
+          nameLocalStorage: 'array_columns_batches_general',
+          nameState: 'array_columns_selected_general',
+          objectStateDefault: state.array_columns_selected_initial_general,
+        }),
+        dispatch('loadState', {
+          nameLocalStorage: 'array_columns_batches_finances',
+          nameState: 'array_columns_selected_finances',
+          objectStateDefault: state.array_columns_selected_initial_finances,
+        }),
+        /**
+         * init pagination
+         */
+        dispatch('loadState', {
+          nameLocalStorage: 'pagination_batches_general',
+          nameState: 'paginationGeneral',
+        }),
+        dispatch('loadState', {
+          nameLocalStorage: 'pagination_batches_finances',
+          nameState: 'paginationFinances',
+        }),
+        /**
+         * init filters
+         */
+        dispatch('loadState', {
+          nameLocalStorage: 'filtersBatchesGeneral',
+          nameState: 'objectFiltersGeneral',
+          objectStateDefault: state.objectFiltersDefaultGeneral,
+        }),
+        dispatch('loadState', {
+          nameLocalStorage: 'filtersBatchesFinances',
+          nameState: 'objectFiltersFinances',
+          objectStateDefault: state.objectFiltersDefaultGeneral,
+        }),
+      ]);
     },
     reset_array_columns_general({ state, commit }) {
       commit(

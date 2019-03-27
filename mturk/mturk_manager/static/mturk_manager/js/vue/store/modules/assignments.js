@@ -4,7 +4,7 @@ import localforage from 'localforage';
 import Assignment from '../../classes/assignment.js';
 
 import HIT from '../../classes/hit';
-import { initPagination, initState, setPagination } from '../../helpers';
+import { initPagination, setPagination } from '../../helpers';
 import baseModule from './base.module';
 
 export const moduleAssignments = _.merge({}, baseModule, {
@@ -75,7 +75,17 @@ export const moduleAssignments = _.merge({}, baseModule, {
       'status',
       'hit',
     ],
+    array_columns_selected_initial_finances: [
+      'id_assignment',
+      'datetime_creation',
+      'datetime_accept',
+      'datetime_submit',
+      'worker',
+      'status',
+      'hit',
+    ],
     array_columns_selected_general: null,
+    array_columns_selected_finances: null,
 
     objectFiltersGeneral: null,
     objectFiltersFinances: null,
@@ -265,38 +275,45 @@ export const moduleAssignments = _.merge({}, baseModule, {
   },
   actions: {
     async init({ state, commit, dispatch }) {
-      const array_columns = await localforage.getItem(
-        'array_columns_assignments_general',
-      );
-      if (array_columns !== null) {
-        state.array_columns_selected_general = array_columns;
-      } else {
-        state.array_columns_selected_general = state.array_columns_selected_initial_general;
-      }
-
-      initPagination({
-        commit,
-        nameLocalStorage: 'pagination_assignments_general',
-        nameMutation: 'setPaginationGeneral',
-      });
-
-      initPagination({
-        commit,
-        nameLocalStorage: 'pagination_assignments_finances',
-        nameMutation: 'setPaginationFinances',
-      });
-
-      dispatch('loadState', {
-        nameLocalStorage: 'filtersAssignmentsGeneral',
-        nameState: 'objectFiltersGeneral',
-        objectStateDefault: state.objectFiltersDefaultGeneral,
-      });
-
-      dispatch('loadState', {
-        nameLocalStorage: 'filtersAssignmentsFinances',
-        nameState: 'objectFiltersFinances',
-        objectStateDefault: state.objectFiltersDefaultGeneral,
-      });
+      await Promise.all([
+        /**
+         * init columns
+         */
+        dispatch('loadState', {
+          nameLocalStorage: 'array_columns_assignments_general',
+          nameState: 'array_columns_selected_general',
+          objectStateDefault: state.array_columns_selected_initial_general,
+        }),
+        dispatch('loadState', {
+          nameLocalStorage: 'array_columns_assignments_finances',
+          nameState: 'array_columns_selected_finances',
+          objectStateDefault: state.array_columns_selected_initial_finances,
+        }),
+        /**
+         * init pagination
+         */
+        dispatch('loadState', {
+          nameLocalStorage: 'pagination_assignments_general',
+          nameState: 'paginationGeneral',
+        }),
+        dispatch('loadState', {
+          nameLocalStorage: 'pagination_assignments_finances',
+          nameState: 'paginationFinances',
+        }),
+        /**
+         * init filters
+         */
+        dispatch('loadState', {
+          nameLocalStorage: 'filtersAssignmentsGeneral',
+          nameState: 'objectFiltersGeneral',
+          objectStateDefault: state.objectFiltersDefaultGeneral,
+        }),
+        dispatch('loadState', {
+          nameLocalStorage: 'filtersAssignmentsFinances',
+          nameState: 'objectFiltersFinances',
+          objectStateDefault: state.objectFiltersDefaultGeneral,
+        }),
+      ]);
     },
     reset_array_columns_general({ state, commit }) {
       commit(

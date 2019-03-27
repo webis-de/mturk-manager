@@ -3,8 +3,9 @@ import Vue from 'vue';
 import Settings_Batch from '../../classes/settings_batch';
 import {initPagination, setPagination} from '../../helpers';
 import localforage from "localforage";
+import baseModule from './base.module';
 
-export const moduleSettingsBatch = {
+export const moduleSettingsBatch = _.merge({}, baseModule, {
   namespaced: true,
   state: {
     urlApiProjectsSettingsBatch: undefined,
@@ -96,12 +97,16 @@ export const moduleSettingsBatch = {
     },
   },
   actions: {
-    async init({ commit }) {
-      initPagination({
-        commit,
-        nameLocalStorage: 'pagination_settings_batch_general',
-        nameMutation: 'setPaginationGeneral',
-      });
+    async init({ dispatch }) {
+      await Promise.all([
+        /**
+         * init pagination
+         */
+        dispatch('loadState', {
+          nameLocalStorage: 'pagination_settings_batch_general',
+          nameState: 'paginationGeneral',
+        }),
+      ]);
     },
   },
-};
+});

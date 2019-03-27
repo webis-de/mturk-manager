@@ -5,8 +5,9 @@ import Template_Worker from '../../classes/template_worker';
 import Template_Assignment from '../../classes/template_assignment';
 import Template_HIT from '../../classes/template_hit';
 import Template_Global from '../../classes/template_global';
+import baseModule from './base.module';
 
-export const moduleTemplates = {
+export const moduleTemplates = _.merge({}, baseModule, {
   namespaced: true,
   state: {
     urlApiProjectsTemplatesWorker: undefined,
@@ -312,27 +313,28 @@ export const moduleTemplates = {
     },
   },
   actions: {
-    async init({ commit }) {
-      initPagination({
-        commit,
-        nameLocalStorage: 'pagination_templates_worker',
-        nameMutation: 'setPaginationWorker',
-      });
-      initPagination({
-        commit,
-        nameLocalStorage: 'pagination_templates_assignment',
-        nameMutation: 'setPaginationAssignment',
-      });
-      initPagination({
-        commit,
-        nameLocalStorage: 'pagination_templates_hit',
-        nameMutation: 'setPaginationHIT',
-      });
-      initPagination({
-        commit,
-        nameLocalStorage: 'pagination_templates_global',
-        nameMutation: 'setPaginationGlobal',
-      });
+    async init({ dispatch }) {
+      await Promise.all([
+        /**
+         * init pagination
+         */
+        dispatch('loadState', {
+          nameLocalStorage: 'pagination_templates_worker',
+          nameState: 'paginationWorker',
+        }),
+        dispatch('loadState', {
+          nameLocalStorage: 'pagination_templates_assignment',
+          nameState: 'paginationAssignment',
+        }),
+        dispatch('loadState', {
+          nameLocalStorage: 'pagination_templates_hit',
+          nameState: 'paginationHIT',
+        }),
+        dispatch('loadState', {
+          nameLocalStorage: 'pagination_templates_global',
+          nameState: 'paginationGlobal',
+        }),
+      ]);
     },
   },
-};
+});
