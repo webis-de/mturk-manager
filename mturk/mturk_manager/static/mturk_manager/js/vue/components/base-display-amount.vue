@@ -1,5 +1,10 @@
 <template>
-  <span>{{ amount_formatted_ }}</span>
+  <span>
+    <template v-if="amount !== undefined">
+      {{ amount_formatted_ }}
+    </template>
+    <slot v-else></slot>
+  </span>
 </template>
 
 <script>
@@ -10,8 +15,9 @@ export default {
   mixins: [helpers],
   props: {
     amount: {
-      required: true,
+      required: false,
       type: Number,
+      default: undefined,
     },
   },
   computed: {

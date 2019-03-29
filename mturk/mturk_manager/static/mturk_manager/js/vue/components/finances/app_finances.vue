@@ -97,6 +97,7 @@
       >
         <display-expenses
           v-bind:expenses="expenses"
+          v-bind:type-item="typeItem"
         ></display-expenses>
       </v-flex>
     </v-layout>

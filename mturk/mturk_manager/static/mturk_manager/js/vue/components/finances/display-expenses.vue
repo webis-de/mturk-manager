@@ -1,97 +1,27 @@
 <template>
   <v-layout>
     <v-flex>
-      <table>
-        <tbody>
-          <tr>
-            <td>
-              Costs so far
-              <base-help>
-                The total costs of the approved assignments
-              </base-help>
-            </td>
-            <td>
-              <base-display-amount
-                v-if="expenses.sum_costs_so_far !== undefined"
+      <v-card>
+        <v-card-title>
+          Costs
+        </v-card-title>
 
-                v-bind:amount="expenses.sum_costs_so_far"
-              />
-              <v-progress-circular
-                v-else
-                indeterminate
-                size="20"
-                width="2"
-              ></v-progress-circular>
-            </td>
-          </tr>
-
-          <tr>
-            <td>
-              Submitted
-              <base-help>
-                The total costs of the submitted assignments
-              </base-help>
-            </td>
-            <td>
-              <base-display-amount
-                v-if="expenses.sum_costs_submitted !== undefined"
-
-                v-bind:amount="expenses.sum_costs_submitted"
-              />
-              <v-progress-circular
-                v-else
-                indeterminate
-                size="20"
-                width="2"
-              ></v-progress-circular>
-            </td>
-          </tr>
-
-          <tr>
-            <td>
-              Pending costs
-              <base-help>
-                The remaining costs you would pay if all remaining assignments would be approved
-              </base-help>
-            </td>
-            <td>
-              <base-display-amount
-                v-if="expenses.sum_costs_pending !== undefined"
-
-                v-bind:amount="expenses.sum_costs_pending"
-              />
-              <v-progress-circular
-                v-else
-                indeterminate
-                size="20"
-                width="2"
-              ></v-progress-circular>
-            </td>
-          </tr>
-
-          <tr>
-            <td>
-              Max costs
-              <base-help>
-                The total costs of all batches
-              </base-help>
-            </td>
-            <td>
-              <base-display-amount
-                v-if="costsTotal !== undefined"
-
-                v-bind:amount="costsTotal"
-              />
-              <v-progress-circular
-                v-else
-                indeterminate
-                size="20"
-                width="2"
-              ></v-progress-circular>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+        <v-card-text>
+          <base-calculation
+            v-bind:calculations="calculations"
+            v-bind:result="{
+              number: costsTotal,
+              description: 'Total',
+            }"
+          >
+            <v-progress-circular
+              indeterminate
+              size="20"
+              width="2"
+            ></v-progress-circular>
+          </base-calculation>
+        </v-card-text>
+      </v-card>
     </v-flex>
   </v-layout>
 </template>
@@ -100,24 +30,58 @@
 import {
   mapState,
 } from 'vuex';
-import BaseDisplayAmount from '../base-display-amount';
-import BaseHelp from '../base-help';
+import BaseCalculation from '../base-calculation';
 
 export default {
   name: 'DisplayExpenses',
   components: {
-    BaseHelp,
-    BaseDisplayAmount,
+    BaseCalculation,
   },
   props: {
     expenses: {
       required: true,
       type: Object,
     },
+    typeItem: {
+      required: true,
+      type: String,
+    },
   },
   computed: {
+    calculations()  {
+      const result = [
+        {
+          operation: '',
+          number: this.expenses.sum_costs_so_far,
+          description: 'So far',
+          detail: 'The costs already paid',
+        },
+      ];
+
+      result.push({
+        operation: '+',
+        number: this.expenses.sum_costs_submitted,
+        description: 'Submitted',
+        detail: 'The costs if all currently submitted assignments would be approved',
+      });
+
+      if(this.typeItem !== 'assignments') {
+        result.push({
+          operation: '+',
+          number: this.expenses.sum_costs_pending,
+          description: 'Pending',
+          detail: 'The costs of the remaining assignments',
+        });
+      }
+
+      return result;
+    },
     costsTotal() {
-      const costsTotal = this.expenses.sum_costs_so_far + this.expenses.sum_costs_submitted + this.expenses.sum_costs_pending;
+      let costsTotal = this.expenses.sum_costs_so_far + this.expenses.sum_costs_submitted;
+
+      if(this.typeItem !== 'assignments') {
+         costsTotal += this.expenses.sum_costs_pending
+      }
 
       if(Number.isNaN(costsTotal) === true) {
         return undefined;
