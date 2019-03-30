@@ -146,6 +146,34 @@ export default class Controller {
         event.data.view.check_submit_button();
       },
     );
+
+    $(document).on(
+      'click',
+      '.dropdown_approve_internally_assignment a',
+      {
+        loader: this.loader,
+        view: this.view,
+      },
+      function (event) {
+        const elem_link = $(this);
+        const id_assignment = elem_link.data('id_assignment');
+        const message = elem_link.text();
+
+        add_to_object_assignments_selected(
+          event.data.loader,
+          id_assignment,
+          'approve_internally',
+          message,
+        );
+
+        $(
+          `.approve_internally_assignment[data-id_assignment="${id_assignment}"]`,
+        ).addClass('active');
+
+        event.data.view.update_info();
+        event.data.view.check_submit_button();
+      },
+    );
     // changes of default reject message
     $(document).on(
       'input',
