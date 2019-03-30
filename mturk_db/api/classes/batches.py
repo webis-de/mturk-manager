@@ -53,11 +53,12 @@ class Manager_Batches(Interface_Manager_Items):
                 id__in=list_ids
             )
 
-        batches_selected = request.query_params.getlist('batchesSelected[]')
-        batches_selected = [name.upper() for name in batches_selected]
-
-        if len(batches_selected) > 0:
-            queryset = queryset.filter(name__in=batches_selected)
+        queryset = Manager_Batches.filter_list(
+            queryset=queryset,
+            request=request,
+            name_filter='batchesSelected',
+            name_field='name'
+        )
 
         return queryset
 

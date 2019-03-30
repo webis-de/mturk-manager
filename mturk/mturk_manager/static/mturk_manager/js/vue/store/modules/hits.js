@@ -79,6 +79,7 @@ export const moduleHITs = _.merge({}, baseModule, {
     objectFiltersFinances: null,
     objectFiltersDefaultGeneral: {
       hitsSelected: [],
+      batchesSelected: [],
     },
   },
   getters: {

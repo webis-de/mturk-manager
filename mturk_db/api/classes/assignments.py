@@ -63,9 +63,44 @@ class Manager_Assignments(Interface_Manager_Items):
         if id_hit is not None:
             queryset = queryset.filter(hit__id=id_hit)
 
-        show_only_submitted_assignments = json.loads(request.query_params.get('show_only_submitted_assignments', 'false'))
-        if show_only_submitted_assignments == True:
-            queryset = queryset.filter(status_external__isnull=True)
+        queryset = Manager_Assignments.filter_list(
+            queryset=queryset,
+            request=request,
+            name_filter='assignmentsSelected',
+            name_field='id_assignment'
+        )
+
+        queryset = Manager_Assignments.filter_list(
+            queryset=queryset,
+            request=request,
+            name_filter='hitsSelected',
+            name_field='hit__id_hit'
+        )
+
+        queryset = Manager_Assignments.filter_list(
+            queryset=queryset,
+            request=request,
+            name_filter='batchesSelected',
+            name_field='hit__batch__name'
+        )
+
+        queryset = Manager_Assignments.filter_list(
+            queryset=queryset,
+            request=request,
+            name_filter='workersSelected',
+            name_field='worker__id_worker'
+        )
+
+        queryset = Manager_Assignments.filter_boolean(
+            queryset=queryset,
+            request=request,
+            name_filter='show_only_submitted_assignments',
+            name_field='status_external__isnull'
+        )
+
+        # show_only_submitted_assignments = json.loads(request.query_params.get('show_only_submitted_assignments', 'false'))
+        # if show_only_submitted_assignments == True:
+        #     queryset = queryset.filter(status_external__isnull=True)
 
         filter_worker = request.query_params.get('worker', '')
         if filter_worker != '':

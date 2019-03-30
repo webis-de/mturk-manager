@@ -52,7 +52,7 @@
               color="primary"
               v-on:click.stop="resetFilters()"
             >
-              Reset
+              Reset All
             </v-btn>
 
             <v-btn

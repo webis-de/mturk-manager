@@ -92,6 +92,9 @@ export const moduleAssignments = _.merge({}, baseModule, {
     objectFiltersDefaultGeneral: {
       show_only_submitted_assignments: false,
       assignmentsSelected: [],
+      hitsSelected: [],
+      batchesSelected: [],
+      workersSelected: [],
     },
   },
   getters: {

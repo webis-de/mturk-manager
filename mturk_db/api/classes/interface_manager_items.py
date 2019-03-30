@@ -1,6 +1,7 @@
 from api.helpers import raise_not_implemented_exception
 from api.models import Project
 from rest_framework.request import Request
+import json
 
 from django.db.models import QuerySet, Model
 
@@ -51,3 +52,35 @@ class Interface_Manager_Items(object):
     @staticmethod
     def delete(id_item: int) -> None:
         raise_not_implemented_exception('delete', __class__)
+
+    @staticmethod
+    def filter_boolean(queryset: QuerySet, request: Request, name_filter: str, name_field: str):
+        isActive = json.loads(request.query_params.get(name_filter, 'false'))
+        if isActive == True:
+            if json.loads(request.query_params.get('{name_filter}Exclude'.format(name_filter=name_filter), 'false')):
+                queryset = queryset.exclude(**{
+                    name_field: True
+                })
+            else:
+                queryset = queryset.filter(**{
+                    name_field: True
+                })
+
+        return queryset
+
+    @staticmethod
+    def filter_list(queryset: QuerySet, request: Request, name_filter: str, name_field: str) -> QuerySet:
+        items_selected = request.query_params.getlist('{name_filter}[]'.format(name_filter=name_filter))
+        items_selected = [name.upper() for name in items_selected]
+
+        if len(items_selected) > 0:
+            if json.loads(request.query_params.get('{name_filter}Exclude'.format(name_filter=name_filter), 'false')):
+                queryset = queryset.exclude(**{
+                    '{name_field}__in'.format(name_field=name_field): items_selected
+                })
+            else:
+                queryset = queryset.filter(**{
+                    '{name_field}__in'.format(name_field=name_field): items_selected
+                })
+
+        return queryset

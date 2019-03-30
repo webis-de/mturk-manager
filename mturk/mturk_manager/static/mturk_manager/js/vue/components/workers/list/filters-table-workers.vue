@@ -3,6 +3,7 @@
     <base-table-filter
       title="Worker ID"
       v-bind:filters-active="filtersActive"
+      v-bind:filters="filters"
       v-bind:breakpoints="{'sm12': true, 'md6': true}"
       name-filter="workersSelected"
     >

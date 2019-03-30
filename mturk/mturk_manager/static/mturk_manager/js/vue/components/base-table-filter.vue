@@ -26,11 +26,13 @@
             <slot
               name="header"
             ></slot>
-            <!--<v-switch-->
-              <!--class="mt-0 pt-0"-->
-              <!--label="Exclude"-->
-              <!--hide-details-->
-            <!--/>-->
+            <v-switch
+              class="mt-0 pt-0"
+              label="Exclude"
+              hide-details
+              v-bind:input-value="isExcluded"
+              v-on:change="$set(filters, nameExcluded, $event)"
+            />
           </v-flex>
         </v-layout>
       </v-card-title>
@@ -52,6 +54,10 @@ export default {
       required: true,
       type: Object,
     },
+    filters: {
+      required: true,
+      type: Object,
+    },
     title: {
       required: true,
       type: String,
@@ -65,6 +71,14 @@ export default {
       type: Object,
       default: () => {},
     },
+  },
+  computed: {
+    nameExcluded() {
+      return `${this.nameFilter}Exclude`;
+    },
+    isExcluded() {
+      return this.filters.hasOwnProperty(this.nameExcluded) ? this.filters[this.nameExcluded] : false;
+    }
   }
 };
 </script>

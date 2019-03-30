@@ -77,10 +77,12 @@ class Manager_Workers(Interface_Manager_Items):
 
     @staticmethod
     def filter(queryset: QuerySet, request: Request) -> QuerySet:
-        workers_selected = request.query_params.getlist('workersSelected[]')
-        workers_selected = [name.upper() for name in workers_selected]
-        if len(workers_selected) > 0:
-            queryset = queryset.filter(id_worker__in=workers_selected)
+        queryset = Manager_Workers.filter_list(
+            queryset=queryset,
+            request=request,
+            name_filter='workersSelected',
+            name_field='id_worker'
+        )
 
         states_block = set(request.query_params.getlist('statesBlock[]'))
         combine_with_and = json.loads(request.query_params.get('combineWithAnd', 'false'))
