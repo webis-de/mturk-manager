@@ -1,6 +1,7 @@
 <template>
-  <v-dialog v-model="dialog" max-width="500">
+  <v-dialog v-bind:disabled="true" v-model="dialog" max-width="500">
     <v-btn
+      v-bind:disabled="true"
       slot="activator"
       class="my-0"
       icon
@@ -38,7 +39,7 @@ import {
 import { Service_Templates } from '../../../services/service_templates';
 
 export default {
-  name: 'CompoentDeleteTemplateWorker',
+  name: 'ComponentDeleteTemplateWorker',
   props: {
     template_worker: {},
   },

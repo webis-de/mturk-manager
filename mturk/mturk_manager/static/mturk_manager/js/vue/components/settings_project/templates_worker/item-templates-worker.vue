@@ -1,8 +1,11 @@
 <template>
   <tr>
     <td
-      v-bind:style="stylesCell"
-      class="text-xs-center"
+      v-bind:style="{
+        ...stylesCell,
+        'paddingLeft': '16px',
+      }"
+      class="text-xs-left"
     >
       {{ templateWorker.name }}
     </td>
@@ -58,20 +61,21 @@
         v-bind:template_worker_current="templateWorker"
         v-on:edited="$emit('edited')"
       ></component-edit-template-worker>
-      <!-- <component-delete-template-worker
-                  v-bind:key="`component-delete-template-worker-${props.item.id}`"
-                  v-bind:template_worker="props.item"
-                  v-on:deleted="snackbar_deleted = true"
-              ></component-delete-template-worker> -->
+      <component-delete-template-worker
+          v-bind:key="`component-delete-template-worker-${props.item.id}`"
+          v-bind:template_worker="props.item"
+          v-on:deleted="snackbar_deleted = true"
+      ></component-delete-template-worker>
     </td>
   </tr>
 </template>
 
 <script>
 import ComponentEditTemplateWorker from './component_edit_template_worker';
+import ComponentDeleteTemplateWorker from './component_delete_template_worker';
 export default {
   name: 'ItemTemplatesWorker',
-  components: {ComponentEditTemplateWorker},
+  components: {ComponentDeleteTemplateWorker, ComponentEditTemplateWorker},
   props: {
     props: {
       type: Object,
@@ -102,5 +106,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

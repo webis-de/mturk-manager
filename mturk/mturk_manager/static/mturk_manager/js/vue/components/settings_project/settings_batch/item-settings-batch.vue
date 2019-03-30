@@ -4,8 +4,11 @@
     class="text-no-wrap"
   >
     <td
-      v-bind:style="stylesCell"
-      class="text-xs-center"
+      v-bind:style="{
+        ...stylesCell,
+        'paddingLeft': '16px',
+      }"
+      class="text-xs-left"
     >
       {{ settingsBatch.name }}
     </td>
@@ -19,7 +22,7 @@
 
     <td
       v-bind:style="stylesCell"
-      class="text-xs-center"
+      class="text-xs-right"
     >
       <base-display-amount v-bind:amount="settingsBatch.reward"></base-display-amount>
     </td>

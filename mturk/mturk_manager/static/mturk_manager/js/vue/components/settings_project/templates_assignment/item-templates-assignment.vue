@@ -1,8 +1,11 @@
 <template>
   <tr>
     <td
-      v-bind:style="stylesCell"
-      class="text-xs-center"
+      v-bind:style="{
+        ...stylesCell,
+        'paddingLeft': '16px',
+      }"
+      class="text-xs-left"
     >
       {{ templateAssignment.name }}
     </td>

@@ -30,14 +30,17 @@
         <th
           v-for="header in props.headers"
           v-bind:key="header.value"
-          v-bind:width="header.width"
           v-bind:class="[
             'column',
             { sortable: header.sortable !== false },
             pagination.descending ? 'desc' : 'asc',
-            header.value === pagination.sortBy ? 'active' : ''
+            header.value === pagination.sortBy ? 'active' : '',
+            ...header.classes,
           ]"
-          v-bind:style="stylesHeaderCell"
+          v-bind:style="{
+            ...stylesHeaderCell,
+            width: header.width,
+          }"
           v-on="
             header.sortable !== false
               ? {
