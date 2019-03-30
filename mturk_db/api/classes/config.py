@@ -4,7 +4,7 @@ class Manager_Config(object):
     @staticmethod
     def get_config():
         config = {
-            'version_api': settings.VERSION_API,
+            'version': settings.VERSION,
             'paths': Manager_Config.get_paths(),
         }
         return config

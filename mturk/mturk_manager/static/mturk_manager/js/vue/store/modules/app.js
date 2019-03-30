@@ -9,7 +9,7 @@ export const module_app = _.merge({}, baseModule, {
     token_instance: null,
     use_sandbox: true,
     version_api: null,
-    version_app: 1.02,
+    version: '1.1.0',
   },
   getters: {
     has_credentials(state) {
@@ -51,7 +51,7 @@ export const module_app = _.merge({}, baseModule, {
       }
       commit('set_use_sandbox', use_sandbox);
 
-      commit('version_api', config.version_api);
+      commit('version_api', config.version);
 
       commit('moduleAssignments/set_urls', config.paths, { root: true });
       commit('moduleBatches/set_urls', config.paths, { root: true });

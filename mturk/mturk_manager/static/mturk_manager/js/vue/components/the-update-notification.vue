@@ -1,9 +1,9 @@
 <template>
   <v-snackbar
     top
-    v-bind:value="version_api > version_app"
+    v-bind:value="version_api !== version && version_api !== null"
     v-bind:timeout="0"
-    color="warning"
+    color="error"
     auto-height
   >
     <v-spacer></v-spacer>
@@ -28,7 +28,7 @@ export default {
     return {};
   },
   computed: {
-    ...mapState('module_app', ['version_api', 'version_app']),
+    ...mapState('module_app', ['version_api', 'version']),
   },
 };
 </script>
