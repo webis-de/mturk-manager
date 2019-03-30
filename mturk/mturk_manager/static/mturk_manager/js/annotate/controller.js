@@ -127,6 +127,8 @@ export default class Controller {
         view: this.view,
       },
       function (event) {
+        event.preventDefault();
+
         const elem_link = $(this);
         const id_assignment = elem_link.data('id_assignment');
         const message = elem_link.text();
@@ -155,6 +157,8 @@ export default class Controller {
         view: this.view,
       },
       function (event) {
+        event.preventDefault();
+
         const elem_link = $(this);
         const id_assignment = elem_link.data('id_assignment');
         const message = elem_link.text();
