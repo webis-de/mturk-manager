@@ -7,7 +7,7 @@ export const table = {
       if (this.pagination.page !== 1) {
         this.pagination.page = 1;
       } else {
-        this.load_page();
+        this.load_page(this.filters);
       }
     },
   },
