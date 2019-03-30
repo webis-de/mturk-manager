@@ -3,7 +3,7 @@
     Current balance:
     <base-display-amount
       v-if="get_balance() !== null"
-      v-bind:amount="get_balance() * 100"
+      v-bind:amount="parseInt(get_balance() * 100)"
     ></base-display-amount>
     <v-progress-circular
       v-else
