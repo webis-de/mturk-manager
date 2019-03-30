@@ -2,7 +2,7 @@
   <tr>
     <td
       v-bind:style="stylesCell"
-      class="text-xs-center"
+      class="text-xs-left"
     >
       {{ templateAssignment.name }}
     </td>

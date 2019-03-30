@@ -27,6 +27,7 @@ export const moduleSettingsBatch = _.merge({}, baseModule, {
       {
         text: 'Name',
         value: 'name',
+        classes: ['text-xs-left'],
       },
       {
         text: 'Title',
@@ -35,6 +36,7 @@ export const moduleSettingsBatch = _.merge({}, baseModule, {
       {
         text: 'Reward',
         value: 'reward',
+        classes: ['text-xs-right'],
       },
       {
         text: 'Block Workers',
@@ -44,6 +46,7 @@ export const moduleSettingsBatch = _.merge({}, baseModule, {
         text: 'Actions',
         value: 'actions',
         sortable: false,
+        width: '10%',
       },
     ],
   },

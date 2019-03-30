@@ -5,7 +5,7 @@
   >
     <td
       v-bind:style="stylesCell"
-      class="text-xs-center"
+      class="text-xs-left"
     >
       {{ settingsBatch.name }}
     </td>
@@ -19,7 +19,7 @@
 
     <td
       v-bind:style="stylesCell"
-      class="text-xs-center"
+      class="text-xs-right"
     >
       <base-display-amount v-bind:amount="settingsBatch.reward"></base-display-amount>
     </td>

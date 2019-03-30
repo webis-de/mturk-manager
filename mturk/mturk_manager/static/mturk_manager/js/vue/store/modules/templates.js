@@ -55,15 +55,18 @@ export const moduleTemplates = _.merge({}, baseModule, {
       {
         text: 'Name',
         value: 'name',
+        classes: ['text-xs-left'],
       },
       {
         text: 'Height',
         value: 'height_frame',
+        classes: ['text-xs-right'],
       },
       {
         text: '#Variables',
         value: 'count_parameters',
         sortable: false,
+        classes: ['text-xs-right'],
       },
       {
         text: 'Assignment Template',
@@ -81,6 +84,7 @@ export const moduleTemplates = _.merge({}, baseModule, {
         text: 'Actions',
         value: 'actions',
         sortable: false,
+        width: '10%',
       },
     ],
 
@@ -88,11 +92,13 @@ export const moduleTemplates = _.merge({}, baseModule, {
       {
         text: 'Name',
         value: 'name',
+        classes: ['text-xs-left'],
       },
       {
         text: 'Actions',
         value: 'actions',
         sortable: false,
+        width: '10%',
       },
     ],
   },
