@@ -60,12 +60,13 @@
         v-bind:key="`component-edit-template-worker-${templateWorker.id}`"
         v-bind:template_worker_current="templateWorker"
         v-on:edited="$emit('edited')"
-      ></component-edit-template-worker>
+      />
       <component-delete-template-worker
-          v-bind:key="`component-delete-template-worker-${props.item.id}`"
-          v-bind:template_worker="props.item"
-          v-on:deleted="snackbar_deleted = true"
-      ></component-delete-template-worker>
+        v-bind:key="`component-delete-template-worker-${props.item.id}`"
+        v-bind:template-worker="props.item"
+        v-bind:disabled="templateWorker.has_assignments === true"
+        v-on:deleted="snackbar_deleted = true"
+      />
     </td>
   </tr>
 </template>

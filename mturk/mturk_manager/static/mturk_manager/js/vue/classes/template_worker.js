@@ -9,6 +9,7 @@ export default class Template_Worker {
     this.template_assignment = _.cloneDeep(data.template_assignment);
     this.template_hit = _.cloneDeep(data.template_hit);
     this.template_global = _.cloneDeep(data.template_global);
+    this.has_assignments = data.has_assignments;
     this.dict_parameters = data.json_dict_parameters != undefined
       ? JSON.parse(data.json_dict_parameters)
       : {};

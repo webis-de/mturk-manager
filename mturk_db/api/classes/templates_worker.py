@@ -2,7 +2,8 @@ import json
 import re
 from collections import Counter
 
-from django.db.models import QuerySet
+from django.db.models import QuerySet, Case, When, BooleanField, Count, F
+from django.db.models.functions import Coalesce
 
 from api.classes import Manager_Templates
 from api.models import Template_Worker
@@ -10,6 +11,20 @@ from api.models import Template_Worker
 
 class Manager_Templates_Worker(Manager_Templates):
     model = Template_Worker
+
+    @staticmethod
+    def annotate(queryset: QuerySet) -> QuerySet:
+        return queryset.annotate(
+            count_batches=Count('settings_batch')
+        ).annotate(
+            has_assignments=Case(
+                When(count_batches__gt=0,
+                     then=True
+                 ),
+                default=False,
+                output_field=BooleanField()
+            )
+        )
 
     @classmethod
     def create(cls, data: dict) -> Template_Worker:
@@ -23,6 +38,8 @@ class Manager_Templates_Worker(Manager_Templates):
             template_hit=data.get('template_hit', None),
             template_global=data.get('template_global', None),
         )
+
+        template.has_assignments = False
 
         return template
 

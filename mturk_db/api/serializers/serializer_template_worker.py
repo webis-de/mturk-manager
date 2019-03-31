@@ -58,7 +58,8 @@ class Serializer_Template_Worker(serializers.ModelSerializer):
 
     # template_assignment = Serializer_Template_Assignment()
     # template_hit = Serializer_Template_HIT()
-    # template_global = Serializer_Template_Global()
+
+    has_assignments = serializers.BooleanField()
 
 
     class Meta:
@@ -72,6 +73,7 @@ class Serializer_Template_Worker(serializers.ModelSerializer):
             'template_assignment',
             'template_hit',
             'template_global',
+            'has_assignments',
             # 'settings_batch_default',
             # 'title',
             # 'description',

@@ -1,35 +1,47 @@
 <template>
-  <v-dialog v-bind:disabled="true" v-model="dialog" max-width="500">
-    <v-btn
-      v-bind:disabled="true"
-      slot="activator"
-      class="my-0"
-      icon
-      small
+  <span>
+    <v-tooltip top>
+      <v-btn
+        slot="activator"
+        class="my-0"
+        icon
+        small
+        v-bind:disabled="disabled"
+        v-on:click.stop="dialog = true"
+      >
+        <v-icon color="error">
+          delete
+        </v-icon>
+      </v-btn>
+
+      You are not allowed to delete this template because it has at least one batch using this template.
+    </v-tooltip>
+
+    <v-dialog
+      v-model="dialog"
+      max-width="500"
     >
-      <v-icon color="error">delete</v-icon>
-    </v-btn>
 
-    <v-card>
-      <!-- <v-card-title>
-                <span class="headline">Add Profile</span>
-                <v-spacer></v-spacer>
-                <v-btn icon v-on:click="dialog = false">
-                    <v-icon>close</v-icon>
-                </v-btn>
-            </v-card-title> -->
-      <v-card-text>
-        Do you really want to delete the assignment template '{{
-          template_worker.name
-        }}'?
-      </v-card-text>
+      <v-card>
+        <v-card-text>
+          Do you really want to delete the assignment template '{{
+            templateWorker.name
+          }}'?
+        </v-card-text>
 
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn flat color="error" v-on:click="remove()">Delete</v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            flat
+            color="error"
+            v-on:click="remove()"
+          >
+            Delete
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </span>
 </template>
 
 <script>
@@ -41,11 +53,19 @@ import { Service_Templates } from '../../../services/service_templates';
 export default {
   name: 'ComponentDeleteTemplateWorker',
   props: {
-    template_worker: {},
+    templateWorker: {
+      required: true,
+      type: Object,
+    },
+    disabled: {
+      required: true,
+      type: Boolean,
+    },
   },
   data() {
     return {
       dialog: false,
+      tooltip: false,
     };
   },
   methods: {
@@ -53,13 +73,13 @@ export default {
       Service_Templates.delete({
         typeTemplate: 'worker',
         project: this.project_current,
-        template: this.template_worker,
+        template: this.templateWorker,
         callback: () => {
           Service_Templates.cleanup({
             typeTemplate: 'workerAll',
             component: this,
             nameEvent: 'deleted',
-            template: this.template_assignment,
+            template: this.templateWorker,
           });
         },
       });
