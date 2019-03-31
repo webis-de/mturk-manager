@@ -4,7 +4,7 @@ import json
 from api.enums import assignments
 from api.classes import Manager_Projects, Manager_Assignments, Manager_HITs, Manager_Batches
 from api.models import Batch
-from datetime import datetime
+from django.utils import timezone
 
 
 class ManagerFinances(object):
@@ -43,7 +43,7 @@ class ManagerFinances(object):
 
     @classmethod
     def aggregate_batches(cls, queryset):
-        now = datetime.now()
+        now = timezone.now()
         ################################
         return queryset.annotate(
             count_assignments_approved=Coalesce(Count(
@@ -86,7 +86,7 @@ class ManagerFinances(object):
 
     @classmethod
     def aggregate_hits(cls, queryset):
-        now = datetime.now()
+        now = timezone.now()
         ################################
         return queryset.annotate(
             count_assignments_approved=Coalesce(Count(
