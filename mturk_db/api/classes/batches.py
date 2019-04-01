@@ -6,16 +6,18 @@ import xmltodict
 
 from botocore.exceptions import ClientError
 from django.conf import settings as settings_django
-from django.db.models import F, Count, Q, QuerySet
+from django.db.models import F, Count, Q, QuerySet, Case, When, BooleanField, IntegerField, ExpressionWrapper, Subquery, \
+    OuterRef, Sum
 from django.db.models.functions import Coalesce
 from django.http import HttpResponse
 from rest_framework.request import Request
+from django.utils import timezone
 
 from api.classes import Interface_Manager_Items
 from api.classes.projects import Manager_Projects
 from api.enums import assignments, STATUS_EXTERNAL, STATUS_INTERNAL
 from api.models import Batch, HIT, Assignment, Settings_Batch, Worker
-
+from api.helpers import mturk_status_to_database_status
 
 class Manager_Batches(Interface_Manager_Items):
     @staticmethod
@@ -69,6 +71,10 @@ class Manager_Batches(Interface_Manager_Items):
         ).annotate(
             count_assignments_available=Coalesce(Count('hits__assignments', distinct=True), 0),
             count_assignments_total=F('count_hits') * F('settings_batch__count_assignments'),
+            count_assignments_dead=Coalesce(Sum(
+                'hits__count_assignments_dead',
+                distinct=True
+            ), 0),
             count_assignments_approved=Coalesce(Count(
                 'hits__assignments',
                 distinct=True,
@@ -399,30 +405,61 @@ class Manager_Batches(Interface_Manager_Items):
 
     @staticmethod
     def sync_mturk(database_object_project, use_sandbox):
-        # batches = Batch.objects.filter(project=database_object_project)
+        # fetch every assignment available belonging to this project and the current sandbox mode
+        assignments_available = {
+            assignment.id_assignment: assignment.status_external for assignment in Assignment.objects.filter(
+                hit__batch__project=database_object_project,
+                hit__batch__use_sandbox=use_sandbox
+            )
+        }
 
-        set_id_assignments_available = set([assignment.id_assignment for assignment in Assignment.objects.filter(hit__batch__project=database_object_project, hit__batch__use_sandbox=use_sandbox)])
-        print(set_id_assignments_available)
+        # fetch the id of every worker in the database
         dictionary_workers_available = {worker.id_worker: worker for worker in Worker.objects.all()}
-        # dictionary_workers_available = {worker.id_worker: worker for worker in Worker.objects.filter(project=database_object_project)}
 
-        ids_batch_changed = set();
-
-        for hit in HIT.objects.annotate(
-            count_assignments_current=Count('assignments', distinct=True)
+        # iterate over every HIT in this project and current sandbox mode where
+        #   not all assignments are already in the database or
+        #   not all assignments have a final state (approved or rejected)
+        for index, hit in enumerate(HIT.objects.annotate(
+            count_assignments_current=Coalesce(Count(
+                'assignments',
+                distinct=True
+            ), 0) + F('count_assignments_dead'),
+            count_assignments_annotated=Coalesce(Count(
+                'assignments',
+                distinct=True,
+                filter=Q(assignments__status_external__isnull=False)
+            ), 0) + F('count_assignments_dead')
+        ).annotate(
+            all_assignments_are_annotated=Case(
+                When(count_assignments_current=F('count_assignments_annotated'),
+                     then=True
+                ),
+                default=False,
+                output_field=BooleanField()
+            )
         ).filter(
             batch__use_sandbox=use_sandbox,
             batch__project=database_object_project,
-            count_assignments_current__lt=F('batch__settings_batch__count_assignments')
-        ).select_related('batch'):
-            # print(hit.id_hit)
+        ).exclude(
+            # TODO: add additional_assignments to calculation
+            count_assignments_current=F('batch__settings_batch__count_assignments'),
+            all_assignments_are_annotated=True
+        ).select_related('batch')):
+            print('##################### hit with index {}'.format(index))
             # print(hit.count_assignments_current)
+            # print(hit.all_assignments_are_annotated)
+            # print(hit.batch.settings_batch.count_assignments)
+
+            # init the boto3 paginator for the operation 'list_assignments_for_hit'
             paginator = Manager_Projects.get_mturk_api(use_sandbox).get_paginator('list_assignments_for_hit')
 
+            # fetch assignments for the current hit
             response_iterator = paginator.paginate(
                 HITId=hit.id_hit,
                 AssignmentStatuses=[
                     'Submitted',
+                    'Approved',
+                    'Rejected'
                 ],
                 PaginationConfig={
                     'PageSize': 100,
@@ -431,37 +468,81 @@ class Manager_Batches(Interface_Manager_Items):
 
             for iterator in response_iterator:
                 for assignment in iterator['Assignments']:
-                    id_assignment = assignment['AssignmentId'].upper()
-                    id_worker = assignment['WorkerId'].upper()
-                    print(id_assignment)
-                    # print(id_worker)
-                    # print(iterator)
+                    id_assignment: str = assignment['AssignmentId'].upper()
+                    id_worker: str = assignment['WorkerId'].upper()
+                    status_mturk: str = assignment['AssignmentStatus']
 
-                    if not id_assignment in set_id_assignments_available:
+                    # if the assignment is not already in the database
+                    if not id_assignment in assignments_available:
+                        # check whether the worker is already in the database
                         try:
                             worker = dictionary_workers_available[id_worker]
                         except KeyError:
+                            # otherwise create the new worker and add it to the dictionary
                             worker = Worker.objects.get_or_create(
                                 id_worker=id_worker,
-                                # project=database_object_project,
                             )[0]
                             dictionary_workers_available[id_worker] = worker
 
-                        ids_batch_changed.add(hit.batch.id)
+                        status = None
+                        if status_mturk == 'Approved':
+                            status = assignments.STATUS_EXTERNAL.APPROVED
+                        elif status_mturk == 'Rejected':
+                            status = assignments.STATUS_EXTERNAL.REJECTED
 
+                        try:
+                            answer: str = json.dumps(xmltodict.parse(assignment['Answer']))
+                        except KeyError:
+                            answer: str = json.dumps({})
+
+                        # create the assignment in the database
                         assignment = Assignment.objects.create(
                             id_assignment=id_assignment,
                             hit=hit,
                             worker=worker,
-                            answer=json.dumps(xmltodict.parse(assignment['Answer'])),
+                            status_external=status,
+                            answer=answer,
                             datetime_submit=assignment['SubmitTime'],
                             datetime_accept=assignment['AcceptTime'],
                         )
+                    # if the assignment is already in the database,
+                    # check whether the annotatation state corresponds with the database state
+                    else:
+                        status: assignments.STATUS_EXTERNAL = mturk_status_to_database_status(status_mturk)
 
-        # print(batches)
-        # print(batches.count())
+                        # if the assignment from mturk has a different state than the assignment of mturk
+                        if status != assignments_available[id_assignment]:
+                            # update the status of the assignment
+                            Assignment.objects.filter(
+                                id_assignment=id_assignment
+                            ).update(
+                                status_external=status
+                            )
 
-        return Batch.objects.filter(id__in=ids_batch_changed)
+            # if hit is expired
+            if hit.datetime_expiration < timezone.now():
+                # add dead assignments
+                print('expired')
+                hit_new = HIT.objects.filter(
+                    pk=hit.pk
+                ).annotate(
+                    count_assignments_current=Coalesce(Count(
+                        'assignments',
+                        distinct=True
+                    ), 0) + F('count_assignments_dead'),
+                ).annotate(
+                    assignments_dead=F('batch__settings_batch__count_assignments') - F('count_assignments_current'),
+                    count_assignments_dead_new=F('count_assignments_dead') + F('assignments_dead')
+                ).get()
+
+                # TODO: add additional_assignments to calculation
+                hit_new.count_assignments_dead = hit_new.count_assignments_dead_new
+                hit_new.save()
+
+        return {
+            'success': True
+        }
+        # return Batch.objects.filter(id__in=ids_batch_changed)
 
     @staticmethod
     def clear_sandbox(database_object_project):

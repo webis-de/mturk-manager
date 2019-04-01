@@ -57,10 +57,11 @@ class Batches(APIView):
 
     @add_database_object_project
     def patch(self, request, slug_project, database_object_project, use_sandbox, format=None):
-        list_batches_changed = Manager_Batches.sync_mturk(database_object_project, use_sandbox)
-        serializer = Serializer_Batch(list_batches_changed, many=True)
+        result = Manager_Batches.sync_mturk(database_object_project, use_sandbox)
+        # list_batches_changed = Manager_Batches.sync_mturk(database_object_project, use_sandbox)
+        # serializer = Serializer_Batch(list_batches_changed, many=True)
 
-        return Response(serializer.data)
+        return Response(result)
 
 
 class Batch(APIView):

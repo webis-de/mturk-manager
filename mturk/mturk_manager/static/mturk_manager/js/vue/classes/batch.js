@@ -14,6 +14,7 @@ export default class Batch {
     this.datetime_creation = moment(data.datetime_creation);
     this.count_assignments_available = data.count_assignments_available;
     this.count_assignments_total = data.count_assignments_total;
+    this.count_assignments_dead = data.count_assignments_dead;
     this.count_assignments_approved = data.count_assignments_approved;
     this.count_assignments_rejected = data.count_assignments_rejected;
     this.costs_max = data.costs_max;
@@ -27,12 +28,12 @@ export default class Batch {
   get progress() {
     // if(this._progress != null) return this._progress;
     //
-    const progress = (this.count_assignments_available / this.count_assignments_total) * 100.0;
+    const progress = ((this.count_assignments_available + this.count_assignments_dead) / this.count_assignments_total) * 100.0;
     // console.log('EXECUTED1')
 
     // this._progress = progress;
     return (
-      (this.count_assignments_available / this.count_assignments_total) * 100.0
+      ( (this.count_assignments_available + this.count_assignments_dead)/ this.count_assignments_total) * 100.0
     );
   }
   //

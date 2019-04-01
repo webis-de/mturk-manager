@@ -130,6 +130,7 @@ class HIT(models.Model):
     datetime_expiration = models.DateTimeField()
     parameters = models.TextField()
     count_assignments_additional = models.IntegerField(default=0)
+    count_assignments_dead = models.IntegerField(default=0)
 
 class Assignment(models.Model):
     id_assignment = models.CharField(max_length=200, unique=True)

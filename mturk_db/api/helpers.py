@@ -1,7 +1,9 @@
 from rest_framework.pagination import PageNumberPagination
 
 from api.models import Project
+from api.enums import assignments
 from mturk_db.settings import REST_FRAMEWORK
+from typing import Union
 
 
 class CustomPagination(PageNumberPagination):
@@ -9,6 +11,22 @@ class CustomPagination(PageNumberPagination):
     page_size_query_param = REST_FRAMEWORK['PAGE_SIZE_QUERY_PARAM']
     # max_page_size = 10000
 
+
+def mturk_status_to_database_status(status: str) -> Union[assignments.STATUS_EXTERNAL, None]:
+    if status == 'Approved':
+        return assignments.STATUS_EXTERNAL.APPROVED
+    elif status == 'Rejected':
+        return assignments.STATUS_EXTERNAL.REJECTED
+    else:
+        return None
+
+def database_status_to_mturk_status(status: assignments.STATUS_EXTERNAL) -> str:
+    if status == assignments.STATUS_EXTERNAL.APPROVED:
+        return 'Approved'
+    elif status == assignments.STATUS_EXTERNAL.REJECTED:
+        return 'Rejected'
+    else:
+        return 'Submitted'
 
 def keep_fields(serializer, fields):
     allowed = set(fields)
