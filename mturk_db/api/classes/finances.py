@@ -1,9 +1,9 @@
-from django.db.models import F, Count, Q, Sum, Max, Min, Case, When, Value, IntegerField
+from django.db.models import F, Count, Q, Sum, Max, Min, Case, When, Value, IntegerField, OuterRef, Subquery
 from django.db.models.functions import Coalesce
 import json
 from api.enums import assignments
 from api.classes import Manager_Projects, Manager_Assignments, Manager_HITs, Manager_Batches
-from api.models import Batch
+from api.models import Batch, HIT
 from django.utils import timezone
 
 
@@ -44,6 +44,21 @@ class ManagerFinances(object):
     @classmethod
     def aggregate_batches(cls, queryset):
         now = timezone.now()
+
+        foo = HIT.objects.filter(batch=OuterRef('id'), datetime_expiration__gt=now).values('batch').annotate(
+            count_assignments=Coalesce(Count(
+                'assignments',
+                distinct=True,
+            ), 0)
+        ).values('count_assignments')
+
+        bar = HIT.objects.filter(batch=OuterRef('id'), datetime_expiration__gt=now).values('batch').annotate(
+            count_assignments=Coalesce(Sum(
+                'batch__settings_batch__count_assignments',
+                distinct=True,
+            ), 0)
+        ).values('count_assignments')
+
         ################################
         return queryset.annotate(
             count_assignments_approved=Coalesce(Count(
@@ -60,17 +75,14 @@ class ManagerFinances(object):
             ), 0),
         ################################
         ).annotate(
-            count_assignments_living_total=Coalesce(Sum(
-                'hits__batch__settings_batch__count_assignments',
-                distinct=True,
-                filter=Q(hits__datetime_expiration__gt=now)
-            ), 0),
-            count_assignments_living_available=Coalesce(Count(
-                'hits__assignments',
-                distinct=True,
-                filter=Q(hits__datetime_expiration__gt=now)
-                # filter=Q(hits__datetime_expiration__gt=now) & Q(hits__assignments__status_external__isnull=False)
-            ), 0)
+            count_assignments_living_total=Subquery(
+                bar,
+                output_field=IntegerField()
+            ),
+            count_assignments_living_available=Subquery(
+                foo,
+                output_field=IntegerField()
+            )
         ).annotate(
             count_assignments_potential=F('count_assignments_living_total') - F('count_assignments_living_available')
         ################################
