@@ -66,15 +66,26 @@ class Manager_Batches(Interface_Manager_Items):
 
     @staticmethod
     def annotate(queryset: QuerySet) -> QuerySet:
+        now = timezone.now()
+
+        foo = HIT.objects.filter(batch=OuterRef('id'), datetime_expiration__gt=now).values('batch').annotate(
+            count_assignments=Coalesce(Count(
+                'assignments',
+                distinct=True,
+            ), 0)
+        ).values('count_assignments')
+
+        bar = HIT.objects.filter(batch=OuterRef('id'), datetime_expiration__gt=now).values('batch').annotate(
+            count_assignments=Coalesce(Sum(
+                'batch__settings_batch__count_assignments',
+                distinct=True,
+            ), 0)
+        ).values('count_assignments')
+
         return queryset.annotate(
             count_hits=Count('hits', distinct=True)
         ).annotate(
-            count_assignments_available=Coalesce(Count('hits__assignments', distinct=True), 0),
             count_assignments_total=F('count_hits') * F('settings_batch__count_assignments'),
-            count_assignments_dead=Coalesce(Sum(
-                'hits__count_assignments_dead',
-                distinct=True
-            ), 0),
             count_assignments_approved=Coalesce(Count(
                 'hits__assignments',
                 distinct=True,
@@ -85,7 +96,27 @@ class Manager_Batches(Interface_Manager_Items):
                 distinct=True,
                 filter=Q(hits__assignments__status_external=assignments.STATUS_EXTERNAL.REJECTED)
             ), 0),
+            count_assignments_submitted=Coalesce(Count(
+                'hits__assignments',
+                distinct=True,
+                filter=Q(hits__assignments__status_external__isnull=True)
+            ), 0),
+            count_assignments_dead=Coalesce(Sum(
+                'hits__count_assignments_dead',
+                distinct=True
+            ), 0),
+            count_assignments_living_total=Coalesce(Subquery(
+                bar,
+                output_field=IntegerField()
+            ), 0),
+            count_assignments_living_available=Coalesce(Subquery(
+                foo,
+                output_field=IntegerField()
+            ), 0),
+            # TODO can be deleted?
+            count_assignments_available=Coalesce(Count('hits__assignments', distinct=True), 0),
         ).annotate(
+            count_assignments_pending=F('count_assignments_living_total') - F('count_assignments_living_available'),
             costs_max=F('count_assignments_total') * F('settings_batch__reward'),
             costs_so_far=F('count_assignments_approved') * F('settings_batch__reward'),
         )

@@ -35,11 +35,11 @@
           </base-display-amount>
         </td>
         <td>
-          <v-icon
-            v-if="result.description"
-            class="px-1"
-            small
-          >arrow_forward</v-icon>
+          <!--<v-icon-->
+            <!--v-if="result.description"-->
+            <!--class="px-1"-->
+            <!--small-->
+          <!--&gt;arrow_forward</v-icon>-->
           {{ result.description }}
           <base-help v-if="result.detail">
             {{ result.detail }}

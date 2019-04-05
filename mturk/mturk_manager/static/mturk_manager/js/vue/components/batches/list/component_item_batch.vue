@@ -97,12 +97,10 @@
       class="text-xs-center"
       v-bind:style="stylesCell"
     >
-      <component-batch-progress v-bind:progress="batch.progress">
-        {{ batch.count_assignments_available + batch.count_assignments_dead }}/{{
-          batch.count_assignments_total
-        }}
-        assignment{{ batch.count_assignments_total > 1 ? "s" : "" }}
-      </component-batch-progress>
+      <base-progress-bar
+        v-bind:title-popover="`Assignments (${batch.countAssignmentsTotal})`"
+        v-bind:datasets="datasets"
+      />
     </td>
 
     <td
@@ -133,12 +131,12 @@ import {
   mapState, mapActions, mapMutations, mapGetters,
 } from 'vuex';
 import _ from 'lodash';
-import ComponentBatchProgress from './component_batch_progress.vue';
 import ComponentDisplayDatetime from '../../helpers/component_display_datetime.vue';
 import BaseDisplayAmount from '../../base-display-amount';
+import BaseProgressBar from '../../base-progress-bar';
 
 export default {
-  name: 'component-item-batch',
+  name: 'ComponentItemBatch',
   props: {
     props: {
       required: true,
@@ -157,6 +155,35 @@ export default {
     return {};
   },
   computed: {
+    datasets() {
+      return [
+        {
+          label: 'Approved',
+          backgroundColor: '#81C784',
+          data: [this.batch.countAssignmentsApproved],
+        },
+        {
+          label: 'Rejected',
+          backgroundColor: '#E57373',
+          data: [this.batch.countAssignmentsRejected],
+        },
+        {
+          label: 'Submitted',
+          backgroundColor: '#FFB74D',
+          data: [this.batch.countAssignmentsSubmitted],
+        },
+        {
+          label: 'Expired',
+          backgroundColor: '#90A4AE',
+          data: [this.batch.countAssignmentsDead],
+        },
+        {
+          label: 'Pending',
+          backgroundColor: '#64B5F6',
+          data: [this.batch.countAssignmentsPending],
+        },
+      ];
+    },
     is_selected: {
       get() {
         return _.has(this.object_batches_selected, this.batch.id);
@@ -196,8 +223,8 @@ export default {
   },
   mounted() {},
   components: {
+    BaseProgressBar,
     BaseDisplayAmount,
-    ComponentBatchProgress,
     ComponentDisplayDatetime,
   },
 };

@@ -75,14 +75,14 @@ class ManagerFinances(object):
             ), 0),
         ################################
         ).annotate(
-            count_assignments_living_total=Subquery(
+            count_assignments_living_total=Coalesce(Subquery(
                 bar,
                 output_field=IntegerField()
-            ),
-            count_assignments_living_available=Subquery(
+            ), 0),
+            count_assignments_living_available=Coalesce(Subquery(
                 foo,
                 output_field=IntegerField()
-            )
+            ), 0),
         ).annotate(
             count_assignments_potential=F('count_assignments_living_total') - F('count_assignments_living_available')
         ################################

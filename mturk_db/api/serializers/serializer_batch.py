@@ -24,11 +24,16 @@ class Serializer_Batch(serializers.ModelSerializer):
     data_csv = serializers.ListField(required=False)
     # hits = Serializer_HIT(many=True, read_only=True)
     count_hits = serializers.IntegerField(required=False)
-    count_assignments_available = serializers.IntegerField(required=False)
+
     count_assignments_total = serializers.IntegerField(required=False)
-    count_assignments_dead = serializers.IntegerField(required=False)
     count_assignments_approved = serializers.IntegerField(required=False)
     count_assignments_rejected = serializers.IntegerField(required=False)
+    count_assignments_submitted = serializers.IntegerField(required=False)
+    count_assignments_dead = serializers.IntegerField(required=False)
+    count_assignments_pending = serializers.IntegerField(required=False)
+
+    count_assignments_available = serializers.IntegerField(required=False)
+
     costs_max = serializers.IntegerField(required=False)
     costs_so_far = serializers.IntegerField(required=False)
 
@@ -44,11 +49,16 @@ class Serializer_Batch(serializers.ModelSerializer):
             # 'hits',
             'data_csv',
             'settings_batch',
-            'count_assignments_available',
+
             'count_assignments_total',
-            'count_assignments_dead',
             'count_assignments_approved',
             'count_assignments_rejected',
+            'count_assignments_submitted',
+            'count_assignments_dead',
+            'count_assignments_pending',
+
+            'count_assignments_available',
+
             'costs_max',
             'costs_so_far',
         )

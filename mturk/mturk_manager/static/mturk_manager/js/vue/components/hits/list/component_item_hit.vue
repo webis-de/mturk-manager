@@ -50,12 +50,10 @@
       class="text-xs-center"
       v-bind:style="stylesCell"
     >
-      <component-batch-progress v-bind:progress="hit.progress">
-        {{ hit.count_assignments_available }}/{{
-          hit.count_assignments_total
-        }}
-        assignment{{ hit.count_assignments_total > 1 ? "s" : "" }}
-      </component-batch-progress>
+      <base-progress-bar
+        v-bind:title-popover="`Assignments (${hit.countAssignmentsTotal})`"
+        v-bind:datasets="datasets"
+      />
     </td>
     <td
       class="text-xs-center"
@@ -91,8 +89,8 @@ import {
   mapState, mapActions, mapMutations, mapGetters,
 } from 'vuex';
 import _ from 'lodash';
-import ComponentBatchProgress from '../../batches/list/component_batch_progress.vue';
 import ComponentDisplayDatetime from '../../helpers/component_display_datetime';
+import BaseProgressBar from '../../base-progress-bar';
 
 export default {
   name: 'component-item-hit',
@@ -125,6 +123,35 @@ export default {
   //     },
   // },
   computed: {
+    datasets() {
+      return [
+        {
+          label: 'Approved',
+          backgroundColor: '#81C784',
+          data: [this.hit.countAssignmentsApproved],
+        },
+        {
+          label: 'Rejected',
+          backgroundColor: '#E57373',
+          data: [this.hit.countAssignmentsRejected],
+        },
+        {
+          label: 'Submitted',
+          backgroundColor: '#FFB74D',
+          data: [this.hit.countAssignmentsSubmitted],
+        },
+        {
+          label: 'Expired',
+          backgroundColor: '#90A4AE',
+          data: [this.hit.countAssignmentsDead],
+        },
+        {
+          label: 'Pending',
+          backgroundColor: '#64B5F6',
+          data: [this.hit.countAssignmentsPending],
+        },
+      ];
+    },
     set_columns_selected() {
       return new Set(this.array_columns_selected);
     },
@@ -206,8 +233,8 @@ export default {
     }),
   },
   components: {
+    BaseProgressBar,
     ComponentDisplayDatetime,
-    ComponentBatchProgress,
   },
 };
 </script>

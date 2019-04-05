@@ -1,10 +1,12 @@
 import json
 
-from django.db.models import Count, F, QuerySet
+from django.db.models import Count, F, QuerySet, Q, Sum, Case, When, Value, IntegerField
+from django.db.models.functions import Coalesce
 from rest_framework.request import Request
-
+from api.enums import assignments
 from api.classes import Interface_Manager_Items
 from api.models import HIT
+from django.utils import timezone
 
 
 class Manager_HITs(Interface_Manager_Items):
@@ -67,9 +69,39 @@ class Manager_HITs(Interface_Manager_Items):
 
     @staticmethod
     def annotate(queryset: QuerySet) -> QuerySet:
+        now = timezone.now()
+
         return queryset.annotate(
-            count_assignments_available=Count('assignments', distint=True),
             count_assignments_total=F('batch__settings_batch__count_assignments'),
+
+            count_assignments_approved=Coalesce(Count(
+                'assignments',
+                distinct=True,
+                filter=Q(assignments__status_external=assignments.STATUS_EXTERNAL.APPROVED)
+            ), 0),
+
+            count_assignments_rejected=Coalesce(Count(
+                'assignments',
+                distinct=True,
+                filter=Q(assignments__status_external=assignments.STATUS_EXTERNAL.REJECTED)
+            ), 0),
+
+            count_assignments_submitted=Coalesce(Count(
+                'assignments',
+                distinct=True,
+                filter=Q(assignments__status_external__isnull=True)
+            ), 0),
+
+            count_assignments_pending=Case(
+                When(datetime_expiration__gt=now,
+                     then=F('batch__settings_batch__count_assignments') - Count(
+                            'assignments',
+                            distinct=True
+                     )
+                 ),
+                default=Value(0),
+                output_field=IntegerField()
+            )
         )
 
     @staticmethod

@@ -42,8 +42,12 @@ class Serializer_HIT(serializers.ModelSerializer):
     # is_auto_granted = serializers.NullBooleanField(source='AutoGranted', required=False)
     # assignments = Serializer_Assignment(many=True, read_only=True)
 
-    count_assignments_available = serializers.IntegerField(required=False)
     count_assignments_total = serializers.IntegerField(required=False)
+    count_assignments_approved = serializers.IntegerField(required=False)
+    count_assignments_rejected = serializers.IntegerField(required=False)
+    count_assignments_submitted = serializers.IntegerField(required=False)
+    count_assignments_dead = serializers.IntegerField(required=False)
+    count_assignments_pending = serializers.IntegerField(required=False)
 
 
     class Meta:
@@ -55,9 +59,14 @@ class Serializer_HIT(serializers.ModelSerializer):
             'datetime_creation',
             'datetime_expiration',
             'parameters',
-            'count_assignments_additional',
-            'count_assignments_available',
-            'count_assignments_total'
+
+            'count_assignments_total',
+            'count_assignments_approved',
+            'count_assignments_rejected',
+            'count_assignments_submitted',
+            'count_assignments_dead',
+            'count_assignments_pending',
+
             # 'assignments',
         )
         extra_kwargs = {

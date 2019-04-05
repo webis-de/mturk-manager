@@ -9,9 +9,8 @@ import VueAxios from 'vue-axios';
 import Vuex from 'vuex';
 import VueCookies from 'vue-cookies';
 import UploadButton from 'vuetify-upload-button';
-import { store } from './store/vuex.js';
-import App from './App.vue';
-import 'vuetify/src/stylus/app.styl';
+import { store } from './store/vuex';
+import App from './App';
 // import 'vuetify/dist/vuetify.min.css';
 import 'material-design-icons-iconfont/dist/material-design-icons.css';
 

@@ -53,7 +53,7 @@ export default {
         {
           operation: '',
           number: this.expenses.sum_costs_so_far,
-          description: 'So far',
+          description: 'Paid',
           detail: 'The costs already paid',
         },
       ];
