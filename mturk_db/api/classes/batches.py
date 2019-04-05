@@ -66,6 +66,15 @@ class Manager_Batches(Interface_Manager_Items):
 
     @staticmethod
     def annotate(queryset: QuerySet) -> QuerySet:
+        queryset = Manager_Batches.annotate_assignments(queryset)
+
+        return queryset.annotate(
+            costs_max=F('count_assignments_total') * F('settings_batch__reward'),
+            costs_so_far=F('count_assignments_approved') * F('settings_batch__reward'),
+        )
+
+    @staticmethod
+    def annotate_assignments(queryset: QuerySet) -> QuerySet:
         now = timezone.now()
 
         foo = HIT.objects.filter(batch=OuterRef('id'), datetime_expiration__gt=now).values('batch').annotate(
@@ -117,8 +126,6 @@ class Manager_Batches(Interface_Manager_Items):
             count_assignments_available=Coalesce(Count('hits__assignments', distinct=True), 0),
         ).annotate(
             count_assignments_pending=F('count_assignments_living_total') - F('count_assignments_living_available'),
-            costs_max=F('count_assignments_total') * F('settings_batch__reward'),
-            costs_so_far=F('count_assignments_approved') * F('settings_batch__reward'),
         )
 
     @staticmethod

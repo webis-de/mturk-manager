@@ -69,6 +69,10 @@ class Manager_HITs(Interface_Manager_Items):
 
     @staticmethod
     def annotate(queryset: QuerySet) -> QuerySet:
+        return Manager_HITs.annotate_assignments(queryset)
+
+    @staticmethod
+    def annotate_assignments(queryset: QuerySet) -> QuerySet:
         now = timezone.now()
 
         return queryset.annotate(

@@ -48,15 +48,30 @@ export default {
     },
   },
   computed: {
-    calculations()  {
+    calculations() {
       const result = [
         {
           operation: '',
-          number: this.expenses.sum_costs_so_far,
-          description: 'Paid',
+          number: this.expenses.sum_costs_approved,
+          description: 'Approved',
+          detail: 'The costs already paid',
+        },
+        {
+          operation: '+',
+          number: this.expenses.sum_costs_rejected,
+          description: 'Rejected',
           detail: 'The costs already paid',
         },
       ];
+
+      if(this.typeItem !== 'assignments') {
+        result.push({
+          operation: '+',
+          number: this.expenses.sum_costs_dead,
+          description: 'Expired',
+          detail: 'The costs if all currently submitted assignments would be approved',
+        });
+      }
 
       result.push({
         operation: '+',
@@ -77,10 +92,13 @@ export default {
       return result;
     },
     costsTotal() {
-      let costsTotal = this.expenses.sum_costs_so_far + this.expenses.sum_costs_submitted;
+      let costsTotal = this.expenses.sum_costs_approved
+                       + this.expenses.sum_costs_rejected
+                       + this.expenses.sum_costs_submitted;
 
       if(this.typeItem !== 'assignments') {
-         costsTotal += this.expenses.sum_costs_pending
+        costsTotal += this.expenses.sum_costs_pending
+                       + this.expenses.sum_costs_dead;
       }
 
       if(Number.isNaN(costsTotal) === true) {

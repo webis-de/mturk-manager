@@ -43,111 +43,57 @@ class ManagerFinances(object):
 
     @classmethod
     def aggregate_batches(cls, queryset):
-        now = timezone.now()
+        queryset = Manager_Batches.annotate_assignments(queryset)
 
-        foo = HIT.objects.filter(batch=OuterRef('id'), datetime_expiration__gt=now).values('batch').annotate(
-            count_assignments=Coalesce(Count(
-                'assignments',
-                distinct=True,
-            ), 0)
-        ).values('count_assignments')
-
-        bar = HIT.objects.filter(batch=OuterRef('id'), datetime_expiration__gt=now).values('batch').annotate(
-            count_assignments=Coalesce(Sum(
-                'batch__settings_batch__count_assignments',
-                distinct=True,
-            ), 0)
-        ).values('count_assignments')
-
-        ################################
         return queryset.annotate(
-            count_assignments_approved=Coalesce(Count(
-                'hits__assignments',
-                distinct=True,
-                filter=Q(hits__assignments__status_external=assignments.STATUS_EXTERNAL.APPROVED)
-            ), 0),
-        ################################
-        ).annotate(
-            count_assignments_submitted=Coalesce(Count(
-                'hits__assignments',
-                distinct=True,
-                filter=Q(hits__assignments__status_external__isnull=True)
-            ), 0),
-        ################################
-        ).annotate(
-            count_assignments_living_total=Coalesce(Subquery(
-                bar,
-                output_field=IntegerField()
-            ), 0),
-            count_assignments_living_available=Coalesce(Subquery(
-                foo,
-                output_field=IntegerField()
-            ), 0),
-        ).annotate(
-            count_assignments_potential=F('count_assignments_living_total') - F('count_assignments_living_available')
-        ################################
-        ).annotate(
-            costs_so_far=F('count_assignments_approved') * F('settings_batch__reward'),
+            costs_approved=F('count_assignments_approved') * F('settings_batch__reward'),
+            costs_rejected=F('count_assignments_rejected') * F('settings_batch__reward'),
             costs_submitted=F('count_assignments_submitted') * F('settings_batch__reward'),
-            costs_pending=F('count_assignments_potential') * F('settings_batch__reward')
+            costs_dead=F('count_assignments_dead') * F('settings_batch__reward'),
+            costs_pending=F('count_assignments_pending') * F('settings_batch__reward')
         ).aggregate(
-            sum_costs_so_far=Coalesce(Sum('costs_so_far'), 0),
+            sum_costs_approved=Coalesce(Sum('costs_approved'), 0),
+            sum_costs_rejected=Coalesce(Sum('costs_rejected'), 0),
             sum_costs_submitted=Coalesce(Sum('costs_submitted'), 0),
+            sum_costs_dead=Coalesce(Sum('costs_dead'), 0),
             sum_costs_pending=Coalesce(Sum('costs_pending'), 0),
         )
 
     @classmethod
     def aggregate_hits(cls, queryset):
-        now = timezone.now()
-        ################################
+        queryset = Manager_HITs.annotate_assignments(queryset)
+
         return queryset.annotate(
-            count_assignments_approved=Coalesce(Count(
-                'assignments',
-                distinct=True,
-                filter=Q(assignments__status_external=assignments.STATUS_EXTERNAL.APPROVED)
-            ), 0),
-        ################################
-        ).annotate(
-            count_assignments_submitted=Coalesce(Count(
-                'assignments',
-                distinct=True,
-                filter=Q(assignments__status_external__isnull=True)
-            ), 0),
-        ################################
-        ).annotate(
-            count_assignments_potential=Case(
-                When(datetime_expiration__gt=now,
-                     then=F('batch__settings_batch__count_assignments') - Count(
-                            'assignments',
-                            distinct=True
-                     )
-                 ),
-                default=Value(0),
-                output_field=IntegerField()
-            )
-        ################################
-        ).annotate(
-            costs_so_far=F('count_assignments_approved') * F('batch__settings_batch__reward'),
+            costs_approved=F('count_assignments_approved') * F('batch__settings_batch__reward'),
+            costs_rejected=F('count_assignments_rejected') * F('batch__settings_batch__reward'),
             costs_submitted=F('count_assignments_submitted') * F('batch__settings_batch__reward'),
-            costs_pending=F('count_assignments_potential') * F('batch__settings_batch__reward'),
+            costs_dead=F('count_assignments_dead') * F('batch__settings_batch__reward'),
+            costs_pending=F('count_assignments_pending') * F('batch__settings_batch__reward')
         ).aggregate(
-            sum_costs_so_far=Coalesce(Sum('costs_so_far'), 0),
+            sum_costs_approved=Coalesce(Sum('costs_approved'), 0),
+            sum_costs_rejected=Coalesce(Sum('costs_rejected'), 0),
             sum_costs_submitted=Coalesce(Sum('costs_submitted'), 0),
+            sum_costs_dead=Coalesce(Sum('costs_dead'), 0),
             sum_costs_pending=Coalesce(Sum('costs_pending'), 0),
         )
 
     @classmethod
     def aggregate_assignments(cls, queryset):
         return queryset.aggregate(
-            sum_costs_so_far=Coalesce(Sum(
+            sum_costs_approved=Coalesce(Sum(
                 'hit__batch__settings_batch__reward',
                 distinct=True,
                 filter=Q(status_external=assignments.STATUS_EXTERNAL.APPROVED)
             ), 0),
+            sum_costs_rejected=Coalesce(Sum(
+                'hit__batch__settings_batch__reward',
+                distinct=True,
+                filter=Q(status_external=assignments.STATUS_EXTERNAL.REJECTED)
+            ), 0),
             sum_costs_submitted=Coalesce(Sum(
                 'hit__batch__settings_batch__reward',
                 distinct=True,
-                filter=Q(status_external=None)
+                filter=Q(status_external__isnull=True)
             ), 0)
         )
 
