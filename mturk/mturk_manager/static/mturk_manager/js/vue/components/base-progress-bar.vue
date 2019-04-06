@@ -72,6 +72,9 @@ export default {
         responsive: true,
         maintainAspectRatio: false,
         legend: false,
+        animation: {
+          duration: 0,
+        },
         scales: {
           xAxes: [{
             stacked: true,
