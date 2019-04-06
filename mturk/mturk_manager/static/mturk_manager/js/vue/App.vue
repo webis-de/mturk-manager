@@ -28,7 +28,6 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 import { Service_Projects } from './services/service_projects';
-import AddCredentials from './views/add-credentials/add-credentials';
 import TheUpdateNotification from './components/the-update-notification';
 
 export default {
@@ -70,7 +69,6 @@ export default {
   },
   components: {
     TheUpdateNotification,
-    AddCredentials,
   },
 };
 </script>

@@ -60,9 +60,9 @@
 
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex';
-import TheNavigationDrawer from '../the-navigation-drawer.vue';
-import ComponentToolbarBatches from '../batches/component_toolbar_batches.vue';
-import ComponentToolbarQualifications from '../qualifications/component-toolbar-qualifications.vue';
+import TheNavigationDrawer from '../../components/the-navigation-drawer.vue';
+import ComponentToolbarBatches from '../../components/batches/component_toolbar_batches.vue';
+import ComponentToolbarQualifications from '../../components/qualifications/component-toolbar-qualifications.vue';
 import slug_project from '../../mixins/slug_project';
 
 export default {

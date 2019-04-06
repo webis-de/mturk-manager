@@ -128,7 +128,7 @@
 import * as _ from 'lodash';
 import { update_sandbox as updateSandbox } from '../mixins/update_sandbox';
 import { table } from '../mixins/table';
-import ComponentSettingsTable from './helpers/component-settings-table';
+import ComponentSettingsTable from './common/component-settings-table';
 import BaseTableFilters from './base-table-filters';
 
 export default {

@@ -61,6 +61,11 @@ export default {
         //     // icon: 'ballot',
         // },
         {
+          name: 'tasks',
+          label: 'Tasks',
+          icon: 'notes',
+        },
+        {
           name: 'batches',
           label: 'Batches',
           icon: 'notes',

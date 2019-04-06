@@ -131,7 +131,7 @@ import {
   mapState, mapActions, mapMutations, mapGetters,
 } from 'vuex';
 import _ from 'lodash';
-import ComponentDisplayDatetime from '../../helpers/component_display_datetime.vue';
+import ComponentDisplayDatetime from '../../common/component_display_datetime.vue';
 import BaseDisplayAmount from '../../base-display-amount';
 import BaseProgressBar from '../../base-progress-bar';
 

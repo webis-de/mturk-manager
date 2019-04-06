@@ -115,14 +115,14 @@ import {
   mapState, mapGetters, mapMutations, mapActions,
 } from 'vuex';
 
-import ComponentShowBalance from './component-show-balance.vue';
-import ComponentShowBatches from './component-show-batches.vue';
-import DisplayExpenses from './display-expenses.vue';
+import ComponentShowBalance from '../../components/finances/component-show-balance.vue';
+import ComponentShowBatches from '../../components/finances/component-show-batches.vue';
+import DisplayExpenses from '../../components/finances/display-expenses.vue';
 import slug_project from '../../mixins/slug_project';
-import ListBatches from '../batches/list/list-batches';
+import ListBatches from '../../components/batches/list/list-batches';
 import { update_sandbox } from '../../mixins/update_sandbox';
-import ListHits from '../hits/list/list-hits';
-import ListAssignments from '../assignments/list/list-assignments';
+import ListHits from '../../components/hits/list/list-hits';
+import ListAssignments from '../../components/assignments/list/list-assignments';
 import { ServiceFinances } from '../../services/finances.service';
 
 export default {

@@ -123,9 +123,9 @@ import {
   mapState, mapActions, mapMutations, mapGetters,
 } from 'vuex';
 import _ from 'lodash';
-import ComponentDisplayDatetime from '../../helpers/component_display_datetime';
+import ComponentDisplayDatetime from '../../common/component_display_datetime';
 import ComponentStatusAssignment from './component-status-assignment';
-import ComponentDisplayDuration from '../../helpers/component-display-duration';
+import ComponentDisplayDuration from '../../common/component-display-duration';
 
 export default {
   name: 'component-item-assignment',

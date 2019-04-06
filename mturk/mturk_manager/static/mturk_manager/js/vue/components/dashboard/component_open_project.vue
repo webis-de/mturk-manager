@@ -63,7 +63,7 @@
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex';
 import _ from 'lodash';
-import ComponentDisplayDatetime from '../helpers/component_display_datetime';
+import ComponentDisplayDatetime from '../common/component_display_datetime';
 import { table } from '../../mixins/table';
 
 export default {

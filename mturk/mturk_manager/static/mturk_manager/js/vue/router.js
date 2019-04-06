@@ -1,15 +1,16 @@
 import VueRouter from 'vue-router';
 import { Service_Projects } from './services/service_projects';
-import app_dashboard from './components/dashboard/app_dashboard.vue';
-import add_credentials from './views/add-credentials/add-credentials.vue';
-import app_connection_error from './components/connection_error/app_connection_error.vue';
-import app_project from './components/project/app_project.vue';
-import app_batches from './components/batches/app_batches.vue';
-import app_hits from './components/hits/app_hits.vue';
-import app_assignments from './components/assignments/app_assignments.vue';
-import app_finances from './components/finances/app_finances.vue';
-import app_workers from './components/workers/app_workers.vue';
-import AppSettingsProject from './components/settings_project/app_settings_project.vue';
+import viewDashboard from './views/dashboard/dashboard.view';
+import viewAddCredentials from './views/add-credentials/add-credentials.view';
+import viewConnectionError from './views/connection-error/connection-error.view';
+import viewProject from './views/project/project.view';
+import viewTasks from './views/tasks/tasks.view';
+import app_batches from './components/batches/app_batches';
+import app_hits from './components/hits/app_hits';
+import app_assignments from './components/assignments/app_assignments';
+import viewFinances from './views/finances/finances.view';
+import viewWorkers from './views/workers/workers.view';
+import AppSettingsProject from './views/settings-project/settings-project.view';
 import { store } from './store/vuex';
 import { Service_App } from './services/service.app';
 import queue from './queue';
@@ -37,12 +38,12 @@ const routes = [
   {
     path: '/',
     name: 'dashboard',
-    component: app_dashboard,
+    component: viewDashboard,
   },
   {
     path: '/add_credentials',
     name: 'add_credentials',
-    component: add_credentials,
+    component: viewAddCredentials,
   },
   {
     path: '/projects',
@@ -54,7 +55,7 @@ const routes = [
       {
         path: ':slug_project',
         name: 'project',
-        component: app_project,
+        component: viewProject,
         redirect: to => ({
           name: 'batches',
           params: {
@@ -63,6 +64,15 @@ const routes = [
         }),
         props: parse_params,
         children: [
+          {
+            path: 'tasks',
+            name: 'tasks',
+            meta: {
+              name: 'Tasks',
+            },
+            component: viewTasks,
+            props: parse_params,
+          },
           {
             path: 'batches',
             name: 'batches',
@@ -123,7 +133,7 @@ const routes = [
             meta: {
               name: 'Finances',
             },
-            component: app_finances,
+            component: viewFinances,
           },
           {
             path: 'workers',
@@ -131,7 +141,7 @@ const routes = [
             meta: {
               name: 'Workers',
             },
-            component: app_workers,
+            component: viewWorkers,
           },
           // {
           // 	path: '/qualifications',
@@ -153,7 +163,7 @@ const routes = [
   {
     path: '/connection_error',
     name: 'connection_error',
-    component: app_connection_error,
+    component: viewConnectionError,
   },
 ];
 

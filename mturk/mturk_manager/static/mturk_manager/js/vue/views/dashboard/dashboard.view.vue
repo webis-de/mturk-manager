@@ -23,8 +23,8 @@
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex';
 
-import ComponentCreateProject from './component_create_project.vue';
-import ComponentOpenProject from './component_open_project.vue';
+import ComponentCreateProject from '../../components/dashboard/component_create_project.vue';
+import ComponentOpenProject from '../../components/dashboard/component_open_project.vue';
 import slug_project from '../../mixins/slug_project';
 
 export default {

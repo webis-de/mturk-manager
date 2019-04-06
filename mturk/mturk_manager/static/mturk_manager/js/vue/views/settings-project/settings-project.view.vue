@@ -69,16 +69,16 @@
 </template>
 
 <script>
-import ComponentBlockLimit from './block_limit/component_block_limit.vue';
-import ComponentMessagesRejectDefault from './messages_reject/component_messages_reject_default.vue';
-import ComponentClearSandbox from './clear_sandbox/component_clear_sandbox.vue';
+import ComponentBlockLimit from '../../components/settings_project/block_limit/component_block_limit.vue';
+import ComponentMessagesRejectDefault from '../../components/settings_project/messages_reject/component_messages_reject_default.vue';
+import ComponentClearSandbox from '../../components/settings_project/clear_sandbox/component_clear_sandbox.vue';
 import slug_project from '../../mixins/slug_project';
-import Budget from '../finances/budget';
-import TableTemplatesWorker from './templates_worker/table-templates-worker';
-import TableTemplatesAssignment from './templates_assignment/table-templates-assignment';
-import TableTemplatesHit from './templates_hit/table-template-hit';
-import TableTemplatesGlobal from './templates_global/table-template-global';
-import TableSettingsBatch from './settings_batch/table-settings-batch';
+import Budget from '../../components/finances/budget';
+import TableTemplatesWorker from '../../components/settings_project/templates_worker/table-templates-worker';
+import TableTemplatesAssignment from '../../components/settings_project/templates_assignment/table-templates-assignment';
+import TableTemplatesHit from '../../components/settings_project/templates_hit/table-template-hit';
+import TableTemplatesGlobal from '../../components/settings_project/templates_global/table-template-global';
+import TableSettingsBatch from '../../components/settings_project/settings_batch/table-settings-batch';
 
 export default {
   mixins: [slug_project],
