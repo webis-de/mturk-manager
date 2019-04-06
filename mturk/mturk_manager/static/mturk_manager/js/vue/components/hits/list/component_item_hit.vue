@@ -29,7 +29,7 @@
           name: 'batch',
           params: {
             slug_project: $route.params.slug_project,
-            id_batch: hit.batch.id
+            id: hit.batch.id
           }
         }"
       >
@@ -69,7 +69,7 @@
           name: 'hit',
           params: {
             slug_project: $route.params.slug_project,
-            id_hit: hit.id
+            id: hit.id
           }
         }"
       >

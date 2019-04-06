@@ -11,7 +11,7 @@
           class="my-0"
           icon
           small
-          v-bind:to="{ name: 'hits' }"
+          v-bind:to="{ name: 'tasksHITs' }"
         >
           <v-icon>arrow_upward</v-icon>
         </v-btn>
@@ -36,7 +36,7 @@ import _ from 'lodash';
 import ListAssignments from '../../assignments/list/list-assignments';
 
 export default {
-  name: 'component-hit-detail',
+  name: 'ComponentHitDetail',
   // props: {
   //  id_hit: {
   //      required: true,

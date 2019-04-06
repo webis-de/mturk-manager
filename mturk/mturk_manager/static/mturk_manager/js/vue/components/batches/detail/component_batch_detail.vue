@@ -11,7 +11,7 @@
           class="my-0"
           icon
           small
-          v-bind:to="{ name: 'batches' }"
+          v-bind:to="{ name: 'tasksBatches' }"
         >
           <v-icon>arrow_upward</v-icon>
         </v-btn>
@@ -36,7 +36,7 @@ import { Service_Batches } from '../../../services/service_batches';
 import ListHits from '../../hits/list/list-hits';
 
 export default {
-  name: 'component-batch-detail',
+  name: 'ComponentBatchDetail',
   // props: {
   // 	id_batch: {
   // 		required: true,

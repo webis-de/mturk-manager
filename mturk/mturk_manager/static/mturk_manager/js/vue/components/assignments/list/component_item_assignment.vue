@@ -82,7 +82,7 @@
           name: 'hit',
           params: {
             slug_project: $route.params.slug_project,
-            id_hit: assignment.hit.id
+            id: assignment.hit.id
           }
         }"
       >
@@ -128,7 +128,7 @@ import ComponentStatusAssignment from './component-status-assignment';
 import ComponentDisplayDuration from '../../common/component-display-duration';
 
 export default {
-  name: 'component-item-assignment',
+  name: 'ComponentItemAssignment',
   props: {
     props: {
       type: Object,

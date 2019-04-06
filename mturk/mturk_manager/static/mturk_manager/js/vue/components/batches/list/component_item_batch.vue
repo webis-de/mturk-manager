@@ -116,8 +116,8 @@
         v-bind:to="{
           name: 'batch',
           params: {
-            slug_project: $route.params.slug_project,
-            id_batch: batch.id
+            // slug_project: $route.params.slug_project,
+            id: batch.id
           }
         }"
       >

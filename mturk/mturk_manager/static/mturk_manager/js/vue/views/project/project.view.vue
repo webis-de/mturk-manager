@@ -95,7 +95,6 @@ export default {
       return {};
     },
     currentTabComponent() {
-      console.log('this.route', this.$route);
       switch (this.$route.name) {
         case 'finances':
         case 'batches':

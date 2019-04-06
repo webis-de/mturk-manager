@@ -5,9 +5,9 @@ import viewAddCredentials from './views/add-credentials/add-credentials.view';
 import viewConnectionError from './views/connection-error/connection-error.view';
 import viewProject from './views/project/project.view';
 import viewTasks from './views/tasks/tasks.view';
-import app_batches from './components/batches/app_batches';
-import app_hits from './components/hits/app_hits';
-import app_assignments from './components/assignments/app_assignments';
+import viewBatches from './views/tasks/batches/batches.view';
+import viewHITs from './views/tasks/hits/hits.view';
+import viewAssignments from './views/tasks/assignments/assignments.view';
 import viewFinances from './views/finances/finances.view';
 import viewWorkers from './views/workers/workers.view';
 import AppSettingsProject from './views/settings-project/settings-project.view';
@@ -31,7 +31,7 @@ function parse_params(route) {
 }
 
 // function loadView(view) {
-//   return () => import(/* webpackChunkName: "view-[request]" */ `../components/hits/app_hits.vue`)
+//   return () => import(/* webpackChunkName: "view-[request]" */ `../components/hits/hits.view.vue`)
 // }
 
 const routes = [
@@ -57,7 +57,7 @@ const routes = [
         name: 'project',
         component: viewProject,
         redirect: to => ({
-          name: 'batches',
+          name: 'tasks',
           params: {
             slug_project: to.params.slug_project,
           },
@@ -70,21 +70,72 @@ const routes = [
             meta: {
               name: 'Tasks',
             },
-            component: viewTasks,
-            props: parse_params,
+            component: { template: '<router-view></router-view>' },
+            // component: viewTasks,
+            // props: parse_params,
+            redirect: to => ({
+              name: 'tasksBatches',
+              params: {
+                slug_project: to.params.slug_project,
+              },
+            }),
             children: [
-
+              {
+                path: 'batches',
+                name: 'tasksBatches',
+                meta: {
+                  name: 'Tasks',
+                  index: 0,
+                },
+                component: viewTasks,
+                props: parse_params,
+                children: [
+                  {
+                    path: ':id',
+                    name: 'batch',
+                    component: viewBatches,
+                    props: parse_params,
+                  },
+                ],
+              },
+              {
+                path: 'hits',
+                name: 'tasksHITs',
+                meta: {
+                  name: 'Tasks',
+                  index: 1,
+                },
+                component: viewTasks,
+                props: parse_params,
+                children: [
+                  {
+                    path: ':id',
+                    name: 'hit',
+                    component: viewHITs,
+                    props: parse_params,
+                  },
+                ],
+              },
+              {
+                path: 'assignments',
+                name: 'tasksAssignments',
+                meta: {
+                  name: 'Tasks',
+                  index: 2,
+                },
+                component: viewTasks,
+                props: parse_params,
+                children: [
+                  {
+                    path: ':id',
+                    name: 'assignment',
+                    component: viewAssignments,
+                    props: parse_params,
+                  },
+                ],
+              },
             ],
           },
-          // {
-          //   path: 'batches',
-          //   name: 'batches',
-          //   meta: {
-          //     name: 'Batches',
-          //   },
-          //   component: app_batches,
-          //   props: parse_params,
-          // },
           // {
           //   path: 'batches/:id_batch',
           //   name: 'batch',
@@ -179,8 +230,8 @@ queue.listen('router', (payload) => {
 });
 
 router.beforeEach((to, from, next) => {
-  // console.log('from', from);
-  // console.log('to', to);
+  console.warn(`from ${from.name} to ${to.name}`);
+
   if (to.matched[0].name !== 'projects') {
     Service_Projects.ping();
   }
