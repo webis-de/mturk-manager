@@ -2,7 +2,7 @@
   <div>
     <the-navigation-drawer
       v-bind:show_drawer.sync="show_drawer"
-    ></the-navigation-drawer>
+    />
 
     <v-progress-linear
       v-bind:active="get_show_progress_indicator"
@@ -10,49 +10,62 @@
       app
       indeterminate
       style="z-index: 50; position: absolute; margin: 0"
-    ></v-progress-linear>
+    />
 
-    <v-toolbar app fixed clipped-left v-bind:style="object_styles_toolbar">
+    <v-toolbar
+      app
+      fixed
+      clipped-left
+      v-bind:style="object_styles_toolbar"
+    >
       <v-toolbar-side-icon
-        @click.stop="show_drawer = !show_drawer"
-      ></v-toolbar-side-icon>
-      <v-toolbar-title
-        >"{{ project_current.name }}" -
-        {{ name_route_current }}</v-toolbar-title
+        v-on:click.stop="show_drawer = !show_drawer"
+      />
+      <v-toolbar-title>
+        {{ namePage }}
+      </v-toolbar-title>
+
+      <v-spacer />
+
+      <v-layout
+        align-center
+        justify-end
       >
-
-      <v-spacer></v-spacer>
-
-      <v-layout align-center justify-end>
         <v-flex shrink>
           <v-tooltip bottom>
             <v-switch
-              hide-details
               slot="activator"
+              hide-details
               v-bind:label="use_sandbox ? 'Toggle Sandbox' : 'Toggle Sandbox'"
               v-bind:input-value="use_sandbox"
               v-on:click.native="toggle_use_sandbox"
-            ></v-switch>
-            <span
-              >You are currently <b v-if="!use_sandbox">not</b> using the
-              Sandbox</span
-            >
+            />
+            <span>
+              You are currently <b v-if="!use_sandbox">
+                not
+              </b> using the
+              Sandbox
+            </span>
           </v-tooltip>
         </v-flex>
 
-        <v-divider class="mx-2" inset vertical></v-divider>
+        <v-divider
+          class="mx-2"
+          inset
+          vertical
+        />
 
         <v-flex shrink>
           <component
-            v-bind:name_route="name_route_current"
             v-bind:is="currentTabComponent"
-          ></component>
+            v-bind:name_route="name_route_current"
+          />
         </v-flex>
       </v-layout>
     </v-toolbar>
     <v-content>
       <v-container fluid>
-        <router-view></router-view>
+        <router-view />
       </v-container>
     </v-content>
   </div>
@@ -60,34 +73,30 @@
 
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex';
-import TheNavigationDrawer from '../../components/the-navigation-drawer.vue';
-import ComponentToolbarBatches from '../../components/batches/component_toolbar_batches.vue';
-import ComponentToolbarQualifications from '../../components/qualifications/component-toolbar-qualifications.vue';
+import TheNavigationDrawer from '../../components/the-navigation-drawer';
+import ComponentToolbarBatches from '../../components/batches/component_toolbar_batches';
+import ComponentToolbarQualifications from '../../components/qualifications/component-toolbar-qualifications';
 import slug_project from '../../mixins/slug_project';
 
 export default {
+  name: 'AppProject',
+  components: {
+    TheNavigationDrawer,
+  },
   mixins: [
     slug_project,
-    // load_data,
   ],
-  // props: {
-  //     // id_batch: {
-  //     // },
-  // },
-  name: 'app-project',
   data() {
     return {
       show_drawer: true,
       id_interval: undefined,
     };
   },
-  methods: {
-    toggle_use_sandbox() {
-      this.set_use_sandbox(!this.use_sandbox);
-    },
-    ...mapActions('module_app', ['set_use_sandbox']),
-  },
   computed: {
+    namePage() {
+      return `"${this.project_current.name}" -
+        ${this.$route.meta.name}`;
+    },
     object_styles_toolbar() {
       if (this.use_sandbox) {
         return { 'background-color': '#dd6e00' };
@@ -107,6 +116,8 @@ export default {
           return ComponentToolbarBatches;
         case 'qualifications':
           return ComponentToolbarQualifications;
+        default:
+          return null;
         // case 'workers':
         //     return ComponentToolbarWorkers;
       }
@@ -123,8 +134,11 @@ export default {
     }),
     ...mapGetters(['get_show_progress_indicator']),
   },
-  components: {
-    TheNavigationDrawer,
+  methods: {
+    toggle_use_sandbox() {
+      this.set_use_sandbox(!this.use_sandbox);
+    },
+    ...mapActions('module_app', ['set_use_sandbox']),
   },
 };
 </script>

@@ -1,21 +1,11 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <div>
-    {{$route.params.id}}
-    <router-view></router-view>
+    <router-view />
     <template
       v-if="$route.params.id === undefined"
     >
       <v-layout>
         <v-flex>
-          <h1 class="headline">
-            {{ $route.meta.name }}
-          </h1>
-        </v-flex>
-      </v-layout>
-
-      <v-layout>
-        <v-flex>
-            <!--v-model="indexTab"-->
           <v-tabs
             v-bind:value="$route.meta.index"
             v-on:change="changedView($event)"
@@ -40,7 +30,7 @@
                     v-bind:pagination-computed="paginationComputedBatches"
                   >
                     <template v-slot:actions>
-                      <component-download-batch></component-download-batch>
+                      <component-download-batch />
                     </template>
                   </list-batches>
                 </v-card>
@@ -66,7 +56,7 @@
                     v-bind:pagination-computed="paginationComputedAssignments"
                   >
                     <template v-slot:actions>
-                      <component-annotate></component-annotate>
+                      <component-annotate />
                     </template>
                   </list-assignments>
                 </v-card>
@@ -80,16 +70,18 @@
 </template>
 
 <script>
+import { mapMutations, mapState } from 'vuex';
 import ComponentDownloadBatch from '../../components/batches/component_download_batch';
 import ListBatches from '../../components/batches/list/list-batches';
-import { mapMutations, mapState } from 'vuex';
 import ListHits from '../../components/hits/list/list-hits';
 import ListAssignments from '../../components/assignments/list/list-assignments';
 import ComponentAnnotate from '../../components/assignments/annotate/component_annotate';
 
 export default {
   name: 'Tasks',
-  components: { ComponentAnnotate, ListAssignments, ListHits, ListBatches, ComponentDownloadBatch },
+  components: {
+    ComponentAnnotate, ListAssignments, ListHits, ListBatches, ComponentDownloadBatch,
+  },
   data() {
     return {
       indexTab: 0,

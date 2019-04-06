@@ -2,17 +2,6 @@
   <div>
     <v-layout>
       <v-flex>
-        <h1 class="headline">Finances</h1>
-      </v-flex>
-      <v-flex
-        class="text-xs-right"
-      >
-        <component-show-balance></component-show-balance>
-      </v-flex>
-    </v-layout>
-
-    <v-layout>
-      <v-flex>
         <v-tabs
           v-model="indexTab"
         >
@@ -89,18 +78,36 @@
     </v-layout>
 
     <v-divider class="my-3"></v-divider>
-    <v-layout
-      justify-end
+    <v-container
+      fluid
+      class="pa-0 grid-list-lg"
     >
-      <v-flex
-        shrink
-      >
-        <display-expenses
-          v-bind:expenses="expenses"
-          v-bind:type-item="typeItem"
-        ></display-expenses>
-      </v-flex>
-    </v-layout>
+      <v-layout>
+        <v-flex
+          shrink
+        >
+          <display-expenses
+            v-bind:expenses="expenses"
+            v-bind:type-item="typeItem"
+          ></display-expenses>
+        </v-flex>
+
+        <v-flex
+          shrink
+        >
+          <v-card>
+            <v-card-title>
+              Current Balance
+            </v-card-title>
+
+            <v-card-text>
+              <component-show-balance></component-show-balance>
+            </v-card-text>
+          </v-card>
+        </v-flex>
+
+      </v-layout>
+    </v-container>
     <!--<v-divider class="my-3"></v-divider>-->
     <!--<div style="max-width: 100%">-->
     <!--<v-flex>-->
@@ -115,9 +122,8 @@ import {
   mapState, mapGetters, mapMutations, mapActions,
 } from 'vuex';
 
-import ComponentShowBalance from '../../components/finances/component-show-balance.vue';
-import ComponentShowBatches from '../../components/finances/component-show-batches.vue';
-import DisplayExpenses from '../../components/finances/display-expenses.vue';
+import ComponentShowBalance from '../../components/finances/component-show-balance';
+import DisplayExpenses from '../../components/finances/display-expenses';
 import slug_project from '../../mixins/slug_project';
 import ListBatches from '../../components/batches/list/list-batches';
 import { update_sandbox } from '../../mixins/update_sandbox';
@@ -127,6 +133,14 @@ import { ServiceFinances } from '../../services/finances.service';
 
 export default {
   name: 'AppFinances',
+  components: {
+    ListAssignments,
+    ListHits,
+    ListBatches,
+    ComponentShowBalance,
+    // ComponentListBatches,
+    DisplayExpenses,
+  },
   mixins: [
     slug_project,
     update_sandbox,
@@ -140,7 +154,7 @@ export default {
   },
   computed: {
     activeFilters() {
-      switch(this.typeItem) {
+      switch (this.typeItem) {
         case 'assignments':
           return this.filtersAssignments;
         case 'hits':
@@ -151,7 +165,7 @@ export default {
       }
     },
     typeItem() {
-      switch(this.indexTab) {
+      switch (this.indexTab) {
         case 0:
           return 'batches';
         case 1:
@@ -190,6 +204,10 @@ export default {
       this.loadExpenses();
     },
   },
+  created() {
+    ServiceFinances.load_balance();
+    this.loadExpenses();
+  },
   methods: {
     loadExpenses() {
       this.expenses = {};
@@ -226,19 +244,6 @@ export default {
       functionSetArrayColumnsAssignments: 'set_array_columns_finances',
       functionSetPaginationAssignments: 'setPaginationFinances',
     }),
-  },
-  created() {
-    ServiceFinances.load_balance();
-    this.loadExpenses();
-  },
-
-  components: {
-    ListAssignments,
-    ListHits,
-    ListBatches,
-    ComponentShowBalance,
-    // ComponentListBatches,
-    DisplayExpenses,
   },
 };
 </script>

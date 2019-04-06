@@ -93,6 +93,9 @@ const routes = [
                   {
                     path: ':id',
                     name: 'batch',
+                    meta: {
+                      name: 'Tasks',
+                    },
                     component: viewBatches,
                     props: parse_params,
                   },
@@ -111,6 +114,9 @@ const routes = [
                   {
                     path: ':id',
                     name: 'hit',
+                    meta: {
+                      name: 'Tasks',
+                    },
                     component: viewHITs,
                     props: parse_params,
                   },
@@ -129,6 +135,9 @@ const routes = [
                   {
                     path: ':id',
                     name: 'assignment',
+                    meta: {
+                      name: 'Tasks',
+                    },
                     component: viewAssignments,
                     props: parse_params,
                   },
@@ -250,13 +259,11 @@ router.beforeEach(async (to, from, next) => {
     if (response.reason === 'load_credentials') {
       next({ name: 'add_credentials' });
       return;
-    } else if(response.exception !== undefined) {
-      //some exception occured fetching data from the server
+    } if (response.exception !== undefined) {
+      // some exception occured fetching data from the server
       return;
     }
   }
 
-  // console.log('to', to);
-  // console.log('from', from);
   next();
 });
