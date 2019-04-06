@@ -9,14 +9,14 @@
     </td>
     <td
       v-if="set_columns_selected.has('id_hit')"
-      class="text-xs-center"
+      class="text-xs-left"
       v-bind:style="stylesCell"
     >
       {{ hit.id_hit }}
     </td>
     <td
       v-if="set_columns_selected.has('batch')"
-      class="text-xs-center"
+      class="text-xs-left"
       v-bind:style="stylesCell"
     >
       {{ hit.batch.name.toUpperCase() }}

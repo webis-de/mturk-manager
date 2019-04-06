@@ -10,7 +10,7 @@
     </td>
     <td
       v-if="set_columns_selected.has('id_assignment')"
-      class="text-xs-center"
+      class="text-xs-left"
       v-bind:style="stylesCell"
     >
       {{ assignment.id_assignment }}

@@ -33,8 +33,9 @@ export const moduleAssignments = _.merge({}, baseModule, {
 
     array_columns_general: [
       {
-        text: 'Name',
+        text: 'ID',
         value: 'id_assignment',
+        classes: ['text-xs-left'],
       },
       {
         text: 'Creation',

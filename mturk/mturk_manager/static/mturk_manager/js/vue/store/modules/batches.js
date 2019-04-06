@@ -40,6 +40,7 @@ export const moduleBatches = _.merge({}, baseModule, {
       {
         value: 'name',
         text: 'Name',
+        classes: ['text-xs-left'],
       },
       {
         text: '#HITs',

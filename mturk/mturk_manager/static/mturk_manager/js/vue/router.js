@@ -239,8 +239,6 @@ queue.listen('router', (payload) => {
 });
 
 router.beforeEach((to, from, next) => {
-  console.warn(`from ${from.name} to ${to.name}`);
-
   if (to.matched[0].name !== 'projects') {
     Service_Projects.ping();
   }

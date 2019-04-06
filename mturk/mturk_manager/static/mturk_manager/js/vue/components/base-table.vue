@@ -56,13 +56,14 @@
               : {}
           "
         >
+          {{ header.text }}
           <v-icon
             v-if="header.sortable !== false"
             small
+            style="position: absolute"
           >
             arrow_upward
           </v-icon>
-          {{ header.text }}
         </th>
       </tr>
     </template>

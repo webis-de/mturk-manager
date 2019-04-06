@@ -32,6 +32,7 @@ export const moduleSettingsBatch = _.merge({}, baseModule, {
       {
         text: 'Title',
         value: 'title',
+        classes: ['text-xs-left'],
       },
       {
         text: 'Reward',

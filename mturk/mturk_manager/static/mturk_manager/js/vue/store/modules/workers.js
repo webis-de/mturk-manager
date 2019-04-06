@@ -30,6 +30,7 @@ export const moduleWorkers = _.merge({}, baseModule, {
       {
         text: 'Name',
         value: 'name',
+        classes: ['text-xs-left'],
       },
       {
         text: 'Assignment Limit',

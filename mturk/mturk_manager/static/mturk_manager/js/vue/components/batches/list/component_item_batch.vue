@@ -7,7 +7,7 @@
 
     <td
       v-if="set_columns_selected.has('name')"
-      class="text-xs-center"
+      class="text-xs-left"
       v-bind:style="stylesCell"
     >
       {{ batch.name.toUpperCase() }}

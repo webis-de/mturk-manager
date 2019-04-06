@@ -15,7 +15,7 @@
 
     <td
       v-bind:style="stylesCell"
-      class="text-xs-center"
+      class="text-xs-left"
     >
       {{ settingsBatch.title }}
     </td>
