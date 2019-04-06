@@ -37,6 +37,7 @@
     "vue-chartjs": "^3.4.2",
     "vue-cookies": "^1.5.6",
     "vue-hot-reload-api": "^2.3.0",
+    "vue-i18n": "^8.10.0",
     "vue-router": "^3.0.2",
     "vuelidate": "^0.7.4",
     "vuetify": "^1.5.2",
@@ -64,6 +65,7 @@
     "style-loader": "^0.23.1",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
+    "vue-cli-plugin-i18n": "^0.5.2",
     "vue-cli-plugin-webpack-bundle-analyzer": "^1.2.0",
     "vue-template-compiler": "^2.6.8"
   },
