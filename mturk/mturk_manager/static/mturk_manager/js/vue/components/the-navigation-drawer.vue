@@ -38,7 +38,7 @@
 import { mapState, mapActions } from 'vuex';
 
 export default {
-  name: 'the-navigation-drawer',
+  name: 'TheNavigationDrawer',
   props: {
     show_drawer: {
       required: true,
@@ -65,23 +65,23 @@ export default {
           label: 'Tasks',
           icon: 'notes',
         },
-        {
-          name: 'batches',
-          label: 'Batches',
-          icon: 'notes',
-          // icon: 'ballot',
-        },
-        {
-          name: 'hits',
-          label: 'HITs',
-          icon: 'notes',
-          // icon: 'ballot',
-        },
-        {
-          name: 'assignments',
-          label: 'Assignments',
-          icon: 'notes',
-        },
+        // {
+        //   name: 'batches',
+        //   label: 'Batches',
+        //   icon: 'notes',
+        //   // icon: 'ballot',
+        // },
+        // {
+        //   name: 'hits',
+        //   label: 'HITs',
+        //   icon: 'notes',
+        //   // icon: 'ballot',
+        // },
+        // {
+        //   name: 'assignments',
+        //   label: 'Assignments',
+        //   icon: 'notes',
+        // },
         {
           name: 'finances',
           label: 'Finances',

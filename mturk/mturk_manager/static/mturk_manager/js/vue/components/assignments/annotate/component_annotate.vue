@@ -23,7 +23,7 @@ import {
 import _ from 'lodash';
 
 export default {
-  name: 'component_annotate',
+  name: 'ComponentAnnotate',
   data() {
     return {};
   },

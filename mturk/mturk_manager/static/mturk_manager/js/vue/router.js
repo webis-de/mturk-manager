@@ -72,61 +72,64 @@ const routes = [
             },
             component: viewTasks,
             props: parse_params,
+            children: [
+
+            ],
           },
-          {
-            path: 'batches',
-            name: 'batches',
-            meta: {
-              name: 'Batches',
-            },
-            component: app_batches,
-            props: parse_params,
-          },
-          {
-            path: 'batches/:id_batch',
-            name: 'batch',
-            meta: {
-              name: 'Batch',
-            },
-            component: app_batches,
-            props: parse_params,
-          },
-          {
-            path: 'hits',
-            name: 'hits',
-            meta: {
-              name: 'HITs',
-            },
-            component: app_hits,
-            props: parse_params,
-          },
-          {
-            path: 'hits/:id_hit',
-            name: 'hit',
-            meta: {
-              name: 'HIT',
-            },
-            component: app_hits,
-            props: parse_params,
-          },
-          {
-            path: 'assignments',
-            name: 'assignments',
-            meta: {
-              name: 'Assignments',
-            },
-            component: app_assignments,
-            props: parse_params,
-          },
-          {
-            path: 'assignments/:id_assignment',
-            name: 'assignment',
-            meta: {
-              name: 'Assignment',
-            },
-            component: app_assignments,
-            props: parse_params,
-          },
+          // {
+          //   path: 'batches',
+          //   name: 'batches',
+          //   meta: {
+          //     name: 'Batches',
+          //   },
+          //   component: app_batches,
+          //   props: parse_params,
+          // },
+          // {
+          //   path: 'batches/:id_batch',
+          //   name: 'batch',
+          //   meta: {
+          //     name: 'Batch',
+          //   },
+          //   component: app_batches,
+          //   props: parse_params,
+          // },
+          // {
+          //   path: 'hits',
+          //   name: 'hits',
+          //   meta: {
+          //     name: 'HITs',
+          //   },
+          //   component: app_hits,
+          //   props: parse_params,
+          // },
+          // {
+          //   path: 'hits/:id_hit',
+          //   name: 'hit',
+          //   meta: {
+          //     name: 'HIT',
+          //   },
+          //   component: app_hits,
+          //   props: parse_params,
+          // },
+          // {
+          //   path: 'assignments',
+          //   name: 'assignments',
+          //   meta: {
+          //     name: 'Assignments',
+          //   },
+          //   component: app_assignments,
+          //   props: parse_params,
+          // },
+          // {
+          //   path: 'assignments/:id_assignment',
+          //   name: 'assignment',
+          //   meta: {
+          //     name: 'Assignment',
+          //   },
+          //   component: app_assignments,
+          //   props: parse_params,
+          // },
           {
             path: 'finances',
             name: 'finances',
