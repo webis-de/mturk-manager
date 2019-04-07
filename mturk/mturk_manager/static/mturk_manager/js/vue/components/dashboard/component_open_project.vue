@@ -34,9 +34,9 @@
                   {{ props.item.name }}
                 </td>
                 <td>
-                  <component-display-datetime
+                  <base-display-datetime
                     v-bind:datetime="props.item.datetime_visited"
-                  ></component-display-datetime>
+                  ></base-display-datetime>
                 </td>
                 <td class="text-xs-right">
                   <!-- v-bind:to="{ name: 'batches', params: { slug_project: props.item.slug } }" -->
@@ -63,8 +63,8 @@
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex';
 import _ from 'lodash';
-import ComponentDisplayDatetime from '../common/component_display_datetime';
 import { table } from '../../mixins/table';
+import BaseDisplayDatetime from '../common/base-display-datetime';
 
 export default {
   mixins: [table],
@@ -107,7 +107,7 @@ export default {
   methods: {},
   created() {},
   components: {
-    ComponentDisplayDatetime,
+    BaseDisplayDatetime
   },
 };
 </script>

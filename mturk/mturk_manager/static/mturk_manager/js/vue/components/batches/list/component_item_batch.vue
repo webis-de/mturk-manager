@@ -26,8 +26,9 @@
       class="text-xs-center"
       v-bind:style="stylesCell"
     >
-      <component-display-datetime v-bind:datetime="batch.datetime_creation">
-      </component-display-datetime>
+      <base-display-datetime
+        v-bind:datetime="batch.datetime_creation"
+      />
     </td>
 
     <td
@@ -131,9 +132,9 @@ import {
   mapState, mapActions, mapMutations, mapGetters,
 } from 'vuex';
 import _ from 'lodash';
-import ComponentDisplayDatetime from '../../common/component_display_datetime.vue';
 import BaseDisplayAmount from '../../base-display-amount';
 import BaseProgressBar from '../../base-progress-bar';
+import BaseDisplayDatetime from '../../common/base-display-datetime';
 
 export default {
   name: 'ComponentItemBatch',
@@ -223,9 +224,9 @@ export default {
   },
   mounted() {},
   components: {
+    BaseDisplayDatetime,
     BaseProgressBar,
     BaseDisplayAmount,
-    ComponentDisplayDatetime,
   },
 };
 </script>

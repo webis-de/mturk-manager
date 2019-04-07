@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import Vue from 'vue';
-import moment from 'moment';
+import { parse } from 'date-fns';
 
 export default class Batch {
   constructor(data = {}) {
@@ -11,7 +11,7 @@ export default class Batch {
     // this.object_hits = {};
     this.settings_batch = data.settings_batch;
     this.count_hits = data.count_hits;
-    this.datetime_creation = moment(data.datetime_creation);
+    this.datetime_creation = parse(data.datetime_creation);
 
     this.countAssignmentsTotal = data.count_assignments_total;
     this.countAssignmentsApproved = data.count_assignments_approved;

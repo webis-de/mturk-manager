@@ -1,4 +1,4 @@
-import moment from 'moment';
+import { parse } from 'date-fns';
 
 export default class Project {
   constructor(data = {}) {
@@ -8,7 +8,7 @@ export default class Project {
     this.slug = data.slug;
     this.version = data.version;
     this.settings_batch_default = data.settings_batch_default;
-    this.datetime_visited = moment(data.datetime_visited);
+    this.datetime_visited = parse(data.datetime_visited);
     this.count_assignments_max_per_worker = data.count_assignments_max_per_worker;
     this.amount_budget_max = data.amount_budget_max;
 

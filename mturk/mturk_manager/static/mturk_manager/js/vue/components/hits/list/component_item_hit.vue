@@ -41,9 +41,9 @@
       class="text-xs-center"
       v-bind:style="stylesCell"
     >
-      <component-display-datetime
+      <base-display-datetime
         v-bind:datetime="hit.datetime_creation"
-      ></component-display-datetime>
+      ></base-display-datetime>
     </td>
     <td
       v-if="set_columns_selected.has('progress')"
@@ -89,8 +89,8 @@ import {
   mapState, mapActions, mapMutations, mapGetters,
 } from 'vuex';
 import _ from 'lodash';
-import ComponentDisplayDatetime from '../../common/component_display_datetime';
 import BaseProgressBar from '../../base-progress-bar';
+import BaseDisplayDatetime from '../../common/base-display-datetime';
 
 export default {
   name: 'component-item-hit',
@@ -233,8 +233,8 @@ export default {
     }),
   },
   components: {
+    BaseDisplayDatetime,
     BaseProgressBar,
-    ComponentDisplayDatetime,
   },
 };
 </script>

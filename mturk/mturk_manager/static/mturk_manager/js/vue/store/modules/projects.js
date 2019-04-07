@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import _ from 'lodash';
-import moment from 'moment';
+import { parse } from 'date-fns';
 import Project from '../../classes/project';
 import Settings_Batch from '../../classes/settings_batch';
 import Template_Worker from '../../classes/template_worker';
@@ -267,7 +267,7 @@ export const moduleProjects = {
       Vue.delete(project.templates_global, template.id);
     },
     set_ping(state, { project, data }) {
-      Vue.set(project, 'datetime_visited', moment(data.datetime));
+      Vue.set(project, 'datetime_visited', parse(data.datetime));
     },
     delete_project(state, { project }) {
       Vue.delete(state.object_projects, project.slug);

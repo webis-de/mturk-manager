@@ -20,36 +20,37 @@
       class="text-xs-center"
       v-bind:style="stylesCell"
     >
-      <component-display-datetime
+      <base-display-datetime
         v-bind:datetime="assignment.datetime_creation"
-      ></component-display-datetime>
+      ></base-display-datetime>
     </td>
     <td
       v-if="set_columns_selected.has('datetime_accept')"
       class="text-xs-center"
       v-bind:style="stylesCell"
     >
-      <component-display-datetime
+      <base-display-datetime
         v-bind:datetime="assignment.datetime_accept"
-      ></component-display-datetime>
+      ></base-display-datetime>
     </td>
     <td
       v-if="set_columns_selected.has('datetime_submit')"
       class="text-xs-center"
       v-bind:style="stylesCell"
     >
-      <component-display-datetime
+      <base-display-datetime
         v-bind:datetime="assignment.datetime_submit"
-      ></component-display-datetime>
+      ></base-display-datetime>
     </td>
     <td
       v-if="set_columns_selected.has('duration')"
       class="text-xs-center"
       v-bind:style="stylesCell"
     >
-      <component-display-duration
-        v-bind:duration="assignment.duration"
-      ></component-display-duration>
+      <base-display-duration
+        v-bind:start="assignment.datetime_accept"
+        v-bind:end="assignment.datetime_submit"
+      ></base-display-duration>
     </td>
     <td
       v-if="set_columns_selected.has('worker')"
@@ -123,9 +124,9 @@ import {
   mapState, mapActions, mapMutations, mapGetters,
 } from 'vuex';
 import _ from 'lodash';
-import ComponentDisplayDatetime from '../../common/component_display_datetime';
 import ComponentStatusAssignment from './component-status-assignment';
-import ComponentDisplayDuration from '../../common/component-display-duration';
+import BaseDisplayDatetime from '../../common/base-display-datetime';
+import BaseDisplayDuration from '../../common/base-display-duration';
 
 export default {
   name: 'ComponentItemAssignment',
@@ -196,9 +197,9 @@ export default {
     }),
   },
   components: {
-    ComponentDisplayDuration,
+    BaseDisplayDuration,
+    BaseDisplayDatetime,
     ComponentStatusAssignment,
-    ComponentDisplayDatetime,
   },
 };
 </script>
