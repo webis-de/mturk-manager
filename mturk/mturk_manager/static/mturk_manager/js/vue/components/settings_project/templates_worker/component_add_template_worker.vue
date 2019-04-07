@@ -127,8 +127,8 @@ import {
 import _ from 'lodash';
 
 import { required, minValue } from 'vuelidate/lib/validators';
-import validations from '../../../mixins/validations';
-import helpers from '../../../mixins/helpers';
+import validations from '../../../mixins/validations.mixin';
+import helpers from '../../../mixins/helpers.mixin';
 import Template_Worker from '../../../classes/template_worker';
 import { Service_Templates } from '../../../services/service_templates';
 

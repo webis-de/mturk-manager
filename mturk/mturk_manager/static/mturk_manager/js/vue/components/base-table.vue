@@ -127,15 +127,14 @@
 
 <script>
 import * as _ from 'lodash';
-import { update_sandbox as updateSandbox } from '../mixins/update_sandbox';
-import { table } from '../mixins/table';
+import { updateSandbox } from '../mixins/update-sandbox.mixin';
 import ComponentSettingsTable from './common/component-settings-table';
 import BaseTableFilters from './base-table-filters';
 
 export default {
   name: 'BaseTable',
   components: {BaseTableFilters, ComponentSettingsTable },
-  mixins: [updateSandbox, table],
+  mixins: [updateSandbox],
   props: {
     arrayItems: {
       type: Array | Function | null,
@@ -303,6 +302,14 @@ export default {
     });
   },
   methods: {
+    // Reset pagination/load page if the sandbox status was changed
+    sandboxUpdated() {
+      if (this.pagination.page !== 1) {
+        this.pagination.page = 1;
+      } else {
+        this.load_page(this.filters);
+      }
+    },
     updatedPagination(pagination) {
       // only update if pagination changed
       if (!_.isEqual(

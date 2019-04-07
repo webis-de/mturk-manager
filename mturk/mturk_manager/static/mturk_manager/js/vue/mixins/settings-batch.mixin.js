@@ -15,7 +15,7 @@ const foo = (object_settings_batch, settingsBatchCurrent) => (value) => {
   );
 };
 
-export default {
+export const settingsBatch = {
   data() {
     return {
       settings_batch: new Settings_Batch(),

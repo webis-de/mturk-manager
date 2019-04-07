@@ -3,7 +3,6 @@ import Vue from 'vue';
 import { store } from '../store/vuex';
 import { Service_Endpoint } from './service_endpoint';
 import { Service_Batches } from './service_batches';
-import load_data from '../mixins/load_data';
 
 class Class_Service_Workers {
   async load_workers({ list_ids, use_sandbox, append }) {

@@ -124,9 +124,8 @@ import {
 
 import ComponentShowBalance from '../../components/finances/component-show-balance';
 import DisplayExpenses from '../../components/finances/display-expenses';
-import slug_project from '../../mixins/slug_project';
 import ListBatches from '../../components/batches/list/list-batches';
-import { update_sandbox } from '../../mixins/update_sandbox';
+import { updateSandbox } from '../../mixins/update-sandbox.mixin';
 import ListHits from '../../components/hits/list/list-hits';
 import ListAssignments from '../../components/assignments/list/list-assignments';
 import { ServiceFinances } from '../../services/finances.service';
@@ -142,8 +141,7 @@ export default {
     DisplayExpenses,
   },
   mixins: [
-    slug_project,
-    update_sandbox,
+    updateSandbox,
     // load_data,
   ],
   data() {
@@ -218,8 +216,9 @@ export default {
         this.expenses = expenses;
       });
     },
-    sandbox_updated() {
+    sandboxUpdated() {
       ServiceFinances.load_balance();
+      this.loadExpenses();
     },
     ...mapActions('moduleBatches', {
       functionResetArrayColumnsBatches: 'reset_array_columns_finances',

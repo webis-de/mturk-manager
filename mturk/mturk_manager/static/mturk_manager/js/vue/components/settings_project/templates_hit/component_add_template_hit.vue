@@ -61,7 +61,7 @@ import {
 import _ from 'lodash';
 
 import { required, minValue } from 'vuelidate/lib/validators';
-import validations from '../../../mixins/validations';
+import validations from '../../../mixins/validations.mixin';
 import { Service_Templates } from '../../../services/service_templates';
 
 export default {

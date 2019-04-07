@@ -55,7 +55,7 @@ import {
   mapState, mapMutations, mapActions, mapGetters,
 } from 'vuex';
 import { required, minValue, maxValue } from 'vuelidate/lib/validators';
-import validations from '../../../mixins/validations';
+import validations from '../../../mixins/validations.mixin';
 import { Service_Projects } from '../../../services/service_projects';
 import { Service_Messages_Reject } from '../../../services/Service_Messages_Reject';
 

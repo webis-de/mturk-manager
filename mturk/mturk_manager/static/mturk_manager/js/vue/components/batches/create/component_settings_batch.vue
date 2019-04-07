@@ -27,8 +27,8 @@ import {
   mapState, mapMutations, mapActions, mapGetters,
 } from 'vuex';
 import _ from 'lodash';
-import settings_batch from '../../../mixins/settings_batch';
-import validations from '../../../mixins/validations';
+import { settingsBatch } from '../../../mixins/settings-batch.mixin';
+import validations from '../../../mixins/validations.mixin';
 import ComponentFormSettingsBatch from '../../settings_project/settings_batch/component_form_settings_batch';
 import { ServiceSettingsBatch } from '../../../services/service_settings_batch';
 
@@ -40,7 +40,7 @@ export default {
   components: {
     ComponentFormSettingsBatch,
   },
-  mixins: [validations, settings_batch],
+  mixins: [validations, settingsBatch],
   props: {
     // project: {
     //     required: true,

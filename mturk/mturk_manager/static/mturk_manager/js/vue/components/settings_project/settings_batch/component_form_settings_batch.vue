@@ -242,7 +242,7 @@ import {
 } from 'vuex';
 import humanizeDuration from 'humanize-duration';
 import _ from 'lodash';
-import helpers from '../../../mixins/helpers';
+import helpers from '../../../mixins/helpers.mixin';
 import {Service_Templates} from '../../../services/service_templates';
 
 export default {

@@ -6,7 +6,6 @@
 
 <script>
 import ComponentHitDetail from '../../../components/hits/detail/component_hit_detail.vue';
-import slug_project from '../../../mixins/slug_project';
 import {mapMutations, mapState} from 'vuex';
 
 export default {
@@ -14,7 +13,6 @@ export default {
   components: {
     ComponentHitDetail,
   },
-  mixins: [slug_project],
   props: {
     id: {
       required: true,

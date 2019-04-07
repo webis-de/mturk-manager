@@ -6,7 +6,6 @@
 
 <script>
 import ComponentAssignmentDetail from '../../../components/assignments/detail/component_assignment_detail.vue';
-import slug_project from '../../../mixins/slug_project';
 import {mapMutations, mapState} from 'vuex';
 
 export default {
@@ -14,7 +13,6 @@ export default {
   components: {
     ComponentAssignmentDetail,
   },
-  mixins: [slug_project],
   props: {
     id: {
       required: true,

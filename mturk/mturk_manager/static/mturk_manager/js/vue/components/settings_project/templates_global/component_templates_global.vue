@@ -6,7 +6,6 @@
 </template>
 
 <script>
-// import settings_batch from '../../../mixins/settings_batch';
 import {
   mapState, mapMutations, mapActions, mapGetters,
 } from 'vuex';

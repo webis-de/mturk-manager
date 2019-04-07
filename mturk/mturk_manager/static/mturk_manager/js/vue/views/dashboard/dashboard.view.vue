@@ -11,7 +11,7 @@
           <v-divider class="my-3"></v-divider>
           <v-layout wrap>
             <v-flex>
-              <component-open-project> </component-open-project>
+              <open-project></open-project>
             </v-flex>
           </v-layout>
         </v-flex>
@@ -21,25 +21,14 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from 'vuex';
-
-import ComponentCreateProject from '../../components/dashboard/component_create_project.vue';
-import ComponentOpenProject from '../../components/dashboard/component_open_project.vue';
-import slug_project from '../../mixins/slug_project';
+import ComponentCreateProject from '../../components/dashboard/component_create_project';
+import OpenProject from '../../components/dashboard/openProject';
 
 export default {
-  mixins: [slug_project],
-  name: 'app-dashboard',
-
-  data() {
-    return {};
-  },
-  computed: {},
-  methods: {},
-  created() {},
+  name: 'AppDashboard',
   components: {
+    OpenProject,
     ComponentCreateProject,
-    ComponentOpenProject,
   },
 };
 </script>

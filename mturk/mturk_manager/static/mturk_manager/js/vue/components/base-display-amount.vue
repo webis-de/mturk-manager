@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import helpers from '../mixins/helpers';
+import helpers from '../mixins/helpers.mixin';
 
 export default {
   name: 'BaseDisplayAmount',

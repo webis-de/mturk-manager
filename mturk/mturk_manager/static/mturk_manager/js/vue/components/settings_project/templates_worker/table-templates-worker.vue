@@ -76,7 +76,6 @@
 import BaseTable from '../../base-table';
 import {mapGetters, mapMutations, mapState} from 'vuex';
 import { Service_Templates } from '../../../services/service_templates';
-import {table} from '../../../mixins/table';
 import ItemTemplatesWorker from './item-templates-worker';
 import ComponentAddTemplateWorker from './component_add_template_worker';
 
@@ -87,7 +86,6 @@ export default {
     ItemTemplatesWorker,
     BaseTable,
   },
-  mixins: [table],
   data() {
     return {
       function_load_page: Service_Templates.loadPageWorker,

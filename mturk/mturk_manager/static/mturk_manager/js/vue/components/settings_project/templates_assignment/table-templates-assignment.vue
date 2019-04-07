@@ -68,7 +68,6 @@
 </template>
 
 <script>
-import {table} from '../../../mixins/table';
 import {Service_Templates} from '../../../services/service_templates';
 import {mapMutations, mapState} from 'vuex';
 import ItemTemplatesAssignment from './item-templates-assignment';

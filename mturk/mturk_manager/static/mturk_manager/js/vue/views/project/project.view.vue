@@ -76,16 +76,12 @@ import { mapState, mapActions, mapGetters } from 'vuex';
 import TheNavigationDrawer from '../../components/the-navigation-drawer';
 import ComponentToolbarBatches from '../../components/batches/component_toolbar_batches';
 import ComponentToolbarQualifications from '../../components/qualifications/component-toolbar-qualifications';
-import slug_project from '../../mixins/slug_project';
 
 export default {
   name: 'AppProject',
   components: {
     TheNavigationDrawer,
   },
-  mixins: [
-    slug_project,
-  ],
   data() {
     return {
       show_drawer: true,

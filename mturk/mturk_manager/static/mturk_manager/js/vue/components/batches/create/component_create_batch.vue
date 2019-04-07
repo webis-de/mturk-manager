@@ -116,7 +116,7 @@
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex';
 import { required } from 'vuelidate/lib/validators';
-import validations from '../../../mixins/validations';
+import validations from '../../../mixins/validations.mixin';
 
 import ComponentUploadCsv from './component_upload_csv.vue';
 import ComponentSettingsBatch from './component_settings_batch.vue';

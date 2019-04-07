@@ -135,8 +135,8 @@ import {
 } from 'vuex';
 import _ from 'lodash';
 import { required, minValue, maxValue } from 'vuelidate/lib/validators';
-import helpers from '../../../mixins/helpers';
-import validations from '../../../mixins/validations';
+import helpers from '../../../mixins/helpers.mixin';
+import validations from '../../../mixins/validations.mixin';
 import Template_Worker from '../../../classes/template_worker';
 import { Service_Templates } from '../../../services/service_templates';
 

@@ -44,9 +44,6 @@
 // import { Policy } from '../../store/modules/policies.js';
 import ComponentItemWorker from './component_item_worker';
 import { Service_Workers as ServiceWorkers } from '../../../services/service_worker';
-import { update_sandbox as updateSandbox } from '../../../mixins/update_sandbox';
-import externalPagination from '../../../mixins/external_pagination';
-import { table } from '../../../mixins/table';
 import BaseTable from '../../base-table';
   import FiltersTableWorkers from './filters-table-workers';
 // import ComponentShowMoneySpent from './component-show-money-spent.vue';
@@ -58,7 +55,6 @@ export default {
     BaseTable,
     ComponentItemWorker,
   },
-  mixins: [updateSandbox, externalPagination, table],
   props: {
     showLinks: {
       required: false,

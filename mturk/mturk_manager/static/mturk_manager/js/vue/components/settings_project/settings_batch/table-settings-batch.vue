@@ -75,7 +75,6 @@
 <script>
   import {mapGetters, mapMutations, mapState} from 'vuex';
 import ComponentAddSettingsBatch from './component_add_settings_batch';
-import { table } from '../../../mixins/table';
 import BaseTable from '../../base-table';
 import { ServiceSettingsBatch } from '../../../services/service_settings_batch';
 import ItemSettingsBatch from './item-settings-batch';
@@ -87,7 +86,6 @@ export default {
     BaseTable,
     ComponentAddSettingsBatch,
   },
-  mixins: [table],
   data() {
     return {
       function_load_page: ServiceSettingsBatch.loadPage,

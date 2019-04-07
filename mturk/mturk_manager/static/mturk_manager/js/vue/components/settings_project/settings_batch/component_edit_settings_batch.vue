@@ -83,8 +83,8 @@ import {
 import _ from 'lodash';
 import { required, minValue, maxValue } from 'vuelidate/lib/validators';
 import ComponentFormSettingsBatch from './component_form_settings_batch';
-import settings_batch from '../../../mixins/settings_batch';
-import validations from '../../../mixins/validations';
+import { settingsBatch } from '../../../mixins/settings-batch.mixin';
+import validations from '../../../mixins/validations.mixin';
 import { ServiceSettingsBatch } from '../../../services/service_settings_batch';
 
 export default {
@@ -92,7 +92,7 @@ export default {
   components: {
     ComponentFormSettingsBatch,
   },
-  mixins: [validations, settings_batch],
+  mixins: [validations, settingsBatch],
   props: {
     settingsBatchCurrent: {},
   },

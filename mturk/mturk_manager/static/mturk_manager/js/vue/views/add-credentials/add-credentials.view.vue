@@ -46,7 +46,7 @@
 <script>
 import required from 'vuelidate/src/validators/required';
 import { mapActions } from 'vuex';
-import validations from '../../mixins/validations';
+import validations from '../../mixins/validations.mixin';
 import { Service_App } from '../../services/service.app';
 
 export default {

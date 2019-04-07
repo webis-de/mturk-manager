@@ -73,10 +73,8 @@ import _ from 'lodash';
 import ComponentAddTemplateGlobal from './component_add_template_global.vue';
 import ComponentDeleteTemplateGlobal from './component_delete_template_global.vue';
 import ComponentEditTemplateGlobal from './component_edit_template_global.vue';
-import { table } from '../../../mixins/table';
 
 export default {
-  mixins: [table],
   name: 'component-list-templates-global',
   data() {
     return {

@@ -63,8 +63,8 @@ import {
 } from 'vuex';
 import _ from 'lodash';
 import ComponentFormSettingsBatch from './component_form_settings_batch';
-import settings_batch from '../../../mixins/settings_batch';
-import validations from '../../../mixins/validations';
+import { settingsBatch } from '../../../mixins/settings-batch.mixin';
+import validations from '../../../mixins/validations.mixin';
 import { ServiceSettingsBatch } from '../../../services/service_settings_batch';
 import {Service_Templates} from '../../../services/service_templates';
 
@@ -73,7 +73,7 @@ export default {
   components: {
     ComponentFormSettingsBatch,
   },
-  mixins: [validations, settings_batch],
+  mixins: [validations, settingsBatch],
   data() {
     return {
       list_templates_worker: [],

@@ -61,9 +61,9 @@
 <script>
 import {mapActions, mapGetters} from 'vuex';
 import { minValue, required, helpers as helpersValidation } from 'vuelidate/lib/validators';
-import validations from '../../mixins/validations';
+import validations from '../../mixins/validations.mixin';
 import {Service_Projects} from '../../services/service_projects';
-import helpers from '../../mixins/helpers';
+import helpers from '../../mixins/helpers.mixin';
 import or from 'vuelidate/src/validators/or';
 // const mustBeCool = (value) => !helpersValidation.req(value) || value > 1;
 

@@ -3,7 +3,9 @@
     <v-flex>
       <v-layout wrap>
         <v-flex class="text-xs-center">
-          <div class="headline">Open Existing Project</div>
+          <div class="headline">
+            Open Existing Project
+          </div>
         </v-flex>
       </v-layout>
       <v-layout wrap>
@@ -14,7 +16,7 @@
             label="Search for Project"
             hide-details
             class="mb-2"
-          ></v-text-field>
+          />
         </v-flex>
       </v-layout>
       <v-layout wrap>
@@ -28,7 +30,10 @@
             v-bind:items="list_projects"
             v-bind:search="search"
           >
-            <template slot="items" slot-scope="props">
+            <template
+              slot="items"
+              slot-scope="props"
+            >
               <tr v-bind:key="props.item.id">
                 <td>
                   {{ props.item.name }}
@@ -36,10 +41,9 @@
                 <td>
                   <base-display-datetime
                     v-bind:datetime="props.item.datetime_visited"
-                  ></base-display-datetime>
+                  />
                 </td>
                 <td class="text-xs-right">
-                  <!-- v-bind:to="{ name: 'batches', params: { slug_project: props.item.slug } }" -->
                   <v-btn
                     small
                     color="primary"
@@ -47,9 +51,9 @@
                       name: 'project',
                       params: { slug_project: props.item.slug }
                     }"
-                    >Open</v-btn
                   >
-                  <!-- v-bind:to="{ name: 'batches', params: { slug_project: props.item.slug } }" -->
+                    Open
+                  </v-btn>
                 </td>
               </tr>
             </template>
@@ -61,14 +65,15 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from 'vuex';
+import { mapGetters } from 'vuex';
 import _ from 'lodash';
-import { table } from '../../mixins/table';
 import BaseDisplayDatetime from '../common/base-display-datetime';
 
 export default {
-  mixins: [table],
-  name: 'component-open-project',
+  name: 'OpenProject',
+  components: {
+    BaseDisplayDatetime,
+  },
   data() {
     return {
       search: '',
@@ -103,11 +108,6 @@ export default {
     ...mapGetters('moduleProjects', {
       object_projects: 'get_object_projects',
     }),
-  },
-  methods: {},
-  created() {},
-  components: {
-    BaseDisplayDatetime
   },
 };
 </script>

@@ -101,10 +101,8 @@ import _ from 'lodash';
 import ComponentAddTemplateWorker from './component_add_template_worker.vue';
 import ComponentEditTemplateWorker from './component_edit_template_worker.vue';
 import ComponentDeleteTemplateWorker from './component_delete_template_worker.vue';
-import { table } from '../../../mixins/table';
 
 export default {
-  mixins: [table],
   name: 'component-list-templates-worker',
   data() {
     return {

@@ -73,10 +73,8 @@ import _ from 'lodash';
 import ComponentAddTemplateHit from './component_add_template_hit.vue';
 import ComponentDeleteTemplateHit from './component_delete_template_hit.vue';
 import ComponentEditTemplateHit from './component_edit_template_hit.vue';
-import { table } from '../../../mixins/table';
 
 export default {
-  mixins: [table],
   name: 'component-list-templates-hit',
   data() {
     return {

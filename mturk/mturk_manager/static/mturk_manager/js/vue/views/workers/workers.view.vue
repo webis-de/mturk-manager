@@ -17,10 +17,8 @@ import { mapState, mapActions, mapGetters } from 'vuex';
 import ComponentListWorkers from '../../components/workers/list/list-workers.vue';
 // import ComponentShowMoneySpent from './component-show-money-spent.vue';
 // import ComponentShowBatches from './component-show-batches.vue';
-import slug_project from '../../mixins/slug_project';
 
 export default {
-  mixins: [slug_project],
   name: 'app-workers',
   data() {
     return {

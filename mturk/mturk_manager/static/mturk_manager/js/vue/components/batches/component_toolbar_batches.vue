@@ -33,15 +33,9 @@
 
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex';
-// import slug_project from '../../mixins/slug_project';
-import load_data from '../../mixins/load_data';
 import { Service_Batches } from '../../services/service_batches';
 
 export default {
-  mixins: [
-    // slug_project,
-    // load_data,
-  ],
   name: 'component-toolbar-batches',
   props: {
     name_route: {},
