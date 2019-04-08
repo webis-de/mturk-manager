@@ -1,6 +1,9 @@
 <template>
   <!-- <div>wda</div> -->
-  <tr v-bind:key="batch.id" class="text-no-wrap">
+  <tr
+    v-bind:key="batch.id"
+    class="text-no-wrap"
+  >
     <td v-bind:style="stylesCell">
       <v-checkbox v-model="is_selected" primary hide-details></v-checkbox>
     </td>
@@ -153,7 +156,9 @@ export default {
     },
   },
   data() {
-    return {};
+    return {
+      batch: this.props.item,
+    };
   },
   computed: {
     datasets() {
@@ -199,9 +204,9 @@ export default {
     set_columns_selected() {
       return new Set(this.array_columns_selected);
     },
-    batch() {
-      return this.props.item;
-    },
+    // batch() {
+    //   return this.props.item;
+    // },
     stylesCell() {
       if (this.isCondensed) {
         return {

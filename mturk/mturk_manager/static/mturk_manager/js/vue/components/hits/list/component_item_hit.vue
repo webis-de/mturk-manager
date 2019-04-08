@@ -115,7 +115,9 @@ export default {
     },
   },
   data() {
-    return {};
+    return {
+      hit: this.props.item,
+    };
   },
   // watch: {
   //     'worker.is_blocked': function() {
@@ -179,9 +181,9 @@ export default {
     //     console.log('EXECUTED')
     //     return (this.count_assignments_available / this.count_assignments_total) * 100.0;
     // },
-    hit() {
-      return this.props.item;
-    },
+    // hit() {
+    //   return this.props.item;
+    // },
     stylesCell() {
       if (this.isCondensed) {
         return {

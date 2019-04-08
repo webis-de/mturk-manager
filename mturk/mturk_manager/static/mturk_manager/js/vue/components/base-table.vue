@@ -6,6 +6,7 @@
     v-bind:total-items="items_total"
     v-bind:loading="loading"
     item-key="id"
+    header-key="value"
     v-bind:rows-per-page-items="[5, 10, 25, { text: 'All', value: null }]"
     v-bind:pagination="pagination"
     v-on:update:pagination="updatedPagination($event)"

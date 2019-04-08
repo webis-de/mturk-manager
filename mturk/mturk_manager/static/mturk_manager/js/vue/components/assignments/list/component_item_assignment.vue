@@ -151,7 +151,9 @@ export default {
     },
   },
   data() {
-    return {};
+    return {
+      assignment: this.props.item,
+    };
   },
   // watch: {
   //     'worker.is_blocked': function() {
@@ -173,9 +175,9 @@ export default {
         });
       },
     },
-    assignment() {
-      return this.props.item;
-    },
+    // assignment() {
+    //   return this.props.item;
+    // },
     stylesCell() {
       if (this.isCondensed) {
         return {

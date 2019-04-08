@@ -86,6 +86,7 @@ export default {
   data() {
     return {
       show_snackbar: false,
+      worker: this.props.item,
     };
   },
   // watch: {
@@ -97,9 +98,9 @@ export default {
     set_columns_selected() {
       return new Set(this.array_columns_selected);
     },
-    worker() {
-      return this.props.item;
-    },
+    // worker() {
+    //   return this.props.item;
+    // },
     stylesCell() {
       if (this.isCondensed) {
         return {
