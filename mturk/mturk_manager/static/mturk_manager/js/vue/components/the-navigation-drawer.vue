@@ -22,6 +22,16 @@
         </v-list-tile-content>
       </v-list-tile>
       <v-divider></v-divider>
+      <v-list-tile
+        v-bind:to="{ name: 'aboutProject' }"
+      >
+        <v-list-tile-action>
+          <v-icon>info</v-icon>
+        </v-list-tile-action>
+        <v-list-tile-content>
+          <v-list-tile-title>About</v-list-tile-title>
+        </v-list-tile-content>
+      </v-list-tile>
       <!-- <v-list-tile>
                 <v-list-tile-action>
                     <v-icon>settings</v-icon>
@@ -65,23 +75,6 @@ export default {
           label: 'Tasks',
           icon: 'notes',
         },
-        // {
-        //   name: 'batches',
-        //   label: 'Batches',
-        //   icon: 'notes',
-        //   // icon: 'ballot',
-        // },
-        // {
-        //   name: 'hits',
-        //   label: 'HITs',
-        //   icon: 'notes',
-        //   // icon: 'ballot',
-        // },
-        // {
-        //   name: 'assignments',
-        //   label: 'Assignments',
-        //   icon: 'notes',
-        // },
         {
           name: 'finances',
           label: 'Finances',

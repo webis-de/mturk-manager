@@ -9,7 +9,7 @@ import {
   mapState, mapMutations,
 } from 'vuex';
 
-import ComponentBatchDetail from '../../../components/batches/detail/component_batch_detail.vue';
+import ComponentBatchDetail from '../../../../components/batches/detail/component_batch_detail.vue';
 
 export default {
   name: 'AppBatches',

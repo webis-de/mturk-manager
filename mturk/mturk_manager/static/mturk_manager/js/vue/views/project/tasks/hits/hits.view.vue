@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import ComponentHitDetail from '../../../components/hits/detail/component_hit_detail.vue';
+import ComponentHitDetail from '../../../../components/hits/detail/component_hit_detail.vue';
 import {mapMutations, mapState} from 'vuex';
 
 export default {

@@ -71,11 +71,11 @@
 
 <script>
 import { mapMutations, mapState } from 'vuex';
-import ComponentDownloadBatch from '../../components/batches/component_download_batch';
-import ListBatches from '../../components/batches/list/list-batches';
-import ListHits from '../../components/hits/list/list-hits';
-import ListAssignments from '../../components/assignments/list/list-assignments';
-import ComponentAnnotate from '../../components/assignments/annotate/component_annotate';
+import ComponentDownloadBatch from '../../../components/batches/component_download_batch';
+import ListBatches from '../../../components/batches/list/list-batches';
+import ListHits from '../../../components/hits/list/list-hits';
+import ListAssignments from '../../../components/assignments/list/list-assignments';
+import ComponentAnnotate from '../../../components/assignments/annotate/component_annotate';
 
 export default {
   name: 'Tasks',

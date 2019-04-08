@@ -5,15 +5,34 @@
         <v-flex>
           <v-layout wrap>
             <v-flex>
-              <component-create-project> </component-create-project>
+              <component-create-project />
             </v-flex>
           </v-layout>
-          <v-divider class="my-3"></v-divider>
+
+          <v-divider class="my-3" />
+
           <v-layout wrap>
             <v-flex>
-              <open-project></open-project>
+              <open-project />
             </v-flex>
           </v-layout>
+        </v-flex>
+      </v-layout>
+
+      <v-divider class="my-3" />
+
+      <v-layout column>
+        <v-flex
+          shrink
+          align-self-end
+        >
+          <v-btn
+            small
+            color="secondary"
+            v-bind:to="{ name: 'about' }"
+          >
+            About
+          </v-btn>
         </v-flex>
       </v-layout>
     </v-container>
@@ -23,10 +42,12 @@
 <script>
 import ComponentCreateProject from '../../components/dashboard/component_create_project';
 import OpenProject from '../../components/dashboard/openProject';
+import About from '../../components/about/about';
 
 export default {
   name: 'AppDashboard',
   components: {
+    About,
     OpenProject,
     ComponentCreateProject,
   },

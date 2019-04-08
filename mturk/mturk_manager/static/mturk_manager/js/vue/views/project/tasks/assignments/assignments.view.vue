@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import ComponentAssignmentDetail from '../../../components/assignments/detail/component_assignment_detail.vue';
+import ComponentAssignmentDetail from '../../../../components/assignments/detail/component_assignment_detail.vue';
 import {mapMutations, mapState} from 'vuex';
 
 export default {

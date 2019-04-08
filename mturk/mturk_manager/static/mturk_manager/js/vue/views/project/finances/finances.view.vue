@@ -122,13 +122,13 @@ import {
   mapState, mapGetters, mapMutations, mapActions,
 } from 'vuex';
 
-import ComponentShowBalance from '../../components/finances/component-show-balance';
-import DisplayExpenses from '../../components/finances/display-expenses';
-import ListBatches from '../../components/batches/list/list-batches';
-import { updateSandbox } from '../../mixins/update-sandbox.mixin';
-import ListHits from '../../components/hits/list/list-hits';
-import ListAssignments from '../../components/assignments/list/list-assignments';
-import { ServiceFinances } from '../../services/finances.service';
+import ComponentShowBalance from '../../../components/finances/component-show-balance';
+import DisplayExpenses from '../../../components/finances/display-expenses';
+import ListBatches from '../../../components/batches/list/list-batches';
+import { updateSandbox } from '../../../mixins/update-sandbox.mixin';
+import ListHits from '../../../components/hits/list/list-hits';
+import ListAssignments from '../../../components/assignments/list/list-assignments';
+import { ServiceFinances } from '../../../services/finances.service';
 
 export default {
   name: 'AppFinances',

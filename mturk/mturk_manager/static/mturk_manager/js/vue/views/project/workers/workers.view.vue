@@ -14,7 +14,7 @@
 import { mapState, mapActions, mapGetters } from 'vuex';
 // import { Policy } from '../../store/modules/policies.js';
 
-import ComponentListWorkers from '../../components/workers/list/list-workers.vue';
+import ComponentListWorkers from '../../../components/workers/list/list-workers.vue';
 // import ComponentShowMoneySpent from './component-show-money-spent.vue';
 // import ComponentShowBatches from './component-show-batches.vue';
 
