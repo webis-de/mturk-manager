@@ -8,109 +8,145 @@
       <v-checkbox v-model="is_selected" primary hide-details></v-checkbox>
     </td>
 
-    <td
-      v-if="set_columns_selected.has('name')"
+    <base-table-cell
+      v-slot="{ item }"
+      name="name"
       class="text-xs-left"
-      v-bind:style="stylesCell"
+      v-bind:item="batch"
+      v-bind:columns-selected="columnsSelected"
+      v-bind:is-condensed="isCondensed"
     >
-      {{ batch.name.toUpperCase() }}
-    </td>
+      {{ item.name }}
+    </base-table-cell>
 
-    <td
-      v-if="set_columns_selected.has('count_hits')"
-      class="text-xs-center"
-      v-bind:style="stylesCell"
+    <base-table-cell
+      v-slot="{ item }"
+      name="count_hits"
+      class="text-xs-right"
+      v-bind:item="batch"
+      v-bind:columns-selected="columnsSelected"
+      v-bind:is-condensed="isCondensed"
     >
-      {{ batch.count_hits }}
-    </td>
+      {{ item.count_hits }}
+    </base-table-cell>
 
-    <td
-      v-if="set_columns_selected.has('datetime_creation')"
+    <base-table-cell
+      v-slot="{ item }"
+      name="datetime_creation"
       class="text-xs-center"
-      v-bind:style="stylesCell"
+      v-bind:item="batch"
+      v-bind:columns-selected="columnsSelected"
+      v-bind:is-condensed="isCondensed"
     >
       <base-display-datetime
-        v-bind:datetime="batch.datetime_creation"
+        v-bind:datetime="item.datetime_creation"
       />
-    </td>
+    </base-table-cell>
 
-    <td
-      v-if="set_columns_selected.has('settings_batch__count_assignments')"
-      class="text-xs-center"
-      v-bind:style="stylesCell"
-    >
-      {{ batch.settings_batch.count_assignments }}
-    </td>
-
-    <td
-      v-if="set_columns_selected.has('settings_batch__reward')"
+    <base-table-cell
+      v-slot="{ item }"
+      name="settings_batch__count_assignments"
       class="text-xs-right"
-      v-bind:style="stylesCell"
+      v-bind:item="batch"
+      v-bind:columns-selected="columnsSelected"
+      v-bind:is-condensed="isCondensed"
+    >
+      {{ item.settings_batch.count_assignments }}
+    </base-table-cell>
+
+    <base-table-cell
+      v-slot="{ item }"
+      name="settings_batch__reward"
+      class="text-xs-right"
+      v-bind:item="batch"
+      v-bind:columns-selected="columnsSelected"
+      v-bind:is-condensed="isCondensed"
     >
       <base-display-amount
-        v-bind:amount="batch.settings_batch.reward"
+        v-bind:amount="item.settings_batch.reward"
       ></base-display-amount>
-    </td>
+    </base-table-cell>
 
-    <td
-      v-if="set_columns_selected.has('count_assignments_total')"
-      class="text-xs-center"
-      v-bind:style="stylesCell"
-    >
-      {{ batch.count_assignments_total }}
-    </td>
-
-    <td
-      v-if="set_columns_selected.has('count_assignments_approved')"
-      class="text-xs-center"
-      v-bind:style="stylesCell"
-    >
-      {{ batch.count_assignments_approved }}
-    </td>
-
-    <td
-      v-if="set_columns_selected.has('count_assignments_rejected')"
-      class="text-xs-center"
-      v-bind:style="stylesCell"
-    >
-      {{ batch.count_assignments_rejected }}
-    </td>
-
-    <td
-      v-if="set_columns_selected.has('costs_max')"
+    <base-table-cell
+      v-slot="{ item }"
+      name="count_assignments_total"
       class="text-xs-right"
-      v-bind:style="stylesCell"
+      v-bind:item="batch"
+      v-bind:columns-selected="columnsSelected"
+      v-bind:is-condensed="isCondensed"
+    >
+      {{ item.countAssignmentsTotal }}
+    </base-table-cell>
+
+    <base-table-cell
+      v-slot="{ item }"
+      name="count_assignments_approved"
+      class="text-xs-right"
+      v-bind:item="batch"
+      v-bind:columns-selected="columnsSelected"
+      v-bind:is-condensed="isCondensed"
+    >
+      {{ item.countAssignmentsApproved }}
+    </base-table-cell>
+
+    <base-table-cell
+      v-slot="{ item }"
+      name="count_assignments_rejected"
+      class="text-xs-right"
+      v-bind:item="batch"
+      v-bind:columns-selected="columnsSelected"
+      v-bind:is-condensed="isCondensed"
+    >
+      {{ item.countAssignmentsRejected }}
+    </base-table-cell>
+
+    <base-table-cell
+      v-slot="{ item }"
+      name="costs_max"
+      class="text-xs-right"
+      v-bind:item="batch"
+      v-bind:columns-selected="columnsSelected"
+      v-bind:is-condensed="isCondensed"
     >
       <base-display-amount
-        v-bind:amount="batch.costs_max"
+        v-bind:amount="item.costs_max"
       ></base-display-amount>
-    </td>
+    </base-table-cell>
 
-    <td
-      v-if="set_columns_selected.has('costs_so_far')"
+    <base-table-cell
+      v-slot="{ item }"
+      name="costs_so_far"
       class="text-xs-right"
-      v-bind:style="stylesCell"
+      v-bind:item="batch"
+      v-bind:columns-selected="columnsSelected"
+      v-bind:is-condensed="isCondensed"
     >
       <base-display-amount
-        v-bind:amount="batch.costs_so_far"
+        v-bind:amount="item.costs_so_far"
       ></base-display-amount>
-    </td>
+    </base-table-cell>
 
-    <td
-      v-if="set_columns_selected.has('progress')"
+    <base-table-cell
+      v-slot="{ item }"
+      name="progress"
       class="text-xs-center"
-      v-bind:style="stylesCell"
+      v-bind:item="batch"
+      v-bind:columns-selected="columnsSelected"
+      v-bind:is-condensed="isCondensed"
     >
       <base-progress-bar
-        v-bind:title-popover="`Assignments (${batch.countAssignmentsTotal})`"
+        v-bind:title-popover="`Assignments (${item.countAssignmentsTotal})`"
         v-bind:datasets="datasets"
       />
-    </td>
+    </base-table-cell>
 
-    <td
-      v-if="set_columns_selected.has('actions')"
+    <base-table-cell
+      v-slot="{ item }"
+      name="actions"
       class="text-xs-center"
-      v-bind:style="stylesCell"
+      v-bind:item="batch"
+      v-bind:columns-selected="columnsSelected"
+      v-bind:is-condensed="isCondensed"
     >
       <v-btn
         slot="activator"
@@ -120,14 +156,13 @@
         v-bind:to="{
           name: 'batch',
           params: {
-            // slug_project: $route.params.slug_project,
-            id: batch.id
+            id: item.id
           }
         }"
       >
         <v-icon>info</v-icon>
       </v-btn>
-    </td>
+    </base-table-cell>
   </tr>
 </template>
 <script>
@@ -138,6 +173,7 @@ import _ from 'lodash';
 import BaseDisplayAmount from '../../base-display-amount';
 import BaseProgressBar from '../../base-progress-bar';
 import BaseDisplayDatetime from '../../common/base-display-datetime';
+import BaseTableCell from '../../base-table-cell';
 
 export default {
   name: 'ComponentItemBatch',
@@ -159,6 +195,11 @@ export default {
     return {
       batch: this.props.item,
     };
+  },
+  watch: {
+    columnsSelected() {
+      return this.columnsSelected;
+    },
   },
   computed: {
     datasets() {
@@ -201,11 +242,22 @@ export default {
         });
       },
     },
+    columnsSelected() {
+      return this.array_columns_selected.reduce((accumulator, column) => {
+        accumulator[column] = column;
+        return accumulator;
+      }, {});
+    },
     set_columns_selected() {
       return new Set(this.array_columns_selected);
     },
     // batch() {
     //   return this.props.item;
+    // },
+    // classesCell() {
+    //   return {
+    //
+    //   },
     // },
     stylesCell() {
       if (this.isCondensed) {
@@ -229,6 +281,7 @@ export default {
   },
   mounted() {},
   components: {
+    BaseTableCell,
     BaseDisplayDatetime,
     BaseProgressBar,
     BaseDisplayAmount,
