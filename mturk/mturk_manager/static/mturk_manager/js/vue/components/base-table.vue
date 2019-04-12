@@ -113,11 +113,14 @@
         </v-flex>
         <v-flex>
           <component-settings-table
-            v-if="functionResetArrayColumns !== undefined"
+            v-if="nameLocalStorageColumnsSelected !== undefined"
             v-bind:colspan="array_headers.length + 1"
             v-bind:array_columns="arrayColumns"
             v-bind:array_columns_selected="arrayColumnsSelected"
-            v-bind:function_reset="functionResetArrayColumns"
+            v-bind:name-vuex-module="nameVuexModule"
+            v-bind:name-state-columns-selected="nameStateColumnsSelected"
+            v-bind:name-state-columns-selected-initial="nameStateColumnsSelectedInitial"
+            v-bind:name-local-storage-columns-selected="nameLocalStorageColumnsSelected"
             v-on:change="functionSetArrayColumns($event)"
           />
           </v-flex>
@@ -137,6 +140,41 @@ export default {
   components: {BaseTableFilters, ComponentSettingsTable },
   mixins: [updateSandbox],
   props: {
+    nameVuexModule: {
+      required: true,
+      type: String,
+    },
+    // Pagination
+    nameStatePagination: {
+      required: true,
+      type: String,
+    },
+    nameLocalStoragePagination: {
+      required: true,
+      type: String,
+    },
+    // Selected columns
+    nameGetterColumnsSelected: {
+      required: true,
+      type: String,
+    },
+    nameLocalStorageColumnsSelected: {
+      required: false,
+      type: String,
+      default: undefined,
+    },
+    nameStateColumnsSelected: {
+      required: true,
+      type: String,
+    },
+    nameStateColumnsSelectedInitial: {
+      required: true,
+      type: String,
+    },
+
+
+
+
     arrayItems: {
       type: Array | Function | null,
       required: true,
@@ -150,16 +188,16 @@ export default {
       type: Array,
       required: true,
     },
-    arrayColumnsSelected: {
-      type: Array,
-      required: true,
-    },
+    // arrayColumnsSelected: {
+    //   type: Array,
+    //   required: true,
+    // },
 
-    functionResetArrayColumns: {
-      type: Function,
-      required: false,
-      default: undefined,
-    },
+    // functionResetArrayColumns: {
+    //   type: Function,
+    //   required: false,
+    //   default: undefined,
+    // },
     functionSetArrayColumns: {
       type: Function,
       required: false,
@@ -192,15 +230,6 @@ export default {
       required: false,
       type: Boolean,
       default: true,
-    },
-
-    paginationComputed: {
-      type: Object,
-      required: true,
-    },
-    functionSetPagination: {
-      type: Function,
-      required: true,
     },
 
     filters: {
@@ -241,14 +270,13 @@ export default {
     };
   },
   computed: {
+    arrayColumnsSelected() {
+      return this.$store.getters[`${this.nameVuexModule}/${this.nameGetterColumnsSelected}`];
+    },
     pagination: {
       get() {
-        return _.assign({}, this.paginationComputed, {totalItems: 0});
+        return _.assign({}, this.$store.state[this.nameVuexModule][this.nameStatePagination], {totalItems: 0});
       },
-      // set(value) {
-      //     console.warn('computed');
-      //   this.functionSetPagination(value);
-      // },
     },
     showFooter() {
       return this.$scopedSlots.actions !== undefined
@@ -297,9 +325,13 @@ export default {
   },
   beforeDestroy() {
     this.functionClearItemsSelected();
-    this.functionSetPagination({
-      undefined,
-      setPageTo1: true,
+
+    this.pagination.page = 1;
+
+    this.$store.dispatch(`${this.nameVuexModule}/setState`, {
+      objectState: this.pagination,
+      nameState: this.nameStatePagination,
+      nameLocalStorage: this.nameLocalStoragePagination,
     });
   },
   methods: {
@@ -317,8 +349,10 @@ export default {
         _.pick(pagination, ['page', 'rowsPerPage', 'sortBy', 'descending']),
         _.pick(this.pagination, ['page', 'rowsPerPage', 'sortBy', 'descending']),
       )) {
-        this.functionSetPagination({
-          pagination,
+        this.$store.dispatch(`${this.nameVuexModule}/setState`, {
+          objectState: pagination,
+          nameState: this.nameStatePagination,
+          nameLocalStorage: this.nameLocalStoragePagination,
         });
       }
 

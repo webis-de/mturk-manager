@@ -23,12 +23,10 @@
             <v-tabs-items>
               <v-tab-item
                 key="batches"
+                lazy
               >
                 <v-card class="pa-1">
-                  <list-batches
-                    v-bind:function-set-pagination="functionSetPaginationBatches"
-                    v-bind:pagination-computed="paginationComputedBatches"
-                  >
+                  <list-batches>
                     <template v-slot:actions>
                       <component-download-batch />
                     </template>
@@ -38,6 +36,7 @@
 
               <v-tab-item
                 key="hits"
+                lazy
               >
                 <v-card class="pa-1">
                   <list-hits
@@ -49,6 +48,7 @@
 
               <v-tab-item
                 key="assignment"
+                lazy
               >
                 <v-card class="pa-1">
                   <list-assignments
@@ -88,9 +88,6 @@ export default {
     };
   },
   computed: {
-    ...mapState('moduleBatches', {
-      paginationComputedBatches: 'paginationGeneral',
-    }),
     ...mapState('moduleHITs', {
       paginationComputedHITs: 'paginationGeneral',
     }),
@@ -120,9 +117,6 @@ export default {
           break;
       }
     },
-    ...mapMutations('moduleBatches', {
-      functionSetPaginationBatches: 'setPaginationGeneral',
-    }),
     ...mapMutations('moduleHITs', {
       functionSetPaginationHITs: 'setPaginationGeneral',
     }),

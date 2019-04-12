@@ -2,7 +2,7 @@ import Vue from 'vue';
 import _ from 'lodash';
 import localforage from 'localforage';
 import Batch from '../../classes/batch';
-import { initPagination, setPagination } from '../../helpers';
+import { setPagination } from '../../helpers';
 import baseModule from './base.module';
 
 export const moduleBatches = _.merge({}, baseModule, {
@@ -155,6 +155,8 @@ export const moduleBatches = _.merge({}, baseModule, {
           ? state.array_batches_sandbox
           : state.array_batches;
       }
+      console.warn('state.array_batches_sandbox', state.array_batches_sandbox);
+      console.warn('state.array_batches', state.array_batches);
       return use_sandbox ? state.array_batches_sandbox : state.array_batches;
     },
     is_valid_csv: (state) => {
@@ -184,15 +186,6 @@ export const moduleBatches = _.merge({}, baseModule, {
     get_is_syncing_mturk: state => state.is_syncing_mturk,
   },
   mutations: {
-    setPaginationGeneral(state, { pagination, setPageTo1 }) {
-      setPagination({
-        pagination,
-        setPageTo1,
-        namePagination: 'paginationGeneral',
-        nameLocalStorage: 'pagination_batches_general',
-        state,
-      });
-    },
     setPaginationFinances(state, { pagination, setPageTo1 }) {
       setPagination({
         pagination,
@@ -220,7 +213,7 @@ export const moduleBatches = _.merge({}, baseModule, {
         state.array_batches = [];
         array_batches = state.array_batches;
       }
-
+      
       _.forEach(data, (data_batch) => {
         const batch = new Batch(data_batch);
         Vue.set(array_batches, array_batches.length, batch);

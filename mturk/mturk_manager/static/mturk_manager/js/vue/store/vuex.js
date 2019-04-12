@@ -9,7 +9,7 @@ import VueCookies from 'vue-cookies';
 import { moduleProjects } from './modules/projects.js';
 import { moduleQualifications } from './modules/qualifications.js';
 import { moduleWorkers } from './modules/workers.js';
-import { moduleBatches } from './modules/batches.js';
+import { moduleBatches } from './modules/batches.store.js';
 import { moduleHITs } from './modules/hits.js';
 import { moduleAssignments } from './modules/assignments.js';
 import { moduleKeywords } from './modules/keywords.js';

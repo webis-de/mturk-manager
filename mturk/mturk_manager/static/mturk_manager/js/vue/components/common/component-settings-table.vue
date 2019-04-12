@@ -36,7 +36,7 @@
               <v-btn
                 color="primary"
                 v-on:click="
-                  function_reset();
+                  reset();
                   dialog = false;
                 "
                 >Reset to default</v-btn
@@ -53,25 +53,49 @@
 </template>
 
 <script>
-import {
-  mapState, mapMutations, mapActions, mapGetters,
-} from 'vuex';
 import _ from 'lodash';
 
 export default {
   name: 'component-settings-table',
   props: {
+    nameVuexModule: {
+      required: true,
+      type: String,
+    },
+
     array_columns: {
       type: Array,
       required: true,
     },
+
     array_columns_selected: {
       type: Array,
       required: true,
     },
-    function_reset: {
-      type: Function,
+    nameLocalStorageColumnsSelected: {
       required: true,
+      type: String,
+    },
+    nameStateColumnsSelected: {
+      required: true,
+      type: String,
+    },
+    nameStateColumnsSelectedInitial: {
+      required: true,
+      type: String,
+    },
+    // function_reset: {
+    //   type: Function,
+    //   required: true,
+    // },
+  },
+  methods: {
+    reset() {
+      this.$store.dispatch(`${this.nameVuexModule}/setState`, {
+        objectState: this.$store.state[this.nameVuexModule][this.nameStateColumnsSelectedInitial],
+        nameState: this.nameStateColumnsSelected,
+        nameLocalStorage: this.nameLocalStorageColumnsSelected,
+      });
     },
   },
   data() {
@@ -104,24 +128,12 @@ export default {
         !this.is_toggled_all && _.size(this.intern_array_columns_selected) !== 0
       );
     },
-    //     intern_array_columns_selected: {
-    //         get() {
-    //             return
-    // 		},
-    // 	}
   },
   watch: {
     array_columns_selected() {
       this.intern_array_columns_selected = this.array_columns_selected;
     },
     intern_array_columns_selected() {
-      // console.log('_.size(this.array_columns_selected)', _.size(this.array_columns_selected));
-      // console.log('_.size(this.intern_array_columns_selected)', _.size(this.intern_array_columns_selected));
-      // if(_.size(this.array_columns) === _.size(this.intern_array_columns_selected)) {
-      //     this.is_toggled_all = true;
-      // } else if(_.size(this.intern_array_columns_selected) === 0) {
-      //     this.is_toggled_all = false;
-      // }
       this.$emit('change', this.intern_array_columns_selected);
     },
   },

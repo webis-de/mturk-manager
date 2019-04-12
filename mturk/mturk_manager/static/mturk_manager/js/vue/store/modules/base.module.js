@@ -32,6 +32,9 @@ export default {
       }
     },
     async setState({ commit }, { objectState, nameState, nameLocalStorage }) {
+      console.warn('objectState', objectState);
+      console.warn('nameState', nameState);
+      console.warn('nameLocalStorage', nameLocalStorage);
       commit('setState', {
         objectState,
         nameState,
