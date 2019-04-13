@@ -16,7 +16,7 @@ export default class Controller {
 
     $('#link_back_to_project').attr(
       'href',
-      `/#/projects/${this.loader.slug_project}/assignments`,
+      `/#/projects/${this.loader.slug_project}/tasks/assignments`,
     );
 
     await this.loader.sync_data();
