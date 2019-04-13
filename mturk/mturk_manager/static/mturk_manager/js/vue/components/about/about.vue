@@ -1,36 +1,70 @@
 <template>
   <v-layout>
     <v-flex>
-      <v-list>
-        <v-list-tile>
-          <v-list-tile-content>
-            Version
-          </v-list-tile-content>
-          <v-list-tile-content>
-            {{ $store.state.module_app.version }}
-          </v-list-tile-content>
-        </v-list-tile>
+      <v-container
+        fluid
+        grid-list-md
+      >
+        <v-layout>
+          <v-flex xs4>
+            <v-card>
+              <v-card-text class="text-xs-center">
+                Version: {{ $store.state.module_app.version }}
+              </v-card-text>
+            </v-card>
+          </v-flex>
 
-        <v-list-tile>
-          <v-list-tile-content>
-            Created By
-          </v-list-tile-content>
-          <v-list-tile-content class="text-xs-right">
-            Kristof Komlossy
-          </v-list-tile-content>
-        </v-list-tile>
+          <v-flex xs4>
+            <v-card>
+              <v-card-text class="text-xs-center">
+                Contact: <a href="mailto:mturk@kritten.org">
+                  mturk@kritten.org
+                </a>
+              </v-card-text>
+            </v-card>
+          </v-flex>
 
-        <v-list-tile>
-          <v-list-tile-content>
-            Contact
-          </v-list-tile-content>
-          <v-list-tile-content>
-            <a href="mailto:mturk@kritten.org">
-              mturk@kritten.org
-            </a>
-          </v-list-tile-content>
-        </v-list-tile>
-      </v-list>
+          <v-flex xs4>
+            <v-card>
+              <v-card-text class="text-xs-center">
+                Created By: Kristof Komlossy
+              </v-card-text>
+            </v-card>
+          </v-flex>
+        </v-layout>
+
+        <v-layout>
+          <v-flex xs4>
+            <v-card>
+              <v-card-text class="text-xs-center">
+                <a href="https://workersandbox.mturk.com">
+                  Worker Sandbox
+                </a>
+              </v-card-text>
+            </v-card>
+          </v-flex>
+
+          <v-flex xs4>
+            <v-card>
+              <v-card-text class="text-xs-center">
+                <a href="https://docs.aws.amazon.com/mturk/index.html">
+                  MTurk Documentation
+                </a>
+              </v-card-text>
+            </v-card>
+          </v-flex>
+
+          <v-flex xs4>
+            <v-card>
+              <v-card-text class="text-xs-center">
+                <a href="https://github.com/webis-de/mturk-manager/wiki">
+                  MTurk Manager Wiki
+                </a>
+              </v-card-text>
+            </v-card>
+          </v-flex>
+        </v-layout>
+      </v-container>
     </v-flex>
   </v-layout>
 </template>
