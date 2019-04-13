@@ -1,19 +1,19 @@
 <template>
   <v-layout align-center justify-end>
-    <v-flex shrink>
-      <v-tooltip bottom>
-        <v-btn
-          flat
-          v-bind:loading="get_show_progress_indicator"
-          v-on:click="refresh_data(true)"
-          slot="activator"
-        >
-          <v-icon>refresh</v-icon>
-          Refresh Data
-        </v-btn>
-        <span>Refresh batch data</span>
-      </v-tooltip>
-    </v-flex>
+    <!--<v-flex shrink>-->
+      <!--<v-tooltip bottom>-->
+        <!--<v-btn-->
+          <!--flat-->
+          <!--v-bind:loading="get_show_progress_indicator"-->
+          <!--v-on:click="refresh_data(true)"-->
+          <!--slot="activator"-->
+        <!--&gt;-->
+          <!--<v-icon>refresh</v-icon>-->
+          <!--Refresh Data-->
+        <!--</v-btn>-->
+        <!--<span>Refresh batch data</span>-->
+      <!--</v-tooltip>-->
+    <!--</v-flex>-->
     <v-flex shrink>
       <v-tooltip bottom>
         <v-btn

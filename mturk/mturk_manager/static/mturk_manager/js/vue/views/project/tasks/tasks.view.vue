@@ -23,7 +23,6 @@
             <v-tabs-items>
               <v-tab-item
                 key="batches"
-                lazy
               >
                 <v-card class="pa-1">
                   <list-batches>
@@ -36,7 +35,6 @@
 
               <v-tab-item
                 key="hits"
-                lazy
               >
                 <v-card class="pa-1">
                   <list-hits />
@@ -45,7 +43,6 @@
 
               <v-tab-item
                 key="assignment"
-                lazy
               >
                 <v-card class="pa-1">
                   <list-assignments>
@@ -59,6 +56,8 @@
           </v-tabs>
         </v-flex>
       </v-layout>
+
+      <create-batch></create-batch>
     </template>
   </div>
 </template>
@@ -70,10 +69,12 @@ import ListBatches from '../../../components/batches/list/list-batches';
 import ListHits from '../../../components/hits/list/list-hits';
 import ListAssignments from '../../../components/assignments/list/list-assignments';
 import ComponentAnnotate from '../../../components/assignments/annotate/component_annotate';
+import CreateBatch from '../../../components/batches/create/component_create_batch';
 
 export default {
   name: 'Tasks',
   components: {
+    CreateBatch,
     ComponentAnnotate, ListAssignments, ListHits, ListBatches, ComponentDownloadBatch,
   },
   data() {

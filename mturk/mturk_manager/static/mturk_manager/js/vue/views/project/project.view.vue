@@ -102,11 +102,11 @@ export default {
     currentTabComponent() {
       switch (this.$route.name) {
         case 'finances':
-        case 'batches':
+        case 'tasksBatches':
         case 'batch':
-        case 'hits':
+        case 'tasksHITs':
         case 'hit':
-        case 'assignments':
+        case 'tasksAssignments':
         case 'assignment':
         case 'workers':
           return ComponentToolbarBatches;

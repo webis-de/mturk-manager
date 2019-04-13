@@ -127,7 +127,7 @@ import ComponentSubmitBatch from './component_submit_batch.vue';
 // import ComponentShowMoneySpent from './component-show-money-spent.vue';
 // import ComponentShowBatches from './component-show-batches.vue';
 export default {
-  name: 'ComponentCreateBatch',
+  name: 'CreateBatch',
   mixins: [validations],
   data() {
     return {
