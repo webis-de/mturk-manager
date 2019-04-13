@@ -1,17 +1,15 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <div>
     <base-table
-      v-bind:array-items="arrayItems"
-      v-bind:array-columns="arrayColumns"
-      v-bind:array-columns-selected="[
-        'name',
-        'actions',
-      ]"
-      v-bind:function-load-page="function_load_page"
-      v-bind:is-condensed="true"
+      name-vuex-module="moduleTemplates"
+      name-state-pagination="paginationGlobal"
+      name-local-storage-pagination="pagination_templates_global"
 
-      v-bind:pagination-computed="paginationComputed"
-      v-bind:function-set-pagination="functionSetPagination"
+      v-bind:function-load-page="loadPage"
+      v-bind:array-items="arrayItems"
+
+      name-state-columns="arrayColumns"
+      name-state-columns-selected="array_columns_selected"
     >
       <template
         v-slot:default="{ props, array_columns_selected, isCondensed }"
@@ -83,7 +81,7 @@ export default {
   },
   data() {
     return {
-      function_load_page: Service_Templates.loadPageGlobal,
+      loadPage: Service_Templates.loadPageGlobal,
 
       snackbarDeleted: false,
       snackbarEdited: false,

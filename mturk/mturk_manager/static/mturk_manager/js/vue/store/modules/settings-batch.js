@@ -50,19 +50,17 @@ export const moduleSettingsBatch = _.merge({}, baseModule, {
         width: '10%',
       },
     ],
+    array_columns_selected_general: [
+      'name',
+      'title',
+      'reward',
+      'block_workers',
+      'actions',
+    ],
   },
   getters: {
   },
   mutations: {
-    setPaginationGeneral(state, { pagination, setPageTo1 }) {
-      setPagination({
-        pagination,
-        setPageTo1,
-        namePagination: 'paginationGeneral',
-        nameLocalStorage: 'pagination_settings_batch_general',
-        state,
-      });
-    },
     setItems(state, { data }) {
       state.arrayItems = [];
 

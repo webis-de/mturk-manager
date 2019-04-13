@@ -4,7 +4,7 @@
     <!-- <v-flex> -->
 
     <h1 class="headline">Workers</h1>
-    <component-list-workers> </component-list-workers>
+    <table-workers></table-workers>
     <!-- </v-flex> -->
     <!-- </v-layout> -->
   </div>
@@ -14,12 +14,17 @@
 import { mapState, mapActions, mapGetters } from 'vuex';
 // import { Policy } from '../../store/modules/policies.js';
 
-import ComponentListWorkers from '../../../components/workers/list/list-workers.vue';
+import TableWorkers from '../../../components/workers/list/list-workers.vue';
 // import ComponentShowMoneySpent from './component-show-money-spent.vue';
 // import ComponentShowBatches from './component-show-batches.vue';
 
 export default {
-  name: 'app-workers',
+  name: 'AppWorkers',
+  components: {
+    TableWorkers,
+    // ComponentShowMoneySpent,
+    // ComponentShowBatches,
+  },
   data() {
     return {
       workers_selected: [],
@@ -82,10 +87,5 @@ export default {
   //     // this.refresh_data();
   // },
 
-  components: {
-    ComponentListWorkers,
-    // ComponentShowMoneySpent,
-    // ComponentShowBatches,
-  },
 };
 </script>

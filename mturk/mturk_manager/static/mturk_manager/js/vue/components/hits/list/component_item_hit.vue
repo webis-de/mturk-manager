@@ -93,7 +93,11 @@ import BaseProgressBar from '../../base-progress-bar';
 import BaseDisplayDatetime from '../../common/base-display-datetime';
 
 export default {
-  name: 'component-item-hit',
+  name: 'ComponentItemHit',
+  components: {
+    BaseDisplayDatetime,
+    BaseProgressBar,
+  },
   props: {
     props: {
       type: Object,
@@ -229,14 +233,18 @@ export default {
     // },
     ...mapGetters(['get_show_progress_indicator']),
   },
+  watch: {
+    'props.item': function() {
+      // TODO: some other technique to prevent unnecessary updates?
+      if (_.isEqual(this.hit, this.props.item)) return;
+
+      this.hit = this.props.item;
+    },
+  },
   methods: {
     ...mapMutations('moduleHITs', {
       set_hits_selected: 'set_hits_selected',
     }),
-  },
-  components: {
-    BaseDisplayDatetime,
-    BaseProgressBar,
   },
 };
 </script>

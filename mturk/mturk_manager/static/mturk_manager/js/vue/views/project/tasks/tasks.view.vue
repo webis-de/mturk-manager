@@ -39,10 +39,7 @@
                 lazy
               >
                 <v-card class="pa-1">
-                  <list-hits
-                    v-bind:function-set-pagination="functionSetPaginationHITs"
-                    v-bind:pagination-computed="paginationComputedHITs"
-                  />
+                  <list-hits />
                 </v-card>
               </v-tab-item>
 
@@ -51,10 +48,7 @@
                 lazy
               >
                 <v-card class="pa-1">
-                  <list-assignments
-                    v-bind:function-set-pagination="functionSetPaginationAssignments"
-                    v-bind:pagination-computed="paginationComputedAssignments"
-                  >
+                  <list-assignments>
                     <template v-slot:actions>
                       <component-annotate />
                     </template>
@@ -88,12 +82,6 @@ export default {
     };
   },
   computed: {
-    ...mapState('moduleHITs', {
-      paginationComputedHITs: 'paginationGeneral',
-    }),
-    ...mapState('moduleAssignments', {
-      paginationComputedAssignments: 'paginationGeneral',
-    }),
   },
   methods: {
     changedView(index) {
@@ -117,12 +105,6 @@ export default {
           break;
       }
     },
-    ...mapMutations('moduleHITs', {
-      functionSetPaginationHITs: 'setPaginationGeneral',
-    }),
-    ...mapMutations('moduleAssignments', {
-      functionSetPaginationAssignments: 'setPaginationGeneral',
-    }),
   },
 };
 </script>

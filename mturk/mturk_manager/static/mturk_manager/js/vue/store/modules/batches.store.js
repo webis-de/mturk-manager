@@ -129,13 +129,6 @@ export const moduleBatches = _.merge({}, baseModule, {
   },
   getters: {
     get_array_columns_general: state => state.array_columns_general,
-
-    get_array_columns_selected_general: (state) => {
-      if (state.array_columns_selected_general === null) {
-        return state.array_columns_selected_initial_general;
-      }
-      return state.array_columns_selected_general;
-    },
     get_array_columns_selected_initial_general: state => state.array_columns_selected_initial_general,
 
     get_array_columns_selected_finances: (state) => {
@@ -186,15 +179,6 @@ export const moduleBatches = _.merge({}, baseModule, {
     get_is_syncing_mturk: state => state.is_syncing_mturk,
   },
   mutations: {
-    setPaginationFinances(state, { pagination, setPageTo1 }) {
-      setPagination({
-        pagination,
-        setPageTo1,
-        namePagination: 'paginationFinances',
-        nameLocalStorage: 'pagination_batches_finances',
-        state,
-      });
-    },
     set_array_columns_general(state, array_columns) {
       localforage.setItem('array_columns_batches_general', array_columns);
       state.array_columns_selected_general = array_columns;

@@ -130,6 +130,11 @@ import BaseDisplayDuration from '../../common/base-display-duration';
 
 export default {
   name: 'ComponentItemAssignment',
+  components: {
+    BaseDisplayDuration,
+    BaseDisplayDatetime,
+    ComponentStatusAssignment,
+  },
   props: {
     props: {
       type: Object,
@@ -193,15 +198,18 @@ export default {
     }),
     ...mapGetters(['get_show_progress_indicator']),
   },
+  watch: {
+    'props.item': function() {
+      // TODO: some other technique to prevent unnecessary updates?
+      if (_.isEqual(this.assignment, this.props.item)) return;
+
+      this.assignment = this.props.item;
+    },
+  },
   methods: {
     ...mapMutations('moduleAssignments', {
       set_assignments_selected: 'set_assignments_selected',
     }),
-  },
-  components: {
-    BaseDisplayDuration,
-    BaseDisplayDatetime,
-    ComponentStatusAssignment,
   },
 };
 </script>

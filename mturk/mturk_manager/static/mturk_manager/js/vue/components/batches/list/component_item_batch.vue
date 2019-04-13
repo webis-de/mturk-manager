@@ -177,6 +177,12 @@ import BaseTableCell from '../../base-table-cell';
 
 export default {
   name: 'ComponentItemBatch',
+  components: {
+    BaseTableCell,
+    BaseDisplayDatetime,
+    BaseProgressBar,
+    BaseDisplayAmount,
+  },
   props: {
     props: {
       required: true,
@@ -195,11 +201,6 @@ export default {
     return {
       batch: this.props.item,
     };
-  },
-  watch: {
-    columnsSelected() {
-      return this.columnsSelected;
-    },
   },
   computed: {
     datasets() {
@@ -274,17 +275,18 @@ export default {
       object_batches_selected: 'get_object_batches_selected',
     }),
   },
+  watch: {
+    'props.item': function() {
+      // TODO: some other technique to prevent unnecessary updates?
+      if (_.isEqual(this.batch, this.props.item)) return;
+
+      this.batch = this.props.item;
+    },
+  },
   methods: {
     ...mapMutations('moduleBatches', {
       set_batches_selected: 'set_batches_selected',
     }),
-  },
-  mounted() {},
-  components: {
-    BaseTableCell,
-    BaseDisplayDatetime,
-    BaseProgressBar,
-    BaseDisplayAmount,
   },
 };
 </script>

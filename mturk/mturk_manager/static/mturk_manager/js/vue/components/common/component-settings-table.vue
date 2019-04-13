@@ -12,7 +12,7 @@
               <v-checkbox
                 class="ma-0"
                 label="Toggle all"
-                v-model="is_toggled_all"
+                v-model="isToggledAll"
                 v-bind:indeterminate="is_indeterminate"
                 hide-details
               ></v-checkbox>
@@ -22,11 +22,11 @@
             <v-flex>
               <v-checkbox
                 class="ma-0"
-                v-for="column in array_columns"
+                v-for="column in columns"
                 v-bind:key="column.value"
                 v-bind:label="column.label || column.text"
                 v-bind:value="column.value"
-                v-model="intern_array_columns_selected"
+                v-model="columnsSelectedIntern"
                 hide-details
               ></v-checkbox>
             </v-flex>
@@ -36,7 +36,7 @@
               <v-btn
                 color="primary"
                 v-on:click="
-                  reset();
+                  columnsSelectedIntern = columnsSelectedInitial;
                   dialog = false;
                 "
                 >Reset to default</v-btn
@@ -44,8 +44,6 @@
               <v-btn flat v-on:click="dialog = false">Cancel</v-btn>
             </v-flex>
           </v-layout>
-          <!-- append-icon="clear"
-	            v-on:click:append="limit = 0" -->
         </v-card-text>
       </v-card>
     </v-dialog>
@@ -56,21 +54,20 @@
 import _ from 'lodash';
 
 export default {
-  name: 'component-settings-table',
+  name: 'ComponentSettingsTable',
   props: {
+    columns: {
+      required: true,
+      type: Array,
+    },
+    columnsSelected: {
+      required: true,
+      type: Array,
+    },
+
     nameVuexModule: {
       required: true,
       type: String,
-    },
-
-    array_columns: {
-      type: Array,
-      required: true,
-    },
-
-    array_columns_selected: {
-      type: Array,
-      required: true,
     },
     nameLocalStorageColumnsSelected: {
       required: true,
@@ -84,57 +81,50 @@ export default {
       required: true,
       type: String,
     },
-    // function_reset: {
-    //   type: Function,
-    //   required: true,
-    // },
-  },
-  methods: {
-    reset() {
-      this.$store.dispatch(`${this.nameVuexModule}/setState`, {
-        objectState: this.$store.state[this.nameVuexModule][this.nameStateColumnsSelectedInitial],
-        nameState: this.nameStateColumnsSelected,
-        nameLocalStorage: this.nameLocalStorageColumnsSelected,
-      });
-    },
   },
   data() {
     return {
       dialog: false,
-      intern_array_columns_selected: this.array_columns_selected,
+      columnsSelectedIntern: this.columnsSelected,
     };
   },
   computed: {
-    is_toggled_all: {
+    columnsSelectedInitial() {
+      return this.$store.state[this.nameVuexModule][this.nameStateColumnsSelectedInitial];
+    },
+    isToggledAll: {
       get() {
-        return (
-          _.size(this.array_columns)
-          === _.size(this.intern_array_columns_selected)
-        );
+        return _.size(this.columns) === _.size(this.columnsSelectedIntern);
       },
-      set(is_checked) {
-        if (is_checked === true) {
-          this.intern_array_columns_selected = _.map(
-            this.array_columns,
+      set(isChecked) {
+        if (isChecked === true) {
+          this.columnsSelectedIntern = _.map(
+            this.columns,
             column => column.value,
           );
         } else {
-          this.intern_array_columns_selected = [];
+          this.columnsSelectedIntern = [];
         }
       },
     },
     is_indeterminate() {
       return (
-        !this.is_toggled_all && _.size(this.intern_array_columns_selected) !== 0
+        !this.isToggledAll && _.size(this.columnsSelectedIntern) !== 0
       );
     },
   },
   watch: {
-    array_columns_selected() {
-      this.intern_array_columns_selected = this.array_columns_selected;
+    columnsSelectedIntern() {
+      this.setArrayColumns(this.columnsSelectedIntern);
     },
-    intern_array_columns_selected() {
-      this.$emit('change', this.intern_array_columns_selected);
+  },
+  methods: {
+    setArrayColumns(columns) {
+      this.$store.dispatch(`${this.nameVuexModule}/setState`, {
+        objectState: columns,
+        nameState: this.nameStateColumnsSelected,
+        nameLocalStorage: this.nameLocalStorageColumnsSelected,
+      });
     },
   },
 };

@@ -1,21 +1,25 @@
 <template>
   <base-table
-    v-bind:array-items="array_items"
-    v-bind:array-columns="array_columns"
-    v-bind:array-columns-selected="array_columns_selected"
-    v-bind:function-reset-array-columns="function_reset_array_columns"
-    v-bind:function-set-array-columns="function_set_array_columns"
-    v-bind:function-load-page="function_load_page"
+    name-vuex-module="moduleWorkers"
+    v-bind:name-state-pagination="nameStatePagination"
+    v-bind:name-local-storage-pagination="nameLocalStoragePagination"
 
-    v-bind:object-items-selected="object_items_selected"
+    v-bind:function-load-page="loadPage"
+    v-bind:array-items="array_items"
+
+    v-bind:name-local-storage-columns-selected="nameLocalStorageColumnsSelected"
+    v-bind:name-state-columns="nameStateColumns"
+    v-bind:name-state-columns-selected="nameStateColumnsSelected"
+    v-bind:name-state-columns-selected-initial="nameStateColumnsSelectedInitial"
+
+    v-bind:name-state-items-selected="nameStateItemsSelected"
+
+
     v-bind:function-set-items-selected="function_set_items_selected"
     v-bind:function-clear-items-selected="function_clear_items_selected"
 
-    v-bind:function-set-pagination="functionSetPagination"
-    v-bind:pagination-computed="paginationComputed"
-
-    v-bind:filters="filters"
-    v-bind:filters-default="filtersDefault"
+    v-bind:filters="filtersComputed"
+    v-bind:filters-default="filtersDefaultComputed"
     v-bind:set-state="setState"
     name-state-filters="objectFiltersGeneral"
     name-local-storage-filters="filtersWorkersGeneral"
@@ -35,6 +39,10 @@
         v-bind:filters-active="filtersActive"
       ></filters-table-workers>
     </template>
+
+    <template v-slot:actions>
+      <slot name="actions"></slot>
+    </template>
   </base-table>
 </template>
 <script>
@@ -49,13 +57,73 @@ import BaseTable from '../../base-table';
 // import ComponentShowMoneySpent from './component-show-money-spent.vue';
 // import ComponentShowBatches from './component-show-batches.vue';
 export default {
-  name: 'ComponentListWorkers',
+  name: 'TableWorkers',
   components: {
     FiltersTableWorkers,
     BaseTable,
     ComponentItemWorker,
   },
   props: {
+    nameStatePagination: {
+      required: false,
+      type: String,
+      default: 'paginationGeneral',
+    },
+    nameLocalStoragePagination: {
+      required: false,
+      type: String,
+      default: 'pagination_workers_general',
+    },
+
+    nameStateColumns: {
+      required: false,
+      type: String,
+      default: 'array_columns_general',
+    },
+    nameLocalStorageColumnsSelected: {
+      required: false,
+      type: String,
+      default: 'array_columns_workers_general',
+    },
+    nameStateColumnsSelected: {
+      required: false,
+      type: String,
+      default: 'array_columns_selected_general',
+    },
+    nameStateColumnsSelectedInitial: {
+      required: false,
+      type: String,
+      default: 'array_columns_selected_initial_general',
+    },
+
+    nameStateItemsSelected: {
+      required: false,
+      type: String,
+      default: 'object_workers_selected',
+    },
+
+    filters: {
+      required: false,
+      type: Object,
+      default: undefined,
+    },
+    filtersDefault: {
+      required: false,
+      type: Object,
+      default: undefined,
+    },
+    nameStateFilters: {
+      required: false,
+      type: String,
+      default: 'objectFiltersGeneral',
+    },
+    nameLocalStorageFilters: {
+      required: false,
+      type: String,
+      default: 'filtersWorkersGeneral',
+    },
+
+
     showLinks: {
       required: false,
       type: Boolean,
@@ -64,7 +132,7 @@ export default {
   },
   data() {
     return {
-      function_load_page: ServiceWorkers.load_page,
+      loadPage: ServiceWorkers.load_page,
       workers_selected: [],
       pagination: { rowsPerPage: 5 },
       // pagination: { rowsPerPage: 5, totalItems: 30 },
@@ -131,6 +199,12 @@ export default {
     };
   },
   computed: {
+    filtersComputed() {
+      return this.filters !== undefined ? this.filters : this.filtersGeneral;
+    },
+    filtersDefaultComputed() {
+      return this.filtersDefault !== undefined ? this.filtersDefault : this.filtersDefaultGeneral;
+    },
     ...mapGetters('moduleWorkers', {
       array_items: 'get_array_workers',
       object_items_selected: 'get_object_workers_selected',
@@ -154,8 +228,8 @@ export default {
     }),
     ...mapState('moduleWorkers', {
       paginationComputed: 'paginationGeneral',
-      filters: 'objectFiltersGeneral',
-      filtersDefault: 'objectFiltersDefaultGeneral',
+      filtersGeneral: 'objectFiltersGeneral',
+      filtersDefaultGeneral: 'objectFiltersDefaultGeneral',
     }),
   },
   methods: {

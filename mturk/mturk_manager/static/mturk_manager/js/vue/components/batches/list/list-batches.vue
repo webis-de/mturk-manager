@@ -1,32 +1,22 @@
 <template>
-<!--    v-bind:pagination-computed="paginationComputed"-->
-<!--    v-bind:function-set-pagination="functionSetPagination"-->
-<!--    v-bind:array-columns-selected="array_columns_selected_computed"-->
-<!--    v-bind:function-reset-array-columns="function_reset_array_columns_computed"-->
   <base-table
     name-vuex-module="moduleBatches"
     v-bind:name-state-pagination="nameStatePagination"
     v-bind:name-local-storage-pagination="nameLocalStoragePagination"
 
+    v-bind:function-load-page="loadPage"
     v-bind:array-items="array_items"
-    v-bind:array-columns="array_columns"
 
-    v-bind:name-getter-columns-selected="nameGetterColumnsSelected"
     v-bind:name-local-storage-columns-selected="nameLocalStorageColumnsSelected"
+    v-bind:name-state-columns="nameStateColumns"
     v-bind:name-state-columns-selected="nameStateColumnsSelected"
-    v-bind:name-state-columns-selected-initial="nameLocalStorageColumnsSelected"
+    v-bind:name-state-columns-selected-initial="nameStateColumnsSelectedInitial"
+
+    v-bind:name-state-items-selected="nameStateItemsSelected"
 
 
-
-
-
-
-    v-bind:function-set-array-columns="function_set_array_columns_computed"
-    v-bind:function-load-page="function_load_page"
-    v-bind:object-items-selected="object_items_selected"
     v-bind:function-set-items-selected="function_set_items_selected"
     v-bind:function-clear-items-selected="function_clear_items_selected"
-
 
     v-bind:filters="filtersComputed"
     v-bind:filters-default="filtersDefaultComputed"
@@ -78,10 +68,10 @@ export default {
       default: 'pagination_batches_general',
     },
 
-    nameGetterColumnsSelected: {
+    nameStateColumns: {
       required: false,
       type: String,
-      default: 'get_array_columns_selected_general',
+      default: 'array_columns_general',
     },
     nameLocalStorageColumnsSelected: {
       required: false,
@@ -99,6 +89,12 @@ export default {
       default: 'array_columns_selected_initial_general',
     },
 
+    nameStateItemsSelected: {
+      required: false,
+      type: String,
+      default: 'object_batches_selected',
+    },
+
 
 
 
@@ -107,21 +103,6 @@ export default {
       required: false,
       type: Boolean,
       default: true,
-    },
-    functionResetArrayColumns: {
-      required: false,
-      type: Function,
-      default: undefined,
-    },
-    functionSetArrayColumns: {
-      required: false,
-      type: Function,
-      default: undefined,
-    },
-    arrayColumnsSelected: {
-      required: false,
-      type: Array,
-      default: undefined,
     },
 
     filters: {
@@ -144,42 +125,13 @@ export default {
       type: String,
       default: 'filtersBatchesGeneral',
     },
-
-    // paginationComputed: {
-    //   type: Object,
-    //   required: true,
-    // },
-    // functionSetPagination: {
-    //   type: Function,
-    //   required: true,
-    // },
   },
   data() {
     return {
-      function_load_page: ServiceBatches.load_page,
+      loadPage: ServiceBatches.load_page,
     };
   },
-  watch: {
-    array_items() {
-      console.warn('3', 3);
-    },
-  },
   computed: {
-    // function_reset_array_columns_computed() {
-    //   return this.functionResetArrayColumns !== undefined
-    //     ? this.functionResetArrayColumns
-    //     : this.function_reset_array_columns_general;
-    // },
-    function_set_array_columns_computed() {
-      return this.functionSetArrayColumns !== undefined
-        ? this.functionSetArrayColumns
-        : this.function_set_array_columns_general;
-    },
-    array_columns_selected_computed() {
-      return this.arrayColumnsSelected !== undefined
-        ? this.arrayColumnsSelected
-        : this.array_columns_selected_general;
-    },
     filtersComputed() {
       return this.filters !== undefined ? this.filters : this.filtersGeneral;
     },
@@ -188,9 +140,6 @@ export default {
     },
     ...mapGetters('moduleBatches', {
       array_items: 'get_array_batches',
-      object_items_selected: 'get_object_batches_selected',
-      array_columns: 'get_array_columns_general',
-      array_columns_selected_general: 'get_array_columns_selected_general',
     }),
     ...mapState('moduleBatches', {
       filtersGeneral: 'objectFiltersGeneral',

@@ -1,17 +1,22 @@
 <template>
   <base-table
+    name-vuex-module="moduleHITs"
+    v-bind:name-state-pagination="nameStatePagination"
+    v-bind:name-local-storage-pagination="nameLocalStoragePagination"
+
+    v-bind:function-load-page="loadPage"
     v-bind:array-items="array_items"
-    v-bind:array-columns="array_columns"
-    v-bind:array-columns-selected="array_columns_selected"
-    v-bind:function-reset-array-columns="function_reset_array_columns"
-    v-bind:function-set-array-columns="function_set_array_columns"
-    v-bind:function-load-page="function_load_page"
-    v-bind:object-items-selected="object_items_selected"
+
+    v-bind:name-local-storage-columns-selected="nameLocalStorageColumnsSelected"
+    v-bind:name-state-columns="nameStateColumns"
+    v-bind:name-state-columns-selected="nameStateColumnsSelected"
+    v-bind:name-state-columns-selected-initial="nameStateColumnsSelectedInitial"
+
+    v-bind:name-state-items-selected="nameStateItemsSelected"
+
+
     v-bind:function-set-items-selected="function_set_items_selected"
     v-bind:function-clear-items-selected="function_clear_items_selected"
-
-    v-bind:pagination-computed="paginationComputed"
-    v-bind:function-set-pagination="functionSetPagination"
 
     v-bind:filters="filtersComputed"
     v-bind:filters-default="filtersDefaultComputed"
@@ -52,6 +57,47 @@ export default {
   name: 'ListHits',
   components: {FiltersTableHits, ComponentItemHit, BaseTable },
   props: {
+    nameStatePagination: {
+      required: false,
+      type: String,
+      default: 'paginationGeneral',
+    },
+    nameLocalStoragePagination: {
+      required: false,
+      type: String,
+      default: 'pagination_hits_general',
+    },
+
+    nameStateColumns: {
+      required: false,
+      type: String,
+      default: 'array_columns_general',
+    },
+    nameLocalStorageColumnsSelected: {
+      required: false,
+      type: String,
+      default: 'array_columns_hits_general',
+    },
+    nameStateColumnsSelected: {
+      required: false,
+      type: String,
+      default: 'array_columns_selected_general',
+    },
+    nameStateColumnsSelectedInitial: {
+      required: false,
+      type: String,
+      default: 'array_columns_selected_initial_general',
+    },
+
+    nameStateItemsSelected: {
+      required: false,
+      type: String,
+      default: 'object_hits_selected',
+    },
+
+
+
+
     showLinks: {
       required: false,
       type: Boolean,
@@ -78,19 +124,10 @@ export default {
       type: String,
       default: 'filtersHITsGeneral',
     },
-
-    paginationComputed: {
-      type: Object,
-      required: true,
-    },
-    functionSetPagination: {
-      type: Function,
-      required: true,
-    },
   },
   data() {
     return {
-      function_load_page: ServiceHits.load_page,
+      loadPage: ServiceHits.load_page,
     };
   },
   computed: {
@@ -102,9 +139,6 @@ export default {
     },
     ...mapGetters('moduleHITs', {
       array_items: 'get_array_hits',
-      object_items_selected: 'get_object_hits_selected',
-      array_columns: 'get_array_columns_general',
-      array_columns_selected: 'get_array_columns_selected_general',
     }),
     ...mapState('moduleHITs', {
       filtersGeneral: 'objectFiltersGeneral',

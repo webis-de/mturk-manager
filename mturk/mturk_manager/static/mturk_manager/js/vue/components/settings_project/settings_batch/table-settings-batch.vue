@@ -1,20 +1,15 @@
 <template>
   <div>
     <base-table
-      v-bind:array-items="arrayItems"
-      v-bind:array-columns="arrayColumns"
-      v-bind:array-columns-selected="[
-        'name',
-        'title',
-        'reward',
-        'block_workers',
-        'actions',
-      ]"
-      v-bind:function-load-page="function_load_page"
-      v-bind:is-condensed="true"
+      name-vuex-module="moduleSettingsBatch"
+      name-state-pagination="paginationGeneral"
+      name-local-storage-pagination="pagination_settings_batch_general"
 
-      v-bind:pagination-computed="paginationComputed"
-      v-bind:function-set-pagination="functionSetPagination"
+      v-bind:function-load-page="loadPage"
+      v-bind:array-items="arrayItems"
+
+      name-state-columns="arrayColumns"
+      name-state-columns-selected="array_columns_selected_general"
     >
       <template
         v-slot:default="{ props, array_columns_selected, isCondensed }"
@@ -88,7 +83,7 @@ export default {
   },
   data() {
     return {
-      function_load_page: ServiceSettingsBatch.loadPage,
+      loadPage: ServiceSettingsBatch.loadPage,
 
       snackbarDeleted: false,
       snackbarEdited: false,
@@ -99,14 +94,6 @@ export default {
     ...mapState('moduleSettingsBatch', ['arrayColumns', 'arrayItems']),
     ...mapGetters('moduleProjects', {
       project_current: 'get_project_current',
-    }),
-    ...mapState('moduleSettingsBatch', {
-      paginationComputed: 'paginationGeneral',
-    }),
-  },
-  methods: {
-    ...mapMutations('moduleSettingsBatch', {
-      functionSetPagination: 'setPaginationGeneral',
     }),
   },
 };

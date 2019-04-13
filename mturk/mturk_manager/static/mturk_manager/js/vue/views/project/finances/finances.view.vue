@@ -21,12 +21,12 @@
             >
               <v-card class="pa-1">
                 <list-batches
-                  v-bind:function-reset-array-columns="functionResetArrayColumnsBatches"
-                  v-bind:function-set-array-columns="functionSetArrayColumnsBatches"
-                  v-bind:array-columns-selected="arrayColumnsSelectedBatches"
+                  name-state-pagination="paginationFinances"
+                  name-local-storage-pagination="pagination_batches_finances"
 
-                  v-bind:function-set-pagination="functionSetPaginationBatches"
-                  v-bind:pagination-computed="paginationComputedBatches"
+                  name-local-storage-columns-selected="array_columns_batches_finances"
+                  name-state-columns-selected="array_columns_selected_finances"
+                  name-state-columns-selected-initial="array_columns_selected_initial_finances"
 
                   v-bind:filters="filtersBatches"
                   name-state-filters="objectFiltersFinances"
@@ -40,12 +40,12 @@
             >
               <v-card class="pa-1">
                 <list-hits
-                  v-bind:function-reset-array-columns="functionResetArrayColumnsHITs"
-                  v-bind:function-set-array-columns="functionSetArrayColumnsHITs"
-                  v-bind:array-columns-selected="arrayColumnsSelectedHITs"
+                  name-state-pagination="paginationFinances"
+                  name-local-storage-pagination="pagination_hits_finances"
 
-                  v-bind:function-set-pagination="functionSetPaginationHITs"
-                  v-bind:pagination-computed="paginationComputedHITs"
+                  name-local-storage-columns-selected="array_columns_hits_finances"
+                  name-state-columns-selected="array_columns_selected_finances"
+                  name-state-columns-selected-initial="array_columns_selected_initial_finances"
 
                   v-bind:filters="filtersHITs"
                   name-state-filters="objectFiltersFinances"
@@ -59,12 +59,12 @@
             >
               <v-card class="pa-1">
                 <list-assignments
-                  v-bind:function-reset-array-columns="functionResetArrayColumnsAssignments"
-                  v-bind:function-set-array-columns="functionSetArrayColumnsAssignments"
-                  v-bind:array-columns-selected="arrayColumnsSelectedAssignments"
+                  name-state-pagination="paginationFinances"
+                  name-local-storage-pagination="pagination_assignments_finances"
 
-                  v-bind:function-set-pagination="functionSetPaginationAssignments"
-                  v-bind:pagination-computed="paginationComputedAssignments"
+                  name-local-storage-columns-selected="array_columns_assignments_finances"
+                  name-state-columns-selected="array_columns_selected_finances"
+                  name-state-columns-selected-initial="array_columns_selected_initial_finances"
 
                   v-bind:filters="filtersAssignments"
                   name-state-filters="objectFiltersFinances"
@@ -173,27 +173,15 @@ export default {
           return 'assignments';
       }
     },
-    ...mapGetters('moduleBatches', {
-      arrayColumnsSelectedBatches: 'get_array_columns_selected_finances',
-    }),
     ...mapState('moduleBatches', {
-      paginationComputedBatches: 'paginationFinances',
       filtersBatches: 'objectFiltersFinances',
     }),
 
-    ...mapGetters('moduleHITs', {
-      arrayColumnsSelectedHITs: 'get_array_columns_selected_general',
-    }),
     ...mapState('moduleHITs', {
-      paginationComputedHITs: 'paginationFinances',
       filtersHITs: 'objectFiltersFinances',
     }),
 
-    ...mapGetters('moduleAssignments', {
-      arrayColumnsSelectedAssignments: 'get_array_columns_selected_general',
-    }),
     ...mapState('moduleAssignments', {
-      paginationComputedAssignments: 'paginationFinances',
       filtersAssignments: 'objectFiltersFinances',
     }),
   },

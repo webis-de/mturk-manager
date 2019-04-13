@@ -1,22 +1,15 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <div>
     <base-table
-      v-bind:array-items="arrayItems"
-      v-bind:array-columns="arrayColumns"
-      v-bind:array-columns-selected="[
-        'name',
-        'height_frame',
-        'count_parameters',
-        'template_assignment',
-        'template_hit',
-        'template_global',
-        'actions',
-      ]"
-      v-bind:function-load-page="function_load_page"
-      v-bind:is-condensed="true"
+      name-vuex-module="moduleTemplates"
+      name-state-pagination="paginationWorker"
+      name-local-storage-pagination="pagination_templates_worker"
 
-      v-bind:pagination-computed="paginationComputed"
-      v-bind:function-set-pagination="functionSetPagination"
+      v-bind:function-load-page="loadPage"
+      v-bind:array-items="arrayItems"
+
+      name-state-columns="arrayColumnsWorker"
+      name-state-columns-selected="array_columns_selected_general"
     >
       <template
         v-slot:default="{ props, array_columns_selected, isCondensed }"
@@ -88,7 +81,7 @@ export default {
   },
   data() {
     return {
-      function_load_page: Service_Templates.loadPageWorker,
+      loadPage: Service_Templates.loadPageWorker,
 
       snackbarDeleted: false,
       snackbarEdited: false,
@@ -98,7 +91,6 @@ export default {
   computed: {
     ...mapState('moduleTemplates', {
       arrayItems: 'arrayItemsWorker',
-      arrayColumns: 'arrayColumnsWorker',
     }),
     ...mapState('moduleTemplates', {
       paginationComputed: 'paginationWorker',

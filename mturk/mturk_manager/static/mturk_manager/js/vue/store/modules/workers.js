@@ -113,19 +113,19 @@ export const moduleWorkers = _.merge({}, baseModule, {
     },
   },
   mutations: {
-    setPaginationGeneral(state, { pagination, setPageTo1 }) {
-      setPagination({
-        pagination,
-        setPageTo1,
-        namePagination: 'paginationGeneral',
-        nameLocalStorage: 'pagination_workers_general',
-        state,
-      });
-    },
-    set_array_columns_general(state, array_columns) {
-      localforage.setItem('array_columns_workers_general', array_columns);
-      state.array_columns_selected_general = array_columns;
-    },
+    // setPaginationGeneral(state, { pagination, setPageTo1 }) {
+    //   setPagination({
+    //     pagination,
+    //     setPageTo1,
+    //     namePagination: 'paginationGeneral',
+    //     nameLocalStorage: 'pagination_workers_general',
+    //     state,
+    //   });
+    // },
+    // set_array_columns_general(state, array_columns) {
+    //   localforage.setItem('array_columns_workers_general', array_columns);
+    //   state.array_columns_selected_general = array_columns;
+    // },
     clear_workers_selected(state) {
       state.object_workers_selected = {};
     },

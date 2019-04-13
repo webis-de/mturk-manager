@@ -88,6 +88,16 @@ export const moduleTemplates = _.merge({}, baseModule, {
       },
     ],
 
+    array_columns_selected_general: [
+      'name',
+      'height_frame',
+      'count_parameters',
+      'template_assignment',
+      'template_hit',
+      'template_global',
+      'actions',
+    ],
+
     arrayColumns: [
       {
         text: 'Name',
@@ -101,46 +111,14 @@ export const moduleTemplates = _.merge({}, baseModule, {
         width: '10%',
       },
     ],
+    array_columns_selected: [
+      'name',
+      'actions',
+    ],
   },
   getters: {
   },
   mutations: {
-    setPaginationWorker(state, { pagination, setPageTo1 }) {
-      setPagination({
-        pagination,
-        setPageTo1,
-        namePagination: 'paginationWorker',
-        nameLocalStorage: 'pagination_templates_worker',
-        state,
-      });
-    },
-    setPaginationAssignment(state, { pagination, setPageTo1 }) {
-      setPagination({
-        pagination,
-        setPageTo1,
-        namePagination: 'paginationAssignment',
-        nameLocalStorage: 'pagination_templates_assignment',
-        state,
-      });
-    },
-    setPaginationHIT(state, { pagination, setPageTo1 }) {
-      setPagination({
-        pagination,
-        setPageTo1,
-        namePagination: 'paginationHIT',
-        nameLocalStorage: 'pagination_templates_hit',
-        state,
-      });
-    },
-    setPaginationGlobal(state, { pagination, setPageTo1 }) {
-      setPagination({
-        pagination,
-        setPageTo1,
-        namePagination: 'paginationGlobal',
-        nameLocalStorage: 'pagination_templates_global',
-        state,
-      });
-    },
     setItems(state, { data, typeTemplate, add = false }) {
       let nameState;
       let classTemplate;

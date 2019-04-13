@@ -17,7 +17,7 @@
     >
       <tr v-bind:style="stylesHeaderRow">
         <th
-          v-if="objectItemsSelected !== undefined"
+          v-if="nameStateItemsSelected !== undefined"
           v-bind:style="stylesHeaderCell"
         >
           <v-checkbox
@@ -75,7 +75,7 @@
     >
       <slot
         v-bind:props="props"
-        v-bind:array_columns_selected="arrayColumnsSelected"
+        v-bind:array_columns_selected="columnsSelected"
         v-bind:is-condensed="isCondensed"
       />
     </template>
@@ -98,7 +98,12 @@
             v-bind:name-local-storage-filters="nameLocalStorageFilters"
             v-bind:set-state="setState"
 
-            v-on:filtersChanged="load_page($event)"
+            v-on:filtersChanged="updatedPagination({
+              sortBy: pagination.sortBy,
+              descending: !pagination.descending,
+              page: 1,
+              rowsPerPage: pagination.rowsPerPage,
+            });"
           >
             <template
               v-slot:filters="{ filters, filtersActive }"
@@ -115,13 +120,13 @@
           <component-settings-table
             v-if="nameLocalStorageColumnsSelected !== undefined"
             v-bind:colspan="array_headers.length + 1"
-            v-bind:array_columns="arrayColumns"
-            v-bind:array_columns_selected="arrayColumnsSelected"
+            v-bind:columns="columns"
+            v-bind:columns-selected="columnsSelected"
+
             v-bind:name-vuex-module="nameVuexModule"
             v-bind:name-state-columns-selected="nameStateColumnsSelected"
             v-bind:name-state-columns-selected-initial="nameStateColumnsSelectedInitial"
             v-bind:name-local-storage-columns-selected="nameLocalStorageColumnsSelected"
-            v-on:change="functionSetArrayColumns($event)"
           />
           </v-flex>
         </v-layout>
@@ -154,7 +159,7 @@ export default {
       type: String,
     },
     // Selected columns
-    nameGetterColumnsSelected: {
+    nameStateColumns: {
       required: true,
       type: String,
     },
@@ -168,9 +173,17 @@ export default {
       type: String,
     },
     nameStateColumnsSelectedInitial: {
-      required: true,
+      required: false,
       type: String,
+      default: undefined,
     },
+    // Selected Items
+    nameStateItemsSelected: {
+      required: false,
+      type: String,
+      default: undefined,
+    },
+
 
 
 
@@ -184,31 +197,6 @@ export default {
       required: true,
     },
 
-    arrayColumns: {
-      type: Array,
-      required: true,
-    },
-    // arrayColumnsSelected: {
-    //   type: Array,
-    //   required: true,
-    // },
-
-    // functionResetArrayColumns: {
-    //   type: Function,
-    //   required: false,
-    //   default: undefined,
-    // },
-    functionSetArrayColumns: {
-      type: Function,
-      required: false,
-      default: undefined,
-    },
-
-    objectItemsSelected: {
-      type: Object,
-      required: false,
-      default: undefined,
-    },
     functionSetItemsSelected: {
       type: Function,
       required: false,
@@ -267,11 +255,17 @@ export default {
       loading: false,
       search: '',
       items_total: undefined,
+
+      columns: this.$store.state[this.nameVuexModule][this.nameStateColumns],
     };
   },
   computed: {
-    arrayColumnsSelected() {
-      return this.$store.getters[`${this.nameVuexModule}/${this.nameGetterColumnsSelected}`];
+    columnsSelected() {
+      if (this.$store.state[this.nameVuexModule][this.nameStateColumnsSelected] === null) {
+        return this.$store.state[this.nameVuexModule][this.nameStateColumnsSelectedInitial];
+      }
+
+      return this.$store.state[this.nameVuexModule][this.nameStateColumnsSelected];
     },
     pagination: {
       get() {
@@ -279,12 +273,11 @@ export default {
       },
     },
     showFooter() {
-      return this.$scopedSlots.actions !== undefined
-        || this.functionResetArrayColumns !== undefined;
+      return this.$scopedSlots.actions !== undefined || this.nameLocalStorageColumnsSelected !== undefined;
     },
     array_headers() {
-      const set = new Set(this.arrayColumnsSelected);
-      return _.filter(this.arrayColumns, column => set.has(column.value));
+      const set = new Set(this.columnsSelected);
+      return _.filter(this.columns, column => set.has(column.value));
     },
     is_page_selected() {
       let isPageSelected = true;
@@ -294,7 +287,7 @@ export default {
       }
 
       _.forEach(this.array_page, (item) => {
-        if (!_.has(this.objectItemsSelected, item.id)) {
+        if (!_.has(this.$store.state[this.nameVuexModule][this.nameStateItemsSelected], item.id)) {
           isPageSelected = false;
           return false;
         }
