@@ -22,5 +22,12 @@ export default class Batch {
 
     this.costs_max = data.costs_max;
     this.costs_so_far = data.costs_so_far;
+
+    // TODO: find nicer approach
+    this.countAssignmentsDead = this.countAssignmentsTotal
+                              - this.countAssignmentsApproved
+                              - this.countAssignmentsRejected
+                              - this.countAssignmentsSubmitted
+                              - this.countAssignmentsPending;
   }
 }

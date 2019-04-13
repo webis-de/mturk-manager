@@ -95,21 +95,25 @@ class Manager_Batches(Interface_Manager_Items):
             count_hits=Count('hits', distinct=True)
         ).annotate(
             count_assignments_total=F('count_hits') * F('settings_batch__count_assignments'),
+
             count_assignments_approved=Coalesce(Count(
                 'hits__assignments',
                 distinct=True,
                 filter=Q(hits__assignments__status_external=assignments.STATUS_EXTERNAL.APPROVED)
             ), 0),
+
             count_assignments_rejected=Coalesce(Count(
                 'hits__assignments',
                 distinct=True,
                 filter=Q(hits__assignments__status_external=assignments.STATUS_EXTERNAL.REJECTED)
             ), 0),
+
             count_assignments_submitted=Coalesce(Count(
                 'hits__assignments',
                 distinct=True,
                 filter=Q(hits__assignments__status_external__isnull=True)
             ), 0),
+
             count_assignments_dead=Coalesce(Sum(
                 'hits__count_assignments_dead',
                 distinct=True

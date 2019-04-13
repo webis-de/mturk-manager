@@ -17,5 +17,12 @@ export default class HIT {
     this.countAssignmentsSubmitted = data.count_assignments_submitted;
     this.countAssignmentsDead = data.count_assignments_dead;
     this.countAssignmentsPending = data.count_assignments_pending;
+
+    // TODO: find nicer approach
+    this.countAssignmentsDead = this.countAssignmentsTotal
+                              - this.countAssignmentsApproved
+                              - this.countAssignmentsRejected
+                              - this.countAssignmentsSubmitted
+                              - this.countAssignmentsPending;
   }
 }
