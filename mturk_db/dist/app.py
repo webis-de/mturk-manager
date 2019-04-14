@@ -88,7 +88,8 @@ def configure_apache():
                 # list_lines.append('</Files>\n')
                 # list_lines.append('</Directory>\n')
 
-                list_lines.append('WSGIDaemonProcess mturk-manager python-home=/var/www/python/mturk-manager/mturk_db/ python-path=/var/www/python/mturk-manager/mturk_db/\n')
+                list_lines.append('WSGIDaemonProcess mturk-manager python-path=/var/www/python/mturk-manager/mturk_db/\n')
+                # list_lines.append('WSGIDaemonProcess mturk-manager python-home=/var/www/python/mturk-manager/mturk_db/ python-path=/var/www/python/mturk-manager/mturk_db/\n')
                 # list_lines.append('WSGIDaemonProcess viewer-framework python-home=/home/sammy/myproject/myprojectenv python-path=/home/sammy/myproject\n')
                 list_lines.append('WSGIProcessGroup mturk-manager\n')
                 list_lines.append('WSGIScriptAlias / /var/www/python/mturk-manager/mturk_db/mturk_db/wsgi.py\n'.format(path_project))
@@ -304,18 +305,18 @@ def change_directory_database():
         print('creating')
         os.mkdir(path_database)
         subprocess.run('chown -R postgres:postgres {}'.format(path_database), shell=True)
-        subprocess.run('su -c \'/usr/lib/postgresql/9.5/bin/initdb -D {}\' postgres'.format(path_database), shell=True)
+        subprocess.run('su -c \'/usr/lib/postgresql/10/bin/initdb -D {}\' postgres'.format(path_database), shell=True)
         global_init = True
 
     list_lines = []
-    with open('/etc/postgresql/9.5/main/postgresql.conf', 'r') as f:
+    with open('/etc/postgresql/10/main/postgresql.conf', 'r') as f:
         for line in f:
             if line.startswith('data_directory'):
                 line = 'data_directory = \'{}\'\n'.format(path_database)
 
             list_lines.append(line)
 
-    with open('/etc/postgresql/9.5/main/postgresql.conf', 'w') as f:
+    with open('/etc/postgresql/10/main/postgresql.conf', 'w') as f:
         for line in list_lines:
             f.write(line)
 
