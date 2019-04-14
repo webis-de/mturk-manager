@@ -19,6 +19,13 @@ class Class_Service_Projects {
         url: {
           path: store.getters.get_url('url_api_projects', 'moduleProjects'),
         },
+        params: {
+          fields: [
+            'name',
+            'slug',
+            'datetime_visited',
+          ],
+        },
       });
 
       if (response.success === true) {

@@ -1,4 +1,6 @@
 from rest_framework import serializers
+
+from api.helpers import keep_fields
 from api.models import Project
 # from api.models import Project, Keyword
 from api.classes import Manager_Projects
@@ -25,6 +27,14 @@ from django.db import IntegrityError
 
 
 class Serializer_Project(serializers.ModelSerializer):
+    def __init__(self, *args, **kwargs):
+        super(Serializer_Project, self).__init__(*args, **kwargs)
+
+        context = kwargs.get('context', {})
+
+        if context.get('fields'):
+            keep_fields(self, context.get('fields'))
+
     # workers = serializers.HyperlinkedRelatedField(
     #     many=True,
     #     read_only=True,

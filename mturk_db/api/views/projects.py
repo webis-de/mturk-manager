@@ -27,8 +27,19 @@ class Projects(APIView):
         #
         # for name_project in list_projects:
         #     migrate_project(name_project)
-        queryset_projects = Manager_Projects.get_all()
-        serializer = Serializer_Project(queryset_projects, many=True, context={'request': request})
+        list_fields = request.query_params.getlist('fields[]')
+        if len(list_fields) == 0:
+            list_fields = None
+
+        queryset_projects = Manager_Projects.get_all(fields=list_fields)
+
+        serializer = Serializer_Project(
+            queryset_projects,
+            many=True,
+            context={
+                'request': request,
+                'fields': list_fields,
+            })
         return Response(serializer.data)
 
     def post(self, request, format=None):

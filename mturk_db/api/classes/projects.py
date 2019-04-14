@@ -31,8 +31,15 @@ class Manager_Projects(object):
 
 
     @classmethod
-    def get_all(cls):
-        return Project.objects.all()
+    def get_all(cls, fields=None):
+        queryset = Project.objects.all()
+
+        if fields is not None:
+            queryset = queryset.values(
+                *fields
+            )
+
+        return queryset
 
     @staticmethod
     def get(database_object_project):
