@@ -25,6 +25,8 @@ class Manager_Assignments(Interface_Manager_Items):
         queryset = Assignment.objects.filter(
             hit__batch__project=database_object_project,
             hit__batch__use_sandbox=use_sandbox,
+        ).select_related(
+            'hit', 'worker'
         )
 
         queryset = Manager_Assignments.filter(
