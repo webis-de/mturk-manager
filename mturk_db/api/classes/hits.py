@@ -15,6 +15,10 @@ class Manager_HITs(Interface_Manager_Items):
         queryset = HIT.objects.filter(
             batch__project=database_object_project,
             batch__use_sandbox=use_sandbox,
+        ).select_related(
+            'batch__settings_batch'
+        ).prefetch_related(
+            'batch__settings_batch__keywords'
         )
 
         queryset = Manager_HITs.filter(
