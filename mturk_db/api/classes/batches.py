@@ -25,6 +25,10 @@ class Manager_Batches(Interface_Manager_Items):
         queryset = Batch.objects.filter(
             project=database_object_project,
             use_sandbox=use_sandbox,
+        ).select_related(
+            'settings_batch'
+        ).prefetch_related(
+            'settings_batch__keywords'
         )
 
         queryset = Manager_Batches.filter(
