@@ -24,7 +24,8 @@ RUN pip3 install psycopg2 django==2.0 boto3 xmltodict djangorestframework markdo
 #RUN a2enmod wsgi
 #
 WORKDIR /var/www/python
-RUN git clone https://github.com/webis-de/mturk-manager.git
+ARG branch=master
+RUN git clone -b $branch https://github.com/webis-de/mturk-manager.git
 #
 ARG setting_files=/kritten
 ENV folder_setting_files=$setting_files
