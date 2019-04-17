@@ -64,6 +64,22 @@
             </v-card>
           </v-flex>
         </v-layout>
+
+        <v-layout>
+          <v-flex xs4>
+            <v-card>
+              <v-card-text class="text-xs-center">
+                <router-link
+                  v-bind:to="{
+                    name: 'add_credentials'
+                  }"
+                >
+                  Update Credentials
+                </router-link>
+              </v-card-text>
+            </v-card>
+          </v-flex>
+        </v-layout>
       </v-container>
     </v-flex>
   </v-layout>
