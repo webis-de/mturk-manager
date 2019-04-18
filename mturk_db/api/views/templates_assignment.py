@@ -30,6 +30,9 @@ class Templates_Assignment(APIView):
         if request.query_params.get(REST_FRAMEWORK['PAGE_SIZE_QUERY_PARAM']) is not None:
             paginator = api_settings.DEFAULT_PAGINATION_CLASS()
             queryset_paginated = paginator.paginate_queryset(queryset, request)
+            count_items = paginator.page.paginator.count
+        else:
+            count_items = queryset.count()
 
         serializer = Serializer_Template_Assignment(
             queryset_paginated,
@@ -41,7 +44,7 @@ class Templates_Assignment(APIView):
         )
 
         return Response({
-            'items_total': queryset.count(),
+            'items_total': count_items,
             'data': serializer.data,
         })
 
