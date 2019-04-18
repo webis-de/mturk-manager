@@ -127,7 +127,7 @@ class HIT(models.Model):
     batch = models.ForeignKey('Batch', on_delete=models.CASCADE, null=True, related_name='hits')
 
     datetime_creation = models.DateTimeField()
-    datetime_expiration = models.DateTimeField()
+    datetime_expiration = models.DateTimeField(db_index=True)
     parameters = models.TextField()
     count_assignments_additional = models.IntegerField(default=0)
     count_assignments_dead = models.IntegerField(default=0)
