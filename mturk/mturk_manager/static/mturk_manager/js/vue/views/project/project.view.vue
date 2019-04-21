@@ -1,7 +1,7 @@
 <template>
   <div>
     <the-navigation-drawer
-      v-bind:show_drawer.sync="show_drawer"
+      v-bind:show-drawer.sync="show_drawer"
     />
 
     <v-progress-linear

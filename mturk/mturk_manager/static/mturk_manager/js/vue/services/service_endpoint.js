@@ -65,12 +65,21 @@ class Class_Service_Endpoint {
   }
 
   get_url_api({
-    path = '', use_sandbox, value, project,
+    host,
+    path = '',
+    use_sandbox,
+    value,
+    project,
   }) {
     // TODO: Fix this approach
     // let url = new URL(path, store.state.module_app.url_api);
 
-    let url = `${store.state.module_app.url_api}/${path}`;
+    let url;
+    if(host !== undefined) {
+      url = `${host}/${path}`;
+    } else {
+      url = `${store.state.module_app.url_api}/${path}`;
+    }
 
     if (value !== undefined) {
       url += `/${value}`;

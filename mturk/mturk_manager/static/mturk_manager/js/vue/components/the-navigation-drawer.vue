@@ -1,10 +1,10 @@
 <template>
   <v-navigation-drawer
-    v-bind:value="show_drawer"
-    @input="$emit('update:show_drawer', $event)"
+    v-bind:value="showDrawer"
     clipped
     fixed
     app
+    v-on:input="$emit('update:show_drawer', $event)"
   >
     <!-- temporary -->
     <v-list>
@@ -12,7 +12,7 @@
         v-for="item_menu in list_items_menu"
         v-bind:key="item_menu.name"
         v-bind:to="{ name: item_menu.name }"
-        v-bind:exact="item_menu.name == 'dashboard' ? true : false"
+        v-bind:exact="item_menu.name === 'dashboard'"
       >
         <v-list-tile-action>
           <v-icon>{{ item_menu.icon }}</v-icon>
@@ -21,7 +21,7 @@
           <v-list-tile-title>{{ item_menu.label }}</v-list-tile-title>
         </v-list-tile-content>
       </v-list-tile>
-      <v-divider></v-divider>
+      <v-divider />
       <v-list-tile
         v-bind:to="{ name: 'aboutProject' }"
       >
@@ -29,8 +29,14 @@
           <v-icon>info</v-icon>
         </v-list-tile-action>
         <v-list-tile-content>
-          <v-list-tile-title>About</v-list-tile-title>
+          <v-list-tile-title>
+            About
+          </v-list-tile-title>
         </v-list-tile-content>
+
+        <v-list-tile-action>
+          <changelog-notification />
+        </v-list-tile-action>
       </v-list-tile>
       <!-- <v-list-tile>
                 <v-list-tile-action>
@@ -45,12 +51,14 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState } from 'vuex';
+import ChangelogNotification from './about/changelog-notification';
 
 export default {
   name: 'TheNavigationDrawer',
+  components: { ChangelogNotification },
   props: {
-    show_drawer: {
+    showDrawer: {
       required: true,
       type: Boolean,
     },

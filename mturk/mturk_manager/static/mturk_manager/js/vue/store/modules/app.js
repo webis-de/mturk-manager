@@ -1,3 +1,4 @@
+import Vue from 'vue';
 import localforage from 'localforage';
 import _ from 'lodash';
 
@@ -9,7 +10,9 @@ export const module_app = _.merge({}, baseModule, {
     token_instance: null,
     use_sandbox: true,
     version_api: null,
-    version: '1.1.0',
+    version: '1.1.1',
+    changelog: [],
+    versionSeen: null,
   },
   getters: {
     has_credentials(state) {
@@ -28,6 +31,12 @@ export const module_app = _.merge({}, baseModule, {
     },
     version_api(state, version_api) {
       state.version_api = version_api;
+    },
+    setReleaseBody(state, { idTag, body }) {
+      const release = state.changelog.find(release => release.id === idTag);
+      if(release !== undefined) {
+        Vue.set(release, 'body', body);
+      }
     },
   },
   actions: {
@@ -53,6 +62,18 @@ export const module_app = _.merge({}, baseModule, {
 
       commit('version_api', config.version);
 
+      dispatch('loadState', {
+        nameLocalStorage: 'changelog',
+        nameState: 'changelog',
+        objectStateDefault: [],
+      });
+
+      dispatch('loadState', {
+        nameLocalStorage: 'version_seen',
+        nameState: 'versionSeen',
+      });
+
+
       commit('moduleAssignments/set_urls', config.paths, { root: true });
       commit('moduleBatches/set_urls', config.paths, { root: true });
       commit('moduleHITs/set_urls', config.paths, { root: true });
@@ -73,9 +94,14 @@ export const module_app = _.merge({}, baseModule, {
         dispatch('moduleTemplates/init', null, { root: true }),
       ]);
     },
-    async set_use_sandbox({ commit, state }, use_sandbox) {
+    async set_use_sandbox({ commit }, use_sandbox) {
       commit('set_use_sandbox', use_sandbox);
       localforage.setItem('use_sandbox', use_sandbox);
+    },
+    async setReleaseBody({ state, commit }, data) {
+      commit('setReleaseBody', data);
+
+      await localforage.setItem('changelog', state.changelog);
     },
   },
 });

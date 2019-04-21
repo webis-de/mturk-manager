@@ -27,7 +27,15 @@ module.exports = {
         ]
       }
     ],
-    'linebreak-style': 0
+    'linebreak-style': 0,
+    'vue/no-v-html': false,
+    'vue/html-self-closing': [
+      'error', {
+      'html': {
+        'normal': 'never'
+      }
+      }
+    ]
   },
 
   parserOptions: {

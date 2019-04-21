@@ -6,60 +6,90 @@
         grid-list-md
       >
         <v-layout>
-          <v-flex xs4>
+          <v-flex xs6>
             <v-card>
-              <v-card-text class="text-xs-center">
-                Version: {{ $store.state.module_app.version }}
+              <v-card-title>Info</v-card-title>
+              <v-card-text>
+                <v-list dense>
+                  <v-list-tile>
+                    Version
+                    <v-spacer />
+                    {{ $store.state.module_app.version }}
+                  </v-list-tile>
+
+                  <v-list-tile>
+                    Contact
+                    <v-spacer />
+                    <a href="mailto:mturk@kritten.org">
+                      mturk@kritten.org
+                    </a>
+                  </v-list-tile>
+
+                  <v-list-tile>
+                    Created By
+                    <v-spacer />
+                    Kristof Komlossy
+                  </v-list-tile>
+                </v-list>
               </v-card-text>
             </v-card>
           </v-flex>
 
-          <v-flex xs4>
+          <v-flex xs6>
             <v-card>
-              <v-card-text class="text-xs-center">
-                Contact: <a href="mailto:mturk@kritten.org">
-                  mturk@kritten.org
-                </a>
-              </v-card-text>
-            </v-card>
-          </v-flex>
+              <v-card-title>Important Links</v-card-title>
+              <v-card-text>
+                <v-list dense>
+                  <v-list-tile>
+                    Worker Sandbox
+                    <v-spacer />
+                    <v-btn
+                      href="https://workersandbox.mturk.com"
+                      target="_blank"
+                      color="primary"
+                      small
+                    >
+                      Open
+                    </v-btn>
+                  </v-list-tile>
 
-          <v-flex xs4>
-            <v-card>
-              <v-card-text class="text-xs-center">
-                Created By: Kristof Komlossy
+                  <v-list-tile>
+                    MTurk Documentation
+                    <v-spacer />
+                    <v-btn
+                      href="https://docs.aws.amazon.com/mturk/index.html"
+                      target="_blank"
+                      color="primary"
+                      small
+                    >
+                      Open
+                    </v-btn>
+                  </v-list-tile>
+
+                  <v-list-tile>
+                    MTurk Manager Wiki
+                    <v-spacer />
+                    <v-btn
+                      href="https://github.com/webis-de/mturk-manager/wiki"
+                      target="_blank"
+                      color="primary"
+                      small
+                    >
+                      Open
+                    </v-btn>
+                  </v-list-tile>
+                </v-list>
               </v-card-text>
             </v-card>
           </v-flex>
         </v-layout>
 
         <v-layout>
-          <v-flex xs4>
+          <v-flex>
             <v-card>
-              <v-card-text class="text-xs-center">
-                <a href="https://workersandbox.mturk.com">
-                  Worker Sandbox
-                </a>
-              </v-card-text>
-            </v-card>
-          </v-flex>
-
-          <v-flex xs4>
-            <v-card>
-              <v-card-text class="text-xs-center">
-                <a href="https://docs.aws.amazon.com/mturk/index.html">
-                  MTurk Documentation
-                </a>
-              </v-card-text>
-            </v-card>
-          </v-flex>
-
-          <v-flex xs4>
-            <v-card>
-              <v-card-text class="text-xs-center">
-                <a href="https://github.com/webis-de/mturk-manager/wiki">
-                  MTurk Manager Wiki
-                </a>
+              <v-card-title>Changelog</v-card-title>
+              <v-card-text>
+                <changelog />
               </v-card-text>
             </v-card>
           </v-flex>
@@ -86,13 +116,13 @@
 </template>
 
 <script>
+import Changelog from './changelog';
+
 export default {
   name: 'About',
+  components: { Changelog },
   data() {
     return {};
-  },
-  mounted() {
-    console.warn('test', this.$store.module_app);
   },
 };
 </script>
