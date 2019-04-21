@@ -35,7 +35,10 @@ class ClassServiceApp {
 
     if (response.success === true) {
       await store.dispatch('module_app/init', response.data);
+      console.warn('frontend version', store.state.module_app.version);
+      console.warn('config', response.data);
     }
+
 
     return response;
   }
