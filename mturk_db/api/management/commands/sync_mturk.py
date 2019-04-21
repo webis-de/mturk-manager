@@ -1,6 +1,7 @@
 from django.core.management.base import BaseCommand
 
 from api.classes import Manager_Projects, Manager_Batches
+from api.models import HIT
 
 
 class Command(BaseCommand):
@@ -20,5 +21,9 @@ class Command(BaseCommand):
             queryset = queryset.filter(name=project_name)
 
         for project in queryset:
-            self.stdout.write(self.style.SUCCESS('Syncing project {}'.format(project.name)))
+
+            self.stdout.write(self.style.SUCCESS('Syncing project {} with {} HITs'.format(
+                project.name,
+                HIT.objects.filter(batch__project=project).count()
+            )))
             Manager_Batches.sync_mturk(project, use_sandbox)
