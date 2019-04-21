@@ -8,10 +8,17 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument('use_sandbox', help='Use Sandbox', type=bool)
+        parser.add_argument('--project', help='Project', type=str)
 
     def handle(self, *args, **options):
         use_sandbox = options['use_sandbox']
+        project_name = options['project']
 
-        for project in Manager_Projects.get_all():
+        queryset = Manager_Projects.get_all()
+
+        if project_name is not None:
+            queryset = queryset.filter(project__name=project_name)
+
+        for project in queryset:
             self.stdout.write(self.style.SUCCESS('Syncing project {}'.format(project.name)))
             Manager_Batches.sync_mturk(project, use_sandbox)
