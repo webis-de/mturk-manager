@@ -1,6 +1,9 @@
 <template>
   <span>
-    <v-tooltip top>
+    <v-tooltip
+      top
+      v-bind:disabled="disabled === false"
+    >
       <v-btn
         slot="activator"
         class="my-0"
