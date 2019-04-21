@@ -10,7 +10,7 @@ export const module_app = _.merge({}, baseModule, {
     token_instance: null,
     use_sandbox: true,
     version_api: null,
-    version: '1.1.1',
+    version: '1.2.0',
     changelog: [],
     versionSeen: null,
   },

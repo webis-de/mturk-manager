@@ -156,5 +156,5 @@ try:
 except AttributeError:
     URL_GLOBAL_DB = 'http://localhost:8004'
 
-VERSION = '1.1.1'
+VERSION = '1.2.0'
 PLACEHOLDER_SLUG_PROJECT = 'PLACEHOLDER_SLUG_PROJECT'
