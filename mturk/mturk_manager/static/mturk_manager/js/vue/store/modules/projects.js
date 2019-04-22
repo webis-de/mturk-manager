@@ -275,9 +275,8 @@ export const moduleProjects = {
   },
   actions: {
     reset_projects({
-      state, commit, getters, rootGetters, dispatch,
+      commit,
     }) {
-      // commit('set_projects', state.response_data_projects);
       commit('moduleBatches/reset', null, { root: true });
       commit('moduleHITs/reset', null, { root: true });
       commit('moduleAssignments/reset', null, { root: true });

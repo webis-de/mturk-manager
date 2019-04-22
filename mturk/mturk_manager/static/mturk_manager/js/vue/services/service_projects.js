@@ -11,32 +11,27 @@ class Class_Service_Projects {
   }
 
   async load_projects() {
-    const use_sandbox = store.state.module_app.use_sandbox;
+    const response = await Service_Endpoint.make_request({
+      method: 'get',
+      url: {
+        path: store.getters.get_url('url_api_projects', 'moduleProjects'),
+      },
+      params: {
+        fields: [
+          'name',
+          'slug',
+          'datetime_visited',
+        ],
+      },
+    });
 
-    if (store.getters['moduleProjects/get_object_projects'] == null) {
-      const response = await Service_Endpoint.make_request({
-        method: 'get',
-        url: {
-          path: store.getters.get_url('url_api_projects', 'moduleProjects'),
-        },
-        params: {
-          fields: [
-            'name',
-            'slug',
-            'datetime_visited',
-          ],
-        },
-      });
-
-      if (response.success === true) {
-        // store.commit('moduleProjects/set_response_data_projects', response.data);
-        store.commit('moduleProjects/set_projects', response.data);
-        return true;
-      }
-      // console.log(router)
-      // router.push({name: 'error'});
-      return false;
+    if (response.success === true) {
+      // store.commit('moduleProjects/set_response_data_projects', response.data);
+      store.commit('moduleProjects/set_projects', response.data);
+      return true;
     }
+
+    return false;
   }
 
   async create_project(name) {

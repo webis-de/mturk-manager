@@ -111,7 +111,7 @@ class ClassServiceApp {
     }
   }
 
-  async updateCredentials({ url, token, router }) {
+  async updateCredentials({ url, token }) {
     url = url.trim();
 
     if (!url.startsWith('http')) {
@@ -136,7 +136,7 @@ class ClassServiceApp {
 
     const response = await this.init(true);
 
-    if(response.success === true) {
+    if (response.success === true) {
       // send the user to the dashboard if no error occured
       queue.notify('router', { name: 'dashboard' });
     }
