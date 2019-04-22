@@ -34,12 +34,16 @@ class Serializer_Template_Worker(serializers.ModelSerializer):
 
         if context.get('usecase') == 'list_settings_batch':
             keep_fields(self, ['id', 'name'])
-        elif context.get('usecase') == 'annotation' or context.get('usecase') == 'list_templates_worker':
+        elif context.get('usecase') == 'annotation':
             self.fields['template_assignment'] = Serializer_Template_Assignment(context=context)
             self.fields['template_hit'] = Serializer_Template_HIT(context=context)
             self.fields['template_global'] = Serializer_Template_Global(context=context)
 
-            # self.fields.pop('has_assignments')
+            self.fields.pop('has_assignments')
+        elif context.get('usecase') == 'list_templates_worker':
+            self.fields['template_assignment'] = Serializer_Template_Assignment(context=context)
+            self.fields['template_hit'] = Serializer_Template_HIT(context=context)
+            self.fields['template_global'] = Serializer_Template_Global(context=context)
 
         if context.get('fields'):
             keep_fields(self, context.get('fields'))
