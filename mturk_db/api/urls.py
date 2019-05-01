@@ -64,6 +64,7 @@ urlpatterns = format_suffix_patterns([
     path('projects/<str:slug_project>/hits_for_annotation', views.hits_for_annotation, name='hits_for_annotation'),
 
     path('projects/<str:slug_project>/assignments', views.Assignments.as_view(), name='assignments_for_project'),
+    path('projects/<str:slug_project>/assignments/<int:id_assignment>', views.Assignment.as_view(), name='assignment_for_project'),
     path('projects/<str:slug_project>/assignments_for_annotation', views.assignments_for_annotation, name='assignments_for_annotation'),
 
     # path('projects/<str:slug_project>/assignments/<int:id_assignment>', views.Assignment.as_view(), name='assignment_for_project'),

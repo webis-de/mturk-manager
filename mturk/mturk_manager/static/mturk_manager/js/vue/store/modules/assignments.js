@@ -66,6 +66,12 @@ export const moduleAssignments = _.merge({}, baseModule, {
         text: 'HIT',
         value: 'hit',
       },
+      {
+        text: 'Actions',
+        value: 'actions',
+        sortable: false,
+        width: '10%',
+      },
     ],
     array_columns_selected_initial_general: [
       'id_assignment',
@@ -75,6 +81,7 @@ export const moduleAssignments = _.merge({}, baseModule, {
       'worker',
       'status',
       'hit',
+      'actions',
     ],
     array_columns_selected_initial_finances: [
       'id_assignment',
@@ -146,113 +153,37 @@ export const moduleAssignments = _.merge({}, baseModule, {
     set_ids_worker: state => state.set_ids_worker,
   },
   mutations: {
-    setPaginationGeneral(state, { pagination, setPageTo1 }) {
-      setPagination({
-        pagination,
-        setPageTo1,
-        namePagination: 'paginationGeneral',
-        nameLocalStorage: 'pagination_assignments_general',
-        state,
-      });
-    },
-    setPaginationFinances(state, { pagination, setPageTo1 }) {
-      setPagination({
-        pagination,
-        setPageTo1,
-        namePagination: 'paginationFinances',
-        nameLocalStorage: 'pagination_assignments_finances',
-        state,
-      });
+    updateItem(state, { item }) {
+      const nameState = 'array_assignments_sandbox';
+
+      Vue.set(
+        state[nameState],
+        _.findIndex(state[nameState], itemOld => itemOld.id === item.id),
+        item,
+      );
     },
     set_array_columns_general(state, array_columns) {
       localforage.setItem('array_columns_assignments_general', array_columns);
       state.array_columns_selected_general = array_columns;
     },
     set_assignments(state, { data, use_sandbox }) {
-      let array_assignments = null;
+      let arrayAssignments = null;
       if (use_sandbox) {
         state.array_assignments_sandbox = [];
-        array_assignments = state.array_assignments_sandbox;
+        arrayAssignments = state.array_assignments_sandbox;
       } else {
         state.array_assignments = [];
-        array_assignments = state.array_assignments;
+        arrayAssignments = state.array_assignments;
       }
 
       _.forEach(data, (data) => {
         const assignment = new Assignment(data);
-        Vue.set(array_assignments, array_assignments.length, assignment);
+        Vue.set(arrayAssignments, arrayAssignments.length, assignment);
       });
     },
-    // set_assignments(state, {data_assignments, object_hits, use_sandbox}) {
-    //     let object_assignments = null;
-    //     if(use_sandbox)
-    //     {
-    //         object_assignments = state.object_assignments_sandbox;
-    //     } else {
-    //         object_assignments = state.object_assignments;
-    //     }
-    //     // console.log('########')
-    //     state.set_ids_worker = new Set();
-    //
-    //     _.forEach(data_batches, function(data_batch) {
-    //         _.forEach(data_batch.hits, function(data_hit) {
-    //         	const id_hit = data_hit.id;
-    //         	const hit = object_hits[id_hit];
-    //
-    //
-    //             _.forEach(data_hit.assignments, function(data_assignment) {
-    //             	state.set_ids_worker.add(data_assignment.worker);
-    //             	data_assignment.hit = hit;
-    //             	// console.log(hit)
-    // 	            const assignment = new Assignment(data_assignment);
-    //             	// console.log(assignment)
-    //
-    // 	            Vue.set(object_assignments, assignment.id, assignment);
-    //
-    // 	            Vue.set(hit.object_assignments, assignment.id, assignment);
-    //             });
-    //         });
-    //     });
-    //     // console.log('########')
-    //
-    //     // console.log(state.set_ids_worker);
-    // },
     clear_sandbox(state) {
       state.object_assignments_sandbox = {};
     },
-    // append_assignments(state, {object_batches, data_batches, object_hits, use_sandbox}) {
-    //           let object_assignments = null;
-    //           if(use_sandbox)
-    //           {
-    //               object_assignments = state.object_assignments_sandbox;
-    //           } else {
-    //               object_assignments = state.object_assignments;
-    //           }
-
-    //           state.set_ids_worker = new Set();
-
-    //           _.forEach(data_batches, function(data_batch) {
-    //           	const id_batch = data_batch.id;
-    //           	const batch = object_batches[id_batch];
-
-    //               _.forEach(data_batch.hits, function(data_hit) {
-    //            	const id_hit = data_hit.id;
-    //            	const hit = object_hits[id_hit];
-
-    //                _.forEach(data_hit.assignments, function(data_assignment) {
-    //                	state.set_ids_worker.add(data_assignment.worker);
-    //                	data_assignment.hit = hit;
-    // 	            const assignment = new Assignment(data_assignment);
-
-    // 	            Vue.set(object_assignments, assignment.id, assignment);
-
-    // 	            Vue.set(hit.assignments, hit.assignments.length, assignment);
-    //             });
-    //               });
-    //           });
-
-    //           console.log(state.set_ids_worker);
-    // },
     clear_assignments_selected(state) {
       state.object_assignments_selected = {};
     },
@@ -275,6 +206,23 @@ export const moduleAssignments = _.merge({}, baseModule, {
     },
     set_urls(state, config) {
       state.url_api_projects_assignments = config.url_api_projects_assignments;
+    },
+    update(state, { assignment }) {
+      let item = _.find(state.array_assignments, item => item.id === assignment.id);
+      if (item === undefined) {
+        item = _.find(state.array_assignments_sandbox, item => item.id === assignment.id);
+      }
+
+      Vue.set(
+        item,
+        'status_external',
+        assignment.status_external,
+      );
+      Vue.set(
+        item,
+        'status_internal',
+        assignment.status_internal,
+      );
     },
   },
   actions: {
@@ -324,6 +272,11 @@ export const moduleAssignments = _.merge({}, baseModule, {
         'set_array_columns_general',
         state.array_columns_selected_initial_general,
       );
+    },
+    async updateItem({ commit }, { item }) {
+      commit('updateItem', {
+        item,
+      });
     },
   },
 });

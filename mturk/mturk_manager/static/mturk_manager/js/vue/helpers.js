@@ -25,3 +25,34 @@ export async function initPagination({ commit, nameLocalStorage, nameMutation })
     });
   }
 }
+
+export function getChanges(item1, item2) {
+  const object = {};
+
+  // console.warn('item1', JSON.stringify(item1));
+  // console.warn('item2', JSON.stringify(item2));
+
+  for (const key in item2) {
+    if (Object.prototype.hasOwnProperty.call(item2, key)) {
+      if (item2[key] !== item1[key]) {
+        if (typeof item1[key] === 'object' && item1[key] !== null && typeof item2[key] === 'object' && item2[key] !== null) {
+          if (
+            _.differenceBy(item1[key], item2[key], value => value.text.toLowerCase()).length > 0
+            || _.differenceBy(item2[key], item1[key], value => value.text.toLowerCase()).length > 0
+          ) {
+            object[key] = item1[key];
+          }
+        } else {
+          const value = item1[key];
+          if (value === undefined) {
+            object[key] = null;
+          } else {
+            object[key] = value;
+          }
+        }
+      }
+    }
+  }
+
+  return object;
+}
