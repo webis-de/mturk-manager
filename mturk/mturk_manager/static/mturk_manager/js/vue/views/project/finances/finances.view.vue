@@ -31,7 +31,7 @@
                   v-bind:filters="filtersBatches"
                   name-state-filters="objectFiltersFinances"
                   name-local-storage-filters="filtersBatchesFinances"
-                ></list-batches>
+                />
               </v-card>
             </v-tab-item>
 
@@ -50,7 +50,7 @@
                   v-bind:filters="filtersHITs"
                   name-state-filters="objectFiltersFinances"
                   name-local-storage-filters="filtersHITsFinances"
-                ></list-hits>
+                />
               </v-card>
             </v-tab-item>
 
@@ -69,7 +69,7 @@
                   v-bind:filters="filtersAssignments"
                   name-state-filters="objectFiltersFinances"
                   name-local-storage-filters="filtersAssignmentsFinances"
-                ></list-assignments>
+                />
               </v-card>
             </v-tab-item>
           </v-tabs-items>
@@ -77,7 +77,7 @@
       </v-flex>
     </v-layout>
 
-    <v-divider class="my-3"></v-divider>
+    <v-divider class="my-3" />
     <v-container
       fluid
       class="pa-0 grid-list-lg"
@@ -89,7 +89,7 @@
           <display-expenses
             v-bind:expenses="expenses"
             v-bind:type-item="typeItem"
-          ></display-expenses>
+          />
         </v-flex>
 
         <v-flex
@@ -97,15 +97,16 @@
         >
           <v-card>
             <v-card-title>
-              Current Balance
+              Budget
             </v-card-title>
 
             <v-card-text>
-              <component-show-balance></component-show-balance>
+              <component-show-balance
+                v-bind:expenses="expenses"
+              />
             </v-card-text>
           </v-card>
         </v-flex>
-
       </v-layout>
     </v-container>
     <!--<v-divider class="my-3"></v-divider>-->
@@ -119,7 +120,7 @@
 
 <script>
 import {
-  mapState, mapGetters, mapMutations, mapActions,
+  mapState, mapMutations, mapActions,
 } from 'vuex';
 
 import ComponentShowBalance from '../../../components/finances/component-show-balance';

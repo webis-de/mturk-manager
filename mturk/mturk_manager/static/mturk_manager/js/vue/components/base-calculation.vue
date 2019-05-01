@@ -4,6 +4,7 @@
       <tr
         v-for="(calculation, index) in calculations"
         v-bind:key="index"
+        v-bind:class="{ 'font-weight-bold': calculation.bold === true }"
       >
         <td>{{ calculation.operation }}</td>
         <td class="text-xs-right px-1">
@@ -13,12 +14,7 @@
             <slot></slot>
           </base-display-amount>
         </td>
-        <td>
-          <v-icon
-            v-if="calculation.description"
-            class="px-1"
-            small
-          >arrow_forward</v-icon>
+        <td class="pl-3">
           {{ calculation.description }}
           <base-help v-if="calculation.detail">
             {{ calculation.detail }}
@@ -34,12 +30,7 @@
             <slot></slot>
           </base-display-amount>
         </td>
-        <td>
-          <!--<v-icon-->
-            <!--v-if="result.description"-->
-            <!--class="px-1"-->
-            <!--small-->
-          <!--&gt;arrow_forward</v-icon>-->
+        <td class="pl-3">
           {{ result.description }}
           <base-help v-if="result.detail">
             {{ result.detail }}
@@ -56,7 +47,7 @@ import BaseHelp from './base-help';
 
 export default {
   name: 'BaseCalculation',
-  components: {BaseHelp, BaseDisplayAmount },
+  components: { BaseHelp, BaseDisplayAmount },
   props: {
     calculations: {
       required: true,
