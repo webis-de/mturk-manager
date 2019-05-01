@@ -26,6 +26,27 @@ export async function initPagination({ commit, nameLocalStorage, nameMutation })
   }
 }
 
+export function compareVersions(version1, version2) {
+  if (version1 === version2) {
+    return 0;
+  }
+
+  const version1Splitted = version1.split('.');
+  const version2Splitted = version2.split('.');
+
+  for (let i = 0; i < version1Splitted.length; i += 1) {
+    if (version1Splitted[i] !== version2Splitted[i]) {
+      if (parseInt(version1Splitted[i], 10) < parseInt(version2Splitted[i], 10)) {
+        return -1;
+      }
+
+      return 1;
+    }
+  }
+
+  return 0;
+}
+
 export function getChanges(item1, item2) {
   const object = {};
 

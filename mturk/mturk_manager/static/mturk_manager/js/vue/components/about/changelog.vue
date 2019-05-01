@@ -14,6 +14,7 @@
 <script>
 import { Service_App } from '../../services/service.app';
 import ChangelogRelease from './changelog-release';
+import { compareVersions } from '../../helpers';
 
 export default {
   name: 'Changelog',
@@ -44,7 +45,9 @@ export default {
     },
   },
   async created() {
-    if (this.changelog.length === 0 || this.changelog[0].name !== this.$store.state.module_app.version) {
+    // check if changelog is empty or not up to date
+    if (this.changelog.length === 0
+      || compareVersions(this.changelog[0].tag, this.$store.state.module_app.version) === -1) {
       await Service_App.loadChangelog();
     }
 

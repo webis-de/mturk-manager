@@ -35,7 +35,12 @@ module.exports = {
         'normal': 'never'
       }
       }
-    ]
+    ],
+    'max-len': [
+      'error', {
+        'code': 120,
+      },
+    ],
   },
 
   parserOptions: {
