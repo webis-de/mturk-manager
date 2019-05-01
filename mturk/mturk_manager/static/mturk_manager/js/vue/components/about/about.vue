@@ -7,7 +7,7 @@
       >
         <v-layout>
           <v-flex xs6>
-            <v-card>
+            <v-card height="100%">
               <v-card-title>Info</v-card-title>
               <v-card-text>
                 <v-list dense>
@@ -29,6 +29,14 @@
                     Created By
                     <v-spacer />
                     Kristof Komlossy
+                  </v-list-tile>
+
+                  <v-list-tile>
+                    Credits
+                    <v-spacer />
+                    Martin Potthast,&nbsp;<a href="https://webis.de/">
+                      Webis
+                    </a>
                   </v-list-tile>
                 </v-list>
               </v-card-text>
@@ -71,6 +79,19 @@
                     <v-spacer />
                     <v-btn
                       href="https://github.com/webis-de/mturk-manager/wiki"
+                      target="_blank"
+                      color="primary"
+                      small
+                    >
+                      Open
+                    </v-btn>
+                  </v-list-tile>
+
+                  <v-list-tile>
+                    MTurk Manager Code
+                    <v-spacer />
+                    <v-btn
+                      href="https://github.com/webis-de/mturk-manager"
                       target="_blank"
                       color="primary"
                       small
