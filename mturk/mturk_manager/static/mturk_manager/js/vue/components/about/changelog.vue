@@ -51,13 +51,15 @@ export default {
       await Service_App.loadChangelog();
     }
 
-    await this.checkLoad(this.changelog[0]);
+    if (this.changelog.length > 0) {
+      await this.checkLoad(this.changelog[0]);
 
-    await this.$store.dispatch('module_app/setState', {
-      objectState: this.changelog[0].tag,
-      nameState: 'versionSeen',
-      nameLocalStorage: 'version_seen',
-    });
+      await this.$store.dispatch('module_app/setState', {
+        objectState: this.changelog[0].tag,
+        nameState: 'versionSeen',
+        nameLocalStorage: 'version_seen',
+      });
+    }
   },
   methods: {
     async checkLoad(release) {
