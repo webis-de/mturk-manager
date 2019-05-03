@@ -6,8 +6,23 @@ from api.enums import assignments
 def set_up_test_database():
     project = set_up_project(name='project')
 
-    set_up_batch(name='batch1', project=project)
-    set_up_batch(name='batch2', project=project)
+    set_up_batch(
+        name='batch1',
+        project=project,
+        settings_batch={
+            'count_assignments': 10,
+            'reward': 50,
+        },
+    )
+    set_up_batch(
+        name='batch2',
+        project=project,
+        settings_batch={
+            'count_assignments': 10,
+            'reward': 100,
+        },
+    )
+
 
 def set_up_project(name):
     return Project.objects.create(
@@ -16,14 +31,16 @@ def set_up_project(name):
         slug=name,
     )
 
-def set_up_batch(name, project):
+
+def set_up_batch(name, project, settings_batch):
     batch = Batch.objects.create(name=name, use_sandbox=True)
 
     Settings_Batch.objects.create(
         name='settings_batch_{}'.format(name),
         batch=batch,
         project=project,
-        count_assignments=10,
+        count_assignments=settings_batch['count_assignments'],
+        reward=settings_batch['reward'],
     )
 
     now = timezone.now()

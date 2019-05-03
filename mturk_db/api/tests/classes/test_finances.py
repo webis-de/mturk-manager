@@ -1,17 +1,55 @@
 from django.test import TestCase
-from api.models import Batch, HIT
+from api.models import Batch
+from api.test_helpers import set_up_test_database
+from api.classes import ManagerFinances
 
 
 class TestsFinances(TestCase):
     @classmethod
     def setUpTestData(cls):
-        batch = Batch.objects.create(name='batch1', use_sandbox=True)
+        set_up_test_database()
 
+    def test_aggregate_batches(self):
+        queryset = Batch.objects.all()
 
-    def test1(self):
-        batch = Batch.objects.first()
-        self.assertEquals(200, 200)
+        queryset_batch1 = queryset.filter(name='batch1')
+        queryset_batch2 = queryset.filter(name='batch2')
 
-    def test2(self):
-        batch = Batch.objects.first()
-        self.assertEquals(200, 200)
+        result_batch1 = ManagerFinances.aggregate_batches(queryset_batch1)
+
+        self.assertEqual(result_batch1['sum_costs_approved'], 900)
+        self.assertEqual(result_batch1['sum_costs_rejected'], 700)
+        self.assertEqual(result_batch1['sum_costs_submitted'], 650)
+        self.assertEqual(result_batch1['sum_costs_dead'], 2250)
+        self.assertEqual(result_batch1['sum_costs_pending'], 2000)
+
+        result_batch2 = ManagerFinances.aggregate_batches(queryset_batch2)
+
+        self.assertEqual(result_batch2['sum_costs_approved'], 1800)
+        self.assertEqual(result_batch2['sum_costs_rejected'], 1400)
+        self.assertEqual(result_batch2['sum_costs_submitted'], 1300)
+        self.assertEqual(result_batch2['sum_costs_dead'], 4500)
+        self.assertEqual(result_batch2['sum_costs_pending'], 4000)
+
+        result = ManagerFinances.aggregate_batches(queryset)
+
+        self.assertEqual(
+            result['sum_costs_approved'],
+            result_batch1['sum_costs_approved'] + result_batch2['sum_costs_approved']
+        )
+        self.assertEqual(
+            result['sum_costs_rejected'],
+            result_batch1['sum_costs_rejected'] + result_batch2['sum_costs_rejected']
+        )
+        self.assertEqual(
+            result['sum_costs_submitted'],
+            result_batch1['sum_costs_submitted'] + result_batch2['sum_costs_submitted']
+        )
+        self.assertEqual(
+            result['sum_costs_dead'],
+            result_batch1['sum_costs_dead'] + result_batch2['sum_costs_dead']
+        )
+        self.assertEqual(
+            result['sum_costs_pending'],
+            result_batch1['sum_costs_pending'] + result_batch2['sum_costs_pending']
+        )

@@ -23,7 +23,7 @@ def mturk_status_to_database_status(status: str) -> Union[assignments.STATUS_EXT
         raise ValueError('Unknown mturk status: '.format(status))
 
 
-def database_status_to_mturk_status(status: assignments.STATUS_EXTERNAL) -> str:
+def database_status_to_mturk_status(status: assignments.STATUS_EXTERNAL = None) -> str:
     if status == assignments.STATUS_EXTERNAL.APPROVED:
         return 'Approved'
     elif status == assignments.STATUS_EXTERNAL.REJECTED:

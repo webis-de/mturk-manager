@@ -1,4 +1,5 @@
-from django.db.models import F, Count, Q, Sum, Max, Min, Case, When, Value, IntegerField, OuterRef, Subquery
+from django.db.models import F, Count, Q, Sum, Max, Min, Case, When, Value, IntegerField, OuterRef, Subquery, \
+    ExpressionWrapper
 from django.db.models.functions import Coalesce
 import json
 from api.enums import assignments
@@ -42,15 +43,25 @@ class ManagerFinances(object):
         return queryset
 
     @classmethod
-    def aggregate_batches(cls, queryset):
+    def aggregate_batches(cls, queryset) -> dict:
         queryset = Manager_Batches.annotate_assignments(queryset)
 
         return queryset.annotate(
-            costs_approved=F('count_assignments_approved') * F('settings_batch__reward'),
-            costs_rejected=F('count_assignments_rejected') * F('settings_batch__reward'),
-            costs_submitted=F('count_assignments_submitted') * F('settings_batch__reward'),
-            costs_dead=F('count_assignments_dead') * F('settings_batch__reward'),
-            costs_pending=F('count_assignments_pending') * F('settings_batch__reward')
+            costs_approved=ExpressionWrapper(
+                F('count_assignments_approved') * F('settings_batch__reward'), output_field=IntegerField()
+            ),
+            costs_rejected=ExpressionWrapper(
+                F('count_assignments_rejected') * F('settings_batch__reward'), output_field=IntegerField()
+            ),
+            costs_submitted=ExpressionWrapper(
+                F('count_assignments_submitted') * F('settings_batch__reward'), output_field=IntegerField()
+            ),
+            costs_dead=ExpressionWrapper(
+                F('count_assignments_dead') * F('settings_batch__reward'), output_field=IntegerField()
+            ),
+            costs_pending=ExpressionWrapper(
+                F('count_assignments_pending') * F('settings_batch__reward'), output_field=IntegerField()
+            ),
         ).aggregate(
             sum_costs_approved=Coalesce(Sum('costs_approved'), 0),
             sum_costs_rejected=Coalesce(Sum('costs_rejected'), 0),
