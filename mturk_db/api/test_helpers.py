@@ -4,15 +4,17 @@ from api.enums import assignments
 
 
 def set_up_test_database():
-    project = Project.objects.create(
-        version=15,
-        name='project',
-        slug='project',
-    )
+    project = set_up_project(name='project')
 
     set_up_batch(name='batch1', project=project)
     set_up_batch(name='batch2', project=project)
 
+def set_up_project(name):
+    return Project.objects.create(
+        version=15,
+        name=name,
+        slug=name,
+    )
 
 def set_up_batch(name, project):
     batch = Batch.objects.create(name=name, use_sandbox=True)

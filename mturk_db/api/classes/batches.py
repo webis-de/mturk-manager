@@ -690,19 +690,6 @@ class Manager_Batches(Interface_Manager_Items):
         return response
 
     @staticmethod
-    def get_set_answer(list_ids_batch):
-        queryset = Assignment.objects.filter(
-            hit__batch__id__in=list_ids_batch
-        ).values_list('answer', flat=True)
-
-        set_answer = set()
-        for index, answer in enumerate(queryset.iterator()):
-            dict_answer = json.loads(Manager_Batches.normalize_answer(answer))
-            set_answer = set_answer.union(set(dict_answer.keys()))
-
-        return set_answer
-
-    @staticmethod
     def normalize_answer(answer):
         dict_answer = json.loads(answer)
         normalize_answer = {}
@@ -716,8 +703,23 @@ class Manager_Batches(Interface_Manager_Items):
 
         return json.dumps(normalize_answer)
 
+
+    @staticmethod
+    def get_set_answer(list_ids_batch):
+        queryset = Assignment.objects.filter(
+            hit__batch__id__in=list_ids_batch
+        ).values_list('answer', flat=True)
+
+        set_answer = set()
+        for index, answer in enumerate(queryset.iterator()):
+            dict_answer = json.loads(Manager_Batches.normalize_answer(answer))
+            set_answer = set_answer.union(set(dict_answer.keys()))
+
+        return set_answer
+
     @staticmethod
     def download_info(database_object_project, request):
+        # TODO: other approach than iterating over assignemnts
         list_ids_batch = request.query_params.getlist('batches[]')
 
         queryset = Batch.objects.filter(

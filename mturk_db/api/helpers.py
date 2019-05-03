@@ -17,16 +17,22 @@ def mturk_status_to_database_status(status: str) -> Union[assignments.STATUS_EXT
         return assignments.STATUS_EXTERNAL.APPROVED
     elif status == 'Rejected':
         return assignments.STATUS_EXTERNAL.REJECTED
-    else:
+    elif status == 'Submitted':
         return None
+    else:
+        raise ValueError('Unknown mturk status: '.format(status))
+
 
 def database_status_to_mturk_status(status: assignments.STATUS_EXTERNAL) -> str:
     if status == assignments.STATUS_EXTERNAL.APPROVED:
         return 'Approved'
     elif status == assignments.STATUS_EXTERNAL.REJECTED:
         return 'Rejected'
-    else:
+    elif status is None:
         return 'Submitted'
+    else:
+        raise ValueError('Unknown database status: '.format(status))
+
 
 def keep_fields(serializer, fields):
     allowed = set(fields)

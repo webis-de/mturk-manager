@@ -26,3 +26,6 @@ class TestsBatches(TestCase):
         self.assertEqual(batch.count_assignments_living_available, 10)
 
         self.assertEqual(batch.count_assignments_pending, 40)
+
+    def test_normalize_answer(self):
+        pass
