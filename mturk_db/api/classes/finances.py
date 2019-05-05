@@ -1,3 +1,4 @@
+from botocore.exceptions import EndpointConnectionError
 from django.db.models import F, Count, Q, Sum, Max, Min, Case, When, Value, IntegerField, OuterRef, Subquery, \
     ExpressionWrapper
 from django.db.models.functions import Coalesce
@@ -71,7 +72,7 @@ class ManagerFinances(object):
         )
 
     @classmethod
-    def aggregate_hits(cls, queryset):
+    def aggregate_hits(cls, queryset) -> dict:
         queryset = Manager_HITs.annotate_assignments(queryset)
 
         return queryset.annotate(
@@ -89,7 +90,7 @@ class ManagerFinances(object):
         )
 
     @classmethod
-    def aggregate_assignments(cls, queryset):
+    def aggregate_assignments(cls, queryset) -> dict:
         return queryset.aggregate(
             sum_costs_approved=Coalesce(Sum(
                 'hit__batch__settings_batch__reward',
@@ -109,8 +110,13 @@ class ManagerFinances(object):
         )
 
     @staticmethod
-    def get_balance(database_object_project, use_sandbox):
+    def get_balance(use_sandbox: bool) -> dict:
         client = Manager_Projects.get_mturk_api(use_sandbox)
+        try:
+            balance = float(client.get_account_balance()['AvailableBalance'])
+        except EndpointConnectionError:
+            balance = None
+
         return {
-            'balance': float(client.get_account_balance()['AvailableBalance'])
+            'balance': balance
         }

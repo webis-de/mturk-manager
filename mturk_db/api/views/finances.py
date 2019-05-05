@@ -31,5 +31,5 @@ class Finances(APIView):
 @permission_classes(PERMISSIONS_INSTANCE_ONLY)
 @add_database_object_project
 def get_balance(request, slug_project, database_object_project, use_sandbox, format=None):
-    balance = ManagerFinances.get_balance(database_object_project=database_object_project, use_sandbox=use_sandbox)
+    balance = ManagerFinances.get_balance(use_sandbox=use_sandbox)
     return Response(balance)
