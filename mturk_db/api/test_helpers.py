@@ -1,9 +1,15 @@
-from api.models import Project, Batch, HIT, Assignment, Settings_Batch
+from api.models import Project, Batch, HIT, Assignment, Settings_Batch, Account_Mturk
 from django.utils import timezone
 from api.enums import assignments
 
 
 def set_up_test_database():
+    Account_Mturk.objects.create(
+        name='dummy',
+        key_access='dummy',
+        key_secret='dummy',
+    )
+
     project = set_up_project(name='project')
 
     set_up_batch(
