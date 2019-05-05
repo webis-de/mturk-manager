@@ -10,10 +10,19 @@ class TestsFinances(TestCase):
         set_up_test_database()
 
     def test_aggregate_batches(self):
-        queryset = Batch.objects.all()
+        queryset_all = Batch.objects.all()
 
-        queryset_batch1 = queryset.filter(name='batch1')
-        queryset_batch2 = queryset.filter(name='batch2')
+        queryset_empty = Batch.objects.filter(name='')
+        queryset_batch1 = queryset_all.filter(name='batch1')
+        queryset_batch2 = queryset_all.filter(name='batch2')
+
+        result_empty = ManagerFinances.aggregate_batches(queryset_empty)
+
+        self.assertEqual(result_empty['sum_costs_approved'], 0)
+        self.assertEqual(result_empty['sum_costs_rejected'], 0)
+        self.assertEqual(result_empty['sum_costs_submitted'], 0)
+        self.assertEqual(result_empty['sum_costs_dead'], 0)
+        self.assertEqual(result_empty['sum_costs_pending'], 0)
 
         result_batch1 = ManagerFinances.aggregate_batches(queryset_batch1)
 
@@ -31,7 +40,7 @@ class TestsFinances(TestCase):
         self.assertEqual(result_batch2['sum_costs_dead'], 4500)
         self.assertEqual(result_batch2['sum_costs_pending'], 4000)
 
-        result = ManagerFinances.aggregate_batches(queryset)
+        result = ManagerFinances.aggregate_batches(queryset_all)
 
         self.assertEqual(
             result['sum_costs_approved'],
