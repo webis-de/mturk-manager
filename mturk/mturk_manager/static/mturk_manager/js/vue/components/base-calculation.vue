@@ -6,7 +6,14 @@
         v-bind:key="index"
         v-bind:class="{ 'font-weight-bold': calculation.bold === true }"
       >
-        <td>{{ calculation.operation }}</td>
+        <td>
+          <template v-if="calculation.operation === '+'">
+            <v-icon>add</v-icon>
+          </template>
+          <template v-else-if="calculation.operation === '-'">
+            <v-icon>remove</v-icon>
+          </template>
+        </td>
         <td class="text-xs-right px-1">
           <base-display-amount
             v-bind:amount="calculation.number"

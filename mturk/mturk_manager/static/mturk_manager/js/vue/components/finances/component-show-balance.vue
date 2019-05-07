@@ -43,15 +43,23 @@ export default {
   },
   computed: {
     result() {
+      let result = this.get_balance()
+      - this.expenses.sum_costs_submitted
+      - this.expenses.sum_costs_pending;
+
+      if (Number.isNaN(result)) {
+        result = undefined;
+      }
+
       return {
-        number: parseInt(this.get_balance(), 10) * 100 - this.expenses.sum_costs_submitted,
+        number: result,
         description: 'Projected Balance',
       };
     },
     calculations() {
       return [
         {
-          number: parseInt(this.get_balance(), 10) * 100,
+          number: this.get_balance(),
           description: 'Current Balance',
           bold: true,
         },
@@ -59,6 +67,11 @@ export default {
           operation: '-',
           number: this.expenses.sum_costs_submitted,
           description: 'Submitted Assignments',
+        },
+        {
+          operation: '-',
+          number: this.expenses.sum_costs_pending,
+          description: 'Open Assignments',
         },
       ];
     },
