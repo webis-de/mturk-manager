@@ -28,16 +28,18 @@
                   <v-list-tile>
                     Created By
                     <v-spacer />
-                    Kristof Komlossy
-                  </v-list-tile>
-
-                  <v-list-tile>
-                    Credits
-                    <v-spacer />
-                    Martin Potthast,&nbsp;<a href="https://webis.de/">
+                    Kristof Komlossy,&nbsp;
+                    <a href="https://webis.de/">
                       Webis
                     </a>
                   </v-list-tile>
+
+<!--                  <v-list-tile>-->
+<!--                    <v-spacer />-->
+<!--                    <a href="https://webis.de/">-->
+<!--                      Webis-->
+<!--                    </a>-->
+<!--                  </v-list-tile>-->
                 </v-list>
               </v-card-text>
             </v-card>
