@@ -27,7 +27,7 @@ Run `./setup.sh` to pull changes from the repository and install missing depende
 3. Visit [localhost:8000](http://localhost:8000)
 
 **Note** You can safely ignore the following message in the terminal: `You have XXX unapplied migration(s)`.  
-You can execute `python manage.py migrate` if the message bothers you.
+You can execute `python3 manage.py migrate` if the message bothers you.
 
 ## Supported Features
 * Create and manage mechanical turk projects
