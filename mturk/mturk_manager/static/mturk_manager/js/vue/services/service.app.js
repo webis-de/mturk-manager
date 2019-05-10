@@ -2,6 +2,7 @@ import { store } from '../store/vuex';
 import { Service_Endpoint } from './service_endpoint';
 import { Service_Projects } from './service_projects';
 import queue from '../queue';
+import { compareVersions } from '../helpers';
 
 class ClassServiceApp {
   async init(force = false) {
@@ -57,26 +58,26 @@ class ClassServiceApp {
       },
     });
 
-    if(response.success === true) {
+    if (response.success === true) {
       const { changelog } = store.state.module_app;
       let changelogNew = response.data;
 
       // get the latest version stored in the browser
-      let versionSeenLatest;
+      let versionStoredLatest;
       if (changelog.length > 0) {
-        versionSeenLatest = changelog[0].tag_name;
+        versionStoredLatest = changelog[0].tag;
       }
-      const indexVersionSeenLatest = response.data.findIndex(release => release.tag_name === versionSeenLatest);
 
       // get only new releases from the response
-      if (indexVersionSeenLatest > -1) {
-        changelogNew = changelogNew.slice(0, indexVersionSeenLatest);
+      if (versionStoredLatest !== undefined) {
+        changelogNew = changelogNew.filter(release => compareVersions(release.tag_name, versionStoredLatest) === 1);
       }
 
       changelogNew = changelogNew.map(release => ({
         id: release.id,
         name: release.name,
         tag: release.tag_name,
+        created: release.published_at,
         body: null,
       }));
 
@@ -111,7 +112,7 @@ class ClassServiceApp {
     }
   }
 
-  async updateCredentials({ url, token, router }) {
+  async updateCredentials({ url, token }) {
     url = url.trim();
 
     if (!url.startsWith('http')) {
@@ -136,7 +137,7 @@ class ClassServiceApp {
 
     const response = await this.init(true);
 
-    if(response.success === true) {
+    if (response.success === true) {
       // send the user to the dashboard if no error occured
       queue.notify('router', { name: 'dashboard' });
     }

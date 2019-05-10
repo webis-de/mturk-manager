@@ -13,7 +13,7 @@
               type="number"
               min="1"
               clearable
-              v-bind:label="`Maximum Budget for this Project (${amount_formatted(amountBudgetProject)})`"
+              v-bind:label="`Maximum Budget for this Project (${amount_formatted(amountBudgetProject, 'unlimited')})`"
               v-bind:error-messages="
                 validation_errors.amountBudgetProject
               "
@@ -26,7 +26,7 @@
           </v-flex>
           <v-flex shrink>
             <div slot="append" class="text-no-wrap">
-              ct, in Dollar: {{ amount_formatted(amountBudgetProject) }}
+              ct, in Dollar: {{ amount_formatted(amountBudgetProject, 'unlimited') }}
             </div>
           </v-flex>
         </v-layout>
@@ -79,19 +79,27 @@ export default {
   mixins: [validations, helpers],
   data() {
     return {
-      amountBudgetProject: null,
+      // amountBudgetProject: null,
       snackbar_updated: false,
     };
   },
   computed: {
     changed() {},
+    amountBudgetProject: {
+      get() {
+        return this.project_current.amount_budget_max;
+      },
+      set(value) {
+        this.project_current.amount_budget_max = value;
+      },
+    },
     ...mapGetters('moduleProjects', {
       project_current: 'get_project_current',
     }),
   },
-  created() {
-    this.amountBudgetProject = this.project_current.amount_budget_max;
-  },
+  // created() {
+  //   this.amountBudgetProject = this.project_current.amount_budget_max;
+  // },
   methods: {
     save() {
       Service_Projects.setAmountBudgetProject({

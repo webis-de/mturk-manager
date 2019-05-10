@@ -53,7 +53,8 @@ class Class_Service_Endpoint {
     }
 
     if (object_response.success === false) {
-      if (object_response.exception.message === 'Network Error') {
+      // only send to connection_error if its an request to the api
+      if (object_response.exception.message === 'Network Error' && url.host === undefined) {
         queue.notify('router', { name: 'connection_error' });
       } else {
         console.warn('Error', object_response.exception);

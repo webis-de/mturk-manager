@@ -18,11 +18,17 @@
 </template>
 
 <script>
+import { compareVersions } from '../../helpers';
+
 export default {
   name: 'ChangelogNotification',
   computed: {
     hasUnseenVersions() {
-      return this.$store.state.module_app.version !== this.$store.state.module_app.versionSeen;
+      if (this.$store.state.module_app.versionSeen === null) {
+        return true;
+      }
+
+      return compareVersions(this.$store.state.module_app.versionSeen, this.$store.state.module_app.version) === -1;
     },
   },
 };

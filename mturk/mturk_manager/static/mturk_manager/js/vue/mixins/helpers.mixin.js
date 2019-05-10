@@ -2,9 +2,9 @@ import Dinero from 'dinero.js';
 
 export default {
   methods: {
-    amount_formatted(value) {
+    amount_formatted(value, messageInvalid = 'invalid') {
       if (Number.isInteger(value) === false) {
-        return 'invalid';
+        return messageInvalid;
       }
       return Dinero({ amount: value }).toFormat('$0,0.00');
     },

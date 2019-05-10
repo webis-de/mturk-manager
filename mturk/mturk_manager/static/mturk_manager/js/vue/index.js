@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import 'material-design-icons-iconfont/dist/material-design-icons.css';
 import VueRouter from 'vue-router';
 import Vuetify from 'vuetify/lib';
 import { Ripple } from 'vuetify/lib/directives';
@@ -12,7 +13,6 @@ import UploadButton from 'vuetify-upload-button';
 import { store } from './store/vuex';
 import App from './App';
 // import 'vuetify/dist/vuetify.min.css';
-import 'material-design-icons-iconfont/dist/material-design-icons.css';
 
 import { router } from './router';
 
@@ -24,7 +24,7 @@ Vue.use(VueAxios, axios);
 Vue.use(Vuex);
 Vue.use(VueCookies);
 
-new Vue({
+export default new Vue({
   router,
   store,
   el: '#app',

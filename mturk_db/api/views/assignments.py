@@ -117,7 +117,20 @@ def assignments_for_annotation(request, slug_project, database_object_project, u
 #     # return Response(True)
 #     return Response(dictionary_data)
 
-# class Assignment(APIView):
+
+class Assignment(APIView):
+    permission_classes = PERMISSIONS_INSTANCE_ONLY
+
+    @add_database_object_project
+    def put(self, request, slug_project, database_object_project, use_sandbox, id_assignment: int, format=None):
+        assignment = Manager_Assignments.get(id_assignment)
+
+        serializer = Serializer_Assignment(assignment, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 #     def get_object(self, id_assignment):
 #         try:
 #             return Assignment.objects.get(id=id_assignment)

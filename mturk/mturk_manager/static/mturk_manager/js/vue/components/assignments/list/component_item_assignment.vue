@@ -6,74 +6,110 @@
     class="text-no-wrap"
   >
     <td v-bind:style="stylesCell">
-      <v-checkbox v-model="is_selected" primary hide-details></v-checkbox>
+      <v-checkbox
+        v-model="is_selected"
+        primary
+        hide-details
+      />
     </td>
-    <td
-      v-if="set_columns_selected.has('id_assignment')"
+
+    <base-table-cell
+      v-slot="{ item }"
+      name="id_assignment"
       class="text-xs-left"
-      v-bind:style="stylesCell"
+      v-bind:item="assignment"
+      v-bind:columns-selected="columnsSelected"
+      v-bind:is-condensed="isCondensed"
     >
-      {{ assignment.id_assignment }}
-    </td>
-    <td
-      v-if="set_columns_selected.has('datetime_creation')"
+      {{ item.id_assignment }}
+    </base-table-cell>
+
+    <base-table-cell
+      v-slot="{ item }"
+      name="datetime_creation"
       class="text-xs-center"
-      v-bind:style="stylesCell"
-    >
-      <base-display-datetime
-        v-bind:datetime="assignment.datetime_creation"
-      ></base-display-datetime>
-    </td>
-    <td
-      v-if="set_columns_selected.has('datetime_accept')"
-      class="text-xs-center"
-      v-bind:style="stylesCell"
+      v-bind:item="assignment"
+      v-bind:columns-selected="columnsSelected"
+      v-bind:is-condensed="isCondensed"
     >
       <base-display-datetime
-        v-bind:datetime="assignment.datetime_accept"
-      ></base-display-datetime>
-    </td>
-    <td
-      v-if="set_columns_selected.has('datetime_submit')"
+        v-bind:datetime="item.datetime_creation"
+      />
+    </base-table-cell>
+
+    <base-table-cell
+      v-slot="{ item }"
+      name="datetime_accept"
       class="text-xs-center"
-      v-bind:style="stylesCell"
+      v-bind:item="assignment"
+      v-bind:columns-selected="columnsSelected"
+      v-bind:is-condensed="isCondensed"
     >
       <base-display-datetime
-        v-bind:datetime="assignment.datetime_submit"
-      ></base-display-datetime>
-    </td>
-    <td
-      v-if="set_columns_selected.has('duration')"
+        v-bind:datetime="item.datetime_accept"
+      />
+    </base-table-cell>
+
+    <base-table-cell
+      v-slot="{ item }"
+      name="datetime_submit"
       class="text-xs-center"
-      v-bind:style="stylesCell"
+      v-bind:item="assignment"
+      v-bind:columns-selected="columnsSelected"
+      v-bind:is-condensed="isCondensed"
+    >
+      <base-display-datetime
+        v-bind:datetime="item.datetime_submit"
+      />
+    </base-table-cell>
+
+    <base-table-cell
+      v-slot="{ item }"
+      name="duration"
+      class="text-xs-center"
+      v-bind:item="assignment"
+      v-bind:columns-selected="columnsSelected"
+      v-bind:is-condensed="isCondensed"
     >
       <base-display-duration
-        v-bind:start="assignment.datetime_accept"
-        v-bind:end="assignment.datetime_submit"
+        v-bind:start="item.datetime_accept"
+        v-bind:end="item.datetime_submit"
       ></base-display-duration>
-    </td>
-    <td
-      v-if="set_columns_selected.has('worker')"
+    </base-table-cell>
+
+    <base-table-cell
+      v-slot="{ item }"
+      name="worker"
       class="text-xs-center"
-      v-bind:style="stylesCell"
+      v-bind:item="assignment"
+      v-bind:columns-selected="columnsSelected"
+      v-bind:is-condensed="isCondensed"
     >
-      {{ assignment.worker.id_worker }}
-    </td>
-    <td
-      v-if="set_columns_selected.has('status')"
+      {{ item.worker.id_worker }}
+    </base-table-cell>
+
+    <base-table-cell
+      v-slot="{ item }"
+      name="status"
       class="text-xs-center"
-      v-bind:style="stylesCell"
+      v-bind:item="assignment"
+      v-bind:columns-selected="columnsSelected"
+      v-bind:is-condensed="isCondensed"
     >
       <component-status-assignment
-        v-bind:assignment="assignment"
+        v-bind:assignment="item"
       ></component-status-assignment>
-    </td>
-    <td
-      v-if="set_columns_selected.has('hit')"
+    </base-table-cell>
+
+    <base-table-cell
+      v-slot="{ item }"
+      name="status"
       class="text-xs-right"
-      v-bind:style="stylesCell"
+      v-bind:item="assignment"
+      v-bind:columns-selected="columnsSelected"
+      v-bind:is-condensed="isCondensed"
     >
-      {{ assignment.hit.id_hit }}
+      {{ item.hit.id_hit }}
       <v-btn
         slot="activator"
         class="my-0"
@@ -83,34 +119,27 @@
           name: 'hit',
           params: {
             slug_project: $route.params.slug_project,
-            id: assignment.hit.id
+            id: item.hit.id
           }
         }"
       >
         <v-icon>info</v-icon>
       </v-btn>
-    </td>
-    <td
+    </base-table-cell>
+
+    <base-table-cell
+      v-slot="{ item }"
+      name="actions"
       class="text-xs-center"
-      v-if="show_links === false"
-      v-bind:style="stylesCell"
+      v-bind:item="assignment"
+      v-bind:columns-selected="columnsSelected"
+      v-bind:is-condensed="isCondensed"
     >
-      <v-btn
-        slot="activator"
-        class="my-0"
-        icon
-        small
-        v-bind:to="{
-          name: 'assignment',
-          params: {
-            slug_project: $route.params.slug_project,
-            id_assignment: assignment.id
-          }
-        }"
-      >
-        <v-icon>info</v-icon>
-      </v-btn>
-    </td>
+      <edit-assignment
+        v-bind:assignment="item"
+      />
+    </base-table-cell>
+
     <!-- <td class="text-xs-center">
             {{ assignment.hits.length }}
         </td>
@@ -127,10 +156,14 @@ import _ from 'lodash';
 import ComponentStatusAssignment from './component-status-assignment';
 import BaseDisplayDatetime from '../../common/base-display-datetime';
 import BaseDisplayDuration from '../../common/base-display-duration';
+import BaseTableCell from '../../base-table-cell';
+import EditAssignment from '../edit-assignment';
 
 export default {
   name: 'ComponentItemAssignment',
   components: {
+    EditAssignment,
+    BaseTableCell,
     BaseDisplayDuration,
     BaseDisplayDatetime,
     ComponentStatusAssignment,
@@ -179,6 +212,12 @@ export default {
           add: is_selected,
         });
       },
+    },
+    columnsSelected() {
+      return this.array_columns_selected.reduce((accumulator, column) => {
+        accumulator[column] = column;
+        return accumulator;
+      }, {});
     },
     // assignment() {
     //   return this.props.item;

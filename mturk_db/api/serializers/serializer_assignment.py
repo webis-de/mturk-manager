@@ -1,4 +1,6 @@
 from rest_framework import serializers
+
+from api.classes import Manager_Assignments
 from api.models import Assignment
 
 # from mturk_manager.classes import Manager_HITs
@@ -78,6 +80,18 @@ class Serializer_Assignment(serializers.ModelSerializer):
         data['answer'] = json.loads(data['answer'])
 
         return data
+
+    def update(self, instance, validated_data):
+        print('validated_data')
+        print(validated_data)
+        print('validated_data')
+
+        instance = Manager_Assignments.update(
+            instance=instance,
+            data=validated_data,
+        )
+
+        return instance
 
     # def update(self, instance, validated_data):
     #     print('validated_data')

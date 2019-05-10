@@ -6,7 +6,7 @@ import xmltodict
 
 from botocore.exceptions import ClientError
 from django.conf import settings as settings_django
-from django.db.models import F, Count, Q, QuerySet, Case, When, BooleanField, IntegerField, ExpressionWrapper, Subquery, \
+from django.db.models import F, Count, Q, QuerySet, Case, When, BooleanField, IntegerField, Subquery, \
     OuterRef, Sum
 from django.db.models.functions import Coalesce
 from django.http import HttpResponse
@@ -118,10 +118,19 @@ class Manager_Batches(Interface_Manager_Items):
                 filter=Q(hits__assignments__status_external__isnull=True)
             ), 0),
 
-            count_assignments_dead=Coalesce(Sum(
-                'hits__count_assignments_dead',
-                distinct=True
-            ), 0),
+            count_assignments_dead=Subquery(
+                HIT.objects.filter(batch=OuterRef('id')).values('batch').annotate(
+                    count_assignments_dead=Coalesce(Sum(
+                        'count_assignments_dead',
+                        distinct=True,
+                    ), 0)
+                ).values('count_assignments_dead')
+            ),
+            # count_assignments_dead=Func(F('hits__count_assignments_dead'), function='SUM'),
+            # count_assignments_dead=Coalesce(Sum(
+            #     'hits__count_assignments_dead',
+            #     distinct=True
+            # ), 0),
             count_assignments_living_total=Coalesce(Subquery(
                 bar,
                 output_field=IntegerField()
@@ -681,19 +690,6 @@ class Manager_Batches(Interface_Manager_Items):
         return response
 
     @staticmethod
-    def get_set_answer(list_ids_batch):
-        queryset = Assignment.objects.filter(
-            hit__batch__id__in=list_ids_batch
-        ).values_list('answer', flat=True)
-
-        set_answer = set()
-        for index, answer in enumerate(queryset.iterator()):
-            dict_answer = json.loads(Manager_Batches.normalize_answer(answer))
-            set_answer = set_answer.union(set(dict_answer.keys()))
-
-        return set_answer
-
-    @staticmethod
     def normalize_answer(answer):
         dict_answer = json.loads(answer)
         normalize_answer = {}
@@ -707,8 +703,23 @@ class Manager_Batches(Interface_Manager_Items):
 
         return json.dumps(normalize_answer)
 
+
+    @staticmethod
+    def get_set_answer(list_ids_batch):
+        queryset = Assignment.objects.filter(
+            hit__batch__id__in=list_ids_batch
+        ).values_list('answer', flat=True)
+
+        set_answer = set()
+        for index, answer in enumerate(queryset.iterator()):
+            dict_answer = json.loads(Manager_Batches.normalize_answer(answer))
+            set_answer = set_answer.union(set(dict_answer.keys()))
+
+        return set_answer
+
     @staticmethod
     def download_info(database_object_project, request):
+        # TODO: other approach than iterating over assignemnts
         list_ids_batch = request.query_params.getlist('batches[]')
 
         queryset = Batch.objects.filter(

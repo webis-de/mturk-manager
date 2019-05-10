@@ -17,6 +17,11 @@ export default {
       required: true,
       type: Date | undefined,
     },
+    onlyDate: {
+      required: false,
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     datetime_formatted() {
@@ -24,7 +29,16 @@ export default {
         return undefined;
       }
 
-      return format(this.datetime, 'MMM D, YYYY H:mm A');
+      return format(this.datetime, this.templateFormat);
+    },
+    templateFormat() {
+      let templateFormat = 'MMM D, YYYY H:mm A';
+
+      if (this.onlyDate === true) {
+        templateFormat = 'MMM D, YYYY';
+      }
+
+      return templateFormat;
     },
   },
 };

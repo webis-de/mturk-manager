@@ -11,32 +11,27 @@ class Class_Service_Projects {
   }
 
   async load_projects() {
-    const use_sandbox = store.state.module_app.use_sandbox;
+    const response = await Service_Endpoint.make_request({
+      method: 'get',
+      url: {
+        path: store.getters.get_url('url_api_projects', 'moduleProjects'),
+      },
+      params: {
+        fields: [
+          'name',
+          'slug',
+          'datetime_visited',
+        ],
+      },
+    });
 
-    if (store.getters['moduleProjects/get_object_projects'] == null) {
-      const response = await Service_Endpoint.make_request({
-        method: 'get',
-        url: {
-          path: store.getters.get_url('url_api_projects', 'moduleProjects'),
-        },
-        params: {
-          fields: [
-            'name',
-            'slug',
-            'datetime_visited',
-          ],
-        },
-      });
-
-      if (response.success === true) {
-        // store.commit('moduleProjects/set_response_data_projects', response.data);
-        store.commit('moduleProjects/set_projects', response.data);
-        return true;
-      }
-      // console.log(router)
-      // router.push({name: 'error'});
-      return false;
+    if (response.success === true) {
+      // store.commit('moduleProjects/set_response_data_projects', response.data);
+      store.commit('moduleProjects/set_projects', response.data);
+      return true;
     }
+
+    return false;
   }
 
   async create_project(name) {
@@ -231,21 +226,46 @@ class Class_Service_Projects {
       },
     });
 
-    project.sum_costs_max_sandbox = response.data.sum_costs_max_sandbox;
-    project.max_costs_max_sandbox = response.data.max_costs_max_sandbox;
-    project.min_costs_max_sandbox = response.data.min_costs_max_sandbox;
+    store.dispatch('moduleProjects/updateState', {
+      objectStateCurrent: project,
+      objectStateNew: response.data,
+      fields: [
+        'amount_budget_max',
+        'count_assignments_max_per_worker',
 
-    project.sum_costs_so_far_sandbox = response.data.sum_costs_so_far_sandbox;
-    project.max_costs_so_far_sandbox = response.data.max_costs_so_far_sandbox;
-    project.min_costs_so_far_sandbox = response.data.min_costs_so_far_sandbox;
+        'sum_costs_max_sandbox',
+        'max_costs_max_sandbox',
+        'min_costs_max_sandbox',
 
-    project.sum_costs_max = response.data.sum_costs_max;
-    project.max_costs_max = response.data.max_costs_max;
-    project.min_costs_max = response.data.min_costs_max;
+        'sum_costs_so_far_sandbox',
+        'max_costs_so_far_sandbox',
+        'min_costs_so_far_sandbox',
 
-    project.sum_costs_so_far = response.data.sum_costs_so_far;
-    project.max_costs_so_far = response.data.max_costs_so_far;
-    project.min_costs_so_far = response.data.min_costs_so_far;
+        'sum_costs_max',
+        'max_costs_max',
+        'min_costs_max',
+
+        'sum_costs_so_far',
+        'max_costs_so_far',
+        'min_costs_so_far',
+      ],
+    });
+
+    // project.sum_costs_max_sandbox = response.data.sum_costs_max_sandbox;
+    // project.max_costs_max_sandbox = response.data.max_costs_max_sandbox;
+    // project.min_costs_max_sandbox = response.data.min_costs_max_sandbox;
+    //
+    // project.sum_costs_so_far_sandbox = response.data.sum_costs_so_far_sandbox;
+    // project.max_costs_so_far_sandbox = response.data.max_costs_so_far_sandbox;
+    // project.min_costs_so_far_sandbox = response.data.min_costs_so_far_sandbox;
+    //
+    // project.sum_costs_max = response.data.sum_costs_max;
+    // project.max_costs_max = response.data.max_costs_max;
+    // project.min_costs_max = response.data.min_costs_max;
+    //
+    // project.sum_costs_so_far = response.data.sum_costs_so_far;
+    // project.max_costs_so_far = response.data.max_costs_so_far;
+    // project.min_costs_so_far = response.data.min_costs_so_far;
 
     // console.log('response', response.data);
     // store.commit('moduleProjects/set_ping', {

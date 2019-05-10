@@ -1,10 +1,17 @@
 <template>
   <div class="subheading">
     <!--Current balance:-->
-    <base-display-amount
+    <base-calculation
       v-if="get_balance() !== null"
-      v-bind:amount="parseInt(get_balance() * 100)"
-    />
+      v-bind:calculations="calculations"
+      v-bind:result="result"
+    >
+      <v-progress-circular
+        indeterminate
+        size="20"
+        width="2"
+      />
+    </base-calculation>
     <v-progress-circular
       v-else
       indeterminate
@@ -16,12 +23,18 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import BaseDisplayAmount from '../base-display-amount';
+import BaseCalculation from '../base-calculation';
 
 export default {
   name: 'ComponentShowBalance',
   components: {
-    BaseDisplayAmount,
+    BaseCalculation,
+  },
+  props: {
+    expenses: {
+      required: true,
+      type: Object,
+    },
   },
   data() {
     return {
@@ -29,6 +42,39 @@ export default {
     };
   },
   computed: {
+    result() {
+      let result = this.get_balance()
+      - this.expenses.sum_costs_submitted
+      - this.expenses.sum_costs_pending;
+
+      if (Number.isNaN(result)) {
+        result = undefined;
+      }
+
+      return {
+        number: result,
+        description: 'Projected Balance',
+      };
+    },
+    calculations() {
+      return [
+        {
+          number: this.get_balance(),
+          description: 'Current Balance',
+          bold: true,
+        },
+        {
+          operation: '-',
+          number: this.expenses.sum_costs_submitted,
+          description: 'Submitted Assignments',
+        },
+        {
+          operation: '-',
+          number: this.expenses.sum_costs_pending,
+          description: 'Open Assignments',
+        },
+      ];
+    },
     show_spinner() {
       return this.updating || this.get_balance === undefined;
     },

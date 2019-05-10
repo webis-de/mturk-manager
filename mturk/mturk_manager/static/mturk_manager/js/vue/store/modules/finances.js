@@ -27,10 +27,10 @@ export const module_finances = _.merge({}, baseModule, {
   },
   mutations: {
     set_balance(state, balance_new) {
-      state.balance = balance_new;
+      state.balance = parseInt(parseFloat(balance_new) * 100, 10);
     },
     set_balance_sandbox(state, balance_new) {
-      state.balance_sandbox = balance_new;
+      state.balance_sandbox = parseInt(parseFloat(balance_new) * 100, 10);;
     },
     set_urls(state, config) {
       state.url_api_projects_balance = config.url_api_projects_balance;

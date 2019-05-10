@@ -18,7 +18,7 @@
               indeterminate
               size="20"
               width="2"
-            ></v-progress-circular>
+            />
           </base-calculation>
         </v-card-text>
       </v-card>
@@ -60,16 +60,16 @@ export default {
           operation: '+',
           number: this.expenses.sum_costs_rejected,
           description: 'Rejected',
-          detail: 'The costs already paid',
+          detail: 'The costs you would have paid approving the rejected assignments',
         },
       ];
 
-      if(this.typeItem !== 'assignments') {
+      if (this.typeItem !== 'assignments') {
         result.push({
           operation: '+',
           number: this.expenses.sum_costs_dead,
           description: 'Expired',
-          detail: 'The costs if all currently submitted assignments would be approved',
+          detail: 'The costs you would have paid if all expired assignments would\'ve been approved',
         });
       }
 
@@ -77,15 +77,15 @@ export default {
         operation: '+',
         number: this.expenses.sum_costs_submitted,
         description: 'Submitted',
-        detail: 'The costs if all currently submitted assignments would be approved',
+        detail: 'The costs you would pay if all currently submitted assignments would be approved',
       });
 
-      if(this.typeItem !== 'assignments') {
+      if (this.typeItem !== 'assignments') {
         result.push({
           operation: '+',
           number: this.expenses.sum_costs_pending,
-          description: 'Pending',
-          detail: 'The costs of the remaining assignments',
+          description: 'Open',
+          detail: 'The costs you would pay if all open assignments would be processed by workers and approved by you',
         });
       }
 
@@ -96,12 +96,12 @@ export default {
                        + this.expenses.sum_costs_rejected
                        + this.expenses.sum_costs_submitted;
 
-      if(this.typeItem !== 'assignments') {
+      if (this.typeItem !== 'assignments') {
         costsTotal += this.expenses.sum_costs_pending
                        + this.expenses.sum_costs_dead;
       }
 
-      if(Number.isNaN(costsTotal) === true) {
+      if (Number.isNaN(costsTotal) === true) {
         return undefined;
       }
 

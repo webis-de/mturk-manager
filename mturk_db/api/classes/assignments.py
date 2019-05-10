@@ -1,13 +1,15 @@
 # from api.classes.projects import Manager_Projects
 import json
 
-from django.db.models import F, ExpressionWrapper, DurationField, QuerySet
+from django.db.models import F, ExpressionWrapper, DurationField, QuerySet, Model
 
 from api.classes import Interface_Manager_Items
 from api.classes.projects import Manager_Projects
 from api.enums import assignments
+from api.helpers import database_status_to_mturk_status
 from api.models import Assignment, Project
 from rest_framework.request import Request
+from django.utils import timezone
 
 
 # # from viewer.models import m_Tag
@@ -47,6 +49,16 @@ class Manager_Assignments(Interface_Manager_Items):
             )
 
         return queryset
+
+    @staticmethod
+    def get(id_item: int) -> Assignment:
+        queryset = Assignment.objects.filter(
+            id=id_item
+        )
+
+        queryset = Manager_Assignments.annotate(queryset)
+
+        return queryset.get()
 
     @staticmethod
     def filter(queryset: QuerySet, request: Request) -> QuerySet:
@@ -113,8 +125,53 @@ class Manager_Assignments(Interface_Manager_Items):
     @staticmethod
     def annotate(queryset: QuerySet) -> QuerySet:
         return queryset.annotate(
-            duration=ExpressionWrapper(F('datetime_submit') - F('datetime_accept'), output_field=DurationField())
+            duration=ExpressionWrapper(F('datetime_submit') - F('datetime_accept'), output_field=DurationField()),
         )
+
+    @staticmethod
+    def update(instance: Assignment, data: dict) -> Assignment:
+        print(instance)
+        print(data)
+
+        client = Manager_Projects.get_mturk_api(instance.hit.batch.use_sandbox)
+
+        success = True
+
+        if 'status_external' in data:
+            status_external = data.get('status_external')
+            # check if the status changed
+            if status_external != instance.status_external:
+                now = timezone.now()
+                # 37ZHEEHM6WMQFCND026CO2X839Q37D
+
+                days = (now - instance.datetime_submit).days
+
+                if days < 30:
+                    if status_external == assignments.STATUS_EXTERNAL.APPROVED:
+                        response = client.approve_assignment(
+                            AssignmentId=instance.id_assignment,
+                            OverrideRejection=True,
+                        )
+                    else:
+                        response = client.reject_assignment(
+                            AssignmentId=instance.id_assignment,
+                        )
+
+                    try:
+                        if response['ResponseMetadata']['HTTPStatusCode'] == 200:
+                            instance.status_external = status_external
+                    except KeyError:
+                        success = False
+                else:
+                    success = False
+
+        if success == True:
+            if 'status_internal' in data:
+                instance.status_internal = data.get('status_internal')
+
+        instance.save()
+
+        return instance
 
     @staticmethod
     def update_stati_assignments(database_object_project, data):

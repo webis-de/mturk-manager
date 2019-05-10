@@ -1,5 +1,7 @@
 import { store } from '../store/vuex';
 import { Service_Endpoint } from './service_endpoint';
+import { getChanges } from '../helpers';
+import Assignment from '../classes/assignment';
 
 class Class_Service_Assignments {
   async set_assignments({ object_hits, data_batches, use_sandbox }) {
@@ -56,6 +58,35 @@ class Class_Service_Assignments {
     });
 
     return response.data.items_total;
+  }
+
+  async edit({ assignmentNew, assignmentCurrent }) {
+    const dataChanged = getChanges(assignmentNew, assignmentCurrent);
+
+    if (Object.keys(dataChanged).length === 0) return;
+
+    const project = store.getters['moduleProjects/get_project_current'];
+
+    const response = await Service_Endpoint.make_request({
+      method: 'put',
+      url: {
+        path: store.getters.get_url(
+          'url_api_projects_assignments',
+          'moduleAssignments',
+        ),
+        project,
+        value: assignmentCurrent.id,
+      },
+      data: dataChanged,
+    });
+
+    store.commit('moduleAssignments/update', {
+      assignment: new Assignment(response.data),
+    });
+    // store.commit('moduleTemplates/update', {
+    //   data: response.data,
+    //   typeTemplate,
+    // });
   }
 }
 

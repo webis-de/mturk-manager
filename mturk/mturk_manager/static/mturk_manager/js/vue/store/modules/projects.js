@@ -7,10 +7,12 @@ import Template_Worker from '../../classes/template_worker';
 import Template_Assignment from '../../classes/template_assignment';
 import Template_HIT from '../../classes/template_hit';
 import Template_Global from '../../classes/template_global';
+import baseModule from './base.module';
 
-export const moduleProjects = {
+export const moduleProjects = _.merge({}, baseModule, {
   namespaced: true,
   state: {
+    projectCurrent: null,
     object_projects: null,
     slug_project_current: null,
 
@@ -49,6 +51,15 @@ export const moduleProjects = {
     },
     set_slug_project_current(state, slug_project_current) {
       state.slug_project_current = slug_project_current;
+
+      // if (
+      //   state.slug_project_current === null
+      //   || state.slug_project_current === undefined
+      //   || state.object_projects === null
+      // ) {
+      //
+      // }
+      // state.projectCurrent = ;
     },
     set_urls(state, config) {
       state.url_api_projects = config.url_api_projects;
@@ -275,9 +286,8 @@ export const moduleProjects = {
   },
   actions: {
     reset_projects({
-      state, commit, getters, rootGetters, dispatch,
+      commit,
     }) {
-      // commit('set_projects', state.response_data_projects);
       commit('moduleBatches/reset', null, { root: true });
       commit('moduleHITs/reset', null, { root: true });
       commit('moduleAssignments/reset', null, { root: true });
@@ -292,4 +302,4 @@ export const moduleProjects = {
       commit('moduleWorkers/clear_sandbox', null, { root: true });
     },
   },
-};
+});

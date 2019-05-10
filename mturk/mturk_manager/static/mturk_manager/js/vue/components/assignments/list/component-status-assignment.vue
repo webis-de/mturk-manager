@@ -18,12 +18,12 @@ export default {
         if (this.status_internal === null) {
           return '<span class="success--text">Approved</span>';
         }
-        return '<span class="success--text">Approved (i)</span>';
+        return '<span class="error--text">Rejected Internally</span>';
       } if (this.status_external === STATUS_EXTERNAL.REJECTED) {
         if (this.status_internal === null) {
           return '<span class="error--text">Rejected</span>';
         }
-        return '<span class="error--text">Rejected (i)</span>';
+        return '<span class="success--text">Approved Internally</span>';
       } if (this.status_external === null) {
         return '<span >Submitted</span>';
       }
