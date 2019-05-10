@@ -86,6 +86,8 @@
 
             style="margin-left: -13px"
             v-bind:settings-batch="settings_batch_current"
+
+            v-on:updated_costs_with_fee="$emit('updated_costs_with_fee', $event)"
           />
           <template
             v-else
