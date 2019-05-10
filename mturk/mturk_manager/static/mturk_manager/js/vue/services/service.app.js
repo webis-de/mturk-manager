@@ -70,7 +70,7 @@ class ClassServiceApp {
 
       // get only new releases from the response
       if (versionStoredLatest !== undefined) {
-        changelogNew = changelogNew.filter(release => compareVersions(release.tag, versionStoredLatest) === 1);
+        changelogNew = changelogNew.filter(release => compareVersions(release.tag_name, versionStoredLatest) === 1);
       }
 
       changelogNew = changelogNew.map(release => ({
