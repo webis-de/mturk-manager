@@ -4,7 +4,7 @@
     <v-dialog
       v-model="dialog"
       max-width="500px"
-      v-if="project_current.count_assignments_max_per_worker != undefined"
+      v-if="project_current.count_assignments_max_per_worker !== null"
     >
       <span
         slot="activator"

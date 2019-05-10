@@ -1,6 +1,6 @@
-import {setState} from '../../helpers';
 import _ from 'lodash';
-import localforage from "localforage";
+import localforage from 'localforage';
+import Vue from 'vue';
 
 export default {
   namespaced: true,
@@ -12,13 +12,18 @@ export default {
     setState(state, { objectState, nameState }) {
       state[nameState] = _.cloneDeep(objectState);
     },
+    updateState(state, { objectStateCurrent, objectStateNew, fields }) {
+      _.forEach(fields, (nameField) => {
+        Vue.set(objectStateCurrent, nameField, _.cloneDeep(objectStateNew[nameField]));
+      });
+    },
   },
   actions: {
     async loadState({ commit }, { nameState, nameLocalStorage, objectStateDefault = null }) {
       const objectState = await localforage.getItem(nameLocalStorage);
 
-      if(objectState === null) {
-        if(objectStateDefault !== null) {
+      if (objectState === null) {
+        if (objectStateDefault !== null) {
           commit('setState', {
             objectState: objectStateDefault,
             nameState,
@@ -40,8 +45,19 @@ export default {
         nameState,
       });
 
-      if(nameLocalStorage !== undefined) {
+      if (nameLocalStorage !== undefined) {
         await localforage.setItem(nameLocalStorage, objectState);
+      }
+    },
+    async updateState({ commit }, { objectStateCurrent, objectStateNew, fields, nameLocalStorage }) {
+      commit('updateState', {
+        objectStateCurrent,
+        objectStateNew,
+        fields,
+      });
+
+      if (nameLocalStorage !== undefined) {
+        await localforage.setItem(nameLocalStorage, objectStateCurrent);
       }
     },
   },
