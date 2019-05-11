@@ -142,7 +142,6 @@ class Manager_Assignments(Interface_Manager_Items):
             # check if the status changed
             if status_external != instance.status_external:
                 now = timezone.now()
-                # 37ZHEEHM6WMQFCND026CO2X839Q37D
 
                 days = (now - instance.datetime_submit).days
 
@@ -155,6 +154,7 @@ class Manager_Assignments(Interface_Manager_Items):
                     else:
                         response = client.reject_assignment(
                             AssignmentId=instance.id_assignment,
+                            RequesterFeedback='Your results did not match our checkinstances'
                         )
 
                     try:
