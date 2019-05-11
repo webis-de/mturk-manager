@@ -94,17 +94,17 @@ class ManagerFinances(object):
         return queryset.aggregate(
             sum_costs_approved=Coalesce(Sum(
                 'hit__batch__settings_batch__reward',
-                distinct=True,
+                # distinct=True,
                 filter=Q(status_external=assignments.STATUS_EXTERNAL.APPROVED)
             ), 0),
             sum_costs_rejected=Coalesce(Sum(
                 'hit__batch__settings_batch__reward',
-                distinct=True,
+                # distinct=True,
                 filter=Q(status_external=assignments.STATUS_EXTERNAL.REJECTED)
             ), 0),
             sum_costs_submitted=Coalesce(Sum(
                 'hit__batch__settings_batch__reward',
-                distinct=True,
+                # distinct=True,
                 filter=Q(status_external__isnull=True)
             ), 0)
         )

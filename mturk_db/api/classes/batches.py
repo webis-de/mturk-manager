@@ -91,7 +91,7 @@ class Manager_Batches(Interface_Manager_Items):
         bar = HIT.objects.filter(batch=OuterRef('id'), datetime_expiration__gt=now).values('batch').annotate(
             count_assignments=Coalesce(Sum(
                 'batch__settings_batch__count_assignments',
-                distinct=True,
+                # distinct=True,
             ), 0)
         ).values('count_assignments')
 
@@ -122,7 +122,7 @@ class Manager_Batches(Interface_Manager_Items):
                 HIT.objects.filter(batch=OuterRef('id')).values('batch').annotate(
                     count_assignments_dead=Coalesce(Sum(
                         'count_assignments_dead',
-                        distinct=True,
+                        # distinct=True,
                     ), 0)
                 ).values('count_assignments_dead')
             ),
