@@ -72,7 +72,7 @@ urlpatterns = format_suffix_patterns([
     path('projects/<str:slug_project>/ping', views.ping, name='ping'),
 
 
-    path('api/messages_reject', views.Messages_Reject.as_view(), name='messages_reject'),
+    path('api/messages_reject', views.MessagesReject.as_view(), name='messages_reject'),
     path('api/keywords', views.Keywords.as_view(), name='keywords'),
 
     path('projects/<str:slug_project>/workers/status_block/<str:id_worker>', views.status_block_for_worker),

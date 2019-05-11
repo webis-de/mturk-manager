@@ -2,7 +2,7 @@ from django.db.models import F, Value, Count, Q, Sum, IntegerField, ExpressionWr
 from django.db.models.functions import Coalesce
 
 from api.enums import assignments
-from api.models import Account_Mturk, Project, Message_Reject, Batch
+from api.models import Account_Mturk, Project, MessageReject, Batch
 from mturk_db.settings import URL_MTURK_SANDBOX
 import boto3
 from pytz import timezone
@@ -179,9 +179,12 @@ class Manager_Projects(object):
     def update(instance, validated_data):
         for key, value in validated_data.items():
             if key == 'message_reject':
-                message_reject, was_created = Message_Reject.objects.get_or_create(message_lowercase=value.lower(), defaults={
-                    'message': value
-                })
+                message_reject, was_created = MessageReject.objects.get_or_create(
+                    message_lowercase=value.lower(),
+                    defaults={
+                        'message': value
+                    }
+                )
 
                 if not was_created:
                     message_reject.message = value

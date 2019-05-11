@@ -11,7 +11,8 @@ from django.http import Http404
 PERMISSIONS_INSTANCE_ONLY = (AllowOptionsAuthentication, IsInstance,)
 PERMISSIONS_WORKER_ONLY = (AllowOptionsAuthentication, IsWorker,)
 
-class Messages_Reject(APIView):
+
+class MessagesReject(APIView):
     permission_classes = PERMISSIONS_INSTANCE_ONLY
 
     def get(self, request, format=None):

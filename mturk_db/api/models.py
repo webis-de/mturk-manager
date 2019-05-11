@@ -31,7 +31,7 @@ class Project(models.Model):
     # fk_template_assignment_main = models.OneToOneField('m_Template_Assignment', on_delete=models.SET_NULL, null=True, related_name='project')
     # fk_template_hit_main = models.OneToOneField('m_Template_Hit', on_delete=models.SET_NULL, null=True, related_name='project')
     # fk_template_global_main = models.OneToOneField('m_Template_Global', on_delete=models.SET_NULL, null=True, related_name='project')
-    message_reject_default = models.ForeignKey('Message_Reject', on_delete=models.SET_NULL, null=True, related_name='project')
+    message_reject_default = models.ForeignKey('MessageReject', on_delete=models.SET_NULL, null=True, related_name='project')
     # fk_message_block_default = models.OneToOneField('m_Message_Block', on_delete=models.SET_NULL, null=True, related_name='project')
     amount_budget_max = models.IntegerField(null=True)
 
@@ -147,16 +147,51 @@ class Assignment(models.Model):
     answer = models.TextField()
 
 
-
-class Message_Reject(models.Model):
-    # project = models.ForeignKey('Project', on_delete=models.CASCADE, related_name='messages_reject')
+class Message(models.Model):
     message = models.CharField(max_length=1024)
     message_lowercase = models.CharField(max_length=1024, unique=True)
+
+    class Meta:
+        abstract = True
 
     def __str__(self):
         return self.message
 
 
+class MessageReject(Message):
+    pass
+
+
+class MessageApprove(Message):
+    pass
+
+
+class Reason(Message):
+    pass
+
+
+class MessageRejectToProject(models.Model):
+    class Meta:
+        unique_together = ("project", "message_reject")
+
+    message_reject = models.ForeignKey('MessageReject', on_delete=models.CASCADE, related_name='message_reject_to_project')
+    project = models.ForeignKey('Project', on_delete=models.CASCADE, related_name='message_reject_to_project')
+
+
+class MessageApproveToProject(models.Model):
+    class Meta:
+        unique_together = ("project", "message_approve")
+
+    message_approve = models.ForeignKey('MessageApprove', on_delete=models.CASCADE, related_name='message_approve_to_project')
+    project = models.ForeignKey('Project', on_delete=models.CASCADE, related_name='message_approve_to_project')
+
+
+class ReasonToProject(models.Model):
+    class Meta:
+        unique_together = ("project", "reason")
+
+    reason = models.ForeignKey('Reason', on_delete=models.CASCADE, related_name='reason_to_project')
+    project = models.ForeignKey('Project', on_delete=models.CASCADE, related_name='reason_to_project')
 
 
 class Worker(models.Model):
