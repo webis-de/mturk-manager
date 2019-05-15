@@ -38,6 +38,15 @@ class Interface_Manager_Items(object):
         return queryset
 
     @staticmethod
+    def limit(queryset: QuerySet, request: Request) -> QuerySet:
+        limit = request.query_params.get('limit')
+
+        if limit is not None:
+            queryset = queryset[:int(limit)]
+
+        return queryset
+
+    @staticmethod
     def get(id_item: object) -> object:
         raise_not_implemented_exception('get', __class__)
 

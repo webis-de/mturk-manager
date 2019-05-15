@@ -6,7 +6,7 @@ from rest_framework.settings import api_settings
 from rest_framework.views import APIView
 
 from api.classes import Manager_Templates_Assignment
-from api.helpers import add_database_object_project
+from api.helpers import add_database_object_project, paginate_queryset
 from api.models import Template_Assignment as Model_Template_Assignment
 from api.serializers import Serializer_Template_Assignment
 from mturk_db.permissions import IsInstance, IsWorker, AllowOptionsAuthentication
@@ -25,14 +25,7 @@ class Templates_Assignment(APIView):
             request=request,
         )
 
-        queryset_paginated = queryset
-
-        if request.query_params.get(REST_FRAMEWORK['PAGE_SIZE_QUERY_PARAM']) is not None:
-            paginator = api_settings.DEFAULT_PAGINATION_CLASS()
-            queryset_paginated = paginator.paginate_queryset(queryset, request)
-            count_items = paginator.page.paginator.count
-        else:
-            count_items = queryset.count()
+        queryset_paginated, count_items = paginate_queryset(queryset, request)
 
         serializer = Serializer_Template_Assignment(
             queryset_paginated,

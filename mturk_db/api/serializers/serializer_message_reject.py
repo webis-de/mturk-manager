@@ -1,4 +1,6 @@
 from rest_framework import serializers
+
+from api.classes import Manager_Messages_Reject
 from api.models import MessageReject
 
 class Serializer_Message_Reject(serializers.ModelSerializer):
@@ -17,7 +19,21 @@ class Serializer_Message_Reject(serializers.ModelSerializer):
                 'read_only': False,
                 'required': False,
             },
-            # 'message': {
-            #     'validators': [],
-            # },
+            'message': {
+                'required': False,
+            },
+            'message_lowercase': {
+                'required': False,
+            },
         }
+
+    def create(self, validated_data):
+        print('validated_data')
+        print(validated_data)
+
+        item = Manager_Messages_Reject.create(
+            database_object_project=validated_data.get('database_object_project'),
+            data=validated_data
+        )
+
+        return item

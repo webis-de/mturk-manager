@@ -44,8 +44,15 @@ class Manager_Config(object):
             'url_api_workers': 'projects/{}/workers'.format(settings.PLACEHOLDER_SLUG_PROJECT),
             'url_api_workers_get_blocks_hard': 'projects/{}/workers/blocks_hard'.format(settings.PLACEHOLDER_SLUG_PROJECT),
 
-            'url_api_keywords': 'api/keywords'.format(settings.PLACEHOLDER_SLUG_PROJECT),
-            'url_api_messages_reject': 'api/messages_reject'.format(settings.PLACEHOLDER_SLUG_PROJECT),
+            'url_api_keywords': 'keywords'.format(settings.PLACEHOLDER_SLUG_PROJECT),
+
+            'url_api_messages_reject': 'messagesReject'.format(settings.PLACEHOLDER_SLUG_PROJECT),
+            'url_api_messages_approve': 'messagesApprove'.format(settings.PLACEHOLDER_SLUG_PROJECT),
+            'url_api_messages_reason': 'messagesReason'.format(settings.PLACEHOLDER_SLUG_PROJECT),
+
+            'url_api_projects_messages_reject': 'projects/{}/messagesReject'.format(settings.PLACEHOLDER_SLUG_PROJECT),
+            'url_api_projects_messages_approve': 'projects/{}/messagesApprove'.format(settings.PLACEHOLDER_SLUG_PROJECT),
+            'url_api_projects_messages_reason': 'projects/{}/messagesReason'.format(settings.PLACEHOLDER_SLUG_PROJECT),
         }
 
         return dictionary_paths

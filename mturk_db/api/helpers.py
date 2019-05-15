@@ -1,15 +1,32 @@
-from rest_framework.pagination import PageNumberPagination
-
-from api.models import Project
-from api.enums import assignments
-from mturk_db.settings import REST_FRAMEWORK
 from typing import Union
+
+from django.db.models import QuerySet
+from rest_framework.pagination import PageNumberPagination
+from rest_framework.request import Request
+from rest_framework.settings import api_settings
+
+from api.enums import assignments
+from api.models import Project
+from mturk_db.settings import REST_FRAMEWORK
 
 
 class CustomPagination(PageNumberPagination):
     page_size = REST_FRAMEWORK['PAGE_SIZE']
     page_size_query_param = REST_FRAMEWORK['PAGE_SIZE_QUERY_PARAM']
     # max_page_size = 10000
+
+
+def paginate_queryset(queryset: QuerySet, request: Request):
+    queryset_paginated = queryset
+
+    if request.query_params.get(REST_FRAMEWORK['PAGE_SIZE_QUERY_PARAM']) is not None:
+        paginator = api_settings.DEFAULT_PAGINATION_CLASS()
+        queryset_paginated = paginator.paginate_queryset(queryset, request)
+        count_items = paginator.page.paginator.count
+    else:
+        count_items = queryset.count()
+
+    return queryset_paginated, count_items
 
 
 def mturk_status_to_database_status(status: str) -> Union[assignments.STATUS_EXTERNAL, None]:
@@ -77,7 +94,7 @@ def raise_not_implemented_exception(name_method, cls):
 
 def migrate_project(name_project):
     import api.models as models 
-    import uuid, json, datetime, xmltodict
+    import uuid, json
     from django.utils.text import slugify
     from django.conf import settings
     import datetime

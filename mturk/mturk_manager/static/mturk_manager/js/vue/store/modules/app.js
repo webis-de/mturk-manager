@@ -78,7 +78,7 @@ export const module_app = _.merge({}, baseModule, {
       commit('moduleBatches/set_urls', config.paths, { root: true });
       commit('moduleHITs/set_urls', config.paths, { root: true });
       commit('moduleKeywords/set_urls', config.paths, { root: true });
-      commit('moduleMessagesReject/set_urls', config.paths, { root: true });
+      commit('moduleMessages/set_urls', config.paths, { root: true });
       commit('moduleProjects/set_urls', config.paths, { root: true });
       commit('moduleWorkers/set_urls', config.paths, { root: true });
       commit('module_finances/set_urls', config.paths, { root: true });

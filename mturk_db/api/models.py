@@ -159,39 +159,15 @@ class Message(models.Model):
 
 
 class MessageReject(Message):
-    pass
+    projects = models.ManyToManyField('Project', related_name='messages_reject')
 
 
 class MessageApprove(Message):
-    pass
+    projects = models.ManyToManyField('Project', related_name='messages_approve')
 
 
 class Reason(Message):
-    pass
-
-
-class MessageRejectToProject(models.Model):
-    class Meta:
-        unique_together = ("project", "message_reject")
-
-    message_reject = models.ForeignKey('MessageReject', on_delete=models.CASCADE, related_name='message_reject_to_project')
-    project = models.ForeignKey('Project', on_delete=models.CASCADE, related_name='message_reject_to_project')
-
-
-class MessageApproveToProject(models.Model):
-    class Meta:
-        unique_together = ("project", "message_approve")
-
-    message_approve = models.ForeignKey('MessageApprove', on_delete=models.CASCADE, related_name='message_approve_to_project')
-    project = models.ForeignKey('Project', on_delete=models.CASCADE, related_name='message_approve_to_project')
-
-
-class ReasonToProject(models.Model):
-    class Meta:
-        unique_together = ("project", "reason")
-
-    reason = models.ForeignKey('Reason', on_delete=models.CASCADE, related_name='reason_to_project')
-    project = models.ForeignKey('Project', on_delete=models.CASCADE, related_name='reason_to_project')
+    projects = models.ManyToManyField('Project', related_name='messages_reason')
 
 
 class Worker(models.Model):

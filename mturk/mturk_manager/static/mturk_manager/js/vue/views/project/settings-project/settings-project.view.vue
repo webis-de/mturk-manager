@@ -7,9 +7,9 @@
       <v-flex xs class="pa-1">
         <component-block-limit> </component-block-limit>
       </v-flex>
-      <v-flex xs class="pa-1">
-        <component-messages-reject-default> </component-messages-reject-default>
-      </v-flex>
+<!--      <v-flex xs class="pa-1">-->
+<!--        <component-messages-reject-default> </component-messages-reject-default>-->
+<!--      </v-flex>-->
     </v-layout>
 
     <v-layout wrap>
@@ -56,6 +56,16 @@
         <table-templates-global></table-templates-global>
       </v-flex>
     </v-layout>
+
+    <v-layout wrap>
+      <v-flex class="pa-1">
+        <h2 class="headline">
+          Reject Messages
+        </h2>
+        <table-messages-reject/>
+      </v-flex>
+    </v-layout>
+
     <v-layout>
       <v-flex shrink class="pa-1">
         <component-clear-sandbox> </component-clear-sandbox>
@@ -70,7 +80,7 @@
 
 <script>
 import ComponentBlockLimit from '../../../components/settings_project/block_limit/component_block_limit.vue';
-import ComponentMessagesRejectDefault from '../../../components/settings_project/messages_reject/component_messages_reject_default.vue';
+import ComponentMessagesRejectDefault from '../../../components/messages-reject/component_messages_reject_default';
 import ComponentClearSandbox from '../../../components/settings_project/clear_sandbox/component_clear_sandbox.vue';
 import Budget from '../../../components/finances/budget';
 import TableTemplatesWorker from '../../../components/settings_project/templates_worker/table-templates-worker';
@@ -78,6 +88,7 @@ import TableTemplatesAssignment from '../../../components/settings_project/templ
 import TableTemplatesHit from '../../../components/settings_project/templates_hit/table-template-hit';
 import TableTemplatesGlobal from '../../../components/settings_project/templates_global/table-template-global';
 import TableSettingsBatch from '../../../components/settings_project/settings_batch/table-settings-batch';
+import TableMessagesReject from '../../../components/messages-reject/table-messages-reject';
 
 export default {
   name: 'app_settings_project',
@@ -86,6 +97,7 @@ export default {
     return {};
   },
   components: {
+    TableMessagesReject,
     TableSettingsBatch,
     TableTemplatesGlobal,
     TableTemplatesHit,

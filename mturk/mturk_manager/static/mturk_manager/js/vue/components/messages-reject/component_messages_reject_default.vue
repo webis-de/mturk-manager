@@ -55,12 +55,12 @@ import {
   mapState, mapMutations, mapActions, mapGetters,
 } from 'vuex';
 import { required, minValue, maxValue } from 'vuelidate/lib/validators';
-import validations from '../../../mixins/validations.mixin';
-import { Service_Projects } from '../../../services/service_projects';
-import { Service_Messages_Reject } from '../../../services/Service_Messages_Reject';
+import validations from '../../mixins/validations.mixin';
+import { Service_Projects } from '../../services/service_projects';
+import { ServiceMessages } from '../../services/Service_Messages_Reject';
 
 export default {
-  name: 'component-messages-reject-default',
+  name: 'ComponentMessagesRejectDefault',
   mixins: [validations],
   data() {
     return {
@@ -80,7 +80,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters('moduleMessagesReject', {
+    ...mapGetters('moduleMessages', {
       list_messages_reject: 'get_list_messages_reject',
     }),
     ...mapGetters('moduleProjects', {
@@ -88,9 +88,8 @@ export default {
     }),
   },
   created() {
-    Service_Messages_Reject.load();
+    // ServiceMessages.loadAll();
   },
-  components: {},
   validations: {},
 };
 </script>

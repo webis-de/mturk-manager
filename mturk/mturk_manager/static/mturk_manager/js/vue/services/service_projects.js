@@ -145,7 +145,7 @@ class Class_Service_Projects {
       array_fields: ['message_reject_default'],
     });
 
-    store.commit('moduleMessagesReject/add_message_reject', {
+    store.commit('moduleMessages/add_message_reject', {
       message_reject: response.data.message_reject_default,
     });
   }
