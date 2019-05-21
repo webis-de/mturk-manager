@@ -22,7 +22,6 @@
         </v-btn>
       </v-card-title>
       <v-card-text>
-        {{model}}
         <v-combobox
           v-model="model"
           v-bind:items="items"
@@ -78,6 +77,8 @@ export default {
       await ServiceMessages.save({
         message: object,
       });
+
+      this.$emit('create');
 
       this.dialog = false;
     },

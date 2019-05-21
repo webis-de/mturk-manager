@@ -80,7 +80,6 @@
 
 <script>
 import ComponentBlockLimit from '../../../components/settings_project/block_limit/component_block_limit.vue';
-import ComponentMessagesRejectDefault from '../../../components/messages-reject/component_messages_reject_default';
 import ComponentClearSandbox from '../../../components/settings_project/clear_sandbox/component_clear_sandbox.vue';
 import Budget from '../../../components/finances/budget';
 import TableTemplatesWorker from '../../../components/settings_project/templates_worker/table-templates-worker';
@@ -105,7 +104,6 @@ export default {
     TableTemplatesWorker,
     Budget,
     ComponentBlockLimit,
-    ComponentMessagesRejectDefault,
     ComponentClearSandbox,
   },
 };

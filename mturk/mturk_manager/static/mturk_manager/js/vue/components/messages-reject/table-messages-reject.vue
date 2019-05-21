@@ -11,30 +11,34 @@
     name-state-columns-selected="array_columns_selected"
     v-bind:is-condensed="true"
   >
-    <template v-slot:default="{ props, array_columns_selected, isCondensed }">
+    <template v-slot:default="{ props, array_columns_selected, isCondensed, refresh }">
       <item-messages-reject
         v-bind:props="props"
         v-bind:array-columns-selected="array_columns_selected"
         v-bind:is-condensed="isCondensed"
+
+        v-on:delete="refresh()"
       />
     </template>
 
-    <template v-slot:actions>
-      <item-add-message/>
+    <template v-slot:actions="{ refresh }">
+      <item-add-message
+        v-on:create="refresh()"
+      />
     </template>
   </base-table>
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import BaseTable from '../base-table';
 import { ServiceMessages } from '../../services/Service_Messages_Reject';
-import { mapState } from 'vuex';
 import ItemMessagesReject from './item-messages-reject';
 import ItemAddMessage from './item-add-message';
 
 export default {
   name: 'TableMessagesReject',
-  components: {ItemAddMessage, ItemMessagesReject, BaseTable },
+  components: { ItemAddMessage, ItemMessagesReject, BaseTable },
   data() {
     return {
       loadPage: ServiceMessages.loadPageReject,

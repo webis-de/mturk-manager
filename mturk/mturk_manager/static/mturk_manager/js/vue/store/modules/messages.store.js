@@ -88,5 +88,17 @@ export const moduleMessages = _.merge({}, baseModule, {
       state.urlApiProjectsMessagesReason = config.url_api_projects_messages_reason;
     },
   },
-  actions: {},
+  actions: {
+    async init({ dispatch }) {
+      await Promise.all([
+        /**
+         * init pagination
+         */
+        dispatch('loadState', {
+          nameLocalStorage: 'pagination_messages_reject',
+          nameState: 'paginationMessagesReject',
+        }),
+      ]);
+    },
+  },
 });

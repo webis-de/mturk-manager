@@ -92,6 +92,7 @@ export const module_app = _.merge({}, baseModule, {
         dispatch('moduleWorkers/init', null, { root: true }),
         dispatch('moduleSettingsBatch/init', null, { root: true }),
         dispatch('moduleTemplates/init', null, { root: true }),
+        dispatch('moduleMessages/init', null, { root: true }),
       ]);
     },
     async set_use_sandbox({ commit }, use_sandbox) {

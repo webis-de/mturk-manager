@@ -33,25 +33,25 @@
                 </v-card>
               </v-tab-item>
 
-              <v-tab-item
-                key="hits"
-              >
-                <v-card class="pa-1">
-                  <list-hits />
-                </v-card>
-              </v-tab-item>
+<!--              <v-tab-item-->
+<!--                key="hits"-->
+<!--              >-->
+<!--                <v-card class="pa-1">-->
+<!--                  <list-hits />-->
+<!--                </v-card>-->
+<!--              </v-tab-item>-->
 
-              <v-tab-item
-                key="assignment"
-              >
-                <v-card class="pa-1">
-                  <list-assignments>
-                    <template v-slot:actions>
-                      <component-annotate />
-                    </template>
-                  </list-assignments>
-                </v-card>
-              </v-tab-item>
+<!--              <v-tab-item-->
+<!--                key="assignment"-->
+<!--              >-->
+<!--                <v-card class="pa-1">-->
+<!--                  <list-assignments>-->
+<!--                    <template v-slot:actions>-->
+<!--                      <component-annotate />-->
+<!--                    </template>-->
+<!--                  </list-assignments>-->
+<!--                </v-card>-->
+<!--              </v-tab-item>-->
             </v-tabs-items>
           </v-tabs>
         </v-flex>

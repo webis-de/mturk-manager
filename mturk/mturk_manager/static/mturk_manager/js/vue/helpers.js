@@ -5,8 +5,8 @@ import _ from 'lodash';
 export function setPagination({ pagination, setPageTo1, state, namePagination, nameLocalStorage }) {
   if (setPageTo1 === true) {
     // necessary to prevent duplicated requests
-    state[namePagination].page = 1;
-    localforage.setItem(nameLocalStorage, state[namePagination]);
+    // state[namePagination].page = 1;
+    // localforage.setItem(nameLocalStorage, state[namePagination]);
     return;
   }
 

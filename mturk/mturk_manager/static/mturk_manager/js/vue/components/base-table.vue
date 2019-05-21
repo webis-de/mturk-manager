@@ -77,6 +77,7 @@
         v-bind:props="props"
         v-bind:array_columns_selected="columnsSelected"
         v-bind:is-condensed="isCondensed"
+        v-bind:refresh="refresh"
       />
     </template>
 
@@ -86,7 +87,9 @@
     >
       <v-layout>
         <v-flex>
-          <slot name="actions" />
+          <slot name="actions"
+            v-bind:refresh="refresh"
+          />
         </v-flex>
         <v-flex>
           <base-table-filters
@@ -103,7 +106,7 @@
               descending: !pagination.descending,
               page: 1,
               rowsPerPage: pagination.rowsPerPage,
-            });"
+            }, true);"
           >
             <template
               v-slot:filters="{ filters, filtersActive }"
@@ -255,6 +258,7 @@ export default {
       loading: false,
       search: '',
       items_total: undefined,
+      page: 1,
 
       columns: this.$store.state[this.nameVuexModule][this.nameStateColumns],
     };
@@ -269,7 +273,7 @@ export default {
     },
     pagination: {
       get() {
-        return _.assign({}, this.$store.state[this.nameVuexModule][this.nameStatePagination], {totalItems: 0});
+        return _.assign({}, this.$store.state[this.nameVuexModule][this.nameStatePagination], {totalItems: 0, page: this.page});
       },
     },
     showFooter() {
@@ -319,15 +323,19 @@ export default {
   beforeDestroy() {
     this.functionClearItemsSelected();
 
-    this.pagination.page = 1;
+    // this.pagination.page = 1;
 
     this.$store.dispatch(`${this.nameVuexModule}/setState`, {
-      objectState: this.pagination,
+      objectState: _.pick(this.pagination, ['sortBy', 'descending', 'rowsPerPage']),
       nameState: this.nameStatePagination,
       nameLocalStorage: this.nameLocalStoragePagination,
     });
   },
   methods: {
+    refresh() {
+      this.pagination.page = 1;
+      this.load_page(this.filters);
+    },
     // Reset pagination/load page if the sandbox status was changed
     sandboxUpdated() {
       if (this.pagination.page !== 1) {
@@ -337,13 +345,17 @@ export default {
       }
     },
     updatedPagination(pagination) {
-      // only update if pagination changed
-      if (!_.isEqual(
+      const equalPagination = _.isEqual(
         _.pick(pagination, ['page', 'rowsPerPage', 'sortBy', 'descending']),
         _.pick(this.pagination, ['page', 'rowsPerPage', 'sortBy', 'descending']),
-      )) {
+      );
+
+      // only update if pagination changed
+      if (equalPagination === false) {
+        this.page = pagination.page;
+
         this.$store.dispatch(`${this.nameVuexModule}/setState`, {
-          objectState: pagination,
+          objectState: _.pick(pagination, ['sortBy', 'descending', 'rowsPerPage']),
           nameState: this.nameStatePagination,
           nameLocalStorage: this.nameLocalStoragePagination,
         });

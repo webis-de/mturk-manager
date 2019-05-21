@@ -189,7 +189,7 @@ export const moduleBatches = _.merge({}, baseModule, {
     },
 
     set_batches(state, { data, use_sandbox }) {
-      let array_batches = null;
+      let array_batches = [];
       if (use_sandbox) {
         state.array_batches_sandbox = [];
         array_batches = state.array_batches_sandbox;
@@ -201,7 +201,6 @@ export const moduleBatches = _.merge({}, baseModule, {
       _.forEach(data, (data_batch) => {
         const batch = new Batch(data_batch);
         Vue.set(array_batches, array_batches.length, batch);
-        // Vue.set(object_batches, batch.id, batch);
       });
     },
     clear_batches_selected(state) {

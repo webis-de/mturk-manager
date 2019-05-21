@@ -1,13 +1,13 @@
 <template>
   <tr
-    v-bind:key="message.id"
+    v-bind:key="this.props.item.id"
     class="text-no-wrap"
   >
     <base-table-cell
       v-slot="{ item }"
       name="message"
       class="text-xs-left"
-      v-bind:item="message"
+      v-bind:item="this.props.item"
       v-bind:columns-selected="columnsSelected"
       v-bind:is-condensed="isCondensed"
     >
@@ -18,12 +18,14 @@
       v-slot="{ item }"
       name="actions"
       class="text-xs-right"
-      v-bind:item="message"
+      v-bind:item="this.props.item"
       v-bind:columns-selected="columnsSelected"
       v-bind:is-condensed="isCondensed"
     >
       <base-delete-message
         v-bind:item="item"
+
+        v-on:delete="$emit('delete')"
       />
     </base-table-cell>
   </tr>
@@ -48,11 +50,6 @@ export default {
       required: true,
       type: Boolean,
     },
-  },
-  data() {
-    return {
-      message: this.props.item,
-    };
   },
   computed: {
     columnsSelected() {

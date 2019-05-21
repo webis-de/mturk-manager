@@ -43,6 +43,8 @@ export default {
         idMessage: this.item.id,
       });
 
+      this.$emit('delete');
+
       this.dialog = false;
     },
   },

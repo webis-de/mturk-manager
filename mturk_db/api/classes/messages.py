@@ -4,6 +4,7 @@ from rest_framework.request import Request
 from api.classes import Interface_Manager_Items
 from api.helpers import raise_not_implemented_exception
 from api.models import Project
+from api.models import Message
 
 
 class ManagerMessages(Interface_Manager_Items):
@@ -69,8 +70,22 @@ class ManagerMessages(Interface_Manager_Items):
         return item
 
     @classmethod
-    def create(cls, data: object) -> object:
-        raise_not_implemented_exception('create', __class__)
+    def create(cls, data: dict, database_object_project: Project = None) -> Message:
+        print(data)
+        print(database_object_project)
+
+        message = data.get('message')
+        if message is not None:
+            instance, was_created = cls.model.objects.get_or_create(
+                message=message,
+                message_lowercase=message.lower(),
+            )
+        else:
+            instance = cls.model.objects.get(id=data.get('id'))
+
+        instance.projects.add(database_object_project)
+
+        return instance
 
     @classmethod
     def update(cls, instance: Model, data: dict) -> Model:
