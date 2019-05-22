@@ -13,7 +13,8 @@
         <span class="headline">
           Add Reject Message
         </span>
-        <v-spacer/>
+        <v-spacer />
+
         <v-btn
           icon
           v-on:click="dialog = false"
@@ -27,12 +28,15 @@
           v-bind:items="items"
           v-bind:loading="isLoading"
           v-bind:search-input.sync="search"
+
           label="Message"
           autofocus
           dense
           item-text="message"
           item-value="message_lowercase"
           no-filter
+
+          v-on:input="input($event)"
         />
       </v-card-text>
     </v-card>
@@ -55,6 +59,7 @@ export default {
   },
   watch: {
     async search(value) {
+
       this.isLoading = true;
 
       if (value !== this.model) {
@@ -65,7 +70,13 @@ export default {
 
       this.isLoading = false;
     },
-    async model(value) {
+  },
+  methods: {
+    async input(value) {
+      if (value === null || value === '') {
+        return;
+      }
+
       const object = {};
 
       if (typeof value === 'string') {
@@ -78,8 +89,9 @@ export default {
         message: object,
       });
 
+      // emit create event
       this.$emit('create');
-
+      this.model = '';
       this.dialog = false;
     },
   },

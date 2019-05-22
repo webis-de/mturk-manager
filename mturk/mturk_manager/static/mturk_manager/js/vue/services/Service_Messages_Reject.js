@@ -41,6 +41,8 @@ class Class_Service_Messages_Reject {
       params: {
         search,
         limit: 10,
+        sort_by: 'count_usage',
+        descending: true,
       },
     });
 
