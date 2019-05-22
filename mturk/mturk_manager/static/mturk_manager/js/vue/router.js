@@ -11,6 +11,7 @@ import ViewAssignments from './views/project/tasks/assignments/assignments.view'
 import ViewFinances from './views/project/finances/finances.view';
 import ViewWorkers from './views/project/workers/workers.view';
 import ViewAbout from './views/about/about.view';
+import ViewAdmin from './views/admin/admin.view';
 import About from './components/about/about';
 import AppSettingsProject from './views/project/settings-project/settings-project.view';
 import { store } from './store/vuex';
@@ -51,6 +52,11 @@ const routes = [
     path: '/about',
     name: 'about',
     component: ViewAbout,
+  },
+  {
+    path: '/admin',
+    name: 'admin',
+    component: ViewAdmin,
   },
   {
     path: '/projects',

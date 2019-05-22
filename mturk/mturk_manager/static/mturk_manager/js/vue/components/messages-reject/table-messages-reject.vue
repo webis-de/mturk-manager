@@ -1,14 +1,14 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <base-table
     name-vuex-module="moduleMessages"
-    name-state-pagination="paginationMessagesReject"
-    name-local-storage-pagination="pagination_messages_reject"
+    v-bind:name-state-pagination="nameStatePagination"
+    v-bind:name-local-storage-pagination="nameLocalStoragePagination"
 
     v-bind:function-load-page="loadPage"
     v-bind:array-items="arrayItems"
 
     name-state-columns="arrayColumns"
-    name-state-columns-selected="array_columns_selected"
+    v-bind:name-state-columns-selected="nameStateColumnsSelected"
     v-bind:is-condensed="true"
   >
     <template v-slot:default="{ props, array_columns_selected, isCondensed, refresh }">
@@ -39,10 +39,27 @@ import ItemAddMessage from './item-add-message';
 export default {
   name: 'TableMessagesReject',
   components: { ItemAddMessage, ItemMessagesReject, BaseTable },
-  data() {
-    return {
-      loadPage: ServiceMessages.loadPageReject,
-    };
+  props: {
+    loadPage: {
+      required: false,
+      type: Function,
+      default: ServiceMessages.loadPageReject,
+    },
+    nameStatePagination: {
+      required: false,
+      type: String,
+      default: 'paginationMessagesReject',
+    },
+    nameLocalStoragePagination: {
+      required: false,
+      type: String,
+      default: 'pagination_messages_reject',
+    },
+    nameStateColumnsSelected: {
+      required: false,
+      type: String,
+      default: 'array_columns_selected',
+    },
   },
   computed: {
     ...mapState('moduleMessages', {

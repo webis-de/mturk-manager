@@ -15,18 +15,22 @@ class MessagesReject(APIView):
     permission_classes = PERMISSIONS_INSTANCE_ONLY
 
     def get(self, request):
-        queryset_messages_reject = Manager_Messages_Reject.get_all(
+        queryset = Manager_Messages_Reject.get_all(
             request=request,
-
         )
 
+        queryset_paginated, count_items = paginate_queryset(queryset, request)
+
         serializer = Serializer_Message_Reject(
-            queryset_messages_reject,
+            queryset_paginated,
             many=True,
             context={'request': request}
         )
 
-        return Response(serializer.data)
+        return Response({
+            'items_total': count_items,
+            'data': serializer.data,
+        })
 
 
 class ProjectMessagesReject(APIView):

@@ -77,7 +77,7 @@ class Project(APIView):
 @api_view(['GET'])
 @permission_classes(PERMISSIONS_INSTANCE_ONLY)
 # @add_database_object_project
-def projects_check_uniqueness(request, name_project, format=None):
+def projects_check_uniqueness(request, name_project):
     is_unique = Manager_Projects.check_uniqueness(name_project)
     # import time
     # time.sleep(1)

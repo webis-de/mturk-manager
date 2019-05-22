@@ -37,12 +37,23 @@ export const moduleMessages = _.merge({}, baseModule, {
       descending: true,
     },
 
+    paginationMessagesRejectAdmin: {
+      rowsPerPage: 15,
+      sortBy: 'count_usage',
+      descending: true,
+    },
+
     // columns
     arrayColumns: [
       {
         text: 'Message',
         value: 'message',
         classes: ['text-xs-left'],
+      },
+      {
+        text: 'Usages',
+        value: 'count_usage',
+        classes: ['text-xs-right'],
       },
       {
         text: '',
@@ -53,6 +64,12 @@ export const moduleMessages = _.merge({}, baseModule, {
 
     array_columns_selected: [
       'message',
+      'actions',
+    ],
+
+    arrayColumnsSelectedAdmin: [
+      'message',
+      'count_usage',
       'actions',
     ],
   },

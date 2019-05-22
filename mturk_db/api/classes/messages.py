@@ -58,7 +58,7 @@ class ManagerMessages(Interface_Manager_Items):
     @staticmethod
     def annotate(queryset: QuerySet) -> QuerySet:
         return queryset.annotate(
-            count_usage=Count('project', distinct=True),
+            count_usage=Count('project', distinct=True) + Count('projects', distinct=True),
         )
 
     @classmethod
@@ -102,4 +102,14 @@ class ManagerMessages(Interface_Manager_Items):
 
     @classmethod
     def delete_from_project(cls, id_message: int, database_object_project: Project) -> None:
-        cls.model.objects.get(id=id_message).projects.remove(database_object_project)
+        message = cls.model.objects.get(id=id_message)
+        message.projects.remove(database_object_project)
+        cls.delete_if_no_usage(message)
+
+    @classmethod
+    def delete_if_no_usage(cls, message: Message):
+        cls.annotate(
+            cls.model.objects.filter(id=message.id)
+        ).filter(
+            count_usage=0
+        ).delete()

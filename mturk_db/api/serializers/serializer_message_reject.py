@@ -24,6 +24,7 @@ class Serializer_Message_Reject(serializers.ModelSerializer):
             },
             'message_lowercase': {
                 'required': False,
+                'validators': []
             },
         }
 
