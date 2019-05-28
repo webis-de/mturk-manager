@@ -14,15 +14,6 @@ import os
 from django.conf import settings
 # from django.contrib.messages import constants as messages
 
-import configparser
-# MESSAGE_TAGS = {
-#     messages.DEBUG: 'alert-info',
-#     messages.INFO: 'alert-info',
-#     messages.SUCCESS: 'alert-success',
-#     messages.WARNING: 'alert-warning',
-#     messages.ERROR: 'alert-danger',
-# }
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -112,13 +103,6 @@ WSGI_APPLICATION = 'mturk.wsgi.application'
 
 VERSION_PROJECT = 14
 # MESSAGE_BLOCK_DEFAULT = 'Some default block message'
-
-config = configparser.ConfigParser()
-dataset = config.read('../mturk_settings.ini')
-TOKEN_INSTANCE = config.get('MTurk', 'token_instance', fallback=None)
-URL_GLOBAL_DB = config.get('MTurk', 'url_global_db', fallback=None)
-if len(dataset) == 0:
-    raise FileNotFoundError('You have to provide an .ini-file containing the database credentials!')
 
 # # URL_GLOBAL_DB = 'https://webis18.medien.uni-weimar.de/mturk-manager'
 # URL_GLOBAL_DB = 'http://localhost:8002'
