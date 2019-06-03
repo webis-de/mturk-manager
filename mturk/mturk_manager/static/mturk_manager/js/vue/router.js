@@ -12,8 +12,9 @@ import ViewFinances from './views/project/finances/finances.view';
 import ViewWorkers from './views/project/workers/workers.view';
 import ViewAbout from './views/about/about.view';
 import ViewAdmin from './views/admin/admin.view';
+import ViewSettingsProject from './views/project/settings-project/settings-project.view';
 import About from './components/about/about';
-import AppSettingsProject from './views/project/settings-project/settings-project.view';
+// import AppSettingsProject from './views/project/settings-project/settings-project.view';
 import { store } from './store/vuex';
 import { Service_App } from './services/service.app';
 import queue from './queue';
@@ -158,51 +159,6 @@ const routes = [
               },
             ],
           },
-          // {
-          //   path: 'batches/:id_batch',
-          //   name: 'batch',
-          //   meta: {
-          //     name: 'Batch',
-          //   },
-          //   component: app_batches,
-          //   props: parse_params,
-          // },
-          // {
-          //   path: 'hits',
-          //   name: 'hits',
-          //   meta: {
-          //     name: 'HITs',
-          //   },
-          //   component: app_hits,
-          //   props: parse_params,
-          // },
-          // {
-          //   path: 'hits/:id_hit',
-          //   name: 'hit',
-          //   meta: {
-          //     name: 'HIT',
-          //   },
-          //   component: app_hits,
-          //   props: parse_params,
-          // },
-          // {
-          //   path: 'assignments',
-          //   name: 'assignments',
-          //   meta: {
-          //     name: 'Assignments',
-          //   },
-          //   component: app_assignments,
-          //   props: parse_params,
-          // },
-          // {
-          //   path: 'assignments/:id_assignment',
-          //   name: 'assignment',
-          //   meta: {
-          //     name: 'Assignment',
-          //   },
-          //   component: app_assignments,
-          //   props: parse_params,
-          // },
           {
             path: 'finances',
             name: 'finances',
@@ -219,18 +175,51 @@ const routes = [
             },
             component: ViewWorkers,
           },
-          // {
-          // 	path: '/qualifications',
-          // 	name: 'Qualifications',
-          // 	component: AppQualifications,
-          // },
           {
-            path: 'settings_project',
+            path: 'settings',
             name: 'settings_project',
             meta: {
               name: 'Project Settings',
             },
-            component: AppSettingsProject,
+            component: { template: '<router-view></router-view>' },
+            redirect: to => ({
+              name: 'projectSettingsGeneral',
+              params: {
+                slug_project: to.params.slug_project,
+              },
+            }),
+            children: [
+              {
+                path: 'general',
+                name: 'projectSettingsGeneral',
+                meta: {
+                  name: 'Project Settings',
+                  index: 0,
+                },
+                component: ViewSettingsProject,
+                props: parse_params,
+              },
+              {
+                path: 'templates',
+                name: 'projectSettingsTemplates',
+                meta: {
+                  name: 'Project Settings',
+                  index: 1,
+                },
+                component: ViewSettingsProject,
+                props: parse_params,
+              },
+              {
+                path: 'messages',
+                name: 'projectSettingsMessages',
+                meta: {
+                  name: 'Project Settings',
+                  index: 2,
+                },
+                component: ViewSettingsProject,
+                props: parse_params,
+              },
+            ],
           },
           {
             path: 'about',
