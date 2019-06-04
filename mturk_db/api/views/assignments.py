@@ -8,7 +8,7 @@ from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from api.helpers import add_database_object_project
+from api.helpers import add_database_object_project, paginate_queryset
 from api.classes import Manager_Assignments
 from api.models import Assignment
 from rest_framework.decorators import api_view, permission_classes
@@ -26,14 +26,7 @@ class Assignments(APIView):
             request=request
         )
 
-        queryset_paginated = queryset
-
-        if request.query_params.get(REST_FRAMEWORK['PAGE_SIZE_QUERY_PARAM']) is not None:
-            paginator = api_settings.DEFAULT_PAGINATION_CLASS()
-            queryset_paginated = paginator.paginate_queryset(queryset, request)
-            count_items = paginator.page.paginator.count
-        else:
-            count_items = queryset.count()
+        queryset_paginated, count_items = paginate_queryset(queryset, request)
 
         serializer = Serializer_Assignment(
             queryset_paginated,

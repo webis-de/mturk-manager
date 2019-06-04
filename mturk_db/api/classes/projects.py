@@ -1,8 +1,9 @@
 from django.db.models import F, Value, Count, Q, Sum, IntegerField, ExpressionWrapper, Max, Min
 from django.db.models.functions import Coalesce
 
+from api.classes import Manager_Messages_Reject
 from api.enums import assignments
-from api.models import Account_Mturk, Project, Message_Reject, Batch
+from api.models import Account_Mturk, Project, MessageReject, Batch
 from mturk_db.settings import URL_MTURK_SANDBOX
 import boto3
 from pytz import timezone
@@ -178,20 +179,16 @@ class Manager_Projects(object):
     @staticmethod
     def update(instance, validated_data):
         for key, value in validated_data.items():
-            if key == 'message_reject':
-                message_reject, was_created = Message_Reject.objects.get_or_create(message_lowercase=value.lower(), defaults={
-                    'message': value
-                })
+            if key == 'message_reject_default':
+                message_old = instance.message_reject_default
 
-                if not was_created:
-                    message_reject.message = value
-                    message_reject.save()
+                if message_old is not None:
+                    Manager_Messages_Reject.delete_if_no_usage(message_old)
 
-                instance.message_reject_default = message_reject
-                instance.save()
-                # messages_reject_deleted = Message_Reject.objects.all().annotate(
-                #     count_usage=Count('project')
-                # ).filter(count_usage=0).delete()
+                if value is None:
+                    instance.message_reject_default = None
+                else:
+                    instance.message_reject_default = MessageReject.objects.get(id=value.get('id'))
             else:
                 setattr(instance, key, value)
 

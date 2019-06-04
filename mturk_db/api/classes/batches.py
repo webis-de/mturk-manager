@@ -18,6 +18,7 @@ from api.classes.projects import Manager_Projects
 from api.enums import assignments, STATUS_EXTERNAL, STATUS_INTERNAL
 from api.models import Batch, HIT, Assignment, Settings_Batch, Worker
 from api.helpers import mturk_status_to_database_status
+import time
 
 class Manager_Batches(Interface_Manager_Items):
     @staticmethod
@@ -30,7 +31,7 @@ class Manager_Batches(Interface_Manager_Items):
         ).prefetch_related(
             'settings_batch__keywords'
         )
-
+        time.sleep(1)
         queryset = Manager_Batches.filter(
             queryset=queryset,
             request=request
@@ -91,7 +92,7 @@ class Manager_Batches(Interface_Manager_Items):
         bar = HIT.objects.filter(batch=OuterRef('id'), datetime_expiration__gt=now).values('batch').annotate(
             count_assignments=Coalesce(Sum(
                 'batch__settings_batch__count_assignments',
-                distinct=True,
+                # distinct=True,
             ), 0)
         ).values('count_assignments')
 
@@ -122,7 +123,7 @@ class Manager_Batches(Interface_Manager_Items):
                 HIT.objects.filter(batch=OuterRef('id')).values('batch').annotate(
                     count_assignments_dead=Coalesce(Sum(
                         'count_assignments_dead',
-                        distinct=True,
+                        # distinct=True,
                     ), 0)
                 ).values('count_assignments_dead')
             ),

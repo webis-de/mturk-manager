@@ -1,5 +1,6 @@
 <template>
   <div class="subheading">
+    {{expenses}}
     <!--Current balance:-->
     <base-calculation
       v-if="get_balance() !== null"
@@ -44,8 +45,11 @@ export default {
   computed: {
     result() {
       let result = this.get_balance()
-      - this.expenses.sum_costs_submitted
-      - this.expenses.sum_costs_pending;
+      - this.expenses.sum_costs_submitted;
+
+      if (!Number.isNaN(result) && this.expenses.sum_costs_pending !== undefined) {
+        result -= this.expenses.sum_costs_pending;
+      }
 
       if (Number.isNaN(result)) {
         result = undefined;
@@ -57,7 +61,7 @@ export default {
       };
     },
     calculations() {
-      return [
+      const result = [
         {
           number: this.get_balance(),
           description: 'Current Balance',
@@ -68,12 +72,17 @@ export default {
           number: this.expenses.sum_costs_submitted,
           description: 'Submitted Assignments',
         },
-        {
+      ];
+
+      if (this.expenses.sum_costs_submitted !== undefined && this.expenses.sum_costs_pending !== undefined) {
+        result.push({
           operation: '-',
           number: this.expenses.sum_costs_pending,
           description: 'Open Assignments',
-        },
-      ];
+        });
+      }
+
+      return result;
     },
     show_spinner() {
       return this.updating || this.get_balance === undefined;

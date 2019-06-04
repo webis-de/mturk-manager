@@ -48,8 +48,9 @@ class Serializer_Project(serializers.ModelSerializer):
 
     # count_assignments_max_per_worker = CustomField()
     # count_assignments_max_per_worker = serializers.SerializerMethodField()
-    message_reject = serializers.CharField(required=False)
-    message_reject_default = Serializer_Message_Reject(required=False)
+
+    # message_reject = serializers.CharField(required=False)
+    message_reject_default = Serializer_Message_Reject(required=False, allow_null=True)
 
     sum_costs_max_sandbox = serializers.IntegerField(required=False)
     max_costs_max_sandbox = serializers.IntegerField(required=False)
@@ -78,7 +79,7 @@ class Serializer_Project(serializers.ModelSerializer):
             'count_assignments_max_per_worker',
             'datetime_visited',
             'message_reject_default',
-            'message_reject',
+            # 'message_reject',
 
             'sum_costs_max_sandbox',
             'max_costs_max_sandbox',

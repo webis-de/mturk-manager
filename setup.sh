@@ -3,4 +3,4 @@
 
 git pull
 
-pip3 install django==2.0
+pip3 install django==2.2.1

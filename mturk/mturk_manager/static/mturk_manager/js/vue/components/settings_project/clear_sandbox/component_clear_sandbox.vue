@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h2 class="headline">Sandbox</h2>
     <v-dialog v-model="dialog" max-width="500">
       <v-btn slot="activator" color="warning">
         <v-icon>delete</v-icon>

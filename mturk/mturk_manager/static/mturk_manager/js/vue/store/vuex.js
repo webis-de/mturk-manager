@@ -13,7 +13,7 @@ import { moduleBatches } from './modules/batches.store.js';
 import { moduleHITs } from './modules/hits.js';
 import { moduleAssignments } from './modules/assignments.js';
 import { moduleKeywords } from './modules/keywords.js';
-import { moduleMessagesReject } from './modules/messages_reject.js';
+import { moduleMessages } from './modules/messages.store';
 import { module_app } from './modules/app';
 import { module_finances } from './modules/finances';
 import { moduleSettingsBatch } from './modules/settings-batch';
@@ -34,7 +34,7 @@ export const store = new Vuex.Store({
     moduleHITs,
     moduleAssignments,
     moduleKeywords,
-    moduleMessagesReject,
+    moduleMessages,
     moduleSettingsBatch,
     moduleTemplates,
   },

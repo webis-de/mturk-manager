@@ -44,6 +44,14 @@ class ClassServiceApp {
     return response;
   }
 
+  async resetChangelog() {
+    await store.dispatch('module_app/setState', {
+      objectState: [],
+      nameState: 'changelog',
+      nameLocalStorage: 'changelog',
+    });
+  }
+
   async loadChangelog() {
     const response = await Service_Endpoint.make_request({
       url: {

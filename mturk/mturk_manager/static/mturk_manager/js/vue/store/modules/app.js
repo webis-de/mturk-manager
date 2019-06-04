@@ -10,7 +10,7 @@ export const module_app = _.merge({}, baseModule, {
     token_instance: null,
     use_sandbox: true,
     version_api: null,
-    version: '1.3.0',
+    version: '1.4.0',
     changelog: [],
     versionSeen: null,
   },
@@ -78,7 +78,7 @@ export const module_app = _.merge({}, baseModule, {
       commit('moduleBatches/set_urls', config.paths, { root: true });
       commit('moduleHITs/set_urls', config.paths, { root: true });
       commit('moduleKeywords/set_urls', config.paths, { root: true });
-      commit('moduleMessagesReject/set_urls', config.paths, { root: true });
+      commit('moduleMessages/set_urls', config.paths, { root: true });
       commit('moduleProjects/set_urls', config.paths, { root: true });
       commit('moduleWorkers/set_urls', config.paths, { root: true });
       commit('module_finances/set_urls', config.paths, { root: true });
@@ -92,6 +92,7 @@ export const module_app = _.merge({}, baseModule, {
         dispatch('moduleWorkers/init', null, { root: true }),
         dispatch('moduleSettingsBatch/init', null, { root: true }),
         dispatch('moduleTemplates/init', null, { root: true }),
+        dispatch('moduleMessages/init', null, { root: true }),
       ]);
     },
     async set_use_sandbox({ commit }, use_sandbox) {

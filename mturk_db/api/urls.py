@@ -71,9 +71,20 @@ urlpatterns = format_suffix_patterns([
     path('projects/<str:slug_project>/clear_sandbox', views.clear_sandbox, name='clear_sandbox'),
     path('projects/<str:slug_project>/ping', views.ping, name='ping'),
 
+    ##################################################################
+    # Messages
+    ##################################################################
+    path('messagesReject', views.MessagesReject.as_view(), name='messages_reject'),
+    # path('messagesApprove', views.MessagesApprove.as_view(), name='messages_approve'),
+    # path('messagesReason', views.MessagesReason.as_view(), name='messages_reason'),
 
-    path('api/messages_reject', views.Messages_Reject.as_view(), name='messages_reject'),
-    path('api/keywords', views.Keywords.as_view(), name='keywords'),
+    path('projects/<str:slug_project>/messagesReject', views.ProjectMessagesReject.as_view(), name='messages_reject_for_project'),
+    # path('projects/<str:slug_project>/messagesApprove', views.ProjectMessagesReject.as_view(), name='messages_approve_for_project'),
+    # path('projects/<str:slug_project>/messagesReason', views.ProjectMessagesReject.as_view(), name='messages_reason_for_project'),
+
+    path('projects/<str:slug_project>/messagesReject/<int:id_message>', views.ProjectMessageReject.as_view(), name='message_reject_for_project'),
+
+    path('keywords', views.Keywords.as_view(), name='keywords'),
 
     path('projects/<str:slug_project>/workers/status_block/<str:id_worker>', views.status_block_for_worker),
     path('projects/<str:slug_project>/workers/increment_counter', views.increment_counter_for_worker),

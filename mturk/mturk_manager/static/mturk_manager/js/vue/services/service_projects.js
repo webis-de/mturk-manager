@@ -126,7 +126,9 @@ class Class_Service_Projects {
     });
   }
 
-  async set_message_reject_default({ project, message_reject }) {
+  async setMessageRejectDefault({ message }) {
+    const project = store.getters['moduleProjects/get_project_current'];
+
     const response = await Service_Endpoint.make_request({
       method: 'put',
       url: {
@@ -135,7 +137,7 @@ class Class_Service_Projects {
         value: project.slug,
       },
       data: {
-        message_reject,
+        message_reject_default: message,
       },
     });
 
@@ -145,9 +147,9 @@ class Class_Service_Projects {
       array_fields: ['message_reject_default'],
     });
 
-    store.commit('moduleMessagesReject/add_message_reject', {
-      message_reject: response.data.message_reject_default,
-    });
+    // store.commit('moduleMessages/add_message_reject', {
+    //   message_reject: response.data.message_reject_default,
+    // });
   }
 
   async set_count_assignments_max_per_worker({
@@ -232,6 +234,7 @@ class Class_Service_Projects {
       fields: [
         'amount_budget_max',
         'count_assignments_max_per_worker',
+        'message_reject_default',
 
         'sum_costs_max_sandbox',
         'max_costs_max_sandbox',

@@ -5,7 +5,7 @@ from rest_framework.settings import api_settings
 from rest_framework.views import APIView
 
 from api.classes import Manager_Workers
-from api.helpers import add_database_object_project
+from api.helpers import add_database_object_project, paginate_queryset
 from api.serializers import Serializer_Worker
 from mturk_db.permissions import IsInstance, IsWorker, AllowOptionsAuthentication
 from mturk_db.settings import REST_FRAMEWORK
@@ -24,14 +24,7 @@ class Workers(APIView):
             request=request
         )
 
-        queryset_paginated = queryset
-
-        if request.query_params.get(REST_FRAMEWORK['PAGE_SIZE_QUERY_PARAM']) is not None:
-            paginator = api_settings.DEFAULT_PAGINATION_CLASS()
-            queryset_paginated = paginator.paginate_queryset(queryset, request)
-            count_items = paginator.page.paginator.count
-        else:
-            count_items = queryset.count()
+        queryset_paginated, count_items = paginate_queryset(queryset, request)
 
         serializer = Serializer_Worker(
             queryset_paginated,

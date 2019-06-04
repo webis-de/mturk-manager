@@ -13,7 +13,7 @@ RUN apt-get update
 # To prevent timezone info prompt during postgresql installation
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y tzdata
 RUN apt-get install -y --no-install-recommends git python3-pip postgresql postgresql-contrib nano apache2 apache2-dev python3-psycopg2 libapache2-mod-wsgi-py3
-RUN pip3 install psycopg2 django==2.0 boto3 xmltodict djangorestframework markdown requests
+RUN pip3 install psycopg2 django==2.2.1 boto3 xmltodict djangorestframework markdown requests
 
 #RUN apt-get install -y --no-install-recommends git python3-pip python3.6-dev postgresql postgresql-contrib nano apache2 apache2-dev python3-psycopg2 libpq-dev
 ##RUN apt-get install -y --no-install-recommends git python3-pip postgresql postgresql-contrib nano apache2 libapache2-mod-wsgi-py3 python3-psycopg2 libpq-dev
