@@ -11,6 +11,7 @@ The whole tool is built on top of the [Django-Framework](https://www.djangoproje
 * Python 3.6+
 
 ## Frontend
+The frontend server is needed to serve the UI of the MTurk Manager.
 
 ### Installation / Update
 
@@ -27,6 +28,7 @@ The whole tool is built on top of the [Django-Framework](https://www.djangoproje
 You can execute `python3 manage.py migrate` if the message bothers you.
 
 ## Backend
+The backend server serves the MTurk Manager api which responses the requests coming from the frontend.
 
 ### Installation / Update
 1. Execute `./setup_db.sh` to pull changes from the repository and install missing dependencies.
@@ -36,7 +38,6 @@ You can execute `python3 manage.py migrate` if the message bothers you.
 ### Run Server
 1. Run `cd mturk_db`
 2. Run `python3 manage.py runserver 8001` to start the server _([more](https://docs.djangoproject.com/en/2.2/ref/django-admin/#django-admin-runserver) on how to start a django server)_
-3. Visit [localhost:8001](http://localhost:8001)
 
 ## Supported Features
 * Create and manage mechanical turk projects
