@@ -8,35 +8,41 @@ The instructions can be found in the [Wiki](https://github.com/webis-de/mturk-ma
 The whole tool is built on top of the [Django-Framework](https://www.djangoproject.com/).  
 
 ## Requirements
-* Python 3.5+
+* Python 3.6+
 
-## Installation Frontend
+## Frontend
+
+### Installation / Update
+
 **Note:** If you want to use a virtual environment like `virtualenv` switch to the virtual environment before executing the following step!
 
-Run `./setup.sh` to pull changes from the repository and install missing dependencies.
+1. Execute `./setup.sh` to pull changes from the repository and install missing dependencies.
 
-## Update Frontend
-Run `./setup.sh` to pull changes from the repository and install missing dependencies.
-
-## Installation Backend
-1. Run `./setup_db.sh`
-
-## Quickstart
-1. Run `cd mturk`
-2. Run `python3 manage.py runserver` to start the server _([more](https://docs.djangoproject.com/en/2.0/ref/django-admin/#django-admin-runserver) on how to start a django server)_
+### Run Server
+1. Execute `cd mturk`
+2. Execute `python3 manage.py runserver 8000` to start the server _([more](https://docs.djangoproject.com/en/2.2/ref/django-admin/#django-admin-runserver) on how to start a django server)_
 3. Visit [localhost:8000](http://localhost:8000)
 
 **Note** You can safely ignore the following message in the terminal: `You have XXX unapplied migration(s)`.  
 You can execute `python3 manage.py migrate` if the message bothers you.
+
+## Backend
+
+### Installation / Update
+1. Execute `./setup_db.sh` to pull changes from the repository and install missing dependencies.
+2. Execute `cd mturk`
+3. Execute `python3 manage.py migrate`
+
+### Run Server
+1. Run `cd mturk_db`
+2. Run `python3 manage.py runserver 8001` to start the server _([more](https://docs.djangoproject.com/en/2.2/ref/django-admin/#django-admin-runserver) on how to start a django server)_
+3. Visit [localhost:8001](http://localhost:8001)
 
 ## Supported Features
 * Create and manage mechanical turk projects
 * Define **multiple** worker templates per project
 * Customize the layout of the worker results
 * Extensive approve/reject facility
-
-## Upcoming Features
-* Filter and download the hit results as json or csv
 
 ## Contributors
 * Kristof Komlossy
