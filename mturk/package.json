@@ -78,7 +78,7 @@
   "lint-staged": {
     "linters": {
       "*.{js,vue}": [
-        "yarn eslint --fix",
+        "npm eslint --fix",
         "git add"
       ]
     },
