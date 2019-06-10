@@ -120,6 +120,20 @@ export default class Controller {
     );
 
     $(document).on(
+      'change',
+      '#input_select_messages_reject',
+      {
+        loader: this.loader,
+        view: this.view,
+      },
+      async function (event) {
+        const idMessage = parseInt($(this).val(), 10);
+        const textMessage = event.data.loader.array_messages_reject.find(message => message.id === idMessage);
+        $('#message_reject_default').val(textMessage.message);
+      },
+    );
+
+    $(document).on(
       'click',
       '.dropdown_reject_assignment a',
       {

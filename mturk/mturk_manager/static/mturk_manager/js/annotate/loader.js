@@ -14,7 +14,7 @@ export default class Loader {
       url_api_hits: `projects/${this.PLACEHOLDER_SLUG_PROJECT}/hits_for_annotation`,
       url_api_batches: `projects/${this.PLACEHOLDER_SLUG_PROJECT}/batches_for_annotation`,
       url_api_workers: `projects/${this.PLACEHOLDER_SLUG_PROJECT}/workers`,
-      url_api_messages_reject: 'messagesReject',
+      url_api_messages_reject: `projects/${this.PLACEHOLDER_SLUG_PROJECT}/messagesReject`,
     };
     this.project = {};
     this.message_reject_default = '';
@@ -51,7 +51,7 @@ export default class Loader {
       },
     });
 
-    this.array_messages_reject = _.orderBy(result, 'usage_count', 'desc');
+    this.array_messages_reject = _.orderBy(result.data, 'usage_count', 'desc');
   }
 
   async load_project() {

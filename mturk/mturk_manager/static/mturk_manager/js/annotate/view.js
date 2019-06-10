@@ -37,6 +37,15 @@ export default class View {
     } else {
       $('#message_reject_default').val('');
     }
+
+    let messagesReject = '<option disabled selected>Select a reject message</option>';
+    _.forEach(this.loader.array_messages_reject, (messageReject) => {
+      messagesReject += `
+        <option value="${messageReject.id}"
+        >${messageReject.message}</option>`;
+    });
+
+    $('#input_select_messages_reject').append(messagesReject);
   }
 
   update_info() {
