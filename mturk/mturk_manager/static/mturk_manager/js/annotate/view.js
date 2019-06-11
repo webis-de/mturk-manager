@@ -2,8 +2,9 @@ import _ from 'lodash';
 import { STATUS_EXTERNAL, STATUS_INTERNAL } from '../vue/classes/enums';
 
 export default class View {
-  constructor(loader) {
+  constructor(loader, controller) {
     this.loader = loader;
+    this.controller = controller;
     this.wrapper_hits = $('#wrapper_hits');
     this.button_submit = $('[data-task="submit_annotations"]');
     this.dropdown_reject_assignment = $('.dropdown_reject_assignment');
@@ -329,5 +330,22 @@ export default class View {
     result = result.replace(/PLACEHOLDER_MESSAGES_REJECT/g, messages_reject);
 
     return result;
+  }
+
+  updateProgress() {
+    let progress = 0;
+    let label = '0%';
+
+    if (this.controller.stepActiveInternal !== null) {
+      progress = ((this.controller.stepActiveInternal + 1) / this.controller.steps.length) * 100;
+      label = `${progress}% ${this.controller.steps[this.controller.stepActiveInternal].label}`;
+    }
+
+    $('#wrapper_progress .progress-bar').css('width', `${progress}%`);
+    $('#wrapper_progress span').html(label);
+
+    if (progress >= 100) {
+      $('#wrapper_progress').hide();
+    }
   }
 }

@@ -3,7 +3,8 @@ import localforage from 'localforage';
 import { normalize_answer } from './helpers';
 
 export default class Loader {
-  constructor() {
+  constructor(controller) {
+    this.controller = controller;
     this.url_api = null;
     this.token_instance = null;
     this.PLACEHOLDER_SLUG_PROJECT = 'PLACEHOLDER_SLUG_PROJECT';
@@ -30,6 +31,7 @@ export default class Loader {
   }
 
   async sync_data() {
+    this.controller.stepActive = null;
     await this.load_project();
     await this.load_assignments();
     await this.load_hits();
@@ -52,6 +54,8 @@ export default class Loader {
     });
 
     this.array_messages_reject = _.orderBy(result.data, 'usage_count', 'desc');
+
+    this.controller.stepActive = 4;
   }
 
   async load_project() {
@@ -73,6 +77,8 @@ export default class Loader {
     if (this.project.message_reject_default !== undefined && this.project.message_reject_default !== null) {
       this.message_reject_default = this.project.message_reject_default.message;
     }
+
+    this.controller.stepActive = 0;
   }
 
   async load_assignments() {
@@ -95,6 +101,8 @@ export default class Loader {
       assignment.answer = normalize_answer(assignment.answer);
       this.object_assignments[assignment.id] = assignment;
     });
+
+    this.controller.stepActive = 1;
   }
 
   async load_hits() {
@@ -131,6 +139,8 @@ export default class Loader {
         hit.assignments.push(assignment);
       }
     });
+
+    this.controller.stepActive = 2;
   }
 
   async load_batches() {
@@ -166,6 +176,8 @@ export default class Loader {
         batch.hits.push(hit);
       }
     });
+
+    this.controller.stepActive = 3;
   }
 
   // async load_workers() {

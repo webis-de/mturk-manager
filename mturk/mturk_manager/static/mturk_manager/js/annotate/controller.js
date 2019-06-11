@@ -5,8 +5,28 @@ import { add_to_object_assignments_selected } from './helpers';
 
 export default class Controller {
   constructor() {
-    this.loader = new Loader();
-    this.view = new View(this.loader);
+    this.loader = new Loader(this);
+    this.view = new View(this.loader, this);
+
+    this.progress = 0;
+    this.steps = [
+      {
+        label: 'Loading Project Settings...',
+      },
+      {
+        label: 'Loading Assignments',
+      },
+      {
+        label: 'Loading HITs',
+      },
+      {
+        label: 'Loading Batches',
+      },
+      {
+        label: 'Loading Reject Messages',
+      },
+    ];
+    this.stepActiveInternal = null;
   }
 
   async init() {
@@ -21,6 +41,12 @@ export default class Controller {
 
     await this.loader.sync_data();
     this.view.update();
+  }
+
+  set stepActive(step) {
+    this.stepActiveInternal = step;
+    console.warn(`update progress to ${this.progress}`);
+    this.view.updateProgress();
   }
 
   init_events() {
