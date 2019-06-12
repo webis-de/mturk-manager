@@ -4,6 +4,7 @@
       <v-container
         fluid
         grid-list-md
+        class="pa-0"
       >
         <v-layout>
           <v-flex xs6>
@@ -33,13 +34,6 @@
                       Webis
                     </a>
                   </v-list-tile>
-
-<!--                  <v-list-tile>-->
-<!--                    <v-spacer />-->
-<!--                    <a href="https://webis.de/">-->
-<!--                      Webis-->
-<!--                    </a>-->
-<!--                  </v-list-tile>-->
                 </v-list>
               </v-card-text>
             </v-card>

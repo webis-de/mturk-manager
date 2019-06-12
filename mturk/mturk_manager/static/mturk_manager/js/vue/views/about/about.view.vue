@@ -8,7 +8,9 @@
       <v-flex shrink>
         <v-layout justify-center>
           <v-flex class="text-xs-center">
-            <h1 class="headline">About</h1>
+            <h1 class="headline">
+              About
+            </h1>
             <about />
             <v-btn
               small

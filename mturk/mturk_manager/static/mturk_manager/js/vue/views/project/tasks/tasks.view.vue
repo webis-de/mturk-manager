@@ -20,50 +20,82 @@
               Assignments
             </v-tab>
 
-            <v-tabs-items>
+            <v-tabs-items class="mt-1">
               <v-tab-item
                 key="batches"
               >
-                <v-card class="pa-1">
-                  <list-batches>
-                    <template v-slot:actions>
-                      <component-download-batch />
-                    </template>
-                  </list-batches>
-                </v-card>
+                <v-container
+                  fluid
+                  grid-list-md
+                  class="pa-0"
+                >
+                  <v-layout wrap>
+                    <v-flex xs>
+                      <v-card class="pa-1">
+                        <list-batches>
+                          <template v-slot:actions>
+                            <component-download-batch />
+                          </template>
+                        </list-batches>
+                      </v-card>
+                    </v-flex>
+                  </v-layout>
+                  <v-layout />
+                </v-container>
               </v-tab-item>
 
               <v-tab-item
                 key="hits"
               >
-                <v-card class="pa-1">
-                  <list-hits />
-                </v-card>
+                <v-container
+                  fluid
+                  grid-list-md
+                  class="pa-0"
+                >
+                  <v-layout wrap>
+                    <v-flex xs>
+                      <v-card class="pa-1">
+                        <list-hits />
+                      </v-card>
+                    </v-flex>
+                  </v-layout>
+                  <v-layout />
+                </v-container>
               </v-tab-item>
 
               <v-tab-item
                 key="assignment"
               >
-                <v-card class="pa-1">
-                  <list-assignments>
-                    <template v-slot:actions>
-                      <component-annotate />
-                    </template>
-                  </list-assignments>
-                </v-card>
+                <v-container
+                  fluid
+                  grid-list-md
+                  class="pa-0"
+                >
+                  <v-layout wrap>
+                    <v-flex xs>
+                      <v-card class="pa-1">
+                        <list-assignments>
+                          <template v-slot:actions>
+                            <component-annotate />
+                          </template>
+                        </list-assignments>
+                      </v-card>
+                    </v-flex>
+                  </v-layout>
+                  <v-layout />
+                </v-container>
               </v-tab-item>
             </v-tabs-items>
           </v-tabs>
         </v-flex>
       </v-layout>
 
-      <create-batch></create-batch>
+      <create-batch />
     </template>
   </div>
 </template>
 
 <script>
-import { mapMutations, mapState } from 'vuex';
 import ComponentDownloadBatch from '../../../components/batches/component_download_batch';
 import ListBatches from '../../../components/batches/list/list-batches';
 import ListHits from '../../../components/hits/list/list-hits';
@@ -75,7 +107,11 @@ export default {
   name: 'Tasks',
   components: {
     CreateBatch,
-    ComponentAnnotate, ListAssignments, ListHits, ListBatches, ComponentDownloadBatch,
+    ComponentAnnotate,
+    ListAssignments,
+    ListHits,
+    ListBatches,
+    ComponentDownloadBatch,
   },
   data() {
     return {

@@ -15,72 +15,107 @@
             Assignments
           </v-tab>
 
-          <v-tabs-items>
+          <v-tabs-items class="mt-1">
             <v-tab-item
               key="batches"
             >
-              <v-card class="pa-1">
-                <list-batches
-                  name-state-pagination="paginationFinances"
-                  name-local-storage-pagination="pagination_batches_finances"
+              <v-container
+                fluid
+                grid-list-md
+                class="pa-0"
+              >
+                <v-layout wrap>
+                  <v-flex xs>
+                    <v-card class="pa-1">
+                      <list-batches
+                        name-state-pagination="paginationFinances"
+                        name-local-storage-pagination="pagination_batches_finances"
 
-                  name-local-storage-columns-selected="array_columns_batches_finances"
-                  name-state-columns-selected="array_columns_selected_finances"
-                  name-state-columns-selected-initial="array_columns_selected_initial_finances"
+                        name-local-storage-columns-selected="array_columns_batches_finances"
+                        name-state-columns-selected="array_columns_selected_finances"
+                        name-state-columns-selected-initial="array_columns_selected_initial_finances"
 
-                  v-bind:filters="filtersBatches"
-                  name-state-filters="objectFiltersFinances"
-                  name-local-storage-filters="filtersBatchesFinances"
-                />
-              </v-card>
+                        v-bind:filters="filtersBatches"
+                        name-state-filters="objectFiltersFinances"
+                        name-local-storage-filters="filtersBatchesFinances"
+                      />
+                    </v-card>
+                  </v-flex>
+                </v-layout>
+                <v-layout />
+              </v-container>
             </v-tab-item>
 
             <v-tab-item
               key="hits"
             >
-              <v-card class="pa-1">
-                <list-hits
-                  name-state-pagination="paginationFinances"
-                  name-local-storage-pagination="pagination_hits_finances"
+              <v-container
+                fluid
+                grid-list-md
+                class="pa-0"
+              >
+                <v-layout wrap>
+                  <v-flex xs>
+                    <v-card class="pa-1">
+                      <list-hits
+                        name-state-pagination="paginationFinances"
+                        name-local-storage-pagination="pagination_hits_finances"
 
-                  name-local-storage-columns-selected="array_columns_hits_finances"
-                  name-state-columns-selected="array_columns_selected_finances"
-                  name-state-columns-selected-initial="array_columns_selected_initial_finances"
+                        name-local-storage-columns-selected="array_columns_hits_finances"
+                        name-state-columns-selected="array_columns_selected_finances"
+                        name-state-columns-selected-initial="array_columns_selected_initial_finances"
 
-                  v-bind:filters="filtersHITs"
-                  name-state-filters="objectFiltersFinances"
-                  name-local-storage-filters="filtersHITsFinances"
-                />
-              </v-card>
+                        v-bind:filters="filtersHITs"
+                        name-state-filters="objectFiltersFinances"
+                        name-local-storage-filters="filtersHITsFinances"
+                      />
+                    </v-card>
+                  </v-flex>
+                </v-layout>
+                <v-layout />
+              </v-container>
             </v-tab-item>
 
             <v-tab-item
               key="assignment"
             >
-              <v-card class="pa-1">
-                <list-assignments
-                  name-state-pagination="paginationFinances"
-                  name-local-storage-pagination="pagination_assignments_finances"
+              <v-container
+                fluid
+                grid-list-md
+                class="pa-0"
+              >
+                <v-layout wrap>
+                  <v-flex xs>
+                    <v-card class="pa-1">
+                      <list-assignments
+                        name-state-pagination="paginationFinances"
+                        name-local-storage-pagination="pagination_assignments_finances"
 
-                  name-local-storage-columns-selected="array_columns_assignments_finances"
-                  name-state-columns-selected="array_columns_selected_finances"
-                  name-state-columns-selected-initial="array_columns_selected_initial_finances"
+                        name-local-storage-columns-selected="array_columns_assignments_finances"
+                        name-state-columns-selected="array_columns_selected_finances"
+                        name-state-columns-selected-initial="array_columns_selected_initial_finances"
 
-                  v-bind:filters="filtersAssignments"
-                  name-state-filters="objectFiltersFinances"
-                  name-local-storage-filters="filtersAssignmentsFinances"
-                />
-              </v-card>
+                        v-bind:filters="filtersAssignments"
+                        name-state-filters="objectFiltersFinances"
+                        name-local-storage-filters="filtersAssignmentsFinances"
+                      />
+                    </v-card>
+                  </v-flex>
+                </v-layout>
+                <v-layout />
+              </v-container>
             </v-tab-item>
           </v-tabs-items>
         </v-tabs>
       </v-flex>
     </v-layout>
 
-    <v-divider class="my-3" />
+    <v-divider class="my-2" />
+
     <v-container
       fluid
-      class="pa-0 grid-list-lg"
+      class="pa-0"
+      grid-list-md
     >
       <v-layout>
         <v-flex

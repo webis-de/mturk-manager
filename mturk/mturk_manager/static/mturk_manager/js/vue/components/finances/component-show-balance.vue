@@ -1,6 +1,5 @@
 <template>
   <div class="subheading">
-    {{expenses}}
     <!--Current balance:-->
     <base-calculation
       v-if="get_balance() !== null"

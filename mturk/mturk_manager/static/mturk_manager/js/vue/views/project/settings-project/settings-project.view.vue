@@ -15,117 +15,129 @@
           Messages
         </v-tab>
 
-        <v-tabs-items>
+        <v-tabs-items class="mt-1">
           <v-tab-item
             key="general"
           >
-            <v-card class="pa-2">
-              <v-container
-                fluid
-                pa-0
-                grid-list-lg
-              >
-                <v-layout wrap>
-                  <v-flex
-                    xs
-                  >
-                    <budget/>
-                  </v-flex>
-<!--                </v-layout>-->
-<!--                <v-layout>-->
-                  <v-flex xs>
+            <v-container
+              fluid
+              grid-list-md
+              class="pa-0"
+            >
+              <v-layout wrap>
+                <v-flex xs>
+                  <v-card class="pa-2">
+                    <budget />
+                  </v-card>
+                </v-flex>
+                <v-flex xs>
+                  <v-card class="pa-2">
                     <component-block-limit />
-                  </v-flex>
-                </v-layout>
+                  </v-card>
+                </v-flex>
+              </v-layout>
 
-                <v-layout wrap>
-                  <v-flex
-                    xs
-                  >
+              <v-layout wrap>
+                <v-flex
+                  xs
+                >
+                  <v-card class="pa-2">
                     <h2 class="headline">
                       Batch Profiles
                     </h2>
                     <table-settings-batch />
-                  </v-flex>
-                </v-layout>
+                  </v-card>
+                </v-flex>
+              </v-layout>
 
-                <v-layout wrap>
-                  <v-flex xs>
-                    <h2 class="headline">Sandbox</h2>
+              <v-layout wrap>
+                <v-flex shrink>
+                  <v-card class="pa-2">
+                    <h2 class="headline">
+                      Sandbox
+                    </h2>
                     <component-clear-sandbox />
-                  </v-flex>
-                </v-layout>
-              </v-container>
-            </v-card>
+                  </v-card>
+                </v-flex>
+              </v-layout>
+            </v-container>
           </v-tab-item>
 
           <v-tab-item
             key="templates"
           >
-            <v-card class="pa-2">
-              <v-container
-                fluid
-                pa-0
-                grid-list-lg
-              >
-                <v-layout wrap>
-                  <v-flex xs>
+            <v-container
+              fluid
+              grid-list-md
+              class="pa-0"
+            >
+              <v-layout wrap>
+                <v-flex xs>
+                  <v-card class="pa-2">
                     <h2 class="headline">
                       Worker Templates
                     </h2>
                     <table-templates-worker />
-                  </v-flex>
-                </v-layout>
+                  </v-card>
+                </v-flex>
+              </v-layout>
 
-                <v-layout wrap>
-                  <v-flex>
+              <v-layout wrap>
+                <v-flex>
+                  <v-card class="pa-2">
                     <h2 class="headline">
                       Assignment Templates
                     </h2>
                     <table-templates-assignment />
-                  </v-flex>
-                </v-layout>
+                  </v-card>
+                </v-flex>
+              </v-layout>
 
-                <v-layout wrap>
-                  <v-flex>
+              <v-layout wrap>
+                <v-flex>
+                  <v-card class="pa-2">
                     <h2 class="headline">
                       HIT Templates
                     </h2>
                     <table-templates-hit />
-                  </v-flex>
-                </v-layout>
+                  </v-card>
+                </v-flex>
+              </v-layout>
 
-                <v-layout wrap>
-                  <v-flex>
+              <v-layout wrap>
+                <v-flex>
+                  <v-card class="pa-2">
                     <h2 class="headline">
                       Global Templates
                     </h2>
                     <table-templates-global />
-                  </v-flex>
-                </v-layout>
-              </v-container>
-            </v-card>
+                  </v-card>
+                </v-flex>
+              </v-layout>
+            </v-container>
           </v-tab-item>
 
           <v-tab-item
             key="messages"
           >
-            <v-card class="pa-2">
-              <v-container
-                fluid
-                pa-0
-                grid-list-lg
-              >
-                <v-layout wrap>
-                  <v-flex>
+            <v-container
+              fluid
+              grid-list-md
+              class="pa-0"
+            >
+              <v-layout wrap>
+                <v-flex xs>
+                  <v-card class="pa-2">
                     <h2 class="headline">
                       Reject Messages
                     </h2>
                     <table-messages-reject />
-                  </v-flex>
-                </v-layout>
-              </v-container>
-            </v-card>
+                  </v-card>
+                </v-flex>
+              </v-layout>
+
+              <v-layout wrap />
+            </v-container>
           </v-tab-item>
         </v-tabs-items>
       </v-tabs>
@@ -208,8 +220,8 @@
 </template>
 
 <script>
-import ComponentBlockLimit from '../../../components/settings_project/block_limit/component_block_limit.vue';
-import ComponentClearSandbox from '../../../components/settings_project/clear_sandbox/component_clear_sandbox.vue';
+import ComponentBlockLimit from '../../../components/settings_project/block_limit/component_block_limit';
+import ComponentClearSandbox from '../../../components/settings_project/clear_sandbox/component_clear_sandbox';
 import Budget from '../../../components/finances/budget';
 import TableTemplatesWorker from '../../../components/settings_project/templates_worker/table-templates-worker';
 import TableTemplatesAssignment from '../../../components/settings_project/templates_assignment/table-templates-assignment';
@@ -256,7 +268,7 @@ export default {
           break;
       }
     },
-  }
+  },
 };
 </script>
 
