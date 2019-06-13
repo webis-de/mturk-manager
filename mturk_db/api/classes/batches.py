@@ -654,7 +654,17 @@ class Manager_Batches(Interface_Manager_Items):
             dict_result['creation'] = assignment.hit.datetime_creation
             dict_result['expiration'] = assignment.hit.datetime_expiration
             dict_result['status_external'] = 'SUBMITTED' if assignment.status_external is None else STATUS_EXTERNAL(assignment.status_external).name
-            dict_result['status_internal'] = 'SUBMITTED' if assignment.status_internal is None else STATUS_INTERNAL(assignment.status_internal).name
+
+            if assignment.status_internal is None:
+                if assignment.status_external is None:
+                    dict_result['status_internal'] = 'SUBMITTED'
+                elif assignment.status_external == STATUS_EXTERNAL.APPROVED:
+                    dict_result['status_internal'] = STATUS_EXTERNAL.APPROVED.name
+                elif assignment.status_external == STATUS_EXTERNAL.REJECTED:
+                    dict_result['status_internal'] = STATUS_EXTERNAL.REJECTED.name
+            else:
+                dict_result['status_internal'] = STATUS_INTERNAL(assignment.status_internal).name
+
             dict_result.update(dict_question)
             dict_result.update(dict_answer)
 
