@@ -113,13 +113,6 @@ export default {
     ListBatches,
     ComponentDownloadBatch,
   },
-  data() {
-    return {
-      indexTab: 0,
-    };
-  },
-  computed: {
-  },
   methods: {
     changedView(index) {
       switch (index) {

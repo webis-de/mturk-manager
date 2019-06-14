@@ -2,7 +2,7 @@
   <v-layout>
     <v-flex>
       <v-tabs
-        v-bind:value="$route.meta.type"
+        v-bind:value="$route.meta.index"
         v-on:change="changedView($event)"
       >
         <v-tab key="general">
@@ -242,9 +242,6 @@ export default {
     Budget,
     ComponentBlockLimit,
     ComponentClearSandbox,
-  },
-  data() {
-    return {};
   },
   methods: {
     changedView(index) {
