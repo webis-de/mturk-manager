@@ -70,7 +70,6 @@ export const moduleMessages = _.merge({}, baseModule, {
     arrayColumnsSelectedAdmin: [
       'message',
       'count_usage',
-      'actions',
     ],
   },
   getters: {
