@@ -40,7 +40,7 @@ export default {
     isDefault() {
       const projectCurrent = this.$store.getters['moduleProjects/get_project_current'];
 
-      if (projectCurrent.message_reject_default === null) {
+      if (projectCurrent.message_reject_default === null || projectCurrent.message_reject_default === undefined) {
         return false;
       }
 
