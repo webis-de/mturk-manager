@@ -22,14 +22,14 @@ export const moduleWorkers = _.merge({}, baseModule, {
 
     paginationGeneral: {
       rowsPerPage: 25,
-      sortBy: 'name',
+      sortBy: 'id_worker',
       descending: true,
     },
 
     array_columns_general: [
       {
         text: 'Name',
-        value: 'name',
+        value: 'id_worker',
         classes: ['text-xs-left'],
       },
       {
@@ -56,7 +56,7 @@ export const moduleWorkers = _.merge({}, baseModule, {
     ],
     array_columns_selected_general: null,
     array_columns_selected_initial_general: [
-      'name',
+      'id_worker',
       'counter_assignments',
       'block_soft',
       'block_soft_hard',
@@ -156,7 +156,7 @@ export const moduleWorkers = _.merge({}, baseModule, {
       }
 
       const obj_worker = new Worker(data_worker);
-      Vue.set(object_workers, obj_worker.name, obj_worker);
+      Vue.set(object_workers, obj_worker.id_worker, obj_worker);
     },
     set_worker(state, { worker, worker_new, array_fields }) {
       _.forEach(array_fields, (name_field) => {
@@ -280,23 +280,23 @@ export const moduleWorkers = _.merge({}, baseModule, {
       }
 
       _.forEach(object_workers, (worker) => {
-        if (set_blocked_soft.has(worker.name)) {
+        if (set_blocked_soft.has(worker.id_worker)) {
           Vue.set(worker, 'is_blocked_soft', true);
         } else {
           Vue.set(worker, 'is_blocked_soft', false);
         }
 
-        if (set_blocked_hard.has(worker.name)) {
+        if (set_blocked_hard.has(worker.id_worker)) {
           Vue.set(worker, 'is_blocked_hard', true);
         } else {
           Vue.set(worker, 'is_blocked_hard', false);
         }
 
-        if (object_counters.hasOwnProperty(worker.name)) {
+        if (object_counters.hasOwnProperty(worker.id_worker)) {
           Vue.set(
             worker,
             'count_assignments_limit',
-            object_counters[worker.name],
+            object_counters[worker.id_worker],
           );
         } else {
           Vue.set(worker, 'count_assignments_limit', 0);

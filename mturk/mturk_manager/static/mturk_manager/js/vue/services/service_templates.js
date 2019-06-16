@@ -1,8 +1,10 @@
 import { store } from '../store/vuex';
 import { Service_Endpoint } from './service_endpoint';
+import { BaseLoadPageService } from './baseLoadPage.service';
 
-class Class_Service_Templates {
+class Class_Service_Templates extends BaseLoadPageService {
   constructor() {
+    super();
     this.isLoadingWorkerAll = false;
     this.isLoadingAssignmentAll = false;
     this.isLoadingHITAll = false;
@@ -46,8 +48,9 @@ class Class_Service_Templates {
         break;
     }
 
-    const response = await Service_Endpoint.make_request({
-      method: 'get',
+    return super.loadPage({
+      pagination,
+      filters,
       url: {
         path: store.getters.get_url(
           urlTemplate,
@@ -55,20 +58,13 @@ class Class_Service_Templates {
         ),
         project,
       },
-      params: {
-        page: pagination.page,
-        page_size: pagination.rowsPerPage,
-        sort_by: pagination.sortBy,
-        descending: pagination.descending,
+      callback(response) {
+        store.commit('moduleTemplates/setItems', {
+          data: response.data.data,
+          typeTemplate,
+        });
       },
     });
-
-    store.commit('moduleTemplates/setItems', {
-      data: response.data.data,
-      typeTemplate,
-    });
-
-    return response.data.items_total;
   }
 
   async getAll({ typeTemplate, force = true }) {

@@ -5,7 +5,7 @@
       <v-checkbox v-model="props.selected" primary hide-details></v-checkbox>
     </td>
     <td
-      v-if="set_columns_selected.has('name')"
+      v-if="set_columns_selected.has('id_worker')"
       class="text-xs-left"
       v-bind:style="stylesCell"
     >
@@ -21,7 +21,7 @@
       v-bind:style="stylesCell"
     >
       <component-limit-assignments
-        v-bind:key="`component_limit_assignments_${props.item.name}`"
+        v-bind:key="`component_limit_assignments_${props.item.id_worker}`"
         v-bind:worker="worker"
       ></component-limit-assignments>
     </td>
@@ -31,7 +31,7 @@
       v-bind:style="stylesCell"
     >
       <component-block-soft-worker
-        v-bind:key="`component_block_soft_worker_${worker.name}`"
+        v-bind:key="`component_block_soft_worker_${worker.id_worker}`"
         v-bind:worker="worker"
       ></component-block-soft-worker>
     </td>
@@ -41,7 +41,7 @@
       v-bind:style="stylesCell"
     >
       <component-block-global-worker
-        v-bind:key="`component_block_global_worker_${worker.name}`"
+        v-bind:key="`component_block_global_worker_${worker.id_worker}`"
         v-bind:worker="worker"
       ></component-block-global-worker>
     </td>
@@ -51,7 +51,7 @@
       v-bind:style="stylesCell"
     >
       <component-block-hard-worker
-        v-bind:key="`component_block_hard_worker_${worker.name}`"
+        v-bind:key="`component_block_hard_worker_${worker.id_worker}`"
         v-bind:worker="worker"
       ></component-block-hard-worker>
     </td>

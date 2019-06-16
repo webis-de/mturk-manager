@@ -1,8 +1,9 @@
 import { Service_Endpoint } from './service_endpoint';
 import { store } from '../store/vuex';
 import Batch from '../classes/batch';
+import { BaseLoadPageService } from './baseLoadPage.service';
 
-class Class_Service_Batches {
+class Class_Service_Batches extends BaseLoadPageService {
   // async load_batches(force=false)
   // {
   // 	const use_sandbox = store.state.module_app.use_sandbox;
@@ -98,33 +99,26 @@ class Class_Service_Batches {
   // }
 
   async load_page(pagination, filters) {
-    const use_sandbox = store.state.module_app.use_sandbox;
+    const useSandbox = store.state.module_app.use_sandbox;
 
-    const response = await Service_Endpoint.make_request({
-      method: 'get',
+    return Class_Service_Batches.loadPage({
+      pagination,
+      filters,
       url: {
         path: store.getters.get_url(
           'url_api_projects_batches',
           'moduleBatches',
         ),
-        use_sandbox,
+        use_sandbox: useSandbox,
         project: store.getters['moduleProjects/get_project_current'],
       },
-      params: {
-        page: pagination.page,
-        page_size: pagination.rowsPerPage,
-        sort_by: pagination.sortBy,
-        descending: pagination.descending,
-        ...filters,
+      callback(response) {
+        store.commit('moduleBatches/set_batches', {
+          data: response.data.data,
+          use_sandbox: useSandbox,
+        });
       },
     });
-
-    store.commit('moduleBatches/set_batches', {
-      data: response.data.data,
-      use_sandbox,
-    });
-
-    return response.data.items_total;
   }
 
   async get_batch(id_batch) {

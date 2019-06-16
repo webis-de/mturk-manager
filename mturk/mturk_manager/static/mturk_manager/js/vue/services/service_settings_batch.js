@@ -1,13 +1,15 @@
 import { Service_Endpoint } from './service_endpoint';
 import { store } from '../store/vuex';
 import Settings_Batch from '../classes/settings_batch';
+import { BaseLoadPageService } from './baseLoadPage.service';
 
-class Class_Settings_Batch {
-  async loadPage(pagination) {
+class Class_Settings_Batch extends BaseLoadPageService {
+  async loadPage(pagination, filters) {
     const project = store.getters['moduleProjects/get_project_current'];
 
-    const response = await Service_Endpoint.make_request({
-      method: 'get',
+    return Class_Settings_Batch.loadPage({
+      pagination,
+      filters,
       url: {
         path: store.getters.get_url(
           'urlApiProjectsSettingsBatch',
@@ -15,20 +17,13 @@ class Class_Settings_Batch {
         ),
         project,
       },
-      params: {
-        page: pagination.page,
-        page_size: pagination.rowsPerPage,
-        sort_by: pagination.sortBy,
-        descending: pagination.descending,
+      callback(response) {
+        store.commit('moduleSettingsBatch/setItems', {
+          data: response.data.data,
+          project,
+        });
       },
     });
-
-    store.commit('moduleSettingsBatch/setItems', {
-      data: response.data.data,
-      project,
-    });
-
-    return response.data.items_total;
   }
 
   async getAll() {

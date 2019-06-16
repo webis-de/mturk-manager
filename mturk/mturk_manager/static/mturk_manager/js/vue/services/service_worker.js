@@ -3,8 +3,9 @@ import Vue from 'vue';
 import { store } from '../store/vuex';
 import { Service_Endpoint } from './service_endpoint';
 import { Service_Batches } from './service_batches';
+import { BaseLoadPageService } from './baseLoadPage.service';
 
-class Class_Service_Workers {
+class Class_Service_Workers extends BaseLoadPageService {
   async load_workers({ list_ids, use_sandbox, append }) {
     if (_.size(list_ids) === 0) {
       return;
@@ -158,51 +159,44 @@ class Class_Service_Workers {
   }
 
   async load_page(pagination, filters) {
-    const use_sandbox = store.state.module_app.use_sandbox;
+    const useSandbox = store.state.module_app.use_sandbox;
 
-    const response = await Service_Endpoint.make_request({
-      method: 'get',
-      url: {
-        path: store.getters.get_url('url_api_workers', 'moduleWorkers'),
-        use_sandbox,
-        project: store.getters['moduleProjects/get_project_current'],
-      },
-      params: {
-        page: pagination.page,
-        page_size: pagination.rowsPerPage,
-        ...filters,
-      },
-    });
-
-    store.commit('moduleWorkers/set_workers', {
-      data: response.data.data,
-      use_sandbox,
-    });
-
-    // fetch worker blocks asynchronously
-    Service_Endpoint.make_request({
-      method: 'patch',
+    return Class_Service_Workers.loadPage({
+      pagination,
+      filters,
       url: {
         path: store.getters.get_url(
-          'url_api_workers_get_blocks_hard',
+          'url_api_workers',
           'moduleWorkers',
         ),
-        use_sandbox,
+        use_sandbox: useSandbox,
         project: store.getters['moduleProjects/get_project_current'],
       },
-      params: {
-        // page: pagination.page,
-        // page_size: pagination.rowsPerPage,
-        // ...filters,
-      },
-    }).then((data) => {
-      store.commit('moduleWorkers/set_blocks_hard', {
-        data: data.data,
-        use_sandbox,
-      });
-    });
+      callback(response) {
+        store.commit('moduleWorkers/set_workers', {
+          data: response.data.data,
+          use_sandbox: useSandbox,
+        });
 
-    return response.data.items_total;
+        // fetch worker blocks asynchronously
+        Service_Endpoint.make_request({
+          method: 'patch',
+          url: {
+            path: store.getters.get_url(
+              'url_api_workers_get_blocks_hard',
+              'moduleWorkers',
+            ),
+            use_sandbox: useSandbox,
+            project: store.getters['moduleProjects/get_project_current'],
+          },
+        }).then((data) => {
+          store.commit('moduleWorkers/set_blocks_hard', {
+            data: data.data,
+            use_sandbox: useSandbox,
+          });
+        });
+      },
+    });
   }
 }
 

@@ -1,32 +1,29 @@
 import { store } from '../store/vuex';
 import { Service_Endpoint } from './service_endpoint';
+import { BaseLoadPageService } from './baseLoadPage.service';
 
-class Class_Service_HITs {
+class Class_Service_HITs extends BaseLoadPageService {
   async load_page(pagination, filters) {
-    const use_sandbox = store.state.module_app.use_sandbox;
+    const useSandbox = store.state.module_app.use_sandbox;
 
-    const response = await Service_Endpoint.make_request({
-      method: 'get',
+    return Class_Service_HITs.loadPage({
+      pagination,
+      filters,
       url: {
-        path: store.getters.get_url('url_api_projects_hits', 'moduleHITs'),
-        use_sandbox,
+        path: store.getters.get_url(
+          'url_api_projects_hits',
+          'moduleHITs',
+        ),
+        use_sandbox: useSandbox,
         project: store.getters['moduleProjects/get_project_current'],
       },
-      params: {
-        page: pagination.page,
-        page_size: pagination.rowsPerPage,
-        sort_by: pagination.sortBy,
-        descending: pagination.descending,
-        ...filters,
+      callback(response) {
+        store.commit('moduleHITs/set_hits', {
+          data: response.data.data,
+          use_sandbox: useSandbox,
+        });
       },
     });
-
-    store.commit('moduleHITs/set_hits', {
-      data: response.data.data,
-      use_sandbox,
-    });
-
-    return response.data.items_total;
   }
   // async set_hits({object_batches, data_batches, use_sandbox})
   // {
