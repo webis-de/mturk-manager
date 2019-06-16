@@ -15,7 +15,36 @@ from rest_framework.decorators import api_view, permission_classes
 from mturk_db.settings import REST_FRAMEWORK
 PERMISSIONS_INSTANCE_ONLY = (AllowOptionsAuthentication, IsInstance,)
 
+
 class Assignments(APIView):
+    permission_classes = PERMISSIONS_INSTANCE_ONLY
+
+    def get(self, request):
+        try:
+            use_sandbox = False if request.query_params['use_sandbox'] == 'false' else True
+        except KeyError:
+            use_sandbox = True
+
+        queryset = Manager_Assignments.get_all(
+            request=request,
+            use_sandbox=use_sandbox
+        )
+
+        queryset_paginated, count_items = paginate_queryset(queryset, request)
+
+        serializer = Serializer_Assignment(
+            queryset_paginated,
+            many=True,
+            context={'request': request}
+        )
+
+        return Response({
+            'items_total': count_items,
+            'data': serializer.data,
+        })
+
+
+class ProjectAssignments(APIView):
     permission_classes = PERMISSIONS_INSTANCE_ONLY
 
     @add_database_object_project
@@ -111,7 +140,7 @@ def assignments_for_annotation(request, slug_project, database_object_project, u
 #     return Response(dictionary_data)
 
 
-class Assignment(APIView):
+class ProjectAssignment(APIView):
     permission_classes = PERMISSIONS_INSTANCE_ONLY
 
     @add_database_object_project

@@ -16,22 +16,29 @@ from django.utils import timezone
 from api.classes import Interface_Manager_Items
 from api.classes.projects import Manager_Projects
 from api.enums import assignments, STATUS_EXTERNAL, STATUS_INTERNAL
-from api.models import Batch, HIT, Assignment, Settings_Batch, Worker
+from api.models import Batch, HIT, Assignment, Settings_Batch, Worker, Project
 from api.helpers import mturk_status_to_database_status
-import time
+
 
 class Manager_Batches(Interface_Manager_Items):
     @staticmethod
-    def get_all(database_object_project, request, fields=None, use_sandbox=None):
-        queryset = Batch.objects.filter(
-            project=database_object_project,
-            use_sandbox=use_sandbox,
-        ).select_related(
-            'settings_batch'
-        ).prefetch_related(
-            'settings_batch__keywords'
-        )
-        time.sleep(1)
+    def get_all(request: Request, database_object_project: Project = None, fields=None, use_sandbox=True):
+        if database_object_project is None:
+            queryset = Batch.objects.filter(
+                use_sandbox=use_sandbox
+            )
+        else:
+            queryset = Batch.objects.filter(
+                project=database_object_project,
+                use_sandbox=use_sandbox,
+            )
+
+        queryset = queryset.select_related(
+                'settings_batch'
+            ).prefetch_related(
+                'settings_batch__keywords'
+            )
+
         queryset = Manager_Batches.filter(
             queryset=queryset,
             request=request

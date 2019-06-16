@@ -15,6 +15,7 @@ export const moduleBatches = _.merge({}, baseModule, {
 
     url_api_assignments_real_approved: undefined,
 
+    url_api_batches: undefined,
     url_api_projects_batches: undefined,
     url_api_projects_batches_download: undefined,
     url_api_projects_batches_download_info: undefined,
@@ -274,6 +275,7 @@ export const moduleBatches = _.merge({}, baseModule, {
       // });
     },
     set_urls(state, config) {
+      state.url_api_batches = config.url_api_batches;
       state.url_api_projects_batches = config.url_api_projects_batches;
       state.url_api_projects_batches_download = config.url_api_projects_batches_download;
       state.url_api_projects_batches_download_info = config.url_api_projects_batches_download_info;

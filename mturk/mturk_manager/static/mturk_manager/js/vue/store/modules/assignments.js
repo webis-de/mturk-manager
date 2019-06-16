@@ -15,6 +15,7 @@ export const moduleAssignments = _.merge({}, baseModule, {
     array_assignments: null,
     array_assignments_sandbox: null,
     url_api_projects_assignments: undefined,
+    url_api_assignments: undefined,
 
     set_ids_worker: null,
     object_assignments_selected: {},
@@ -206,6 +207,7 @@ export const moduleAssignments = _.merge({}, baseModule, {
     },
     set_urls(state, config) {
       state.url_api_projects_assignments = config.url_api_projects_assignments;
+      state.url_api_assignments = config.url_api_assignments;
     },
     update(state, { assignment }) {
       let item = _.find(state.array_assignments, item => item.id === assignment.id);

@@ -16,6 +16,9 @@ export const moduleHITs = _.merge({}, baseModule, {
     array_hits: null,
     array_hits_sandbox: null,
 
+    url_api_projects_hits: undefined,
+    url_api_hits: undefined,
+
     object_hits_selected: {},
 
     paginationGeneral: {
@@ -74,8 +77,6 @@ export const moduleHITs = _.merge({}, baseModule, {
     ],
     array_columns_selected_general: null,
     array_columns_selected_finances: null,
-
-    url_api_projects_hits: undefined,
 
     objectFiltersGeneral: null,
     objectFiltersFinances: null,
@@ -212,6 +213,7 @@ export const moduleHITs = _.merge({}, baseModule, {
     },
     set_urls(state, config) {
       state.url_api_projects_hits = config.url_api_projects_hits;
+      state.url_api_hits = config.url_api_hits;
     },
   },
   actions: {

@@ -54,23 +54,33 @@ urlpatterns = format_suffix_patterns([
     path('projects/<str:slug_project>/count_assignments_max_per_worker', views.get_count_assignments_max_per_worker),
     path('projects/<str:slug_project>/count_assignments_max_per_worker/<negint:value>', views.set_count_assignments_max_per_worker),
 
-    path('projects/<str:slug_project>/batches', views.Batches.as_view(), name='batches_for_project'),
+    ##################################################################
+    # Batches
+    ##################################################################
+    path('batches', views.Batches.as_view(), name='batches'),
+
+    path('projects/<str:slug_project>/batches', views.ProjectBatches.as_view(), name='batches_for_project'),
     path('projects/<str:slug_project>/batches/<int:id_batch>', views.Batch.as_view(), name='batch_for_project'),
     path('projects/<str:slug_project>/batches_for_annotation', views.batches_for_annotation, name='batches_for_annotation'),
     path('projects/<str:slug_project>/download_batches', views.download_batches, name='download_batches'),
     path('projects/<str:slug_project>/download_info_batches', views.download_info_batches, name='download_info_batches'),
 
-    path('projects/<str:slug_project>/hits', views.HITs.as_view(), name='hits_for_project'),
+    ##################################################################
+    # HITs
+    ##################################################################
+    path('hits', views.HITs.as_view(), name='hits'),
+
+    path('projects/<str:slug_project>/hits', views.ProjectHITs.as_view(), name='hits_for_project'),
     path('projects/<str:slug_project>/hits_for_annotation', views.hits_for_annotation, name='hits_for_annotation'),
+    ##################################################################
+    # Assignments
+    ##################################################################
+    path('assignments', views.Assignments.as_view(), name='assignments'),
 
-    path('projects/<str:slug_project>/assignments', views.Assignments.as_view(), name='assignments_for_project'),
-    path('projects/<str:slug_project>/assignments/<int:id_assignment>', views.Assignment.as_view(), name='assignment_for_project'),
+    path('projects/<str:slug_project>/assignments', views.ProjectAssignments.as_view(), name='assignments_for_project'),
+    path('projects/<str:slug_project>/assignments/<int:id_assignment>', views.ProjectAssignment.as_view(), name='assignment_for_project'),
+
     path('projects/<str:slug_project>/assignments_for_annotation', views.assignments_for_annotation, name='assignments_for_annotation'),
-
-    # path('projects/<str:slug_project>/assignments/<int:id_assignment>', views.Assignment.as_view(), name='assignment_for_project'),
-    path('projects/<str:slug_project>/clear_sandbox', views.clear_sandbox, name='clear_sandbox'),
-    path('projects/<str:slug_project>/ping', views.ping, name='ping'),
-
     ##################################################################
     # Messages
     ##################################################################
@@ -84,6 +94,9 @@ urlpatterns = format_suffix_patterns([
 
     path('projects/<str:slug_project>/messagesReject/<int:id_message>', views.ProjectMessageReject.as_view(), name='message_reject_for_project'),
 
+    ##################################################################
+    # Keywords
+    ##################################################################
     path('keywords', views.Keywords.as_view(), name='keywords'),
 
     path('projects/<str:slug_project>/workers/status_block/<str:id_worker>', views.status_block_for_worker),
@@ -98,6 +111,10 @@ urlpatterns = format_suffix_patterns([
     path('projects/<str:slug_project>/workers/<str:id_worker>/remove_block_soft', views.remove_block_soft_for_worker),
 
     # path('projects/<str:slug_project>/workers/<str:id_worker>/count_assignments', views.set_count_assignments),
+
+    # path('projects/<str:slug_project>/assignments/<int:id_assignment>', views.Assignment.as_view(), name='assignment_for_project'),
+    path('projects/<str:slug_project>/clear_sandbox', views.clear_sandbox, name='clear_sandbox'),
+    path('projects/<str:slug_project>/ping', views.ping, name='ping'),
 ])
 app_name = 'api'
 

@@ -23,11 +23,18 @@ from django.utils import timezone
 
 class Manager_Assignments(Interface_Manager_Items):
     @staticmethod
-    def get_all(database_object_project, request, fields=None, use_sandbox=True):
-        queryset = Assignment.objects.filter(
-            hit__batch__project=database_object_project,
-            hit__batch__use_sandbox=use_sandbox,
-        ).select_related(
+    def get_all(request: Request, database_object_project: Project = None, fields=None, use_sandbox=True):
+        if database_object_project is None:
+            queryset = Assignment.objects.filter(
+                hit__batch__use_sandbox=use_sandbox
+            )
+        else:
+            queryset = Assignment.objects.filter(
+                hit__batch__project=database_object_project,
+                hit__batch__use_sandbox=use_sandbox,
+            )
+
+        queryset = queryset.select_related(
             'hit', 'worker'
         )
 

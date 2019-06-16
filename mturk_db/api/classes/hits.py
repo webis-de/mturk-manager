@@ -5,17 +5,24 @@ from django.db.models.functions import Coalesce
 from rest_framework.request import Request
 from api.enums import assignments
 from api.classes import Interface_Manager_Items
-from api.models import HIT
+from api.models import HIT, Project
 from django.utils import timezone
 
 
 class Manager_HITs(Interface_Manager_Items):
     @staticmethod
-    def get_all(database_object_project, request, fields=None, use_sandbox=None):
-        queryset = HIT.objects.filter(
-            batch__project=database_object_project,
-            batch__use_sandbox=use_sandbox,
-        ).select_related(
+    def get_all(request: Request, database_object_project: Project = None, fields=None, use_sandbox=True):
+        if database_object_project is None:
+            queryset = HIT.objects.filter(
+                batch__use_sandbox=use_sandbox
+            )
+        else:
+            queryset = HIT.objects.filter(
+                batch__project=database_object_project,
+                batch__use_sandbox=use_sandbox,
+            )
+
+        queryset = queryset.select_related(
             'batch__settings_batch'
         ).prefetch_related(
             'batch__settings_batch__keywords'
