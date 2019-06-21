@@ -90,7 +90,7 @@ class ClassServiceApp {
       }));
 
       await store.dispatch('module_app/setState', {
-        objectState: changelog.concat(changelogNew),
+        objectState: changelogNew.concat(changelog),
         nameState: 'changelog',
         nameLocalStorage: 'changelog',
       });
