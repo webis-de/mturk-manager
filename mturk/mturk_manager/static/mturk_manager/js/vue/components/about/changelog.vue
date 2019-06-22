@@ -79,6 +79,8 @@ export default {
       if (this.changelog.length > 0) {
         await this.checkLoad(this.changelog[0]);
 
+        this.panelsOpened = [true];
+
         await this.$store.dispatch('module_app/setState', {
           objectState: this.changelog[0].tag,
           nameState: 'versionSeen',
