@@ -12,18 +12,18 @@
       </v-layout>
       <v-layout>
         <v-flex xs4>Batches</v-flex>
-        <v-flex xs4>{{ infoSize[0] }}</v-flex>
-        <v-flex xs4>{{ infoSize[1] }}</v-flex>
+        <v-flex xs4>{{ infoSize[0].toLocaleString() }}</v-flex>
+        <v-flex xs4>{{ infoSize[1].toLocaleString() }}</v-flex>
       </v-layout>
       <v-layout>
         <v-flex xs4>HITs</v-flex>
-        <v-flex xs4>{{ infoSize[2] }}</v-flex>
-        <v-flex xs4>{{ infoSize[3] }}</v-flex>
+        <v-flex xs4>{{ infoSize[2].toLocaleString() }}</v-flex>
+        <v-flex xs4>{{ infoSize[3].toLocaleString() }}</v-flex>
       </v-layout>
       <v-layout>
         <v-flex xs4>Assignments</v-flex>
-        <v-flex xs4>{{ infoSize[4] }}</v-flex>
-        <v-flex xs4>{{ infoSize[5] }}</v-flex>
+        <v-flex xs4>{{ infoSize[4].toLocaleString() }}</v-flex>
+        <v-flex xs4>{{ infoSize[5].toLocaleString() }}</v-flex>
       </v-layout>
     </v-flex>
 
