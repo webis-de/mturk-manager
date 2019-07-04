@@ -1,8 +1,9 @@
+django==2.2.1
 boto3
 xmltodict
 djangorestframework
 markdown
-requests
 django-cors-headers
-
--r submodules/corpus-viewer/requirements.txt
+celery=4.3.0
+django-celery-results=1.1.2
+django-celery-beat=1.5.0

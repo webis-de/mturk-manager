@@ -615,8 +615,9 @@ class Manager_Batches(Interface_Manager_Items):
             use_sandbox=True,
             project=database_object_project,
         )
-
-        queryset_batches.delete()
+        from api.tasks import create_batch
+        create_batch.delay(1, 2)
+        # queryset_batches.delete()
 
     @staticmethod
     def download(database_object_project, request):
