@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
 
 cd ..
-/home/kritten/PycharmProjects/mturk-manager/venv/bin/celery -A mturk_db worker -l info --concurrency=1
+if [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+  /home/kritten/PycharmProjects/mturk-manager/venv/bin/celery -A mturk_db worker -l info --concurrency=1
+elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
+  ../venv/Scripts/celery -A mturk_db worker -l info --concurrency=1
+fi
