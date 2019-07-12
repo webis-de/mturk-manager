@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from api.models import Batch
+from api.models import Batch, Settings_Batch, Project
 from api.classes import Manager_Batches
 from api.serializers import Serializer_Settings_Batch, Serializer_Keyword, Serializer_Template_Worker
 
@@ -67,6 +67,7 @@ class Serializer_Batch(serializers.ModelSerializer):
             #     'source': 'template_worker',
             # },
             'name': {'required': False},
+            'use_sandbox': {'required': False},
         }
 
     def create(self, validated_data):
@@ -80,7 +81,16 @@ class Serializer_Batch(serializers.ModelSerializer):
             data=validated_data
         )
 
+        batch = Batch.objects.get_or_create(name='gmudupzvxtjtpmcepnre', use_sandbox=True)[0]
+        foo = Settings_Batch.objects.get_or_create(name='gmudupzvxtjtpmcepnre', defaults={
+            'batch': batch,
+            'project': Project.objects.first()
+        })
+
+        print(foo)
+
         return batch
+        # return batch
         # return {'data_csv': []}
 
     def update(self, instance, validated_data):

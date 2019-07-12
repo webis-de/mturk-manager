@@ -1,5 +1,5 @@
 from django.db import models
-from api.enums import assignments
+from api.enums import assignments, tasks
 from datetime import datetime
 from django.utils import timezone
 
@@ -209,4 +209,14 @@ class Assignment_Worker(models.Model):
     id_assignment = models.CharField(max_length=200)
 
 
-    
+class CeleryTasks(models.Model):
+    project = models.ForeignKey('Project', on_delete=models.CASCADE, related_name='celery_tasks')
+    task = models.CharField(max_length=100)
+    description = models.CharField(max_length=100)
+    status = models.IntegerField(choices=[(status.value, status.name) for status in sorted(tasks.STATUS_TASK)])
+
+    datetime_created = models.DateTimeField()
+    datetime_started = models.DateTimeField(null=True)
+    datetime_finished = models.DateTimeField(null=True)
+
+

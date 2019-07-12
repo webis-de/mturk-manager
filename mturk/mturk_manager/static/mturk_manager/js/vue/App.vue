@@ -22,6 +22,9 @@
     <!--</template>-->
     <!--</template>-->
     <the-update-notification></the-update-notification>
+    <the-progress-bar
+      v-bind:open="open"
+    ></the-progress-bar>
   </v-app>
 </template>
 
@@ -29,6 +32,7 @@
 import { mapActions, mapGetters } from 'vuex';
 import { Service_Projects } from './services/service_projects';
 import TheUpdateNotification from './components/the-update-notification';
+import TheProgressBar from "./components/the-progress-bar";
 
 export default {
   name: 'app',
@@ -68,6 +72,7 @@ export default {
     ...mapActions(['init']),
   },
   components: {
+    TheProgressBar,
     TheUpdateNotification,
   },
 };

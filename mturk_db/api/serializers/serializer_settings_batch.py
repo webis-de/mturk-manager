@@ -63,11 +63,14 @@ class Serializer_Settings_Batch(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         data = super(Serializer_Settings_Batch, self).to_representation(instance)
+        print(data)
         import json
         try:
             data['qualification_locale'] = json.loads(data['qualification_locale'])
         except KeyError:
             # qualification_locale was excluded from the data
+            pass
+        except TypeError:
             pass
 
         return data

@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import Settings_Batch from '../../../classes/settings_batch';
 import { Service_Batches } from '../../../services/service_batches';
 
@@ -43,6 +43,7 @@ export default {
   data() {
     return {
       is_uploading_batch: false,
+      open: false,
     };
   },
   computed: {
@@ -80,6 +81,10 @@ export default {
       }).then(() => {
         this.is_uploading_batch = false;
         this.$emit('update:is_creating_batch', false);
+
+
+        this.open = true;
+
         Service_Batches.load_page({
           page: 1,
           rowsPerPage: 25,
