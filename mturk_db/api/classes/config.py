@@ -12,8 +12,14 @@ class Manager_Config(object):
     @staticmethod
     def get_paths():
         dictionary_paths = {
+            ##################################################################
+            # Project
+            ##################################################################
             'url_api_projects': 'projects',
             'url_api_projects_check_uniqueness': 'info_projects/uniqueness',
+            'url_api_ping': 'projects/{}/ping'.format(settings.PLACEHOLDER_SLUG_PROJECT),
+            'url_api_projects_clear_sandbox': 'projects/{}/clear_sandbox'.format(settings.PLACEHOLDER_SLUG_PROJECT),
+            'url_api_projects_tasks': 'projects/{}/tasks'.format(settings.PLACEHOLDER_SLUG_PROJECT),
 
             'url_api_projects_balance': 'projects/{}/balance'.format(settings.PLACEHOLDER_SLUG_PROJECT),
             'url_api_projects_finances': 'projects/{}/finances'.format(settings.PLACEHOLDER_SLUG_PROJECT),
@@ -54,9 +60,6 @@ class Manager_Config(object):
             'url_api_assignments': 'assignments'.format(settings.PLACEHOLDER_SLUG_PROJECT),
 
             'url_api_projects_assignments': 'projects/{}/assignments'.format(settings.PLACEHOLDER_SLUG_PROJECT),
-
-            'url_api_projects_clear_sandbox': 'projects/{}/clear_sandbox'.format(settings.PLACEHOLDER_SLUG_PROJECT),
-            'url_api_ping': 'projects/{}/ping'.format(settings.PLACEHOLDER_SLUG_PROJECT),
 
             'url_api_workers': 'projects/{}/workers'.format(settings.PLACEHOLDER_SLUG_PROJECT),
             'url_api_workers_get_blocks_hard': 'projects/{}/workers/blocks_hard'.format(settings.PLACEHOLDER_SLUG_PROJECT),

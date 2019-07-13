@@ -18,6 +18,7 @@
 import { mapState, mapGetters } from 'vuex';
 import Settings_Batch from '../../../classes/settings_batch';
 import { Service_Batches } from '../../../services/service_batches';
+import {Service_Projects} from '../../../services/service_projects';
 
 export default {
   name: 'component-submit-batch',
@@ -43,7 +44,6 @@ export default {
   data() {
     return {
       is_uploading_batch: false,
-      open: false,
     };
   },
   computed: {
@@ -70,27 +70,27 @@ export default {
     ...mapState('module_app', ['use_sandbox']),
   },
   methods: {
-    submit() {
+    async submit() {
       this.is_uploading_batch = true;
       console.log('adding batch');
 
-      Service_Batches.create({
+      await Service_Batches.create({
         name: this.name_batch,
         settings_batch: this.settings_batch_current,
         data_csv: this.object_csv_parsed.data,
-      }).then(() => {
-        this.is_uploading_batch = false;
-        this.$emit('update:is_creating_batch', false);
-
-
-        this.open = true;
-
-        Service_Batches.load_page({
-          page: 1,
-          rowsPerPage: 25,
-          sortBy: 'datetime_creation',
-        });
       });
+
+
+      this.is_uploading_batch = false;
+      this.$emit('update:is_creating_batch', false);
+
+      Service_Projects.pollTasks();
+
+      // Service_Batches.load_page({
+      //   page: 1,
+      //   rowsPerPage: 25,
+      //   sortBy: 'datetime_creation',
+      // });
     },
   },
 };

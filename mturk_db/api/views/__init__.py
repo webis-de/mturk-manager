@@ -12,3 +12,4 @@ from .templates_hit import *
 from .templates_global import *
 from .assignments import *
 from .hits import *
+from .tasks import *

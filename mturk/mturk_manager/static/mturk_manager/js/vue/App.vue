@@ -1,6 +1,6 @@
 <template>
   <v-app dark>
-    <router-view></router-view>
+    <router-view/>
     <!--<template v-if="url_api === null || token_instance === null">-->
     <!--<v-spacer></v-spacer>-->
     <!--<add-credentials></add-credentials>-->
@@ -21,10 +21,7 @@
     <!--<v-spacer></v-spacer>-->
     <!--</template>-->
     <!--</template>-->
-    <the-update-notification></the-update-notification>
-    <the-progress-bar
-      v-bind:open="open"
-    ></the-progress-bar>
+    <the-update-notification />
   </v-app>
 </template>
 
@@ -32,31 +29,15 @@
 import { mapActions, mapGetters } from 'vuex';
 import { Service_Projects } from './services/service_projects';
 import TheUpdateNotification from './components/the-update-notification';
-import TheProgressBar from "./components/the-progress-bar";
 
 export default {
-  name: 'app',
+  name: 'App',
+  components: {
+    TheUpdateNotification,
+  },
   data() {
     return {
-      has_loaded_projects: false,
     };
-  },
-  async created() {
-    // return await Service_App.init();
-    // await this.init();
-    //
-    // Service_Endpoint.init(
-    //     this.token_instance,
-    //     () => {
-    //         router.push({name: 'connection_error'});
-    //     }
-    // );
-    //
-    // await Service_Projects.load_projects();
-    // //
-    // Service_Projects.load_project_data();
-    //
-    // this.has_loaded_projects = true;
   },
   watch: {
     slug_project_current() {
@@ -70,10 +51,6 @@ export default {
   },
   methods: {
     ...mapActions(['init']),
-  },
-  components: {
-    TheProgressBar,
-    TheUpdateNotification,
   },
 };
 </script>

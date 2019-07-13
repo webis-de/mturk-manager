@@ -5,20 +5,27 @@ from api.models import Settings_Batch, Batch, HIT
 import uuid
 import json
 from botocore.exceptions import ClientError
-
+import time
 
 @shared_task(bind=True, name='tasks.create_batch')
 def create_batch(self, data, database_object_project=None, use_sandbox=True):
+    time.sleep(2)
+
+    ManagerTasks.start(self.request.id)
     from api.classes.batches import Manager_Batches
 # def create_batch(self, x, y):
-#     print('started task ##################')
-    # for i in range(10):
-    #     import time
-    #     time.sleep(2)
-    #     self.update_state(
-    #         state='PROGRESS',
-    #         meta={'current': i, 'total': 10}
-    #     )
+    print('started task ##################')
+    iterations = 10
+    for i in range(iterations):
+        time.sleep(2)
+        self.update_state(
+            state='PROGRESS',
+            meta={'current': i, 'total': iterations}
+        )
+
+    ManagerTasks.delete(self.request.id)
+    return
+
     client = Manager_Projects.get_mturk_api(use_sandbox)
     # client = Manager_Projects.get_mturk_api(database_object_project, use_sandbox)
     dictionary_settings_batch = data['settings_batch']
@@ -131,6 +138,9 @@ def create_batch(self, data, database_object_project=None, use_sandbox=True):
             meta={'current': index + 1, 'total': len(data['data_csv'])}
         )
 
+    ManagerTasks.delete(self.request.id)
+
+
         # db_obj_hit = HIT.objects.create(
         #     # id_hit=str(random.randint(0, 9999999)),
         #     id_hit=uuid.uuid4().hex,
@@ -139,8 +149,6 @@ def create_batch(self, data, database_object_project=None, use_sandbox=True):
         #     datetime_expiration=datetime.datetime.now(),
         #     datetime_creation=datetime.datetime.now(),
         # )
-
-    ManagerTasks.delete(self.request.id)
 
     # db_obj_tag = m_Tag.objects.get_or_create(
     #     name=project.glob_prefix_name_tag_batch+database_object_batch.name,

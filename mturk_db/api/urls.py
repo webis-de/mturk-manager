@@ -22,9 +22,6 @@ register_converter(NegativeIntConverter, 'negint')
 
 urlpatterns = format_suffix_patterns([
     path('config', views.Config.as_view(), name='config'),
-    path('info_projects/uniqueness/<str:name_project>', views.projects_check_uniqueness, name='projects_check_uniqueness'),
-    path('projects', views.Projects.as_view(), name='projects'),
-    path('projects/<str:slug_project>', views.Project.as_view(), name='project'),
 
     path('projects/<str:slug_project>/balance', views.get_balance, name='get_balance'),
     path('projects/<str:slug_project>/finances', views.Finances.as_view(), name='get_finances_for_project'),
@@ -53,6 +50,16 @@ urlpatterns = format_suffix_patterns([
 
     path('projects/<str:slug_project>/count_assignments_max_per_worker', views.get_count_assignments_max_per_worker),
     path('projects/<str:slug_project>/count_assignments_max_per_worker/<negint:value>', views.set_count_assignments_max_per_worker),
+
+    ##################################################################
+    # Projects
+    ##################################################################
+    path('info_projects/uniqueness/<str:name_project>', views.projects_check_uniqueness, name='projects_check_uniqueness'),
+    path('projects', views.Projects.as_view(), name='projects'),
+    path('projects/<str:slug_project>', views.Project.as_view(), name='project'),
+    path('projects/<str:slug_project>/clear_sandbox', views.clear_sandbox, name='clear_sandbox'),
+    path('projects/<str:slug_project>/ping', views.ping, name='ping'),
+    path('projects/<str:slug_project>/tasks', views.Tasks.as_view(), name='tasks_for_project'),
 
     ##################################################################
     # Batches
@@ -113,8 +120,6 @@ urlpatterns = format_suffix_patterns([
     # path('projects/<str:slug_project>/workers/<str:id_worker>/count_assignments', views.set_count_assignments),
 
     # path('projects/<str:slug_project>/assignments/<int:id_assignment>', views.Assignment.as_view(), name='assignment_for_project'),
-    path('projects/<str:slug_project>/clear_sandbox', views.clear_sandbox, name='clear_sandbox'),
-    path('projects/<str:slug_project>/ping', views.ping, name='ping'),
 ])
 app_name = 'api'
 

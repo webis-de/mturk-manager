@@ -41,6 +41,7 @@ module.exports = {
         'code': 120,
       },
     ],
+    'import/prefer-default-export': false,
   },
 
   parserOptions: {

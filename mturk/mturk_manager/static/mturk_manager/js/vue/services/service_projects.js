@@ -3,11 +3,13 @@ import { store } from '../store/vuex';
 import { Service_Endpoint } from './service_endpoint';
 import { ServiceSettingsBatch } from './service_settings_batch';
 import { Service_Templates } from './service_templates';
+import {compareDesc, parse} from 'date-fns';
 // import {router} from "./service_router.js";
 
 class Class_Service_Projects {
   constructor() {
     this.id_interval = undefined;
+    this.idTimeoutPollStatus = null;
   }
 
   async load_projects() {
@@ -83,6 +85,8 @@ class Class_Service_Projects {
       this.load_data(project);
       // ServiceSettingsBatch.load();
       // Service_Templates.load_all();
+
+      this.pollTasks();
 
       this.ping();
       this.id_interval = setInterval(() => {
@@ -275,6 +279,56 @@ class Class_Service_Projects {
     // 	project,
     // 	data: response.data,
     // });
+  }
+
+  async pollTasks() {
+    if (this.idTimeoutPollStatus !== null) return;
+
+    const response = await Service_Endpoint.make_request({
+      method: 'get',
+      url: {
+        path: store.getters.get_url('urlApiTasks', 'moduleProjects'),
+        project: store.getters['moduleProjects/get_project_current'],
+      },
+    });
+
+    const arrayTasksServer = response.data.data;
+    const arrayTasks = [...response.data.data];
+    console.warn('arrayTasksServer', arrayTasksServer);
+    const setTasksOld = new Set(store.state.moduleProjects.arrayTasks.map(task => task.task));
+    const setTasksNew = new Set(arrayTasks.map(task => task.task));
+
+    const setFinishedTasks = new Set([...setTasksOld].filter(idTask => !setTasksNew.has(idTask)));
+
+    if (setFinishedTasks.size > 0) {
+      for (const idTask of setFinishedTasks) {
+        const taskFinished = store.state.moduleProjects.arrayTasks.find(task => task.task === idTask);
+        taskFinished.status = 2;
+        arrayTasks.push(taskFinished);
+      }
+    }
+
+    for (const task of store.state.moduleProjects.arrayTasks) {
+      // console.warn('task', task);
+    }
+
+    arrayTasks.sort((a, b) => {
+      return compareDesc(parse(a.datetime_created), parse(b.datetime_created));
+    });
+
+    store.commit('moduleProjects/setState', {
+      objectState: arrayTasks,
+      nameState: 'arrayTasks',
+    });
+
+
+    if (arrayTasksServer.length === 0) {
+      clearTimeout(this.idTimeoutPollStatus);
+    } else {
+      this.idTimeoutPollStatus = setTimeout(() => {
+        this.pollTasks();
+      }, 2000);
+    }
   }
 }
 

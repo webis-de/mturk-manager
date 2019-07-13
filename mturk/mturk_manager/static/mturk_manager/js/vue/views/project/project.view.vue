@@ -68,6 +68,8 @@
         <router-view />
       </v-container>
     </v-content>
+
+    <the-tasks-bar />
   </div>
 </template>
 
@@ -76,10 +78,12 @@ import { mapState, mapActions, mapGetters } from 'vuex';
 import TheNavigationDrawer from '../../components/the-navigation-drawer';
 import ComponentToolbarBatches from '../../components/batches/component_toolbar_batches';
 import ComponentToolbarQualifications from '../../components/qualifications/component-toolbar-qualifications';
+import TheTasksBar from '../../components/the-tasks-bar';
 
 export default {
   name: 'AppProject',
   components: {
+    TheTasksBar,
     TheNavigationDrawer,
   },
   data() {

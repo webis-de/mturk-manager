@@ -20,6 +20,9 @@ export const moduleProjects = _.merge({}, baseModule, {
     url_api_projects_check_uniqueness: undefined,
     url_api_projects_clear_sandbox: undefined,
     url_api_ping: null,
+    urlApiTasks: null,
+
+    arrayTasks: [],
 
     // response_data_projects: undefined,
   },
@@ -66,6 +69,7 @@ export const moduleProjects = _.merge({}, baseModule, {
       state.url_api_projects_check_uniqueness = config.url_api_projects_check_uniqueness;
       state.url_api_projects_clear_sandbox = config.url_api_projects_clear_sandbox;
       state.url_api_ping = config.url_api_ping;
+      state.urlApiTasks = config.url_api_projects_tasks;
     },
     set_settings_batch(state, { data, project }) {
       project.settings_batch = {};
