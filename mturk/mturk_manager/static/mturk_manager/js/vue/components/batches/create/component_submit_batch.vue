@@ -84,7 +84,7 @@ export default {
       this.is_uploading_batch = false;
       this.$emit('update:is_creating_batch', false);
 
-      Service_Projects.pollTasks();
+      Service_Projects.startPollTasks();
 
       // Service_Batches.load_page({
       //   page: 1,

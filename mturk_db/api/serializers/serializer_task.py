@@ -5,7 +5,7 @@ from api.models import CeleryTasks
 
 class SerializerTasks(serializers.ModelSerializer):
 
-    payload = serializers.CharField(required=False)
+    payloadExtern = serializers.CharField(required=False)
 
     class Meta:
         model = CeleryTasks
@@ -21,6 +21,7 @@ class SerializerTasks(serializers.ModelSerializer):
             'datetime_finished',
 
             'payload',
+            'payloadExtern',
         )
         extra_kwargs = {
         }

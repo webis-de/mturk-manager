@@ -86,7 +86,7 @@ class Class_Service_Projects {
       // ServiceSettingsBatch.load();
       // Service_Templates.load_all();
 
-      this.pollTasks();
+      this.startPollTasks();
 
       this.ping();
       this.id_interval = setInterval(() => {
@@ -281,9 +281,13 @@ class Class_Service_Projects {
     // });
   }
 
-  async pollTasks() {
+  async startPollTasks() {
     if (this.idTimeoutPollStatus !== null) return;
 
+    this.pollTasks();
+  }
+
+  async pollTasks() {
     const response = await Service_Endpoint.make_request({
       method: 'get',
       url: {
@@ -322,13 +326,31 @@ class Class_Service_Projects {
     });
 
 
-    if (arrayTasksServer.length === 0) {
+    if (arrayTasksServer.filter(task => task.status !== 3).length === 0) {
       clearTimeout(this.idTimeoutPollStatus);
     } else {
       this.idTimeoutPollStatus = setTimeout(() => {
         this.pollTasks();
       }, 2000);
     }
+  }
+
+  async deleteTask({ task }) {
+    if (task.status === 3) {
+      await Service_Endpoint.make_request({
+        method: 'delete',
+        url: {
+          path: store.getters.get_url('urlApiTasks', 'moduleProjects'),
+          project: store.getters['moduleProjects/get_project_current'],
+          value: task.id,
+        },
+      });
+    }
+
+    store.commit('moduleProjects/setState', {
+      objectState: store.state.moduleProjects.arrayTasks.filter(taskCurrent => taskCurrent.id !== task.id),
+      nameState: 'arrayTasks',
+    });
   }
 }
 

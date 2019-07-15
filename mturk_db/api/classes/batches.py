@@ -164,7 +164,6 @@ class Manager_Batches(Interface_Manager_Items):
 
     @staticmethod
     def create(data, database_object_project=None, use_sandbox=True):
-        pass
         id = create_batch.delay(data=data, database_object_project=database_object_project, use_sandbox=use_sandbox)
 
         ManagerTasks.create(
@@ -173,7 +172,10 @@ class Manager_Batches(Interface_Manager_Items):
                 'database_object_project': database_object_project,
                 'description': 'create_batch',
                 'status': tasks.STATUS_TASK.CREATED,
-                'datetime_created': timezone.now()
+                'datetime_created': timezone.now(),
+                'payload': {
+                    'name_batch': data['name'],
+                }
             },
         )
 

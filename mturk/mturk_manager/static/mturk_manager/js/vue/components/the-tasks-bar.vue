@@ -1,6 +1,6 @@
 <template>
   <v-bottom-sheet
-    v-model="open"
+    v-bind:value="arrayTasks.length > 0"
     persistent
     inset
     hide-overlay
@@ -23,11 +23,6 @@ import BaseTask from './base-task';
 export default {
   name: 'TheTasksBar',
   components: { BaseTask },
-  data() {
-    return {
-      open: true,
-    };
-  },
   computed: {
     arrayTasks() {
       return this.$store.state.moduleProjects.arrayTasks;

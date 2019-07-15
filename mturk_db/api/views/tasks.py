@@ -1,5 +1,6 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework import status
 
 from api.classes import ManagerTasks
 from api.helpers import add_database_object_project, paginate_queryset
@@ -30,3 +31,12 @@ class Tasks(APIView):
             'items_total': count_items,
             'data': serializer.data,
         })
+
+
+class Task(APIView):
+    permission_classes = PERMISSIONS_INSTANCE_ONLY
+
+    @add_database_object_project
+    def delete(self, request, slug_project, database_object_project, use_sandbox, id_task, format=None):
+        ManagerTasks.delete(id_task)
+        return Response(status=status.HTTP_204_NO_CONTENT)

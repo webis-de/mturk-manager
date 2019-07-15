@@ -214,6 +214,7 @@ class CeleryTasks(models.Model):
     task = models.CharField(max_length=100)
     description = models.CharField(max_length=100)
     status = models.IntegerField(choices=[(status.value, status.name) for status in sorted(tasks.STATUS_TASK)])
+    payload = models.TextField(null=True)
 
     datetime_created = models.DateTimeField()
     datetime_started = models.DateTimeField(null=True)

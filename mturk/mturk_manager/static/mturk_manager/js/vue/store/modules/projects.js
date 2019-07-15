@@ -287,11 +287,15 @@ export const moduleProjects = _.merge({}, baseModule, {
     delete_project(state, { project }) {
       Vue.delete(state.object_projects, project.slug);
     },
+    reset: (state) => {
+      state.arrayTasks = [];
+    },
   },
   actions: {
     reset_projects({
       commit,
     }) {
+      commit('reset');
       commit('moduleBatches/reset', null, { root: true });
       commit('moduleHITs/reset', null, { root: true });
       commit('moduleAssignments/reset', null, { root: true });
