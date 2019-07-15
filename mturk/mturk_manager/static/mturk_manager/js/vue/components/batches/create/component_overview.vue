@@ -12,7 +12,7 @@
           Valid CSV:
         </v-flex>
         <v-flex>
-          <template v-if="is_valid_csv">
+          <template v-if="isValidCSV">
             <v-icon color="success">check</v-icon>
           </template>
           <template v-else>
@@ -28,7 +28,7 @@
           Number of variables:
         </v-flex>
         <v-flex>
-          <template v-if="is_valid_csv">
+          <template v-if="isValidCSV">
             {{ get_variables.length }}
 
             <v-tooltip top>
@@ -49,7 +49,7 @@
           Number of HITs:
         </v-flex>
         <v-flex>
-          <template v-if="is_valid_csv">
+          <template v-if="isValidCSV">
             {{ count_hits }}
           </template>
           <template v-else>
@@ -85,7 +85,6 @@
             v-if="is_valid"
 
             style="margin-left: -13px"
-            v-bind:settings-batch="settings_batch_current"
 
             v-on:updated_costs_with_fee="$emit('updated_costs_with_fee', $event)"
           />
@@ -102,9 +101,9 @@
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex';
 import humanizeDuration from 'humanize-duration';
-import Settings_Batch from '../../../classes/settings_batch';
 import BaseDisplayAmount from '../../base-display-amount.vue';
 import OverviewCosts from './overview-costs';
+import {Service_Batches} from '../../../services/service_batches';
 
 // import ComponentStepUploadCSV from './component_step_upload_csv.vue';
 // import ComponentShowMoneySpent from './component-show-money-spent.vue';
@@ -112,10 +111,6 @@ import OverviewCosts from './overview-costs';
 export default {
   name: 'component-overview',
   props: {
-    settings_batch_current: {
-      required: true,
-      type: Settings_Batch | undefined,
-    },
     is_invalid_settings_batch: {
       required: true,
       type: Boolean,
@@ -126,47 +121,45 @@ export default {
       current_time_ms: Date.now(),
     };
   },
-  methods: {},
   computed: {
+    isValidCSV() {
+      return Service_Batches.isValidCSV();
+    },
     lifetime_formatted() {
-      if (this.settings_batch_current == undefined) return undefined;
+      if (this.$store.state.moduleBatches.objectSettingsBatch === null) return null;
 
-      return humanizeDuration(this.settings_batch_current.lifetime * 1000);
+      return humanizeDuration(this.$store.state.moduleBatches.objectSettingsBatch.lifetime * 1000);
     },
     format_lifetime_absolute() {
-      if (this.settings_batch_current == undefined) return undefined;
+      if (this.$store.state.moduleBatches.objectSettingsBatch === null) return null;
 
-      const lifetime_absolute = this.current_time_ms + this.settings_batch_current.lifetime * 1000.0;
+      const lifetime_absolute = this.current_time_ms + this.$store.state.moduleBatches.objectSettingsBatch.lifetime * 1000.0;
       return new Date(lifetime_absolute).toLocaleString();
     },
     count_hits() {
-      if (this.is_valid_csv) {
+      if (this.isValidCSV) {
         return this.data_csv.length;
       }
       return null;
     },
     get_variables() {
-      if (this.is_valid_csv) {
+      if (this.isValidCSV) {
         return Object.keys(this.data_csv[0]);
       }
 
       return [];
     },
     data_csv() {
-      if (this.is_valid_csv) {
-        return this.object_csv_parsed.data;
+      if (this.isValidCSV) {
+        return this.$store.state.moduleBatches.objectCSVParsed.data;
       }
       return null;
     },
     is_valid() {
-      return this.is_valid_csv && !this.is_invalid_settings_batch;
+      return this.isValidCSV && !this.is_invalid_settings_batch;
     },
     ...mapGetters('moduleProjects', {
       project_current: 'get_project_current',
-    }),
-    ...mapGetters('moduleBatches', {
-      object_csv_parsed: 'get_object_csv_parsed',
-      is_valid_csv: 'is_valid_csv',
     }),
   },
   created() {

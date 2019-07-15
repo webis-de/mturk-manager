@@ -16,15 +16,20 @@
               <v-icon
                 class="px-1"
                 small
-              >arrow_forward</v-icon>
+              >
+                arrow_forward
+              </v-icon>
               <base-display-amount
-                v-bind:amount="settingsBatch.reward"
-              /> * {{ settingsBatch.count_assignments }} Assignments * {{ object_csv_parsed.data.length }} HITs
+                v-bind:amount="$store.state.moduleBatches.objectSettingsBatch.reward"
+              /> * {{ $store.state.moduleBatches.objectSettingsBatch.count_assignments }}
+              Assignments * {{ csv.data.length }} HITs
             </td>
           </tr>
 
           <tr>
-            <td class="underlinesd">+</td>
+            <td class="underlinesd">
+              +
+            </td>
             <td
               class="text-xs-right underlined"
             >
@@ -36,8 +41,11 @@
               <v-icon
                 class="px-1"
                 small
-              >arrow_forward</v-icon>
-              MTurk fee</td>
+              >
+                arrow_forward
+              </v-icon>
+              MTurk fee
+            </td>
           </tr>
 
           <tr>
@@ -49,12 +57,13 @@
                 v-bind:amount="costsTotalWithFee"
               />
             </td>
-            <td
-            >
+            <td>
               <v-icon
                 class="px-1"
                 small
-              >arrow_forward</v-icon>
+              >
+                arrow_forward
+              </v-icon>
               Total
             </td>
           </tr>
@@ -66,37 +75,35 @@
 
 <script>
 import BaseDisplayAmount from '../../base-display-amount';
-import {mapGetters} from 'vuex';
 
 export default {
   name: 'OverviewCosts',
   components: { BaseDisplayAmount },
   props: {
-    settingsBatch: {
-      required: true,
-      type: Object,
-    },
   },
   computed: {
+    csv() {
+      return this.$store.state.moduleBatches.objectCSVParsed;
+    },
     costsTotalWithoutFee() {
-      if (this.settingsBatch === undefined) return 0;
+      if (this.$store.state.moduleBatches.objectSettingsBatch === null) return 0;
 
-      console.log(this.object_csv_parsed);
-      const reward = parseFloat(this.settingsBatch.reward);
-      if (this.object_csv_parsed !== undefined) {
+      console.log(this.csv);
+      const reward = parseFloat(this.$store.state.moduleBatches.objectSettingsBatch.reward);
+      if (this.csv !== undefined) {
         return (
           reward
-          * this.settingsBatch.count_assignments
-          * this.object_csv_parsed.data.length
+          * this.$store.state.moduleBatches.objectSettingsBatch.count_assignments
+          * this.csv.data.length
         );
       }
 
-      return reward * this.settingsBatch.count_assignments;
+      return reward * this.$store.state.moduleBatches.objectSettingsBatch.count_assignments;
     },
     costsTotalWithFee() {
       let costsWithFee;
 
-      if (this.settingsBatch.count_assignments < 10) {
+      if (this.$store.state.moduleBatches.objectSettingsBatch.count_assignments < 10) {
         costsWithFee = this.costsTotalWithoutFee * 1.2;
       } else {
         costsWithFee = this.costsTotalWithoutFee * 1.4;
@@ -109,9 +116,6 @@ export default {
     fee() {
       return this.costsTotalWithFee - this.costsTotalWithoutFee;
     },
-    ...mapGetters('moduleBatches', {
-      object_csv_parsed: 'get_object_csv_parsed',
-    }),
   },
 };
 </script>

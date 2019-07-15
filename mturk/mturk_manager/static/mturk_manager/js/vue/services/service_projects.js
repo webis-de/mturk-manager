@@ -331,7 +331,7 @@ class Class_Service_Projects {
     } else {
       this.idTimeoutPollStatus = setTimeout(() => {
         this.pollTasks();
-      }, 2000);
+      }, 1000);
     }
   }
 

@@ -23,10 +23,6 @@ import {Service_Projects} from '../../../services/service_projects';
 export default {
   name: 'component-submit-batch',
   props: {
-    settings_batch_current: {
-      required: true,
-      type: Settings_Batch | undefined,
-    },
     is_invalid_settings_batch: {
       required: true,
       type: Boolean,
@@ -58,14 +54,10 @@ export default {
       return isInBudget;
     },
     is_valid() {
-      return this.is_valid_csv && !this.is_invalid_settings_batch && this.isInBudget;
+      return Service_Batches.isValidCSV() && !this.is_invalid_settings_batch && this.isInBudget;
     },
     ...mapGetters('moduleProjects', {
       project_current: 'get_project_current',
-    }),
-    ...mapGetters('moduleBatches', {
-      object_csv_parsed: 'get_object_csv_parsed',
-      is_valid_csv: 'is_valid_csv',
     }),
     ...mapState('module_app', ['use_sandbox']),
   },
@@ -76,8 +68,8 @@ export default {
 
       await Service_Batches.create({
         name: this.name_batch,
-        settings_batch: this.settings_batch_current,
-        data_csv: this.object_csv_parsed.data,
+        settings_batch: this.$store.state.objectSettingsBatch,
+        data_csv: this.$store.state.moduleBatches.objectCSVParsed.data,
       });
 
 

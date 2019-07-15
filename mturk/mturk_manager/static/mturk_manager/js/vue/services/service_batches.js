@@ -176,6 +176,13 @@ class Class_Service_Batches extends BaseLoadPageService {
     console.log('response', response.data);
     return response;
   }
+
+  isValidCSV() {
+    if (store.state.moduleBatches.objectCSVParsed === null) {
+      return false;
+    }
+    return store.state.moduleBatches.objectCSVParsed.errors.length === 0;
+  }
 }
 
 export const Service_Batches = new Class_Service_Batches();

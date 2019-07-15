@@ -22,7 +22,12 @@ export const moduleBatches = _.merge({}, baseModule, {
 
     object_batches_selected: {},
 
-    object_csv_parsed: undefined,
+    /**
+     * batch creation
+     */
+    objectCSVParsed: null,
+    objectSettingsBatch: null,
+
     is_syncing_mturk: false,
 
     paginationGeneral: {
@@ -153,13 +158,6 @@ export const moduleBatches = _.merge({}, baseModule, {
       console.warn('state.array_batches', state.array_batches);
       return use_sandbox ? state.array_batches_sandbox : state.array_batches;
     },
-    is_valid_csv: (state) => {
-      if (state.object_csv_parsed === undefined) {
-        return false;
-      }
-      return state.object_csv_parsed.errors.length === 0;
-    },
-    get_object_csv_parsed: state => state.object_csv_parsed,
     // get_object_batches: (state, getters, rootState) => {
     //     return rootState.module_app.use_sandbox ? state.object_batches_sandbox : state.object_batches;
     // },
@@ -280,9 +278,6 @@ export const moduleBatches = _.merge({}, baseModule, {
       state.url_api_projects_batches_download = config.url_api_projects_batches_download;
       state.url_api_projects_batches_download_info = config.url_api_projects_batches_download_info;
     },
-    set_csv_parsed(state, csv_parsed) {
-      state.object_csv_parsed = csv_parsed;
-    },
     set_is_syncing_mturk(state, value) {
       state.is_syncing_mturk = value;
     },
@@ -292,7 +287,7 @@ export const moduleBatches = _.merge({}, baseModule, {
     reset: (state) => {
       state.object_batches = null;
       state.object_batches_sandbox = null;
-      state.object_csv_parsed = undefined;
+      state.objectCSVParsed = null;
       state.is_syncing_mturk = false;
     },
   },
