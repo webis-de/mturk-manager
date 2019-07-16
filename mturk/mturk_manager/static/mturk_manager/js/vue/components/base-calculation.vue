@@ -28,7 +28,9 @@
           </base-help>
         </td>
       </tr>
-      <tr>
+      <tr
+        v-bind:class="{ 'font-weight-bold': result.bold === true }"
+      >
         <td></td>
         <td class="text-xs-right px-1">
           <base-display-amount

@@ -1,94 +1,53 @@
 <template>
   <v-layout>
     <v-flex>
-      <table>
-        <tbody>
-          <tr>
-            <td></td>
-            <td
-              class="text-xs-right"
-            >
-              <base-display-amount
-                v-bind:amount="costsTotalWithoutFee"
-              />
-            </td>
-            <td>
-              <v-icon
-                class="px-1"
-                small
-              >
-                arrow_forward
-              </v-icon>
-              <base-display-amount
-                v-bind:amount="$store.state.moduleBatches.objectSettingsBatch.reward"
-              /> * {{ $store.state.moduleBatches.objectSettingsBatch.count_assignments }}
-              Assignments * {{ csv.data.length }} HITs
-            </td>
-          </tr>
-
-          <tr>
-            <td class="underlinesd">
-              +
-            </td>
-            <td
-              class="text-xs-right underlined"
-            >
-              <base-display-amount
-                v-bind:amount="fee"
-              />
-            </td>
-            <td>
-              <v-icon
-                class="px-1"
-                small
-              >
-                arrow_forward
-              </v-icon>
-              MTurk fee
-            </td>
-          </tr>
-
-          <tr>
-            <td></td>
-            <td
-              class="text-xs-right underlined-double"
-            >
-              <base-display-amount
-                v-bind:amount="costsTotalWithFee"
-              />
-            </td>
-            <td>
-              <v-icon
-                class="px-1"
-                small
-              >
-                arrow_forward
-              </v-icon>
-              Total
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <base-calculation
+        v-bind:calculations="calculations"
+        v-bind:result="result"
+      />
     </v-flex>
   </v-layout>
 </template>
 
 <script>
-import BaseDisplayAmount from '../../base-display-amount';
+import BaseCalculation from '../../base-calculation';
+import helpers from '../../../mixins/helpers.mixin';
 
 export default {
   name: 'OverviewCosts',
-  components: { BaseDisplayAmount },
+  components: { BaseCalculation },
+  mixins: [helpers],
   props: {
   },
   computed: {
+    result() {
+      return {
+        number: this.costsTotalWithFee,
+        description: 'Total',
+        bold: true,
+      };
+    },
+    calculations() {
+      return [
+        {
+          number: this.costsTotalWithoutFee,
+          description: `${this.amount_formatted(this.$store.state.moduleBatches.objectSettingsBatch.reward)}
+          * ${this.$store.state.moduleBatches.objectSettingsBatch.count_assignments} Assignments
+          * ${this.csv.data.length} HITs`,
+        },
+        {
+          operation: '+',
+          number: this.fee,
+          description: 'MTurk fee',
+        },
+      ];
+    },
     csv() {
       return this.$store.state.moduleBatches.objectCSVParsed;
     },
     costsTotalWithoutFee() {
       if (this.$store.state.moduleBatches.objectSettingsBatch === null) return 0;
 
-      console.log(this.csv);
       const reward = parseFloat(this.$store.state.moduleBatches.objectSettingsBatch.reward);
       if (this.csv !== undefined) {
         return (
@@ -121,10 +80,4 @@ export default {
 </script>
 
 <style scoped>
-  .underlined {
-    border-bottom: 1px white solid;
-  }
-  .underlined-double {
-    border-bottom: 3px white double;
-  }
 </style>

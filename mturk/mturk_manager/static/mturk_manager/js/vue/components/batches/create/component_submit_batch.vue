@@ -19,6 +19,8 @@ import { mapState, mapGetters } from 'vuex';
 import Settings_Batch from '../../../classes/settings_batch';
 import { Service_Batches } from '../../../services/service_batches';
 import {Service_Projects} from '../../../services/service_projects';
+import { required } from 'vuelidate/lib/validators'
+
 
 export default {
   name: 'component-submit-batch',
@@ -54,7 +56,10 @@ export default {
       return isInBudget;
     },
     is_valid() {
-      return Service_Batches.isValidCSV() && !this.is_invalid_settings_batch && this.isInBudget;
+      return Service_Batches.isValidCSV()
+        && !this.is_invalid_settings_batch
+        && this.isInBudget
+        && required(this.name_batch);
     },
     ...mapGetters('moduleProjects', {
       project_current: 'get_project_current',
@@ -64,14 +69,12 @@ export default {
   methods: {
     async submit() {
       this.is_uploading_batch = true;
-      console.log('adding batch');
 
       await Service_Batches.create({
         name: this.name_batch,
-        settings_batch: this.$store.state.objectSettingsBatch,
+        settings_batch: this.$store.state.moduleBatches.objectSettingsBatch,
         data_csv: this.$store.state.moduleBatches.objectCSVParsed.data,
       });
-
 
       this.is_uploading_batch = false;
       this.$emit('update:is_creating_batch', false);

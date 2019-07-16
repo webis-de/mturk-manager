@@ -44,6 +44,15 @@ export default {
     };
   },
   watch: {
+    settings_batch: {
+      handler() {
+        this.$store.commit('moduleBatches/setState', {
+          objectState: this.settings_batch,
+          nameState: 'objectSettingsBatch',
+        });
+      },
+      deep: true,
+    },
     idSettingsBatchCurrent: {
       handler() {
         if (this.idSettingsBatchCurrent === undefined) {
@@ -67,8 +76,10 @@ export default {
         }
       },
     },
-    '$v.$invalid': function (v) {
-      this.$emit('updated_is_invalid_settings_batch', v);
+    '$v.$invalid': {
+      handler(v) {
+        this.$emit('updated_is_invalid_settings_batch', v);
+      },
     },
   },
   created() {
