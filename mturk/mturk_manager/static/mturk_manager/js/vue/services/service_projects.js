@@ -80,6 +80,11 @@ class Class_Service_Projects {
 
     clearInterval(this.id_interval);
 
+    if (this.idTimeoutPollStatus !== null) {
+      clearTimeout(this.idTimeoutPollStatus);
+      this.idTimeoutPollStatus = null;
+    }
+
     // load initial values for project
     if (project.slug !== undefined) {
       this.load_data(project);
@@ -298,7 +303,7 @@ class Class_Service_Projects {
 
     const arrayTasksServer = response.data.data;
     const arrayTasks = [...response.data.data];
-    console.warn('arrayTasksServer', arrayTasksServer);
+    console.log('arrayTasksServer', arrayTasksServer);
     const setTasksOld = new Set(store.state.moduleProjects.arrayTasks.map(task => task.task));
     const setTasksNew = new Set(arrayTasks.map(task => task.task));
 
@@ -328,6 +333,7 @@ class Class_Service_Projects {
 
     if (arrayTasksServer.filter(task => task.status !== 3).length === 0) {
       clearTimeout(this.idTimeoutPollStatus);
+      this.idTimeoutPollStatus = null;
     } else {
       this.idTimeoutPollStatus = setTimeout(() => {
         this.pollTasks();
