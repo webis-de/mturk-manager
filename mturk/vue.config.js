@@ -20,6 +20,11 @@ module.exports = {
       }),
       new VuetifyLoaderPlugin(),
     ],
+    optimization: {
+      splitChunks: {
+        chunks: 'all',
+      },
+    },
   },
   pluginOptions: {
     webpackBundleAnalyzer: {
