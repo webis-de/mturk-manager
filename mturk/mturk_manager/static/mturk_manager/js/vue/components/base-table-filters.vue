@@ -3,6 +3,7 @@
     v-model="showFilters"
     hide-overlay
     inset
+    lazy
   >
     <template v-slot:activator>
       <v-btn

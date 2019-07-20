@@ -1,12 +1,12 @@
 <template>
   <span>
-    <v-tooltip left>
+    <v-tooltip left lazy>
       <v-btn icon slot="activator" class="ma-0 warning--text text--lighten-1">
         <v-icon>block</v-icon>
       </v-btn>
       <span>Soft Blocked</span>
     </v-tooltip>
-    <v-tooltip left>
+    <v-tooltip left lazy>
       <v-btn icon slot="activator" class="ma-0 error--text text--lighten-4">
         <v-icon>block</v-icon>
       </v-btn>

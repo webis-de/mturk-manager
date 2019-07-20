@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-tooltip top v-bind:disabled="is_valid_selection">
+    <v-tooltip top v-bind:disabled="is_valid_selection" lazy>
       <v-btn
         slot="activator"
         small
@@ -23,7 +23,7 @@
       </v-btn>
       Selected batches have an incompatible structure
     </v-tooltip>
-    <v-dialog v-model="dialog" max-width="80%">
+    <v-dialog v-model="dialog" max-width="80%" lazy>
       <v-card>
         <v-card-title>
           Download Batch(es)

@@ -4,7 +4,7 @@
       Toggle Columns
     </v-btn>
 
-    <v-dialog v-model="dialog" max-width="80%">
+    <v-dialog v-model="dialog" max-width="80%" lazy>
       <v-card>
         <v-card-text>
           <v-layout>

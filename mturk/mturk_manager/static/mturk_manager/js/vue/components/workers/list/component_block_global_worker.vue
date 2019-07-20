@@ -1,6 +1,6 @@
 <template>
   <span>
-    <v-tooltip left>
+    <v-tooltip left lazy>
       <v-btn
         icon
         small

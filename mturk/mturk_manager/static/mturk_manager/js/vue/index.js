@@ -16,6 +16,8 @@ import App from './App';
 
 import { router } from './router';
 
+Vue.config.performance = process.env.NODE_ENV === 'development';
+
 Vue.use(Vuetify, { directives: { Ripple } });
 Vue.use(VueRouter);
 Vue.use(UploadButton);

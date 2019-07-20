@@ -3,6 +3,7 @@
     left
     offset-x
     open-on-hover
+    lazy
   >
     <base-chart-horizontal-bar
       slot="activator"

@@ -1,5 +1,5 @@
 <template>
-  <v-tooltip top>
+  <v-tooltip top lazy>
     <span slot="activator">
       {{ datetime_formatted }}
     </span>

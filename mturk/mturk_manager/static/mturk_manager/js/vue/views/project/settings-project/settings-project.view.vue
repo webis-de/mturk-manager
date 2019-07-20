@@ -18,6 +18,7 @@
         <v-tabs-items class="mt-1">
           <v-tab-item
             key="general"
+            lazy
           >
             <v-container
               fluid
@@ -65,6 +66,7 @@
 
           <v-tab-item
             key="templates"
+            lazy
           >
             <v-container
               fluid
@@ -119,6 +121,7 @@
 
           <v-tab-item
             key="messages"
+            lazy
           >
             <v-container
               fluid

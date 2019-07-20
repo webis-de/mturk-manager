@@ -3,6 +3,7 @@
     offset-y
     offset-x
     v-bind:close-on-content-click="false"
+    lazy
   >
     <v-btn
       icon

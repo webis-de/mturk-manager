@@ -2,6 +2,7 @@
   <v-dialog
     v-model="is_creating_batch"
     transition="slide-y-transition"
+    lazy
   >
     <!-- persistent -->
     <v-fab-transition slot="activator">
