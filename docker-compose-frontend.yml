@@ -1,0 +1,7 @@
+version: '3.7'
+
+services:
+  web:
+    build:
+      context: frontend
+    ports: [8000:80]
