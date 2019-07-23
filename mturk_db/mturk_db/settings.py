@@ -158,7 +158,7 @@ try:
 except AttributeError:
     URL_GLOBAL_DB = 'http://localhost:8004'
 
-VERSION = '1.5.1'
+VERSION = os.environ['VERSION_MTURK_MANAGER']
 PLACEHOLDER_SLUG_PROJECT = 'PLACEHOLDER_SLUG_PROJECT'
 
 CELERY_BROKER_URL = 'amqp://admin:password@localhost:5672/'

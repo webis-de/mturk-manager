@@ -3,6 +3,8 @@ mturk/.cache
 mturk_settings.ini
 .directory
 
+.env
+
 venv
 misc
 __pycache__

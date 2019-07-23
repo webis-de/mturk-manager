@@ -5,3 +5,5 @@ services:
     build:
       context: frontend
     ports: [8000:80]
+    container_name: mturk-manager-frontend
+    image: mturk-manager-frontend:${VERSION_MTURK_MANAGER}
