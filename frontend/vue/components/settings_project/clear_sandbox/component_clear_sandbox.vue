@@ -1,8 +1,9 @@
 <template>
   <div>
     <v-dialog v-model="dialog" max-width="500">
-      <v-btn slot="activator" color="warning">
-        <v-icon>delete</v-icon>
+      <v-btn
+        class="ml-0" slot="activator" color="warning">
+        <v-icon left>delete</v-icon>
         Clear Sandbox
       </v-btn>
 

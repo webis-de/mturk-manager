@@ -2,6 +2,7 @@ import { Service_Endpoint } from './service_endpoint';
 import { store } from '../store/vuex';
 import Batch from '../classes/batch';
 import { BaseLoadPageService } from './baseLoadPage.service';
+import {convertRewardFromMturkToModel} from '../helpers';
 
 class Class_Service_Batches extends BaseLoadPageService {
   // async load_batches(force=false)
@@ -182,6 +183,25 @@ class Class_Service_Batches extends BaseLoadPageService {
       return false;
     }
     return store.state.moduleBatches.objectCSVParsed.errors.length === 0;
+  }
+
+  async findSettingsBatch(assignment) {
+    const response = await Service_Endpoint.make_request({
+      method: 'get',
+      url: {
+        path: store.getters.get_url(
+          'urlApiProjectsSettingsBatch',
+          'moduleSettingsBatch',
+        ),
+        project: store.getters['moduleProjects/get_project_current'],
+      },
+      params: {
+        model__title: assignment.Title,
+        model__description: assignment.Description,
+        model__reward: convertRewardFromMturkToModel(assignment.Reward),
+      },
+    });
+    console.warn('assignment', assignment);
   }
 }
 

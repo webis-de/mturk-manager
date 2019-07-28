@@ -26,10 +26,6 @@ urlpatterns = format_suffix_patterns([
     path('projects/<str:slug_project>/balance', views.get_balance, name='get_balance'),
     path('projects/<str:slug_project>/finances', views.Finances.as_view(), name='get_finances_for_project'),
 
-    path('projects/<str:slug_project>/settings_batch_all', views.settings_batch_all, name='setting_batch_for_project_all'),
-    path('projects/<str:slug_project>/settings_batch', views.Settings_Batch.as_view(), name='settings_batch_for_project'),
-    path('projects/<str:slug_project>/settings_batch/<int:id_settings_batch>', views.Setting_Batch.as_view(), name='setting_batch_for_project'),
-
     path('projects/<str:slug_project>/templates_worker_all', views.templates_worker_all, name='templates_worker_for_project_all'),
     path('projects/<str:slug_project>/templates_worker', views.Templates_Worker.as_view(), name='templates_for_project'),
     path('projects/<str:slug_project>/templates_worker/<int:id_template>', views.Template_Worker.as_view(), name='template_for_project'),
@@ -90,6 +86,14 @@ urlpatterns = format_suffix_patterns([
     path('projects/<str:slug_project>/assignments/<int:id_assignment>', views.ProjectAssignment.as_view(), name='assignment_for_project'),
 
     path('projects/<str:slug_project>/assignments_for_annotation', views.assignments_for_annotation, name='assignments_for_annotation'),
+
+    ##################################################################
+    # Batch Settings
+    ##################################################################
+    path('projects/<str:slug_project>/settings_batch_all', views.settings_batch_all, name='setting_batch_for_project_all'),
+    path('projects/<str:slug_project>/settings_batch', views.Settings_Batch.as_view(), name='settings_batch_for_project'),
+    path('projects/<str:slug_project>/settings_batch/<int:id_settings_batch>', views.Setting_Batch.as_view(), name='setting_batch_for_project'),
+
     ##################################################################
     # Messages
     ##################################################################

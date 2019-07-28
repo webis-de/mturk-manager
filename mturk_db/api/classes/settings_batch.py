@@ -1,9 +1,11 @@
+import json
+
+from django.db.models import QuerySet
+from rest_framework.request import Request
+
 from api.classes import Interface_Manager_Items
-from api.models import Account_Mturk, Settings_Batch, Keyword
-from mturk_db.settings import URL_MTURK_SANDBOX
-import boto3, json
-from django.utils.text import slugify
-from django.conf import settings
+from api.models import Settings_Batch, Keyword
+
 
 class Manager_Settings_Batch(Interface_Manager_Items):
     @staticmethod
@@ -11,6 +13,11 @@ class Manager_Settings_Batch(Interface_Manager_Items):
         queryset = Settings_Batch.objects.filter(
             project=database_object_project,
             batch=None,
+        )
+
+        queryset = Manager_Settings_Batch.filter(
+            queryset=queryset,
+            request=request
         )
 
         sort_by = request.query_params.get('sort_by')
@@ -25,6 +32,28 @@ class Manager_Settings_Batch(Interface_Manager_Items):
                 *fields
             )
 
+        return queryset
+
+    @staticmethod
+    def filter(queryset: QuerySet, request: Request) -> QuerySet:
+        queryset = Manager_Settings_Batch.filter_value(
+            queryset=queryset,
+            request=request,
+            name_filter='model__title',
+            name_field='title'
+        )
+        queryset = Manager_Settings_Batch.filter_value(
+            queryset=queryset,
+            request=request,
+            name_filter='model__description',
+            name_field='description'
+        )
+        queryset = Manager_Settings_Batch.filter_value(
+            queryset=queryset,
+            request=request,
+            name_filter='model__reward',
+            name_field='reward'
+        )
         return queryset
 
     @staticmethod

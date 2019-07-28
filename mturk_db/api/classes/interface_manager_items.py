@@ -63,6 +63,21 @@ class Interface_Manager_Items(object):
         raise_not_implemented_exception('delete', __class__)
 
     @staticmethod
+    def filter_value(queryset: QuerySet, request: Request, name_filter: str, name_field: str):
+        value = request.query_params.get(name_filter)
+        if value is not None:
+            if json.loads(request.query_params.get('{name_filter}Exclude'.format(name_filter=name_filter), 'false')):
+                queryset = queryset.exclude(**{
+                    name_field: value
+                })
+            else:
+                queryset = queryset.filter(**{
+                    name_field: value
+                })
+
+        return queryset
+
+    @staticmethod
     def filter_boolean(queryset: QuerySet, request: Request, name_filter: str, name_field: str):
         isActive = json.loads(request.query_params.get(name_filter, 'false'))
         if isActive == True:
@@ -77,6 +92,7 @@ class Interface_Manager_Items(object):
 
         return queryset
 
+    #
     @staticmethod
     def filter_list(queryset: QuerySet, request: Request, name_filter: str, name_field: str) -> QuerySet:
         items_selected = request.query_params.getlist('{name_filter}[]'.format(name_filter=name_filter))

@@ -60,6 +60,15 @@
                     <component-clear-sandbox />
                   </v-card>
                 </v-flex>
+
+                <v-flex shrink>
+                  <v-card class="pa-2">
+                    <h2 class="headline">
+                      Import from MTurk
+                    </h2>
+                    <import-batch/>
+                  </v-card>
+                </v-flex>
               </v-layout>
             </v-container>
           </v-tab-item>
@@ -232,10 +241,12 @@ import TableTemplatesHit from '../../../components/settings_project/templates_hi
 import TableTemplatesGlobal from '../../../components/settings_project/templates_global/table-template-global';
 import TableSettingsBatch from '../../../components/settings_project/settings_batch/table-settings-batch';
 import TableMessagesReject from '../../../components/messages-reject/table-messages-reject';
+import ImportBatch from '../../../components/project/import-batch';
 
 export default {
   name: 'AppSettingsProject',
   components: {
+    ImportBatch,
     TableMessagesReject,
     TableSettingsBatch,
     TableTemplatesGlobal,

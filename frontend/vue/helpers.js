@@ -77,3 +77,12 @@ export function getChanges(item1, item2) {
 
   return object;
 }
+
+export function convertRewardFromMturkToModel(reward) {
+  let result = reward;
+  if (reward.startsWith('$')) {
+    result = reward.substring(1);
+  }
+
+  return Math.round(parseFloat(result) * 100);
+}
