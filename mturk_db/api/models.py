@@ -98,6 +98,7 @@ class Template_Worker(Template):
     template_hit = models.ForeignKey('Template_HIT', null=True, on_delete=models.SET_NULL, related_name='templates_used')
     template_global = models.ForeignKey('Template_Global', null=True, on_delete=models.SET_NULL, related_name='templates_used')
     json_dict_parameters = models.TextField()
+    is_fixed = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name

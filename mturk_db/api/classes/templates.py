@@ -14,6 +14,11 @@ class Manager_Templates(Interface_Manager_Items):
             project=database_object_project,
         )
 
+        queryset = cls.filter(
+            queryset=queryset,
+            request=request,
+        )
+
         queryset = cls.annotate(
             queryset=queryset,
         )
@@ -28,6 +33,10 @@ class Manager_Templates(Interface_Manager_Items):
                 *fields
             )
 
+        return queryset
+
+    @staticmethod
+    def filter(queryset: QuerySet, request: Request) -> QuerySet:
         return queryset
 
     @staticmethod

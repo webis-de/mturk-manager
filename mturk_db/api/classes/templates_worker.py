@@ -4,6 +4,7 @@ from collections import Counter
 
 from django.db.models import QuerySet, Case, When, BooleanField, Count, F
 from django.db.models.functions import Coalesce
+from rest_framework.request import Request
 
 from api.classes import Manager_Templates
 from api.models import Template_Worker
@@ -11,6 +12,12 @@ from api.models import Template_Worker
 
 class Manager_Templates_Worker(Manager_Templates):
     model = Template_Worker
+
+    @staticmethod
+    def filter(queryset: QuerySet, request: Request) -> QuerySet:
+        return queryset.filter(
+            is_fixed=False
+        )
 
     @staticmethod
     def annotate(queryset: QuerySet) -> QuerySet:

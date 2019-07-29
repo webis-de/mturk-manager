@@ -1,54 +1,22 @@
 from celery import shared_task
-from api.models import Settings_Batch, Batch, HIT
+from api.models import Settings_Batch, Batch, HIT, Template_Worker
 import uuid
 import json
 from botocore.exceptions import ClientError
+from django.utils import timezone
 
 
 @shared_task(bind=True, name='tasks.create_batch')
 def create_batch(self, data, database_object_project=None, use_sandbox=True):
+    from api.classes import Manager_Projects, ManagerTasks, Manager_Batches
     try:
-        from api.classes import Manager_Projects, ManagerTasks, Manager_Batches
         ManagerTasks.start(self.request.id)
 
-    #     time.sleep(2)
-    #
-    #     ManagerTasks.start(self.request.id)
-    #     from api.classes.batches import Manager_Batches
-    # # def create_batch(self, x, y):
-    #     print('started task ##################')
-    #     iterations = 10
-    #     for i in range(iterations):
-    #         time.sleep(2)
-    #         self.update_state(
-    #             state='PROGRESS',
-    #             meta={'current': i, 'total': iterations}
-    #         )
-
-        # ManagerTasks.delete_by_uid(self.request.id)
-        # return
-
         client = Manager_Projects.get_mturk_api(use_sandbox)
-        # client = Manager_Projects.get_mturk_api(database_object_project, use_sandbox)
         dictionary_settings_batch = data['settings_batch']
-
-        # print('+++++++++++++++++++++++++++')
-        # print(dictionary_settings_batch)
-        # print(dictionary_settings_batch['keywords'])
-        # print(dictionary_settings_batch['assignments_max'])
-        # print(dictionary_settings_batch['lifetime'])
-        # print(dictionary_settings_batch['duration'])
-        # print(dictionary_settings_batch['reward'])
-        # print(dictionary_settings_batch['title'])
-        # print(dictionary_settings_batch['description'])
-        # print(dictionary_settings_batch['template'])
-        # print('missing: AutoApprovalDelayInSeconds, Question, QualificationRequirement')
-        # print('+++++++++++++++++++++++++++')
 
         if dictionary_settings_batch['block_workers']:
             dictionary_settings_batch['template_worker'].template = Manager_Batches.preprocess_template_request(database_object_project, dictionary_settings_batch['template_worker'].template)
-
-        # print(data['template_worker'].template)
         try:
             name_batch = data['name'].upper()
         except KeyError:
@@ -59,6 +27,14 @@ def create_batch(self, data, database_object_project=None, use_sandbox=True):
             project=database_object_project,
             use_sandbox=use_sandbox,
         )
+
+        template = dictionary_settings_batch.get('template_worker')
+
+        template.pk = None
+        template.name = '{}__{}'.format(template.name, timezone.now().timestamp())
+        template.is_fixed = False
+
+        template.save()
 
         settings_batch = Settings_Batch.objects.create(
             batch=database_object_batch,
@@ -143,80 +119,5 @@ def create_batch(self, data, database_object_project=None, use_sandbox=True):
         ManagerTasks.delete_by_uid(self.request.id)
 
     except Exception as e:
-        print('{}: {}'.format(e.type, e.message))
         ManagerTasks.failed(self.request.id)
-
-
-
-            # db_obj_hit = HIT.objects.create(
-            #     # id_hit=str(random.randint(0, 9999999)),
-            #     id_hit=uuid.uuid4().hex,
-            #     batch=database_object_batch,
-            #     parameters=json.dumps(dictionary_hit),
-            #     datetime_expiration=datetime.datetime.now(),
-            #     datetime_creation=datetime.datetime.now(),
-            # )
-
-        # db_obj_tag = m_Tag.objects.get_or_create(
-        #     name=project.glob_prefix_name_tag_batch+database_object_batch.name,
-        #     key_corpus=database_object_project.name
-        # )[0]
-    #     for index_reader, dict_parameters in enumerate(reader):
-    #     # print(index_reader)
-    #     # print(len(dict_parameters))
-    #     # print(dict_parameters)
-    #     try:
-    #         mturk_obj_hit = client.create_hit(
-    #             Keywords='',
-    #             # Keywords=dictionary_settings_batch['keywords'],
-    #             MaxAssignments=form.cleaned_data['count_assignments'],
-    #             LifetimeInSeconds=form.cleaned_data['lifetime'],
-    #             AssignmentDurationInSeconds=form.cleaned_data['duration'],
-    #             AutoApprovalDelayInSeconds=1209600,
-    #             Reward=form.cleaned_data['reward'],
-    #             Title=title,
-    #             Description=form.cleaned_data['description'],
-    #             Question=code_shared.create_question(db_obj_template.template, db_obj_template.height_frame, dict_parameters),
-    #             QualificationRequirements=list_requirements
-    #         )
-    #         # print(mturk_obj_hit)
-    #     except ClientError as e:
-    #         messages.error(request, '''
-    #             An error occured
-    #             <a href="#alert_1" data-toggle="collapse" class="alert-link">details</a>
-    #             <p class="collapse mb-0" id="alert_1">
-    #                 {}
-    #             </p>
-    #         '''.format(e))
-
-    #         if index == 0:
-    #             db_obj_batch.delete()
-
-    #         break
-
-    #     index += 1
-
-    #     db_obj_tag = m_Tag.objects.create(
-    #         name=glob_prefix_name_tag_hit+mturk_obj_hit['HIT']['HITId'],
-    #         key_corpus=db_obj_project.name
-    #     )
-
-    #     # print(mturk_obj_hit)
-    #     db_obj_hit = m_Hit.objects.create(
-    #         # id_hit=str(random.randint(0, 9999999)),
-    #         id_hit=mturk_obj_hit['HIT']['HITId'],
-    #         fk_batch=db_obj_batch,
-    #         parameters=json.dumps(dict_parameters),
-    #         datetime_expiration=mturk_obj_hit['HIT']['Expiration'],
-    #         datetime_creation=mturk_obj_hit['HIT']['CreationTime'],
-    #     )
-
-    #     # list_assignments
-
-    #     # list_entities.append(db_obj_hit.id)
-
-    # db_obj_tag = m_Tag.objects.get_or_create(
-    #     name=glob_prefix_name_tag_batch+db_obj_batch.name,
-    #     key_corpus=db_obj_project.name
-    # )[0]
-    #     return database_object_batch
+        print('{}'.format(e))
