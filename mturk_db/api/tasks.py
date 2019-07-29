@@ -3,38 +3,35 @@ from api.models import Settings_Batch, Batch, HIT, Template_Worker
 import uuid
 import json
 from botocore.exceptions import ClientError
-from django.utils import timezone
 
 
 @shared_task(bind=True, name='tasks.create_batch')
 def create_batch(self, data, database_object_project=None, use_sandbox=True):
-    from api.classes import Manager_Projects, ManagerTasks, Manager_Batches
+    from api.classes import Manager_Projects, ManagerTasks, Manager_Batches, Manager_Templates_Worker
     try:
         ManagerTasks.start(self.request.id)
 
         client = Manager_Projects.get_mturk_api(use_sandbox)
         dictionary_settings_batch = data['settings_batch']
 
+        # inject blocking code into the template
         if dictionary_settings_batch['block_workers']:
             dictionary_settings_batch['template_worker'].template = Manager_Batches.preprocess_template_request(database_object_project, dictionary_settings_batch['template_worker'].template)
+
+        # generate batch name if not given
         try:
             name_batch = data['name'].upper()
         except KeyError:
             name_batch = uuid.uuid4().hex.upper()
 
+        # create batch
         database_object_batch = Batch.objects.create(
             name=name_batch,
             project=database_object_project,
             use_sandbox=use_sandbox,
         )
 
-        template = dictionary_settings_batch.get('template_worker')
-
-        template.pk = None
-        template.name = '{}__{}'.format(template.name, timezone.now().timestamp())
-        template.is_fixed = False
-
-        template.save()
+        Manager_Templates_Worker.clone_and_fix_template(dictionary_settings_batch['template_worker'])
 
         settings_batch = Settings_Batch.objects.create(
             batch=database_object_batch,

@@ -5,6 +5,7 @@ from collections import Counter
 from django.db.models import QuerySet, Case, When, BooleanField, Count, F
 from django.db.models.functions import Coalesce
 from rest_framework.request import Request
+from django.utils import timezone
 
 from api.classes import Manager_Templates
 from api.models import Template_Worker
@@ -66,3 +67,11 @@ class Manager_Templates_Worker(Manager_Templates):
         instance.save()
 
         return instance
+
+    @classmethod
+    def clone_and_fix_template(cls, template):
+        # create a copy of the worker template and fix it
+        template.pk = None
+        template.name = '{}__{}'.format(template.name, timezone.now().timestamp())
+        template.is_fixed = True
+        template.save()
