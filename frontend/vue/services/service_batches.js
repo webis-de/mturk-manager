@@ -185,6 +185,24 @@ class Class_Service_Batches extends BaseLoadPageService {
     return store.state.moduleBatches.objectCSVParsed.errors.length === 0;
   }
 
+  async importBatches({ nameBatch, templateWorker, parsedCSVs }) {
+    const response = await Service_Endpoint.make_request({
+      method: 'post',
+      url: {
+        path: store.getters.get_url(
+          'urlApiProjectsBatchesImport',
+          'moduleBatches',
+        ),
+        project: store.getters['moduleProjects/get_project_current'],
+      },
+      data: {
+        nameBatch,
+        templateWorker,
+        parsedCSVs,
+      }
+    });
+  }
+
   async findSettingsBatch(assignment) {
     const response = await Service_Endpoint.make_request({
       method: 'get',

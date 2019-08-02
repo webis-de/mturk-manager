@@ -1,10 +1,11 @@
 import json
+import uuid
 
 from django.db.models import QuerySet
 from rest_framework.request import Request
 
 from api.classes import Interface_Manager_Items
-from api.models import Settings_Batch, Keyword
+from api.models import Settings_Batch, Keyword, Project, Batch
 
 
 class Manager_Settings_Batch(Interface_Manager_Items):
@@ -147,3 +148,29 @@ class Manager_Settings_Batch(Interface_Manager_Items):
     @staticmethod
     def delete(id_item):
         Settings_Batch.objects.filter(id=id_item).delete()
+
+    @staticmethod
+    def clone_and_fix_settings_batch(database_object_project: Project, database_object_batch: Batch, name_batch: str, dictionary_settings_batch: dict):
+        settings_batch = Settings_Batch.objects.create(
+            batch=database_object_batch,
+            project=database_object_project,
+            name='{}__{}__{}'.format(database_object_project.id, name_batch, uuid.uuid4().hex),
+
+            title=dictionary_settings_batch.get('title'),
+            reward=dictionary_settings_batch.get('reward'),
+            count_assignments=dictionary_settings_batch.get('count_assignments'),
+            count_assignments_max_per_worker=dictionary_settings_batch.get('count_assignments_max_per_worker'),
+            description=dictionary_settings_batch.get('description'),
+            lifetime=dictionary_settings_batch.get('lifetime'),
+            duration=dictionary_settings_batch.get('duration'),
+            block_workers=dictionary_settings_batch.get('block_workers', False),
+            template_worker=dictionary_settings_batch.get('template_worker'),
+
+            has_content_adult=dictionary_settings_batch.get('has_content_adult', False),
+            qualification_assignments_approved=dictionary_settings_batch.get('qualification_assignments_approved'),
+            qualification_hits_approved=dictionary_settings_batch.get('qualification_hits_approved'),
+            qualification_locale=json.dumps(dictionary_settings_batch.get('qualification_locale')),
+        )
+
+        # settings_batch.keywords.set([keyword['id'] for keyword in dictionary_settings_batch['keywords']])
+        # settings_batch.save()

@@ -61,10 +61,33 @@
               </v-layout>
             </v-card-text>
 
-            <v-card-text v-if="info !== null">
+            <v-card-text
+              v-if="info !== null"
+              class="px-4"
+            >
+              <v-layout>
+                <v-flex xs6>
+                  <v-text-field
+                    v-model="nameBatch"
+                    label="Batch name"
+                  />
+                </v-flex>
+              </v-layout>
+
+              <v-layout>
+                <v-flex xs6>
+                  <v-textarea
+                    v-model="templateWorker"
+                    required
+                    rows="1"
+                    label="Template"
+                  />
+                </v-flex>
+              </v-layout>
+
               <v-layout
-                v-bind:key="item.label"
                 v-for="item in info"
+                v-bind:key="item.label"
               >
                 <v-flex xs3>
                   {{ item.label }}
@@ -73,6 +96,18 @@
                   {{ item.value }}
                 </v-flex>
               </v-layout>
+
+              <v-btn
+                slot="activator"
+                color="primary"
+                class="ml-0"
+                v-on:click="importBatches()"
+              >
+                <!--                <v-icon left>-->
+                <!--                  cloud_upload-->
+                <!--                </v-icon>-->
+                Import Batch
+              </v-btn>
             </v-card-text>
             <v-card-actions>
               <v-spacer />
@@ -93,7 +128,7 @@
 <script>
 import UploadButton from 'vuetify-upload-button';
 import Papa from 'papaparse';
-import {Service_Batches} from '../../services/service_batches';
+import { Service_Batches } from '../../services/service_batches';
 
 export default {
   name: 'ImportBatch',
@@ -105,6 +140,8 @@ export default {
       dialog: false,
       isParsingCSV: true,
       parsedCSV: null,
+      nameBatch: null,
+      templateWorker: null,
     };
   },
   computed: {
@@ -122,6 +159,15 @@ export default {
     },
   },
   methods: {
+    importBatches() {
+      Service_Batches.importBatches({
+        nameBatch: this.nameBatch,
+        templateWorker: this.templateWorker,
+        parsedCSVs: [this.parsedCSV.data],
+      }).then(() => {
+        this.dialog = false;
+      });
+    },
     fileChanged(file) {
       if (file == null) {
         return;

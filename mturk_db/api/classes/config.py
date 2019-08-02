@@ -47,6 +47,7 @@ class Manager_Config(object):
             'url_api_projects_batches': 'projects/{}/batches'.format(settings.PLACEHOLDER_SLUG_PROJECT),
             'url_api_projects_batches_download': 'projects/{}/download_batches'.format(settings.PLACEHOLDER_SLUG_PROJECT),
             'url_api_projects_batches_download_info': 'projects/{}/download_info_batches'.format(settings.PLACEHOLDER_SLUG_PROJECT),
+            'url_api_projects_batches_import': 'projects/{}/import_batches'.format(settings.PLACEHOLDER_SLUG_PROJECT),
 
             ##################################################################
             # HITs

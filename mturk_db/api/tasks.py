@@ -7,7 +7,7 @@ from botocore.exceptions import ClientError
 
 @shared_task(bind=True, name='tasks.create_batch')
 def create_batch(self, data, database_object_project=None, use_sandbox=True):
-    from api.classes import Manager_Projects, ManagerTasks, Manager_Batches, Manager_Templates_Worker
+    from api.classes import Manager_Projects, ManagerTasks, Manager_Batches, Manager_Templates_Worker, Manager_Settings_Batch
     try:
         ManagerTasks.start(self.request.id)
 
@@ -25,37 +25,21 @@ def create_batch(self, data, database_object_project=None, use_sandbox=True):
             name_batch = uuid.uuid4().hex.upper()
 
         # create batch
-        database_object_batch = Batch.objects.create(
-            name=name_batch,
-            project=database_object_project,
+        database_object_batch = Manager_Batches.create_batch(
+            name_batch=name_batch,
+            database_object_project=database_object_project,
             use_sandbox=use_sandbox,
         )
 
         Manager_Templates_Worker.clone_and_fix_template(dictionary_settings_batch['template_worker'])
 
-        settings_batch = Settings_Batch.objects.create(
-            batch=database_object_batch,
-            project=database_object_project,
-            name='{}__{}__{}'.format(database_object_project.id, name_batch, uuid.uuid4().hex),
-
-            title=dictionary_settings_batch.get('title'),
-            reward=dictionary_settings_batch.get('reward'),
-            count_assignments=dictionary_settings_batch.get('count_assignments'),
-            count_assignments_max_per_worker=dictionary_settings_batch.get('count_assignments_max_per_worker'),
-            description=dictionary_settings_batch.get('description'),
-            lifetime=dictionary_settings_batch.get('lifetime'),
-            duration=dictionary_settings_batch.get('duration'),
-            block_workers=dictionary_settings_batch.get('block_workers'),
-            template_worker=dictionary_settings_batch.get('template_worker'),
-
-            has_content_adult=dictionary_settings_batch.get('has_content_adult'),
-            qualification_assignments_approved=dictionary_settings_batch.get('qualification_assignments_approved'),
-            qualification_hits_approved=dictionary_settings_batch.get('qualification_hits_approved'),
-            qualification_locale=json.dumps(dictionary_settings_batch.get('qualification_locale')),
-
+        Manager_Settings_Batch.clone_and_fix_settings_batch(
+            database_object_project=database_object_project,
+            database_object_batch=database_object_batch,
+            name_batch=name_batch,
+            dictionary_settings_batch=dictionary_settings_batch,
         )
-        settings_batch.keywords.set([keyword['id'] for keyword in dictionary_settings_batch['keywords']])
-        settings_batch.save()
+
 
         title = dictionary_settings_batch['title']
         if dictionary_settings_batch['has_content_adult'] == True:

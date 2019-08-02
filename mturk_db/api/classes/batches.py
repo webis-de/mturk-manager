@@ -3,6 +3,7 @@ import csv
 import json
 import uuid
 import xmltodict
+import datetime
 
 from django.conf import settings as settings_django
 from django.db.models import F, Count, Q, QuerySet, Case, When, BooleanField, IntegerField, Subquery, \
@@ -16,7 +17,7 @@ from api.classes import Interface_Manager_Items, ManagerTasks
 from api.classes.projects import Manager_Projects
 from api.enums import assignments, STATUS_EXTERNAL, STATUS_INTERNAL, tasks
 from api.models import Batch, HIT, Assignment, Settings_Batch, Worker, Project
-from api.helpers import mturk_status_to_database_status
+from api.helpers import mturk_status_to_database_status, mturk_reward_to_database_reward
 
 from api.tasks import create_batch
 
@@ -631,3 +632,68 @@ class Manager_Batches(Interface_Manager_Items):
             })
 
         return result
+
+    @staticmethod
+    def import_batches(database_object_project: Project, request: Request, use_sandbox: bool):
+        from api.classes import Manager_Settings_Batch, Manager_Templates_Worker
+
+        for parsed_csv in request.data.get('parsedCSVs', []):
+            name_batch = request.data['nameBatch']
+            if name_batch is None:
+                name_batch = uuid.uuid4().hex.upper()
+            else:
+                name_batch = name_batch.upper()
+
+            # create batch
+            database_object_batch = Manager_Batches.create_batch(
+                name_batch=name_batch,
+                database_object_project=database_object_project,
+                use_sandbox=use_sandbox,
+                datetime_creation=datetime.datetime.strptime(sorted(map(lambda x: x['CreationTime'], parsed_csv))[0], '%a %b %d %H:%M:%S %Z %Y'),
+            )
+
+            template_worker = Manager_Templates_Worker.create(
+                data={
+                    'database_object_project': database_object_project,
+                    'name': '{}__{}'.format(name_batch, timezone.now().timestamp()),
+                    'height_frame': 800,
+                    'template': request.data.get('templateWorker'),
+                    'is_fixed': True,
+                }
+            )
+
+            count_assignments_estimated = collections.Counter(map(lambda x: x['HITId'], parsed_csv)).most_common(1)[0][1]
+
+            Manager_Settings_Batch.clone_and_fix_settings_batch(
+                database_object_project=database_object_project,
+                database_object_batch=database_object_batch,
+                name_batch=name_batch,
+                dictionary_settings_batch={
+                    'title': parsed_csv[0]['Title'],
+                    'reward': mturk_reward_to_database_reward(parsed_csv[0]['Reward']),
+                    'count_assignments': count_assignments_estimated,
+                    'description': parsed_csv[0]['Description'],
+                    'lifetime': 600,
+                    # 'lifetime': int(parsed_csv[0]['LifetimeInSeconds']),
+                    'duration': int(parsed_csv[0]['AssignmentDurationInSeconds']),
+                    # 'keywords': parsed_csv[0]['Keywords']
+                    'template_worker': template_worker,
+                },
+            )
+
+            for assignment in parsed_csv:
+                print(assignment.keys())
+                break
+
+        return {
+            'name_batch': name_batch
+        }
+
+    @staticmethod
+    def create_batch(name_batch: str, database_object_project: Project, use_sandbox: bool, datetime_creation):
+        return Batch.objects.create(
+            name=name_batch,
+            project=database_object_project,
+            use_sandbox=use_sandbox,
+            datetime_creation=datetime_creation
+        )

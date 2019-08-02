@@ -58,7 +58,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'api.middleware.SqlPrintMiddleware',
+    # 'api.middleware.SqlPrintMiddleware',
 ]
 
 ROOT_URLCONF = 'mturk_db.urls'

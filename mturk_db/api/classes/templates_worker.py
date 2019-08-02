@@ -45,6 +45,7 @@ class Manager_Templates_Worker(Manager_Templates):
             template_assignment=data.get('template_assignment', None),
             template_hit=data.get('template_hit', None),
             template_global=data.get('template_global', None),
+            is_fixed=data.get('is_fixed', False),
         )
 
         template.has_assignments = False
@@ -71,7 +72,10 @@ class Manager_Templates_Worker(Manager_Templates):
     @classmethod
     def clone_and_fix_template(cls, template):
         # create a copy of the worker template and fix it
+        # TODO: check copy vs reference
         template.pk = None
         template.name = '{}__{}'.format(template.name, timezone.now().timestamp())
         template.is_fixed = True
         template.save()
+
+        return template
