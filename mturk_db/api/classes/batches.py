@@ -658,7 +658,7 @@ class Manager_Batches(Interface_Manager_Items):
                     'name': '{}__{}'.format(name_batch, timezone.now().timestamp()),
                     'height_frame': 800,
                     'template': request.data.get('templateWorker'),
-                    'is_fixed': True,
+                    'template_original': True,
                 }
             )
 
@@ -690,10 +690,15 @@ class Manager_Batches(Interface_Manager_Items):
         }
 
     @staticmethod
-    def create_batch(name_batch: str, database_object_project: Project, use_sandbox: bool, datetime_creation):
-        return Batch.objects.create(
+    def create_batch(name_batch: str, database_object_project: Project, use_sandbox: bool, datetime_creation=None):
+        batch =  Batch.objects.create(
             name=name_batch,
             project=database_object_project,
             use_sandbox=use_sandbox,
-            datetime_creation=datetime_creation
         )
+
+        if datetime_creation is not None:
+            batch.datetime_creation = datetime_creation
+            batch.save()
+
+        return batch

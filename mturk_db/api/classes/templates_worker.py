@@ -17,7 +17,7 @@ class Manager_Templates_Worker(Manager_Templates):
     @staticmethod
     def filter(queryset: QuerySet, request: Request) -> QuerySet:
         return queryset.filter(
-            is_fixed=False
+            template_original=None
         )
 
     @staticmethod
@@ -45,8 +45,16 @@ class Manager_Templates_Worker(Manager_Templates):
             template_assignment=data.get('template_assignment', None),
             template_hit=data.get('template_hit', None),
             template_global=data.get('template_global', None),
-            is_fixed=data.get('is_fixed', False),
         )
+
+        template_original = data.get('template_original', None)
+        if template_original is not None:
+            if template_original is True:
+                template.template_original = template
+            else:
+                template.template_original = template_original
+
+            template.save()
 
         template.has_assignments = False
 
@@ -70,12 +78,21 @@ class Manager_Templates_Worker(Manager_Templates):
         return instance
 
     @classmethod
-    def clone_and_fix_template(cls, template):
+    def clone_and_fix_template(cls, template: Template_Worker):
         # create a copy of the worker template and fix it
-        # TODO: check copy vs reference
-        template.pk = None
-        template.name = '{}__{}'.format(template.name, timezone.now().timestamp())
-        template.is_fixed = True
-        template.save()
+        template_original = template
+
+        template = Template_Worker.objects.create(
+            name='{}__{}'.format(template_original.name, timezone.now().timestamp()),
+            project=template_original.project,
+            template=template_original.template,
+            is_active=template_original.is_active,
+            height_frame=template_original.height_frame,
+            template_assignment=template_original.template_assignment,
+            template_hit=template_original.template_hit,
+            template_global=template_original.template_global,
+            json_dict_parameters=template_original.json_dict_parameters,
+            template_original=template_original,
+        )
 
         return template
