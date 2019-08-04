@@ -19,6 +19,11 @@ module.exports = {
         cwd: process.cwd(),
       }),
       new VuetifyLoaderPlugin(),
+      new webpack.DefinePlugin({
+        'process.env': {
+          VERSION_MTURK_MANAGER: JSON.stringify(process.env.VERSION_MTURK_MANAGER),
+        },
+      }),
     ],
     optimization: {
       splitChunks: {

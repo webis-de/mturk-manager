@@ -10,7 +10,7 @@ export const module_app = _.merge({}, baseModule, {
     token_instance: null,
     use_sandbox: true,
     version_api: null,
-    version: process.env.VUE_APP_VERSION_MTURK_MANAGER,
+    version: process.env.VERSION_MTURK_MANAGER,
     changelog: [],
     versionSeen: null,
   },

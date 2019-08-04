@@ -2,8 +2,8 @@
   "name": "mturk",
   "version": "1.0.0",
   "scripts": {
-    "serve": "vue-cli-service serve vue/index.js",
-    "build": "vue-cli-service build vue/index.js",
+    "serve": "env-cmd -f ../.env vue-cli-service serve vue/index.js",
+    "build": "env-cmd -f ../.env vue-cli-service build vue/index.js",
     "lint": "vue-cli-service lint",
     "parcel": "./node_modules/.bin/parcel watch --public-url /static/mturk_manager/js/dist ./mturk_manager/static/mturk_manager/js/vue/index.js -d ./mturk_manager/static/mturk_manager/js/dist",
     "parcel_annotate": "./node_modules/.bin/parcel watch --public-url /static/mturk_manager/js/dist --no-hmr ./mturk_manager/static/mturk_manager/js/annotate/index_annotate.js -d ./mturk_manager/static/mturk_manager/js/dist",
@@ -19,6 +19,7 @@
     "components": "^0.1.0",
     "date-fns": "^1.30.1",
     "dinero.js": "^1.5.0",
+    "env-cmd": "^9.0.3",
     "humanize-duration": "^3.15.1",
     "husky": "^2.3.0",
     "loadash": "^1.0.0",
