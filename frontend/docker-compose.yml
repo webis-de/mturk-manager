@@ -3,7 +3,7 @@ version: '3.7'
 services:
   web:
     build:
-      context: frontend
+      context: ""
     ports: [8000:80]
     container_name: mturk-manager-frontend
     image: mturk-manager-frontend:${VERSION_MTURK_MANAGER}

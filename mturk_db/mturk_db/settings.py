@@ -161,7 +161,7 @@ except AttributeError:
 VERSION = os.environ.get('VERSION_MTURK_MANAGER')
 PLACEHOLDER_SLUG_PROJECT = 'PLACEHOLDER_SLUG_PROJECT'
 
-CELERY_BROKER_URL = 'amqp://admin:password@localhost:5672/'
+CELERY_BROKER_URL = 'amqp://kritten:safepassword@localhost:5672/'
 CELERY_RESULT_BACKEND = 'django-db'
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TIMEZONE = 'UTC'
