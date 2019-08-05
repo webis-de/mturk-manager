@@ -2,4 +2,4 @@
 
 cd "$(dirname "$0")"
 
-docker-compose -f mturk_db/docker-compose.yml up --build
+docker-compose -f mturk_db/docker-compose.yml up --detach --build

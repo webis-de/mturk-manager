@@ -2,14 +2,14 @@ version: '3.7'
 
 services:
   backend:
-    build: ""
+    build: .
     container_name: mturk-manager-backend-${VERSION_MTURK_MANAGER}
     image: mturk-manager-backend:${VERSION_MTURK_MANAGER}
     env_file:
       - ../.env
     depends_on:
       - db
-#      - rabbitmq
+      - rabbitmq
     ports:
       - 8004:8000
 
@@ -25,13 +25,24 @@ services:
     ports:
       - 5432:5432
 
-#  rabbitmq:
-#    image: rabbitmq:3-management
-#    container_name: rabbitmq-mturk-manager
-#    hostname: rabbitmq-mturk-manager
-#    ports:
-#      - 5672:5672
-#      - 15672:15672
-#    environment:
-#      RABBITMQ_DEFAULT_USER: "kritten"
-#      RABBITMQ_DEFAULT_PASS: "safepassword"
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: mturk-manager-rabbitmq-${VERSION_MTURK_MANAGER}
+    ports:
+      - 5672:5672
+      - 15672:15672
+    environment:
+      - RABBITMQ_DEFAULT_USER=${BROKER_USER}
+      - RABBITMQ_DEFAULT_PASS=${BROKER_PASSWORD}
+
+  celery:
+    build: .
+    container_name: mturk-manager-worker-${VERSION_MTURK_MANAGER}
+    image: mturk-manager-worker:${VERSION_MTURK_MANAGER}
+    command: /venv/bin/celery -A mturk_db worker -l info --concurrency=1
+    environment:
+      - C_FORCE_ROOT=true
+    env_file:
+      - ../.env
+    depends_on:
+      - rabbitmq
