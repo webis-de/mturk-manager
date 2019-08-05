@@ -1,0 +1,37 @@
+version: '3.7'
+
+services:
+  backend:
+    build: ""
+    container_name: mturk-manager-backend-${VERSION_MTURK_MANAGER}
+    image: mturk-manager-backend:${VERSION_MTURK_MANAGER}
+    env_file:
+      - ../.env
+    depends_on:
+      - db
+#      - rabbitmq
+    ports:
+      - 8004:8000
+
+  db:
+    image: postgres:10
+    container_name: mturk-manager-database-${VERSION_MTURK_MANAGER}
+    env_file:
+      - ../.env
+    volumes:
+      - type: bind
+        source: ${PATH_DATABASE_DATA}
+        target: /var/lib/postgresql/data/
+    ports:
+      - 5432:5432
+
+#  rabbitmq:
+#    image: rabbitmq:3-management
+#    container_name: rabbitmq-mturk-manager
+#    hostname: rabbitmq-mturk-manager
+#    ports:
+#      - 5672:5672
+#      - 15672:15672
+#    environment:
+#      RABBITMQ_DEFAULT_USER: "kritten"
+#      RABBITMQ_DEFAULT_PASS: "safepassword"

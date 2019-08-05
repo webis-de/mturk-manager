@@ -1,5 +1,8 @@
 django==2.2.1
+uwsgi==2.0.18
 boto3
+psycopg2
+django-environ
 xmltodict
 djangorestframework
 markdown
