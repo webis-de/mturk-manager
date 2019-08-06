@@ -667,7 +667,6 @@ class Manager_Batches(Interface_Manager_Items):
             Manager_Settings_Batch.clone_and_fix_settings_batch(
                 database_object_project=database_object_project,
                 database_object_batch=database_object_batch,
-                name_batch=name_batch,
                 dictionary_settings_batch={
                     'title': parsed_csv[0]['Title'],
                     'reward': mturk_reward_to_database_reward(parsed_csv[0]['Reward']),

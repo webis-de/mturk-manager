@@ -80,19 +80,15 @@ class Manager_Templates_Worker(Manager_Templates):
     @classmethod
     def clone_and_fix_template(cls, template: Template_Worker):
         # create a copy of the worker template and fix it
-        template_original = template
-
-        template = Template_Worker.objects.create(
-            name='{}__{}'.format(template_original.name, timezone.now().timestamp()),
-            project=template_original.project,
-            template=template_original.template,
-            is_active=template_original.is_active,
-            height_frame=template_original.height_frame,
-            template_assignment=template_original.template_assignment,
-            template_hit=template_original.template_hit,
-            template_global=template_original.template_global,
-            json_dict_parameters=template_original.json_dict_parameters,
-            template_original=template_original,
+        return Template_Worker.objects.create(
+            name='{}__{}'.format(template.name, timezone.now().timestamp()),
+            project=template.project,
+            template=template.template,
+            is_active=template.is_active,
+            height_frame=template.height_frame,
+            template_assignment=template.template_assignment,
+            template_hit=template.template_hit,
+            template_global=template.template_global,
+            json_dict_parameters=template.json_dict_parameters,
+            template_original=template,
         )
-
-        return template

@@ -36,7 +36,6 @@ def create_batch(self, data, database_object_project=None, use_sandbox=True):
         Manager_Settings_Batch.clone_and_fix_settings_batch(
             database_object_project=database_object_project,
             database_object_batch=database_object_batch,
-            name_batch=name_batch,
             dictionary_settings_batch=dictionary_settings_batch,
         )
 

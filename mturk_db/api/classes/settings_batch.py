@@ -6,6 +6,7 @@ from rest_framework.request import Request
 
 from api.classes import Interface_Manager_Items
 from api.models import Settings_Batch, Keyword, Project, Batch
+from django.utils import timezone
 
 
 class Manager_Settings_Batch(Interface_Manager_Items):
@@ -150,11 +151,11 @@ class Manager_Settings_Batch(Interface_Manager_Items):
         Settings_Batch.objects.filter(id=id_item).delete()
 
     @staticmethod
-    def clone_and_fix_settings_batch(database_object_project: Project, database_object_batch: Batch, name_batch: str, dictionary_settings_batch: dict):
+    def clone_and_fix_settings_batch(database_object_project: Project, database_object_batch: Batch, dictionary_settings_batch: dict):
         settings_batch = Settings_Batch.objects.create(
             batch=database_object_batch,
             project=database_object_project,
-            name='{}__{}__{}'.format(database_object_project.id, name_batch, uuid.uuid4().hex),
+            name='{}__{}__{}'.format(database_object_project.id, database_object_batch.name, timezone.now().timestamp()),
 
             title=dictionary_settings_batch.get('title'),
             reward=dictionary_settings_batch.get('reward'),
