@@ -61,14 +61,14 @@
                   </v-card>
                 </v-flex>
 
-                <v-flex shrink>
-                  <v-card class="pa-2">
-                    <h2 class="headline">
-                      Import from MTurk
-                    </h2>
-                    <import-batch/>
-                  </v-card>
-                </v-flex>
+<!--                <v-flex shrink>-->
+<!--                  <v-card class="pa-2">-->
+<!--                    <h2 class="headline">-->
+<!--                      Import from MTurk-->
+<!--                    </h2>-->
+<!--                    <import-batch/>-->
+<!--                  </v-card>-->
+<!--                </v-flex>-->
               </v-layout>
             </v-container>
           </v-tab-item>
