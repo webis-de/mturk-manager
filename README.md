@@ -68,11 +68,10 @@ services:
   celery:
     image: kritten/mturk-manager-backend:${VERSION_MTURK_MANAGER}
     command: /venv/bin/celery -A mturk_db worker -l info --concurrency=1
-    environment:
-      - C_FORCE_ROOT=true
     depends_on:
       - rabbitmq
     environment:
+      - C_FORCE_ROOT=true
       - VERSION_MTURK_MANAGER=${VERSION_MTURK_MANAGER}
       - URL_GLOBAL_DB=${URL_GLOBAL_DB}
       - DATABASE_URL=${DATABASE_URL}
