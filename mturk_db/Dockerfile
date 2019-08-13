@@ -5,6 +5,7 @@ RUN set -ex \
     && RUN_DEPS=" \
         libpcre3 \
         postgresql-client \
+        iputils-ping \
     " \
     && seq 1 8 | xargs -I{} mkdir -p /usr/share/man/man{} \
     && apt-get update && apt-get install -y --no-install-recommends $RUN_DEPS \

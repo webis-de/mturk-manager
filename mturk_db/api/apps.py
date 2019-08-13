@@ -25,10 +25,10 @@ def new_connection(**kwargs):
             logger.critical('######################################################################################')
             logger.critical('# You did not set the authentication tokens. Execute \'python3 manage.py set_tokens -h\' #')
             logger.critical('######################################################################################')
-    except OperationalError:
+    except Exception:
         logger = logging.getLogger(__name__)
         logger.critical('######################################################################################')
-        logger.critical('# Execute \'python3 manage.py migrate\' to initialize the database #')
+        logger.critical('# Execute \'python3 manage.py migrate\' to initialize the database (Ignore this message if you are currently migrating) #')
         logger.critical('######################################################################################')
 
 

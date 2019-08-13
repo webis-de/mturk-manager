@@ -15,7 +15,9 @@ import environ
 
 env = environ.Env(
     # set casting, default value
-    DEBUG=(bool, False)
+    DEBUG=(bool, False),
+    RABBITMQ_DEFAULT_USER=(str, 'guest'),
+    RABBITMQ_DEFAULT_PASS=(str, 'guest'),
 )
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -166,9 +168,9 @@ VERSION = os.environ.get('VERSION_MTURK_MANAGER')
 PLACEHOLDER_SLUG_PROJECT = 'PLACEHOLDER_SLUG_PROJECT'
 
 CELERY_BROKER_URL = 'amqp://{BROKER_USER}:{BROKER_PASSWORD}@rabbitmq:{BROKER_PORT}'.format(
-    BROKER_USER=os.environ.get('BROKER_USER'),
-    BROKER_PASSWORD=os.environ.get('BROKER_PASSWORD'),
-    BROKER_PORT=os.environ.get('BROKER_PORT')
+    BROKER_USER=env('RABBITMQ_DEFAULT_USER'),
+    BROKER_PASSWORD=env('RABBITMQ_DEFAULT_PASS'),
+    BROKER_PORT=5672
 )
 CELERY_RESULT_BACKEND = 'django-db'
 CELERY_TASK_TRACK_STARTED = True
