@@ -18,6 +18,7 @@ env = environ.Env(
     DEBUG=(bool, False),
     RABBITMQ_DEFAULT_USER=(str, 'guest'),
     RABBITMQ_DEFAULT_PASS=(str, 'guest'),
+    DATABASE_URL=(str, 'sqlite:///db.sqlite3'),
 )
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)

@@ -101,6 +101,7 @@
                 slot="activator"
                 color="primary"
                 class="ml-0"
+                v-bind:loading="loading"
                 v-on:click="importBatches()"
               >
                 <!--                <v-icon left>-->
@@ -142,6 +143,7 @@ export default {
       parsedCSV: null,
       nameBatch: null,
       templateWorker: null,
+      loading: false,
     };
   },
   computed: {
@@ -160,6 +162,7 @@ export default {
   },
   methods: {
     importBatches() {
+      this.loading = true;
       Service_Batches.importBatches({
         nameBatch: this.nameBatch,
         templateWorker: this.templateWorker,
