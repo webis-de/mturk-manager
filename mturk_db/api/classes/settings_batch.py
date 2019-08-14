@@ -29,12 +29,12 @@ class Manager_Settings_Batch(Interface_Manager_Items):
                 ('-' if descending else '') + sort_by
             )
 
-        if fields is not None:
-            queryset = queryset.values(
-                *fields
-            )
+        queryset, list_fields = Manager_Settings_Batch.fields(
+            queryset=queryset,
+            request=request,
+        )
 
-        return queryset
+        return queryset, list_fields
 
     @staticmethod
     def filter(queryset: QuerySet, request: Request) -> QuerySet:

@@ -20,7 +20,7 @@ class Templates_Assignment(APIView):
 
     @add_database_object_project
     def get(self, request, slug_project, database_object_project, use_sandbox, format=None):
-        queryset = Manager_Templates_Assignment.get_all(
+        queryset, list_fields = Manager_Templates_Assignment.get_all(
             database_object_project=database_object_project,
             request=request,
         )
@@ -33,6 +33,7 @@ class Templates_Assignment(APIView):
             context={
                 'request': request,
                 'usecase': 'list_templates_assignment',
+                'fields': list_fields,
             }
         )
 
@@ -93,14 +94,9 @@ class Template_Assignment(APIView):
 @permission_classes(PERMISSIONS_INSTANCE_ONLY)
 @add_database_object_project
 def templates_assignment_all(request, slug_project, database_object_project, use_sandbox, format=None):
-    list_fields = request.query_params.getlist('fields[]')
-    if len(list_fields) == 0:
-        list_fields = None
-
-    queryset = Manager_Templates_Assignment.get_all(
+    queryset, list_fields = Manager_Templates_Assignment.get_all(
         database_object_project=database_object_project,
         request=request,
-        fields=list_fields,
     )
 
     serializer = Serializer_Template_Assignment(

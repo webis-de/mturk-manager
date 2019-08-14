@@ -16,8 +16,7 @@ class Serializer_Settings_Batch(serializers.ModelSerializer):
         if context.get('usecase') == 'annotation' or context.get('usecase') == 'list_settings_batch':
             self.fields['template'] = Serializer_Template_Worker(source='template_worker', context=context)
 
-        if context.get('fields'):
-            keep_fields(self, context.get('fields'))
+        keep_fields(self, context.get('fields'))
 
 
     #     # print(self.fields)

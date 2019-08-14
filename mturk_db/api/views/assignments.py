@@ -25,7 +25,7 @@ class Assignments(APIView):
         except KeyError:
             use_sandbox = True
 
-        queryset = Manager_Assignments.get_all(
+        queryset, list_fields = Manager_Assignments.get_all(
             request=request,
             use_sandbox=use_sandbox
         )
@@ -35,7 +35,10 @@ class Assignments(APIView):
         serializer = Serializer_Assignment(
             queryset_paginated,
             many=True,
-            context={'request': request}
+            context={
+                'request': request,
+                'fields': list_fields,
+            }
         )
 
         return Response({
@@ -49,7 +52,7 @@ class ProjectAssignments(APIView):
 
     @add_database_object_project
     def get(self, request, slug_project, database_object_project, use_sandbox, format=None):
-        queryset = Manager_Assignments.get_all(
+        queryset, list_fields = Manager_Assignments.get_all(
             database_object_project=database_object_project,
             use_sandbox=use_sandbox,
             request=request
@@ -61,7 +64,8 @@ class ProjectAssignments(APIView):
             queryset_paginated,
             many=True,
             context={
-                'usecase': 'list_assignments'
+                'usecase': 'list_assignments',
+                'fields': list_fields,
             })
 
         return Response({
@@ -114,7 +118,7 @@ class ProjectAssignments(APIView):
 @permission_classes(PERMISSIONS_INSTANCE_ONLY)
 @add_database_object_project
 def assignments_for_annotation(request, slug_project, database_object_project, use_sandbox, format=None):
-    queryset_assignments = Manager_Assignments.get_all(
+    queryset_assignments, list_fields = Manager_Assignments.get_all(
         database_object_project=database_object_project,
         use_sandbox=use_sandbox,
         request=request
@@ -123,7 +127,8 @@ def assignments_for_annotation(request, slug_project, database_object_project, u
     serializer = Serializer_Assignment(
         queryset_assignments,
         context={
-            'usecase': 'annotation'
+            'usecase': 'annotation',
+            'fields': list_fields,
         },
         many=True
     )

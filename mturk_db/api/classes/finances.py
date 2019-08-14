@@ -22,7 +22,7 @@ class ManagerFinances(object):
 
         manager = cls.items[type_item]
 
-        queryset = manager.get_all(
+        queryset, list_fields = manager.get_all(
             database_object_project=database_object_project,
             request=request,
             use_sandbox=use_sandbox

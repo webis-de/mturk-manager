@@ -20,7 +20,7 @@ class Settings_Batch(APIView):
     @add_database_object_project
     def get(self, request, slug_project, database_object_project, use_sandbox, format=None):
 
-        queryset = Manager_Settings_Batch.get_all(
+        queryset, list_fields = Manager_Settings_Batch.get_all(
             database_object_project=database_object_project,
             request=request,
         )
@@ -32,6 +32,7 @@ class Settings_Batch(APIView):
             many=True,
             context={
                 'usecase': 'list_settings_batch',
+                'fields': list_fields,
             }
         )
 
@@ -75,11 +76,7 @@ class Setting_Batch(APIView):
 @permission_classes(PERMISSIONS_INSTANCE_ONLY)
 @add_database_object_project
 def settings_batch_all(request, slug_project, database_object_project, use_sandbox, format=None):
-    list_fields = request.query_params.getlist('fields[]')
-    if len(list_fields) == 0:
-        list_fields = None
-
-    queryset = Manager_Settings_Batch.get_all(
+    queryset, list_fields = Manager_Settings_Batch.get_all(
         database_object_project=database_object_project,
         request=request,
         fields=list_fields,

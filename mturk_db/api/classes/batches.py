@@ -53,12 +53,12 @@ class Manager_Batches(Interface_Manager_Items):
             request=request
         )
 
-        if fields is not None:
-            queryset = queryset.values(
-                *fields
-            )
+        queryset, list_fields = Manager_Batches.fields(
+            queryset=queryset,
+            request=request,
+        )
 
-        return queryset
+        return queryset, list_fields
 
     @staticmethod
     def filter(queryset: QuerySet, request: Request) -> QuerySet:

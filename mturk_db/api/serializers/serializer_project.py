@@ -32,8 +32,7 @@ class Serializer_Project(serializers.ModelSerializer):
 
         context = kwargs.get('context', {})
 
-        if context.get('fields'):
-            keep_fields(self, context.get('fields'))
+        keep_fields(self, context.get('fields'))
 
     # workers = serializers.HyperlinkedRelatedField(
     #     many=True,
