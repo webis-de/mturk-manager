@@ -652,16 +652,9 @@ class Manager_Batches(Interface_Manager_Items):
                 datetime_creation=datetime.datetime.strptime(sorted(map(lambda x: x['CreationTime'], parsed_csv))[0], '%a %b %d %H:%M:%S %Z %Y'),
             )
 
-            # TODO: remove this and require an existing template
-            template_worker_original = Manager_Templates_Worker.create(
-                data={
-                    'database_object_project': database_object_project,
-                    'name': '{}__{}'.format(name_batch, timezone.now().timestamp()),
-                    'height_frame': 800,
-                    'template': request.data.get('templateWorker'),
-                }
-            )
-            template_worker = Manager_Templates_Worker.clone_and_fix_template(template_worker_original)
+            database_object_template_worker = Manager_Templates_Worker.get(request.data.get('templateWorker'))
+
+            template_worker = Manager_Templates_Worker.clone_and_fix_template(database_object_template_worker)
 
             count_assignments_estimated = collections.Counter(map(lambda x: x['HITId'], parsed_csv)).most_common(1)[0][1]
 

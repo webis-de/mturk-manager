@@ -2,7 +2,7 @@ from django.db.models import Model, QuerySet
 from rest_framework.request import Request
 
 from api.classes import Interface_Manager_Items
-from api.models import Project
+from api.models import Project, Template
 from typing import Tuple
 
 
@@ -45,7 +45,7 @@ class Manager_Templates(Interface_Manager_Items):
         return queryset
 
     @classmethod
-    def get(cls, id_item: object) -> object:
+    def get(cls, id_item: object) -> Template:
         item = cls.model.objects.get(
             pk=id_item
         )

@@ -321,9 +321,9 @@ export default {
     }),
   },
   created() {
-    Service_Templates.getAll({
-      typeTemplate: 'workerAll',
-    });
+    // Service_Templates.getAll({
+    //   typeTemplate: 'workerAll',
+    // });
   },
 };
 </script>

@@ -11,8 +11,8 @@ class Class_Service_Templates extends BaseLoadPageService {
     this.isLoadingGlobalAll = false;
   }
 
-  async loadPageWorker(pagination, filters) {
-    return Class_Service_Templates.loadPage(pagination, filters, 'worker');
+  async loadPageWorker(pagination, filters, nameState) {
+    return Class_Service_Templates.loadPage(pagination, filters, 'worker', nameState);
   }
 
   async loadPageAssignment(pagination, filters) {
@@ -27,7 +27,7 @@ class Class_Service_Templates extends BaseLoadPageService {
     return Class_Service_Templates.loadPage(pagination, filters, 'global');
   }
 
-  static async loadPage(pagination, filters, typeTemplate) {
+  static async loadPage(pagination, filters, typeTemplate, nameState) {
     const project = store.getters['moduleProjects/get_project_current'];
 
     let urlTemplate;
@@ -59,10 +59,17 @@ class Class_Service_Templates extends BaseLoadPageService {
         project,
       },
       callback(response) {
-        store.commit('moduleTemplates/setItems', {
-          data: response.data.data,
-          typeTemplate,
-        });
+        if (nameState !== undefined) {
+          store.commit('moduleTemplates/setState', {
+            objectState: response.data.data,
+            nameState,
+          });
+        } else {
+          store.commit('moduleTemplates/setItems', {
+            data: response.data.data,
+            typeTemplate,
+          });
+        }
       },
     });
   }

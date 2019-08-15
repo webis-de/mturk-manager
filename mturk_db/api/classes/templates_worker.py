@@ -8,7 +8,7 @@ from rest_framework.request import Request
 from django.utils import timezone
 
 from api.classes import Manager_Templates
-from api.models import Template_Worker
+from api.models import Template_Worker, Template
 
 
 class Manager_Templates_Worker(Manager_Templates):
@@ -78,7 +78,7 @@ class Manager_Templates_Worker(Manager_Templates):
         return instance
 
     @classmethod
-    def clone_and_fix_template(cls, template: Template_Worker):
+    def clone_and_fix_template(cls, template: Template):
         # create a copy of the worker template and fix it
         return Template_Worker.objects.create(
             name='{}__{}'.format(template.name, timezone.now().timestamp()),
