@@ -60,6 +60,9 @@ def database_status_to_mturk_status(status: assignments.STATUS_EXTERNAL = None) 
 
 
 def keep_fields(serializer, fields):
+    if fields is None or len(fields) == 0:
+        return
+
     allowed = set(fields)
     existing = set(serializer.fields)
     for field_name in existing - allowed:

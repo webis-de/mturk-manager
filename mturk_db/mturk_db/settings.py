@@ -15,7 +15,15 @@ import environ
 
 env = environ.Env(
     # set casting, default value
-    DEBUG=(bool, False)
+    DEBUG=(bool, False),
+    RABBITMQ_DEFAULT_USER=(str, 'guest'),
+    RABBITMQ_DEFAULT_PASS=(str, 'guest'),
+    DATABASE_URL=(str, 'postgres://{user}:{password}@db:5432/{database}'.format(
+        user=os.environ.get('POSTGRES_USER', 'user'),
+        password=os.environ.get('POSTGRES_PASSWORD', 'password'),
+        database=os.environ.get('POSTGRES_DB', 'database'),
+    )),
+    # DATABASE_URL=(str, 'sqlite:///db.sqlite3'),
 )
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -158,17 +166,17 @@ REST_FRAMEWORK = {
 VERSION_PROJECT = 15
 
 try:
-    URL_GLOBAL_DB = os.environ.get('URL_GLOBAL_DB')
+    URL_BACKEND = os.environ.get('URL_BACKEND')
 except AttributeError:
-    URL_GLOBAL_DB = 'http://localhost:8004'
+    URL_BACKEND = 'http://localhost:8004'
 
 VERSION = os.environ.get('VERSION_MTURK_MANAGER')
 PLACEHOLDER_SLUG_PROJECT = 'PLACEHOLDER_SLUG_PROJECT'
 
 CELERY_BROKER_URL = 'amqp://{BROKER_USER}:{BROKER_PASSWORD}@rabbitmq:{BROKER_PORT}'.format(
-    BROKER_USER=os.environ.get('BROKER_USER'),
-    BROKER_PASSWORD=os.environ.get('BROKER_PASSWORD'),
-    BROKER_PORT=os.environ.get('BROKER_PORT')
+    BROKER_USER=env('RABBITMQ_DEFAULT_USER'),
+    BROKER_PASSWORD=env('RABBITMQ_DEFAULT_PASS'),
+    BROKER_PORT=5672
 )
 CELERY_RESULT_BACKEND = 'django-db'
 CELERY_TASK_TRACK_STARTED = True
@@ -180,3 +188,9 @@ CELERY_RESULT_SERIALIZER = 'json'
 # CELERY_EVENT_SERIALIZER = 'pickle'
 CELERY_ACCEPT_CONTENT = ['pickle']
 CELERY_WORKER_SEND_TASK_EVENTS = True
+
+MTURK_KEY_ACCESS = os.environ.get('MTURK_ACCESS_KEY')
+MTURK_KEY_SECRET = os.environ.get('MTURK_SECRET_KEY')
+
+TOKEN_INSTANCE = os.environ.get('INSTANCE_TOKEN')
+TOKEN_WORKER = os.environ.get('WORKER_TOKEN')

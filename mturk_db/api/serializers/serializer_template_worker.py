@@ -45,8 +45,7 @@ class Serializer_Template_Worker(serializers.ModelSerializer):
             self.fields['template_hit'] = Serializer_Template_HIT(context=context)
             self.fields['template_global'] = Serializer_Template_Global(context=context)
 
-        if context.get('fields'):
-            keep_fields(self, context.get('fields'))
+        keep_fields(self, context.get('fields'))
 
     # workers = serializers.HyperlinkedRelatedField(
     #     many=True,

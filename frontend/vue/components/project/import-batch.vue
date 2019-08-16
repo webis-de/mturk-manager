@@ -76,15 +76,15 @@
 
               <v-layout>
                 <v-flex xs6>
-                  <v-textarea
+                  <v-select
                     v-model="templateWorker"
-                    required
-                    rows="1"
-                    label="Template"
+                    v-bind:items="$store.state.moduleTemplates.arrayItemsWorkerAll"
+                    label="Worker Template"
+                    item-text="name"
+                    item-value="id"
                   />
                 </v-flex>
               </v-layout>
-
               <v-layout
                 v-for="item in info"
                 v-bind:key="item.label"
@@ -96,11 +96,12 @@
                   {{ item.value }}
                 </v-flex>
               </v-layout>
-
               <v-btn
                 slot="activator"
                 color="primary"
                 class="ml-0"
+                v-bind:loading="loading"
+                v-bind:disabled="$v.$invalid"
                 v-on:click="importBatches()"
               >
                 <!--                <v-icon left>-->
@@ -128,7 +129,9 @@
 <script>
 import UploadButton from 'vuetify-upload-button';
 import Papa from 'papaparse';
+import { required } from 'vuelidate/lib/validators';
 import { Service_Batches } from '../../services/service_batches';
+import { Service_Templates } from '../../services/service_templates';
 
 export default {
   name: 'ImportBatch',
@@ -138,10 +141,11 @@ export default {
   data() {
     return {
       dialog: false,
-      isParsingCSV: true,
+      isParsingCSV: false,
       parsedCSV: null,
       nameBatch: null,
       templateWorker: null,
+      loading: false,
     };
   },
   computed: {
@@ -158,8 +162,31 @@ export default {
       return info;
     },
   },
+  watch: {
+    dialog(value) {
+      if (value === true) {
+        this.isParsingCSV = false;
+        this.parsedCSV = null;
+        this.nameBatch = null;
+        this.templateWorker = null;
+        this.loading = false;
+      } else {
+        this.$refs['upload-button'].clear();
+      }
+    },
+  },
+  created() {
+    Service_Templates.loadPageWorker({
+
+    }, {
+      fields: ['id', 'name'],
+    }, 'arrayItemsWorkerAll').then((data) => {
+      console.warn('data', data);
+    });
+  },
   methods: {
     importBatches() {
+      this.loading = true;
       Service_Batches.importBatches({
         nameBatch: this.nameBatch,
         templateWorker: this.templateWorker,
@@ -178,8 +205,8 @@ export default {
         header: true,
         skipEmptyLines: true,
         complete: (data) => {
-          console.warn('results', data);
           this.parsedCSV = data;
+          this.isParsingCSV = false;
 
           Service_Batches.findSettingsBatch(data.data[0]);
           // this.$store.commit('moduleBatches/setState', {
@@ -188,6 +215,14 @@ export default {
           // });
         },
       });
+    },
+  },
+  validations: {
+    templateWorker: {
+      required,
+    },
+    parsedCSV: {
+      required,
     },
   },
 };

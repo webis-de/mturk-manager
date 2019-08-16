@@ -30,15 +30,11 @@ services:
     container_name: mturk-manager-rabbitmq-${VERSION_MTURK_MANAGER}
     ports:
       - 5672:5672
-      - 15672:15672
-    environment:
-      - RABBITMQ_DEFAULT_USER=${BROKER_USER}
-      - RABBITMQ_DEFAULT_PASS=${BROKER_PASSWORD}
 
   celery:
     build: .
     container_name: mturk-manager-worker-${VERSION_MTURK_MANAGER}
-    image: mturk-manager-worker:${VERSION_MTURK_MANAGER}
+    image: mturk-manager-backend:${VERSION_MTURK_MANAGER}
     command: /venv/bin/celery -A mturk_db worker -l info --concurrency=1
     environment:
       - C_FORCE_ROOT=true

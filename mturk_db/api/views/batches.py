@@ -24,7 +24,7 @@ class Batches(APIView):
         except KeyError:
             use_sandbox = True
 
-        queryset = Manager_Batches.get_all(
+        queryset, list_fields = Manager_Batches.get_all(
             request=request,
             use_sandbox=use_sandbox
         )
@@ -36,6 +36,7 @@ class Batches(APIView):
             many=True,
             context={
                 'usecase': 'list_batches',
+                'fields': list_fields,
             }
         )
 
@@ -50,7 +51,7 @@ class ProjectBatches(APIView):
 
     @add_database_object_project
     def get(self, request, slug_project, database_object_project, use_sandbox, format=None):
-        queryset = Manager_Batches.get_all(
+        queryset, list_fields = Manager_Batches.get_all(
             database_object_project=database_object_project,
             use_sandbox=use_sandbox,
             request=request
@@ -63,6 +64,7 @@ class ProjectBatches(APIView):
             many=True,
             context={
                 'usecase': 'list_batches',
+                'fields': list_fields,
             }
         )
 
@@ -116,7 +118,7 @@ def clear_sandbox(request, slug_project, database_object_project, use_sandbox, f
 @permission_classes(PERMISSIONS_INSTANCE_ONLY)
 @add_database_object_project
 def batches_for_annotation(request, slug_project, database_object_project, use_sandbox, format=None):
-    queryset = Manager_Batches.get_all(
+    queryset, list_fields = Manager_Batches.get_all(
         database_object_project=database_object_project,
         use_sandbox=use_sandbox,
         request=request
@@ -126,6 +128,7 @@ def batches_for_annotation(request, slug_project, database_object_project, use_s
         queryset,
         context={
             'usecase': 'annotation',
+            'fields': list_fields,
         },
         many=True
     )

@@ -53,12 +53,12 @@ class Manager_Batches(Interface_Manager_Items):
             request=request
         )
 
-        if fields is not None:
-            queryset = queryset.values(
-                *fields
-            )
+        queryset, list_fields = Manager_Batches.fields(
+            queryset=queryset,
+            request=request,
+        )
 
-        return queryset
+        return queryset, list_fields
 
     @staticmethod
     def filter(queryset: QuerySet, request: Request) -> QuerySet:
@@ -232,7 +232,7 @@ class Manager_Batches(Interface_Manager_Items):
 
     @classmethod
     def get_url_block_worker(cls, db_obj_project):
-        url = settings_django.URL_GLOBAL_DB + '/projects/{}/workers/status_block/'.format(db_obj_project.slug)
+        url = settings_django.URL_BACKEND + '/projects/{}/workers/status_block/'.format(db_obj_project.slug)
 
         if url.startswith('http'):
             url = url.replace('http://', 'https://')
@@ -243,7 +243,7 @@ class Manager_Batches(Interface_Manager_Items):
 
     @classmethod
     def get_url_add_counter(cls, db_obj_project):
-        url = settings_django.URL_GLOBAL_DB + '/projects/{}/workers/increment_counter'.format(db_obj_project.slug)
+        url = settings_django.URL_BACKEND + '/projects/{}/workers/increment_counter'.format(db_obj_project.slug)
 
         if url.startswith('http'):
             url = url.replace('http://', 'https://')
@@ -652,15 +652,9 @@ class Manager_Batches(Interface_Manager_Items):
                 datetime_creation=datetime.datetime.strptime(sorted(map(lambda x: x['CreationTime'], parsed_csv))[0], '%a %b %d %H:%M:%S %Z %Y'),
             )
 
-            template_worker = Manager_Templates_Worker.create(
-                data={
-                    'database_object_project': database_object_project,
-                    'name': '{}__{}'.format(name_batch, timezone.now().timestamp()),
-                    'height_frame': 800,
-                    'template': request.data.get('templateWorker'),
-                    'template_original': True,
-                }
-            )
+            database_object_template_worker = Manager_Templates_Worker.get(request.data.get('templateWorker'))
+
+            template_worker = Manager_Templates_Worker.clone_and_fix_template(database_object_template_worker)
 
             count_assignments_estimated = collections.Counter(map(lambda x: x['HITId'], parsed_csv)).most_common(1)[0][1]
 
@@ -680,9 +674,42 @@ class Manager_Batches(Interface_Manager_Items):
                 },
             )
 
+            dict_hits = {}
+            dictionary_workers_available = {worker.id_worker: worker for worker in Worker.objects.all()}
+
             for assignment in parsed_csv:
-                print(assignment.keys())
-                break
+                print('###################')
+                try:
+                    database_object_hit = dict_hits[assignment['HITId']]
+                except KeyError:
+                    database_object_hit = HIT.objects.create(
+                        id_hit=assignment['HITId'].upper(),
+                        batch=database_object_batch,
+                        parameters=json.dumps({name_input: assignment['Input.{}'.format(name_input)] for name_input in [key.replace('Input.', '') for key in assignment if key.startswith('Input.')]}),
+                        datetime_expiration=datetime.datetime.strptime(assignment['Expiration'], '%a %b %d %H:%M:%S %Z %Y'),
+                        datetime_creation=datetime.datetime.strptime(assignment['CreationTime'], '%a %b %d %H:%M:%S %Z %Y'),
+                    )
+                    dict_hits[assignment['HITId']] = database_object_hit
+
+                try:
+                    database_object_worker = dictionary_workers_available[assignment['WorkerId']]
+                except KeyError:
+                    # otherwise create the new worker and add it to the dictionary
+                    database_object_worker = Worker.objects.get_or_create(
+                        id_worker=assignment['WorkerId'],
+                    )[0]
+                    dictionary_workers_available[assignment['WorkerId']] = database_object_worker
+
+                Assignment.objects.create(
+                    id_assignment=assignment['AssignmentId'],
+                    hit=database_object_hit,
+                    worker=database_object_worker,
+                    status_external=mturk_status_to_database_status(assignment['AssignmentStatus']),
+                    answer=json.dumps({name_input: assignment['Answer.{}'.format(name_input)] for name_input in [key.replace('Answer.', '') for key in assignment if key.startswith('Answer.')]}),
+                    datetime_submit=datetime.datetime.strptime(assignment['SubmitTime'], '%a %b %d %H:%M:%S %Z %Y'),
+                    datetime_accept=datetime.datetime.strptime(assignment['AcceptTime'], '%a %b %d %H:%M:%S %Z %Y'),
+                )
+                # break
 
         return {
             'name_batch': name_batch

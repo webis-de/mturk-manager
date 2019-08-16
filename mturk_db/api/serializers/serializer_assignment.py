@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from api.classes import Manager_Assignments
+from api.helpers import keep_fields
 from api.models import Assignment
 
 # from mturk_manager.classes import Manager_HITs
@@ -23,6 +24,9 @@ class Serializer_Assignment(serializers.ModelSerializer):
 
         if context.get('usecase') == 'list_assignments':
             self.fields['hit'] = Serializer_HIT(read_only=True)
+
+        keep_fields(self, context.get('fields'))
+
 
 # class Serializer_Batch(serializers.Serializer):
     # workers = serializers.HyperlinkedRelatedField(

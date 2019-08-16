@@ -23,7 +23,7 @@ class HITs(APIView):
         except KeyError:
             use_sandbox = True
 
-        queryset = Manager_HITs.get_all(
+        queryset, list_fields = Manager_HITs.get_all(
             request=request,
             use_sandbox=use_sandbox
         )
@@ -33,7 +33,10 @@ class HITs(APIView):
         serializer = Serializer_HIT(
             queryset_paginated,
             many=True,
-            context={'request': request}
+            context={
+                'request': request,
+                'fields': list_fields,
+            }
         )
 
         return Response({
@@ -47,7 +50,7 @@ class ProjectHITs(APIView):
 
     @add_database_object_project
     def get(self, request, slug_project, database_object_project, use_sandbox, format=None):
-        queryset = Manager_HITs.get_all(
+        queryset, list_fields = Manager_HITs.get_all(
             database_object_project=database_object_project,
             use_sandbox=use_sandbox,
             request=request
@@ -59,7 +62,8 @@ class ProjectHITs(APIView):
             queryset_paginated,
             many=True,
             context={
-                'usecase': 'list_hits'
+                'usecase': 'list_hits',
+                'fields': list_fields,
             }
         )
 
@@ -73,7 +77,7 @@ class ProjectHITs(APIView):
 @permission_classes(PERMISSIONS_INSTANCE_ONLY)
 @add_database_object_project
 def hits_for_annotation(request, slug_project, database_object_project, use_sandbox, format=None):
-    queryset = Manager_HITs.get_all(
+    queryset, list_fields = Manager_HITs.get_all(
         database_object_project=database_object_project,
         use_sandbox=use_sandbox,
         request=request
@@ -83,6 +87,7 @@ def hits_for_annotation(request, slug_project, database_object_project, use_sand
         queryset,
         context={
             'usecase': 'annotation',
+            'fields': list_fields,
         },
         many=True
     )

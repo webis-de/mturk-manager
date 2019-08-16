@@ -2,14 +2,15 @@ from django.db.models import Model, QuerySet
 from rest_framework.request import Request
 
 from api.classes import Interface_Manager_Items
-from api.models import Project
+from api.models import Project, Template
+from typing import Tuple
 
 
 class Manager_Templates(Interface_Manager_Items):
     model = None
 
     @classmethod
-    def get_all(cls, database_object_project: Project, request: Request, fields: list = None) -> QuerySet:
+    def get_all(cls, database_object_project: Project, request: Request) -> Tuple[QuerySet, list]:
         queryset = cls.model.objects.filter(
             project=database_object_project,
         )
@@ -28,12 +29,12 @@ class Manager_Templates(Interface_Manager_Items):
             request=request,
         )
 
-        if fields is not None:
-            queryset = queryset.values(
-                *fields
-            )
+        queryset, list_fields = cls.fields(
+            queryset=queryset,
+            request=request,
+        )
 
-        return queryset
+        return queryset, list_fields
 
     @staticmethod
     def filter(queryset: QuerySet, request: Request) -> QuerySet:
@@ -44,7 +45,7 @@ class Manager_Templates(Interface_Manager_Items):
         return queryset
 
     @classmethod
-    def get(cls, id_item: object) -> object:
+    def get(cls, id_item: object) -> Template:
         item = cls.model.objects.get(
             pk=id_item
         )

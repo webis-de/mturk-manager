@@ -1,34 +1,38 @@
 from django.apps import AppConfig
 from django.db.backends.signals import connection_created
 import logging
-from django.db import OperationalError
+from django.db import IntegrityError
+from django.conf import settings
+
 
 def new_connection(**kwargs):
-    from api.models import Account_Mturk
     from django.contrib.auth.models import User
+    from rest_framework.authtoken.models import Token
 
     try:
-        if Account_Mturk.objects.count() == 0:
-            logger = logging.getLogger(__name__)
-            logger.critical('######################################################################################')
-            logger.critical('# You did not add an MTurk account. Execute \'python3 manage.py set_mturk_account -h\' #')
-            logger.critical('######################################################################################')
-
         try:
-            worker = User.objects.get(username='worker')
-            instance = User.objects.get(username='instance')
+            object_instance = User.objects.create_user('instance')
+            object_worker = User.objects.create_user('worker')
+        except IntegrityError:
+            object_instance = User.objects.get(username='instance')
+            object_worker = User.objects.get(username='worker')
 
-            worker.auth_token
-            instance.auth_token
-        except Exception:
-            logger = logging.getLogger(__name__)
-            logger.critical('######################################################################################')
-            logger.critical('# You did not set the authentication tokens. Execute \'python3 manage.py set_tokens -h\' #')
-            logger.critical('######################################################################################')
-    except OperationalError:
+        Token.objects.all().delete()
+
+        Token.objects.create(
+            key=settings.TOKEN_INSTANCE,
+            user_id=object_instance.id,
+        )
+
+        Token.objects.create(
+            key=settings.TOKEN_WORKER,
+            user_id=object_worker.id,
+        )
+
+    except Exception:
         logger = logging.getLogger(__name__)
         logger.critical('######################################################################################')
-        logger.critical('# Execute \'python3 manage.py migrate\' to initialize the database #')
+        logger.critical('# Execute \'docker exec <docker-id> /venv/bin/python /code/manage.py migrate\' to initialize the database (Ignore this message if you are currently migrating) #')
         logger.critical('######################################################################################')
 
 

@@ -1,4 +1,6 @@
 from rest_framework import serializers
+
+from api.helpers import keep_fields
 from api.models import Batch, Settings_Batch, Project
 from api.classes import Manager_Batches
 from api.serializers import Serializer_Settings_Batch, Serializer_Keyword, Serializer_Template_Worker
@@ -18,6 +20,9 @@ class Serializer_Batch(serializers.ModelSerializer):
         context = kwargs.get('context', {})
 
         self.fields['settings_batch'] = Serializer_Settings_Batch(context=context)
+
+        keep_fields(self, context.get('fields'))
+
 
     settings_batch = Serializer_Settings_Batch()
 

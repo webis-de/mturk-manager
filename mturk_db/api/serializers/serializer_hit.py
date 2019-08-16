@@ -1,4 +1,6 @@
 from rest_framework import serializers
+
+from api.helpers import keep_fields
 from api.models import HIT
 from api.serializers import Serializer_Batch
 
@@ -21,7 +23,10 @@ class Serializer_HIT(serializers.ModelSerializer):
 
         if context.get('usecase') == 'list_hits':
             self.fields['batch'] = Serializer_Batch(read_only=True)
-# class Serializer_Batch(serializers.Serializer):
+
+        keep_fields(self, context.get('fields'))
+
+    # class Serializer_Batch(serializers.Serializer):
     # workers = serializers.HyperlinkedRelatedField(
     #     many=True,
     #     read_only=True,

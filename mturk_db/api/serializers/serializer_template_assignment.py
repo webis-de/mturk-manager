@@ -36,8 +36,7 @@ class Serializer_Template_Assignment(serializers.ModelSerializer):
                 fields=['id', 'name']
             )
 
-        if context.get('fields'):
-            keep_fields(self, context.get('fields'))
+        keep_fields(self, context.get('fields'))
 
     # workers = serializers.HyperlinkedRelatedField(
     #     many=True,

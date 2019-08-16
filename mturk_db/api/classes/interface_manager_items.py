@@ -2,13 +2,15 @@ from api.helpers import raise_not_implemented_exception
 from api.models import Project
 from rest_framework.request import Request
 import json
+from typing import Tuple
+
 
 from django.db.models import QuerySet, Model
 
 
 class Interface_Manager_Items(object):
     @staticmethod
-    def get_all(database_object_project: Project, request: Request, fields: list=None) -> QuerySet:
+    def get_all(database_object_project: Project, request: Request) -> Tuple[QuerySet, list]:
         """
         Args:
             database_object_project: The project
@@ -45,6 +47,16 @@ class Interface_Manager_Items(object):
             queryset = queryset[:int(limit)]
 
         return queryset
+
+    @staticmethod
+    def fields(queryset: QuerySet, request: Request) -> QuerySet:
+        list_fields = request.query_params.getlist('fields[]')
+        if len(list_fields) > 0:
+            queryset = queryset.values(
+                *list_fields
+            )
+
+        return queryset, list_fields
 
     @staticmethod
     def get(id_item: object) -> object:

@@ -3,22 +3,11 @@ from api.enums import assignments, tasks
 from datetime import datetime
 from django.utils import timezone
 
-class Account_Mturk(models.Model):
-    name = models.CharField(max_length=200, unique=True)
-    key_access = models.CharField(max_length=200)
-    key_secret = models.CharField(max_length=200)
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        verbose_name = 'MTurk Account'
 
 class Project(models.Model):
     version = models.IntegerField()
     name = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200, unique=True)
-    fk_account_mturk = models.ForeignKey('Account_Mturk', on_delete=models.SET_NULL, null=True, related_name='projects')
     datetime_visited = models.DateTimeField(default=timezone.now)
     count_assignments_max_per_worker = models.IntegerField(null=True)
     datetime_creation = models.DateTimeField(default=timezone.now)
