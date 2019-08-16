@@ -70,6 +70,8 @@ class ClassServiceApp {
       const { changelog } = store.state.module_app;
       let changelogNew = response.data;
 
+      changelogNew = changelogNew.filter(release => release.prerelease === false);
+
       // get the latest version stored in the browser
       let versionStoredLatest;
       if (changelog.length > 0) {
