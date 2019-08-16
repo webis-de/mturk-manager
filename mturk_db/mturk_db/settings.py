@@ -193,4 +193,4 @@ MTURK_KEY_ACCESS = os.environ.get('MTURK_ACCESS_KEY')
 MTURK_KEY_SECRET = os.environ.get('MTURK_SECRET_KEY')
 
 TOKEN_INSTANCE = os.environ.get('INSTANCE_TOKEN')
-WORKER_INSTANCE = os.environ.get('INSTANCE_WORKER')
+TOKEN_WORKER = os.environ.get('WORKER_TOKEN')
