@@ -6,8 +6,8 @@
     "build": "env-cmd -f ../.env vue-cli-service build vue/index.js",
     "lint": "vue-cli-service lint",
     "parcel": "./node_modules/.bin/parcel watch --public-url /static/mturk_manager/js/dist ./mturk_manager/static/mturk_manager/js/vue/index.js -d ./mturk_manager/static/mturk_manager/js/dist",
-    "parcel_annotate": "./node_modules/.bin/parcel watch --public-url /static/mturk_manager/js/dist --no-hmr ./mturk_manager/static/mturk_manager/js/annotate/index_annotate.js -d ./mturk_manager/static/mturk_manager/js/dist",
-    "parcel_annotate_build": "./node_modules/.bin/parcel build --public-url /static/mturk_manager/js/dist ./mturk_manager/static/mturk_manager/js/annotate/index_annotate.js -d ./mturk_manager/static/mturk_manager/js/dist",
+    "parcel_annotate": "./node_modules/.bin/parcel watch --no-hmr ./annotate/index_annotate.js -d ./dist",
+    "parcel_annotate_build": "./node_modules/.bin/parcel build ./annotate/index_annotate.js -d ./dist",
     "parcel_build": "./node_modules/.bin/parcel build --public-url /static/mturk_manager/js/dist ./mturk_manager/static/mturk_manager/js/vue/index.js -d ./mturk_manager/static/mturk_manager/js/dist"
   },
   "dependencies": {
