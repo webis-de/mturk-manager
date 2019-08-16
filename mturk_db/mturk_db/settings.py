@@ -18,7 +18,12 @@ env = environ.Env(
     DEBUG=(bool, False),
     RABBITMQ_DEFAULT_USER=(str, 'guest'),
     RABBITMQ_DEFAULT_PASS=(str, 'guest'),
-    DATABASE_URL=(str, 'sqlite:///db.sqlite3'),
+    DATABASE_URL=(str, 'postgres://{user}:{password}@db:5432/{database}'.format(
+        user=os.environ.get('POSTGRES_USER', 'user'),
+        password=os.environ.get('POSTGRES_PASSWORD', 'password'),
+        database=os.environ.get('POSTGRES_DB', 'database'),
+    )),
+    # DATABASE_URL=(str, 'sqlite:///db.sqlite3'),
 )
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -161,9 +166,9 @@ REST_FRAMEWORK = {
 VERSION_PROJECT = 15
 
 try:
-    URL_GLOBAL_DB = os.environ.get('URL_GLOBAL_DB')
+    URL_BACKEND = os.environ.get('URL_BACKEND')
 except AttributeError:
-    URL_GLOBAL_DB = 'http://localhost:8004'
+    URL_BACKEND = 'http://localhost:8004'
 
 VERSION = os.environ.get('VERSION_MTURK_MANAGER')
 PLACEHOLDER_SLUG_PROJECT = 'PLACEHOLDER_SLUG_PROJECT'

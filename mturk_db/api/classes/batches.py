@@ -232,7 +232,7 @@ class Manager_Batches(Interface_Manager_Items):
 
     @classmethod
     def get_url_block_worker(cls, db_obj_project):
-        url = settings_django.URL_GLOBAL_DB + '/projects/{}/workers/status_block/'.format(db_obj_project.slug)
+        url = settings_django.URL_BACKEND + '/projects/{}/workers/status_block/'.format(db_obj_project.slug)
 
         if url.startswith('http'):
             url = url.replace('http://', 'https://')
@@ -243,7 +243,7 @@ class Manager_Batches(Interface_Manager_Items):
 
     @classmethod
     def get_url_add_counter(cls, db_obj_project):
-        url = settings_django.URL_GLOBAL_DB + '/projects/{}/workers/increment_counter'.format(db_obj_project.slug)
+        url = settings_django.URL_BACKEND + '/projects/{}/workers/increment_counter'.format(db_obj_project.slug)
 
         if url.startswith('http'):
             url = url.replace('http://', 'https://')

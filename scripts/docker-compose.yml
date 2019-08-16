@@ -1,0 +1,57 @@
+version: '3.7'
+
+services:
+  frontend:
+    image: kritten/mturk-manager-frontend:${VERSION_MTURK_MANAGER}
+    container_name: mturk-manager-frontend-${VERSION_MTURK_MANAGER}
+    ports: [8000:80]
+
+  backend:
+    image: kritten/mturk-manager-backend:${VERSION_MTURK_MANAGER}
+    container_name: mturk-manager-backend-${VERSION_MTURK_MANAGER}
+    depends_on:
+      - db
+      - rabbitmq
+    ports:
+      - ${PORT_BACKEND}:8000
+    environment:
+      - VERSION_MTURK_MANAGER=${VERSION_MTURK_MANAGER}
+      - URL_BACKEND=${URL_BACKEND}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+
+  db:
+    image: postgres:10
+    container_name: mturk-manager-database-${VERSION_MTURK_MANAGER}
+    volumes:
+      - type: bind
+        source: ${PATH_DATABASE_DATA}
+        target: /var/lib/postgresql/data/
+    ports:
+      - 5432:5432
+    environment:
+      - PATH_DATABASE_DATA=${PATH_DATABASE_DATA}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: mturk-manager-rabbitmq-${VERSION_MTURK_MANAGER}
+    ports:
+      - 5672:5672
+
+  celery:
+    image: kritten/mturk-manager-backend:${VERSION_MTURK_MANAGER}
+    container_name: mturk-manager-worker-${VERSION_MTURK_MANAGER}
+    command: /venv/bin/celery -A mturk_db worker -l info --concurrency=1
+    depends_on:
+      - rabbitmq
+    environment:
+      - VERSION_MTURK_MANAGER=${VERSION_MTURK_MANAGER}
+      - URL_BACKEND=${URL_BACKEND}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - C_FORCE_ROOT=true
