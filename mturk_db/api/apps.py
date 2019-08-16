@@ -4,16 +4,9 @@ import logging
 from django.db import OperationalError
 
 def new_connection(**kwargs):
-    from api.models import Account_Mturk
     from django.contrib.auth.models import User
 
     try:
-        if Account_Mturk.objects.count() == 0:
-            logger = logging.getLogger(__name__)
-            logger.critical('######################################################################################')
-            logger.critical('# You did not add an MTurk account. Execute \'python3 manage.py set_mturk_account -h\' #')
-            logger.critical('######################################################################################')
-
         try:
             worker = User.objects.get(username='worker')
             instance = User.objects.get(username='instance')
