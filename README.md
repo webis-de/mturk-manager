@@ -26,7 +26,9 @@ You don't need to pull this repository, you only need `scripts/docker-compose.ym
 
 1. Adjust the values in `.env` to your need. *Don't forget to add the data path for the database (`PATH_DATABASE_DATA`) and ensure the path exists*
 2. Run `docker-compose up -d` to start the back- and frontend
-3. **Only once**: Run `docker exec mturk-manager-backend-<version> /venv/bin/python /code/manage.py migrate` to initialize the database
+3. Run `docker exec mturk-manager-backend-<version> /code/setup.sh` to initialize the database
+
+Run the last command (at 3.) every time you update the version of the mturk manager and/or you change the `INSTANCE_TOKEN` and `WORKER_TOKEN` in `.env`.
 
 ## Supported Features
 * Create and manage mechanical turk projects
