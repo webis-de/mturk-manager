@@ -79,7 +79,6 @@ def settings_batch_all(request, slug_project, database_object_project, use_sandb
     queryset, list_fields = Manager_Settings_Batch.get_all(
         database_object_project=database_object_project,
         request=request,
-        fields=list_fields,
     )
 
     serializer = Serializer_Settings_Batch(
