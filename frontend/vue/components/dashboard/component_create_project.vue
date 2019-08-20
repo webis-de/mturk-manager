@@ -1,54 +1,55 @@
 <template>
-  <v-layout wrap>
-    <v-flex class="text-xs-center">
-      <v-layout wrap>
-        <v-flex>
-          <span class="headline">Create New Project</span>
-        </v-flex>
-      </v-layout>
-      <!-- {{$v}} -->
-      <v-layout wrap>
-        <v-spacer></v-spacer>
-        <v-flex xs3>
-          <!-- v-model.trim="$v.name.$model" -->
-          <v-text-field
-            v-bind:value="name"
-            v-on:input="
-              update_name($event);
-              name_instant = $event;
-            "
-            label="Name"
-            v-bind:error-messages="errors"
-            v-bind:loading="$v.$pending"
-          ></v-text-field>
-        </v-flex>
-        <v-flex shrink>
-          <v-btn
-            v-on:click="save(name)"
-            v-bind:loading="is_creating"
-            color="primary"
-            v-bind:disabled="
-              $v.pending || $v.$invalid || name_instant.trim() == '' || disabled
-            "
-            >Create</v-btn
-          >
-        </v-flex>
-        <v-spacer></v-spacer>
-      </v-layout>
-    </v-flex>
-  </v-layout>
+  <form v-on:submit.prevent="save">
+    <v-layout wrap>
+      <v-flex class="text-xs-center">
+        <v-layout wrap>
+          <v-flex>
+            <span class="headline">Create New Project</span>
+          </v-flex>
+        </v-layout>
+        <!-- {{$v}} -->
+        <v-layout wrap>
+          <v-spacer />
+          <v-flex xs3>
+            <v-text-field
+              v-bind:value="name"
+              label="Name"
+              v-bind:error-messages="errors"
+              v-bind:loading="$v.$pending"
+              v-on:input="
+                update_name($event);
+                name_instant = $event;
+              "
+            />
+          </v-flex>
+          <v-flex shrink>
+            <v-btn
+              type="submit"
+              v-bind:loading="is_creating"
+              color="primary"
+              v-bind:disabled="
+                $v.pending || $v.$invalid || name_instant.trim() === '' || disabled
+              "
+            >
+              Create
+            </v-btn>
+          </v-flex>
+          <v-spacer />
+        </v-layout>
+      </v-flex>
+    </v-layout>
+  </form>
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from 'vuex';
+import { mapActions } from 'vuex';
 import _ from 'lodash';
-import axios from 'axios';
 
-import { required, minLength, between } from 'vuelidate/lib/validators';
+import { required } from 'vuelidate/lib/validators';
 import { Service_Projects } from '../../services/service_projects';
 
 export default {
-  name: 'component-create-project',
+  name: 'ComponentCreateProject',
   data() {
     return {
       snackbar_created: false,
@@ -57,9 +58,6 @@ export default {
       is_creating: false,
       name_instant: '',
       disabled: true,
-      // rules: [
-      // 	this.check_uniqueness,
-      // ],
     };
   },
   computed: {
@@ -69,10 +67,10 @@ export default {
         return errors;
       }
 
-      if (this.$v.name.required == false) {
+      if (this.$v.name.required === false) {
         errors.push('Required!');
       }
-      if (this.$v.name.is_unique == false) {
+      if (this.$v.name.is_unique === false) {
         errors.push('Name has to be unique!');
       }
 
@@ -86,9 +84,9 @@ export default {
     },
   },
   methods: {
-    save(name) {
+    save() {
       this.is_creating = true;
-      Service_Projects.create_project(name).then((project) => {
+      Service_Projects.create_project(this.name).then((project) => {
         this.name = '';
         this.$v.$reset();
         this.is_creating = false;
@@ -125,7 +123,5 @@ export default {
       },
     },
   },
-  created() {},
-  components: {},
 };
 </script>
