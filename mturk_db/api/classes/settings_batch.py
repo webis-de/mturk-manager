@@ -38,24 +38,14 @@ class Manager_Settings_Batch(Interface_Manager_Items):
 
     @staticmethod
     def filter(queryset: QuerySet, request: Request) -> QuerySet:
-        queryset = Manager_Settings_Batch.filter_value(
-            queryset=queryset,
-            request=request,
-            name_filter='model__title',
-            name_field='title'
-        )
-        queryset = Manager_Settings_Batch.filter_value(
-            queryset=queryset,
-            request=request,
-            name_filter='model__description',
-            name_field='description'
-        )
-        queryset = Manager_Settings_Batch.filter_value(
-            queryset=queryset,
-            request=request,
-            name_filter='model__reward',
-            name_field='reward'
-        )
+        for param in (param for param in request.query_params if param.startswith('model__')):
+            queryset = Manager_Settings_Batch.filter_value(
+                queryset=queryset,
+                request=request,
+                name_filter=param,
+                name_field=param[7:]
+            )
+
         return queryset
 
     @staticmethod

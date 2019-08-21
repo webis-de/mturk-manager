@@ -69,7 +69,7 @@
                 <v-flex xs6>
                   <v-text-field
                     v-model="nameBatch"
-                    label="Batch name"
+                    label="Batch Name"
                   />
                 </v-flex>
               </v-layout>
@@ -82,9 +82,20 @@
                     label="Worker Template"
                     item-text="name"
                     item-value="id"
+                    dense
                   />
                 </v-flex>
               </v-layout>
+
+              <v-layout v-if="countSettingsBatch === 0">
+                <v-flex xs6>
+                  <v-text-field
+                    v-model="nameSettingsBatch"
+                    label="Batch Profile Name"
+                  />
+                </v-flex>
+              </v-layout>
+
               <v-layout
                 v-for="item in info"
                 v-bind:key="item.label"
@@ -129,9 +140,10 @@
 <script>
 import UploadButton from 'vuetify-upload-button';
 import Papa from 'papaparse';
-import { required } from 'vuelidate/lib/validators';
+import { required, requiredIf } from 'vuelidate/lib/validators';
 import { Service_Batches } from '../../services/service_batches';
 import { Service_Templates } from '../../services/service_templates';
+import { ServiceSettingsBatch } from '../../services/service_settings_batch';
 
 export default {
   name: 'ImportBatch',
@@ -146,6 +158,8 @@ export default {
       nameBatch: null,
       templateWorker: null,
       loading: false,
+      countSettingsBatch: 0,
+      nameSettingsBatch: null,
     };
   },
   computed: {
@@ -169,6 +183,7 @@ export default {
         this.parsedCSV = null;
         this.nameBatch = null;
         this.templateWorker = null;
+        this.nameSettingsBatch = null;
         this.loading = false;
       } else {
         this.$refs['upload-button'].clear();
@@ -181,7 +196,6 @@ export default {
     }, {
       fields: ['id', 'name'],
     }, 'arrayItemsWorkerAll').then((data) => {
-      console.warn('data', data);
     });
   },
   methods: {
@@ -189,9 +203,11 @@ export default {
       this.loading = true;
       Service_Batches.importBatches({
         nameBatch: this.nameBatch,
+        nameSettingsBatch: this.nameSettingsBatch,
         templateWorker: this.templateWorker,
         parsedCSVs: [this.parsedCSV.data],
       }).then(() => {
+        ServiceSettingsBatch.loadPage(this.$store.state.moduleSettingsBatch.paginationGeneral, {});
         this.dialog = false;
       });
     },
@@ -204,22 +220,30 @@ export default {
       Papa.parse(file, {
         header: true,
         skipEmptyLines: true,
-        complete: (data) => {
-          this.parsedCSV = data;
-          this.isParsingCSV = false;
+        complete: async (data) => {
+          if (data.data.length > 0) {
+            this.countSettingsBatch = (await Service_Batches.findSettingsBatch(data.data)).items_total;
 
-          Service_Batches.findSettingsBatch(data.data[0]);
-          // this.$store.commit('moduleBatches/setState', {
-          //   objectState: results,
-          //   nameState: 'objectCSVParsed',
-          // });
+            this.parsedCSV = data;
+            this.isParsingCSV = false;
+            // this.$store.commit('moduleBatches/setState', {
+            //   objectState: results,
+            //   nameState: 'objectCSVParsed',
+            // });
+          }
         },
       });
     },
   },
   validations: {
+    nameBatch: {
+      required,
+    },
     templateWorker: {
       required,
+    },
+    nameSettingsBatch: {
+      required: requiredIf(component => component.countSettingsBatch === 0),
     },
     parsedCSV: {
       required,

@@ -185,7 +185,7 @@ class Class_Service_Batches extends BaseLoadPageService {
     return store.state.moduleBatches.objectCSVParsed.errors.length === 0;
   }
 
-  async importBatches({ nameBatch, templateWorker, parsedCSVs }) {
+  async importBatches({ nameBatch, nameSettingsBatch, templateWorker, parsedCSVs }) {
     const response = await Service_Endpoint.make_request({
       method: 'post',
       url: {
@@ -199,11 +199,12 @@ class Class_Service_Batches extends BaseLoadPageService {
         nameBatch,
         templateWorker,
         parsedCSVs,
-      }
+        name_settings_batch: nameSettingsBatch,
+      },
     });
   }
 
-  async findSettingsBatch(assignment) {
+  async findSettingsBatch(assignments) {
     const response = await Service_Endpoint.make_request({
       method: 'get',
       url: {
@@ -214,12 +215,17 @@ class Class_Service_Batches extends BaseLoadPageService {
         project: store.getters['moduleProjects/get_project_current'],
       },
       params: {
-        model__title: assignment.Title,
-        model__description: assignment.Description,
-        model__reward: convertRewardFromMturkToModel(assignment.Reward),
+        page: 1,
+        page_size: 1,
+        model__title: assignments[0].Title,
+        model__description: assignments[0].Description,
+        model__reward: convertRewardFromMturkToModel(assignments[0].Reward),
+        model__duration: assignments[0].AssignmentDurationInSeconds,
+        model__count_assignments: Object.values(_.countBy(assignments.map(assignment => assignment.HITId))).sort((a, b) => a - b).reverse()[0],
       },
     });
-    console.warn('assignment', assignment);
+
+    return response.data;
   }
 }
 

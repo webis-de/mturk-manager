@@ -658,6 +658,23 @@ class Manager_Batches(Interface_Manager_Items):
 
             count_assignments_estimated = collections.Counter(map(lambda x: x['HITId'], parsed_csv)).most_common(1)[0][1]
 
+            if 'name_settings_batch' in request.data:
+                Manager_Settings_Batch.create(data={
+                    'database_object_project': database_object_project,
+                    'name': request.data['name_settings_batch'],
+                    'title': parsed_csv[0]['Title'],
+                    'reward': mturk_reward_to_database_reward(parsed_csv[0]['Reward']),
+                    'count_assignments': count_assignments_estimated,
+                    'description': parsed_csv[0]['Description'],
+                    'lifetime': 604800,
+                    'duration': int(parsed_csv[0]['AssignmentDurationInSeconds']),
+                    'template_worker': template_worker,
+
+                    'block_workers': False,
+                    'has_content_adult': False,
+                    'keywords': [],
+                })
+
             Manager_Settings_Batch.clone_and_fix_settings_batch(
                 database_object_project=database_object_project,
                 database_object_batch=database_object_batch,
@@ -666,7 +683,7 @@ class Manager_Batches(Interface_Manager_Items):
                     'reward': mturk_reward_to_database_reward(parsed_csv[0]['Reward']),
                     'count_assignments': count_assignments_estimated,
                     'description': parsed_csv[0]['Description'],
-                    'lifetime': 600,
+                    'lifetime': 604800,
                     # 'lifetime': int(parsed_csv[0]['LifetimeInSeconds']),
                     'duration': int(parsed_csv[0]['AssignmentDurationInSeconds']),
                     # 'keywords': parsed_csv[0]['Keywords']
