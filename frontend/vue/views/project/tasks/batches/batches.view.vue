@@ -1,6 +1,6 @@
 <template>
   <component-batch-detail
-    v-bind:id_batch="id"
+    v-bind:id-batch="id"
   />
 </template>
 

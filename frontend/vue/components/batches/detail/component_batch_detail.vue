@@ -5,7 +5,6 @@
     <v-flex>
       <!-- {{object_batches}} -->
       <h2 class="headline">
-        Batch {{ batch.name }}
         <v-btn
           slot="activator"
           class="my-0"
@@ -13,18 +12,37 @@
           small
           v-bind:to="{ name: 'tasksBatches' }"
         >
-          <v-icon>arrow_upward</v-icon>
+          <v-icon>arrow_back</v-icon>
         </v-btn>
+        Batch {{ batch.name }}
       </h2>
-      <v-divider class="my-3"></v-divider>
-      <list-hits
-        v-bind:pagination-computed="paginationComputed"
-        v-bind:function-set-pagination="functionSetPagination"
+      <v-divider class="my-3" />
+      <v-container
+        fluid
+        class="pa-0"
+        grid-list-md
+      >
+        <v-layout>
+          <v-flex>
+            <v-card>
+              <v-card-title>
+                HITs
+              </v-card-title>
 
-        v-bind:filters="{
-          id_batch: id_batch
-        }"
-      />
+              <v-card-text>
+                <list-hits
+                  v-bind:pagination-computed="paginationComputed"
+                  v-bind:function-set-pagination="functionSetPagination"
+
+                  v-bind:filters="{
+                    id_batch: idBatch
+                  }"
+                />
+              </v-card-text>
+            </v-card>
+          </v-flex>
+        </v-layout>
+      </v-container>
     </v-flex>
   </v-layout>
 </template>
@@ -37,13 +55,16 @@ import ListHits from '../../hits/list/list-hits';
 
 export default {
   name: 'ComponentBatchDetail',
+  components: {
+    ListHits,
+  },
   // props: {
   // 	id_batch: {
   // 		required: true,
   // 	},
   // },
   props: {
-    id_batch: {
+    idBatch: {
       required: true,
       type: Number,
     },
@@ -115,7 +136,7 @@ export default {
     }),
   },
   created() {
-    Service_Batches.get_batch(this.id_batch).then((batch) => {
+    Service_Batches.get_batch(this.idBatch).then((batch) => {
       this.batch_intern = batch;
     });
   },
@@ -127,9 +148,6 @@ export default {
       function_set_array_columns: 'set_array_columns_general',
       functionSetPagination: 'setPaginationGeneral',
     }),
-  },
-  components: {
-    ListHits,
   },
 };
 </script>
