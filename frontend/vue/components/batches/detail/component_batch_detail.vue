@@ -1,9 +1,6 @@
 <template>
-  <!-- <div>wda</div> -->
-
   <v-layout wrap>
     <v-flex>
-      <!-- {{object_batches}} -->
       <h2 class="headline">
         <v-btn
           slot="activator"
@@ -22,6 +19,22 @@
         class="pa-0"
         grid-list-md
       >
+        <v-layout>
+          <v-flex>
+            <v-card>
+              <v-card-title>
+                Batch Profile
+              </v-card-title>
+              <v-card-text>
+                <component-form-settings-batch
+                  v-bind.sync="batch.settings_batch"
+                  v-bind:disabled="true"
+                  v-bind:flex-size="{ lg4: true }"
+                />
+              </v-card-text>
+            </v-card>
+          </v-flex>
+        </v-layout>
         <v-layout>
           <v-flex>
             <v-card>
@@ -52,17 +65,14 @@ import {
 } from 'vuex';
 import { Service_Batches } from '../../../services/service_batches';
 import ListHits from '../../hits/list/list-hits';
+import ComponentFormSettingsBatch from '../../settings_project/settings_batch/component_form_settings_batch';
 
 export default {
   name: 'ComponentBatchDetail',
   components: {
+    ComponentFormSettingsBatch,
     ListHits,
   },
-  // props: {
-  // 	id_batch: {
-  // 		required: true,
-  // 	},
-  // },
   props: {
     idBatch: {
       required: true,
