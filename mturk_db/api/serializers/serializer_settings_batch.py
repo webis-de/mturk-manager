@@ -12,9 +12,16 @@ class Serializer_Settings_Batch(serializers.ModelSerializer):
         super(Serializer_Settings_Batch, self).__init__(*args, **kwargs)
 
         context = kwargs.get('context', {})
+        try:
+            expand = context.get('request').query_params.get('expand')
 
-        if context.get('usecase') == 'annotation' or context.get('usecase') == 'list_settings_batch':
-            self.fields['template'] = Serializer_Template_Worker(source='template_worker', context=context)
+            if '__template_worker__' in expand:
+                self.fields['template'] = Serializer_Template_Worker(source='template_worker', context=context)
+        except AttributeError:
+            pass
+
+        # if context.get('usecase') == 'annotation' or context.get('usecase') == 'list_settings_batch':
+        #     self.fields['template'] = Serializer_Template_Worker(source='template_worker', context=context)
 
         keep_fields(self, context.get('fields'))
 

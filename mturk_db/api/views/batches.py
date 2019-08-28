@@ -98,7 +98,7 @@ class Batch(APIView):
         serializer = Serializer_Batch(
             batch,
             context={
-                'detailed': True
+                'request': request
             }
         )
 

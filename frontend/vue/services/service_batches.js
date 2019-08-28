@@ -133,6 +133,9 @@ class Class_Service_Batches extends BaseLoadPageService {
         project: store.getters['moduleProjects/get_project_current'],
         value: id_batch,
       },
+      params: {
+        expand: '__settings_batch__template_worker__',
+      },
     });
 
     return new Batch(response.data);

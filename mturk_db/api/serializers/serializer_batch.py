@@ -92,8 +92,6 @@ class Serializer_Batch(serializers.ModelSerializer):
             'project': Project.objects.first()
         })
 
-        print(foo)
-
         return batch
         # return batch
         # return {'data_csv': []}

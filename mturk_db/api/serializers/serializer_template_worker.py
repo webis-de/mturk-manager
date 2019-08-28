@@ -64,7 +64,7 @@ class Serializer_Template_Worker(serializers.ModelSerializer):
     # template_assignment = Serializer_Template_Assignment()
     # template_hit = Serializer_Template_HIT()
 
-    has_assignments = serializers.BooleanField()
+    has_assignments = serializers.BooleanField(required=False)
 
 
     class Meta:
