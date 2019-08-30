@@ -119,7 +119,7 @@
             v-bind:disabled="disabled"
           ></v-text-field>
         </v-flex>
-        <v-flex v-bind="flexSize">
+        <v-flex v-if="disabled === false" v-bind="flexSize">
           <v-select
             v-bind:value="template"
             v-on:input="
