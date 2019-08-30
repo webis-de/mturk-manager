@@ -1,6 +1,6 @@
 <template>
   <component-hit-detail
-    v-bind:id_hit="id"
+    v-bind:id-hit="id"
   />
 </template>
 

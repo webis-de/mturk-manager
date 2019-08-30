@@ -1,6 +1,7 @@
 import { store } from '../store/vuex';
 import { Service_Endpoint } from './service_endpoint';
 import { BaseLoadPageService } from './baseLoadPage.service';
+import HIT from '../classes/hit';
 
 class Class_Service_HITs extends BaseLoadPageService {
   async load_page(pagination, filters) {
@@ -24,6 +25,24 @@ class Class_Service_HITs extends BaseLoadPageService {
         });
       },
     });
+  }
+
+  async loadHIT(idHit) {
+    const response = await Service_Endpoint.make_request({
+      method: 'get',
+      url: {
+        path: store.getters.get_url(
+          'url_api_projects_hits',
+          'moduleHITs',
+        ),
+        project: store.getters['moduleProjects/get_project_current'],
+        value: idHit,
+      },
+      params: {
+      },
+    });
+
+    return new HIT(response.data);
   }
   // async set_hits({object_batches, data_batches, use_sandbox})
   // {

@@ -1,11 +1,7 @@
 <template>
-  <!-- <div>wda</div> -->
-
   <v-layout wrap>
     <v-flex>
-      <!-- {{object_batches}} -->
       <h2 class="headline">
-        HIT {{ hit.id_hit }}
         <v-btn
           slot="activator"
           class="my-0"
@@ -13,8 +9,9 @@
           small
           v-bind:to="{ name: 'tasksHITs' }"
         >
-          <v-icon>arrow_upward</v-icon>
+          <v-icon>arrow_back</v-icon>
         </v-btn>
+        HIT {{ hit.idHit }}
       </h2>
       <v-divider class="my-3"></v-divider>
       <list-assignments
@@ -22,7 +19,7 @@
         v-bind:pagination-computed="paginationComputed"
 
         v-bind:filters="{
-          id_hit: id_hit
+          id_hit: idHit
         }"
       ></list-assignments>
     </v-flex>
@@ -34,22 +31,28 @@ import {
 } from 'vuex';
 import _ from 'lodash';
 import ListAssignments from '../../assignments/list/list-assignments';
+import {Service_HITs} from '../../../services/service_hits';
 
 export default {
   name: 'ComponentHitDetail',
+  components: {
+    ListAssignments,
+  },
   // props: {
   //  id_hit: {
   //      required: true,
   //  },
   // },
   props: {
-    id_hit: {
+    idHit: {
       required: true,
       type: Number,
     },
   },
   data() {
-    return {};
+    return {
+      hitIntern: null,
+    };
   },
   // watch: {
   //     'worker.is_blocked': function() {
@@ -64,14 +67,7 @@ export default {
       return _.orderBy(this.hit.object_assignments);
     },
     hit() {
-      const object_hits = this.get_object_hits();
-      if (object_hits == null) {
-        return {};
-      }
-      if (object_hits[this.id_hit] == undefined) {
-        return {};
-      }
-      return object_hits[this.id_hit];
+      return this.hitIntern === null ? {} : this.hitIntern;
     },
     ...mapGetters('moduleAssignments', {
       array_columns_selected: 'get_array_columns_selected_general',
@@ -84,6 +80,11 @@ export default {
       paginationComputed: 'paginationGeneral',
     }),
   },
+  created() {
+    Service_HITs.loadHIT(this.idHit).then((hit) => {
+      this.hitIntern = hit;
+    });
+  },
   methods: {
     ...mapActions('moduleAssignments', {
       function_reset_array_columns: 'reset_array_columns_general',
@@ -92,9 +93,6 @@ export default {
       function_set_array_columns: 'set_array_columns_general',
       functionSetPagination: 'setPaginationGeneral',
     }),
-  },
-  components: {
-    ListAssignments,
   },
 };
 </script>
