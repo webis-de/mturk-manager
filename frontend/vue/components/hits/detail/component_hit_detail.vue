@@ -11,17 +11,51 @@
         >
           <v-icon>arrow_back</v-icon>
         </v-btn>
-        HIT {{ hit.idHit }}
+        HIT {{ hit.id_hit }}
       </h2>
-      <v-divider class="my-3"></v-divider>
-      <list-assignments
-        v-bind:function-set-pagination="functionSetPagination"
-        v-bind:pagination-computed="paginationComputed"
+      <v-divider class="my-3" />
+      <v-container
+        fluid
+        class="pa-0"
+        grid-list-md
+      >
+        <v-layout>
+          <v-flex>
+            <v-card>
+              <v-card-title>
+                Batch Profile
+              </v-card-title>
+              <v-card-text>
+                <component-form-settings-batch
+                  v-bind.sync="hit.batch.settings_batch"
+                  v-bind:disabled="true"
+                  v-bind:flex-size="{ lg4: true }"
+                />
+              </v-card-text>
+            </v-card>
+          </v-flex>
+        </v-layout>
+        <v-layout>
+          <v-flex>
+            <v-card>
+              <v-card-title>
+                HITs
+              </v-card-title>
 
-        v-bind:filters="{
-          id_hit: idHit
-        }"
-      ></list-assignments>
+              <v-card-text>
+                <list-assignments
+                  v-bind:function-set-pagination="functionSetPagination"
+                  v-bind:pagination-computed="paginationComputed"
+
+                  v-bind:filters="{
+                    id_hit: idHit
+                  }"
+                />
+              </v-card-text>
+            </v-card>
+          </v-flex>
+        </v-layout>
+      </v-container>
     </v-flex>
   </v-layout>
 </template>
@@ -31,11 +65,13 @@ import {
 } from 'vuex';
 import _ from 'lodash';
 import ListAssignments from '../../assignments/list/list-assignments';
-import {Service_HITs} from '../../../services/service_hits';
+import { Service_HITs } from '../../../services/service_hits';
+import ComponentFormSettingsBatch from '../../settings_project/settings_batch/component_form_settings_batch';
 
 export default {
   name: 'ComponentHitDetail',
   components: {
+    ComponentFormSettingsBatch,
     ListAssignments,
   },
   // props: {
@@ -60,14 +96,9 @@ export default {
   //     },
   // },
   computed: {
-    list_assignments() {
-      if (this.hit.object_assignments == undefined) {
-        return [];
-      }
-      return _.orderBy(this.hit.object_assignments);
-    },
     hit() {
-      return this.hitIntern === null ? {} : this.hitIntern;
+      console.warn(' this.hitIntern ', this.hitIntern);
+      return this.hitIntern === null ? { batch: {} } : this.hitIntern;
     },
     ...mapGetters('moduleAssignments', {
       array_columns_selected: 'get_array_columns_selected_general',

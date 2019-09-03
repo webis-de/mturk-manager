@@ -48,6 +48,14 @@ class Manager_HITs(Interface_Manager_Items):
         return queryset, list_fields
 
     @staticmethod
+    def get(id_item: int) -> HIT:
+        hit = HIT.objects.get(
+            pk=id_item
+        )
+
+        return hit
+
+    @staticmethod
     def filter(queryset: QuerySet, request: Request) -> QuerySet:
         list_ids = json.loads(request.query_params.get('list_ids', '[]'))
 

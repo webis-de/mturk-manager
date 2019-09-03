@@ -21,6 +21,14 @@ class Serializer_HIT(serializers.ModelSerializer):
 
         context = kwargs.get('context', {})
 
+        try:
+            expand = context.get('request').query_params.get('expand')
+
+            if '__batch__' in expand:
+                self.fields['batch'] = Serializer_Batch(context=context)
+        except AttributeError:
+            pass
+
         if context.get('usecase') == 'list_hits':
             self.fields['batch'] = Serializer_Batch(read_only=True)
 

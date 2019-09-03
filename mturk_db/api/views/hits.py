@@ -73,6 +73,25 @@ class ProjectHITs(APIView):
         })
 
 
+class ProjectHIT(APIView):
+    permission_classes = PERMISSIONS_INSTANCE_ONLY
+
+    @add_database_object_project
+    def get(self, request, slug_project, database_object_project, id_hit, use_sandbox, format=None):
+        hit = Manager_HITs.get(
+            id_item=id_hit
+        )
+
+        serializer = Serializer_HIT(
+            hit,
+            context={
+                'request': request
+            }
+        )
+
+        return Response(serializer.data)
+
+
 @api_view(['GET'])
 @permission_classes(PERMISSIONS_INSTANCE_ONLY)
 @add_database_object_project

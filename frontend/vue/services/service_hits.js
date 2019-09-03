@@ -39,6 +39,7 @@ class Class_Service_HITs extends BaseLoadPageService {
         value: idHit,
       },
       params: {
+        expand: '__batch__settings_batch__template_worker__',
       },
     });
 
