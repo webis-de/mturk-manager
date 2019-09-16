@@ -29,8 +29,17 @@
                 <component-form-settings-batch
                   v-bind.sync="hit.batch.settings_batch"
                   v-bind:disabled="true"
-                  v-bind:flex-size="{ lg4: true }"
                 />
+              </v-card-text>
+            </v-card>
+          </v-flex>
+        </v-layout><v-layout>
+          <v-flex>
+            <v-card>
+              <v-card-title>
+                Template
+              </v-card-title>
+              <v-card-text>
               </v-card-text>
             </v-card>
           </v-flex>
