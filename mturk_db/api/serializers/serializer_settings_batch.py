@@ -20,8 +20,8 @@ class Serializer_Settings_Batch(serializers.ModelSerializer):
         except AttributeError:
             pass
 
-        # if context.get('usecase') == 'annotation' or context.get('usecase') == 'list_settings_batch':
-        #     self.fields['template'] = Serializer_Template_Worker(source='template_worker', context=context)
+        if context.get('usecase') == 'annotation' or context.get('usecase') == 'list_settings_batch':
+            self.fields['template'] = Serializer_Template_Worker(source='template_worker', context=context)
 
         keep_fields(self, context.get('fields'))
 
@@ -39,8 +39,8 @@ class Serializer_Settings_Batch(serializers.ModelSerializer):
     class Meta:
         model = Settings_Batch
         fields = (
-            'id', 
-            'name', 
+            'id',
+            'name',
             # 'settings_batch_default',
             'title',
             'description',
