@@ -40,6 +40,8 @@
                 Template
               </v-card-title>
               <v-card-text>
+                Name: {{ hit.batch.settings_batch.template.name }}<br>
+                <sandbox-template v-bind:hit="hit" />
               </v-card-text>
             </v-card>
           </v-flex>
@@ -76,10 +78,13 @@ import _ from 'lodash';
 import ListAssignments from '../../assignments/list/list-assignments';
 import { Service_HITs } from '../../../services/service_hits';
 import ComponentFormSettingsBatch from '../../settings_project/settings_batch/component_form_settings_batch';
+import SandboxTemplate from './sandbox-hit';
+import HIT from '../../../classes/hit';
 
 export default {
   name: 'ComponentHitDetail',
   components: {
+    SandboxTemplate,
     ComponentFormSettingsBatch,
     ListAssignments,
   },
@@ -107,7 +112,7 @@ export default {
   computed: {
     hit() {
       console.warn(' this.hitIntern ', this.hitIntern);
-      return this.hitIntern === null ? { batch: {} } : this.hitIntern;
+      return this.hitIntern === null ? new HIT() : this.hitIntern;
     },
     ...mapGetters('moduleAssignments', {
       array_columns_selected: 'get_array_columns_selected_general',

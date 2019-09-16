@@ -1,25 +1,26 @@
 import _ from 'lodash';
+import Template_Worker from './template_worker';
 
 export default class Settings_Batch {
-  constructor(data = undefined) {
-    this.id = data != undefined ? data.id : undefined;
-    this.name = data != undefined ? data.name : undefined;
+  constructor(data = { template: new Template_Worker() }) {
+    this.id = data.id;
+    this.name = data.name;
 
-    this.title = data != undefined ? data.title : undefined;
-    this.description = data != undefined ? data.description : undefined;
-    this.reward = data != undefined ? data.reward : undefined;
-    this.keywords = data != undefined ? JSON.parse(JSON.stringify(data.keywords)) : [];
-    this.count_assignments = data != undefined ? data.count_assignments : undefined;
-    this.count_assignments_max_per_worker = data != undefined ? data.count_assignments_max_per_worker : undefined;
-    this.lifetime = data != undefined ? data.lifetime : undefined;
-    this.duration = data != undefined ? data.duration : undefined;
-    this.block_workers = data != undefined ? data.block_workers : false;
-    this.template = data != undefined ? data.template : undefined;
+    this.title = data.title;
+    this.description = data.description;
+    this.reward = data.reward;
+    this.keywords = data.keywords !== undefined ? JSON.parse(JSON.stringify(data.keywords)) : [];
+    this.count_assignments = data.count_assignments;
+    this.count_assignments_max_per_worker = data.count_assignments_max_per_worker;
+    this.lifetime = data.lifetime;
+    this.duration = data.duration;
+    this.block_workers = data.block_workers;
+    this.template = data.template;
 
-    this.has_content_adult = data != undefined ? data.has_content_adult : false;
-    this.qualification_assignments_approved = data != undefined ? data.qualification_assignments_approved : undefined;
-    this.qualification_hits_approved = data != undefined ? data.qualification_hits_approved : undefined;
-    this.qualification_locale = data != undefined
+    this.has_content_adult = data.has_content_adult !== undefined ? data.has_content_adult : false;
+    this.qualification_assignments_approved = data.qualification_assignments_approved;
+    this.qualification_hits_approved = data.qualification_hits_approved;
+    this.qualification_locale = data.qualification_locale !== undefined
       ? JSON.parse(JSON.stringify(data.qualification_locale))
       : [];
   }

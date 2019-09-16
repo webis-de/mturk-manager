@@ -1,8 +1,8 @@
-import _ from 'lodash';
 import { parse } from 'date-fns';
+import Batch from './batch';
 
 export default class HIT {
-  constructor(data = {}) {
+  constructor(data = { batch: new Batch() }) {
     this.id = data.id;
     this.id_hit = data.id_hit;
     this.batch = data.batch;

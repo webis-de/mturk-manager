@@ -18,7 +18,7 @@
 
 <script>
 import {
-  mapState, mapMutations, mapActions, mapGetters,
+  mapGetters,
 } from 'vuex';
 import _ from 'lodash';
 
