@@ -1,12 +1,50 @@
 <template>
-  <v-btn
-    color="primary"
-    small
-    class="ml-0"
-    v-on:click="openSandbox"
-  >
-    Open in Sandbox
-  </v-btn>
+  <v-layout>
+    <v-flex shrink>
+      <v-dialog
+        v-model="dialog"
+        fullscreen
+      >
+        <v-btn
+          slot="activator"
+          color="primary"
+          small
+          class="ml-0"
+        >
+          Show
+        </v-btn>
+
+        <v-card>
+          <v-toolbar
+            dense
+          >
+            <v-spacer />
+            <v-btn
+              icon
+              dark
+              v-on:click="dialog = false"
+            >
+              <v-icon>close</v-icon>
+            </v-btn>
+          </v-toolbar>
+          <iframe
+            ref="iframe"
+            style="border-width: 0"
+          ></iframe>
+        </v-card>
+      </v-dialog>
+    </v-flex>
+    <v-flex shrink>
+      <v-btn
+        color="primary"
+        small
+        class="ml-0"
+        v-on:click="openSandbox"
+      >
+        View in new tab
+      </v-btn>
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>
@@ -14,6 +52,7 @@ import {
   mapGetters,
 } from 'vuex';
 import HIT from '../../../classes/hit';
+import { getHeight, getWidth } from '../../../helpers';
 
 export default {
   name: 'SandboxTemplate',
@@ -23,14 +62,34 @@ export default {
       type: HIT,
     },
   },
+  data() {
+    return {
+      dialog: false,
+    };
+  },
   computed: {
     ...mapGetters('moduleProjects', {
       project_current: 'get_project_current',
     }),
   },
+  watch: {
+    dialog() {
+      if (this.dialog === true) {
+        this.$refs.iframe.width = getWidth();
+        this.$refs.iframe.height = getHeight();
+
+        let { template } = this.hit.batch.settings_batch.template;
+
+        for (const entry of Object.entries(JSON.parse(this.hit.parameters))) {
+          template = template.replace(`\${${entry[0]}}`, entry[1]);
+        }
+
+        this.$refs.iframe.srcdoc = template;
+      }
+    },
+  },
   methods: {
     openSandbox() {
-      console.warn('this.hit', this.hit);
       const url = `/sandbox/hit?slug_project=${this.project_current.slug}&id_hit=${this.hit.id}`;
       window.open(url, '_blank');
     },
@@ -39,5 +98,7 @@ export default {
 </script>
 
 <style scoped>
-
+  .v-card {
+    background-color: white;
+  }
 </style>
