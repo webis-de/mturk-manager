@@ -1,9 +1,15 @@
 <template>
-  <v-container>
-    <v-layout fill-height column justify-center>
-      <v-flex shrink>
-        <v-layout justify-center>
-          <v-flex class="text-xs-center">
+  <v-container class="fill-height">
+    <v-row
+      class="fill-height"
+      justify="center"
+    >
+      <v-col>
+        <v-row
+          class="fill-height"
+          align="center"
+        >
+          <v-col class="text-center">
             <h3 class="display-1">
               Connection Error
             </h3>
@@ -16,10 +22,10 @@
             >
               Update credentials
             </v-btn>
-          </v-flex>
-        </v-layout>
-      </v-flex>
-    </v-layout>
+          </v-col>
+        </v-row>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 

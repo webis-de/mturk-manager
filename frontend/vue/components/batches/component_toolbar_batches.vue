@@ -1,34 +1,36 @@
 <template>
-  <v-layout align-center justify-end>
+  <v-row>
     <!--<v-flex shrink>-->
-      <!--<v-tooltip bottom>-->
-        <!--<v-btn-->
-          <!--flat-->
-          <!--v-bind:loading="get_show_progress_indicator"-->
-          <!--v-on:click="refresh_data(true)"-->
-          <!--slot="activator"-->
-        <!--&gt;-->
-          <!--<v-icon>refresh</v-icon>-->
-          <!--Refresh Data-->
-        <!--</v-btn>-->
-        <!--<span>Refresh batch data</span>-->
-      <!--</v-tooltip>-->
+    <!--<v-tooltip bottom>-->
+    <!--<v-btn-->
+    <!--flat-->
+    <!--v-bind:loading="get_show_progress_indicator"-->
+    <!--v-on:click="refresh_data(true)"-->
+    <!--slot="activator"-->
+    <!--&gt;-->
+    <!--<v-icon>refresh</v-icon>-->
+    <!--Refresh Data-->
+    <!--</v-btn>-->
+    <!--<span>Refresh batch data</span>-->
+    <!--</v-tooltip>-->
     <!--</v-flex>-->
-    <v-flex shrink>
+    <v-col shrink>
       <v-tooltip bottom>
-        <v-btn
-          flat
-          v-bind:loading="is_syncing_mturk"
-          v-on:click="sync_mturk(true)"
-          slot="activator"
-        >
-          <v-icon>sync</v-icon>
-          Sync with MTurk
-        </v-btn>
+        <template v-slot:activator="{ on }">
+          <v-btn
+            text
+            v-bind:loading="is_syncing_mturk"
+            v-on:click="sync_mturk(true)"
+            v-on="on"
+          >
+            <v-icon>mdi-sync</v-icon>
+            Sync with MTurk
+          </v-btn>
+        </template>
         <span>Refresh batch data</span>
       </v-tooltip>
-    </v-flex>
-  </v-layout>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
@@ -36,9 +38,9 @@ import { mapState, mapActions, mapGetters } from 'vuex';
 import { Service_Batches } from '../../services/service_batches';
 
 export default {
-  name: 'component-toolbar-batches',
+  name: 'ComponentToolbarBatches',
   props: {
-    name_route: {},
+    nameRoute: {},
   },
   data() {
     return {};

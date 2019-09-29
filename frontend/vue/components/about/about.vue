@@ -1,50 +1,49 @@
 <template>
-  <v-layout>
-    <v-flex>
+  <v-row no-gutters>
+    <v-col>
       <v-container
         fluid
-        grid-list-md
         class="pa-0"
       >
-        <v-layout>
-          <v-flex xs6>
-            <v-card height="100%">
+        <v-row dense>
+          <v-col cols="6">
+            <v-card class="fill-height">
               <v-card-title>Info</v-card-title>
               <v-card-text>
                 <v-list dense>
-                  <v-list-tile>
+                  <v-list-item>
                     Version
                     <v-spacer />
                     {{ $store.state.module_app.version }}
-                  </v-list-tile>
+                  </v-list-item>
 
-                  <v-list-tile>
+                  <v-list-item>
                     Contact
                     <v-spacer />
                     <a href="mailto:mturk@kritten.org">
                       mturk@kritten.org
                     </a>
-                  </v-list-tile>
+                  </v-list-item>
 
-                  <v-list-tile>
+                  <v-list-item>
                     Created By
                     <v-spacer />
                     Kristof Komlossy,&nbsp;
                     <a href="https://webis.de/">
                       Webis
                     </a>
-                  </v-list-tile>
+                  </v-list-item>
                 </v-list>
               </v-card-text>
             </v-card>
-          </v-flex>
+          </v-col>
 
-          <v-flex xs6>
-            <v-card>
+          <v-col cols="6">
+            <v-card class="fill-height">
               <v-card-title>Important Links</v-card-title>
               <v-card-text>
                 <v-list dense>
-                  <v-list-tile>
+                  <v-list-item>
                     Worker Sandbox
                     <v-spacer />
                     <v-btn
@@ -55,9 +54,9 @@
                     >
                       Open
                     </v-btn>
-                  </v-list-tile>
+                  </v-list-item>
 
-                  <v-list-tile>
+                  <v-list-item>
                     MTurk Documentation
                     <v-spacer />
                     <v-btn
@@ -68,9 +67,9 @@
                     >
                       Open
                     </v-btn>
-                  </v-list-tile>
+                  </v-list-item>
 
-                  <v-list-tile>
+                  <v-list-item>
                     MTurk Manager Wiki
                     <v-spacer />
                     <v-btn
@@ -81,9 +80,9 @@
                     >
                       Open
                     </v-btn>
-                  </v-list-tile>
+                  </v-list-item>
 
-                  <v-list-tile>
+                  <v-list-item>
                     MTurk Manager Code
                     <v-spacer />
                     <v-btn
@@ -94,27 +93,27 @@
                     >
                       Open
                     </v-btn>
-                  </v-list-tile>
+                  </v-list-item>
                 </v-list>
               </v-card-text>
             </v-card>
-          </v-flex>
-        </v-layout>
+          </v-col>
+        </v-row>
 
-        <v-layout>
-          <v-flex>
-            <v-card>
+        <v-row dense>
+          <v-col>
+            <v-card class="fill-height">
               <v-card-title>Changelog</v-card-title>
               <v-card-text>
                 <changelog />
               </v-card-text>
             </v-card>
-          </v-flex>
-        </v-layout>
+          </v-col>
+        </v-row>
 
-        <v-layout>
-          <v-flex xs4>
-            <v-card>
+        <v-row dense>
+          <v-col cols="4">
+            <v-card class="fill-height">
               <v-card-text class="text-xs-center">
                 <router-link
                   v-bind:to="{
@@ -125,11 +124,11 @@
                 </router-link>
               </v-card-text>
             </v-card>
-          </v-flex>
-        </v-layout>
+          </v-col>
+        </v-row>
       </v-container>
-    </v-flex>
-  </v-layout>
+    </v-col>
+  </v-row>
 </template>
 
 <script>

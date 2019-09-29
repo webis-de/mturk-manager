@@ -2,22 +2,24 @@
   <v-dialog
     v-model="is_creating_batch"
     transition="slide-y-transition"
-    lazy
   >
     <!-- persistent -->
-    <v-fab-transition slot="activator">
-      <v-btn
-        v-show="!is_creating_batch"
-        color="pink"
-        fab
-        left
-        bottom
-        fixed
-        large
-      >
-        <v-icon>add</v-icon>
-      </v-btn>
-    </v-fab-transition>
+    <template v-slot:activator="{ on }">
+      <v-fab-transition>
+        <v-btn
+          v-show="!is_creating_batch"
+          color="pink"
+          fab
+          left
+          bottom
+          fixed
+          large
+          v-on="on"
+        >
+          <v-icon>mdi-plus</v-icon>
+        </v-btn>
+      </v-fab-transition>
+    </template>
 
     <v-card>
       <v-card-title>

@@ -7,7 +7,7 @@
         color="warning"
         v-on="on"
       >
-        warning
+        mdi-alert
       </v-icon>
     </template>
 
@@ -24,6 +24,7 @@ export default {
   name: 'ChangelogNotification',
   computed: {
     hasUnseenVersions() {
+      return true;
       if (this.$store.state.module_app.versionSeen === null) {
         return true;
       }

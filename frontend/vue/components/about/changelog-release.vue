@@ -1,35 +1,34 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
-  <v-expansion-panel-content lazy>
-    <template
-      v-slot:header=""
-    >
-      <v-layout>
-        <v-flex>
+  <v-expansion-panel>
+    <v-expansion-panel-header>
+      <v-row no-gutters>
+        <v-col>
           {{ release.name }}
-        </v-flex>
-        <v-flex class="text-xs-right">
+        </v-col>
+        <v-col class="text-right">
           <base-display-datetime
             v-bind:datetime="release.created"
             v-bind:only-date="true"
           />
-        </v-flex>
-      </v-layout>
-    </template>
+        </v-col>
+      </v-row>
+    </v-expansion-panel-header>
 
-    <v-card>
-      <v-card-text>
+    <v-expansion-panel-content>
+      <div
+        v-if="release.body === null"
+        class="text-center"
+      >
+        <v-progress-circular indeterminate />
+      </div>
+      <template v-else>
         <div
-          v-if="release.body === null"
-          class="text-xs-center"
-        >
-          <v-progress-circular indeterminate />
-        </div>
-        <template v-else>
-          <div v-html="bodyCompiled"></div>
-        </template>
-      </v-card-text>
-    </v-card>
-  </v-expansion-panel-content>
+          class="text-left"
+          v-html="bodyCompiled"
+        ></div>
+      </template>
+    </v-expansion-panel-content>
+  </v-expansion-panel>
 </template>
 
 

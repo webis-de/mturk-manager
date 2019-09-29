@@ -1,72 +1,64 @@
 <template>
-  <v-layout wrap>
-    <v-flex>
-      <v-layout wrap>
-        <v-flex class="text-xs-center">
+  <v-row no-gutters>
+    <v-col>
+      <v-row no-gutters>
+        <v-col class="text-center">
           <div class="headline">
             Open Existing Project
           </div>
-        </v-flex>
-      </v-layout>
-      <v-layout wrap>
-        <v-flex>
+        </v-col>
+      </v-row>
+      <v-row no-gutters>
+        <v-col>
           <v-text-field
             v-model="search"
-            append-icon="search"
+            append-icon="mdi-magnify"
             label="Search for Project"
             hide-details
             class="mb-2"
+            clearable
           />
-        </v-flex>
-      </v-layout>
-      <v-layout wrap>
-        <v-flex>
+        </v-col>
+      </v-row>
+      <v-row no-gutters>
+        <v-col>
           <!-- select-all -->
           <!-- v-bind:rows-per-page-items="items_per_page" -->
           <!-- select-all -->
           <v-data-table
-            v-bind:pagination.sync="pagination"
-            v-bind:headers="list_headers"
-            v-bind:items="list_projects"
+            v-bind:headers="listHeaders"
+            v-bind:items="listProjects"
             v-bind:search="search"
+            sort-by="datetime_visited"
+            v-bind:sort-desc="true"
           >
-            <template
-              slot="items"
-              slot-scope="props"
-            >
-              <tr v-bind:key="props.item.id">
-                <td>
-                  {{ props.item.name }}
-                </td>
-                <td>
-                  <base-display-datetime
-                    v-bind:datetime="props.item.datetime_visited"
-                  />
-                </td>
-                <td class="text-xs-right">
-                  <v-btn
-                    small
-                    color="primary"
-                    v-bind:to="{
-                      name: 'project',
-                      params: { slug_project: props.item.slug }
-                    }"
-                  >
-                    Open
-                  </v-btn>
-                </td>
-              </tr>
+            <template v-slot:item.datetime_visited="{ value }">
+              <base-display-datetime
+                v-bind:datetime="value"
+              />
+            </template>
+            <template v-slot:item.actions="{ item }">
+              <v-btn
+                small
+                color="primary"
+                v-bind:to="{
+                  name: 'project',
+                  params: { slug_project: item.slug }
+                }"
+              >
+                Open
+              </v-btn>
             </template>
           </v-data-table>
-        </v-flex>
-      </v-layout>
-    </v-flex>
-  </v-layout>
+        </v-col>
+      </v-row>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
-import _ from 'lodash';
+import { compareDesc } from 'date-fns';
 import BaseDisplayDatetime from '../common/base-display-datetime';
 
 export default {
@@ -77,7 +69,7 @@ export default {
   data() {
     return {
       search: '',
-      list_headers: [
+      listHeaders: [
         {
           text: 'Name',
           value: 'name',
@@ -90,23 +82,19 @@ export default {
         },
         {
           text: '',
-          value: '',
+          value: 'actions',
           align: '',
           sortable: false,
         },
       ],
-      pagination: {
-        sortBy: 'datetime_visited',
-        descending: true,
-      },
     };
   },
   computed: {
-    list_projects() {
-      return _.orderBy(this.object_projects, ['datetime_visited'], ['desc']);
+    listProjects() {
+      return Object.values(this.objectProjects).sort((a, b) => compareDesc(a.datetime_visited, b.datetime_visited));
     },
     ...mapGetters('moduleProjects', {
-      object_projects: 'get_object_projects',
+      objectProjects: 'get_object_projects',
     }),
   },
 };

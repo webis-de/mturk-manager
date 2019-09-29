@@ -1,30 +1,32 @@
 <template>
   <v-content>
     <v-container fluid>
-      <v-layout wrap>
-        <v-flex>
-          <v-layout wrap>
-            <v-flex>
+      <v-row no-gutters>
+        <v-col>
+          <v-row no-gutters>
+            <v-col>
               <component-create-project />
-            </v-flex>
-          </v-layout>
+            </v-col>
+          </v-row>
 
           <v-divider class="my-3" />
 
-          <v-layout wrap>
-            <v-flex>
+          <v-row no-gutters>
+            <v-col>
               <open-project />
-            </v-flex>
-          </v-layout>
-        </v-flex>
-      </v-layout>
+            </v-col>
+          </v-row>
+        </v-col>
+      </v-row>
 
       <v-divider class="my-3" />
 
-      <v-layout column>
-        <v-flex
-          shrink
-          align-self-end
+      <v-row
+        no-gutters
+        justify="end"
+      >
+        <v-col
+          class="shrink"
         >
           <v-btn
             small
@@ -33,8 +35,8 @@
           >
             About
           </v-btn>
-        </v-flex>
-      </v-layout>
+        </v-col>
+      </v-row>
     </v-container>
   </v-content>
 </template>

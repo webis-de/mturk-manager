@@ -12,13 +12,14 @@
       style="z-index: 50; position: absolute; margin: 0"
     />
 
-    <v-toolbar
+    <v-app-bar
       app
       fixed
       clipped-left
+      dense
       v-bind:style="object_styles_toolbar"
     >
-      <v-toolbar-side-icon
+      <v-app-bar-nav-icon
         v-on:click.stop="show_drawer = !show_drawer"
       />
       <v-toolbar-title>
@@ -27,19 +28,22 @@
 
       <v-spacer />
 
-      <v-layout
-        align-center
-        justify-end
+      <v-row
+        align="center"
+        justify="end"
       >
-        <v-flex shrink>
+        <v-col class="shrink text-no-wrap">
           <v-tooltip bottom>
-            <v-switch
-              slot="activator"
-              hide-details
-              v-bind:label="use_sandbox ? 'Toggle Sandbox' : 'Toggle Sandbox'"
-              v-bind:input-value="use_sandbox"
-              v-on:click.native="toggle_use_sandbox"
-            />
+            <template v-slot:activator="{ on }">
+              <v-switch
+                hide-details
+                v-bind:label="use_sandbox ? 'Toggle Sandbox' : 'Toggle Sandbox'"
+                v-bind:input-value="use_sandbox"
+                color="secondary"
+                v-on:click.native="toggle_use_sandbox"
+                v-on="on"
+              />
+            </template>
             <span>
               You are currently <b v-if="!use_sandbox">
                 not
@@ -47,7 +51,7 @@
               Sandbox
             </span>
           </v-tooltip>
-        </v-flex>
+        </v-col>
 
         <v-divider
           class="mx-2"
@@ -61,8 +65,8 @@
             v-bind:name_route="name_route_current"
           />
         </v-flex>
-      </v-layout>
-    </v-toolbar>
+      </v-row>
+    </v-app-bar>
     <v-content>
       <v-container fluid>
         <router-view />

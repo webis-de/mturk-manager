@@ -1,16 +1,18 @@
 <template>
   <form v-on:submit.prevent="save">
-    <v-layout wrap>
-      <v-flex class="text-xs-center">
-        <v-layout wrap>
-          <v-flex>
+    <v-row no-gutters>
+      <v-col class="text-center">
+        <v-row no-gutters>
+          <v-col>
             <span class="headline">Create New Project</span>
-          </v-flex>
-        </v-layout>
-        <!-- {{$v}} -->
-        <v-layout wrap>
+          </v-col>
+        </v-row>
+        <v-row
+          dense
+          align="center"
+        >
           <v-spacer />
-          <v-flex xs3>
+          <v-col>
             <v-text-field
               v-bind:value="name"
               label="Name"
@@ -21,8 +23,10 @@
                 name_instant = $event;
               "
             />
-          </v-flex>
-          <v-flex shrink>
+          </v-col>
+          <v-col
+            class="shrink"
+          >
             <v-btn
               type="submit"
               v-bind:loading="is_creating"
@@ -33,11 +37,11 @@
             >
               Create
             </v-btn>
-          </v-flex>
+          </v-col>
           <v-spacer />
-        </v-layout>
-      </v-flex>
-    </v-layout>
+        </v-row>
+      </v-col>
+    </v-row>
   </form>
 </template>
 

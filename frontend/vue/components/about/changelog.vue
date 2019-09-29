@@ -1,35 +1,32 @@
 <template>
-  <v-layout
-    wrap
-    column
-  >
-    <v-flex xs12>
-      <v-expansion-panel
+  <v-row no-gutters>
+    <v-col cols="12">
+      <v-expansion-panels
         v-model="panelsOpened"
-        expand
+        multiple
       >
         <changelog-release
           v-for="release in changelog"
           v-bind:key="release.tag"
           v-bind:release="release"
         />
-      </v-expansion-panel>
-    </v-flex>
+      </v-expansion-panels>
+    </v-col>
 
-    <v-flex
-      xs12
-      align-self-end
+    <v-col
+      class="text-right"
+      cols="12"
     >
       <v-btn
         small
-        flat
+        text
         color="primary"
         v-on:click="reset"
       >
         Reset
       </v-btn>
-    </v-flex>
-  </v-layout>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
@@ -42,7 +39,7 @@ export default {
   components: { ChangelogRelease },
   data() {
     return {
-      panelsOpened: [true],
+      panelsOpened: [0],
     };
   },
   computed: {
@@ -52,15 +49,10 @@ export default {
   },
   watch: {
     panelsOpened(listNew, listOld) {
-      // console.warn('listOld', JSON.stringify(listOld));
-      // console.warn('listNew', JSON.stringify(listNew));
-
-      listNew.forEach((isOpened, index) => {
-        if (isOpened === true) {
-          if (listOld[index] !== true) {
-            const release = this.changelog[index];
-            this.checkLoad(release);
-          }
+      listNew.forEach((index) => {
+        if (listOld[index] !== true) {
+          const release = this.changelog[index];
+          this.checkLoad(release);
         }
       });
     },
@@ -69,6 +61,7 @@ export default {
     this.init();
   },
   methods: {
+    // Todo: fix bug when panel is open and "reset" is pressed
     async init() {
       // check if changelog is empty or not up to date
       if (this.changelog.length === 0
@@ -79,7 +72,7 @@ export default {
       if (this.changelog.length > 0) {
         await this.checkLoad(this.changelog[0]);
 
-        this.panelsOpened = [true];
+        this.panelsOpened = [0];
 
         await this.$store.dispatch('module_app/setState', {
           objectState: this.changelog[0].tag,
@@ -91,7 +84,7 @@ export default {
     async reset() {
       await Service_App.resetChangelog();
       await this.init();
-      this.panelsOpened = [true];
+      this.panelsOpened = [0];
     },
     async checkLoad(release) {
       if (release.body === null) {

@@ -20,10 +20,12 @@
               Assignments
             </v-tab>
 
-            <v-tabs-items class="mt-1">
+            <v-tabs-items
+              class="mt-1"
+              v-bind:value="$route.meta.index"
+            >
               <v-tab-item
                 key="batches"
-                lazy
               >
                 <v-container
                   fluid
@@ -47,7 +49,6 @@
 
               <v-tab-item
                 key="hits"
-                lazy
               >
                 <v-container
                   fluid
@@ -67,7 +68,6 @@
 
               <v-tab-item
                 key="assignment"
-                lazy
               >
                 <v-container
                   fluid

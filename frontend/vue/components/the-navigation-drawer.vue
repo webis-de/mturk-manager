@@ -7,37 +7,40 @@
     v-on:input="$emit('update:show_drawer', $event)"
   >
     <!-- temporary -->
-    <v-list>
-      <v-list-tile
+    <v-list
+      dense
+      nav
+    >
+      <v-list-item
         v-for="item_menu in list_items_menu"
         v-bind:key="item_menu.name"
         v-bind:to="{ name: item_menu.name }"
         v-bind:exact="item_menu.name === 'dashboard'"
       >
-        <v-list-tile-action>
+        <v-list-item-action>
           <v-icon>{{ item_menu.icon }}</v-icon>
-        </v-list-tile-action>
-        <v-list-tile-content>
-          <v-list-tile-title>{{ item_menu.label }}</v-list-tile-title>
-        </v-list-tile-content>
-      </v-list-tile>
+        </v-list-item-action>
+        <v-list-item-content>
+          <v-list-item-title>{{ item_menu.label }}</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
       <v-divider />
-      <v-list-tile
+      <v-list-item
         v-bind:to="{ name: 'aboutProject' }"
       >
-        <v-list-tile-action>
-          <v-icon>info</v-icon>
-        </v-list-tile-action>
-        <v-list-tile-content>
-          <v-list-tile-title>
+        <v-list-item-action>
+          <v-icon>mdi-information</v-icon>
+        </v-list-item-action>
+        <v-list-item-content>
+          <v-list-item-title>
             About
-          </v-list-tile-title>
-        </v-list-tile-content>
+          </v-list-item-title>
+        </v-list-item-content>
 
-        <v-list-tile-action>
+        <v-list-item-action>
           <changelog-notification />
-        </v-list-tile-action>
-      </v-list-tile>
+        </v-list-item-action>
+      </v-list-item>
       <!-- <v-list-tile>
                 <v-list-tile-action>
                     <v-icon>settings</v-icon>
@@ -69,7 +72,7 @@ export default {
         {
           name: 'dashboard',
           label: 'Projects',
-          icon: 'list',
+          icon: 'mdi-format-list-bulleted',
           // icon: 'ballot',
         },
         // {
@@ -81,22 +84,22 @@ export default {
         {
           name: 'tasks',
           label: 'Tasks',
-          icon: 'notes',
+          icon: 'mdi-note',
         },
         {
           name: 'finances',
           label: 'Finances',
-          icon: 'attach_money',
+          icon: 'mdi-currency-usd',
         },
         {
           name: 'workers',
           label: 'Workers',
-          icon: 'person',
+          icon: 'mdi-account',
         },
         {
           name: 'settings_project',
           label: 'Project Settings',
-          icon: 'settings_applications',
+          icon: 'mdi-settings',
         },
         // {
         //     name: 'Qualifications',

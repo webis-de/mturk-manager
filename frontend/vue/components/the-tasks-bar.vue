@@ -4,7 +4,6 @@
     persistent
     inset
     hide-overlay
-    lazy
   >
     <v-card>
       <v-list>

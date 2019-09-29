@@ -4,7 +4,6 @@
     v-bind:value="hasUpdate === true"
     v-bind:timeout="0"
     color="error"
-    auto-height
   >
     <v-spacer />
     Update Available!

@@ -1,9 +1,17 @@
 <template>
-  <v-container>
-    <v-layout fill-height column justify-center>
-      <v-flex shrink>
-        <v-layout justify-center>
-          <v-flex shrink class="text-xs-center">
+  <v-container class="fill-height">
+    <v-row
+      class="fill-height"
+      justify="center"
+    >
+      <v-col cols="4">
+        <v-row
+          class="fill-height"
+          align="center"
+        >
+          <v-col
+            class="text-center"
+          >
             <v-form
               v-on:submit.prevent="save"
             >
@@ -11,12 +19,12 @@
                 v-model="url"
                 label="URL"
                 autofocus
-              ></v-text-field>
+              />
 
               <v-text-field
                 v-model="token"
                 label="Token"
-              ></v-text-field>
+              />
 
               <v-btn
                 type="submit"
@@ -27,10 +35,10 @@
                 Save
               </v-btn>
             </v-form>
-          </v-flex>
-        </v-layout>
-      </v-flex>
-    </v-layout>
+          </v-col>
+        </v-row>
+      </v-col>
+    </v-row>
 
     <v-snackbar
       v-bind:value="false"
@@ -45,7 +53,6 @@
 
 <script>
 import required from 'vuelidate/src/validators/required';
-import { mapActions } from 'vuex';
 import validations from '../../mixins/validations.mixin';
 import { Service_App } from '../../services/service.app';
 
@@ -69,8 +76,6 @@ export default {
         token: this.token,
         router: this.$router,
       });
-
-      // this.loading = false;
     },
   },
   validations: {

@@ -1,6 +1,6 @@
 <template>
-  <v-app dark>
-    <router-view/>
+  <v-app>
+    <router-view />
     <!--<template v-if="url_api === null || token_instance === null">-->
     <!--<v-spacer></v-spacer>-->
     <!--<add-credentials></add-credentials>-->
@@ -39,15 +39,15 @@ export default {
     return {
     };
   },
-  watch: {
-    slug_project_current() {
-      Service_Projects.load_project_data();
-    },
-  },
   computed: {
     ...mapGetters('moduleProjects', {
       slug_project_current: 'get_slug_project_current',
     }),
+  },
+  watch: {
+    slug_project_current() {
+      Service_Projects.load_project_data();
+    },
   },
   methods: {
     ...mapActions(['init']),
