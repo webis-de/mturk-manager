@@ -364,59 +364,62 @@ class Manager_Batches(Interface_Manager_Items):
                     'PageSize': 100,
                 }
             )
+            try:
+                for iterator in response_iterator:
+                    for assignment in iterator['Assignments']:
+                        id_assignment: str = assignment['AssignmentId'].upper()
+                        id_worker: str = assignment['WorkerId'].upper()
+                        status_mturk: str = assignment['AssignmentStatus']
 
-            for iterator in response_iterator:
-                for assignment in iterator['Assignments']:
-                    id_assignment: str = assignment['AssignmentId'].upper()
-                    id_worker: str = assignment['WorkerId'].upper()
-                    status_mturk: str = assignment['AssignmentStatus']
+                        # if the assignment is not already in the database
+                        if not id_assignment in assignments_available:
+                            # check whether the worker is already in the database
+                            try:
+                                worker = dictionary_workers_available[id_worker]
+                            except KeyError:
+                                # otherwise create the new worker and add it to the dictionary
+                                worker = Worker.objects.get_or_create(
+                                    id_worker=id_worker,
+                                )[0]
+                                dictionary_workers_available[id_worker] = worker
 
-                    # if the assignment is not already in the database
-                    if not id_assignment in assignments_available:
-                        # check whether the worker is already in the database
-                        try:
-                            worker = dictionary_workers_available[id_worker]
-                        except KeyError:
-                            # otherwise create the new worker and add it to the dictionary
-                            worker = Worker.objects.get_or_create(
-                                id_worker=id_worker,
-                            )[0]
-                            dictionary_workers_available[id_worker] = worker
+                            status = None
+                            if status_mturk == 'Approved':
+                                status = assignments.STATUS_EXTERNAL.APPROVED
+                            elif status_mturk == 'Rejected':
+                                status = assignments.STATUS_EXTERNAL.REJECTED
 
-                        status = None
-                        if status_mturk == 'Approved':
-                            status = assignments.STATUS_EXTERNAL.APPROVED
-                        elif status_mturk == 'Rejected':
-                            status = assignments.STATUS_EXTERNAL.REJECTED
+                            try:
+                                answer: str = json.dumps(xmltodict.parse(assignment['Answer']))
+                            except KeyError:
+                                answer: str = json.dumps({})
 
-                        try:
-                            answer: str = json.dumps(xmltodict.parse(assignment['Answer']))
-                        except KeyError:
-                            answer: str = json.dumps({})
-
-                        # create the assignment in the database
-                        assignment = Assignment.objects.create(
-                            id_assignment=id_assignment,
-                            hit=hit,
-                            worker=worker,
-                            status_external=status,
-                            answer=answer,
-                            datetime_submit=assignment['SubmitTime'],
-                            datetime_accept=assignment['AcceptTime'],
-                        )
-                    # if the assignment is already in the database,
-                    # check whether the annotatation state corresponds with the database state
-                    else:
-                        status: assignments.STATUS_EXTERNAL = mturk_status_to_database_status(status_mturk)
-
-                        # if the assignment from mturk has a different state than the assignment of mturk
-                        if status != assignments_available[id_assignment]:
-                            # update the status of the assignment
-                            Assignment.objects.filter(
-                                id_assignment=id_assignment
-                            ).update(
-                                status_external=status
+                            # create the assignment in the database
+                            assignment = Assignment.objects.create(
+                                id_assignment=id_assignment,
+                                hit=hit,
+                                worker=worker,
+                                status_external=status,
+                                answer=answer,
+                                datetime_submit=assignment['SubmitTime'],
+                                datetime_accept=assignment['AcceptTime'],
                             )
+                        # if the assignment is already in the database,
+                        # check whether the annotatation state corresponds with the database state
+                        else:
+                            status: assignments.STATUS_EXTERNAL = mturk_status_to_database_status(status_mturk)
+
+                            # if the assignment from mturk has a different state than the assignment of mturk
+                            if status != assignments_available[id_assignment]:
+                                # update the status of the assignment
+                                Assignment.objects.filter(
+                                    id_assignment=id_assignment
+                                ).update(
+                                    status_external=status
+                                )
+            except:
+                pass
+
 
             # if hit is expired
             if hit.datetime_expiration < timezone.now():
