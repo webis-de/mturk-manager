@@ -1,80 +1,84 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <v-data-table
-    select-all
+    show-select
     v-bind:headers="array_headers"
     v-bind:items="array_page"
-    v-bind:total-items="items_total"
+    v-bind:server-items-length="items_total"
     v-bind:loading="loading"
     item-key="id"
+    v-bind:dense="isCondensed"
     header-key="value"
-    v-bind:rows-per-page-items="[5, 10, 25, { text: 'All', value: null }]"
-    v-bind:pagination="pagination"
+    v-bind:items-per-page="pagination.rowsPerPage"
+    v-bind:sort-by="pagination.sortBy"
+    v-bind:sort-desc="pagination.descending"
+
+    v-bind:footer-props="{
+      'items-per-page-options': [5, 10, 25, { text: 'All', value: null }]
+    }"
+
     v-on:update:pagination="updatedPagination($event)"
   >
-    <template
-      slot="headers"
-      slot-scope="props"
-    >
-      <tr v-bind:style="stylesHeaderRow">
-        <th
-          v-if="nameStateItemsSelected !== undefined"
-          v-bind:style="stylesHeaderCell"
-        >
-          <v-checkbox
-            v-bind:input-value="is_page_selected"
-            v-bind:indeterminate="props.indeterminate"
-            primary
-            hide-details
-            v-on:click.native="toggle_all()"
-          />
-        </th>
-        <th
-          v-for="header in props.headers"
-          v-bind:key="header.value"
-          v-bind:class="[
-            'column',
-            { sortable: header.sortable !== false },
-            pagination.descending ? 'desc' : 'asc',
-            header.value === pagination.sortBy ? 'active' : '',
-            ...header.classes,
-          ]"
-          v-bind:style="{
-            ...stylesHeaderCell,
-            width: header.width,
-          }"
-          v-on="
-            header.sortable !== false
-              ? {
-                click: () => {
-                  updatedPagination({
-                    sortBy: header.value,
-                    descending: !pagination.descending,
-                    page: 1,
-                    rowsPerPage: pagination.rowsPerPage,
-                  });
-                }
-              }
-              : {}
-          "
-        >
-          {{ header.text }}
-          <v-icon
-            v-if="header.sortable !== false"
-            small
-            style="position: absolute"
-          >
-            arrow_upward
-          </v-icon>
-        </th>
-      </tr>
-    </template>
+<!--    <template-->
+<!--      slot="headers"-->
+<!--      slot-scope="props"-->
+<!--    >-->
+<!--      <tr>-->
+<!--        <th-->
+<!--          v-if="nameStateItemsSelected !== undefined"-->
+<!--        >-->
+<!--          <v-checkbox-->
+<!--            v-bind:input-value="is_page_selected"-->
+<!--            v-bind:indeterminate="props.indeterminate"-->
+<!--            primary-->
+<!--            hide-details-->
+<!--            v-on:click.native="toggle_all()"-->
+<!--          />-->
+<!--        </th>-->
+<!--        <th-->
+<!--          v-for="header in props.headers"-->
+<!--          v-bind:key="header.value"-->
+<!--          v-bind:class="[-->
+<!--            'column',-->
+<!--            { sortable: header.sortable !== false },-->
+<!--            pagination.descending ? 'desc' : 'asc',-->
+<!--            header.value === pagination.sortBy ? 'active' : '',-->
+<!--            ...header.classes,-->
+<!--          ]"-->
+<!--          v-bind:style="{-->
+<!--            width: header.width,-->
+<!--          }"-->
+<!--          v-on="-->
+<!--            header.sortable !== false-->
+<!--              ? {-->
+<!--                click: () => {-->
+<!--                  updatedPagination({-->
+<!--                    sortBy: header.value,-->
+<!--                    descending: !pagination.descending,-->
+<!--                    page: 1,-->
+<!--                    rowsPerPage: pagination.rowsPerPage,-->
+<!--                  });-->
+<!--                }-->
+<!--              }-->
+<!--              : {}-->
+<!--          "-->
+<!--        >-->
+<!--          {{ header.text }}-->
+<!--          <v-icon-->
+<!--            v-if="header.sortable !== false"-->
+<!--            small-->
+<!--            style="position: absolute"-->
+<!--          >-->
+<!--            arrow_upward-->
+<!--          </v-icon>-->
+<!--        </th>-->
+<!--      </tr>-->
+<!--    </template>-->
 
     <template
-      slot="items"
-      slot-scope="props"
+      v-slot:item="{ item }"
     >
       <slot
-        v-bind:props="props"
+        v-bind:props="item"
         v-bind:array_columns_selected="columnsSelected"
         v-bind:is-condensed="isCondensed"
         v-bind:refresh="refresh"
@@ -83,15 +87,15 @@
 
     <template
       v-if="showFooter"
-      slot="actions-prepend"
+      v-slot:footer
     >
-      <v-layout>
-        <v-flex>
+      <v-layout justify-end>
+        <v-flex class="shrink">
           <slot name="actions"
             v-bind:refresh="refresh"
           />
         </v-flex>
-        <v-flex>
+        <v-flex class="shrink">
           <base-table-filters
             v-if="filters !== undefined"
 
@@ -119,7 +123,7 @@
             </template>
           </base-table-filters>
         </v-flex>
-        <v-flex>
+        <v-flex class="shrink">
           <component-settings-table
             v-if="nameLocalStorageColumnsSelected !== undefined"
             v-bind:colspan="array_headers.length + 1"
@@ -308,16 +312,6 @@ export default {
       }
 
       return arrayItems === null ? [] : arrayItems;
-    },
-    stylesHeaderRow() {
-      return {
-        height: this.isCondensed ? 'unset' : null,
-      };
-    },
-    stylesHeaderCell() {
-      return {
-        padding: this.isCondensed ? '5px' : null,
-      };
     },
   },
   beforeDestroy() {

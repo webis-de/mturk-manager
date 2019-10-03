@@ -3,20 +3,22 @@
     left
     offset-x
     open-on-hover
-    lazy
   >
-    <base-chart-horizontal-bar
-      slot="activator"
-      v-bind:styles="{
-        height: `${height}px`,
-        width: `${width}px`,
-        'margin-bottom': '-10px',
-        'margin-left': 'auto',
-        'margin-right': 'auto',
-      }"
-      v-bind:chartdata="chartdata"
-      v-bind:options="options"
-    />
+      <template v-slot:activator="{ on }">
+<!--    <v-hover v-slot:default="{ hover }">-->
+        <base-chart-horizontal-bar
+          v-bind:styles="{
+            height: `${height}px`,
+            width: `${width}px`,
+            'margin-bottom': '-10px',
+            'margin-left': 'auto',
+            'margin-right': 'auto',
+          }"
+          v-bind:chartdata="chartdata"
+          v-bind:options="options"
+        />
+<!--    </v-hover>-->
+      </template>
 
     <v-list
       dense

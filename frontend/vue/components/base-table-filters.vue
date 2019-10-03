@@ -3,14 +3,14 @@
     v-model="showFilters"
     hide-overlay
     inset
-    lazy
   >
-    <template v-slot:activator>
+    <template v-slot:activator="{ on }">
       <v-btn
         v-if="countFiltersActive === 0"
 
         small
         color="primary"
+        v-on="on"
       >
         Filters
       </v-btn>
@@ -19,6 +19,7 @@
 
         small
         color="warning"
+        v-on="on"
       >
         Filters ({{ countFiltersActive }})
       </v-btn>
@@ -48,7 +49,7 @@
             <v-btn
               v-if="countFiltersActive > 0"
               small
-              flat
+              text
               class="ma-0"
               color="primary"
               v-on:click.stop="resetFilters()"
@@ -60,7 +61,7 @@
               icon
               v-on:click="showFilters = false"
             >
-              <v-icon>close</v-icon>
+              <v-icon>mdi-close</v-icon>
             </v-btn>
           </v-flex>
         </v-layout>

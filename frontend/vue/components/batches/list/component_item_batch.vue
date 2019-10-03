@@ -1,11 +1,10 @@
 <template>
-  <!-- <div>wda</div> -->
   <tr
     v-bind:key="batch.id"
     class="text-no-wrap"
   >
-    <td v-bind:style="stylesCell">
-      <v-checkbox v-model="is_selected" primary hide-details></v-checkbox>
+    <td>
+      <v-checkbox class="pa-0 ma-0" v-model="is_selected" primary hide-details></v-checkbox>
     </td>
 
     <base-table-cell
@@ -14,7 +13,6 @@
       class="text-xs-left"
       v-bind:item="batch"
       v-bind:columns-selected="columnsSelected"
-      v-bind:is-condensed="isCondensed"
     >
       {{ item.name }}
     </base-table-cell>
@@ -25,7 +23,6 @@
       class="text-xs-right"
       v-bind:item="batch"
       v-bind:columns-selected="columnsSelected"
-      v-bind:is-condensed="isCondensed"
     >
       {{ item.count_hits }}
     </base-table-cell>
@@ -36,7 +33,6 @@
       class="text-xs-center"
       v-bind:item="batch"
       v-bind:columns-selected="columnsSelected"
-      v-bind:is-condensed="isCondensed"
     >
       <base-display-datetime
         v-bind:datetime="item.datetime_creation"
@@ -49,7 +45,6 @@
       class="text-xs-right"
       v-bind:item="batch"
       v-bind:columns-selected="columnsSelected"
-      v-bind:is-condensed="isCondensed"
     >
       {{ item.settings_batch.count_assignments }}
     </base-table-cell>
@@ -60,7 +55,6 @@
       class="text-xs-right"
       v-bind:item="batch"
       v-bind:columns-selected="columnsSelected"
-      v-bind:is-condensed="isCondensed"
     >
       <base-display-amount
         v-bind:amount="item.settings_batch.reward"
@@ -73,7 +67,6 @@
       class="text-xs-right"
       v-bind:item="batch"
       v-bind:columns-selected="columnsSelected"
-      v-bind:is-condensed="isCondensed"
     >
       {{ item.countAssignmentsTotal }}
     </base-table-cell>
@@ -84,7 +77,6 @@
       class="text-xs-right"
       v-bind:item="batch"
       v-bind:columns-selected="columnsSelected"
-      v-bind:is-condensed="isCondensed"
     >
       {{ item.countAssignmentsApproved }}
     </base-table-cell>
@@ -95,7 +87,6 @@
       class="text-xs-right"
       v-bind:item="batch"
       v-bind:columns-selected="columnsSelected"
-      v-bind:is-condensed="isCondensed"
     >
       {{ item.countAssignmentsRejected }}
     </base-table-cell>
@@ -106,7 +97,6 @@
       class="text-xs-right"
       v-bind:item="batch"
       v-bind:columns-selected="columnsSelected"
-      v-bind:is-condensed="isCondensed"
     >
       <base-display-amount
         v-bind:amount="item.costs_max"
@@ -119,7 +109,6 @@
       class="text-xs-right"
       v-bind:item="batch"
       v-bind:columns-selected="columnsSelected"
-      v-bind:is-condensed="isCondensed"
     >
       <base-display-amount
         v-bind:amount="item.costs_so_far"
@@ -132,7 +121,6 @@
       class="text-xs-center"
       v-bind:item="batch"
       v-bind:columns-selected="columnsSelected"
-      v-bind:is-condensed="isCondensed"
     >
       <base-progress-bar
         v-bind:title-popover="`Assignments (${item.countAssignmentsTotal})`"
@@ -146,7 +134,6 @@
       class="text-xs-center"
       v-bind:item="batch"
       v-bind:columns-selected="columnsSelected"
-      v-bind:is-condensed="isCondensed"
     >
       <v-btn
         slot="activator"
@@ -160,7 +147,7 @@
           }
         }"
       >
-        <v-icon>info</v-icon>
+        <v-icon>mdi-information</v-icon>
       </v-btn>
     </base-table-cell>
   </tr>
@@ -191,15 +178,10 @@ export default {
       type: Array,
       required: true,
     },
-
-    isCondensed: {
-      required: true,
-      type: Boolean,
-    },
   },
   data() {
     return {
-      batch: this.props.item,
+      batch: this.props,
     };
   },
   computed: {
@@ -260,16 +242,6 @@ export default {
     //
     //   },
     // },
-    stylesCell() {
-      if (this.isCondensed) {
-        return {
-          height: 'unset !important',
-          paddingLeft: '5px !important',
-          paddingRight: '5px !important',
-        };
-      }
-      return {};
-    },
     ...mapGetters(['get_show_progress_indicator']),
     ...mapGetters('moduleBatches', {
       object_batches_selected: 'get_object_batches_selected',
@@ -278,9 +250,9 @@ export default {
   watch: {
     'props.item': function() {
       // TODO: some other technique to prevent unnecessary updates?
-      if (_.isEqual(this.batch, this.props.item)) return;
+      if (_.isEqual(this.batch, this.props)) return;
 
-      this.batch = this.props.item;
+      this.batch = this.props;
     },
   },
   methods: {

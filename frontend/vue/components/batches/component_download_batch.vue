@@ -1,29 +1,31 @@
 <template>
   <div>
-    <v-tooltip top v-bind:disabled="is_valid_selection" lazy>
-      <v-btn
-        slot="activator"
-        small
-        v-bind:loading="is_downloading_csv"
-        v-bind:disabled="
-          is_downloading_csv ||
-            count_batches_to_download === 0 ||
-            !is_valid_selection
-        "
-        color="primary"
-        v-on:click="dialog = true"
-      >
-        <!--<template v-if="is_valid_selection">-->
-        Download {{ count_batches_to_download }} Batch(es)
-        <v-icon right>cloud_download</v-icon>
-        <!--</template>-->
-        <!--<template v-else>-->
-        <!--Selected batches have an incompatible Structure-->
-        <!--</template>-->
-      </v-btn>
+    <v-tooltip top v-bind:disabled="is_valid_selection">
+      <template v-slot:activator="{ on }">
+        <v-btn
+          slot="activator"
+          small
+          v-bind:loading="is_downloading_csv"
+          v-bind:disabled="
+            is_downloading_csv ||
+              count_batches_to_download === 0 ||
+              !is_valid_selection
+          "
+          color="primary"
+          v-on:click="dialog = true"
+        >
+          <!--<template v-if="is_valid_selection">-->
+          Download {{ count_batches_to_download }} Batch(es)
+          <v-icon right>mdi-cloud-download</v-icon>
+          <!--</template>-->
+          <!--<template v-else>-->
+          <!--Selected batches have an incompatible Structure-->
+          <!--</template>-->
+        </v-btn>
+      </template>
       Selected batches have an incompatible structure
     </v-tooltip>
-    <v-dialog v-model="dialog" max-width="80%" lazy>
+    <v-dialog v-model="dialog" max-width="80%">
       <v-card>
         <v-card-title>
           Download Batch(es)

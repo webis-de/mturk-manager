@@ -4,7 +4,7 @@
       Toggle Columns
     </v-btn>
 
-    <v-dialog v-model="dialog" max-width="80%" lazy>
+    <v-dialog v-model="dialog" max-width="80%">
       <v-card>
         <v-card-text>
           <v-layout>
@@ -41,7 +41,7 @@
                 "
                 >Reset to default</v-btn
               >
-              <v-btn flat v-on:click="dialog = false">Cancel</v-btn>
+              <v-btn text v-on:click="dialog = false">Cancel</v-btn>
             </v-flex>
           </v-layout>
         </v-card-text>
