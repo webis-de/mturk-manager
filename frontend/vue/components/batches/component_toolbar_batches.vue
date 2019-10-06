@@ -1,5 +1,5 @@
 <template>
-  <v-row>
+  <v-row no-gutters>
     <!--<v-flex shrink>-->
     <!--<v-tooltip bottom>-->
     <!--<v-btn-->

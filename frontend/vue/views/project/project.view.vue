@@ -26,11 +26,10 @@
         {{ namePage }}
       </v-toolbar-title>
 
-      <v-spacer />
-
       <v-row
         align="center"
         justify="end"
+        no-gutters
       >
         <v-col class="shrink text-no-wrap">
           <v-tooltip bottom>
@@ -39,7 +38,6 @@
                 hide-details
                 v-bind:label="use_sandbox ? 'Toggle Sandbox' : 'Toggle Sandbox'"
                 v-bind:input-value="use_sandbox"
-                color="secondary"
                 v-on:click.native="toggle_use_sandbox"
                 v-on="on"
               />
@@ -55,16 +53,35 @@
 
         <v-divider
           class="mx-2"
-          inset
           vertical
         />
 
-        <v-flex shrink>
+        <v-col class="shrink">
           <component
             v-bind:is="currentTabComponent"
             v-bind:name_route="name_route_current"
           />
-        </v-flex>
+        </v-col>
+
+        <v-divider
+          class="mx-2"
+          vertical
+        />
+        <v-menu
+          v-bind:close-on-content-click="false"
+          offset-y
+        >
+          <template v-slot:activator="{ on }">
+            <v-btn
+              icon
+              v-on="on"
+            >
+              <v-icon>mdi-dots-vertical</v-icon>
+            </v-btn>
+          </template>
+
+          <the-settings-project />
+        </v-menu>
       </v-row>
     </v-app-bar>
     <v-content>
@@ -83,10 +100,12 @@ import TheNavigationDrawer from '../../components/the-navigation-drawer';
 import ComponentToolbarBatches from '../../components/batches/component_toolbar_batches';
 import ComponentToolbarQualifications from '../../components/qualifications/component-toolbar-qualifications';
 import TheTasksBar from '../../components/the-tasks-bar';
+import TheSettingsProject from '../../components/the-settings-project';
 
 export default {
   name: 'AppProject',
   components: {
+    TheSettingsProject,
     TheTasksBar,
     TheNavigationDrawer,
   },

@@ -3,6 +3,7 @@ import { Service_Endpoint } from './service_endpoint';
 import { Service_Projects } from './service_projects';
 import queue from '../queue';
 import { compareVersions } from '../helpers';
+import { vuetify } from '../vuetify';
 
 class ClassServiceApp {
   async init(force = false) {
@@ -151,6 +152,16 @@ class ClassServiceApp {
       // send the user to the dashboard if no error occured
       queue.notify('router', { name: 'dashboard' });
     }
+  }
+
+  async setLightMode(isActiveModeLight) {
+    await store.dispatch('module_app/setState', {
+      objectState: isActiveModeLight,
+      nameState: 'isActiveModeLight',
+      nameLocalStorage: 'isActiveModeLight',
+    });
+
+    vuetify.framework.theme.dark = !isActiveModeLight;
   }
 }
 

@@ -8,7 +8,7 @@
       <v-fab-transition>
         <v-btn
           v-show="!is_creating_batch"
-          color="pink"
+          color="primary"
           fab
           left
           bottom

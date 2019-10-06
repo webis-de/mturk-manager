@@ -26,7 +26,7 @@
     </template>
 
     <v-card
-      color="secondary darken-1"
+      color="accent lighten-2"
     >
       <v-card-title
         class="pa-2"

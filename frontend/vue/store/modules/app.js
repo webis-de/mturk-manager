@@ -13,6 +13,7 @@ export const module_app = _.merge({}, baseModule, {
     version: process.env.VERSION_MTURK_MANAGER,
     changelog: [],
     versionSeen: null,
+    isActiveModeLight: false,
   },
   getters: {
     has_credentials(state) {
@@ -53,7 +54,7 @@ export const module_app = _.merge({}, baseModule, {
 
       return getters.has_credentials;
     },
-    async init({ commit, dispatch }, config) {
+    async init({ state, commit, dispatch }, config) {
       let use_sandbox = await localforage.getItem('use_sandbox');
       if (use_sandbox === null) {
         use_sandbox = true;
@@ -61,17 +62,6 @@ export const module_app = _.merge({}, baseModule, {
       commit('set_use_sandbox', use_sandbox);
 
       commit('version_api', config.version);
-
-      dispatch('loadState', {
-        nameLocalStorage: 'changelog',
-        nameState: 'changelog',
-        objectStateDefault: [],
-      });
-
-      dispatch('loadState', {
-        nameLocalStorage: 'version_seen',
-        nameState: 'versionSeen',
-      });
 
 
       commit('moduleAssignments/set_urls', config.paths, { root: true });
@@ -93,6 +83,23 @@ export const module_app = _.merge({}, baseModule, {
         dispatch('moduleSettingsBatch/init', null, { root: true }),
         dispatch('moduleTemplates/init', null, { root: true }),
         dispatch('moduleMessages/init', null, { root: true }),
+
+        dispatch('loadState', {
+          nameLocalStorage: 'changelog',
+          nameState: 'changelog',
+          objectStateDefault: [],
+        }),
+
+        dispatch('loadState', {
+          nameLocalStorage: 'version_seen',
+          nameState: 'versionSeen',
+        }),
+
+        dispatch('loadState', {
+          nameLocalStorage: 'isActiveModeLight',
+          nameState: 'isActiveModeLight',
+          objectStateDefault: false,
+        }),
       ]);
     },
     async set_use_sandbox({ commit }, use_sandbox) {

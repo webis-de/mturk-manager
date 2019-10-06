@@ -85,4 +85,16 @@ export default {
       }
     }
   }
+
+  .theme--light {
+    .calculation {
+
+    tr:last-child {
+      td {
+        border-top: 1px rgba(0, 0, 0, 0.54) solid;
+        border-bottom: 3px rgba(0, 0, 0, 0.54) double;
+      }
+    }
+    }
+  }
 </style>

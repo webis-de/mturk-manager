@@ -13,6 +13,7 @@ import { store } from './store/vuex';
 import App from './App';
 
 import { router } from './router';
+import { vuetify } from './vuetify';
 
 Vue.config.performance = process.env.NODE_ENV === 'development';
 
@@ -27,23 +28,7 @@ Vue.use(VueCookies);
 export default new Vue({
   router,
   store,
-  vuetify: new Vuetify({
-    theme: {
-      dark: true,
-    },
-    // lang: {
-    //   locales: { de },
-    //   current: 'de',
-    // },
-    // theme: {
-    //   themes: {
-    //     light: {
-    //       primary: '#011e40',
-    //       secondary: '#009fe3',
-    //     },
-    //   },
-    // },
-  }),
+  vuetify,
   el: '#app',
   render: h => h(App),
 });
