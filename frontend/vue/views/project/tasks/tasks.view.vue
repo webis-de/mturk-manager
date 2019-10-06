@@ -4,8 +4,8 @@
     <template
       v-if="$route.params.id === undefined"
     >
-      <v-layout>
-        <v-flex>
+      <v-row no-gutters>
+        <v-col>
           <v-tabs
             v-bind:value="$route.meta.index"
             v-on:change="changedView($event)"
@@ -29,11 +29,10 @@
               >
                 <v-container
                   fluid
-                  grid-list-md
                   class="pa-0"
                 >
-                  <v-layout wrap>
-                    <v-flex xs>
+                  <v-row no-gutters>
+                    <v-col xs>
                       <v-card class="pa-1">
                         <list-batches>
                           <template v-slot:actions>
@@ -41,8 +40,8 @@
                           </template>
                         </list-batches>
                       </v-card>
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
                   <v-layout />
                 </v-container>
               </v-tab-item>
@@ -52,16 +51,15 @@
               >
                 <v-container
                   fluid
-                  grid-list-md
                   class="pa-0"
                 >
-                  <v-layout wrap>
-                    <v-flex xs>
+                  <v-row no-gutters>
+                    <v-col xs>
                       <v-card class="pa-1">
                         <list-hits />
                       </v-card>
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
                   <v-layout />
                 </v-container>
               </v-tab-item>
@@ -74,8 +72,8 @@
                   grid-list-md
                   class="pa-0"
                 >
-                  <v-layout wrap>
-                    <v-flex xs>
+                  <v-row no-gutters>
+                    <v-col xs>
                       <v-card class="pa-1">
                         <list-assignments>
                           <template v-slot:actions>
@@ -83,15 +81,15 @@
                           </template>
                         </list-assignments>
                       </v-card>
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
                   <v-layout />
                 </v-container>
               </v-tab-item>
             </v-tabs-items>
           </v-tabs>
-        </v-flex>
-      </v-layout>
+        </v-col>
+      </v-row>
 
       <create-batch />
     </template>

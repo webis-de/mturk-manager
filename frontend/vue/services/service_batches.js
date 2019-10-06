@@ -114,9 +114,9 @@ class Class_Service_Batches extends BaseLoadPageService {
         project: store.getters['moduleProjects/get_project_current'],
       },
       callback(response) {
-        store.commit('moduleBatches/set_batches', {
-          data: response.data.data,
-          use_sandbox: useSandbox,
+        store.commit('moduleBatches/setState', {
+          objectState: response.data.data.map(batch => new Batch(batch)),
+          nameState: useSandbox === true ? 'arrayBatchesSandbox' : 'arrayBatches',
         });
       },
     });
@@ -177,7 +177,7 @@ class Class_Service_Batches extends BaseLoadPageService {
       },
       params,
     });
-    console.log('response', response.data);
+
     return response;
   }
 

@@ -5,7 +5,7 @@
     v-bind:name-local-storage-pagination="nameLocalStoragePagination"
 
     v-bind:function-load-page="loadPage"
-    v-bind:array-items="array_items"
+    v-bind:array-items="arrayItems"
 
     v-bind:name-local-storage-columns-selected="nameLocalStorageColumnsSelected"
     v-bind:name-state-columns="nameStateColumns"
@@ -24,10 +24,10 @@
     name-state-filters="objectFiltersGeneral"
     name-local-storage-filters="filtersWorkersGeneral"
   >
-    <template v-slot:default="{ props, array_columns_selected, isCondensed }">
+    <template v-slot:default="{ item, objectColumnsSelected, isCondensed }">
       <component-item-worker
-        v-bind:props="props"
-        v-bind:array_columns_selected="array_columns_selected"
+        v-bind:item="item"
+        v-bind:object-columns-selected="objectColumnsSelected"
         v-bind:show_links="showLinks"
         v-bind:is-condensed="isCondensed"
       />
@@ -88,12 +88,12 @@ export default {
     nameStateColumnsSelected: {
       required: false,
       type: String,
-      default: 'array_columns_selected_general',
+      default: 'objectColumnsSelectedGeneral',
     },
     nameStateColumnsSelectedInitial: {
       required: false,
       type: String,
-      default: 'array_columns_selected_initial_general',
+      default: 'objectColumnsSelectedInitialGeneral',
     },
 
     nameStateItemsSelected: {
@@ -205,8 +205,18 @@ export default {
     filtersDefaultComputed() {
       return this.filtersDefault !== undefined ? this.filtersDefault : this.filtersDefaultGeneral;
     },
+    arrayItems() {
+      let arrayItems = [];
+
+      if (this.$store.state.module_app.use_sandbox === true) {
+        arrayItems = this.$store.state.moduleWorkers.arrayWorkersSandbox;
+      } else {
+        arrayItems = this.$store.state.moduleWorkers.arrayWorkers;
+      }
+
+      return arrayItems === null ? [] : arrayItems;
+    },
     ...mapGetters('moduleWorkers', {
-      array_items: 'get_array_workers',
       object_items_selected: 'get_object_workers_selected',
       array_columns: 'get_array_columns_general',
       array_columns_selected: 'get_array_columns_selected_general',

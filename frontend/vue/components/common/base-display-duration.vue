@@ -1,8 +1,9 @@
 <template>
-  <v-tooltip top lazy>
-    <span slot="activator">
-      {{ durationFormatted }}
-    </span>
+  <v-tooltip top>
+    <template v-slot:activator="{ on }">
+      <span v-on="on">{{ durationFormatted }}</span>
+    </template>
+
     {{ durationFormattedStrict }}s
   </v-tooltip>
 </template>

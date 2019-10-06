@@ -11,8 +11,8 @@ export const moduleWorkers = _.merge({}, baseModule, {
     object_workers: {},
     object_workers_sandbox: {},
 
-    array_workers: null,
-    array_workers_sandbox: null,
+    arrayWorkers: null,
+    arrayWorkersSandbox: null,
 
     object_workers_selected: {},
 
@@ -21,47 +21,51 @@ export const moduleWorkers = _.merge({}, baseModule, {
     // loaded_status_block_sandbox: false,
 
     paginationGeneral: {
-      rowsPerPage: 25,
-      sortBy: 'id_worker',
-      descending: true,
+      itemsPerPage: 25,
+      sortBy: ['id_worker'],
+      sortDesc: [true],
     },
 
     array_columns_general: [
       {
         text: 'Name',
         value: 'id_worker',
-        classes: ['text-xs-left'],
+        class: ['text-center'],
       },
       {
         text: 'Assignment Limit',
         value: 'counter_assignments',
         align: 'center',
         width: '1px',
+        class: ['text-no-wrap'],
       },
       {
         text: 'Project Block',
         value: 'block_soft',
         width: '1px',
+        class: ['text-no-wrap'],
       },
       {
         text: 'Soft MTurk Block',
         value: 'block_soft_hard',
         width: '1px',
+        class: ['text-no-wrap'],
       },
       {
         text: 'Hard MTurk Block',
         value: 'block_hard',
         width: '1px',
+        class: ['text-no-wrap'],
       },
     ],
-    array_columns_selected_general: null,
-    array_columns_selected_initial_general: [
-      'id_worker',
-      'counter_assignments',
-      'block_soft',
-      'block_soft_hard',
-      'block_hard',
-    ],
+    objectColumnsSelectedGeneral: null,
+    objectColumnsSelectedInitialGeneral: {
+      id_worker: true,
+      counter_assignments: true,
+      block_soft: true,
+      block_soft_hard: true,
+      block_hard: true,
+    },
     objectFiltersGeneral: null,
     objectFiltersDefaultGeneral: {
       workersSelected: [],

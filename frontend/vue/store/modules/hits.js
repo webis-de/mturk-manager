@@ -13,8 +13,8 @@ export const moduleHITs = _.merge({}, baseModule, {
     object_hits: {},
     object_hits_sandbox: {},
 
-    array_hits: null,
-    array_hits_sandbox: null,
+    arrayHITs: null,
+    arrayHITsSandbox: null,
 
     url_api_projects_hits: undefined,
     url_api_hits: undefined,
@@ -22,15 +22,15 @@ export const moduleHITs = _.merge({}, baseModule, {
     object_hits_selected: {},
 
     paginationGeneral: {
-      rowsPerPage: 25,
-      sortBy: 'datetime_creation',
-      descending: true,
+      itemsPerPage: 25,
+      sortBy: ['datetime_creation'],
+      sortDesc: [true],
     },
 
     paginationFinances: {
-      rowsPerPage: 5,
-      sortBy: 'datetime_creation',
-      descending: true,
+      itemsPerPage: 5,
+      sortBy: ['datetime_creation'],
+      sortDesc: [true],
     },
 
     array_columns_general: [
@@ -61,22 +61,22 @@ export const moduleHITs = _.merge({}, baseModule, {
         label: 'Details',
       },
     ],
-    array_columns_selected_initial_general: [
-      'id_hit',
-      'batch',
-      'datetime_creation',
-      'progress',
-      'actions',
-    ],
-    array_columns_selected_initial_finances: [
-      'id_hit',
-      'batch',
-      'datetime_creation',
-      'progress',
-      'actions',
-    ],
-    array_columns_selected_general: null,
-    array_columns_selected_finances: null,
+    objectColumnsSelectedInitialGeneral: {
+      id_hit: true,
+      batch: true,
+      datetime_creation: true,
+      progress: true,
+      actions: true,
+    },
+    objectColumnsSelectedInitialFinances: {
+      id_hit: true,
+      batch: true,
+      datetime_creation: true,
+      progress: true,
+      actions: true,
+    },
+    objectColumnsSelectedGeneral: null,
+    objectColumnsSelectedFinances: null,
 
     objectFiltersGeneral: null,
     objectFiltersFinances: null,

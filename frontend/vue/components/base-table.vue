@@ -1,85 +1,104 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <v-data-table
     show-select
-    v-bind:headers="array_headers"
-    v-bind:items="array_page"
+    v-bind:headers="arrayHeaders"
+    v-bind:items="arrayItems"
     v-bind:server-items-length="items_total"
     v-bind:loading="loading"
     item-key="id"
     v-bind:dense="isCondensed"
     header-key="value"
-    v-bind:items-per-page="pagination.rowsPerPage"
+    v-bind:items-per-page="pagination.itemsPerPage"
+    v-bind:page="page"
     v-bind:sort-by="pagination.sortBy"
-    v-bind:sort-desc="pagination.descending"
+    v-bind:sort-desc="pagination.sortDesc"
+    must-sort
 
     v-bind:footer-props="{
       'items-per-page-options': [5, 10, 25, { text: 'All', value: null }]
     }"
 
-    v-on:update:pagination="updatedPagination($event)"
+    v-on:update:options="updatedOptions($event)"
   >
-<!--    <template-->
-<!--      slot="headers"-->
-<!--      slot-scope="props"-->
-<!--    >-->
-<!--      <tr>-->
-<!--        <th-->
-<!--          v-if="nameStateItemsSelected !== undefined"-->
+    <template
+      v-slot:header.data-table-select
+    >
+      <v-checkbox
+        class="pa-0 ma-0"
+        primary
+        hide-details
+        v-on:change="toggle_all"
+      />
+    </template>
+<!--        <template-->
+<!--          v-for="slot in arraySlotsItems"-->
+<!--          v-slot:[slot]-->
 <!--        >-->
-<!--          <v-checkbox-->
-<!--            v-bind:input-value="is_page_selected"-->
-<!--            v-bind:indeterminate="props.indeterminate"-->
-<!--            primary-->
-<!--            hide-details-->
-<!--            v-on:click.native="toggle_all()"-->
-<!--          />-->
-<!--        </th>-->
-<!--        <th-->
-<!--          v-for="header in props.headers"-->
-<!--          v-bind:key="header.value"-->
-<!--          v-bind:class="[-->
-<!--            'column',-->
-<!--            { sortable: header.sortable !== false },-->
-<!--            pagination.descending ? 'desc' : 'asc',-->
-<!--            header.value === pagination.sortBy ? 'active' : '',-->
-<!--            ...header.classes,-->
-<!--          ]"-->
-<!--          v-bind:style="{-->
-<!--            width: header.width,-->
-<!--          }"-->
-<!--          v-on="-->
-<!--            header.sortable !== false-->
-<!--              ? {-->
-<!--                click: () => {-->
-<!--                  updatedPagination({-->
-<!--                    sortBy: header.value,-->
-<!--                    descending: !pagination.descending,-->
-<!--                    page: 1,-->
-<!--                    rowsPerPage: pagination.rowsPerPage,-->
-<!--                  });-->
-<!--                }-->
-<!--              }-->
-<!--              : {}-->
-<!--          "-->
+<!--          <slot v-bind:name="slot"></slot>-->
+<!--        </template>-->
+
+<!--        <template-->
+<!--          slot="headers"-->
+<!--          slot-scope="props"-->
 <!--        >-->
-<!--          {{ header.text }}-->
-<!--          <v-icon-->
-<!--            v-if="header.sortable !== false"-->
-<!--            small-->
-<!--            style="position: absolute"-->
-<!--          >-->
-<!--            arrow_upward-->
-<!--          </v-icon>-->
-<!--        </th>-->
-<!--      </tr>-->
-<!--    </template>-->
+<!--          <tr>-->
+<!--            <th-->
+<!--              v-if="nameStateItemsSelected !== undefined"-->
+<!--            >-->
+<!--              <v-checkbox-->
+<!--                v-bind:input-value="is_page_selected"-->
+<!--                v-bind:indeterminate="props.indeterminate"-->
+<!--                primary-->
+<!--                hide-details-->
+<!--                v-on:click.native="toggle_all()"-->
+<!--              />-->
+<!--            </th>-->
+<!--            <th-->
+<!--              v-for="header in props.headers"-->
+<!--              v-bind:key="header.value"-->
+<!--              v-bind:class="[-->
+<!--                'column',-->
+<!--                { sortable: header.sortable !== false },-->
+<!--                pagination.sortDesc ? 'desc' : 'asc',-->
+<!--                header.value === pagination.sortBy ? 'active' : '',-->
+<!--                ...header.classes,-->
+<!--              ]"-->
+<!--              v-bind:style="{-->
+<!--                width: header.width,-->
+<!--              }"-->
+<!--              v-on="-->
+<!--                header.sortable !== false-->
+<!--                  ? {-->
+<!--                    click: () => {-->
+<!--                      updatedPagination({-->
+<!--                        sortBy: header.value,-->
+<!--                        sortDesc: !pagination.sortDesc,-->
+<!--                        page: 1,-->
+<!--                        itemsPerPage: pagination.itemsPerPage,-->
+<!--                      });-->
+<!--                    }-->
+<!--                  }-->
+<!--                  : {}-->
+<!--              "-->
+<!--            >-->
+<!--              {{ header.text }}-->
+<!--              <v-icon-->
+<!--                v-if="header.sortable !== false"-->
+<!--                small-->
+<!--                style="position: absolute"-->
+<!--              >-->
+<!--                arrow_upward-->
+<!--              </v-icon>-->
+<!--            </th>-->
+<!--          </tr>-->
+<!--        </template>-->
 
     <template
       v-slot:item="{ item }"
     >
       <slot
-        v-bind:props="item"
-        v-bind:array_columns_selected="columnsSelected"
+        v-bind:item="item"
+        v-bind:objectColumnsSelected="columnsSelected"
         v-bind:is-condensed="isCondensed"
         v-bind:refresh="refresh"
       />
@@ -87,15 +106,19 @@
 
     <template
       v-if="showFooter"
-      v-slot:footer
+      v-slot:top
     >
-      <v-layout justify-end>
-        <v-flex class="shrink">
-          <slot name="actions"
+      <v-row
+        dense
+        justify="end"
+      >
+        <v-col class="shrink">
+          <slot
+            name="actions"
             v-bind:refresh="refresh"
           />
-        </v-flex>
-        <v-flex class="shrink">
+        </v-col>
+        <v-col class="shrink">
           <base-table-filters
             v-if="filters !== undefined"
 
@@ -107,10 +130,10 @@
 
             v-on:filtersChanged="updatedPagination({
               sortBy: pagination.sortBy,
-              descending: !pagination.descending,
+              sortDesc: pagination.sortDesc,
               page: 1,
-              rowsPerPage: pagination.rowsPerPage,
-            }, true);"
+              itemsPerPage: pagination.itemsPerPage,
+            })"
           >
             <template
               v-slot:filters="{ filters, filtersActive }"
@@ -122,21 +145,21 @@
               />
             </template>
           </base-table-filters>
-        </v-flex>
-        <v-flex class="shrink">
+        </v-col>
+        <v-col class="shrink">
           <component-settings-table
             v-if="nameLocalStorageColumnsSelected !== undefined"
-            v-bind:colspan="array_headers.length + 1"
+            v-bind:colspan="arrayHeaders.length + 1"
             v-bind:columns="columns"
-            v-bind:columns-selected="columnsSelected"
+            v-bind:object-columns-selected="columnsSelected"
 
             v-bind:name-vuex-module="nameVuexModule"
             v-bind:name-state-columns-selected="nameStateColumnsSelected"
             v-bind:name-state-columns-selected-initial="nameStateColumnsSelectedInitial"
             v-bind:name-local-storage-columns-selected="nameLocalStorageColumnsSelected"
           />
-          </v-flex>
-        </v-layout>
+        </v-col>
+      </v-row>
     </template>
   </v-data-table>
 </template>
@@ -196,7 +219,7 @@ export default {
 
 
     arrayItems: {
-      type: Array | Function | null,
+      type: Array,
       required: true,
     },
     functionLoadPage: {
@@ -256,8 +279,8 @@ export default {
   data() {
     return {
       // pagination: {
-      //   rowsPerPage: 25,
-      //   descending: true,
+      //   itemsPerPage: 25,
+      //   sortDesc: true,
       // },
       loading: false,
       search: '',
@@ -277,24 +300,27 @@ export default {
     },
     pagination: {
       get() {
-        return _.assign({}, this.$store.state[this.nameVuexModule][this.nameStatePagination], {totalItems: 0, page: this.page});
+        return _.assign(
+          {},
+          this.$store.state[this.nameVuexModule][this.nameStatePagination],
+          { totalItems: 0, page: this.page },
+        );
       },
     },
     showFooter() {
       return this.$scopedSlots.actions !== undefined || this.nameLocalStorageColumnsSelected !== undefined;
     },
-    array_headers() {
-      const set = new Set(this.columnsSelected);
-      return _.filter(this.columns, column => set.has(column.value));
+    arrayHeaders() {
+      return _.filter(this.columns, column => this.columnsSelected.hasOwnProperty(column.value));
     },
     is_page_selected() {
       let isPageSelected = true;
 
-      if (_.size(this.array_page) === 0) {
+      if (_.size(this.arrayItems) === 0) {
         return false;
       }
 
-      _.forEach(this.array_page, (item) => {
+      _.forEach(this.arrayItems, (item) => {
         if (!_.has(this.$store.state[this.nameVuexModule][this.nameStateItemsSelected], item.id)) {
           isPageSelected = false;
           return false;
@@ -304,15 +330,6 @@ export default {
 
       return isPageSelected;
     },
-    array_page() {
-      let arrayItems = this.arrayItems;
-
-      if (_.isFunction(this.arrayItems)) {
-        arrayItems = this.arrayItems();
-      }
-
-      return arrayItems === null ? [] : arrayItems;
-    },
   },
   beforeDestroy() {
     this.functionClearItemsSelected();
@@ -320,40 +337,68 @@ export default {
     // this.pagination.page = 1;
 
     this.$store.dispatch(`${this.nameVuexModule}/setState`, {
-      objectState: _.pick(this.pagination, ['sortBy', 'descending', 'rowsPerPage']),
+      objectState: _.pick(this.pagination, ['sortBy', 'sortDesc', 'itemsPerPage']),
       nameState: this.nameStatePagination,
       nameLocalStorage: this.nameLocalStoragePagination,
     });
   },
   methods: {
+    updatedOptions(options, force = false) {
+      const equalOptions = _.isEqual(
+        _.pick(options, ['page', 'itemsPerPage', 'sortBy', 'sortDesc']),
+        _.pick(this.pagination, ['page', 'itemsPerPage', 'sortBy', 'sortDesc']),
+      );
+      console.warn('options', options);
+      if (equalOptions === false || force === true) {
+        this.$store.dispatch(`${this.nameVuexModule}/setState`, {
+          objectState: _.pick(options, ['sortBy', 'sortDesc', 'itemsPerPage']),
+          nameState: this.nameStatePagination,
+          nameLocalStorage: this.nameLocalStoragePagination,
+        });
+
+        this.page = options.page;
+
+        this.$nextTick(() => {
+          this.load_page(this.filters);
+        });
+      }
+    },
     refresh() {
       this.pagination.page = 1;
       this.load_page(this.filters);
     },
     // Reset pagination/load page if the sandbox status was changed
     sandboxUpdated() {
-      if (this.pagination.page !== 1) {
-        this.pagination.page = 1;
-      } else {
-        this.load_page(this.filters);
-      }
+      this.updatedOptions({
+        ...this.pagination,
+        page: 1,
+      }, true);
+
+      // console.warn('this.pagination.page', this.pagination.page);
+      // return;
+      // if (this.pagination.page !== 1) {
+      //   this.pagination.page = 1;
+      // } else {
+      //   this.load_page(this.filters);
+      // }
     },
     updatedPagination(pagination) {
-      const equalPagination = _.isEqual(
-        _.pick(pagination, ['page', 'rowsPerPage', 'sortBy', 'descending']),
-        _.pick(this.pagination, ['page', 'rowsPerPage', 'sortBy', 'descending']),
-      );
+      // const equalPagination = _.isEqual(
+      //   _.pick(pagination, ['page', 'itemsPerPage', 'sortBy', 'sortDesc']),
+      //   _.pick(this.pagination, ['page', 'itemsPerPage', 'sortBy', 'sortDesc']),
+      // );
 
       // only update if pagination changed
-      if (equalPagination === false) {
-        this.page = pagination.page;
+      // if (equalPagination === false) {
+      //   this.page = 1;
+        // this.page = pagination.page;
 
         this.$store.dispatch(`${this.nameVuexModule}/setState`, {
-          objectState: _.pick(pagination, ['sortBy', 'descending', 'rowsPerPage']),
+          objectState: _.pick(pagination, ['sortBy', 'sortDesc', 'itemsPerPage']),
           nameState: this.nameStatePagination,
           nameLocalStorage: this.nameLocalStoragePagination,
         });
-      }
+      // }
 
       this.$nextTick(() => {
         this.load_page(this.filters);
@@ -371,9 +416,12 @@ export default {
     toggle_all() {
       this.functionSetItemsSelected({
         add: !this.is_page_selected,
-        array_items: this.array_page,
+        array_items: this.arrayItems,
       });
     },
+  },
+  created() {
+    this.load_page();
   },
 };
 </script>

@@ -60,9 +60,9 @@ export default {
       required: true,
       type: Array,
     },
-    columnsSelected: {
+    objectColumnsSelected: {
       required: true,
-      type: Array,
+      type: Object,
     },
 
     nameVuexModule: {
@@ -85,12 +85,12 @@ export default {
   data() {
     return {
       dialog: false,
-      columnsSelectedIntern: this.columnsSelected,
+      columnsSelectedIntern: Object.keys(this.objectColumnsSelected),
     };
   },
   computed: {
     columnsSelectedInitial() {
-      return this.$store.state[this.nameVuexModule][this.nameStateColumnsSelectedInitial];
+      return Object.keys(this.$store.state[this.nameVuexModule][this.nameStateColumnsSelectedInitial]);
     },
     isToggledAll: {
       get() {
@@ -119,9 +119,12 @@ export default {
     },
   },
   methods: {
-    setArrayColumns(columns) {
+    setArrayColumns(arrayColumns) {
       this.$store.dispatch(`${this.nameVuexModule}/setState`, {
-        objectState: columns,
+        objectState: arrayColumns.reduce((obj, value) => {
+          obj[value] = true;
+          return obj;
+        }, {}),
         nameState: this.nameStateColumnsSelected,
         nameLocalStorage: this.nameLocalStorageColumnsSelected,
       });

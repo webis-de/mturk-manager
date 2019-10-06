@@ -10,8 +10,8 @@ export const moduleBatches = _.merge({}, baseModule, {
     object_batches: null,
     object_batches_sandbox: null,
 
-    array_batches: null,
-    array_batches_sandbox: null,
+    arrayBatches: null,
+    arrayBatchesSandbox: null,
 
     url_api_assignments_real_approved: undefined,
 
@@ -32,15 +32,15 @@ export const moduleBatches = _.merge({}, baseModule, {
     is_syncing_mturk: false,
 
     paginationGeneral: {
-      rowsPerPage: 25,
-      sortBy: 'datetime_creation',
-      descending: true,
+      itemsPerPage: 25,
+      sortBy: ['datetime_creation'],
+      sortDesc: [true],
     },
 
     paginationFinances: {
-      rowsPerPage: 5,
-      sortBy: 'datetime_creation',
-      descending: true,
+      itemsPerPage: 5,
+      sortBy: ['datetime_creation'],
+      sortDesc: [true],
     },
 
     array_columns_general: [
@@ -104,28 +104,28 @@ export const moduleBatches = _.merge({}, baseModule, {
         label: 'Details',
       },
     ],
-    array_columns_selected_initial_general: [
-      'name',
-      'count_hits',
-      'datetime_creation',
-      'settings_batch__count_assignments',
-      'count_assignments_total',
-      'progress',
-      'actions',
-    ],
-    array_columns_selected_general: null,
-    array_columns_selected_initial_finances: [
-      'name',
-      'count_hits',
-      'settings_batch__count_assignments',
-      'settings_batch__reward',
-      'count_assignments_total',
-      'count_assignments_approved',
-      'count_assignments_rejected',
-      'costs_max',
-      'costs_so_far',
-    ],
-    array_columns_selected_finances: null,
+    objectColumnsSelectedInitialGeneral: {
+      name: true,
+      count_hits: true,
+      datetime_creation: true,
+      settings_batch__count_assignments: true,
+      count_assignments_total: true,
+      progress: true,
+      actions: true,
+    },
+    objectColumnsSelectedGeneral: null,
+    objectColumnsSelectedInitialFinances: {
+      name: true,
+      count_hits: true,
+      settings_batch__count_assignments: true,
+      settings_batch__reward: true,
+      count_assignments_total: true,
+      count_assignments_approved: true,
+      count_assignments_rejected: true,
+      costs_max: true,
+      costs_so_far: true,
+    },
+    objectColumnsSelectedFinances: null,
 
     objectFiltersGeneral: null,
     objectFiltersFinances: null,
@@ -147,22 +147,6 @@ export const moduleBatches = _.merge({}, baseModule, {
     get_array_columns_selected_initial_finances: state => state.array_columns_selected_initial_finances,
 
     get_object_batches_selected: state => state.object_batches_selected,
-    get_array_batches: (state, getters, rootState) => (
-      use_sandbox = undefined,
-    ) => {
-      if (use_sandbox === undefined) {
-        return rootState.module_app.use_sandbox
-          ? state.array_batches_sandbox
-          : state.array_batches;
-      }
-      console.warn('state.array_batches_sandbox', state.array_batches_sandbox);
-      console.warn('state.array_batches', state.array_batches);
-      return use_sandbox ? state.array_batches_sandbox : state.array_batches;
-    },
-    // get_object_batches: (state, getters, rootState) => {
-    //     return rootState.module_app.use_sandbox ? state.object_batches_sandbox : state.object_batches;
-    // },
-
     list_hits_for_csv: (state) => {
       const list_hits = [];
       _.forIn(state.object_batches, (batch, id_batch) => {
@@ -186,22 +170,6 @@ export const moduleBatches = _.merge({}, baseModule, {
     set_array_columns_finances(state, array_columns) {
       localforage.setItem('array_columns_batches_finances', array_columns);
       state.array_columns_selected_finances = array_columns;
-    },
-
-    set_batches(state, { data, use_sandbox }) {
-      let array_batches = [];
-      if (use_sandbox) {
-        state.array_batches_sandbox = [];
-        array_batches = state.array_batches_sandbox;
-      } else {
-        state.array_batches = [];
-        array_batches = state.array_batches;
-      }
-      
-      _.forEach(data, (data_batch) => {
-        const batch = new Batch(data_batch);
-        Vue.set(array_batches, array_batches.length, batch);
-      });
     },
     clear_batches_selected(state) {
       state.object_batches_selected = {};

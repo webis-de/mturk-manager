@@ -3,15 +3,17 @@
     offset-y
     offset-x
     v-bind:close-on-content-click="false"
-    lazy
   >
-    <v-btn
-      icon
-      small
-      slot="activator"
-    >
-      <v-icon>help</v-icon>
-    </v-btn>
+    <template v-slot:activator="{ on }">
+      <v-btn
+        icon
+        small
+        v-on="on"
+      >
+        <v-icon>mdi-information-outline</v-icon>
+      </v-btn>
+    </template>
+
     <v-card>
       <v-card-text>
         <slot></slot>
@@ -25,10 +27,3 @@ export default {
   name: 'BaseHelp',
 };
 </script>
-
-<style scoped>
-.v-btn {
-  padding: 0;
-  margin: 0;
-}
-</style>

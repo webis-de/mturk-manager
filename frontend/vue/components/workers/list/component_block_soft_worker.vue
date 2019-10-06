@@ -1,16 +1,18 @@
 <template>
   <span>
-    <v-tooltip left lazy>
-      <v-btn
-        icon
-        small
-        slot="activator"
-        class="ma-0"
-        v-on:click="toggle()"
-        v-bind:loading="is_updating"
-      >
-        <v-icon v-bind:color="color">block</v-icon>
-      </v-btn>
+    <v-tooltip left>
+      <template v-slot:activator="{ on }">
+        <v-btn
+          icon
+          small
+          v-on="on"
+          class="ma-0"
+          v-on:click="toggle()"
+          v-bind:loading="is_updating"
+        >
+          <v-icon v-bind:color="color">mdi-cancel</v-icon>
+        </v-btn>
+      </template>
       <span>{{ text_tooltip }}</span>
     </v-tooltip>
 

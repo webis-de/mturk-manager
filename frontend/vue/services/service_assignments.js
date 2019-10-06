@@ -3,6 +3,7 @@ import { Service_Endpoint } from './service_endpoint';
 import { getChanges } from '../helpers';
 import Assignment from '../classes/assignment';
 import { BaseLoadPageService } from './baseLoadPage.service';
+import HIT from '../classes/hit';
 
 class Class_Service_Assignments extends BaseLoadPageService {
   async set_assignments({ object_hits, data_batches, use_sandbox }) {
@@ -47,9 +48,9 @@ class Class_Service_Assignments extends BaseLoadPageService {
         project: store.getters['moduleProjects/get_project_current'],
       },
       callback(response) {
-        store.commit('moduleAssignments/set_assignments', {
-          data: response.data.data,
-          use_sandbox: useSandbox,
+        store.commit('moduleAssignments/setState', {
+          objectState: response.data.data.map(hit => new Assignment(hit)),
+          nameState: useSandbox === true ? 'arrayAssignmentsSandbox' : 'arrayAssignments',
         });
       },
     });

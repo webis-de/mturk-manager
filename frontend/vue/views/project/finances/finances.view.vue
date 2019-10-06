@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-layout>
+    <v-row no-gutters>
       <v-flex>
         <v-tabs
           v-model="indexTab"
@@ -15,103 +15,100 @@
             Assignments
           </v-tab>
 
-          <v-tabs-items class="mt-1">
+          <v-tabs-items
+            class="mt-1"
+            v-bind:value="indexTab"
+          >
             <v-tab-item
               key="batches"
-              lazy
             >
               <v-container
                 fluid
-                grid-list-md
                 class="pa-0"
               >
-                <v-layout wrap>
-                  <v-flex xs>
+                <v-row no-gutters>
+                  <v-col xs>
                     <v-card class="pa-1">
                       <list-batches
                         name-state-pagination="paginationFinances"
                         name-local-storage-pagination="pagination_batches_finances"
 
                         name-local-storage-columns-selected="array_columns_batches_finances"
-                        name-state-columns-selected="array_columns_selected_finances"
-                        name-state-columns-selected-initial="array_columns_selected_initial_finances"
+                        name-state-columns-selected="objectColumnsSelectedFinances"
+                        name-state-columns-selected-initial="objectColumnsSelectedInitialFinances"
 
                         v-bind:filters="filtersBatches"
                         name-state-filters="objectFiltersFinances"
                         name-local-storage-filters="filtersBatchesFinances"
                       />
                     </v-card>
-                  </v-flex>
-                </v-layout>
-                <v-layout />
+                  </v-col>
+                </v-row>
               </v-container>
             </v-tab-item>
 
             <v-tab-item
               key="hits"
-              lazy
             >
               <v-container
                 fluid
                 grid-list-md
                 class="pa-0"
               >
-                <v-layout wrap>
-                  <v-flex xs>
+                <v-row no-gutters>
+                  <v-col xs>
                     <v-card class="pa-1">
                       <list-hits
                         name-state-pagination="paginationFinances"
                         name-local-storage-pagination="pagination_hits_finances"
 
                         name-local-storage-columns-selected="array_columns_hits_finances"
-                        name-state-columns-selected="array_columns_selected_finances"
-                        name-state-columns-selected-initial="array_columns_selected_initial_finances"
+                        name-state-columns-selected="objectColumnsSelectedFinances"
+                        name-state-columns-selected-initial="objectColumnsSelectedInitialFinances"
 
                         v-bind:filters="filtersHITs"
                         name-state-filters="objectFiltersFinances"
                         name-local-storage-filters="filtersHITsFinances"
                       />
                     </v-card>
-                  </v-flex>
-                </v-layout>
-                <v-layout />
+                  </v-col>
+                </v-row>
               </v-container>
             </v-tab-item>
 
             <v-tab-item
               key="assignment"
-              lazy
             >
               <v-container
                 fluid
                 grid-list-md
                 class="pa-0"
               >
-                <v-layout wrap>
-                  <v-flex xs>
+                <v-row no-gutters>
+                  <v-col xs>
                     <v-card class="pa-1">
                       <list-assignments
                         name-state-pagination="paginationFinances"
                         name-local-storage-pagination="pagination_assignments_finances"
 
                         name-local-storage-columns-selected="array_columns_assignments_finances"
-                        name-state-columns-selected="array_columns_selected_finances"
-                        name-state-columns-selected-initial="array_columns_selected_initial_finances"
+                        name-state-columns-selected="objectColumnsSelectedFinances"
+                        name-state-columns-selected-initial="objectColumnsSelectedInitialFinances"
 
                         v-bind:filters="filtersAssignments"
                         name-state-filters="objectFiltersFinances"
                         name-local-storage-filters="filtersAssignmentsFinances"
                       />
                     </v-card>
-                  </v-flex>
-                </v-layout>
+                  </v-col>
+                </v-row>
                 <v-layout />
               </v-container>
             </v-tab-item>
           </v-tabs-items>
         </v-tabs>
       </v-flex>
-    </v-layout>
+    </v-row>
 
     <v-divider class="my-2" />
 

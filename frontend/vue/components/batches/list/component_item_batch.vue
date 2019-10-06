@@ -4,15 +4,20 @@
     class="text-no-wrap"
   >
     <td>
-      <v-checkbox class="pa-0 ma-0" v-model="is_selected" primary hide-details></v-checkbox>
+      <v-checkbox
+        v-model="is_selected"
+        class="pa-0 ma-0"
+        primary
+        hide-details
+      />
     </td>
 
     <base-table-cell
       v-slot="{ item }"
       name="name"
-      class="text-xs-left"
+      class="text-left"
       v-bind:item="batch"
-      v-bind:columns-selected="columnsSelected"
+      v-bind:columns-selected="objectColumnsSelected"
     >
       {{ item.name }}
     </base-table-cell>
@@ -20,9 +25,9 @@
     <base-table-cell
       v-slot="{ item }"
       name="count_hits"
-      class="text-xs-right"
+      class="text-right"
       v-bind:item="batch"
-      v-bind:columns-selected="columnsSelected"
+      v-bind:columns-selected="objectColumnsSelected"
     >
       {{ item.count_hits }}
     </base-table-cell>
@@ -30,9 +35,9 @@
     <base-table-cell
       v-slot="{ item }"
       name="datetime_creation"
-      class="text-xs-center"
+      class="text-center"
       v-bind:item="batch"
-      v-bind:columns-selected="columnsSelected"
+      v-bind:columns-selected="objectColumnsSelected"
     >
       <base-display-datetime
         v-bind:datetime="item.datetime_creation"
@@ -42,9 +47,9 @@
     <base-table-cell
       v-slot="{ item }"
       name="settings_batch__count_assignments"
-      class="text-xs-right"
+      class="text-right"
       v-bind:item="batch"
-      v-bind:columns-selected="columnsSelected"
+      v-bind:columns-selected="objectColumnsSelected"
     >
       {{ item.settings_batch.count_assignments }}
     </base-table-cell>
@@ -52,9 +57,9 @@
     <base-table-cell
       v-slot="{ item }"
       name="settings_batch__reward"
-      class="text-xs-right"
+      class="text-right"
       v-bind:item="batch"
-      v-bind:columns-selected="columnsSelected"
+      v-bind:columns-selected="objectColumnsSelected"
     >
       <base-display-amount
         v-bind:amount="item.settings_batch.reward"
@@ -64,9 +69,9 @@
     <base-table-cell
       v-slot="{ item }"
       name="count_assignments_total"
-      class="text-xs-right"
+      class="text-right"
       v-bind:item="batch"
-      v-bind:columns-selected="columnsSelected"
+      v-bind:columns-selected="objectColumnsSelected"
     >
       {{ item.countAssignmentsTotal }}
     </base-table-cell>
@@ -74,9 +79,9 @@
     <base-table-cell
       v-slot="{ item }"
       name="count_assignments_approved"
-      class="text-xs-right"
+      class="text-right"
       v-bind:item="batch"
-      v-bind:columns-selected="columnsSelected"
+      v-bind:columns-selected="objectColumnsSelected"
     >
       {{ item.countAssignmentsApproved }}
     </base-table-cell>
@@ -84,9 +89,9 @@
     <base-table-cell
       v-slot="{ item }"
       name="count_assignments_rejected"
-      class="text-xs-right"
+      class="text-right"
       v-bind:item="batch"
-      v-bind:columns-selected="columnsSelected"
+      v-bind:columns-selected="objectColumnsSelected"
     >
       {{ item.countAssignmentsRejected }}
     </base-table-cell>
@@ -94,9 +99,9 @@
     <base-table-cell
       v-slot="{ item }"
       name="costs_max"
-      class="text-xs-right"
+      class="text-right"
       v-bind:item="batch"
-      v-bind:columns-selected="columnsSelected"
+      v-bind:columns-selected="objectColumnsSelected"
     >
       <base-display-amount
         v-bind:amount="item.costs_max"
@@ -106,9 +111,9 @@
     <base-table-cell
       v-slot="{ item }"
       name="costs_so_far"
-      class="text-xs-right"
+      class="text-right"
       v-bind:item="batch"
-      v-bind:columns-selected="columnsSelected"
+      v-bind:columns-selected="objectColumnsSelected"
     >
       <base-display-amount
         v-bind:amount="item.costs_so_far"
@@ -118,9 +123,9 @@
     <base-table-cell
       v-slot="{ item }"
       name="progress"
-      class="text-xs-center"
+      class="text-center"
       v-bind:item="batch"
-      v-bind:columns-selected="columnsSelected"
+      v-bind:columns-selected="objectColumnsSelected"
     >
       <base-progress-bar
         v-bind:title-popover="`Assignments (${item.countAssignmentsTotal})`"
@@ -131,9 +136,9 @@
     <base-table-cell
       v-slot="{ item }"
       name="actions"
-      class="text-xs-center"
+      class="text-center"
       v-bind:item="batch"
-      v-bind:columns-selected="columnsSelected"
+      v-bind:columns-selected="objectColumnsSelected"
     >
       <v-btn
         slot="activator"
@@ -171,17 +176,17 @@ export default {
     BaseDisplayAmount,
   },
   props: {
-    props: {
+    item: {
       required: true,
     },
-    array_columns_selected: {
-      type: Array,
+    objectColumnsSelected: {
+      type: Object,
       required: true,
     },
   },
   data() {
     return {
-      batch: this.props,
+      batch: this.item,
     };
   },
   computed: {
@@ -225,15 +230,6 @@ export default {
         });
       },
     },
-    columnsSelected() {
-      return this.array_columns_selected.reduce((accumulator, column) => {
-        accumulator[column] = column;
-        return accumulator;
-      }, {});
-    },
-    set_columns_selected() {
-      return new Set(this.array_columns_selected);
-    },
     // batch() {
     //   return this.props.item;
     // },
@@ -248,11 +244,11 @@ export default {
     }),
   },
   watch: {
-    'props.item': function() {
+    item() {
       // TODO: some other technique to prevent unnecessary updates?
-      if (_.isEqual(this.batch, this.props)) return;
+      if (_.isEqual(this.batch, this.item)) return;
 
-      this.batch = this.props;
+      this.batch = this.item;
     },
   },
   methods: {

@@ -1,60 +1,74 @@
 <template>
-  <!-- <div>wda</div> -->
   <tr>
-    <td v-bind:style="stylesCell">
-      <v-checkbox v-model="props.selected" primary hide-details></v-checkbox>
+    <td>
+      <v-checkbox
+        class="pa-0 ma-0"
+        primary
+        hide-details
+      />
     </td>
-    <td
-      v-if="set_columns_selected.has('id_worker')"
-      class="text-xs-left"
-      v-bind:style="stylesCell"
+
+    <base-table-cell
+      v-slot="{ item }"
+      name="id_worker"
+      class="text-left"
+      v-bind:item="worker"
+      v-bind:columns-selected="objectColumnsSelected"
     >
-      {{ props.item.id_worker }}
-    </td>
-    <!--<td>-->
-    <!--</td>-->
-    <!--<td>-->
-    <!--</td>-->
-    <td
-      v-if="set_columns_selected.has('counter_assignments')"
-      class="text-xs-center"
-      v-bind:style="stylesCell"
+      {{ item.id_worker }}
+    </base-table-cell>
+
+    <base-table-cell
+      v-slot="{ item }"
+      name="counter_assignments"
+      class="text-center"
+      v-bind:item="worker"
+      v-bind:columns-selected="objectColumnsSelected"
     >
       <component-limit-assignments
-        v-bind:key="`component_limit_assignments_${props.item.id_worker}`"
-        v-bind:worker="worker"
+        v-bind:key="`component_limit_assignments_${item.id_worker}`"
+        v-bind:worker="item"
       ></component-limit-assignments>
-    </td>
-    <td
-      v-if="set_columns_selected.has('block_soft')"
-      class="text-xs-center"
-      v-bind:style="stylesCell"
+    </base-table-cell>
+
+    <base-table-cell
+      v-slot="{ item }"
+      name="block_soft"
+      class="text-center"
+      v-bind:item="worker"
+      v-bind:columns-selected="objectColumnsSelected"
     >
       <component-block-soft-worker
-        v-bind:key="`component_block_soft_worker_${worker.id_worker}`"
-        v-bind:worker="worker"
+        v-bind:key="`component_block_soft_worker_${item.id_worker}`"
+        v-bind:worker="item"
       ></component-block-soft-worker>
-    </td>
-    <td
-      v-if="set_columns_selected.has('block_soft_hard')"
-      class="text-xs-center"
-      v-bind:style="stylesCell"
+    </base-table-cell>
+
+    <base-table-cell
+      v-slot="{ item }"
+      name="block_soft_hard"
+      class="text-center"
+      v-bind:item="worker"
+      v-bind:columns-selected="objectColumnsSelected"
     >
       <component-block-global-worker
-        v-bind:key="`component_block_global_worker_${worker.id_worker}`"
-        v-bind:worker="worker"
+        v-bind:key="`component_block_global_worker_${item.id_worker}`"
+        v-bind:worker="item"
       ></component-block-global-worker>
-    </td>
-    <td
-      v-if="set_columns_selected.has('block_hard')"
-      class="text-xs-center"
-      v-bind:style="stylesCell"
+    </base-table-cell>
+
+    <base-table-cell
+      v-slot="{ item }"
+      name="block_hard"
+      class="text-center"
+      v-bind:item="worker"
+      v-bind:columns-selected="objectColumnsSelected"
     >
       <component-block-hard-worker
-        v-bind:key="`component_block_hard_worker_${worker.id_worker}`"
-        v-bind:worker="worker"
+        v-bind:key="`component_block_hard_worker_${item.id_worker}`"
+        v-bind:worker="item"
       ></component-block-hard-worker>
-    </td>
+    </base-table-cell>
   </tr>
 </template>
 <script>
@@ -65,28 +79,25 @@ import ComponentBlockSoftWorker from './component_block_soft_worker.vue';
 import ComponentBlockGlobalWorker from './component_block_global_worker.vue';
 import ComponentBlockHardWorker from './component_block_hard_worker.vue';
 import ComponentLimitAssignments from './component_limit_assignments.vue';
+import Worker from '../../../classes/workers';
+import BaseTableCell from '../../base-table-cell';
 
 export default {
   name: 'component-item-worker',
   props: {
-    props: {
+    item: {
+      type: Worker,
+      required: true,
+    },
+    objectColumnsSelected: {
       type: Object,
       required: true,
-    },
-    array_columns_selected: {
-      type: Array,
-      required: true,
-    },
-
-    isCondensed: {
-      required: true,
-      type: Boolean,
     },
   },
   data() {
     return {
       show_snackbar: false,
-      worker: this.props.item,
+      worker: this.item,
     };
   },
   // watch: {
@@ -95,22 +106,9 @@ export default {
   //     },
   // },
   computed: {
-    set_columns_selected() {
-      return new Set(this.array_columns_selected);
-    },
     // worker() {
     //   return this.props.item;
     // },
-    stylesCell() {
-      if (this.isCondensed) {
-        return {
-          height: 'unset !important',
-          paddingLeft: '5px !important',
-          paddingRight: '5px !important',
-        };
-      }
-      return {};
-    },
     // status_block() {
     //     if(this.worker.is_blocked == undefined)
     //     {
@@ -147,6 +145,7 @@ export default {
   },
   methods: {},
   components: {
+    BaseTableCell,
     ComponentBlockSoftWorker,
     ComponentBlockGlobalWorker,
     ComponentBlockHardWorker,

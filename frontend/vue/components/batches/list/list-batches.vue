@@ -5,7 +5,7 @@
     v-bind:name-local-storage-pagination="nameLocalStoragePagination"
 
     v-bind:function-load-page="loadPage"
-    v-bind:array-items="array_items"
+    v-bind:array-items="arrayItems"
 
     v-bind:name-local-storage-columns-selected="nameLocalStorageColumnsSelected"
     v-bind:name-state-columns="nameStateColumns"
@@ -24,10 +24,10 @@
     v-bind:name-state-filters="nameStateFilters"
     v-bind:name-local-storage-filters="nameLocalStorageFilters"
   >
-    <template v-slot:default="{ props, array_columns_selected, isCondensed }">
+    <template v-slot:default="{ item, objectColumnsSelected, isCondensed }">
       <component-item-batch
-        v-bind:props="props"
-        v-bind:array_columns_selected="array_columns_selected"
+        v-bind:item="item"
+        v-bind:object-columns-selected="objectColumnsSelected"
         v-bind:show_links="showLinks"
         v-bind:is-condensed="isCondensed"
       />
@@ -37,7 +37,7 @@
       <filters-table-batches
         v-bind:filters="filters"
         v-bind:filters-active="filtersActive"
-      ></filters-table-batches>
+      />
     </template>
 
     <template v-slot:actions>
@@ -47,7 +47,9 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapMutations, mapState } from 'vuex';
+import {
+  mapActions, mapGetters, mapMutations, mapState,
+} from 'vuex';
 import { Service_Batches as ServiceBatches } from '../../../services/service_batches';
 import BaseTable from '../../base-table';
 import ComponentItemBatch from './component_item_batch';
@@ -55,7 +57,7 @@ import FiltersTableBatches from './filters-table-batches';
 
 export default {
   name: 'ListBatches',
-  components: {FiltersTableBatches, ComponentItemBatch, BaseTable },
+  components: { FiltersTableBatches, ComponentItemBatch, BaseTable },
   props: {
     nameStatePagination: {
       required: false,
@@ -81,12 +83,12 @@ export default {
     nameStateColumnsSelected: {
       required: false,
       type: String,
-      default: 'array_columns_selected_general',
+      default: 'objectColumnsSelectedGeneral',
     },
     nameStateColumnsSelectedInitial: {
       required: false,
       type: String,
-      default: 'array_columns_selected_initial_general',
+      default: 'objectColumnsSelectedInitialGeneral',
     },
 
     nameStateItemsSelected: {
@@ -94,9 +96,6 @@ export default {
       type: String,
       default: 'object_batches_selected',
     },
-
-
-
 
 
     showLinks: {
@@ -138,9 +137,17 @@ export default {
     filtersDefaultComputed() {
       return this.filtersDefault !== undefined ? this.filtersDefault : this.filtersDefaultGeneral;
     },
-    ...mapGetters('moduleBatches', {
-      array_items: 'get_array_batches',
-    }),
+    arrayItems() {
+      let arrayItems = [];
+
+      if (this.$store.state.module_app.use_sandbox === true) {
+        arrayItems = this.$store.state.moduleBatches.arrayBatchesSandbox;
+      } else {
+        arrayItems = this.$store.state.moduleBatches.arrayBatches;
+      }
+
+      return arrayItems === null ? [] : arrayItems;
+    },
     ...mapState('moduleBatches', {
       filtersGeneral: 'objectFiltersGeneral',
       filtersDefaultGeneral: 'objectFiltersDefaultGeneral',

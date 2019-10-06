@@ -12,8 +12,8 @@ export const moduleAssignments = _.merge({}, baseModule, {
     object_assignments: {},
     object_assignments_sandbox: {},
 
-    array_assignments: null,
-    array_assignments_sandbox: null,
+    arrayAssignments: null,
+    arrayAssignmentsSandbox: null,
     url_api_projects_assignments: undefined,
     url_api_assignments: undefined,
 
@@ -21,15 +21,15 @@ export const moduleAssignments = _.merge({}, baseModule, {
     object_assignments_selected: {},
 
     paginationGeneral: {
-      rowsPerPage: 25,
-      sortBy: 'datetime_creation',
-      descending: true,
+      itemsPerPage: 25,
+      sortBy: ['datetime_creation'],
+      sortDesc: [true],
     },
 
     paginationFinances: {
-      rowsPerPage: 5,
-      sortBy: 'datetime_creation',
-      descending: true,
+      itemsPerPage: 5,
+      sortBy: ['datetime_creation'],
+      sortDesc: [true],
     },
 
     array_columns_general: [
@@ -74,27 +74,27 @@ export const moduleAssignments = _.merge({}, baseModule, {
         width: '10%',
       },
     ],
-    array_columns_selected_initial_general: [
-      'id_assignment',
-      'datetime_creation',
-      'datetime_accept',
-      'datetime_submit',
-      'worker',
-      'status',
-      'hit',
-      'actions',
-    ],
-    array_columns_selected_initial_finances: [
-      'id_assignment',
-      'datetime_creation',
-      'datetime_accept',
-      'datetime_submit',
-      'worker',
-      'status',
-      'hit',
-    ],
-    array_columns_selected_general: null,
-    array_columns_selected_finances: null,
+    objectColumnsSelectedInitialGeneral: {
+      id_assignment: true,
+      datetime_creation: true,
+      datetime_accept: true,
+      datetime_submit: true,
+      worker: true,
+      status: true,
+      hit: true,
+      actions: true,
+    },
+    objectColumnsSelectedInitialFinances: {
+      id_assignment: true,
+      datetime_creation: true,
+      datetime_accept: true,
+      datetime_submit: true,
+      worker: true,
+      status: true,
+      hit: true,
+    },
+    objectColumnsSelectedGeneral: null,
+    objectColumnsSelectedFinances: null,
 
     objectFiltersGeneral: null,
     objectFiltersFinances: null,

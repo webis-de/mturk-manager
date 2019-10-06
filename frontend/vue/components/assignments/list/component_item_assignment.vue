@@ -2,12 +2,12 @@
   <!-- <div>wda</div> -->
   <tr
     v-bind:key="assignment.id"
-    v-on:click="props.expanded = !props.expanded"
     class="text-no-wrap"
   >
-    <td v-bind:style="stylesCell">
+    <td>
       <v-checkbox
         v-model="is_selected"
+        class="pa-0 ma-0"
         primary
         hide-details
       />
@@ -16,10 +16,9 @@
     <base-table-cell
       v-slot="{ item }"
       name="id_assignment"
-      class="text-xs-left"
+      class="text-left"
       v-bind:item="assignment"
-      v-bind:columns-selected="columnsSelected"
-      v-bind:is-condensed="isCondensed"
+      v-bind:columns-selected="objectColumnsSelected"
     >
       {{ item.id_assignment }}
     </base-table-cell>
@@ -27,10 +26,9 @@
     <base-table-cell
       v-slot="{ item }"
       name="datetime_creation"
-      class="text-xs-center"
+      class="text-center"
       v-bind:item="assignment"
-      v-bind:columns-selected="columnsSelected"
-      v-bind:is-condensed="isCondensed"
+      v-bind:columns-selected="objectColumnsSelected"
     >
       <base-display-datetime
         v-bind:datetime="item.datetime_creation"
@@ -40,10 +38,9 @@
     <base-table-cell
       v-slot="{ item }"
       name="datetime_accept"
-      class="text-xs-center"
+      class="text-center"
       v-bind:item="assignment"
-      v-bind:columns-selected="columnsSelected"
-      v-bind:is-condensed="isCondensed"
+      v-bind:columns-selected="objectColumnsSelected"
     >
       <base-display-datetime
         v-bind:datetime="item.datetime_accept"
@@ -53,10 +50,9 @@
     <base-table-cell
       v-slot="{ item }"
       name="datetime_submit"
-      class="text-xs-center"
+      class="text-center"
       v-bind:item="assignment"
-      v-bind:columns-selected="columnsSelected"
-      v-bind:is-condensed="isCondensed"
+      v-bind:columns-selected="objectColumnsSelected"
     >
       <base-display-datetime
         v-bind:datetime="item.datetime_submit"
@@ -66,24 +62,22 @@
     <base-table-cell
       v-slot="{ item }"
       name="duration"
-      class="text-xs-center"
+      class="text-center"
       v-bind:item="assignment"
-      v-bind:columns-selected="columnsSelected"
-      v-bind:is-condensed="isCondensed"
+      v-bind:columns-selected="objectColumnsSelected"
     >
       <base-display-duration
         v-bind:start="item.datetime_accept"
         v-bind:end="item.datetime_submit"
-      ></base-display-duration>
+      />
     </base-table-cell>
 
     <base-table-cell
       v-slot="{ item }"
       name="worker"
-      class="text-xs-center"
+      class="text-center"
       v-bind:item="assignment"
-      v-bind:columns-selected="columnsSelected"
-      v-bind:is-condensed="isCondensed"
+      v-bind:columns-selected="objectColumnsSelected"
     >
       {{ item.worker.id_worker }}
     </base-table-cell>
@@ -91,10 +85,9 @@
     <base-table-cell
       v-slot="{ item }"
       name="status"
-      class="text-xs-center"
+      class="text-center"
       v-bind:item="assignment"
-      v-bind:columns-selected="columnsSelected"
-      v-bind:is-condensed="isCondensed"
+      v-bind:columns-selected="objectColumnsSelected"
     >
       <component-status-assignment
         v-bind:assignment="item"
@@ -103,11 +96,10 @@
 
     <base-table-cell
       v-slot="{ item }"
-      name="status"
-      class="text-xs-right"
+      name="hit"
+      class="text-right"
       v-bind:item="assignment"
-      v-bind:columns-selected="columnsSelected"
-      v-bind:is-condensed="isCondensed"
+      v-bind:columns-selected="objectColumnsSelected"
     >
       {{ item.hit.id_hit }}
       <v-btn
@@ -123,17 +115,16 @@
           }
         }"
       >
-        <v-icon>info</v-icon>
+        <v-icon>mdi-information</v-icon>
       </v-btn>
     </base-table-cell>
 
     <base-table-cell
       v-slot="{ item }"
       name="actions"
-      class="text-xs-center"
+      class="text-center"
       v-bind:item="assignment"
-      v-bind:columns-selected="columnsSelected"
-      v-bind:is-condensed="isCondensed"
+      v-bind:columns-selected="objectColumnsSelected"
     >
       <edit-assignment
         v-bind:assignment="item"
@@ -169,7 +160,7 @@ export default {
     ComponentStatusAssignment,
   },
   props: {
-    props: {
+    item: {
       type: Object,
       required: true,
     },
@@ -178,19 +169,14 @@ export default {
       type: Boolean,
       default: true,
     },
-    array_columns_selected: {
-      type: Array,
+    objectColumnsSelected: {
+      type: Object,
       required: true,
-    },
-
-    isCondensed: {
-      required: true,
-      type: Boolean,
     },
   },
   data() {
     return {
-      assignment: this.props.item,
+      assignment: this.item,
     };
   },
   // watch: {
@@ -199,9 +185,6 @@ export default {
   //     },
   // },
   computed: {
-    set_columns_selected() {
-      return new Set(this.array_columns_selected);
-    },
     is_selected: {
       get() {
         return _.has(this.object_assignments_selected, this.assignment.id);
@@ -213,36 +196,20 @@ export default {
         });
       },
     },
-    columnsSelected() {
-      return this.array_columns_selected.reduce((accumulator, column) => {
-        accumulator[column] = column;
-        return accumulator;
-      }, {});
-    },
     // assignment() {
     //   return this.props.item;
     // },
-    stylesCell() {
-      if (this.isCondensed) {
-        return {
-          height: 'unset !important',
-          paddingLeft: '5px !important',
-          paddingRight: '5px !important',
-        };
-      }
-      return {};
-    },
     ...mapGetters('moduleAssignments', {
       object_assignments_selected: 'get_object_assignments_selected',
     }),
     ...mapGetters(['get_show_progress_indicator']),
   },
   watch: {
-    'props.item': function() {
+    item() {
       // TODO: some other technique to prevent unnecessary updates?
-      if (_.isEqual(this.assignment, this.props.item)) return;
+      if (_.isEqual(this.assignment, this.item)) return;
 
-      this.assignment = this.props.item;
+      this.assignment = this.item;
     },
   },
   methods: {

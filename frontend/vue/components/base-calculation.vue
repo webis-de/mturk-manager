@@ -8,10 +8,10 @@
       >
         <td>
           <template v-if="calculation.operation === '+'">
-            <v-icon>add</v-icon>
+            <v-icon>mdi-plus</v-icon>
           </template>
           <template v-else-if="calculation.operation === '-'">
-            <v-icon>remove</v-icon>
+            <v-icon>mdi-minus</v-icon>
           </template>
         </td>
         <td class="text-xs-right px-1">

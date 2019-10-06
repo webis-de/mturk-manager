@@ -2,6 +2,7 @@ import { store } from '../store/vuex';
 import { Service_Endpoint } from './service_endpoint';
 import { BaseLoadPageService } from './baseLoadPage.service';
 import HIT from '../classes/hit';
+import Batch from '../classes/batch';
 
 class Class_Service_HITs extends BaseLoadPageService {
   async load_page(pagination, filters) {
@@ -19,9 +20,9 @@ class Class_Service_HITs extends BaseLoadPageService {
         project: store.getters['moduleProjects/get_project_current'],
       },
       callback(response) {
-        store.commit('moduleHITs/set_hits', {
-          data: response.data.data,
-          use_sandbox: useSandbox,
+        store.commit('moduleHITs/setState', {
+          objectState: response.data.data.map(hit => new HIT(hit)),
+          nameState: useSandbox === true ? 'arrayHITsSandbox' : 'arrayHITs',
         });
       },
     });

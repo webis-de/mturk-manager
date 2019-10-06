@@ -3,16 +3,19 @@
     v-model="dialog"
     max-width="80%"
   >
-    <v-btn
-      slot="activator"
-      class="my-0"
-      icon
-      small
-    >
-      <v-icon color="warning">
-        edit
-      </v-icon>
-    </v-btn>
+    <template v-slot:activator="{ on }">
+      <v-btn
+        v-on="on"
+        class="my-0"
+        icon
+        small
+      >
+        <v-icon color="warning">
+          mdi-pencil
+        </v-icon>
+      </v-btn>
+    </template>
+
     <v-card>
       <v-card-title>
         Edit Assignment {{ assignment.id_assignment }}

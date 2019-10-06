@@ -1,13 +1,15 @@
 <template>
-  <v-layout>
-    <v-flex>
+  <v-row>
+    <v-col>
       <v-btn-toggle
         v-model="statusNew"
+        dense
       >
         <v-btn
           v-bind:disabled="!canBeApproved"
           value="approved"
           color="success"
+          small
         >
           Approve
         </v-btn>
@@ -15,6 +17,7 @@
           v-bind:disabled="!canBeRejectedInternally"
           value="rejectedInternally"
           color="warning"
+          small
         >
           Reject Internally
         </v-btn>
@@ -28,6 +31,7 @@
           v-bind:disabled="!canBeRejected"
           value="rejected"
           color="error"
+          small
         >
           Reject
         </v-btn>
@@ -35,12 +39,13 @@
           v-bind:disabled="!canBeApprovedInternally"
           value="approvedInternally"
           color="warning"
+          small
         >
           Approve Internally
         </v-btn>
       </v-btn-toggle>
-    </v-flex>
-  </v-layout>
+    </v-col>
+  </v-row>
 </template>
 
 <script>

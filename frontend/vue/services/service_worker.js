@@ -4,6 +4,7 @@ import { store } from '../store/vuex';
 import { Service_Endpoint } from './service_endpoint';
 import { Service_Batches } from './service_batches';
 import { BaseLoadPageService } from './baseLoadPage.service';
+import Worker from '../classes/workers';
 
 class Class_Service_Workers extends BaseLoadPageService {
   async load_workers({ list_ids, use_sandbox, append }) {
@@ -173,9 +174,9 @@ class Class_Service_Workers extends BaseLoadPageService {
         project: store.getters['moduleProjects/get_project_current'],
       },
       callback(response) {
-        store.commit('moduleWorkers/set_workers', {
-          data: response.data.data,
-          use_sandbox: useSandbox,
+        store.commit('moduleWorkers/setState', {
+          objectState: response.data.data.map(worker => new Worker(worker)),
+          nameState: useSandbox === true ? 'arrayWorkersSandbox' : 'arrayWorkers',
         });
 
         // fetch worker blocks asynchronously

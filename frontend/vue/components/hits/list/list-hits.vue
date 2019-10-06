@@ -5,7 +5,7 @@
     v-bind:name-local-storage-pagination="nameLocalStoragePagination"
 
     v-bind:function-load-page="loadPage"
-    v-bind:array-items="array_items"
+    v-bind:array-items="arrayItems"
 
     v-bind:name-local-storage-columns-selected="nameLocalStorageColumnsSelected"
     v-bind:name-state-columns="nameStateColumns"
@@ -24,10 +24,10 @@
     v-bind:name-state-filters="nameStateFilters"
     v-bind:name-local-storage-filters="nameLocalStorageFilters"
   >
-    <template v-slot:default="{ props, array_columns_selected, isCondensed }">
+    <template v-slot:default="{ item, objectColumnsSelected, isCondensed }">
       <component-item-hit
-        v-bind:props="props"
-        v-bind:array_columns_selected="array_columns_selected"
+        v-bind:item="item"
+        v-bind:object-columns-selected="objectColumnsSelected"
         v-bind:show_links="showLinks"
         v-bind:is-condensed="isCondensed"
       />
@@ -37,7 +37,7 @@
       <filters-table-hits
         v-bind:filters="filters"
         v-bind:filters-active="filtersActive"
-      ></filters-table-hits>
+      />
     </template>
 
     <template v-slot:actions>
@@ -81,12 +81,12 @@ export default {
     nameStateColumnsSelected: {
       required: false,
       type: String,
-      default: 'array_columns_selected_general',
+      default: 'objectColumnsSelectedGeneral',
     },
     nameStateColumnsSelectedInitial: {
       required: false,
       type: String,
-      default: 'array_columns_selected_initial_general',
+      default: 'objectColumnsSelectedInitialGeneral',
     },
 
     nameStateItemsSelected: {
@@ -137,9 +137,17 @@ export default {
     filtersDefaultComputed() {
       return this.filtersDefault !== undefined ? this.filtersDefault : this.filtersDefaultGeneral;
     },
-    ...mapGetters('moduleHITs', {
-      array_items: 'get_array_hits',
-    }),
+    arrayItems() {
+      let arrayItems = [];
+
+      if (this.$store.state.module_app.use_sandbox === true) {
+        arrayItems = this.$store.state.moduleHITs.arrayHITsSandbox;
+      } else {
+        arrayItems = this.$store.state.moduleHITs.arrayHITs;
+      }
+
+      return arrayItems === null ? [] : arrayItems;
+    },
     ...mapState('moduleHITs', {
       filtersGeneral: 'objectFiltersGeneral',
       filtersDefaultGeneral: 'objectFiltersDefaultGeneral',

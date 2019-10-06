@@ -8,9 +8,9 @@ export class BaseLoadPageService {
       url,
       params: {
         page: pagination.page,
-        page_size: pagination.rowsPerPage,
-        sort_by: pagination.sortBy,
-        descending: pagination.descending,
+        page_size: pagination.itemsPerPage,
+        sort_by: pagination.sortBy[0],
+        descending: pagination.sortDesc[0],
         ...filters,
       },
     });

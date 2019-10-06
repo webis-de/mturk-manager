@@ -5,14 +5,16 @@
       v-model="dialog"
       max-width="500px"
       v-if="project_current.count_assignments_max_per_worker !== null"
-      lazy
     >
-      <span
-        slot="activator"
-        v-bind:class="{ 'warning--text': has_reached_limit_assignments }"
-      >
-        {{ content }}
-      </span>
+      <template v-slot:activator="{ on }">
+        <span
+          v-on="on"
+          v-bind:class="{ 'warning--text': has_reached_limit_assignments }"
+          class="text-no-wrap"
+        >
+          {{ content }}
+        </span>
+      </template>
 
       <v-card>
         <v-card-title>

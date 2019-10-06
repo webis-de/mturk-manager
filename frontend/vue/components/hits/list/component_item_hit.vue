@@ -1,23 +1,33 @@
 <template>
   <tr
     v-bind:key="hit.id"
-    v-on:click="props.expanded = !props.expanded"
     class="text-no-wrap"
   >
-    <td v-bind:style="stylesCell">
-      <v-checkbox v-model="is_selected" primary hide-details></v-checkbox>
+    <td>
+      <v-checkbox
+        v-model="is_selected"
+        class="pa-0 ma-0"
+        primary
+        hide-details
+      />
     </td>
-    <td
-      v-if="set_columns_selected.has('id_hit')"
-      class="text-xs-left"
-      v-bind:style="stylesCell"
+
+    <base-table-cell
+      v-slot="{ item }"
+      name="id_hit"
+      class="text-left"
+      v-bind:item="hit"
+      v-bind:columns-selected="objectColumnsSelected"
     >
-      {{ hit.id_hit }}
-    </td>
-    <td
-      v-if="set_columns_selected.has('batch')"
-      class="text-xs-left"
-      v-bind:style="stylesCell"
+      {{ item.id_hit }}
+    </base-table-cell>
+
+    <base-table-cell
+      v-slot="{ item }"
+      name="batch"
+      class="text-left"
+      v-bind:item="hit"
+      v-bind:columns-selected="objectColumnsSelected"
     >
       {{ hit.batch.name.toUpperCase() }}
       <v-btn
@@ -33,32 +43,41 @@
           }
         }"
       >
-        <v-icon>info</v-icon>
+        <v-icon>mdi-information</v-icon>
       </v-btn>
-    </td>
-    <td
-      v-if="set_columns_selected.has('datetime_creation')"
-      class="text-xs-center"
-      v-bind:style="stylesCell"
+    </base-table-cell>
+
+    <base-table-cell
+      v-slot="{ item }"
+      name="datetime_creation"
+      class="text-center"
+      v-bind:item="hit"
+      v-bind:columns-selected="objectColumnsSelected"
     >
       <base-display-datetime
         v-bind:datetime="hit.datetime_creation"
-      ></base-display-datetime>
-    </td>
-    <td
-      v-if="set_columns_selected.has('progress')"
-      class="text-xs-center"
-      v-bind:style="stylesCell"
+      />
+    </base-table-cell>
+
+    <base-table-cell
+      v-slot="{ item }"
+      name="progress"
+      class="text-center"
+      v-bind:item="hit"
+      v-bind:columns-selected="objectColumnsSelected"
     >
       <base-progress-bar
         v-bind:title-popover="`Assignments (${hit.countAssignmentsTotal})`"
         v-bind:datasets="datasets"
       />
-    </td>
-    <td
-      class="text-xs-center"
-      v-if="show_links === true && set_columns_selected.has('actions')"
-      v-bind:style="stylesCell"
+    </base-table-cell>
+
+    <base-table-cell
+      v-slot="{ item }"
+      name="actions"
+      class="text-center"
+      v-bind:item="hit"
+      v-bind:columns-selected="objectColumnsSelected"
     >
       <v-btn
         slot="activator"
@@ -73,15 +92,9 @@
           }
         }"
       >
-        <v-icon>info</v-icon>
+        <v-icon>mdi-information</v-icon>
       </v-btn>
-    </td>
-    <!-- <td class="text-xs-center">
-            {{ hit.hits.length }}
-        </td>
-        <td class="text-xs-center">
-            {{ hit.count_assignments }}
-        </td> -->
+    </base-table-cell>
   </tr>
 </template>
 <script>
@@ -91,15 +104,17 @@ import {
 import _ from 'lodash';
 import BaseProgressBar from '../../base-progress-bar';
 import BaseDisplayDatetime from '../../common/base-display-datetime';
+import BaseTableCell from '../../base-table-cell';
 
 export default {
   name: 'ComponentItemHit',
   components: {
+    BaseTableCell,
     BaseDisplayDatetime,
     BaseProgressBar,
   },
   props: {
-    props: {
+    item: {
       type: Object,
       required: true,
     },
@@ -108,19 +123,14 @@ export default {
       type: Boolean,
       default: true,
     },
-    array_columns_selected: {
-      type: Array,
+    objectColumnsSelected: {
+      type: Object,
       required: true,
-    },
-
-    isCondensed: {
-      required: true,
-      type: Boolean,
     },
   },
   data() {
     return {
-      hit: this.props.item,
+      hit: this.item,
     };
   },
   // watch: {
@@ -158,9 +168,6 @@ export default {
         },
       ];
     },
-    set_columns_selected() {
-      return new Set(this.array_columns_selected);
-    },
     is_selected: {
       get() {
         return _.has(this.object_hits_selected, this.hit.id);
@@ -188,16 +195,6 @@ export default {
     // hit() {
     //   return this.props.item;
     // },
-    stylesCell() {
-      if (this.isCondensed) {
-        return {
-          height: 'unset !important',
-          paddingLeft: '5px !important',
-          paddingRight: '5px !important',
-        };
-      }
-      return {};
-    },
 
     // status_block() {
     //     if(this.worker.is_blocked == undefined)
@@ -234,11 +231,11 @@ export default {
     ...mapGetters(['get_show_progress_indicator']),
   },
   watch: {
-    'props.item': function() {
+    item() {
       // TODO: some other technique to prevent unnecessary updates?
-      if (_.isEqual(this.hit, this.props.item)) return;
+      if (_.isEqual(this.hit, this.item)) return;
 
-      this.hit = this.props.item;
+      this.hit = this.item;
     },
   },
   methods: {
