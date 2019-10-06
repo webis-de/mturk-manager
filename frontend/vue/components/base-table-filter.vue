@@ -3,7 +3,7 @@
     v-bind="breakpoints"
   >
     <v-card
-        v-bind:color="filtersActive.hasOwnProperty(nameFilter) ? 'accent lighten-2' : 'accent lighten-3'"
+        v-bind:color="filtersActive.hasOwnProperty(nameFilter) ? 'secondary lighten-2' : 'secondary lighten-3'"
     >
       <v-card-title
         class="px-2 py-1"
