@@ -519,7 +519,7 @@ class Manager_Batches(Interface_Manager_Items):
                     dict_result[value] = None
 
             if set_values_filtered is not None:
-                for key in dict_result.keys():
+                for key in dict_result.copy().keys():
                     if key not in set_values_filtered:
                         del dict_result[key]
                 # dict_result = {key: value for key, value in dict_result.items() if key in set_values_filtered}
