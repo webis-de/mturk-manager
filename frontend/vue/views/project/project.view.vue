@@ -80,7 +80,7 @@
             </v-btn>
           </template>
 
-          <the-settings-project />
+          <the-settings-app />
         </v-menu>
       </v-row>
     </v-app-bar>
@@ -100,12 +100,12 @@ import TheNavigationDrawer from '../../components/the-navigation-drawer';
 import ComponentToolbarBatches from '../../components/batches/component_toolbar_batches';
 import ComponentToolbarQualifications from '../../components/qualifications/component-toolbar-qualifications';
 import TheTasksBar from '../../components/the-tasks-bar';
-import TheSettingsProject from '../../components/the-settings-project';
+import TheSettingsApp from '../../components/the-settings-app';
 
 export default {
   name: 'AppProject',
   components: {
-    TheSettingsProject,
+    TheSettingsApp,
     TheTasksBar,
     TheNavigationDrawer,
   },

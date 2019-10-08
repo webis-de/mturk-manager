@@ -110,22 +110,6 @@
             </v-card>
           </v-col>
         </v-row>
-
-        <v-row dense>
-          <v-col cols="4">
-            <v-card class="fill-height">
-              <v-card-text class="text-xs-center">
-                <router-link
-                  v-bind:to="{
-                    name: 'add_credentials'
-                  }"
-                >
-                  Update Credentials
-                </router-link>
-              </v-card-text>
-            </v-card>
-          </v-col>
-        </v-row>
       </v-container>
     </v-col>
   </v-row>
