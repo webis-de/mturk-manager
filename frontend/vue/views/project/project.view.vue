@@ -76,7 +76,7 @@
               icon
               v-on="on"
             >
-              <v-icon>mdi-dots-vertical</v-icon>
+              <v-icon>mdi-settings</v-icon>
             </v-btn>
           </template>
 

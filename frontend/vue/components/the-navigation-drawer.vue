@@ -7,10 +7,7 @@
     v-on:input="$emit('update:show_drawer', $event)"
   >
     <!-- temporary -->
-    <v-list
-      dense
-      nav
-    >
+    <v-list>
       <v-list-item
         v-for="item_menu in list_items_menu"
         v-bind:key="item_menu.name"
@@ -24,42 +21,15 @@
           <v-list-item-title>{{ item_menu.label }}</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
-      <v-divider />
-      <v-list-item
-        v-bind:to="{ name: 'aboutProject' }"
-      >
-        <v-list-item-action>
-          <v-icon>mdi-information</v-icon>
-        </v-list-item-action>
-        <v-list-item-content>
-          <v-list-item-title>
-            About
-          </v-list-item-title>
-        </v-list-item-content>
-
-        <v-list-item-action>
-          <changelog-notification />
-        </v-list-item-action>
-      </v-list-item>
-      <!-- <v-list-tile>
-                <v-list-tile-action>
-                    <v-icon>settings</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-content>
-                    <v-list-tile-title>Settings</v-list-tile-title>
-                </v-list-tile-content>
-            </v-list-tile> -->
     </v-list>
   </v-navigation-drawer>
 </template>
 
 <script>
 import { mapState } from 'vuex';
-import ChangelogNotification from './about/changelog-notification';
 
 export default {
   name: 'TheNavigationDrawer',
-  components: { ChangelogNotification },
   props: {
     showDrawer: {
       required: true,
@@ -72,7 +42,7 @@ export default {
         {
           name: 'dashboard',
           label: 'Projects',
-          icon: 'mdi-format-list-bulleted',
+          icon: 'mdi-format-list-bulleted-square',
           // icon: 'ballot',
         },
         // {

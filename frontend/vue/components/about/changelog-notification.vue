@@ -3,7 +3,6 @@
     <template v-slot:activator="{ on }">
       <v-icon
         v-if="hasUnseenVersions"
-        small
         color="warning"
         v-on="on"
       >
