@@ -1,6 +1,6 @@
 <template>
-  <v-layout wrap>
-    <v-flex>
+  <v-row no-gutters>
+    <v-col>
       <h2 class="headline">
         <v-btn
           slot="activator"
@@ -9,7 +9,7 @@
           small
           v-bind:to="{ name: 'tasksBatches' }"
         >
-          <v-icon>arrow_back</v-icon>
+          <v-icon>mdi-arrow-left</v-icon>
         </v-btn>
         Batch {{ batch.name }}
       </h2>
@@ -17,46 +17,56 @@
       <v-container
         fluid
         class="pa-0"
-        grid-list-md
       >
-        <v-layout>
-          <v-flex>
+        <v-row dense>
+          <v-col>
             <v-card>
-              <v-card-title>
-                Batch Profile
+              <v-card-title
+                class="py-1 pointer"
+                v-on:click="showBatchProfile = !showBatchProfile"
+              >
+                <v-row no-gutters>
+                  <v-col>
+                    Batch Profile
+                  </v-col>
+                  <v-col class="shrink">
+                    <v-icon v-if="showBatchProfile === false">
+                      mdi-chevron-up
+                    </v-icon>
+                    <v-icon v-else>
+                      mdi-chevron-down
+                    </v-icon>
+                  </v-col>
+                </v-row>
               </v-card-title>
-              <v-card-text>
-                <component-form-settings-batch
-                  v-bind.sync="batch.settings_batch"
-                  v-bind:disabled="true"
-                />
-              </v-card-text>
+              <v-slide-y-transition>
+                <v-card-text v-if="showBatchProfile">
+                  <component-form-settings-batch
+                    v-bind.sync="batch.settings_batch"
+                    v-bind:disabled="true"
+                  />
+                </v-card-text>
+              </v-slide-y-transition>
             </v-card>
-          </v-flex>
-        </v-layout>
-        <v-layout>
-          <v-flex>
+          </v-col>
+        </v-row>
+        <v-row dense>
+          <v-col>
             <v-card>
-              <v-card-title>
-                HITs
-              </v-card-title>
+              <list-hits
+                v-bind:pagination-computed="paginationComputed"
+                v-bind:function-set-pagination="functionSetPagination"
 
-              <v-card-text>
-                <list-hits
-                  v-bind:pagination-computed="paginationComputed"
-                  v-bind:function-set-pagination="functionSetPagination"
-
-                  v-bind:filters="{
-                    id_batch: idBatch
-                  }"
-                />
-              </v-card-text>
+                v-bind:filters="{
+                  id_batch: idBatch
+                }"
+              />
             </v-card>
-          </v-flex>
-        </v-layout>
+          </v-col>
+        </v-row>
       </v-container>
-    </v-flex>
-  </v-layout>
+    </v-col>
+  </v-row>
 </template>
 <script>
 import {
@@ -81,6 +91,7 @@ export default {
   data() {
     return {
       batch_intern: undefined,
+      showBatchProfile: false,
     };
   },
   // watch: {
@@ -167,5 +178,8 @@ td {
 }
 td .v-input--selection-controls {
   padding: unset;
+}
+.pointer {
+  cursor: pointer;
 }
 </style>

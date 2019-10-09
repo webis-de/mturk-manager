@@ -28,7 +28,7 @@
               >
                 <v-row no-gutters>
                   <v-col xs>
-                    <v-card class="pa-1">
+                    <v-card>
                       <list-batches
                         name-state-pagination="paginationFinances"
                         name-local-storage-pagination="pagination_batches_finances"
@@ -57,7 +57,7 @@
               >
                 <v-row no-gutters>
                   <v-col xs>
-                    <v-card class="pa-1">
+                    <v-card>
                       <list-hits
                         name-state-pagination="paginationFinances"
                         name-local-storage-pagination="pagination_hits_finances"
@@ -86,7 +86,7 @@
               >
                 <v-row no-gutters>
                   <v-col xs>
-                    <v-card class="pa-1">
+                    <v-card>
                       <list-assignments
                         name-state-pagination="paginationFinances"
                         name-local-storage-pagination="pagination_assignments_finances"

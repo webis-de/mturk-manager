@@ -129,6 +129,14 @@
       <edit-assignment
         v-bind:assignment="item"
       />
+      <v-btn
+        small
+        text
+        color="primary"
+        v-on:click="annotate"
+      >
+        <v-icon>mdi-magnify</v-icon>
+      </v-btn>
     </base-table-cell>
 
     <!-- <td class="text-xs-center">
@@ -203,6 +211,9 @@ export default {
       object_assignments_selected: 'get_object_assignments_selected',
     }),
     ...mapGetters(['get_show_progress_indicator']),
+    ...mapGetters('moduleProjects', {
+      project_current: 'get_project_current',
+    }),
   },
   watch: {
     item() {
@@ -213,6 +224,9 @@ export default {
     },
   },
   methods: {
+    annotate() {
+      window.open(`/view/${this.project_current.slug}?list_ids=[${this.assignment.id}]`, '_blank');
+    },
     ...mapMutations('moduleAssignments', {
       set_assignments_selected: 'set_assignments_selected',
     }),

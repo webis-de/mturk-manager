@@ -33,7 +33,7 @@
                 >
                   <v-row no-gutters>
                     <v-col xs>
-                      <v-card class="pa-1">
+                      <v-card>
                         <list-batches>
                           <template v-slot:actions>
                             <component-download-batch />
@@ -55,7 +55,7 @@
                 >
                   <v-row no-gutters>
                     <v-col xs>
-                      <v-card class="pa-1">
+                      <v-card>
                         <list-hits />
                       </v-card>
                     </v-col>
@@ -74,7 +74,7 @@
                 >
                   <v-row no-gutters>
                     <v-col xs>
-                      <v-card class="pa-1">
+                      <v-card>
                         <list-assignments>
                           <template v-slot:actions>
                             <component-annotate />

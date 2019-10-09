@@ -1,18 +1,20 @@
 <template>
-  <v-layout>
-    <v-flex shrink>
+  <v-row dense>
+    <v-col class="shrink">
       <v-dialog
         v-model="dialog"
         fullscreen
       >
-        <v-btn
-          slot="activator"
-          color="primary"
-          small
-          class="ml-0"
-        >
-          Show
-        </v-btn>
+        <template v-slot:activator="{ on }">
+          <v-btn
+            color="primary"
+            small
+            class="ml-0"
+            v-on="on"
+          >
+            Show
+          </v-btn>
+        </template>
 
         <v-card>
           <v-toolbar
@@ -24,7 +26,7 @@
               dark
               v-on:click="dialog = false"
             >
-              <v-icon>close</v-icon>
+              <v-icon>mdi-close</v-icon>
             </v-btn>
           </v-toolbar>
           <iframe
@@ -33,8 +35,8 @@
           ></iframe>
         </v-card>
       </v-dialog>
-    </v-flex>
-    <v-flex shrink>
+    </v-col>
+    <v-col class="shrink">
       <v-btn
         color="primary"
         small
@@ -43,8 +45,8 @@
       >
         View in new tab
       </v-btn>
-    </v-flex>
-  </v-layout>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
@@ -75,16 +77,18 @@ export default {
   watch: {
     dialog() {
       if (this.dialog === true) {
-        this.$refs.iframe.width = getWidth();
-        this.$refs.iframe.height = getHeight();
+        this.$nextTick(() => {
+          this.$refs.iframe.width = getWidth();
+          this.$refs.iframe.height = getHeight();
 
-        let { template } = this.hit.batch.settings_batch.template;
+          let { template } = this.hit.batch.settings_batch.template;
 
-        for (const entry of Object.entries(JSON.parse(this.hit.parameters))) {
-          template = template.replace(`\${${entry[0]}}`, entry[1]);
-        }
+          for (const entry of Object.entries(JSON.parse(this.hit.parameters))) {
+            template = template.replace(`\${${entry[0]}}`, entry[1]);
+          }
 
-        this.$refs.iframe.srcdoc = template;
+          this.$refs.iframe.srcdoc = template;
+        });
       }
     },
   },

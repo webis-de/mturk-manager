@@ -1,10 +1,11 @@
 <template>
   <div>
     <h2>General Settings</h2>
-    <v-container fluid class="pa-0" grid-list-md>
+    <v-container fluid class="pa-0 pt-3" grid-list-md>
       <v-layout wrap>
         <v-flex v-bind="flexSize">
           <v-text-field
+            dense
             required
             v-bind:value="title"
             v-on:input="
@@ -19,6 +20,7 @@
         </v-flex>
         <v-flex v-bind="flexSize">
           <v-text-field
+            dense
             required
             v-bind:value="description"
             v-on:input="
@@ -35,6 +37,7 @@
           <v-layout row align-center>
             <v-flex>
               <v-text-field
+                dense
                 required
                 type="number"
                 v-bind:value="reward"
@@ -59,6 +62,7 @@
         </v-flex>
         <v-flex v-bind="flexSize">
           <v-text-field
+            dense
             required
             type="number"
             v-bind:value="count_assignments"
@@ -87,6 +91,7 @@
         </v-flex>
         <v-flex v-bind="flexSize">
           <v-text-field
+            dense
             required
             type="number"
             v-bind:value="lifetime"
@@ -104,6 +109,7 @@
         </v-flex>
         <v-flex v-bind="flexSize">
           <v-text-field
+            dense
             required
             type="number"
             v-bind:value="duration"
@@ -121,6 +127,7 @@
         </v-flex>
         <v-flex v-if="disabled === false" v-bind="flexSize">
           <v-select
+            dense
             v-bind:value="template"
             v-on:input="
               $emit('update:template', $event);
@@ -154,6 +161,7 @@
         </v-flex>
         <v-flex v-bind="flexSize">
           <v-combobox
+            dense
             v-bind:value="keywords"
             v-on:input="
               $emit('update:keywords', $event);
@@ -208,6 +216,7 @@
         </v-flex>
         <v-flex v-bind="flexSize">
           <v-text-field
+            dense
             required
             type="number"
             v-bind:value="qualification_assignments_approved"
@@ -229,6 +238,7 @@
         </v-flex>
         <v-flex v-bind="flexSize">
           <v-text-field
+            dense
             required
             type="number"
             v-bind:value="qualification_hits_approved"
@@ -248,6 +258,7 @@
         </v-flex>
         <v-flex v-bind="flexSize">
           <v-combobox
+            dense
             v-bind:value="qualification_locale"
             v-on:input="
               $emit('update:qualification_locale', $event);

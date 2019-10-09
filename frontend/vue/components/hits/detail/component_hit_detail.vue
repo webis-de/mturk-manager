@@ -9,7 +9,7 @@
           small
           v-bind:to="{ name: 'tasksHITs' }"
         >
-          <v-icon>arrow_back</v-icon>
+          <v-icon>mdi-arrow-left</v-icon>
         </v-btn>
         HIT {{ hit.id_hit }}
       </h2>
@@ -17,26 +17,40 @@
       <v-container
         fluid
         class="pa-0"
-        grid-list-md
       >
-        <v-layout>
-          <v-flex>
+        <v-row dense>
+          <v-col>
             <v-card>
-              <v-card-title>
-                Batch Profile
+              <v-card-title
+                class="py-1 pointer"
+                v-on:click="showBatchProfile = !showBatchProfile"
+              >
+                <v-row no-gutters>
+                  <v-col>
+                    Batch Profile
+                  </v-col>
+                  <v-col class="shrink">
+                    <v-icon class="foo">
+                      {{ showBatchProfile ? 'mdi-chevron-down': 'mdi-chevron-up' }}
+                    </v-icon>
+                  </v-col>
+                </v-row>
               </v-card-title>
-              <v-card-text>
-                <component-form-settings-batch
-                  v-bind.sync="hit.batch.settings_batch"
-                  v-bind:disabled="true"
-                />
-              </v-card-text>
+              <v-slide-y-transition>
+                <v-card-text v-if="showBatchProfile">
+                  <component-form-settings-batch
+                    v-bind.sync="hit.batch.settings_batch"
+                    v-bind:disabled="true"
+                  />
+                </v-card-text>
+              </v-slide-y-transition>
             </v-card>
-          </v-flex>
-        </v-layout><v-layout>
-          <v-flex>
+          </v-col>
+        </v-row>
+        <v-row dense>
+          <v-col>
             <v-card>
-              <v-card-title>
+              <v-card-title class="py-1">
                 Template
               </v-card-title>
               <v-card-text>
@@ -44,28 +58,22 @@
                 <sandbox-template v-bind:hit="hit" />
               </v-card-text>
             </v-card>
-          </v-flex>
-        </v-layout>
-        <v-layout>
-          <v-flex>
+          </v-col>
+        </v-row>
+        <v-row dense>
+          <v-col>
             <v-card>
-              <v-card-title>
-                HITs
-              </v-card-title>
+              <list-assignments
+                v-bind:function-set-pagination="functionSetPagination"
+                v-bind:pagination-computed="paginationComputed"
 
-              <v-card-text>
-                <list-assignments
-                  v-bind:function-set-pagination="functionSetPagination"
-                  v-bind:pagination-computed="paginationComputed"
-
-                  v-bind:filters="{
-                    id_hit: idHit
-                  }"
-                />
-              </v-card-text>
+                v-bind:filters="{
+                  id_hit: idHit
+                }"
+              />
             </v-card>
-          </v-flex>
-        </v-layout>
+          </v-col>
+        </v-row>
       </v-container>
     </v-flex>
   </v-layout>
@@ -102,6 +110,7 @@ export default {
   data() {
     return {
       hitIntern: null,
+      showBatchProfile: false,
     };
   },
   // watch: {
@@ -149,4 +158,10 @@ td {
 td .v-input--selection-controls {
   padding: unset;
 }
+.pointer {
+  cursor: pointer;
+}
+  .foo {
+    transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+  }
 </style>

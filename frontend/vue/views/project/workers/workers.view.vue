@@ -3,7 +3,7 @@
     <!-- <v-layout wrap> -->
     <!-- <v-flex> -->
 
-    <h1 class="headline">Workers</h1>
+<!--    <h1 class="headline">Workers</h1>-->
     <table-workers></table-workers>
     <!-- </v-flex> -->
     <!-- </v-layout> -->
