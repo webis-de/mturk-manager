@@ -110,8 +110,13 @@
     >
       <v-row
         dense
-        justify="end"
+        align="center"
       >
+        <v-col
+          class="py-0 pl-5 headline"
+        >
+          {{ title }}
+        </v-col>
         <v-col class="shrink">
           <slot
             name="actions"
@@ -146,7 +151,7 @@
             </template>
           </base-table-filters>
         </v-col>
-        <v-col class="shrink">
+        <v-col class="shrink pr-2">
           <component-settings-table
             v-if="nameLocalStorageColumnsSelected !== undefined"
             v-bind:colspan="arrayHeaders.length + 1"
@@ -175,6 +180,11 @@ export default {
   components: {BaseTableFilters, ComponentSettingsTable },
   mixins: [updateSandbox],
   props: {
+    title: {
+      required: false,
+      type: String,
+      default: null,
+    },
     nameVuexModule: {
       required: true,
       type: String,
@@ -421,7 +431,7 @@ export default {
     },
   },
   created() {
-    this.load_page();
+    this.load_page(this.filters);
   },
 };
 </script>

@@ -1,5 +1,7 @@
 <template>
   <base-table
+    title="Workers"
+
     name-vuex-module="moduleWorkers"
     v-bind:name-state-pagination="nameStatePagination"
     v-bind:name-local-storage-pagination="nameLocalStoragePagination"

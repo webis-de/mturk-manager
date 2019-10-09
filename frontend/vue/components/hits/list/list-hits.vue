@@ -1,5 +1,7 @@
 <template>
   <base-table
+    title="HITs"
+
     name-vuex-module="moduleHITs"
     v-bind:name-state-pagination="nameStatePagination"
     v-bind:name-local-storage-pagination="nameLocalStoragePagination"

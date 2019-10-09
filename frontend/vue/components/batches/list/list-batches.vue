@@ -1,5 +1,7 @@
 <template>
   <base-table
+    title="Batches"
+
     name-vuex-module="moduleBatches"
     v-bind:name-state-pagination="nameStatePagination"
     v-bind:name-local-storage-pagination="nameLocalStoragePagination"
