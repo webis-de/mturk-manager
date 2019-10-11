@@ -3,7 +3,12 @@
     <v-list dense>
       <v-list-item>
         <v-list-item-content>
-          <v-list-item-title>Light Mode</v-list-item-title>
+          <v-list-item-title
+            style="cursor: pointer"
+            v-on:click="isActiveModeLight = !isActiveModeLight"
+          >
+            Light Mode
+          </v-list-item-title>
         </v-list-item-content>
         <v-list-item-action class="my-0">
           <v-switch
