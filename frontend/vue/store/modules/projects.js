@@ -27,6 +27,17 @@ export const moduleProjects = _.merge({}, baseModule, {
     // response_data_projects: undefined,
   },
   getters: {
+    getProjectCurrent(state) {
+      if (
+        state.slug_project_current === null
+        || state.slug_project_current === undefined
+        || state.object_projects === null
+      ) {
+        return {};
+      }
+
+      return state.object_projects[state.slug_project_current];
+    },
     get_project_current(state) {
       if (
         state.slug_project_current === null

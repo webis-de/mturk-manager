@@ -14,6 +14,7 @@ export const module_app = _.merge({}, baseModule, {
     changelog: [],
     versionSeen: null,
     isActiveModeLight: false,
+    nameItem: null,
   },
   getters: {
     has_credentials(state) {

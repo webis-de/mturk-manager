@@ -137,6 +137,10 @@ export default {
   created() {
     Service_HITs.loadHIT(this.idHit).then((hit) => {
       this.hitIntern = hit;
+      this.$store.commit('module_app/setState', {
+        nameState: 'nameItem',
+        objectState: hit.id_hit,
+      });
     });
   },
   methods: {

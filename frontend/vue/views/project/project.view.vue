@@ -23,7 +23,7 @@
         v-on:click.stop="show_drawer = !show_drawer"
       />
       <v-toolbar-title>
-        {{ namePage }}
+        <the-breadcrumb />
       </v-toolbar-title>
 
       <v-row
@@ -101,10 +101,12 @@ import ComponentToolbarBatches from '../../components/batches/component_toolbar_
 import ComponentToolbarQualifications from '../../components/qualifications/component-toolbar-qualifications';
 import TheTasksBar from '../../components/the-tasks-bar';
 import TheSettingsApp from '../../components/the-settings-app';
+import TheBreadcrumb from '../../components/the-breadcrumb';
 
 export default {
   name: 'AppProject',
   components: {
+    TheBreadcrumb,
     TheSettingsApp,
     TheTasksBar,
     TheNavigationDrawer,
@@ -116,10 +118,6 @@ export default {
     };
   },
   computed: {
-    namePage() {
-      return `"${this.project_current.name}" -
-        ${this.$route.meta.name}`;
-    },
     object_styles_toolbar() {
       if (this.use_sandbox) {
         return { 'background-color': '#dd6e00' };

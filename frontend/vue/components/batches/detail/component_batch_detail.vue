@@ -158,6 +158,10 @@ export default {
   created() {
     Service_Batches.get_batch(this.idBatch).then((batch) => {
       this.batch_intern = batch;
+      this.$store.commit('module_app/setState', {
+        nameState: 'nameItem',
+        objectState: batch.name,
+      });
     });
   },
   methods: {

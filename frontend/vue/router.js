@@ -112,7 +112,7 @@ const routes = [
                 path: 'batches',
                 name: 'tasksBatches',
                 meta: {
-                  name: 'Tasks',
+                  name: 'Batches',
                   index: 0,
                 },
                 component: ViewTasks,
@@ -122,7 +122,7 @@ const routes = [
                     path: ':id',
                     name: 'batch',
                     meta: {
-                      name: 'Tasks',
+                      name: null,
                     },
                     component: ViewBatches,
                     props: parse_params,
@@ -133,7 +133,7 @@ const routes = [
                 path: 'hits',
                 name: 'tasksHITs',
                 meta: {
-                  name: 'Tasks',
+                  name: 'HITs',
                   index: 1,
                 },
                 component: ViewTasks,
@@ -143,7 +143,7 @@ const routes = [
                     path: ':id',
                     name: 'hit',
                     meta: {
-                      name: 'Tasks',
+                      name: null,
                     },
                     component: ViewHITs,
                     props: parse_params,
@@ -154,7 +154,7 @@ const routes = [
                 path: 'assignments',
                 name: 'tasksAssignments',
                 meta: {
-                  name: 'Tasks',
+                  name: 'Assignments',
                   index: 2,
                 },
                 component: ViewTasks,
@@ -164,7 +164,7 @@ const routes = [
                     path: ':id',
                     name: 'assignment',
                     meta: {
-                      name: 'Tasks',
+                      name: null,
                     },
                     component: ViewAssignments,
                     props: parse_params,
