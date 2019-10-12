@@ -35,7 +35,6 @@ export default {
   data() {
     return {
       objectBlacklist: Object.freeze({
-        tasks: true,
       }),
     };
   },
