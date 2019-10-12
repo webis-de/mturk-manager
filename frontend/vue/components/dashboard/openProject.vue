@@ -79,9 +79,7 @@ export default {
           text: 'Last Usage',
           value: 'datetime_visited',
           align: 'left',
-          sort: (a, b) => {
-            return compareAsc(a, b);
-          },
+          sort: (a, b) => compareAsc(a, b),
         },
         {
           text: '',
