@@ -1,23 +1,37 @@
 <template>
   <v-layout wrap>
     <v-flex>
-      <h2 class="headline">
-        <v-btn
-          slot="activator"
-          class="my-0"
-          icon
-          small
-          v-bind:to="{ name: 'tasksHITs' }"
-        >
-          <v-icon>mdi-arrow-left</v-icon>
-        </v-btn>
-        HIT {{ hit.id_hit }}
-      </h2>
-      <v-divider class="my-3" />
+<!--      <h2 class="headline">-->
+<!--        <v-btn-->
+<!--          slot="activator"-->
+<!--          class="my-0"-->
+<!--          icon-->
+<!--          small-->
+<!--          v-bind:to="{ name: 'tasksHITs' }"-->
+<!--        >-->
+<!--          <v-icon>mdi-arrow-left</v-icon>-->
+<!--        </v-btn>-->
+<!--        HIT {{ hit.id_hit }}-->
+<!--      </h2>-->
+<!--      <v-divider class="my-3" />-->
       <v-container
         fluid
         class="pa-0"
       >
+        <v-row dense>
+          <v-col class="pt-0">
+            <v-card>
+              <list-assignments
+                v-bind:function-set-pagination="functionSetPagination"
+                v-bind:pagination-computed="paginationComputed"
+
+                v-bind:filters="{
+                  id_hit: idHit
+                }"
+              />
+            </v-card>
+          </v-col>
+        </v-row>
         <v-row dense>
           <v-col>
             <v-card>
@@ -57,20 +71,6 @@
                 Name: {{ hit.batch.settings_batch.template.name }}<br>
                 <sandbox-template v-bind:hit="hit" />
               </v-card-text>
-            </v-card>
-          </v-col>
-        </v-row>
-        <v-row dense>
-          <v-col>
-            <v-card>
-              <list-assignments
-                v-bind:function-set-pagination="functionSetPagination"
-                v-bind:pagination-computed="paginationComputed"
-
-                v-bind:filters="{
-                  id_hit: idHit
-                }"
-              />
             </v-card>
           </v-col>
         </v-row>

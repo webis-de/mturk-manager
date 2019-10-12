@@ -1,23 +1,37 @@
 <template>
   <v-row no-gutters>
     <v-col>
-      <h2 class="headline">
-        <v-btn
-          slot="activator"
-          class="my-0"
-          icon
-          small
-          v-bind:to="{ name: 'tasksBatches' }"
-        >
-          <v-icon>mdi-arrow-left</v-icon>
-        </v-btn>
-        Batch {{ batch.name }}
-      </h2>
-      <v-divider class="my-3" />
+<!--      <h2 class="headline">-->
+<!--        <v-btn-->
+<!--          slot="activator"-->
+<!--          class="my-0"-->
+<!--          icon-->
+<!--          small-->
+<!--          v-bind:to="{ name: 'tasksBatches' }"-->
+<!--        >-->
+<!--          <v-icon>mdi-arrow-left</v-icon>-->
+<!--        </v-btn>-->
+<!--        Batch {{ batch.name }}-->
+<!--      </h2>-->
+<!--      <v-divider class="my-3" />-->
       <v-container
         fluid
         class="pa-0"
       >
+        <v-row dense>
+          <v-col class="pt-0">
+            <v-card>
+              <list-hits
+                v-bind:pagination-computed="paginationComputed"
+                v-bind:function-set-pagination="functionSetPagination"
+
+                v-bind:filters="{
+                  id_batch: idBatch
+                }"
+              />
+            </v-card>
+          </v-col>
+        </v-row>
         <v-row dense>
           <v-col>
             <v-card>
@@ -47,20 +61,6 @@
                   />
                 </v-card-text>
               </v-slide-y-transition>
-            </v-card>
-          </v-col>
-        </v-row>
-        <v-row dense>
-          <v-col>
-            <v-card>
-              <list-hits
-                v-bind:pagination-computed="paginationComputed"
-                v-bind:function-set-pagination="functionSetPagination"
-
-                v-bind:filters="{
-                  id_batch: idBatch
-                }"
-              />
             </v-card>
           </v-col>
         </v-row>
