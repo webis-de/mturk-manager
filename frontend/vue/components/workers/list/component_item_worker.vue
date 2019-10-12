@@ -1,5 +1,5 @@
 <template>
-  <tr>
+  <tr class="roboto-mono">
     <td>
       <v-checkbox
         class="pa-0 ma-0"
