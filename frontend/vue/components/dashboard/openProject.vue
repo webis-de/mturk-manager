@@ -58,7 +58,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { compareDesc } from 'date-fns';
+import { compareAsc } from 'date-fns';
 import BaseDisplayDatetime from '../common/base-display-datetime';
 
 export default {
@@ -79,6 +79,9 @@ export default {
           text: 'Last Usage',
           value: 'datetime_visited',
           align: 'left',
+          sort: (a, b) => {
+            return compareAsc(a, b);
+          },
         },
         {
           text: '',
@@ -91,7 +94,7 @@ export default {
   },
   computed: {
     listProjects() {
-      return Object.values(this.objectProjects).sort((a, b) => compareDesc(a.datetime_visited, b.datetime_visited));
+      return Object.values(this.objectProjects);
     },
     ...mapGetters('moduleProjects', {
       objectProjects: 'get_object_projects',
