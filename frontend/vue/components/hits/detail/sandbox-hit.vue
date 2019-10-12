@@ -12,7 +12,7 @@
             class="ml-0"
             v-on="on"
           >
-            Show
+            View in popup
           </v-btn>
         </template>
 
