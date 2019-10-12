@@ -101,12 +101,25 @@ const routes = [
             component: { template: '<router-view></router-view>' },
             // component: viewTasks,
             // props: parse_params,
-            redirect: to => ({
-              name: 'tasksBatches',
-              params: {
-                slug_project: to.params.slug_project,
-              },
-            }),
+            // redirect: to => ({
+            //   name: 'tasksBatches',
+            //   params: {
+            //     slug_project: to.params.slug_project,
+            //   },
+            // }),
+            // beforeEnter: (to, from, next) => {
+            //   console.warn('from.name', from.name);
+            //   if (to.name !== 'tasksBatches' || from.name === 'tasks') {
+            //     next({
+            //       name: 'tasksBatches',
+            //       params: {
+            //         slug_project: to.params.slug_project,
+            //       },
+            //     });
+            //   } else {
+            //     next();
+            //   }
+            // },
             children: [
               {
                 path: 'batches',
@@ -272,6 +285,19 @@ router.beforeEach((to, from, next) => {
   }
 
   Service_Projects.set_slug_current(to.params.slug_project);
+  next();
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.name === 'tasks') {
+    next({
+      name: 'tasksBatches',
+      params: {
+        slug_project: to.params.slug_project,
+      },
+    });
+    return;
+  }
   next();
 });
 

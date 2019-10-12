@@ -54,7 +54,7 @@ export default {
         {
           name: 'tasks',
           label: 'Tasks',
-          icon: 'mdi-note',
+          icon: 'mdi-note-multiple',
         },
         {
           name: 'finances',
@@ -64,7 +64,7 @@ export default {
         {
           name: 'workers',
           label: 'Workers',
-          icon: 'mdi-account',
+          icon: 'mdi-account-group',
         },
         {
           name: 'settings_project',
