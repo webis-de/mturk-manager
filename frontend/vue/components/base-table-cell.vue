@@ -1,6 +1,7 @@
 <template>
   <td
     v-bind:class="classesCell"
+    v-on:click="click"
   >
     <slot
       v-bind:item="item"
@@ -24,16 +25,27 @@ export default {
       required: true,
       type: Object,
     },
+    to: {
+      required: false,
+      type: Object,
+      default: null,
+    },
   },
   computed: {
     classesCell() {
       return {
         'hidden-sm-and-up': !this.show,
         'hidden-xs-only': !this.show,
+        'pointer-underline': this.to !== null,
       };
     },
     show() {
       return this.columnsSelected.hasOwnProperty(this.name);
+    },
+  },
+  methods: {
+    click() {
+      this.$router.push(this.to);
     },
   },
 };

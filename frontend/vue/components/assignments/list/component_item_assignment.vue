@@ -100,23 +100,14 @@
       class="text-right"
       v-bind:item="assignment"
       v-bind:columns-selected="objectColumnsSelected"
+      v-bind:to="{
+        name: 'hit',
+        params: {
+          id: item.hit.id
+        }
+      }"
     >
       {{ item.hit.id_hit }}
-      <v-btn
-        slot="activator"
-        class="my-0"
-        icon
-        small
-        v-bind:to="{
-          name: 'hit',
-          params: {
-            slug_project: $route.params.slug_project,
-            id: item.hit.id
-          }
-        }"
-      >
-        <v-icon>mdi-information</v-icon>
-      </v-btn>
     </base-table-cell>
 
     <base-table-cell

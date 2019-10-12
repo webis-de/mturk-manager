@@ -97,12 +97,12 @@ export const moduleBatches = _.merge({}, baseModule, {
         align: 'center',
         sortable: false,
       },
-      {
-        text: '',
-        value: 'actions',
-        sortable: false,
-        label: 'Details',
-      },
+      // {
+      //   text: '',
+      //   value: 'actions',
+      //   sortable: false,
+      //   label: 'Details',
+      // },
     ],
     objectColumnsSelectedInitialGeneral: {
       name: true,

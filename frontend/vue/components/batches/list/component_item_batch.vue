@@ -18,6 +18,12 @@
       class="text-left"
       v-bind:item="batch"
       v-bind:columns-selected="objectColumnsSelected"
+      v-bind:to="{
+        name: 'batch',
+        params: {
+          id: item.id
+        }
+      }"
     >
       {{ item.name }}
     </base-table-cell>
@@ -63,7 +69,7 @@
     >
       <base-display-amount
         v-bind:amount="item.settings_batch.reward"
-      ></base-display-amount>
+      />
     </base-table-cell>
 
     <base-table-cell
@@ -105,7 +111,7 @@
     >
       <base-display-amount
         v-bind:amount="item.costs_max"
-      ></base-display-amount>
+      />
     </base-table-cell>
 
     <base-table-cell
@@ -117,7 +123,7 @@
     >
       <base-display-amount
         v-bind:amount="item.costs_so_far"
-      ></base-display-amount>
+      />
     </base-table-cell>
 
     <base-table-cell
@@ -133,28 +139,28 @@
       />
     </base-table-cell>
 
-    <base-table-cell
-      v-slot="{ item }"
-      name="actions"
-      class="text-center"
-      v-bind:item="batch"
-      v-bind:columns-selected="objectColumnsSelected"
-    >
-      <v-btn
-        slot="activator"
-        class="my-0"
-        icon
-        small
-        v-bind:to="{
-          name: 'batch',
-          params: {
-            id: item.id
-          }
-        }"
-      >
-        <v-icon>mdi-information</v-icon>
-      </v-btn>
-    </base-table-cell>
+    <!--    <base-table-cell-->
+    <!--      v-slot="{ item }"-->
+    <!--      name="actions"-->
+    <!--      class="text-center"-->
+    <!--      v-bind:item="batch"-->
+    <!--      v-bind:columns-selected="objectColumnsSelected"-->
+    <!--    >-->
+    <!--      <v-btn-->
+    <!--        slot="activator"-->
+    <!--        class="my-0"-->
+    <!--        icon-->
+    <!--        small-->
+    <!--        v-bind:to="{-->
+    <!--          name: 'batch',-->
+    <!--          params: {-->
+    <!--            id: item.id-->
+    <!--          }-->
+    <!--        }"-->
+    <!--      >-->
+    <!--        <v-icon>mdi-information</v-icon>-->
+    <!--      </v-btn>-->
+    <!--    </base-table-cell>-->
   </tr>
 </template>
 <script>

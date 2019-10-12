@@ -18,6 +18,12 @@
       class="text-left"
       v-bind:item="hit"
       v-bind:columns-selected="objectColumnsSelected"
+      v-bind:to="{
+        name: 'hit',
+        params: {
+          id: hit.id
+        }
+      }"
     >
       {{ item.id_hit }}
     </base-table-cell>
@@ -28,23 +34,14 @@
       class="text-left"
       v-bind:item="hit"
       v-bind:columns-selected="objectColumnsSelected"
+      v-bind:to="{
+        name: 'batch',
+        params: {
+          id: hit.batch.id
+        }
+      }"
     >
       {{ hit.batch.name.toUpperCase() }}
-      <v-btn
-        slot="activator"
-        class="my-0"
-        icon
-        small
-        v-bind:to="{
-          name: 'batch',
-          params: {
-            slug_project: $route.params.slug_project,
-            id: hit.batch.id
-          }
-        }"
-      >
-        <v-icon>mdi-information</v-icon>
-      </v-btn>
     </base-table-cell>
 
     <base-table-cell
@@ -72,29 +69,29 @@
       />
     </base-table-cell>
 
-    <base-table-cell
-      v-slot="{ item }"
-      name="actions"
-      class="text-center"
-      v-bind:item="hit"
-      v-bind:columns-selected="objectColumnsSelected"
-    >
-      <v-btn
-        slot="activator"
-        class="my-0"
-        icon
-        small
-        v-bind:to="{
-          name: 'hit',
-          params: {
-            slug_project: $route.params.slug_project,
-            id: hit.id
-          }
-        }"
-      >
-        <v-icon>mdi-information</v-icon>
-      </v-btn>
-    </base-table-cell>
+<!--    <base-table-cell-->
+<!--      v-slot="{ item }"-->
+<!--      name="actions"-->
+<!--      class="text-center"-->
+<!--      v-bind:item="hit"-->
+<!--      v-bind:columns-selected="objectColumnsSelected"-->
+<!--    >-->
+<!--      <v-btn-->
+<!--        slot="activator"-->
+<!--        class="my-0"-->
+<!--        icon-->
+<!--        small-->
+<!--        v-bind:to="{-->
+<!--          name: 'hit',-->
+<!--          params: {-->
+<!--            slug_project: $route.params.slug_project,-->
+<!--            id: hit.id-->
+<!--          }-->
+<!--        }"-->
+<!--      >-->
+<!--        <v-icon>mdi-information</v-icon>-->
+<!--      </v-btn>-->
+<!--    </base-table-cell>-->
   </tr>
 </template>
 <script>

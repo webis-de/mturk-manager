@@ -15,6 +15,8 @@ import App from './App';
 import { router } from './router';
 import { vuetify } from './vuetify';
 
+import './assets/main.scss';
+
 Vue.config.performance = process.env.NODE_ENV === 'development';
 
 Vue.use(Vuetify, { directives: { Ripple } });
