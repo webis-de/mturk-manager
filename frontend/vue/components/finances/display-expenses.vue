@@ -3,7 +3,7 @@
     <v-flex>
       <v-card>
         <v-card-title>
-          Costs
+          Costs ($)
         </v-card-title>
 
         <v-card-text>

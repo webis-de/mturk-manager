@@ -1,7 +1,7 @@
 <template>
   <div>
     <h2 class="headline">
-      Budget
+      Budget ($)
     </h2>
     <v-layout row>
       <v-flex>
