@@ -2,7 +2,7 @@
   <v-row no-gutters>
     <v-col>
       <v-row no-gutters>
-        <v-col class="text-center">
+        <v-col>
           <div class="headline">
             Open Existing Project
           </div>

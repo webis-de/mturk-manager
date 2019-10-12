@@ -1,7 +1,7 @@
 <template>
   <form v-on:submit.prevent="save">
     <v-row no-gutters>
-      <v-col class="text-center">
+      <v-col>
         <v-row no-gutters>
           <v-col>
             <span class="headline">Create New Project</span>
@@ -11,7 +11,6 @@
           dense
           align="center"
         >
-          <v-spacer />
           <v-col>
             <v-text-field
               v-bind:value="name"
@@ -38,7 +37,6 @@
               Create
             </v-btn>
           </v-col>
-          <v-spacer />
         </v-row>
       </v-col>
     </v-row>
