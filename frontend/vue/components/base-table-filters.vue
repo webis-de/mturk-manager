@@ -9,7 +9,7 @@
         v-if="countFiltersActive === 0"
 
         small
-        color="primary"
+        color="secondary"
         v-on="on"
       >
         Filters

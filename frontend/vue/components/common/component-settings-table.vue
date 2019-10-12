@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-btn color="primary" v-on:click="dialog = true" small>
+    <v-btn color="secondary" v-on:click="dialog = true" small>
       Toggle Columns
     </v-btn>
 

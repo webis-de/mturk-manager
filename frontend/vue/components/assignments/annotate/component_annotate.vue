@@ -6,7 +6,7 @@
       <input type="hidden" name="list_ids[]" value="3" />
       <v-btn
         type="submit"
-        color="primary"
+        color="secondary"
         small
         v-bind:disabled="count_assignments_selected === 0"
       >

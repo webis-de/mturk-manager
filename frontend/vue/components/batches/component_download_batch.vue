@@ -11,7 +11,7 @@
               count_batches_to_download === 0 ||
               !is_valid_selection
           "
-          color="primary"
+          color="secondary"
           v-on:click="dialog = true"
         >
           <!--<template v-if="is_valid_selection">-->
