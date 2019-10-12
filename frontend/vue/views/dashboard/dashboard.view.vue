@@ -9,12 +9,9 @@
         'background-color': $store.state.module_app.use_sandbox === true ? '#dd6e00' : null
       }"
     >
-      <v-toolbar-title style="position:absolute; left: 50%; margin-left: -70.76px">
-        MTurk-Manager
+      <v-toolbar-title>
+        MTurk Manager
       </v-toolbar-title>
-<!--      <v-toolbar-title>-->
-<!--        Dashboard-->
-<!--      </v-toolbar-title>-->
 
       <v-row
         align="center"
@@ -50,32 +47,13 @@
               </v-col>
             </v-row>
 
-            <v-divider class="my-3" />
+<!--            <v-divider class="my-3" />-->
 
-            <v-row no-gutters>
+            <v-row no-gutters class="mt-6">
               <v-col>
                 <open-project />
               </v-col>
             </v-row>
-          </v-col>
-        </v-row>
-
-        <v-divider class="my-3" />
-
-        <v-row
-          no-gutters
-          justify="end"
-        >
-          <v-col
-            class="shrink"
-          >
-            <v-btn
-              small
-              color="secondary"
-              v-bind:to="{ name: 'about' }"
-            >
-              About
-            </v-btn>
           </v-col>
         </v-row>
       </v-container>
