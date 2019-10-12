@@ -37,12 +37,12 @@ export const moduleHITs = _.merge({}, baseModule, {
       {
         text: 'ID',
         value: 'id_hit',
-        classes: ['text-xs-left'],
+        classes: ['text-left'],
       },
       {
         text: 'Batch',
         value: 'batch',
-        classes: ['text-xs-left'],
+        classes: ['text-left'],
       },
       {
         text: 'Creation',

@@ -36,7 +36,7 @@ export const moduleAssignments = _.merge({}, baseModule, {
       {
         text: 'ID',
         value: 'id_assignment',
-        classes: ['text-xs-left'],
+        classes: ['text-left'],
       },
       {
         text: 'Creation',
