@@ -136,7 +136,7 @@ def batches_for_annotation(request, slug_project, database_object_project, use_s
     return Response(serializer.data)
 
 
-@api_view(['GET'])
+@api_view(['POST'])
 @permission_classes(PERMISSIONS_INSTANCE_ONLY)
 @add_database_object_project
 def download_batches(request, slug_project, database_object_project, use_sandbox, format=None):

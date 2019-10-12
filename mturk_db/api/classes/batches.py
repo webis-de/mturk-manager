@@ -461,9 +461,9 @@ class Manager_Batches(Interface_Manager_Items):
         response = HttpResponse(content_type="text/csv")
         response['Content-Disposition'] = 'attachment; filename=' + 'results.csv'
 
-        list_ids_batch = request.query_params.getlist('batches[]')
+        list_ids_batch = request.data.get('batches')
         # check if all values should be downloaded
-        set_values_filtered = request.query_params.getlist('values[]')
+        set_values_filtered = request.data.get('values', [])
         if len(set_values_filtered) > 0:
             set_values_filtered = set(set_values_filtered)
         else:

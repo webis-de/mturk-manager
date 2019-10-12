@@ -141,9 +141,9 @@ class Class_Service_Batches extends BaseLoadPageService {
     return new Batch(response.data);
   }
 
-  async download(params) {
+  async download(data) {
     const response = await Service_Endpoint.make_request({
-      method: 'get',
+      method: 'post',
       url: {
         path: store.getters.get_url(
           'url_api_projects_batches_download',
@@ -151,7 +151,7 @@ class Class_Service_Batches extends BaseLoadPageService {
         ),
         project: store.getters['moduleProjects/get_project_current'],
       },
-      params,
+      data,
       options: {
         responseType: 'blob',
       },
