@@ -19,10 +19,15 @@ export default {
       type: Number,
       default: undefined,
     },
+    currency: {
+      required: false,
+      type: String,
+      default: undefined,
+    },
   },
   computed: {
     amount_formatted_() {
-      return this.amount_formatted(this.amount);
+      return this.amount_formatted(this.amount, null, this.currency);
     },
   },
 };

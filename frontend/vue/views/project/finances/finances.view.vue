@@ -132,7 +132,7 @@
         >
           <v-card>
             <v-card-title>
-              Budget
+              Budget ($)
             </v-card-title>
 
             <v-card-text>

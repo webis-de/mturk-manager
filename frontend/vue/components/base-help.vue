@@ -9,6 +9,7 @@
         icon
         small
         v-on="on"
+        class="text--secondary"
       >
         <v-icon>mdi-information-outline</v-icon>
       </v-btn>

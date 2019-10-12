@@ -6,23 +6,19 @@
         v-bind:key="index"
         v-bind:class="{ 'font-weight-bold': calculation.bold === true }"
       >
-        <td>
-          <template v-if="calculation.operation === '+'">
-            <v-icon>mdi-plus</v-icon>
-          </template>
-          <template v-else-if="calculation.operation === '-'">
-            <v-icon>mdi-minus</v-icon>
-          </template>
-        </td>
         <td class="text-right px-1">
+          <span v-if="calculation.operation === '-'">-</span>
           <base-display-amount
             v-bind:amount="calculation.number"
+            currency=""
           >
             <slot></slot>
           </base-display-amount>
         </td>
         <td class="pl-3">
           {{ calculation.description }}
+        </td>
+        <td>
           <base-help v-if="calculation.detail">
             {{ calculation.detail }}
           </base-help>
@@ -31,10 +27,10 @@
       <tr
         v-bind:class="{ 'font-weight-bold': result.bold === true }"
       >
-        <td></td>
         <td class="text-right px-1">
           <base-display-amount
             v-bind:amount="result.number"
+            currency=""
           >
             <slot></slot>
           </base-display-amount>
@@ -45,6 +41,7 @@
             {{ result.detail }}
           </base-help>
         </td>
+        <td></td>
       </tr>
     </tbody>
   </table>

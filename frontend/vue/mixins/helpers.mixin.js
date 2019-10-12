@@ -2,11 +2,11 @@ import Dinero from 'dinero.js';
 
 export default {
   methods: {
-    amount_formatted(value, messageInvalid = 'invalid') {
+    amount_formatted(value, messageInvalid = 'invalid', currency = '$') {
       if (Number.isInteger(value) === false) {
         return messageInvalid;
       }
-      return Dinero({ amount: value }).toFormat('$0,0.00');
+      return Dinero({ amount: value }).toFormat(`${currency}0,0.00`);
     },
     try_money(value) {
       const number = this.try_number(value);
