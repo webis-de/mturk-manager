@@ -1,7 +1,7 @@
 <template>
   <tr
     v-bind:key="hit.id"
-    class="text-no-wrap"
+    class="text-no-wrap roboto-mono"
   >
     <td>
       <v-checkbox

@@ -14,7 +14,7 @@
             <v-icon>mdi-minus</v-icon>
           </template>
         </td>
-        <td class="text-xs-right px-1">
+        <td class="text-right px-1">
           <base-display-amount
             v-bind:amount="calculation.number"
           >
@@ -32,7 +32,7 @@
         v-bind:class="{ 'font-weight-bold': result.bold === true }"
       >
         <td></td>
-        <td class="text-xs-right px-1">
+        <td class="text-right px-1">
           <base-display-amount
             v-bind:amount="result.number"
           >

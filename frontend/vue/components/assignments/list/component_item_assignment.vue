@@ -2,7 +2,7 @@
   <!-- <div>wda</div> -->
   <tr
     v-bind:key="assignment.id"
-    class="text-no-wrap"
+    class="text-no-wrap roboto-mono"
   >
     <td>
       <v-checkbox

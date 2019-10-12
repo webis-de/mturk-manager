@@ -1,7 +1,7 @@
 <template>
   <tr
     v-bind:key="batch.id"
-    class="text-no-wrap"
+    class="text-no-wrap roboto-mono"
   >
     <td>
       <v-checkbox
@@ -15,7 +15,7 @@
     <base-table-cell
       v-slot="{ item }"
       name="name"
-      class="text-left"
+      class="text-left roboto-mono"
       v-bind:item="batch"
       v-bind:columns-selected="objectColumnsSelected"
       v-bind:to="{

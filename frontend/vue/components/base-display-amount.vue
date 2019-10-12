@@ -1,5 +1,5 @@
 <template>
-  <span>
+  <span class="roboto-mono">
     <template v-if="amount !== undefined">
       {{ amount_formatted_ }}
     </template>
