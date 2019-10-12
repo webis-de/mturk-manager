@@ -41,11 +41,11 @@
               >
                 <v-row no-gutters>
                   <v-col>
-                    Batch Profile
+                    Batch profile
                   </v-col>
                   <v-col class="shrink">
                     <v-icon class="foo">
-                      {{ showBatchProfile ? 'mdi-chevron-down': 'mdi-chevron-up' }}
+                      {{ showBatchProfile ? 'mdi-chevron-up': 'mdi-chevron-down' }}
                     </v-icon>
                   </v-col>
                 </v-row>
