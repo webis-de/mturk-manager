@@ -7,7 +7,7 @@ class Class_Settings_Batch extends BaseLoadPageService {
   async loadPage(pagination, filters) {
     const project = store.getters['moduleProjects/get_project_current'];
 
-    return Class_Settings_Batch.loadPage({
+    return Class_Settings_Batch.loadPageInternal({
       pagination,
       filters,
       url: {
@@ -18,9 +18,9 @@ class Class_Settings_Batch extends BaseLoadPageService {
         project,
       },
       callback(response) {
-        store.commit('moduleSettingsBatch/setItems', {
-          data: response.data.data,
-          project,
+        store.commit('moduleSettingsBatch/setState', {
+          objectState: response.data.data.map(settingsBatch => new Settings_Batch(settingsBatch)),
+          nameState: 'arrayItems',
         });
       },
     });

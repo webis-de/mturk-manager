@@ -88,15 +88,15 @@ export const moduleTemplates = _.merge({}, baseModule, {
       },
     ],
 
-    array_columns_selected_general: [
-      'name',
-      'height_frame',
-      'count_parameters',
-      'template_assignment',
-      'template_hit',
-      'template_global',
-      'actions',
-    ],
+    objectColumnsSelectedInitialGeneral: {
+      name: true,
+      height_frame: true,
+      count_parameters: true,
+      template_assignment: true,
+      template_hit: true,
+      template_global: true,
+      actions: true,
+    },
 
     arrayColumns: [
       {
@@ -111,10 +111,10 @@ export const moduleTemplates = _.merge({}, baseModule, {
         width: '10%',
       },
     ],
-    array_columns_selected: [
-      'name',
-      'actions',
-    ],
+    objectColumnsSelectedInitial: {
+      name: true,
+      actions: true,
+    },
   },
   getters: {
   },

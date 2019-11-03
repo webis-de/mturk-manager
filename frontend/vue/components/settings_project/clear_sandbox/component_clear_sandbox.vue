@@ -1,11 +1,15 @@
 <template>
   <div>
     <v-dialog v-model="dialog" max-width="500">
-      <v-btn
-        class="ml-0" slot="activator" color="warning">
-        <v-icon left>delete</v-icon>
-        Clear Sandbox
-      </v-btn>
+      <template v-slot:activator="{ on }">
+        <v-btn
+          class="ml-0"
+          v-on="on"
+          color="warning">
+          <v-icon left>mdi-delete</v-icon>
+          Clear Sandbox
+        </v-btn>
+      </template>
 
       <v-card>
         <!-- <v-card-title>
@@ -21,7 +25,7 @@
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn flat color="warning" v-on:click="clear">Clear</v-btn>
+          <v-btn text color="warning" v-on:click="clear">Clear</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

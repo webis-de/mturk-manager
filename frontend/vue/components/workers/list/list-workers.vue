@@ -134,7 +134,7 @@ export default {
   },
   data() {
     return {
-      loadPage: ServiceWorkers.load_page,
+      loadPage: ServiceWorkers.loadPage,
       workers_selected: [],
       pagination: { rowsPerPage: 5 },
       // pagination: { rowsPerPage: 5, totalItems: 30 },
@@ -247,7 +247,7 @@ export default {
   methods: {
     load_page() {
       this.loading = true;
-      ServiceWorkers.load_page(this.pagination, {
+      ServiceWorkers.loadPage(this.pagination, {
         ...this.filters,
       }).then((itemsTotal) => {
         this.items_total = itemsTotal;

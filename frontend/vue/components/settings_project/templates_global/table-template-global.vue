@@ -1,6 +1,8 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <div>
     <base-table
+      title="Global templates"
+
       name-vuex-module="moduleTemplates"
       name-state-pagination="paginationGlobal"
       name-local-storage-pagination="pagination_templates_global"
@@ -9,13 +11,15 @@
       v-bind:array-items="arrayItems"
 
       name-state-columns="arrayColumns"
-      name-state-columns-selected="array_columns_selected"
+      name-state-columns-selected="objectColumnsSelectedInitial"
+
+      v-bind:show-select="false"
     >
       <template
-        v-slot:default="{ props, array_columns_selected, isCondensed }"
+        v-slot:default="{ item, isCondensed }"
       >
         <item-templates-global
-          v-bind:props="props"
+          v-bind:item="item"
           v-bind:is-condensed="isCondensed"
 
           v-on:edited="snackbarEdited = true"
@@ -89,8 +93,12 @@ export default {
     };
   },
   computed: {
+    arrayItems() {
+      const { arrayItemsGlobal } = this.$store.state.moduleTemplates;
+
+      return arrayItemsGlobal === null ? [] : arrayItemsGlobal;
+    },
     ...mapState('moduleTemplates', {
-      arrayItems: 'arrayItemsGlobal',
       arrayColumns: 'arrayColumns',
     }),
     ...mapState('moduleTemplates', {

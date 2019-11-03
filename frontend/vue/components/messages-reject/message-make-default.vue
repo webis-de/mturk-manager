@@ -13,7 +13,7 @@
       <v-icon
         v-bind:color="isDefault ? 'warning' : 'white'"
       >
-        {{ hover || isDefault ? 'star' : 'star_border' }}
+        {{ hover || isDefault ? 'mdi-star' : 'mdi-star-outline' }}
       </v-icon>
     </v-btn>
   </v-hover>

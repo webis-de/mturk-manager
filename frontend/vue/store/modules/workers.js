@@ -261,9 +261,9 @@ export const moduleWorkers = _.merge({}, baseModule, {
 
       let array_workers = null;
       if (use_sandbox) {
-        array_workers = state.array_workers_sandbox;
+        array_workers = state.arrayWorkersSandbox;
       } else {
-        array_workers = state.array_workers;
+        array_workers = state.arrayWorkers;
       }
       _.forEach(array_workers, (worker) => {
         Vue.set(worker, 'is_blocked_hard', set_workers_blocked.has(worker.id));

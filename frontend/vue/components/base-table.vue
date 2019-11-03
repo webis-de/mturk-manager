@@ -1,6 +1,6 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <v-data-table
-    show-select
+    v-bind:show-select="showSelect"
     v-bind:headers="arrayHeaders"
     v-bind:items="arrayItems"
     v-bind:server-items-length="items_total"
@@ -285,6 +285,12 @@ export default {
       type: Function,
       default: () => {},
     },
+
+    showSelect: {
+      required: false,
+      type: Boolean,
+      default: true,
+    },
   },
   data() {
     return {
@@ -358,7 +364,7 @@ export default {
         _.pick(options, ['page', 'itemsPerPage', 'sortBy', 'sortDesc']),
         _.pick(this.pagination, ['page', 'itemsPerPage', 'sortBy', 'sortDesc']),
       );
-      console.warn('options', options);
+
       if (equalOptions === false || force === true) {
         this.$store.dispatch(`${this.nameVuexModule}/setState`, {
           objectState: _.pick(options, ['sortBy', 'sortDesc', 'itemsPerPage']),

@@ -36,7 +36,7 @@ class Class_Service_Assignments extends BaseLoadPageService {
   async load_page(pagination, filters) {
     const useSandbox = store.state.module_app.use_sandbox;
 
-    return Class_Service_Assignments.loadPage({
+    return Class_Service_Assignments.loadPageInternal({
       pagination,
       filters,
       url: {

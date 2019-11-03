@@ -4,7 +4,7 @@ import { BaseLoadPageService } from './baseLoadPage.service';
 
 class Class_Service_Messages_Reject extends BaseLoadPageService {
   async loadPageReject(pagination, filters) {
-    return Class_Service_Messages_Reject.loadPage({
+    return Class_Service_Messages_Reject.loadPageInternal({
       pagination,
       filters,
       url: {
@@ -24,7 +24,7 @@ class Class_Service_Messages_Reject extends BaseLoadPageService {
   }
 
   async loadPageRejectAll(pagination, filters) {
-    return Class_Service_Messages_Reject.loadPage({
+    return Class_Service_Messages_Reject.loadPageInternal({
       pagination,
       filters,
       url: {

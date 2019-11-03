@@ -102,7 +102,7 @@ class Class_Service_Batches extends BaseLoadPageService {
   async load_page(pagination, filters) {
     const useSandbox = store.state.module_app.use_sandbox;
 
-    return Class_Service_Batches.loadPage({
+    return Class_Service_Batches.loadPageInternal({
       pagination,
       filters,
       url: {

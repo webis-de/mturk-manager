@@ -4,8 +4,9 @@
       top
       v-bind:disabled="disabled === false"
     >
+      <template v-slot:activator="{ on }">
       <v-btn
-        slot="activator"
+        v-on="on"
         class="my-0"
         icon
         small
@@ -13,9 +14,10 @@
         v-on:click.stop="dialog = true"
       >
         <v-icon color="error">
-          delete
+          mdi-delete
         </v-icon>
       </v-btn>
+      </template>
 
       You are not allowed to delete this template because it has at least one batch using this template.
     </v-tooltip>
@@ -35,7 +37,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
-            flat
+            text
             color="error"
             v-on:click="remove()"
           >

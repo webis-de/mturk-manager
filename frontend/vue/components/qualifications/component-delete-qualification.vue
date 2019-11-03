@@ -47,7 +47,7 @@
         <v-spacer></v-spacer>
         <v-btn
           color="blue darken-1"
-          flat
+          text
           v-bind:disabled="is_deleting"
           v-on:click.native="cancel"
           >Cancel</v-btn
@@ -55,7 +55,7 @@
         <v-btn
           color="red darken-1"
           v-bind:loading="is_deleting"
-          flat
+          text
           v-on:click.native="remove"
           >Delete</v-btn
         >

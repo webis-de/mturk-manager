@@ -48,29 +48,29 @@ export const moduleMessages = _.merge({}, baseModule, {
       {
         text: 'Message',
         value: 'message',
-        classes: ['text-xs-left'],
+        classes: ['text-left'],
       },
       {
         text: 'Usages',
         value: 'count_usage',
-        classes: ['text-xs-right'],
+        classes: ['text-right'],
       },
       {
         text: '',
         value: 'actions',
-        classes: ['text-xs-right'],
+        classes: ['text-right'],
       },
     ],
 
-    array_columns_selected: [
-      'message',
-      'actions',
-    ],
+    objectColumnsSelectedInitialGeneral: {
+      message: true,
+      actions: true,
+    },
 
-    arrayColumnsSelectedAdmin: [
-      'message',
-      'count_usage',
-    ],
+    arrayColumnsSelectedAdmin: {
+      message: true,
+      count_usage: true,
+    },
   },
   getters: {
     get_list_messages_reject: state => _.orderBy(state.object_messages_reject, 'count_usage', 'desc'),

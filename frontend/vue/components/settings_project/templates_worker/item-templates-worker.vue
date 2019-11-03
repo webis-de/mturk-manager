@@ -62,8 +62,8 @@
         v-on:edited="$emit('edited')"
       />
       <component-delete-template-worker
-        v-bind:key="`component-delete-template-worker-${props.item.id}`"
-        v-bind:template-worker="props.item"
+        v-bind:key="`component-delete-template-worker-${item.id}`"
+        v-bind:template-worker="item"
         v-bind:disabled="templateWorker.has_assignments === true"
         v-on:deleted="snackbar_deleted = true"
       />
@@ -78,7 +78,7 @@ export default {
   name: 'ItemTemplatesWorker',
   components: {ComponentDeleteTemplateWorker, ComponentEditTemplateWorker},
   props: {
-    props: {
+    item: {
       type: Object,
       required: true,
     },
@@ -91,7 +91,7 @@ export default {
     return {};
   },
   computed: {
-    templateWorker() { return this.props.item; },
+    templateWorker() { return this.item; },
     stylesCell() {
       if (this.isCondensed) {
         return {

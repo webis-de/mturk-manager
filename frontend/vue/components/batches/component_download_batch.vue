@@ -3,7 +3,6 @@
     <v-tooltip top v-bind:disabled="is_valid_selection">
       <template v-slot:activator="{ on }">
         <v-btn
-          slot="activator"
           small
           v-bind:loading="is_downloading_csv"
           v-bind:disabled="
@@ -13,6 +12,7 @@
           "
           color="secondary"
           v-on:click="dialog = true"
+          v-on="on"
         >
           <!--<template v-if="is_valid_selection">-->
           Download {{ count_batches_to_download }} Batch(es)

@@ -40,7 +40,7 @@ export default {
     ComponentEditTemplateGlobal,
 },
   props: {
-    props: {
+    item: {
       type: Object,
       required: true,
     },
@@ -50,7 +50,7 @@ export default {
     },
   },
   computed: {
-    templateGlobal() { return this.props.item; },
+    templateGlobal() { return this.item; },
     stylesCell() {
       if (this.isCondensed) {
         return {

@@ -73,7 +73,7 @@
         <v-spacer></v-spacer>
         <v-btn
           color="blue darken-1"
-          flat
+          text
           v-bind:disabled="is_updating"
           v-on:click.native="clear"
           >Cancel</v-btn
@@ -81,7 +81,7 @@
         <v-btn
           color="blue darken-1"
           v-bind:loading="is_updating"
-          flat
+          text
           v-on:click.native="update"
           >Update</v-btn
         >

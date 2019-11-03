@@ -1,12 +1,14 @@
 <template>
   <v-dialog v-model="dialog" max-width="500">
+    <template v-slot:activator="{ on }">
     <v-btn
-      slot="activator"
+      v-on="on"
       class="my-0"
       icon small
     >
-      <v-icon color="error">delete</v-icon>
+      <v-icon color="error">mdi-delete</v-icon>
     </v-btn>
+    </template>
 
     <v-card>
       <!-- <v-card-title>
@@ -24,7 +26,7 @@
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn flat color="error" v-on:click="remove()">Delete</v-btn>
+        <v-btn text color="error" v-on:click="remove()">Delete</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>

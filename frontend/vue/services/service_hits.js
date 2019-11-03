@@ -2,13 +2,12 @@ import { store } from '../store/vuex';
 import { Service_Endpoint } from './service_endpoint';
 import { BaseLoadPageService } from './baseLoadPage.service';
 import HIT from '../classes/hit';
-import Batch from '../classes/batch';
 
 class Class_Service_HITs extends BaseLoadPageService {
   async load_page(pagination, filters) {
     const useSandbox = store.state.module_app.use_sandbox;
 
-    return Class_Service_HITs.loadPage({
+    return Class_Service_HITs.loadPageInternal({
       pagination,
       filters,
       url: {

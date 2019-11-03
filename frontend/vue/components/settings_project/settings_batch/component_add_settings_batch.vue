@@ -4,14 +4,17 @@
       v-model="dialog"
       max-width="80%"
     >
-      <v-btn
-        slot="activator"
-        color="primary"
-        small
-        v-bind:disabled="is_disabled"
-      >
-        <v-icon>add</v-icon> Add Profile
-      </v-btn>
+      <template v-slot:activator="{ on }">
+        <v-btn
+          color="primary"
+          small
+          v-bind:disabled="is_disabled"
+          v-on="on"
+        >
+          <v-icon>mdi-plus</v-icon> Add Profile
+        </v-btn>
+      </template>
+
       <v-card>
         <v-card-title>
           <span class="headline">
@@ -66,7 +69,7 @@ import ComponentFormSettingsBatch from './component_form_settings_batch';
 import { settingsBatch } from '../../../mixins/settings-batch.mixin';
 import validations from '../../../mixins/validations.mixin';
 import { ServiceSettingsBatch } from '../../../services/service_settings_batch';
-import {Service_Templates} from '../../../services/service_templates';
+import { Service_Templates } from '../../../services/service_templates';
 
 export default {
   name: 'ComponentAddSettingsBatch',

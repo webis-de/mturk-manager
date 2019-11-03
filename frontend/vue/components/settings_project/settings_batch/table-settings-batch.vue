@@ -1,6 +1,8 @@
 <template>
   <div>
     <base-table
+      title="Batch profiles"
+
       name-vuex-module="moduleSettingsBatch"
       name-state-pagination="paginationGeneral"
       name-local-storage-pagination="pagination_settings_batch_general"
@@ -9,13 +11,15 @@
       v-bind:array-items="arrayItems"
 
       name-state-columns="arrayColumns"
-      name-state-columns-selected="array_columns_selected_general"
+      name-state-columns-selected="objectColumnsSelectedInitialGeneral"
+
+      v-bind:show-select="false"
     >
       <template
-        v-slot:default="{ props, array_columns_selected, isCondensed }"
+        v-slot:default="{ item, isCondensed }"
       >
         <item-settings-batch
-          v-bind:props="props"
+          v-bind:item="item"
           v-bind:is-condensed="isCondensed"
 
           v-on:edited="snackbarEdited = true"
@@ -68,7 +72,7 @@
 </template>
 
 <script>
-  import {mapGetters, mapMutations, mapState} from 'vuex';
+import { mapGetters, mapMutations, mapState } from 'vuex';
 import ComponentAddSettingsBatch from './component_add_settings_batch';
 import BaseTable from '../../base-table';
 import { ServiceSettingsBatch } from '../../../services/service_settings_batch';
@@ -91,7 +95,12 @@ export default {
     };
   },
   computed: {
-    ...mapState('moduleSettingsBatch', ['arrayColumns', 'arrayItems']),
+    arrayItems() {
+      const { arrayItems } = this.$store.state.moduleSettingsBatch;
+
+      return arrayItems === null ? [] : arrayItems;
+    },
+    ...mapState('moduleSettingsBatch', ['arrayColumns']),
     ...mapGetters('moduleProjects', {
       project_current: 'get_project_current',
     }),

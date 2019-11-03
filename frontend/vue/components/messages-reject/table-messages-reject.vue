@@ -1,5 +1,7 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <base-table
+    title="Reject Messages"
+
     name-vuex-module="moduleMessages"
     v-bind:name-state-pagination="nameStatePagination"
     v-bind:name-local-storage-pagination="nameLocalStoragePagination"
@@ -10,11 +12,13 @@
     name-state-columns="arrayColumns"
     v-bind:name-state-columns-selected="nameStateColumnsSelected"
     v-bind:is-condensed="true"
+
+    v-bind:show-select="false"
   >
-    <template v-slot:default="{ props, array_columns_selected, isCondensed, refresh }">
+    <template v-slot:default="{ item, objectColumnsSelected, isCondensed, refresh }">
       <item-messages-reject
-        v-bind:props="props"
-        v-bind:array-columns-selected="array_columns_selected"
+        v-bind:item="item"
+        v-bind:object-columns-selected="objectColumnsSelected"
         v-bind:is-condensed="isCondensed"
 
         v-on:delete="refresh()"
@@ -58,13 +62,15 @@ export default {
     nameStateColumnsSelected: {
       required: false,
       type: String,
-      default: 'array_columns_selected',
+      default: 'objectColumnsSelectedInitialGeneral',
     },
   },
   computed: {
-    ...mapState('moduleMessages', {
-      arrayItems: 'arrayItemsReject',
-    }),
+    arrayItems() {
+      const { arrayItemsReject } = this.$store.state.moduleMessages;
+
+      return arrayItemsReject === null ? [] : arrayItemsReject;
+    },
   },
 };
 </script>

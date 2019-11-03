@@ -48,7 +48,7 @@ class Class_Service_Templates extends BaseLoadPageService {
         break;
     }
 
-    return super.loadPage({
+    return super.loadPageInternal({
       pagination,
       filters,
       url: {

@@ -1,14 +1,20 @@
 <template>
   <div>
     <h2 class="headline">
-      Budget ($)
+      Budget
     </h2>
-    <v-layout row>
-      <v-flex>
+    <v-row
+      no-gutters
+      align="center"
+    >
+      <v-col>
         <!-- v-model="$v.amount_budget_project.$model" -->
         <!-- v-on:input="amount_budget_project = $event" -->
-        <v-layout align-center>
-          <v-flex>
+        <v-row
+          align="center"
+          no-gutters
+        >
+          <v-col>
             <v-text-field
               type="number"
               min="1"
@@ -22,16 +28,18 @@
                 amountBudgetProject = tryInteger($event);
                 $v.amountBudgetProject.$touch();
               "
-            ></v-text-field>
-          </v-flex>
-          <v-flex shrink>
-            <div slot="append" class="text-no-wrap">
+            />
+          </v-col>
+          <v-col class="shrink">
+            <div
+              class="text-no-wrap"
+            >
               ct, in Dollar: {{ amount_formatted(amountBudgetProject, 'unlimited') }}
             </div>
-          </v-flex>
-        </v-layout>
-      </v-flex>
-      <v-flex shrink>
+          </v-col>
+        </v-row>
+      </v-col>
+      <v-col class="pl-3 shrink">
         <v-btn
           v-bind:disabled="$v.$invalid"
           color="primary"
@@ -39,8 +47,8 @@
         >
           Update
         </v-btn>
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
 
     <v-snackbar
       v-model="snackbar_updated"

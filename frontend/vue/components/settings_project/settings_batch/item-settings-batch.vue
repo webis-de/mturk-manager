@@ -24,7 +24,7 @@
       v-bind:style="stylesCell"
       class="text-xs-right"
     >
-      <base-display-amount v-bind:amount="settingsBatch.reward"></base-display-amount>
+      <base-display-amount v-bind:amount="settingsBatch.reward" />
     </td>
 
     <td
@@ -39,12 +39,12 @@
       class="text-xs-center"
     >
       <component-edit-settings-batch
-        v-bind:key="`edit-settings-batch-${props.item.id}`"
+        v-bind:key="`edit-settings-batch-${settingsBatch.id}`"
         v-bind:settings-batch-current="settingsBatch"
         v-on:edited="$emit('edited')"
       />
       <component-delete-settings-batch
-        v-bind:key="`delete-settings-batch-${props.item.id}`"
+        v-bind:key="`delete-settings-batch-${settingsBatch.id}`"
         v-bind:settings-batch-current="settingsBatch"
         v-on:deleted="$emit('deleted')"
       />
@@ -61,7 +61,7 @@ export default {
   name: 'ItemSettingsBatch',
   components: {BaseDisplayAmount, ComponentDeleteSettingsBatch, ComponentEditSettingsBatch },
   props: {
-    props: {
+    item: {
       type: Object,
       required: true,
     },
@@ -74,7 +74,7 @@ export default {
     return {};
   },
   computed: {
-    settingsBatch() { return this.props.item; },
+    settingsBatch() { return this.item; },
     stylesCell() {
       if (this.isCondensed) {
         return {

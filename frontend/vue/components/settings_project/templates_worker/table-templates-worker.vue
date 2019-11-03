@@ -1,6 +1,8 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <div>
     <base-table
+      title="Worker templates"
+
       name-vuex-module="moduleTemplates"
       name-state-pagination="paginationWorker"
       name-local-storage-pagination="pagination_templates_worker"
@@ -9,13 +11,15 @@
       v-bind:array-items="arrayItems"
 
       name-state-columns="arrayColumnsWorker"
-      name-state-columns-selected="array_columns_selected_general"
+      name-state-columns-selected="objectColumnsSelectedInitialGeneral"
+
+      v-bind:show-select="false"
     >
       <template
-        v-slot:default="{ props, array_columns_selected, isCondensed }"
+        v-slot:default="{ item, isCondensed }"
       >
         <item-templates-worker
-          v-bind:props="props"
+          v-bind:item="item"
           v-bind:is-condensed="isCondensed"
 
           v-on:edited="snackbarEdited = true"
@@ -89,9 +93,11 @@ export default {
     };
   },
   computed: {
-    ...mapState('moduleTemplates', {
-      arrayItems: 'arrayItemsWorker',
-    }),
+    arrayItems() {
+      const { arrayItemsWorker } = this.$store.state.moduleTemplates;
+
+      return arrayItemsWorker === null ? [] : arrayItemsWorker;
+    },
     ...mapState('moduleTemplates', {
       paginationComputed: 'paginationWorker',
     }),

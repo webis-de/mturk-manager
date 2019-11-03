@@ -1,14 +1,14 @@
 <template>
   <tr
-    v-bind:key="this.props.item.id"
+    v-bind:key="this.item.id"
     class="text-no-wrap"
   >
     <base-table-cell
       v-slot="{ item }"
       name="message"
       class="text-xs-left"
-      v-bind:item="this.props.item"
-      v-bind:columns-selected="columnsSelected"
+      v-bind:item="this.item"
+      v-bind:columns-selected="objectColumnsSelected"
       v-bind:is-condensed="isCondensed"
     >
       {{ item.message }}
@@ -18,8 +18,8 @@
       v-slot="{ item }"
       name="count_usage"
       class="text-xs-right"
-      v-bind:item="this.props.item"
-      v-bind:columns-selected="columnsSelected"
+      v-bind:item="this.item"
+      v-bind:columns-selected="objectColumnsSelected"
       v-bind:is-condensed="isCondensed"
     >
       {{ item.count_usage }}
@@ -29,8 +29,8 @@
       v-slot="{ item }"
       name="actions"
       class="text-xs-right"
-      v-bind:item="this.props.item"
-      v-bind:columns-selected="columnsSelected"
+      v-bind:item="this.item"
+      v-bind:columns-selected="objectColumnsSelected"
       v-bind:is-condensed="isCondensed"
     >
       <message-make-default
@@ -55,11 +55,11 @@ export default {
   name: 'ItemMessagesReject',
   components: { MessageMakeDefault, BaseDeleteMessage, BaseTableCell },
   props: {
-    props: {
+    item: {
       required: true,
     },
-    arrayColumnsSelected: {
-      type: Array,
+    objectColumnsSelected: {
+      type: Object,
       required: true,
     },
     isCondensed: {
@@ -68,12 +68,6 @@ export default {
     },
   },
   computed: {
-    columnsSelected() {
-      return this.arrayColumnsSelected.reduce((accumulator, column) => {
-        accumulator[column] = column;
-        return accumulator;
-      }, {});
-    },
   },
 };
 </script>

@@ -1,6 +1,6 @@
 import Vuetify from 'vuetify/lib';
 import localforage from 'localforage';
-import colors from 'vuetify/lib/util/colors'
+import colors from 'vuetify/lib/util/colors';
 
 export const vuetify = new Vuetify({
   theme: {

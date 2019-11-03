@@ -25,8 +25,8 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" flat v-on:click.native="cancel">Cancel</v-btn>
-              <v-btn color="blue darken-1" flat v-on:click.native="add_or_edit_policy">Save</v-btn>
+              <v-btn color="blue darken-1" text v-on:click.native="cancel">Cancel</v-btn>
+              <v-btn color="blue darken-1" text v-on:click.native="add_or_edit_policy">Save</v-btn>
             </v-card-actions>
         </v-card>
     </v-dialog> -->

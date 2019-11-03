@@ -1,19 +1,22 @@
 <template>
   <v-dialog v-model="dialog" max-width="80%" persistent>
+    <template v-slot:activator="{ on }">
     <v-btn
-      slot="activator"
+      v-on="on"
       class="my-0"
       icon
       small
     >
-      <v-icon color="warning">edit</v-icon>
+      <v-icon color="warning">mdi-pencil</v-icon>
     </v-btn>
+    </template>
+
     <v-card>
       <v-card-title>
         <span class="headline">Edit Global Template</span>
         <v-spacer></v-spacer>
         <v-btn icon v-on:click="dialog = false">
-          <v-icon>close</v-icon>
+          <v-icon>mdi-close</v-icon>
         </v-btn>
       </v-card-title>
       <v-card-text>
@@ -44,7 +47,7 @@
 
       <v-card-actions>
         <v-btn
-          flat
+          text
           class="ml-0"
           color="înfo"
           v-on:click="
@@ -56,7 +59,7 @@
         >
         <v-spacer></v-spacer>
         <v-btn
-          flat
+          text
           class="ml-0"
           color="primary"
           v-on:click="update()"
@@ -65,7 +68,7 @@
         >
 
         <v-btn
-          flat
+          text
           class="ml-0"
           color="success"
           v-on:click="update(true)"
@@ -84,7 +87,7 @@
 	>
 	    Saved!
 	    <v-btn
-	        flat
+	        text
 	        v-on:click="show_snackbar = false"
 	    >
 	        Close

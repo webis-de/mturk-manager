@@ -95,7 +95,7 @@
                 <v-flex>
                   <v-btn
                     class="mx-3"
-                    flat
+                    text
                     large
                     v-on:click="is_creating_batch = false"
                   >

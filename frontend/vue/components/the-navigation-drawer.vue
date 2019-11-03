@@ -55,6 +55,20 @@ export default {
           name: 'tasks',
           label: 'Tasks',
           icon: 'mdi-note-multiple',
+          children: [
+            {
+              name: 'batches',
+              label: 'Batches',
+            },
+            {
+              name: 'hits',
+              label: 'HITs',
+            },
+            {
+              name: 'assignments',
+              label: 'Assignments',
+            },
+          ],
         },
         {
           name: 'finances',

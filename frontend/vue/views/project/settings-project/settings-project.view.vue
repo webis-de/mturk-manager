@@ -1,6 +1,6 @@
 <template>
-  <v-layout>
-    <v-flex>
+  <v-row no-gutters>
+    <v-col>
       <v-tabs
         v-bind:value="$route.meta.index"
         v-on:change="changedView($event)"
@@ -15,146 +15,127 @@
           Messages
         </v-tab>
 
-        <v-tabs-items class="mt-1">
+        <v-tabs-items
+          class="mt-1"
+          v-bind:value="$route.meta.index"
+        >
           <v-tab-item
             key="general"
-            lazy
           >
             <v-container
               fluid
-              grid-list-md
               class="pa-0"
             >
-              <v-layout wrap>
-                <v-flex xs>
+              <v-row>
+                <v-col xs>
                   <v-card class="pa-2">
                     <budget />
                   </v-card>
-                </v-flex>
-                <v-flex xs>
+                </v-col>
+                <v-col xs>
                   <v-card class="pa-2">
                     <component-block-limit />
                   </v-card>
-                </v-flex>
-              </v-layout>
+                </v-col>
+              </v-row>
 
-              <v-layout wrap>
-                <v-flex
+              <v-row wrap>
+                <v-col
                   xs
                 >
                   <v-card class="pa-2">
-                    <h2 class="headline">
-                      Batch Profiles
-                    </h2>
                     <table-settings-batch />
                   </v-card>
-                </v-flex>
-              </v-layout>
+                </v-col>
+              </v-row>
 
-              <v-layout wrap>
-                <v-flex shrink>
+              <v-row wrap>
+                <v-col shrink>
                   <v-card class="pa-2">
                     <h2 class="headline">
                       Sandbox
                     </h2>
                     <component-clear-sandbox />
                   </v-card>
-                </v-flex>
+                </v-col>
 
-                <v-flex shrink>
+                <v-col shrink>
                   <v-card class="pa-2">
                     <h2 class="headline">
                       Import from MTurk
                     </h2>
-                    <import-batch/>
+                    <import-batch />
                   </v-card>
-                </v-flex>
-              </v-layout>
+                </v-col>
+              </v-row>
             </v-container>
           </v-tab-item>
 
           <v-tab-item
             key="templates"
-            lazy
           >
             <v-container
               fluid
               grid-list-md
               class="pa-0"
             >
-              <v-layout wrap>
-                <v-flex xs>
+              <v-row wrap>
+                <v-col xs>
                   <v-card class="pa-2">
-                    <h2 class="headline">
-                      Worker Templates
-                    </h2>
                     <table-templates-worker />
                   </v-card>
-                </v-flex>
-              </v-layout>
+                </v-col>
+              </v-row>
 
-              <v-layout wrap>
-                <v-flex>
+              <v-row wrap>
+                <v-col>
                   <v-card class="pa-2">
-                    <h2 class="headline">
-                      Assignment Templates
-                    </h2>
                     <table-templates-assignment />
                   </v-card>
-                </v-flex>
-              </v-layout>
+                </v-col>
+              </v-row>
 
-              <v-layout wrap>
-                <v-flex>
+              <v-row wrap>
+                <v-col>
                   <v-card class="pa-2">
-                    <h2 class="headline">
-                      HIT Templates
-                    </h2>
                     <table-templates-hit />
                   </v-card>
-                </v-flex>
-              </v-layout>
+                </v-col>
+              </v-row>
 
-              <v-layout wrap>
-                <v-flex>
+              <v-row wrap>
+                <v-col>
                   <v-card class="pa-2">
-                    <h2 class="headline">
-                      Global Templates
-                    </h2>
                     <table-templates-global />
                   </v-card>
-                </v-flex>
-              </v-layout>
+                </v-col>
+              </v-row>
             </v-container>
           </v-tab-item>
 
           <v-tab-item
             key="messages"
-            lazy
           >
             <v-container
               fluid
               grid-list-md
               class="pa-0"
             >
-              <v-layout wrap>
-                <v-flex xs>
+              <v-row wrap>
+                <v-col xs>
                   <v-card class="pa-2">
-                    <h2 class="headline">
-                      Reject Messages
-                    </h2>
                     <table-messages-reject />
                   </v-card>
-                </v-flex>
-              </v-layout>
+                </v-col>
+              </v-row>
 
-              <v-layout wrap />
+              <v-row wrap />
             </v-container>
           </v-tab-item>
         </v-tabs-items>
       </v-tabs>
-    </v-flex>
-  </v-layout>
+    </v-col>
+  </v-row>
 <!--  <div>-->
 <!--    <v-layout wrap>-->
 <!--      <v-flex xs class="pa-1">-->

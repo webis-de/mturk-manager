@@ -45,7 +45,9 @@ export default {
   },
   methods: {
     click() {
-      this.$router.push(this.to);
+      if (this.to !== null) {
+        this.$router.push(this.to);
+      }
     },
   },
 };

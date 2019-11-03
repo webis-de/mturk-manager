@@ -2,7 +2,7 @@ import { Service_Endpoint } from './service_endpoint';
 import { store } from '../store/vuex';
 
 export class BaseLoadPageService {
-  static async loadPage({ pagination, filters, method = 'get', url, callback}) {
+  static async loadPageInternal({ pagination, filters, method = 'get', url, callback}) {
     const response = await Service_Endpoint.make_request({
       method,
       url,

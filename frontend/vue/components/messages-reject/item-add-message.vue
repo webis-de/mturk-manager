@@ -1,12 +1,14 @@
 <template>
   <v-dialog v-model="dialog">
-    <v-btn
-      slot="activator"
-      color="primary"
-      small
-    >
-      <v-icon>add</v-icon> Add Message
-    </v-btn>
+    <template v-slot:activator="{ on }">
+      <v-btn
+        v-on="on"
+        color="primary"
+        small
+      >
+        <v-icon>mdi-plus</v-icon> Add Message
+      </v-btn>
+    </template>
 
     <v-card>
       <v-card-title>
@@ -19,7 +21,7 @@
           icon
           v-on:click="dialog = false"
         >
-          <v-icon>close</v-icon>
+          <v-icon>mdi-close</v-icon>
         </v-btn>
       </v-card-title>
       <v-card-text>

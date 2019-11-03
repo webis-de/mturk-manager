@@ -27,17 +27,17 @@ export const moduleSettingsBatch = _.merge({}, baseModule, {
       {
         text: 'Name',
         value: 'name',
-        classes: ['text-xs-left', 'pl-3'],
+        classes: ['text-left', 'pl-3'],
       },
       {
         text: 'Title',
         value: 'title',
-        classes: ['text-xs-left'],
+        classes: ['text-left'],
       },
       {
         text: 'Reward',
         value: 'reward',
-        classes: ['text-xs-right'],
+        classes: ['text-right'],
       },
       {
         text: 'Block Workers',
@@ -50,13 +50,13 @@ export const moduleSettingsBatch = _.merge({}, baseModule, {
         width: '10%',
       },
     ],
-    array_columns_selected_general: [
-      'name',
-      'title',
-      'reward',
-      'block_workers',
-      'actions',
-    ],
+    objectColumnsSelectedInitialGeneral: {
+      name: true,
+      title: true,
+      reward: true,
+      block_workers: true,
+      actions: true,
+    },
   },
   getters: {
   },

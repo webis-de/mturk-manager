@@ -52,7 +52,7 @@
         <!-- <v-card-actions>
             	<v-btn
             		color="primary"
-            		flat
+            		text
             		v-on:click="dialog=false"
         		>Close</v-btn>
           	</v-card-actions> -->
@@ -70,7 +70,7 @@
       bottom
     >
       Updated
-      <v-btn flat v-on:click="show_snackbar = false">
+      <v-btn text v-on:click="show_snackbar = false">
         Close
       </v-btn>
     </v-snackbar>

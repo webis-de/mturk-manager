@@ -2,26 +2,27 @@
   <v-dialog
     v-model="dialog"
     max-width="1000"
-    lazy
   >
-    <v-btn
-      slot="activator"
-      color="primary"
-      class="ml-0"
-    >
-      <v-icon left>
-        cloud_upload
-      </v-icon>
-      Import CSV
-    </v-btn>
+    <template v-slot:activator="{ on }">
+      <v-btn
+        v-on="on"
+        color="primary"
+        class="ml-0"
+      >
+        <v-icon left>
+          mdi-cloud-upload
+        </v-icon>
+        Import CSV
+      </v-btn>
+    </template>
 
     <v-card>
       <v-container
         fluid
         pa-0
       >
-        <v-layout>
-          <v-flex xs>
+        <v-row>
+          <v-col xs>
             <v-card-title>
               <span class="headline">Import from MTurk</span>
               <v-spacer />
@@ -29,13 +30,13 @@
                 icon
                 v-on:click="dialog = false"
               >
-                <v-icon>close</v-icon>
+                <v-icon>mdi-close</v-icon>
               </v-btn>
             </v-card-title>
 
             <v-card-text>
-              <v-layout>
-                <v-flex shrink>
+              <v-row>
+                <v-col shrink>
                   <!--              {{ statistics }}-->
                   <upload-button
                     ref="upload-button"
@@ -45,11 +46,11 @@
                   >
                     <template v-slot:icon-left>
                       <v-icon left>
-                        attachment
+                        mdi-attachment
                       </v-icon>
                     </template>
                   </upload-button>
-                </v-flex>
+                </v-col>
                 <!--                <v-flex>-->
                 <!--                  <v-btn-->
 
@@ -58,24 +59,24 @@
                 <!--                    Upload-->
                 <!--                  </v-btn>-->
                 <!--                </v-flex>-->
-              </v-layout>
+              </v-row>
             </v-card-text>
 
             <v-card-text
               v-if="info !== null"
               class="px-4"
             >
-              <v-layout>
-                <v-flex xs6>
+              <v-row>
+                <v-col xs6>
                   <v-text-field
                     v-model="nameBatch"
                     label="Batch Name"
                   />
-                </v-flex>
-              </v-layout>
+                </v-col>
+              </v-row>
 
-              <v-layout>
-                <v-flex xs6>
+              <v-row>
+                <v-col xs6>
                   <v-select
                     v-model="templateWorker"
                     v-bind:items="$store.state.moduleTemplates.arrayItemsWorkerAll"
@@ -84,29 +85,29 @@
                     item-value="id"
                     dense
                   />
-                </v-flex>
-              </v-layout>
+                </v-col>
+              </v-row>
 
-              <v-layout v-if="countSettingsBatch === 0">
-                <v-flex xs6>
+              <v-row v-if="countSettingsBatch === 0">
+                <v-col xs6>
                   <v-text-field
                     v-model="nameSettingsBatch"
                     label="Batch Profile Name"
                   />
-                </v-flex>
-              </v-layout>
+                </v-col>
+              </v-row>
 
-              <v-layout
+              <v-row
                 v-for="item in info"
                 v-bind:key="item.label"
               >
-                <v-flex xs3>
+                <v-col xs3>
                   {{ item.label }}
-                </v-flex>
-                <v-flex>
+                </v-col>
+                <v-col>
                   {{ item.value }}
-                </v-flex>
-              </v-layout>
+                </v-col>
+              </v-row>
               <v-btn
                 slot="activator"
                 color="primary"
@@ -124,14 +125,14 @@
             <v-card-actions>
               <v-spacer />
               <!--        <v-btn-->
-              <!--          flat-->
+              <!--          text-->
               <!--          color="warning"-->
               <!--        >-->
               <!--          Clear-->
               <!--        </v-btn>-->
             </v-card-actions>
-          </v-flex>
-        </v-layout>
+          </v-col>
+        </v-row>
       </v-container>
     </v-card>
   </v-dialog>
@@ -191,12 +192,12 @@ export default {
     },
   },
   created() {
-    Service_Templates.loadPageWorker({
-
-    }, {
-      fields: ['id', 'name'],
-    }, 'arrayItemsWorkerAll').then((data) => {
-    });
+    // Service_Templates.loadPageWorker({
+    //
+    // }, {
+    //   fields: ['id', 'name'],
+    // }, 'arrayItemsWorkerAll').then((data) => {
+    // });
   },
   methods: {
     importBatches() {

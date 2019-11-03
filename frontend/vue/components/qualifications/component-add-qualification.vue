@@ -86,7 +86,7 @@
         <v-spacer></v-spacer>
         <v-btn
           color="blue darken-1"
-          flat
+          text
           v-bind:disabled="is_creating"
           v-on:click.native="clear"
           >Cancel</v-btn
@@ -94,7 +94,7 @@
         <v-btn
           color="blue darken-1"
           v-bind:loading="is_creating"
-          flat
+          text
           v-on:click.native="save"
           >Save</v-btn
         >

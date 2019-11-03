@@ -104,7 +104,7 @@
             <!--</span>-->
             <!--<v-btn-->
               <!--small-->
-              <!--flat-->
+              <!--text-->
               <!--class="ma-0"-->
               <!--color="primary"-->
               <!--v-on:click.stop="resetFilters()"-->

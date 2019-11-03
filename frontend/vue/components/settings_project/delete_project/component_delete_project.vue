@@ -21,7 +21,7 @@
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn flat color="error" v-on:click="confirm">Delete</v-btn>
+          <v-btn text color="error" v-on:click="confirm">Delete</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

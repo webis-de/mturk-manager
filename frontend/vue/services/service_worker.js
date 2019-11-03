@@ -159,10 +159,10 @@ class Class_Service_Workers extends BaseLoadPageService {
     });
   }
 
-  async load_page(pagination, filters) {
+  async loadPage(pagination, filters) {
     const useSandbox = store.state.module_app.use_sandbox;
 
-    return Class_Service_Workers.loadPage({
+    return Class_Service_Workers.loadPageInternal({
       pagination,
       filters,
       url: {

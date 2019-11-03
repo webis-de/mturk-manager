@@ -1,8 +1,13 @@
 <template>
   <div>
-    <h2 class="headline">Limit Block</h2>
-    <v-layout row>
-      <v-flex>
+    <h2 class="headline">
+      Limit Block
+    </h2>
+    <v-row
+      align="center"
+      no-gutters
+    >
+      <v-col>
         <!-- v-model="$v.count_assignments_max_per_worker.$model" -->
         <!-- v-on:input="count_assignments_max_per_worker = $event" -->
         <v-text-field
@@ -18,14 +23,14 @@
           v-bind:error-messages="
             validation_errors.count_assignments_max_per_worker
           "
-        ></v-text-field>
-      </v-flex>
-      <v-flex shrink>
+        />
+      </v-col>
+      <v-col class="pl-3 shrink">
         <v-btn v-bind:disabled="$v.$invalid" color="primary" v-on:click="save"
           >Update</v-btn
         >
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
 
     <v-snackbar
       v-model="snackbar_updated"

@@ -23,7 +23,7 @@
       bottom
     >
       Updated
-      <v-btn flat v-on:click="show_snackbar = false">
+      <v-btn text v-on:click="show_snackbar = false">
         Close
       </v-btn>
     </v-snackbar>

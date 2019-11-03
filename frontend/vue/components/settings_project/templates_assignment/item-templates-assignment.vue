@@ -37,7 +37,7 @@ export default {
   name: 'ItemTemplatesAssignment',
   components: {ComponentDeleteTemplateAssignment, ComponentEditTemplateAssignment},
   props: {
-    props: {
+    item: {
       type: Object,
       required: true,
     },
@@ -47,7 +47,7 @@ export default {
     },
   },
   computed: {
-    templateAssignment() { return this.props.item; },
+    templateAssignment() { return this.item; },
     stylesCell() {
       if (this.isCondensed) {
         return {
