@@ -75,16 +75,16 @@ class Interface_Manager_Items(object):
         raise_not_implemented_exception('delete', __class__)
 
     @staticmethod
-    def filter_value(queryset: QuerySet, request: Request, name_filter: str, name_field: str):
+    def filter_value(queryset: QuerySet, request: Request, name_filter: str, name_field: str, name_lookup: str = 'exact'):
         value = request.query_params.get(name_filter)
         if value is not None:
             if json.loads(request.query_params.get('{name_filter}Exclude'.format(name_filter=name_filter), 'false')):
                 queryset = queryset.exclude(**{
-                    name_field: value
+                    '{}__{}'.format(name_field, name_lookup): value
                 })
             else:
                 queryset = queryset.filter(**{
-                    name_field: value
+                    '{}__{}'.format(name_field, name_lookup): value
                 })
 
         return queryset
@@ -103,6 +103,20 @@ class Interface_Manager_Items(object):
                 })
 
         return queryset
+    # @staticmethod
+    # def filter_boolean(queryset: QuerySet, request: Request, name_filter: str, name_field: str):
+    #     value = request.query_params.get(name_filter)
+    #     if value is not None:
+    #         if json.loads(request.query_params.get('{name_filter}Exclude'.format(name_filter=name_filter), 'false')):
+    #             queryset = queryset.exclude(**{
+    #                 name_field: json.loads(value)
+    #             })
+    #         else:
+    #             queryset = queryset.filter(**{
+    #                 name_field: json.loads(value)
+    #             })
+    #
+    #     return queryset
 
     #
     @staticmethod
@@ -120,4 +134,4 @@ class Interface_Manager_Items(object):
                     '{name_field}__in'.format(name_field=name_field): items_selected
                 })
 
-        return queryset
+        return queryset.distinct()
