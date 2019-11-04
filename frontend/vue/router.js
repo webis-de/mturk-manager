@@ -26,10 +26,13 @@ const ViewAbout = () => import(/* webpackChunkName: "about" */ './views/about/ab
 const ViewAdmin = () => import(/* webpackChunkName: "admin" */ './views/admin/admin.view');
 const ViewWorkers = () => import(/* webpackChunkName: "workers" */ './views/project/workers/workers.view');
 const ViewFinances = () => import(/* webpackChunkName: "finances" */ './views/project/finances/finances.view');
+const ViewAssignment = () => import(/* webpackChunkName: "assignments" */ './views/project/tasks/assignments/assignment.view');
+const ViewHIT = () => import(/* webpackChunkName: "hits" */ './views/project/tasks/hits/hit.view');
+const ViewBatch = () => import(/* webpackChunkName: "batches" */ './views/project/tasks/batches/batch.view');
 const ViewAssignments = () => import(/* webpackChunkName: "assignments" */ './views/project/tasks/assignments/assignments.view');
 const ViewHITs = () => import(/* webpackChunkName: "hits" */ './views/project/tasks/hits/hits.view');
 const ViewBatches = () => import(/* webpackChunkName: "batches" */ './views/project/tasks/batches/batches.view');
-const ViewTasks = () => import(/* webpackChunkName: "tasks" */ './views/project/tasks/tasks.view');
+// const ViewTasks = () => import(/* webpackChunkName: "tasks" */ './views/project/tasks/tasks.view');
 const ViewProject = () => import(/* webpackChunkName: "project" */ './views/project/project.view');
 const ViewSettingsProject = () => import(/* webpackChunkName: "settings-project" */ './views/project/settings-project/settings-project.view');
 
@@ -128,7 +131,7 @@ const routes = [
                   name: 'Batches',
                   index: 0,
                 },
-                component: ViewTasks,
+                component: ViewBatches,
                 props: parse_params,
                 children: [
                   {
@@ -137,7 +140,7 @@ const routes = [
                     meta: {
                       name: null,
                     },
-                    component: ViewBatches,
+                    component: ViewBatch,
                     props: parse_params,
                   },
                 ],
@@ -149,7 +152,7 @@ const routes = [
                   name: 'HITs',
                   index: 1,
                 },
-                component: ViewTasks,
+                component: ViewHITs,
                 props: parse_params,
                 children: [
                   {
@@ -158,7 +161,7 @@ const routes = [
                     meta: {
                       name: null,
                     },
-                    component: ViewHITs,
+                    component: ViewHIT,
                     props: parse_params,
                   },
                 ],
@@ -170,7 +173,7 @@ const routes = [
                   name: 'Assignments',
                   index: 2,
                 },
-                component: ViewTasks,
+                component: ViewAssignments,
                 props: parse_params,
                 children: [
                   {
@@ -179,7 +182,7 @@ const routes = [
                     meta: {
                       name: null,
                     },
-                    component: ViewAssignments,
+                    component: ViewAssignment,
                     props: parse_params,
                   },
                 ],

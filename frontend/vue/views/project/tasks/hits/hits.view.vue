@@ -1,33 +1,21 @@
 <template>
-  <component-hit-detail
-    v-bind:id-hit="id"
-  />
+  <div>
+    <router-view />
+    <template
+      v-if="$route.params.id === undefined"
+    >
+      <v-card>
+        <list-hits />
+      </v-card>
+    </template>
+  </div>
 </template>
 
 <script>
-import ComponentHitDetail from '../../../../components/hits/detail/component_hit_detail.vue';
-import {mapMutations, mapState} from 'vuex';
+import ListHits from '../../../../components/hits/list/list-hits';
 
 export default {
   name: 'AppHits',
-  components: {
-    ComponentHitDetail,
-  },
-  props: {
-    id: {
-      required: true,
-      type: Number,
-    },
-  },
-  computed: {
-    ...mapState('moduleHITs', {
-      paginationComputed: 'paginationGeneral',
-    }),
-  },
-  methods: {
-    ...mapMutations('moduleHITs', {
-      functionSetPagination: 'setPaginationGeneral',
-    }),
-  },
+  components: { ListHits },
 };
 </script>

@@ -8,19 +8,57 @@
   >
     <!-- temporary -->
     <v-list>
-      <v-list-item
+      <template
         v-for="item_menu in list_items_menu"
-        v-bind:key="item_menu.name"
-        v-bind:to="{ name: item_menu.name }"
-        v-bind:exact="item_menu.name === 'dashboard'"
       >
-        <v-list-item-action>
-          <v-icon>{{ item_menu.icon }}</v-icon>
-        </v-list-item-action>
-        <v-list-item-content>
-          <v-list-item-title>{{ item_menu.label }}</v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
+        <v-list-item
+          v-if="item_menu.children === undefined"
+          v-bind:key="item_menu.name"
+          v-bind:to="{ name: item_menu.name }"
+          v-bind:exact="item_menu.name === 'dashboard'"
+        >
+          <v-list-item-action>
+            <v-icon>{{ item_menu.icon }}</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>{{ item_menu.label }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <!--
+          children
+        -->
+        <v-list-group
+          v-else
+          v-bind:key="`${item_menu.name}_children`"
+          v-bind:value="true"
+          disabled
+          no-action
+          color="white"
+          v-bind:ripple="false"
+          exact
+          class="navigation-drawer-list-group"
+        >
+          <template
+            v-slot:activator
+          >
+            <v-list-item-action>
+              <v-icon>{{ item_menu.icon }}</v-icon>
+            </v-list-item-action>
+            <v-list-item-title>{{ item_menu.label }}</v-list-item-title>
+          </template>
+
+          <v-list-item
+            v-for="child in item_menu.children"
+            v-bind:key="child.name"
+            v-bind:to="{ name: child.name }"
+            dense
+          >
+            <v-list-item-content class="pl-3">
+              <v-list-item-title>{{ child.label }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-group>
+      </template>
     </v-list>
   </v-navigation-drawer>
 </template>
@@ -57,15 +95,15 @@ export default {
           icon: 'mdi-note-multiple',
           children: [
             {
-              name: 'batches',
+              name: 'tasksBatches',
               label: 'Batches',
             },
             {
-              name: 'hits',
+              name: 'tasksHITs',
               label: 'HITs',
             },
             {
-              name: 'assignments',
+              name: 'tasksAssignments',
               label: 'Assignments',
             },
           ],
@@ -98,3 +136,9 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+  .navigation-drawer-list-group .v-list-item__icon.v-list-group__header__append-icon {
+    display: none;
+  }
+</style>

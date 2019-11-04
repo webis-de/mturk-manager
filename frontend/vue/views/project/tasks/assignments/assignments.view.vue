@@ -1,37 +1,26 @@
 <template>
-  <component-assignment-detail
-    v-bind:id_assignment="id"
-  />
+  <div>
+    <router-view />
+    <template
+      v-if="$route.params.id === undefined"
+    >
+      <v-card>
+        <list-assignments>
+          <template v-slot:actions>
+            <component-annotate />
+          </template>
+        </list-assignments>
+      </v-card>
+    </template>
+  </div>
 </template>
 
 <script>
-import ComponentAssignmentDetail from '../../../../components/assignments/detail/component_assignment_detail.vue';
-import {mapMutations, mapState} from 'vuex';
+import ListAssignments from '../../../../components/assignments/list/list-assignments';
+import ComponentAnnotate from '../../../../components/assignments/annotate/component_annotate';
 
 export default {
   name: 'AppAssignments',
-  components: {
-    ComponentAssignmentDetail,
-  },
-  props: {
-    id: {
-      required: true,
-      type: Number,
-    },
-  },
-  data() {
-    return {
-    };
-  },
-  computed: {
-    ...mapState('moduleAssignments', {
-      paginationComputed: 'paginationGeneral',
-    }),
-  },
-  methods: {
-    ...mapMutations('moduleAssignments', {
-      functionSetPagination: 'setPaginationGeneral',
-    }),
-  },
+  components: { ComponentAnnotate, ListAssignments },
 };
 </script>

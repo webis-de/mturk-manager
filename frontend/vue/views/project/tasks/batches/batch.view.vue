@@ -1,0 +1,39 @@
+<template>
+  <component-batch-detail
+    v-bind:id-batch="id"
+  />
+</template>
+
+<script>
+import {
+  mapState, mapMutations,
+} from 'vuex';
+
+import ComponentBatchDetail from '../../../../components/batches/detail/component_batch_detail.vue';
+
+export default {
+  name: 'AppBatch',
+  components: {
+    ComponentBatchDetail,
+  },
+  created() {
+    console.warn('123', 123);
+  },
+  props: {
+    id: {
+      required: true,
+      type: Number,
+    },
+  },
+  computed: {
+    ...mapState('moduleBatches', {
+      paginationComputed: 'paginationGeneral',
+    }),
+  },
+  methods: {
+    ...mapMutations('moduleBatches', {
+      functionSetPagination: 'setPaginationGeneral',
+    }),
+  },
+};
+</script>
