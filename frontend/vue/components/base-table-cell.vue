@@ -5,11 +5,13 @@
   >
     <slot
       v-bind:item="item"
-    />
+    ></slot>
   </td>
 </template>
 
 <script>
+import { classesHeaders } from '../helpers';
+
 export default {
   name: 'BaseTableCell',
   props: {
@@ -37,6 +39,11 @@ export default {
         'hidden-sm-and-up': !this.show,
         'hidden-xs-only': !this.show,
         'pointer-underline': this.to !== null,
+        'px-0': true,
+        ...classesHeaders.reduce((obj, value) => {
+          obj[value] = true;
+          return obj;
+        }, {}),
       };
     },
     show() {

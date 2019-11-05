@@ -106,3 +106,5 @@ export function getHeight() {
     document.documentElement.clientHeight,
   );
 }
+
+export const classesHeaders = ['px-1', 'text-no-wrap'];

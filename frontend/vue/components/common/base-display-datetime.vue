@@ -32,10 +32,10 @@ export default {
       return format(this.datetime, this.templateFormat);
     },
     templateFormat() {
-      let templateFormat = 'MMM D, YYYY H:mm A';
+      let templateFormat = 'MMM DD, YYYY H:mm A';
 
       if (this.onlyDate === true) {
-        templateFormat = 'MMM D, YYYY';
+        templateFormat = 'MMM DD, YYYY';
       }
 
       return templateFormat;

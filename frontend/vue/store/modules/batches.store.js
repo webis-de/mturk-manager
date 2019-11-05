@@ -2,7 +2,7 @@ import Vue from 'vue';
 import _ from 'lodash';
 import localforage from 'localforage';
 import Batch from '../../classes/batch';
-import { setPagination } from '../../helpers';
+import {classesHeaders, setPagination} from '../../helpers';
 import baseModule from './base.module';
 
 export const moduleBatches = _.merge({}, baseModule, {
@@ -47,55 +47,78 @@ export const moduleBatches = _.merge({}, baseModule, {
       {
         value: 'name',
         text: 'Name',
-        classes: ['text-left'],
+        class: classesHeaders,
       },
       {
         text: '#HITs',
         value: 'count_hits',
-        align: 'center',
+        align: 'end',
+        class: classesHeaders,
+        width: '1px',
       },
       {
         text: 'Creation',
         value: 'datetime_creation',
-        align: 'center',
+        align: 'end',
+        class: classesHeaders,
+        width: '1px',
       },
       {
         text: '#Assignments Per HIT',
         value: 'settings_batch__count_assignments',
-        align: 'center',
+        align: 'end',
+        class: classesHeaders,
+        width: '1px',
       },
       {
         text: 'Reward',
         value: 'settings_batch__reward',
-        align: 'center',
+        align: 'end',
+        class: classesHeaders,
+        width: '1px',
       },
       {
-        text: '#Assignments',
+        text: 'Assignments',
         value: 'count_assignments_total',
+        align: 'end',
+        class: classesHeaders,
+        width: '1px',
       },
       {
         text: '#Approved assignments',
         value: 'count_assignments_approved',
+        align: 'end',
+        class: classesHeaders,
+        width: '1px',
       },
       {
         text: '#Rejected assignments',
         value: 'count_assignments_rejected',
+        align: 'end',
+        class: classesHeaders,
+        width: '1px',
       },
       {
         text: 'Max costs',
         value: 'costs_max',
-        align: 'right',
+        align: 'end',
+        class: classesHeaders,
+        width: '1px',
       },
       {
         text: 'Costs So Far',
         value: 'costs_so_far',
-        align: 'right',
+        align: 'end',
+        class: classesHeaders,
+        width: '1px',
       },
       {
         text: 'Progress',
         value: 'progress',
-        align: 'center',
+        align: 'end',
         sortable: false,
+        class: classesHeaders,
+        width: '1px',
       },
       // {
       //   text: '',
