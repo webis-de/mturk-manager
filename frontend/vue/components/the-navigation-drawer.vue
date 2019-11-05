@@ -33,7 +33,7 @@
           v-bind:value="true"
           disabled
           no-action
-          color="white"
+          color="light"
           v-bind:ripple="false"
           exact
           class="navigation-drawer-list-group"
