@@ -223,7 +223,7 @@ const routes = [
                 path: 'general',
                 name: 'projectSettingsGeneral',
                 meta: {
-                  name: 'Project Settings',
+                  name: 'General Settings',
                   index: 0,
                 },
                 component: ViewSettingsProject,
@@ -233,7 +233,7 @@ const routes = [
                 path: 'templates',
                 name: 'projectSettingsTemplates',
                 meta: {
-                  name: 'Project Settings',
+                  name: 'Template Settings',
                   index: 1,
                 },
                 component: ViewSettingsProject,
@@ -243,7 +243,7 @@ const routes = [
                 path: 'messages',
                 name: 'projectSettingsMessages',
                 meta: {
-                  name: 'Project Settings',
+                  name: 'Message Settings',
                   index: 2,
                 },
                 component: ViewSettingsProject,
