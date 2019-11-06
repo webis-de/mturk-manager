@@ -31,7 +31,7 @@
     <base-table-cell
       v-slot="{ item }"
       name="batch"
-      class="text-left"
+      class="text-right"
       v-bind:item="hit"
       v-bind:columns-selected="objectColumnsSelected"
       v-bind:to="{
@@ -47,7 +47,7 @@
     <base-table-cell
       v-slot="{ item }"
       name="datetime_creation"
-      class="text-center"
+      class="text-right"
       v-bind:item="hit"
       v-bind:columns-selected="objectColumnsSelected"
     >
@@ -59,7 +59,7 @@
     <base-table-cell
       v-slot="{ item }"
       name="progress"
-      class="text-center"
+      class="text-right"
       v-bind:item="hit"
       v-bind:columns-selected="objectColumnsSelected"
     >

@@ -4,7 +4,7 @@ import localforage from 'localforage';
 import HIT from '../../classes/hit.js';
 
 import Batch from '../../classes/batch';
-import {initPagination, setPagination} from '../../helpers';
+import {classesHeaders, initPagination, setPagination} from '../../helpers';
 import baseModule from './base.module';
 
 export const moduleHITs = _.merge({}, baseModule, {
@@ -37,22 +37,29 @@ export const moduleHITs = _.merge({}, baseModule, {
       {
         text: 'ID',
         value: 'id_hit',
-        classes: ['text-left'],
+        class: classesHeaders,
       },
       {
         text: 'Batch',
         value: 'batch',
-        classes: ['text-left'],
+        align: 'end',
+        class: classesHeaders,
+        width: '1px',
       },
       {
         text: 'Creation',
         value: 'datetime_creation',
+        align: 'end',
+        class: classesHeaders,
+        width: '1px',
       },
       {
         text: 'Progress',
         value: 'progress',
-        align: 'center',
+        align: 'end',
         sortable: false,
+        class: classesHeaders,
+        width: '1px',
       },
       // {
       //   text: '',

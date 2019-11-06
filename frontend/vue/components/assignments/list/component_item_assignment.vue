@@ -122,7 +122,8 @@
       />
       <v-btn
         small
-        text
+        icon
+        class="px-0"
         color="primary"
         v-on:click="annotate"
       >

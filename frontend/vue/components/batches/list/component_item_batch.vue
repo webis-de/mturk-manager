@@ -41,7 +41,7 @@
     <base-table-cell
       v-slot="{ item }"
       name="datetime_creation"
-      class="text-center"
+      class="text-right"
       v-bind:item="batch"
       v-bind:columns-selected="objectColumnsSelected"
     >

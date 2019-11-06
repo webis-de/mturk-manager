@@ -50,7 +50,7 @@ export const moduleBatches = _.merge({}, baseModule, {
         class: classesHeaders,
       },
       {
-        text: '#HITs',
+        text: 'HITs',
         value: 'count_hits',
         align: 'end',
         class: classesHeaders,
@@ -64,7 +64,7 @@ export const moduleBatches = _.merge({}, baseModule, {
         width: '1px',
       },
       {
-        text: '#Assignments Per HIT',
+        text: 'Assignments',
         value: 'settings_batch__count_assignments',
         align: 'end',
         class: classesHeaders,
@@ -78,21 +78,21 @@ export const moduleBatches = _.merge({}, baseModule, {
         width: '1px',
       },
       {
-        text: 'Assignments',
+        text: 'Total Assignments',
         value: 'count_assignments_total',
         align: 'end',
         class: classesHeaders,
         width: '1px',
       },
       {
-        text: '#Approved assignments',
+        text: 'Approved assignments',
         value: 'count_assignments_approved',
         align: 'end',
         class: classesHeaders,
         width: '1px',
       },
       {
-        text: '#Rejected assignments',
+        text: 'Rejected assignments',
         value: 'count_assignments_rejected',
         align: 'end',
         class: classesHeaders,

@@ -4,7 +4,7 @@ import localforage from 'localforage';
 import Assignment from '../../classes/assignment.js';
 
 import HIT from '../../classes/hit';
-import { initPagination, setPagination } from '../../helpers';
+import {classesHeaders, initPagination, setPagination} from '../../helpers';
 import baseModule from './base.module';
 
 export const moduleAssignments = _.merge({}, baseModule, {
@@ -36,42 +36,64 @@ export const moduleAssignments = _.merge({}, baseModule, {
       {
         text: 'ID',
         value: 'id_assignment',
-        classes: ['text-left'],
+        class: classesHeaders,
       },
       {
         text: 'Creation',
         value: 'datetime_creation',
+        align: 'end',
+        class: classesHeaders,
+        width: '1px',
       },
       {
         text: 'Accepted',
         value: 'datetime_accept',
+        align: 'end',
+        class: classesHeaders,
+        width: '1px',
       },
       {
         text: 'Submitted',
         value: 'datetime_submit',
+        align: 'end',
+        class: classesHeaders,
+        width: '1px',
       },
       {
         text: 'Duration',
         value: 'duration',
+        align: 'end',
+        class: classesHeaders,
+        width: '1px',
       },
       {
         text: 'Worker',
         value: 'worker',
-        align: 'center',
+        align: 'end',
+        class: classesHeaders,
+        width: '1px',
       },
       {
         text: 'Status',
         value: 'status',
+        align: 'end',
+        class: classesHeaders,
+        width: '1px',
       },
       {
         text: 'HIT',
         value: 'hit',
+        align: 'end',
+        class: classesHeaders,
+        width: '1px',
       },
       {
-        text: 'Actions',
+        text: '',
         value: 'actions',
         sortable: false,
-        width: '10%',
+        align: 'end',
+        class: classesHeaders,
+        width: '1px',
       },
     ],
     objectColumnsSelectedInitialGeneral: {
