@@ -231,13 +231,13 @@ export const moduleHITs = _.merge({}, baseModule, {
          */
         dispatch('loadState', {
           nameLocalStorage: 'array_columns_hits_general',
-          nameState: 'array_columns_selected_general',
-          objectStateDefault: state.array_columns_selected_initial_general,
+          nameState: 'objectColumnsSelectedGeneral',
+          objectStateDefault: state.objectColumnsSelectedInitialGeneral,
         }),
         dispatch('loadState', {
           nameLocalStorage: 'array_columns_hits_finances',
-          nameState: 'array_columns_selected_finances',
-          objectStateDefault: state.array_columns_selected_initial_finances,
+          nameState: 'objectColumnsSelectedFinances',
+          objectStateDefault: state.objectColumnsSelectedInitialFinances,
         }),
         /**
          * init paginations
@@ -268,7 +268,7 @@ export const moduleHITs = _.merge({}, baseModule, {
     reset_array_columns_general({ state, commit }) {
       commit(
         'set_array_columns_general',
-        state.array_columns_selected_initial_general,
+        state.objectColumnsSelectedInitialGeneral,
       );
     },
   },
