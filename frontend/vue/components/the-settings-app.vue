@@ -21,7 +21,7 @@
       <v-divider />
 
       <v-list-item v-on:click="">
-        <v-dialog width="500">
+        <v-dialog v-model="isOpenUpdateCredentials" width="500">
           <template v-slot:activator="{ on }">
             <v-list-item-content>
               <v-list-item-title v-on="on">
@@ -84,6 +84,7 @@ export default {
   data() {
     return {
       isActiveModeLight: this.$store.state.module_app.isActiveModeLight,
+      isOpenUpdateCredentials: false,
     };
   },
   watch: {
@@ -94,6 +95,7 @@ export default {
   methods: {
     updatedCredentials() {
       this.$emit('updated-credentials');
+      this.isOpenUpdateCredentials = false;
     },
   },
 };

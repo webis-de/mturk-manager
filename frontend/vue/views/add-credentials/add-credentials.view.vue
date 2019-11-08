@@ -32,9 +32,10 @@
 <script>
 
 import TheUpdateCredentials from '../../components/the-update-credentials';
+
 export default {
   name: 'AddCredentials',
-  components: {TheUpdateCredentials},
+  components: { TheUpdateCredentials },
 };
 </script>
 
