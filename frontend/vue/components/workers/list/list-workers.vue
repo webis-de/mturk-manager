@@ -223,18 +223,12 @@ export default {
       array_columns: 'get_array_columns_general',
       array_columns_selected: 'get_array_columns_selected_general',
     }),
-    list_workers() {
-      return this.list_workers_processed.slice(0, 5);
-    },
     // policy_dialog: function() {
     //     return this.policy_to_be_edited == null ? this.policy_new : this.policy_to_be_edited;
     // },
     // title_dialog_policy: function() {
     //     return this.policy_to_be_edited == null ? 'New Policy' : 'Edit Policy';
     // },
-    ...mapGetters('moduleWorkers', {
-      list_workers_processed: 'list_workers',
-    }),
     ...mapGetters('moduleProjects', {
       project_current: 'get_project_current',
     }),
