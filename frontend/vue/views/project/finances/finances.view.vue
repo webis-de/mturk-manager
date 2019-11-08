@@ -130,7 +130,7 @@
         <v-flex
           shrink
         >
-          <v-card>
+          <v-card class="fill-height">
             <v-card-title>
               Budget ($)
             </v-card-title>
