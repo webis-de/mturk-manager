@@ -14,11 +14,12 @@
 }
 
 .v-data-table {
-    //table th + th { border-left:1px solid rgba(255, 255, 255, 0.12); }
     &.theme--dark {
+        //table th + th { border-left:1px solid rgba(255, 255, 255, 0.12); }
         table td + td { border-left: 1px solid rgba(255, 255, 255, 0.12); }
     }
     &.theme--light {
+        //table td + td { border-left: 1px solid rgba(0, 0, 0, 0.3); }
         table td + td { border-left: 1px solid rgba(0, 0, 0, 0.12); }
     }
 }
