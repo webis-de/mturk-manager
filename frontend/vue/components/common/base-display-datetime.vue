@@ -1,5 +1,5 @@
 <template>
-  <v-tooltip top>
+  <v-tooltip top v-bind:open-delay="1000">
     <template v-slot:activator="{ on }">
       <span v-on="on">{{ datetime_formatted }}</span>
     </template>
@@ -32,10 +32,10 @@ export default {
       return format(this.datetime, this.templateFormat);
     },
     templateFormat() {
-      let templateFormat = 'MMM DD, YYYY H:mm A';
+      let templateFormat = 'YYYY-MM-DD HH:mm';
 
       if (this.onlyDate === true) {
-        templateFormat = 'MMM DD, YYYY';
+        templateFormat = 'YYYY-MM-DD';
       }
 
       return templateFormat;
