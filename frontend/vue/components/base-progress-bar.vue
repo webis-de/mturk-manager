@@ -4,8 +4,8 @@
     offset-x
     open-on-hover
   >
-      <template v-slot:activator="{ on }">
-<!--    <v-hover v-slot:default="{ hover }">-->
+    <template v-slot:activator="{ on }">
+      <div v-on="on">
         <base-chart-horizontal-bar
           v-bind:styles="{
             height: `${height}px`,
@@ -17,27 +17,27 @@
           v-bind:chartdata="chartdata"
           v-bind:options="options"
         />
-<!--    </v-hover>-->
-      </template>
+      </div>
+    </template>
 
     <v-list
       dense
     >
       <v-subheader>{{ titlePopover }}</v-subheader>
 
-      <v-list-tile
+      <v-list-item
         v-for="(item, index) in chartdata.datasets"
         v-bind:key="index"
       >
-        <v-list-tile-title
+        <v-list-item-title
           v-bind:style="{ color: item.backgroundColor }"
         >
           {{ item.label }}
-        </v-list-tile-title>
-        <v-list-tile-title>
+        </v-list-item-title>
+        <v-list-item-title>
           {{ item.data[0] }}
-        </v-list-tile-title>
-      </v-list-tile>
+        </v-list-item-title>
+      </v-list-item>
     </v-list>
   </v-menu>
 </template>
