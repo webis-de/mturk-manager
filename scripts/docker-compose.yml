@@ -4,7 +4,8 @@ services:
   frontend:
     image: kritten/mturk-manager-frontend:${VERSION_MTURK_MANAGER}
     container_name: mturk-manager-frontend-${VERSION_MTURK_MANAGER}
-    ports: [8000:80]
+    ports:
+      - ${PORT_FRONTEND}:80
 
   backend:
     image: kritten/mturk-manager-backend:${VERSION_MTURK_MANAGER}
