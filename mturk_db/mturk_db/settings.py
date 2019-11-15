@@ -19,12 +19,12 @@ env = environ.Env(
     RABBITMQ_DEFAULT_USER=(str, 'guest'),
     RABBITMQ_DEFAULT_PASS=(str, 'guest'),
     # TODO: remove before deployment
-    DATABASE_URL=(str, 'postgres://user:password@localhost:5432/database'),
-    # DATABASE_URL=(str, 'postgres://{user}:{password}@db:5432/{database}'.format(
-    #     user=os.environ.get('POSTGRES_USER', 'user'),
-    #     password=os.environ.get('POSTGRES_PASSWORD', 'password'),
-    #     database=os.environ.get('POSTGRES_DB', 'database'),
-    # )),
+    # DATABASE_URL=(str, 'postgres://user:password@localhost:5432/database'),
+    DATABASE_URL=(str, 'postgres://{user}:{password}@db:5432/{database}'.format(
+        user=os.environ.get('POSTGRES_USER', 'user'),
+        password=os.environ.get('POSTGRES_PASSWORD', 'password'),
+        database=os.environ.get('POSTGRES_DB', 'database'),
+    )),
     # DATABASE_URL=(str, 'sqlite:///db.sqlite3'),
 )
 
@@ -156,7 +156,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
-        'mturk_db.permissions.AllowOptionsAuthentication', 
+        'mturk_db.permissions.AllowOptionsAuthentication',
     ),
     'DEFAULT_METADATA_CLASS': 'rest_framework.metadata.SimpleMetadata',
 
