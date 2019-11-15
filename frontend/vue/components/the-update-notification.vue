@@ -8,8 +8,7 @@
     <v-spacer />
     Update Available!
     <base-help>
-      Pull the latest changes of the git repository to update the
-      application.
+      Update your frontend by using the image <code>kritten/mturk-manager-frontend:{{ version_api }}</code>
     </base-help>
     <v-spacer />
   </v-snackbar>
