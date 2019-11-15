@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body style="overflow-y: scroll">
+	<div class="container-fluid">
+		<div class="row p-3  min-vh-100">
+			<div class="col-2 position-fixed h-100 pb-4" style="overflow-y: scroll">
+				<div class="row">
+					<div class="col">
+						<a id="link_back_to_project">Back to project</a>
+					</div>
+				</div>
+				<hr>
+				<div class="row">
+					<div class="col">
+						<form>
+							<label for="input_select_groupby">Group Assignments by:</label>
+							<select id="input_select_groupby" class="custom-select custom-select-sm">
+								<option value="assignments" selected>Assignments</option>
+								<option value="hits">HITs</option>
+								<option value="workers">Workers</option>
+							</select>
+						</form>
+					</div>
+				</div>
+				<hr>
+				<div class="row">
+					<div class="col-12">
+					    <label for="message_reject_default">Current Reject Message</label>
+					    <input type="text" class="form-control form-control-sm" id="message_reject_default">
+					</div>
+					<div class="col-12">
+					    <label for="input_select_messages_reject">Reject Messages</label>
+							<select id="input_select_messages_reject" class="custom-select custom-select-sm">
+							</select>
+					</div>
+				</div>
+				<hr>
+				<div class="row">
+					<div class="col">
+						<table class="table table-sm table-borderless">
+							<!-- <thead>
+								<tr>
+									<td></td>
+								</tr>
+							</thead> -->
+							<tbody>
+								<tr>
+									<td>Approve</td>
+									<td data-inject_count_approved_assignments>0</td>
+								</tr>
+								<tr>
+									<td>Reject Internally</td>
+									<td data-inject_count_rejected_internally_assignments>0</td>
+								</tr>
+								<tr>
+									<td>Reject</td>
+									<td data-inject_count_rejected_assignments>0</td>
+								</tr>
+								<tr>
+									<td>Approve Internally</td>
+									<td data-inject_count_approved_internally_assignments>0</td>
+								</tr>
+							</tbody>
+							<tfoot>
+								<tr>
+									<th>Total</th>
+									<th data-inject_count_assignments>0</th>
+								</tr>
+							</tfoot>
+						</table>
+						<button type="button" data-task="submit_annotations" class="btn btn-primary" disabled="disabled">Submit</button>
+					</div>
+				</div>
+			</div>
+			<div class="col offset-2 position-relative">
+        <div id="wrapper_progress" class="position-absolute w-100 px-5 pt-5 text-center">
+          <div class="progress">
+            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"></div>
+          </div>
+          <span></span>
+        </div>
+
+				<div id="wrapper_hits"></div>
+
+				<pre data-inject_info></pre>
+			</div>
+		</div>
+	</div>
+
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script>document.write('<script type="text/javascript" src="/index_annotate.js?v=' + Date.now() + '"><\/script>');</script>
+</body>
+</html>
