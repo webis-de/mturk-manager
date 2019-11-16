@@ -3,7 +3,7 @@
     v-bind:show-select="showSelect"
     v-bind:headers="arrayHeaders"
     v-bind:items="arrayItems"
-    v-bind:server-items-length="items_total"
+    v-bind:server-items-length="itemsTotal"
     v-bind:loading="loading"
     item-key="id"
     v-bind:dense="isCondensed"
@@ -18,6 +18,7 @@
       'items-per-page-options': [5, 10, 25, { text: 'All', value: null }]
     }"
 
+    v-bind:style="objectStyles"
     v-on:update:options="updatedOptions($event)"
   >
     <template
@@ -30,68 +31,68 @@
         v-on:change="toggle_all"
       />
     </template>
-<!--        <template-->
-<!--          v-for="slot in arraySlotsItems"-->
-<!--          v-slot:[slot]-->
-<!--        >-->
-<!--          <slot v-bind:name="slot"></slot>-->
-<!--        </template>-->
+    <!--        <template-->
+    <!--          v-for="slot in arraySlotsItems"-->
+    <!--          v-slot:[slot]-->
+    <!--        >-->
+    <!--          <slot v-bind:name="slot"></slot>-->
+    <!--        </template>-->
 
-<!--        <template-->
-<!--          slot="headers"-->
-<!--          slot-scope="props"-->
-<!--        >-->
-<!--          <tr>-->
-<!--            <th-->
-<!--              v-if="nameStateItemsSelected !== undefined"-->
-<!--            >-->
-<!--              <v-checkbox-->
-<!--                v-bind:input-value="is_page_selected"-->
-<!--                v-bind:indeterminate="props.indeterminate"-->
-<!--                primary-->
-<!--                hide-details-->
-<!--                v-on:click.native="toggle_all()"-->
-<!--              />-->
-<!--            </th>-->
-<!--            <th-->
-<!--              v-for="header in props.headers"-->
-<!--              v-bind:key="header.value"-->
-<!--              v-bind:class="[-->
-<!--                'column',-->
-<!--                { sortable: header.sortable !== false },-->
-<!--                pagination.sortDesc ? 'desc' : 'asc',-->
-<!--                header.value === pagination.sortBy ? 'active' : '',-->
-<!--                ...header.classes,-->
-<!--              ]"-->
-<!--              v-bind:style="{-->
-<!--                width: header.width,-->
-<!--              }"-->
-<!--              v-on="-->
-<!--                header.sortable !== false-->
-<!--                  ? {-->
-<!--                    click: () => {-->
-<!--                      updatedPagination({-->
-<!--                        sortBy: header.value,-->
-<!--                        sortDesc: !pagination.sortDesc,-->
-<!--                        page: 1,-->
-<!--                        itemsPerPage: pagination.itemsPerPage,-->
-<!--                      });-->
-<!--                    }-->
-<!--                  }-->
-<!--                  : {}-->
-<!--              "-->
-<!--            >-->
-<!--              {{ header.text }}-->
-<!--              <v-icon-->
-<!--                v-if="header.sortable !== false"-->
-<!--                small-->
-<!--                style="position: absolute"-->
-<!--              >-->
-<!--                arrow_upward-->
-<!--              </v-icon>-->
-<!--            </th>-->
-<!--          </tr>-->
-<!--        </template>-->
+    <!--        <template-->
+    <!--          slot="headers"-->
+    <!--          slot-scope="props"-->
+    <!--        >-->
+    <!--          <tr>-->
+    <!--            <th-->
+    <!--              v-if="nameStateItemsSelected !== undefined"-->
+    <!--            >-->
+    <!--              <v-checkbox-->
+    <!--                v-bind:input-value="is_page_selected"-->
+    <!--                v-bind:indeterminate="props.indeterminate"-->
+    <!--                primary-->
+    <!--                hide-details-->
+    <!--                v-on:click.native="toggle_all()"-->
+    <!--              />-->
+    <!--            </th>-->
+    <!--            <th-->
+    <!--              v-for="header in props.headers"-->
+    <!--              v-bind:key="header.value"-->
+    <!--              v-bind:class="[-->
+    <!--                'column',-->
+    <!--                { sortable: header.sortable !== false },-->
+    <!--                pagination.sortDesc ? 'desc' : 'asc',-->
+    <!--                header.value === pagination.sortBy ? 'active' : '',-->
+    <!--                ...header.classes,-->
+    <!--              ]"-->
+    <!--              v-bind:style="{-->
+    <!--                width: header.width,-->
+    <!--              }"-->
+    <!--              v-on="-->
+    <!--                header.sortable !== false-->
+    <!--                  ? {-->
+    <!--                    click: () => {-->
+    <!--                      updatedPagination({-->
+    <!--                        sortBy: header.value,-->
+    <!--                        sortDesc: !pagination.sortDesc,-->
+    <!--                        page: 1,-->
+    <!--                        itemsPerPage: pagination.itemsPerPage,-->
+    <!--                      });-->
+    <!--                    }-->
+    <!--                  }-->
+    <!--                  : {}-->
+    <!--              "-->
+    <!--            >-->
+    <!--              {{ header.text }}-->
+    <!--              <v-icon-->
+    <!--                v-if="header.sortable !== false"-->
+    <!--                small-->
+    <!--                style="position: absolute"-->
+    <!--              >-->
+    <!--                arrow_upward-->
+    <!--              </v-icon>-->
+    <!--            </th>-->
+    <!--          </tr>-->
+    <!--        </template>-->
 
     <template
       v-slot:item="{ item }"
@@ -101,7 +102,7 @@
         v-bind:objectColumnsSelected="columnsSelected"
         v-bind:is-condensed="isCondensed"
         v-bind:refresh="refresh"
-      />
+      ></slot>
     </template>
 
     <template
@@ -121,7 +122,7 @@
           <slot
             name="actions"
             v-bind:refresh="refresh"
-          />
+          ></slot>
         </v-col>
         <v-col class="shrink">
           <base-table-filters
@@ -147,7 +148,7 @@
                 name="filters"
                 v-bind:filters="filters"
                 v-bind:filters-active="filtersActive"
-              />
+              ></slot>
             </template>
           </base-table-filters>
         </v-col>
@@ -175,9 +176,13 @@ import { updateSandbox } from '../mixins/update-sandbox.mixin';
 import ComponentSettingsTable from './common/component-settings-table';
 import BaseTableFilters from './base-table-filters';
 
+/**
+ * TODO: lazy loading if visible
+ */
+
 export default {
   name: 'BaseTable',
-  components: {BaseTableFilters, ComponentSettingsTable },
+  components: { BaseTableFilters, ComponentSettingsTable },
   mixins: [updateSandbox],
   props: {
     title: {
@@ -223,9 +228,6 @@ export default {
       type: String,
       default: undefined,
     },
-
-
-
 
 
     arrayItems: {
@@ -300,13 +302,32 @@ export default {
       // },
       loading: false,
       search: '',
-      items_total: undefined,
+      itemsTotal: null,
       page: 1,
 
       columns: this.$store.state[this.nameVuexModule][this.nameStateColumns],
     };
   },
   computed: {
+    objectStyles() {
+      return {
+        'min-height': `${this.heightTable}px`,
+      };
+    },
+    heightTable() {
+      let { itemsPerPage } = this.pagination;
+
+      if (this.itemsTotal !== null && this.itemsTotal < itemsPerPage) {
+        itemsPerPage = this.itemsTotal;
+      }
+
+      return itemsPerPage * 25.0
+        - 1 // border of last row
+        + 32 // thead
+        + 36 // headitemsPerPage
+        + 59 // footer
+      ;
+    },
     columnsSelected() {
       if (this.$store.state[this.nameVuexModule][this.nameStateColumnsSelected] === null) {
         return this.$store.state[this.nameVuexModule][this.nameStateColumnsSelectedInitial];
@@ -358,6 +379,9 @@ export default {
       nameLocalStorage: this.nameLocalStoragePagination,
     });
   },
+  created() {
+    this.load_page(this.filters);
+  },
   methods: {
     updatedOptions(options, force = false) {
       const equalOptions = _.isEqual(
@@ -407,13 +431,13 @@ export default {
       // only update if pagination changed
       // if (equalPagination === false) {
       //   this.page = 1;
-        // this.page = pagination.page;
+      // this.page = pagination.page;
 
-        this.$store.dispatch(`${this.nameVuexModule}/setState`, {
-          objectState: _.pick(pagination, ['sortBy', 'sortDesc', 'itemsPerPage']),
-          nameState: this.nameStatePagination,
-          nameLocalStorage: this.nameLocalStoragePagination,
-        });
+      this.$store.dispatch(`${this.nameVuexModule}/setState`, {
+        objectState: _.pick(pagination, ['sortBy', 'sortDesc', 'itemsPerPage']),
+        nameState: this.nameStatePagination,
+        nameLocalStorage: this.nameLocalStoragePagination,
+      });
       // }
 
       this.$nextTick(() => {
@@ -424,7 +448,7 @@ export default {
       this.loading = true;
       this.functionLoadPage(this.pagination, filters).then(
         (itemsTotal) => {
-          this.items_total = itemsTotal;
+          this.itemsTotal = itemsTotal;
           this.loading = false;
         },
       );
@@ -435,9 +459,6 @@ export default {
         array_items: this.arrayItems,
       });
     },
-  },
-  created() {
-    this.load_page(this.filters);
   },
 };
 </script>
