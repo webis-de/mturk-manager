@@ -4,7 +4,7 @@
     <v-btn
       v-on="on"
       class="my-0"
-      icon small
+      icon x-small
     >
       <v-icon color="error">mdi-delete</v-icon>
     </v-btn>

@@ -121,7 +121,7 @@
         v-bind:assignment="item"
       />
       <v-btn
-        small
+        x-small
         icon
         class="px-0"
         color="primary"

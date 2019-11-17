@@ -9,7 +9,7 @@
         v-on="on"
         class="my-0"
         icon
-        small
+        x-small
         v-bind:disabled="disabled"
         v-on:click.stop="dialog = true"
       >

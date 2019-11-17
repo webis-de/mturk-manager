@@ -8,7 +8,7 @@
         v-on="on"
         class="my-0"
         icon
-        small
+        x-small
       >
         <v-icon color="warning">
           mdi-pencil

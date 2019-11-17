@@ -3,7 +3,7 @@
     <v-btn
       slot-scope="{ hover }"
       class="my-0"
-      small
+      x-small
       icon
 
       v-bind:loading="loading"

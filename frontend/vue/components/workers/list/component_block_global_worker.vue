@@ -4,7 +4,7 @@
       <template v-slot:activator="{ on }">
         <v-btn
           icon
-          small
+          x-small
           v-on="on"
           class="ma-0"
           v-on:click="toggle()"
