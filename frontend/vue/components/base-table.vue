@@ -1,5 +1,6 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <v-data-table
+    v-intersect.once="onIntersect"
     v-bind:show-select="showSelect"
     v-bind:headers="arrayHeaders"
     v-bind:items="arrayItems"
@@ -17,8 +18,8 @@
     v-bind:footer-props="{
       'items-per-page-options': [5, 10, 25, { text: 'All', value: null }]
     }"
-
     v-bind:style="objectStyles"
+
     v-on:update:options="updatedOptions($event)"
   >
     <template
@@ -172,6 +173,7 @@
 
 <script>
 import * as _ from 'lodash';
+import intersect from 'vuetify/lib/directives/intersect';
 import { updateSandbox } from '../mixins/update-sandbox.mixin';
 import ComponentSettingsTable from './common/component-settings-table';
 import BaseTableFilters from './base-table-filters';
@@ -182,6 +184,9 @@ import BaseTableFilters from './base-table-filters';
 
 export default {
   name: 'BaseTable',
+  directives: {
+    intersect,
+  },
   components: { BaseTableFilters, ComponentSettingsTable },
   mixins: [updateSandbox],
   props: {
@@ -379,10 +384,12 @@ export default {
       nameLocalStorage: this.nameLocalStoragePagination,
     });
   },
-  created() {
-    this.load_page(this.filters);
-  },
   methods: {
+    onIntersect(entries, observer, isIntersecting) {
+      if (isIntersecting === true) {
+        this.load_page(this.filters);
+      }
+    },
     updatedOptions(options, force = false) {
       const equalOptions = _.isEqual(
         _.pick(options, ['page', 'itemsPerPage', 'sortBy', 'sortDesc']),
