@@ -18,6 +18,7 @@ import About from './components/about/about';
 import { store } from './store/vuex';
 import { Service_App } from './services/service.app';
 import queue from './queue';
+import goTo from 'vuetify/es5/services/goto';
 
 const ViewDashboard = () => import(/* webpackChunkName: "dashboard" */ './views/dashboard/dashboard.view');
 const ViewAddCredentials = () => import(/* webpackChunkName: "credentials" */ './views/add-credentials/add-credentials.view');
@@ -32,7 +33,7 @@ const ViewBatch = () => import(/* webpackChunkName: "batches" */ './views/projec
 const ViewAssignments = () => import(/* webpackChunkName: "assignments" */ './views/project/tasks/assignments/assignments.view');
 const ViewHITs = () => import(/* webpackChunkName: "hits" */ './views/project/tasks/hits/hits.view');
 const ViewBatches = () => import(/* webpackChunkName: "batches" */ './views/project/tasks/batches/batches.view');
-// const ViewTasks = () => import(/* webpackChunkName: "tasks" */ './views/project/tasks/tasks.view');
+const ViewTasks = () => import(/* webpackChunkName: "tasks" */ './views/project/tasks/tasks.view');
 const ViewProject = () => import(/* webpackChunkName: "project" */ './views/project/project.view');
 const ViewSettingsProject = () => import(/* webpackChunkName: "settings-project" */ './views/project/settings-project/settings-project.view');
 
@@ -101,8 +102,8 @@ const routes = [
             meta: {
               name: 'Tasks',
             },
-            component: { template: '<router-view></router-view>' },
-            // component: viewTasks,
+            // component: { template: '<router-view></router-view>' },
+            component: ViewTasks,
             // props: parse_params,
             // redirect: to => ({
             //   name: 'tasksBatches',
@@ -275,12 +276,33 @@ const routes = [
 
 export const router = new VueRouter({
   routes,
+  // scrollBehavior(to) {
+  //   console.warn('to.hash', to.hash);
+  //   if (to.hash) {
+  //     return goTo(to.hash);
+  //     return {
+  //       selector: to.hash,
+  //       offset: { x: 0, y: 50 },
+  //     };
+  //   }
+  //
+  //   return false;
+  // },
   mode: 'history',
 });
 
 queue.listen('router', (payload) => {
   router.push(payload);
 });
+
+// router.afterEach((to, from) => {
+//   if (from.name === null && to.hash !== '') {
+//     console.log('afterEach');
+//     setTimeout(() => {
+//       goTo(to.hash);
+//     }, 5000)
+//   }
+// });
 
 router.beforeEach((to, from, next) => {
   if (to.matched[0].name !== 'projects') {
@@ -291,18 +313,18 @@ router.beforeEach((to, from, next) => {
   next();
 });
 
-router.beforeEach((to, from, next) => {
-  if (to.name === 'tasks') {
-    next({
-      name: 'tasksBatches',
-      params: {
-        slug_project: to.params.slug_project,
-      },
-    });
-    return;
-  }
-  next();
-});
+// router.beforeEach((to, from, next) => {
+//   if (to.name === 'tasks') {
+//     next({
+//       name: 'tasksBatches',
+//       params: {
+//         slug_project: to.params.slug_project,
+//       },
+//     });
+//     return;
+//   }
+//   next();
+// });
 
 // go to add_credentials if there are no credentials stored and the target route is not already add_credentials
 router.beforeEach(async (to, from, next) => {

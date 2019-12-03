@@ -1,8 +1,8 @@
 <template>
   <div>
-    <the-navigation-drawer
-      v-bind:show-drawer.sync="show_drawer"
-    />
+    <!--    <the-navigation-drawer-->
+    <!--      v-bind:show-drawer.sync="show_drawer"-->
+    <!--    />-->
 
     <v-progress-linear
       v-bind:active="get_show_progress_indicator"
@@ -19,70 +19,122 @@
       dense
       v-bind:style="object_styles_toolbar"
     >
-      <v-app-bar-nav-icon
-        v-on:click.stop="show_drawer = !show_drawer"
-      />
+      <!--      <v-app-bar-nav-icon-->
+      <!--        v-on:click.stop="show_drawer = !show_drawer"-->
+      <!--      />-->
       <v-toolbar-title>
-        <the-breadcrumb />
+        <v-row
+          no-gutters
+        >
+          <v-col>
+            <v-btn
+              text
+              class="text-none pa-0"
+              style="text-indent: 0; font-size: inherit; letter-spacing: normal; font-weight: 400"
+              v-bind:to="{ name: 'dashboard' }"
+              exact
+            >
+              MTurk Manager
+            </v-btn>
+          </v-col>
+
+          <v-col class="px-2">
+            <v-divider vertical />
+          </v-col>
+
+          <v-col align-self="center">
+            {{ $store.getters['moduleProjects/getProjectCurrent'].name }}
+          </v-col>
+        </v-row>
+        <!--        <the-breadcrumb />-->
       </v-toolbar-title>
 
-      <v-row
-        align="center"
-        justify="end"
-        no-gutters
-      >
-        <v-col class="shrink text-no-wrap">
-          <v-tooltip bottom>
-            <template v-slot:activator="{ on }">
-              <v-switch
-                hide-details
-                v-bind:label="use_sandbox ? 'Toggle Sandbox' : 'Toggle Sandbox'"
-                v-bind:input-value="use_sandbox"
-                v-on:click.native="toggle_use_sandbox"
-                v-on="on"
-              />
-            </template>
-            <span>
-              You are currently <b v-if="!use_sandbox">
-                not
-              </b> using the
-              Sandbox
-            </span>
-          </v-tooltip>
-        </v-col>
+      <v-spacer />
 
-        <v-divider
-          class="mx-2"
-          vertical
-        />
-
-        <v-col class="shrink">
-          <component
-            v-bind:is="currentTabComponent"
-            v-bind:name_route="name_route_current"
-          />
-        </v-col>
-
-        <v-divider
-          class="mx-2"
-          vertical
-        />
-        <v-menu
-          v-bind:close-on-content-click="false"
-          offset-y
+      <v-toolbar-items>
+        <v-btn
+          text
+          v-bind:to="{name:'tasks'}"
         >
-          <template v-slot:activator="{ on }">
-            <v-btn
-              icon
-              v-on="on"
-            >
-              <v-icon>mdi-settings</v-icon>
-            </v-btn>
-          </template>
+          Tasks
+        </v-btn>
+        <v-btn
+          text
+          v-bind:to="{name:'finances'}"
+        >
+          Finances
+        </v-btn>
+        <v-btn
+          text
+          v-bind:to="{name:'workers'}"
+        >
+          Workers
+        </v-btn>
+        <v-btn
+          text
+          v-bind:to="{name:'settings_project'}"
+        >
+          Settings
+        </v-btn>
+      </v-toolbar-items>
 
-          <the-settings-app />
-        </v-menu>
-      </v-row>
+      <!--      <v-row-->
+      <!--        align="center"-->
+      <!--        justify="end"-->
+      <!--        no-gutters-->
+      <!--      >-->
+      <!--        <v-col class="shrink text-no-wrap">-->
+      <!--          <v-tooltip bottom>-->
+      <!--            <template v-slot:activator="{ on }">-->
+      <!--              <v-switch-->
+      <!--                hide-details-->
+      <!--                v-bind:label="use_sandbox ? 'Toggle Sandbox' : 'Toggle Sandbox'"-->
+      <!--                v-bind:input-value="use_sandbox"-->
+      <!--                v-on:click.native="toggle_use_sandbox"-->
+      <!--                v-on="on"-->
+      <!--              />-->
+      <!--            </template>-->
+      <!--            <span>-->
+      <!--              You are currently <b v-if="!use_sandbox">-->
+      <!--                not-->
+      <!--              </b> using the-->
+      <!--              Sandbox-->
+      <!--            </span>-->
+      <!--          </v-tooltip>-->
+      <!--        </v-col>-->
+
+      <!--        <v-divider-->
+      <!--          class="mx-2"-->
+      <!--          vertical-->
+      <!--        />-->
+
+      <!--        <v-col class="shrink">-->
+      <!--          <component-->
+      <!--            v-bind:is="currentTabComponent"-->
+      <!--            v-bind:name_route="name_route_current"-->
+      <!--          />-->
+      <!--        </v-col>-->
+
+      <!--        <v-divider-->
+      <!--          class="mx-2"-->
+      <!--          vertical-->
+      <!--        />-->
+      <!--        <v-menu-->
+      <!--          v-bind:close-on-content-click="false"-->
+      <!--          offset-y-->
+      <!--        >-->
+      <!--          <template v-slot:activator="{ on }">-->
+      <!--            <v-btn-->
+      <!--              icon-->
+      <!--              v-on="on"-->
+      <!--            >-->
+      <!--              <v-icon>mdi-settings</v-icon>-->
+      <!--            </v-btn>-->
+      <!--          </template>-->
+
+      <!--          <the-settings-app />-->
+      <!--        </v-menu>-->
+      <!--      </v-row>-->
     </v-app-bar>
     <v-content>
       <v-container fluid>
