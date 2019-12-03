@@ -2,6 +2,7 @@
   <tr
     v-bind:key="settingsBatch.id"
     class="text-no-wrap"
+    v-bind:class="classes"
   >
     <td
       v-bind:style="{
@@ -68,6 +69,13 @@ export default {
     isCondensed: {
       required: true,
       type: Boolean,
+    },
+    classes: {
+      required: false,
+      type: Object | Array,
+      default() {
+        return {};
+      },
     },
   },
   data() {

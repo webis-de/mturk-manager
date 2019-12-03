@@ -16,11 +16,12 @@
       v-bind:show-select="false"
     >
       <template
-        v-slot:default="{ item, isCondensed }"
+        v-slot:default="{ item, isCondensed, classes }"
       >
         <item-settings-batch
           v-bind:item="item"
           v-bind:is-condensed="isCondensed"
+          v-bind:classes="classes"
 
           v-on:edited="snackbarEdited = true"
           v-on:deleted="snackbarDeleted = true"

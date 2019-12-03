@@ -103,6 +103,7 @@
         v-bind:objectColumnsSelected="columnsSelected"
         v-bind:is-condensed="isCondensed"
         v-bind:refresh="refresh"
+        v-bind:classes="['roboto-mono']"
       ></slot>
     </template>
 
