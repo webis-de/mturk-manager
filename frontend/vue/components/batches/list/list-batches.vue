@@ -26,12 +26,13 @@
     v-bind:name-state-filters="nameStateFilters"
     v-bind:name-local-storage-filters="nameLocalStorageFilters"
   >
-    <template v-slot:default="{ item, objectColumnsSelected, isCondensed }">
+    <template v-slot:default="{ item, objectColumnsSelected, isCondensed, classes }">
       <component-item-batch
         v-bind:item="item"
         v-bind:object-columns-selected="objectColumnsSelected"
         v-bind:show_links="showLinks"
         v-bind:is-condensed="isCondensed"
+        v-bind:classes="classes"
       />
     </template>
 

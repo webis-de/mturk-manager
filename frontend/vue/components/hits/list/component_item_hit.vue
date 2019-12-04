@@ -31,7 +31,7 @@
     <base-table-cell
       v-slot="{ item }"
       name="batch"
-      class="text-right"
+      class="text-right text-capitalize"
       v-bind:item="hit"
       v-bind:columns-selected="objectColumnsSelected"
       v-bind:to="{
@@ -41,7 +41,7 @@
         }
       }"
     >
-      {{ hit.batch.name.toUpperCase() }}
+      {{ hit.batch.name.toLowerCase() }}
     </base-table-cell>
 
     <base-table-cell

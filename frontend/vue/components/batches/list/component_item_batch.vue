@@ -1,7 +1,8 @@
 <template>
   <tr
     v-bind:key="batch.id"
-    class="text-no-wrap roboto-mono"
+    class="text-no-wrap"
+    v-bind:class="classes"
   >
     <td>
       <v-checkbox
@@ -15,7 +16,7 @@
     <base-table-cell
       v-slot="{ item }"
       name="name"
-      class="text-left roboto-mono"
+      class="text-left text-capitalize"
       v-bind:item="batch"
       v-bind:columns-selected="objectColumnsSelected"
       v-bind:to="{
@@ -25,7 +26,7 @@
         }
       }"
     >
-      {{ item.name }}
+      {{ item.name.toLowerCase() }}
     </base-table-cell>
 
     <base-table-cell
@@ -188,6 +189,13 @@ export default {
     objectColumnsSelected: {
       type: Object,
       required: true,
+    },
+    classes: {
+      required: false,
+      type: Object | Array,
+      default() {
+        return {};
+      },
     },
   },
   data() {
