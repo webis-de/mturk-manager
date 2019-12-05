@@ -1,141 +1,203 @@
 <template>
   <v-row no-gutters>
     <v-col>
-      <v-tabs
-        v-bind:value="$route.meta.index"
-        v-on:change="changedView($event)"
-      >
-        <v-tab key="general">
-          General
-        </v-tab>
-        <v-tab key="templates">
-          Templates
-        </v-tab>
-        <v-tab key="messages">
-          Messages
-        </v-tab>
-
-        <v-tabs-items
-          class="mt-1"
-          v-bind:value="$route.meta.index"
+      <v-row dense>
+        <v-col
+          cols="12"
+          class="pt-0"
         >
-          <v-tab-item
-            key="general"
+          <v-list
+            dense
+            flat
           >
+            <v-list-item-group>
+              <v-list-item
+                v-for="anchor of arrayAnchors"
+                v-bind:key="anchor.anchor"
+                style="min-height: 24px"
+                v-on:click.native="scrollTo(anchor.anchor)"
+              >
+                <v-list-item-icon class="ma-0">
+                  <v-icon>mdi-chevron-down</v-icon>
+                </v-list-item-icon>
+                <v-list-item-content class="py-0">
+                  {{ anchor.label }}
+                </v-list-item-content>
+              </v-list-item>
+            </v-list-item-group>
+          </v-list>
+        </v-col>
+
+        <v-col
+          id="general"
+          cols="12 display-1"
+        >
+          General
+        </v-col>
+
+        <v-col cols="12">
+          <v-card>
             <v-container
               fluid
-              class="pa-0"
+              class="py-0 px-2"
             >
-              <v-row>
+              <v-row dense>
                 <v-col xs>
-                  <v-card class="pa-2">
-                    <budget />
-                  </v-card>
+                  <budget />
                 </v-col>
                 <v-col xs>
-                  <v-card class="pa-2">
-                    <component-block-limit />
-                  </v-card>
-                </v-col>
-              </v-row>
-
-              <v-row wrap>
-                <v-col
-                  xs
-                >
-                  <v-card class="pa-2">
-                    <table-settings-batch />
-                  </v-card>
-                </v-col>
-              </v-row>
-
-              <v-row wrap>
-                <v-col shrink>
-                  <v-card class="pa-2">
-                    <h2 class="headline">
-                      Sandbox
-                    </h2>
-                    <component-clear-sandbox />
-                  </v-card>
-                </v-col>
-
-                <v-col shrink>
-                  <v-card class="pa-2">
-                    <h2 class="headline">
-                      Import from MTurk
-                    </h2>
-                    <import-batch />
-                  </v-card>
+                  <component-block-limit />
                 </v-col>
               </v-row>
             </v-container>
-          </v-tab-item>
+          </v-card>
+        </v-col>
 
-          <v-tab-item
-            key="templates"
-          >
+        <v-col cols="12">
+          <v-card>
+            <table-settings-batch />
+          </v-card>
+        </v-col>
+
+        <v-col cols="12">
+          <v-card>
             <v-container
               fluid
-              grid-list-md
-              class="pa-0"
+              class="py-0 px-2"
             >
-              <v-row wrap>
-                <v-col xs>
-                  <v-card class="pa-2">
-                    <table-templates-worker />
-                  </v-card>
+              <v-row dense>
+                <v-col class="shrink">
+                  <h2 class="headline">
+                    Sandbox
+                  </h2>
+                  <component-clear-sandbox />
                 </v-col>
-              </v-row>
-
-              <v-row wrap>
                 <v-col>
-                  <v-card class="pa-2">
-                    <table-templates-assignment />
-                  </v-card>
-                </v-col>
-              </v-row>
-
-              <v-row wrap>
-                <v-col>
-                  <v-card class="pa-2">
-                    <table-templates-hit />
-                  </v-card>
-                </v-col>
-              </v-row>
-
-              <v-row wrap>
-                <v-col>
-                  <v-card class="pa-2">
-                    <table-templates-global />
-                  </v-card>
+                  <h2 class="headline">
+                    Import from MTurk
+                  </h2>
+                  <import-batch />
                 </v-col>
               </v-row>
             </v-container>
-          </v-tab-item>
+          </v-card>
+        </v-col>
+      </v-row>
 
-          <v-tab-item
-            key="messages"
-          >
+      <v-row dense>
+        <v-col
+          id="templates"
+          cols="12 display-1"
+        >
+          Templates
+        </v-col>
+      </v-row>
+
+      <v-row dense>
+        <v-col cols="12">
+          <v-card>
+            <table-templates-worker />
+          </v-card>
+        </v-col>
+
+        <v-col cols="12">
+          <v-card>
+            <table-templates-assignment />
+          </v-card>
+        </v-col>
+
+        <v-col cols="12">
+          <v-card>
+            <table-templates-hit />
+          </v-card>
+        </v-col>
+
+        <v-col cols="12">
+          <v-card>
+            <table-templates-global />
+          </v-card>
+        </v-col>
+      </v-row>
+
+      <v-row dense>
+        <v-col
+          id="messages"
+          cols="12 display-1"
+        >
+          Messages
+        </v-col>
+      </v-row>
+
+      <v-row dense>
+        <v-col cols="12">
+          <v-card>
+            <table-messages-reject />
+          </v-card>
+        </v-col>
+      </v-row>
+
+      <v-row dense>
+        <v-col
+          id="global"
+          cols="12 display-1"
+        >
+          Global
+        </v-col>
+      </v-row>
+
+      <v-row dense>
+
+
+        <v-col cols="12">
+          <v-card>
             <v-container
               fluid
-              grid-list-md
-              class="pa-0"
+              class="py-0 px-2"
             >
-              <v-row wrap>
-                <v-col xs>
-                  <v-card class="pa-2">
-                    <table-messages-reject />
-                  </v-card>
+              <v-row dense>
+                <v-col>
+                  <h2 class="headline">
+                    Light Mode
+                  </h2>
+                  <v-switch
+                    v-model="isActiveModeLight"
+                    color="primary"
+                  />
                 </v-col>
               </v-row>
-
-              <v-row wrap />
             </v-container>
-          </v-tab-item>
-        </v-tabs-items>
-      </v-tabs>
+          </v-card>
+        </v-col>
+
+        <v-col cols="12">
+          <!--          <v-card>-->
+          <v-dialog max-width="1500">
+            <template v-slot:activator="{ on }">
+              <v-btn
+                color="primary"
+                v-on="on"
+              >
+                About
+              </v-btn>
+            </template>
+
+            <v-card>
+              <v-card-title>
+                About
+              </v-card-title>
+              <v-card-text>
+                <about />
+              </v-card-text>
+            </v-card>
+          </v-dialog>
+          <!--          </v-card>-->
+        </v-col>
+      </v-row>
     </v-col>
   </v-row>
+  <!----------------------------------------------------------------->
+  <!----------------------------------------------------------------->
+  <!----------------------------------------------------------------->
 <!--  <div>-->
 <!--    <v-layout wrap>-->
 <!--      <v-flex xs class="pa-1">-->
@@ -223,10 +285,15 @@ import TableTemplatesGlobal from '../../../components/settings_project/templates
 import TableSettingsBatch from '../../../components/settings_project/settings_batch/table-settings-batch';
 import TableMessagesReject from '../../../components/messages-reject/table-messages-reject';
 import ImportBatch from '../../../components/project/import-batch';
+import About from '../../../components/about/about';
+import ChangelogNotification from '../../../components/about/changelog-notification';
+import { Service_App } from '../../../services/service.app';
 
 export default {
   name: 'AppSettingsProject',
   components: {
+    ChangelogNotification,
+    About,
     ImportBatch,
     TableMessagesReject,
     TableSettingsBatch,
@@ -238,27 +305,41 @@ export default {
     ComponentBlockLimit,
     ComponentClearSandbox,
   },
+  data() {
+    return {
+      isActiveModeLight: this.$store.state.module_app.isActiveModeLight,
+    };
+  },
+  computed: {
+    arrayAnchors() {
+      return [
+        {
+          label: 'General',
+          anchor: '#general',
+        },
+        {
+          label: 'Templates',
+          anchor: '#templates',
+        },
+        {
+          label: 'Messages',
+          anchor: '#messages',
+        },
+        {
+          label: 'Global',
+          anchor: '#global',
+        },
+      ];
+    },
+  },
+  watch: {
+    isActiveModeLight() {
+      Service_App.setLightMode(this.isActiveModeLight);
+    },
+  },
   methods: {
-    changedView(index) {
-      switch (index) {
-        case 0:
-          this.$router.push({
-            name: 'projectSettingsGeneral',
-          });
-          break;
-        case 1:
-          this.$router.push({
-            name: 'projectSettingsTemplates',
-          });
-          break;
-        case 2:
-          this.$router.push({
-            name: 'projectSettingsMessages',
-          });
-          break;
-        default:
-          break;
-      }
+    scrollTo(hash) {
+      this.$vuetify.goTo(hash, { offset: 8, duration: 0 });
     },
   },
 };
