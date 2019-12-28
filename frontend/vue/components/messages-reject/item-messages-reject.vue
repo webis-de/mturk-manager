@@ -6,7 +6,7 @@
     <base-table-cell
       v-slot="{ item }"
       name="message"
-      class="text-xs-left"
+      class="text-xs-left pl-4"
       v-bind:item="this.item"
       v-bind:columns-selected="objectColumnsSelected"
       v-bind:is-condensed="isCondensed"
@@ -68,6 +68,17 @@ export default {
     },
   },
   computed: {
+    templateGlobal() { return this.item; },
+    stylesCell() {
+      if (this.isCondensed) {
+        return {
+          height: 'unset !important',
+          paddingLeft: '5px !important',
+          paddingRight: '5px !important',
+        };
+      }
+      return {};
+    },
   },
 };
 </script>
