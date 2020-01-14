@@ -23,4 +23,23 @@
         //table td + td { border-left: 1px solid rgba(0, 0, 0, 0.3); }
         table td + td { border-left: 1px solid rgba(0, 0, 0, 0.12); }
     }
+
+    .v-data-footer {
+        .v-data-footer__select {
+            .v-input {
+                margin-top: 0;
+                margin-bottom: 0;
+
+                .v-input__control .v-input__slot:before {
+                    display: none;
+                }
+            }
+        }
+
+        .v-data-footer__icons-before, .v-data-footer__icons-after {
+            button {
+                height: 36px;
+            }
+        }
+    }
 }

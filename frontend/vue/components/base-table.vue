@@ -331,8 +331,7 @@ export default {
         - 1 // border of last row
         + 32 // thead
         + 36 // headitemsPerPage
-        + 59 // footer
-      ;
+        + 37; // footer
     },
     columnsSelected() {
       if (this.$store.state[this.nameVuexModule][this.nameStateColumnsSelected] === null) {
@@ -354,7 +353,7 @@ export default {
       return this.$scopedSlots.actions !== undefined || this.nameLocalStorageColumnsSelected !== undefined;
     },
     arrayHeaders() {
-      return _.filter(this.columns, column => this.columnsSelected.hasOwnProperty(column.value));
+      return _.filter(this.columns, column => Object.prototype.hasOwnProperty.call(this.columnsSelected, column.value));
     },
     is_page_selected() {
       let isPageSelected = true;
