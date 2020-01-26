@@ -1,149 +1,264 @@
 <template>
   <div>
     <v-row no-gutters>
-      <v-flex>
-        <v-tabs
-          v-model="indexTab"
-        >
-          <v-tab key="batch">
-            Batches
-          </v-tab>
-          <v-tab key="hits">
-            HITs
-          </v-tab>
-          <v-tab key="assignments">
-            Assignments
-          </v-tab>
-
-          <v-tabs-items
-            class="mt-1"
-            v-bind:value="indexTab"
+      <v-col>
+        <v-row dense>
+          <v-col
+            cols="12"
+            class="pt-0"
           >
-            <v-tab-item
-              key="batches"
+            <v-list
+              dense
+              flat
             >
-              <v-container
-                fluid
-                class="pa-0"
-              >
-                <v-row no-gutters>
-                  <v-col xs>
-                    <v-card>
-                      <list-batches
-                        name-state-pagination="paginationFinances"
-                        name-local-storage-pagination="pagination_batches_finances"
+              <v-list-item-group>
+                <v-list-item
+                  v-for="anchor of arrayAnchors"
+                  v-bind:key="anchor.anchor"
+                  style="min-height: 24px"
+                  v-on:click.native="scrollTo(anchor.anchor)"
+                >
+                  <v-list-item-icon class="ma-0">
+                    <v-icon>mdi-chevron-down</v-icon>
+                  </v-list-item-icon>
+                  <v-list-item-content class="py-0">
+                    {{ anchor.label }}
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list-item-group>
+            </v-list>
+          </v-col>
 
-                        name-local-storage-columns-selected="array_columns_batches_finances"
-                        name-state-columns-selected="objectColumnsSelectedFinances"
-                        name-state-columns-selected-initial="objectColumnsSelectedInitialFinances"
+          <v-col
+            id="finances"
+            cols="12"
+          >
+            <v-row no-gutters>
+              <v-col class="pr-1">
+                <display-expenses
+                  v-bind:expenses="expenses"
+                  v-bind:type-item="typeItem"
+                />
+              </v-col>
+              <v-col class="pl-1">
+                <v-card class="fill-height">
+                  <v-card-title>
+                    Budget ($)
+                  </v-card-title>
 
-                        v-bind:filters="filtersBatches"
-                        name-state-filters="objectFiltersFinances"
-                        name-local-storage-filters="filtersBatchesFinances"
-                      />
-                    </v-card>
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-tab-item>
+                  <v-card-text>
+                    <component-show-balance
+                      v-bind:expenses="expenses"
+                    />
+                  </v-card-text>
+                </v-card>
+              </v-col>
+            </v-row>
+          </v-col>
 
-            <v-tab-item
-              key="hits"
+          <v-col cols="12">
+            <v-card
+              id="batches"
             >
-              <v-container
-                fluid
-                grid-list-md
-                class="pa-0"
-              >
-                <v-row no-gutters>
-                  <v-col xs>
-                    <v-card>
-                      <list-hits
-                        name-state-pagination="paginationFinances"
-                        name-local-storage-pagination="pagination_hits_finances"
+              <list-batches
+                name-state-pagination="paginationFinances"
+                name-local-storage-pagination="pagination_batches_finances"
 
-                        name-local-storage-columns-selected="array_columns_hits_finances"
-                        name-state-columns-selected="objectColumnsSelectedFinances"
-                        name-state-columns-selected-initial="objectColumnsSelectedInitialFinances"
+                name-local-storage-columns-selected="array_columns_batches_finances"
+                name-state-columns-selected="objectColumnsSelectedFinances"
+                name-state-columns-selected-initial="objectColumnsSelectedInitialFinances"
 
-                        v-bind:filters="filtersHITs"
-                        name-state-filters="objectFiltersFinances"
-                        name-local-storage-filters="filtersHITsFinances"
-                      />
-                    </v-card>
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-tab-item>
-
-            <v-tab-item
-              key="assignment"
-            >
-              <v-container
-                fluid
-                grid-list-md
-                class="pa-0"
-              >
-                <v-row no-gutters>
-                  <v-col xs>
-                    <v-card>
-                      <list-assignments
-                        name-state-pagination="paginationFinances"
-                        name-local-storage-pagination="pagination_assignments_finances"
-
-                        name-local-storage-columns-selected="array_columns_assignments_finances"
-                        name-state-columns-selected="objectColumnsSelectedFinances"
-                        name-state-columns-selected-initial="objectColumnsSelectedInitialFinances"
-
-                        v-bind:filters="filtersAssignments"
-                        name-state-filters="objectFiltersFinances"
-                        name-local-storage-filters="filtersAssignmentsFinances"
-                      />
-                    </v-card>
-                  </v-col>
-                </v-row>
-                <v-layout />
-              </v-container>
-            </v-tab-item>
-          </v-tabs-items>
-        </v-tabs>
-      </v-flex>
-    </v-row>
-
-    <v-divider class="my-2" />
-
-    <v-container
-      fluid
-      class="pa-0"
-      grid-list-md
-    >
-      <v-layout>
-        <v-flex
-          shrink
-        >
-          <display-expenses
-            v-bind:expenses="expenses"
-            v-bind:type-item="typeItem"
-          />
-        </v-flex>
-
-        <v-flex
-          shrink
-        >
-          <v-card class="fill-height">
-            <v-card-title>
-              Budget ($)
-            </v-card-title>
-
-            <v-card-text>
-              <component-show-balance
-                v-bind:expenses="expenses"
+                v-bind:filters="filtersBatches"
+                name-state-filters="objectFiltersFinances"
+                name-local-storage-filters="filtersBatchesFinances"
               />
-            </v-card-text>
-          </v-card>
-        </v-flex>
-      </v-layout>
-    </v-container>
+            </v-card>
+          </v-col>
+
+          <v-col cols="12">
+            <v-card
+              id="hits"
+            >
+              <list-hits
+                name-state-pagination="paginationFinances"
+                name-local-storage-pagination="pagination_hits_finances"
+
+                name-local-storage-columns-selected="array_columns_hits_finances"
+                name-state-columns-selected="objectColumnsSelectedFinances"
+                name-state-columns-selected-initial="objectColumnsSelectedInitialFinances"
+
+                v-bind:filters="filtersHITs"
+                name-state-filters="objectFiltersFinances"
+                name-local-storage-filters="filtersHITsFinances"
+              />
+            </v-card>
+          </v-col>
+
+          <v-col cols="12">
+            <v-card
+              id="assignments"
+            >
+              <list-assignments
+                name-state-pagination="paginationFinances"
+                name-local-storage-pagination="pagination_assignments_finances"
+
+                name-local-storage-columns-selected="array_columns_assignments_finances"
+                name-state-columns-selected="objectColumnsSelectedFinances"
+                name-state-columns-selected-initial="objectColumnsSelectedInitialFinances"
+
+                v-bind:filters="filtersAssignments"
+                name-state-filters="objectFiltersFinances"
+                name-local-storage-filters="filtersAssignmentsFinances"
+              />
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-col>
+    </v-row>
+    <!--    <v-row no-gutters>-->
+    <!--      <v-flex>-->
+    <!--        <v-tabs-->
+    <!--          v-model="indexTab"-->
+    <!--        >-->
+    <!--          <v-tab key="batch">-->
+    <!--            Batches-->
+    <!--          </v-tab>-->
+    <!--          <v-tab key="hits">-->
+    <!--            HITs-->
+    <!--          </v-tab>-->
+    <!--          <v-tab key="assignments">-->
+    <!--            Assignments-->
+    <!--          </v-tab>-->
+
+    <!--          <v-tabs-items-->
+    <!--            class="mt-1"-->
+    <!--            v-bind:value="indexTab"-->
+    <!--          >-->
+    <!--            <v-tab-item-->
+    <!--              key="batches"-->
+    <!--            >-->
+    <!--              <v-container-->
+    <!--                fluid-->
+    <!--                class="pa-0"-->
+    <!--              >-->
+    <!--                <v-row no-gutters>-->
+    <!--                  <v-col xs>-->
+    <!--                    <v-card>-->
+    <!--                      <list-batches-->
+    <!--                        name-state-pagination="paginationFinances"-->
+    <!--                        name-local-storage-pagination="pagination_batches_finances"-->
+
+    <!--                        name-local-storage-columns-selected="array_columns_batches_finances"-->
+    <!--                        name-state-columns-selected="objectColumnsSelectedFinances"-->
+    <!--                        name-state-columns-selected-initial="objectColumnsSelectedInitialFinances"-->
+
+    <!--                        v-bind:filters="filtersBatches"-->
+    <!--                        name-state-filters="objectFiltersFinances"-->
+    <!--                        name-local-storage-filters="filtersBatchesFinances"-->
+    <!--                      />-->
+    <!--                    </v-card>-->
+    <!--                  </v-col>-->
+    <!--                </v-row>-->
+    <!--              </v-container>-->
+    <!--            </v-tab-item>-->
+
+    <!--            <v-tab-item-->
+    <!--              key="hits"-->
+    <!--            >-->
+    <!--              <v-container-->
+    <!--                fluid-->
+    <!--                grid-list-md-->
+    <!--                class="pa-0"-->
+    <!--              >-->
+    <!--                <v-row no-gutters>-->
+    <!--                  <v-col xs>-->
+    <!--                    <v-card>-->
+    <!--                      <list-hits-->
+    <!--                        name-state-pagination="paginationFinances"-->
+    <!--                        name-local-storage-pagination="pagination_hits_finances"-->
+
+    <!--                        name-local-storage-columns-selected="array_columns_hits_finances"-->
+    <!--                        name-state-columns-selected="objectColumnsSelectedFinances"-->
+    <!--                        name-state-columns-selected-initial="objectColumnsSelectedInitialFinances"-->
+
+    <!--                        v-bind:filters="filtersHITs"-->
+    <!--                        name-state-filters="objectFiltersFinances"-->
+    <!--                        name-local-storage-filters="filtersHITsFinances"-->
+    <!--                      />-->
+    <!--                    </v-card>-->
+    <!--                  </v-col>-->
+    <!--                </v-row>-->
+    <!--              </v-container>-->
+    <!--            </v-tab-item>-->
+
+    <!--            <v-tab-item-->
+    <!--              key="assignment"-->
+    <!--            >-->
+    <!--              <v-container-->
+    <!--                fluid-->
+    <!--                grid-list-md-->
+    <!--                class="pa-0"-->
+    <!--              >-->
+    <!--                <v-row no-gutters>-->
+    <!--                  <v-col xs>-->
+    <!--                    <v-card>-->
+    <!--                      <list-assignments-->
+    <!--                        name-state-pagination="paginationFinances"-->
+    <!--                        name-local-storage-pagination="pagination_assignments_finances"-->
+
+    <!--                        name-local-storage-columns-selected="array_columns_assignments_finances"-->
+    <!--                        name-state-columns-selected="objectColumnsSelectedFinances"-->
+    <!--                        name-state-columns-selected-initial="objectColumnsSelectedInitialFinances"-->
+
+    <!--                        v-bind:filters="filtersAssignments"-->
+    <!--                        name-state-filters="objectFiltersFinances"-->
+    <!--                        name-local-storage-filters="filtersAssignmentsFinances"-->
+    <!--                      />-->
+    <!--                    </v-card>-->
+    <!--                  </v-col>-->
+    <!--                </v-row>-->
+    <!--                <v-layout />-->
+    <!--              </v-container>-->
+    <!--            </v-tab-item>-->
+    <!--          </v-tabs-items>-->
+    <!--        </v-tabs>-->
+    <!--      </v-flex>-->
+    <!--    </v-row>-->
+
+    <!--    <v-divider class="my-2" />-->
+
+    <!--    <v-container-->
+    <!--      fluid-->
+    <!--      class="pa-0"-->
+    <!--      grid-list-md-->
+    <!--    >-->
+    <!--      <v-layout>-->
+    <!--        <v-flex-->
+    <!--          shrink-->
+    <!--        >-->
+    <!--          <display-expenses-->
+    <!--            v-bind:expenses="expenses"-->
+    <!--            v-bind:type-item="typeItem"-->
+    <!--          />-->
+    <!--        </v-flex>-->
+
+    <!--        <v-flex-->
+    <!--          shrink-->
+    <!--        >-->
+    <!--          <v-card class="fill-height">-->
+    <!--            <v-card-title>-->
+    <!--              Budget ($)-->
+    <!--            </v-card-title>-->
+
+    <!--            <v-card-text>-->
+    <!--              <component-show-balance-->
+    <!--                v-bind:expenses="expenses"-->
+    <!--              />-->
+    <!--            </v-card-text>-->
+    <!--          </v-card>-->
+    <!--        </v-flex>-->
+    <!--      </v-layout>-->
+    <!--    </v-container>-->
     <!--<v-divider class="my-3"></v-divider>-->
     <!--<div style="max-width: 100%">-->
     <!--<v-flex>-->
@@ -187,6 +302,26 @@ export default {
     };
   },
   computed: {
+    arrayAnchors() {
+      return [
+        {
+          label: 'Finances',
+          anchor: '#finances',
+        },
+        {
+          label: 'Batches',
+          anchor: '#batches',
+        },
+        {
+          label: 'HITs',
+          anchor: '#hits',
+        },
+        {
+          label: 'Assignments',
+          anchor: '#assignments',
+        },
+      ];
+    },
     activeFilters() {
       switch (this.typeItem) {
         case 'assignments':
@@ -231,6 +366,9 @@ export default {
     this.loadExpenses();
   },
   methods: {
+    scrollTo(hash) {
+      this.$vuetify.goTo(hash, { offset: 8, duration: 0 });
+    },
     loadExpenses() {
       this.expenses = {};
       ServiceFinances.load({
