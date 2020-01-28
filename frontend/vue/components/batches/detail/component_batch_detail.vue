@@ -1,19 +1,19 @@
 <template>
   <v-row no-gutters>
     <v-col>
-<!--      <h2 class="headline">-->
-<!--        <v-btn-->
-<!--          slot="activator"-->
-<!--          class="my-0"-->
-<!--          icon-->
-<!--          small-->
-<!--          v-bind:to="{ name: 'tasksBatches' }"-->
-<!--        >-->
-<!--          <v-icon>mdi-arrow-left</v-icon>-->
-<!--        </v-btn>-->
-<!--        Batch {{ batch.name }}-->
-<!--      </h2>-->
-<!--      <v-divider class="my-3" />-->
+      <!--      <h2 class="headline">-->
+      <!--        <v-btn-->
+      <!--          slot="activator"-->
+      <!--          class="my-0"-->
+      <!--          icon-->
+      <!--          small-->
+      <!--          v-bind:to="{ name: 'tasksBatches' }"-->
+      <!--        >-->
+      <!--          <v-icon>mdi-arrow-left</v-icon>-->
+      <!--        </v-btn>-->
+      <!--        Batch {{ batch.name }}-->
+      <!--      </h2>-->
+      <!--      <v-divider class="my-3" />-->
       <v-container
         fluid
         class="pa-0"
@@ -159,6 +159,7 @@ export default {
         nameState: 'nameItem',
         objectState: batch.name,
       });
+      this.$emit('loaded-batch', batch);
     });
   },
   methods: {

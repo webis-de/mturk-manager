@@ -1,19 +1,19 @@
 <template>
   <v-layout wrap>
     <v-flex>
-<!--      <h2 class="headline">-->
-<!--        <v-btn-->
-<!--          slot="activator"-->
-<!--          class="my-0"-->
-<!--          icon-->
-<!--          small-->
-<!--          v-bind:to="{ name: 'tasksHITs' }"-->
-<!--        >-->
-<!--          <v-icon>mdi-arrow-left</v-icon>-->
-<!--        </v-btn>-->
-<!--        HIT {{ hit.id_hit }}-->
-<!--      </h2>-->
-<!--      <v-divider class="my-3" />-->
+      <!--      <h2 class="headline">-->
+      <!--        <v-btn-->
+      <!--          slot="activator"-->
+      <!--          class="my-0"-->
+      <!--          icon-->
+      <!--          small-->
+      <!--          v-bind:to="{ name: 'tasksHITs' }"-->
+      <!--        >-->
+      <!--          <v-icon>mdi-arrow-left</v-icon>-->
+      <!--        </v-btn>-->
+      <!--        HIT {{ hit.id_hit }}-->
+      <!--      </h2>-->
+      <!--      <v-divider class="my-3" />-->
       <v-container
         fluid
         class="pa-0"
@@ -141,6 +141,7 @@ export default {
         nameState: 'nameItem',
         objectState: hit.id_hit,
       });
+      this.$emit('loaded-hit', hit);
     });
   },
   methods: {
