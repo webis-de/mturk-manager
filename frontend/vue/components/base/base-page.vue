@@ -1,23 +1,23 @@
 <template>
-  <v-row>
+  <v-row no-gutters>
     <v-col>
-      <v-row>
-        <v-col>
-          <v-list
-            dense
-            flat
-          >
-            <v-card>
-              <v-breadcrumbs
-                class="breadcrumbs"
-                v-bind:items="breadcrumbs"
-              />
-            </v-card>
-          </v-list>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col>
+      <!--      <v-row no-gutters>-->
+      <!--        <v-col>-->
+      <!--          <v-list-->
+      <!--            dense-->
+      <!--            flat-->
+      <!--          >-->
+      <!--            <v-card>-->
+      <!--              <v-breadcrumbs-->
+      <!--                class="breadcrumbs"-->
+      <!--                v-bind:items="breadcrumbs"-->
+      <!--              />-->
+      <!--            </v-card>-->
+      <!--          </v-list>-->
+      <!--        </v-col>-->
+      <!--      </v-row>-->
+      <v-row dense>
+        <v-col class="pt-0">
           <v-list
             dense
             flat
@@ -40,7 +40,7 @@
           </v-list>
         </v-col>
       </v-row>
-      <v-row>
+      <v-row no-gutters>
         <v-col>
           <slot></slot>
         </v-col>
@@ -52,9 +52,20 @@
 <script>
 export default {
   name: 'BasePage',
+  props: {
+    sections: {
+      type: Object,
+      required: true,
+    },
+  },
   computed: {
     anchors() {
-      return [];
+      const sectionsOrdered = this.$slots.default.map(node => node.componentOptions.propsData.identifier);
+
+      return sectionsOrdered.map(identifier => ({
+        label: this.sections[identifier],
+        anchor: identifier,
+      }));
     },
     breadcrumbs() {
       return [];
@@ -65,9 +76,21 @@ export default {
   },
   methods: {
     scrollTo(hash) {
-      this.$vuetify.goTo(hash, { offset: 8, duration: 0 });
+      this.$vuetify.goTo(`#${hash}`, { offset: 8, duration: 0 });
     },
   },
+  // mounted() {
+  //   console.warn('this.$route', this.$route.hash);
+  //   if (this.$route.hash !== '') {
+  //     // this.isWaitingForScrolling
+  //     // setTimeout(() => {
+  //     //   this.$vuetify.goTo(this.$route.hash);
+  //     // }, 4000);
+  //     // this.$nextTick(() => {
+  //     //   this.$vuetify.goTo(this.$route.hash);
+  //     // });
+  //   }
+  // },
 };
 </script>
 

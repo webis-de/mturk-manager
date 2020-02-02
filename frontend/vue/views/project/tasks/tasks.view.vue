@@ -1,170 +1,40 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <div>
-    <base-page>
-      <base-page-section>
-        test
-      </base-page-section>
-      <base-page-section>
-        test
-      </base-page-section>
-    </base-page>
-    <v-row no-gutters>
-      <v-col>
-        <router-view />
-        <template
-          v-if="$route.params.id === undefined"
+    <router-view />
+    <template
+      v-if="$route.params.id === undefined"
+    >
+      <base-page v-bind:sections="sections">
+        <base-page-section
+          type="table"
+          identifier="batches"
         >
-          <v-row dense>
-            <v-col
-              cols="12"
-              class="pt-0"
-            >
-              <v-list
-                dense
-                flat
-              >
-                <v-list-item-group>
-                  <v-list-item
-                    v-for="anchor of arrayAnchors"
-                    v-bind:key="anchor.anchor"
-                    style="min-height: 24px"
-                    v-on:click.native="scrollTo(anchor.anchor)"
-                  >
-                    <v-list-item-icon class="ma-0">
-                      <v-icon>mdi-chevron-down</v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-content class="py-0">
-                      {{ anchor.label }}
-                    </v-list-item-content>
-                  </v-list-item>
-                </v-list-item-group>
-              </v-list>
-            </v-col>
+          <list-batches>
+            <template v-slot:actions>
+              <component-download-batch />
+            </template>
+          </list-batches>
+        </base-page-section>
 
-            <v-col cols="12">
-              <v-card
-                id="batches"
-              >
-                <list-batches>
-                  <template v-slot:actions>
-                    <component-download-batch />
-                  </template>
-                </list-batches>
-              </v-card>
-            </v-col>
+        <base-page-section
+          type="table"
+          identifier="hits"
+        >
+          <list-hits />
+        </base-page-section>
 
-            <v-col cols="12">
-              <v-card
-                id="hits"
-              >
-                <list-hits />
-              </v-card>
-            </v-col>
-
-            <v-col cols="12">
-              <v-card
-                id="assignments"
-              >
-                <list-assignments>
-                  <template v-slot:actions>
-                    <component-annotate />
-                  </template>
-                </list-assignments>
-              </v-card>
-            </v-col>
-          </v-row>
-
-          <!--      <v-row no-gutters>-->
-          <!--        <v-col>-->
-          <!--          <v-tabs-->
-          <!--            v-bind:value="$route.meta.index"-->
-          <!--            v-on:change="changedView($event)"-->
-          <!--          >-->
-          <!--            <v-tab key="batch">-->
-          <!--              Batches-->
-          <!--            </v-tab>-->
-          <!--            <v-tab key="hits">-->
-          <!--              HITs-->
-          <!--            </v-tab>-->
-          <!--            <v-tab key="assignments">-->
-          <!--              Assignments-->
-          <!--            </v-tab>-->
-
-          <!--            <v-tabs-items-->
-          <!--              class="mt-1"-->
-          <!--              v-bind:value="$route.meta.index"-->
-          <!--            >-->
-          <!--              <v-tab-item-->
-          <!--                key="batches"-->
-          <!--              >-->
-          <!--                <v-container-->
-          <!--                  fluid-->
-          <!--                  class="pa-0"-->
-          <!--                >-->
-          <!--                  <v-row no-gutters>-->
-          <!--                    <v-col xs>-->
-          <!--                      <v-card>-->
-          <!--                        <list-batches>-->
-          <!--                          <template v-slot:actions>-->
-          <!--                            <component-download-batch />-->
-          <!--                          </template>-->
-          <!--                        </list-batches>-->
-          <!--                      </v-card>-->
-          <!--                    </v-col>-->
-          <!--                  </v-row>-->
-          <!--                  <v-layout />-->
-          <!--                </v-container>-->
-          <!--              </v-tab-item>-->
-
-          <!--              <v-tab-item-->
-          <!--                key="hits"-->
-          <!--              >-->
-          <!--                <v-container-->
-          <!--                  fluid-->
-          <!--                  class="pa-0"-->
-          <!--                >-->
-          <!--                  <v-row no-gutters>-->
-          <!--                    <v-col xs>-->
-          <!--                      <v-card>-->
-          <!--                        <list-hits />-->
-          <!--                      </v-card>-->
-          <!--                    </v-col>-->
-          <!--                  </v-row>-->
-          <!--                  <v-layout />-->
-          <!--                </v-container>-->
-          <!--              </v-tab-item>-->
-
-          <!--              <v-tab-item-->
-          <!--                key="assignment"-->
-          <!--              >-->
-          <!--                <v-container-->
-          <!--                  fluid-->
-          <!--                  grid-list-md-->
-          <!--                  class="pa-0"-->
-          <!--                >-->
-          <!--                  <v-row no-gutters>-->
-          <!--                    <v-col xs>-->
-          <!--                      <v-card>-->
-          <!--                        <list-assignments>-->
-          <!--                          <template v-slot:actions>-->
-          <!--                            <component-annotate />-->
-          <!--                          </template>-->
-          <!--                        </list-assignments>-->
-          <!--                      </v-card>-->
-          <!--                    </v-col>-->
-          <!--                  </v-row>-->
-          <!--                  <v-layout />-->
-          <!--                </v-container>-->
-          <!--              </v-tab-item>-->
-          <!--            </v-tabs-items>-->
-          <!--          </v-tabs>-->
-          <!--        </v-col>-->
-          <!--      </v-row>-->
-
-          <!--      <create-batch />-->
-        </template>
-      </v-col>
-    </v-row>
+        <base-page-section
+          type="table"
+          identifier="assignments"
+        >
+          <list-assignments>
+            <template v-slot:actions>
+              <component-annotate />
+            </template>
+          </list-assignments>
+        </base-page-section>
+      </base-page>
+    </template>
   </div>
 </template>
 
@@ -190,67 +60,14 @@ export default {
     ListBatches,
     ComponentDownloadBatch,
   },
-  // mounted() {
-  //   console.warn('this.$route', this.$route.hash);
-  //   if (this.$route.hash !== '') {
-  //     // this.isWaitingForScrolling
-  //     // setTimeout(() => {
-  //     //   this.$vuetify.goTo(this.$route.hash);
-  //     // }, 4000);
-  //     // this.$nextTick(() => {
-  //     //   this.$vuetify.goTo(this.$route.hash);
-  //     // });
-  //   }
-  // },
-  computed: {
-    arrayAnchors() {
-      return [
-        {
-          label: 'Batches',
-          anchor: '#batches',
-        },
-        {
-          label: 'HITs',
-          anchor: '#hits',
-        },
-        {
-          label: 'Assignments',
-          anchor: '#assignments',
-        },
-      ];
-    },
-  },
-  methods: {
-    onIntersect(entries) {
-      // More information about these options
-      // is located here: https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API
-      console.warn('entries', entries);
-      this.isIntersecting = entries[0].isIntersecting;
-    },
-    scrollTo(hash) {
-      this.$vuetify.goTo(hash, { offset: 8, duration: 0 });
-    },
-    changedView(index) {
-      switch (index) {
-        case 0:
-          this.$router.push({
-            name: 'tasksBatches',
-          });
-          break;
-        case 1:
-          this.$router.push({
-            name: 'tasksHITs',
-          });
-          break;
-        case 2:
-          this.$router.push({
-            name: 'tasksAssignments',
-          });
-          break;
-        default:
-          break;
-      }
-    },
+  data() {
+    return {
+      sections: {
+        batches: 'Batches',
+        hits: 'HITs',
+        assignments: 'Assignments',
+      },
+    };
   },
 };
 </script>
