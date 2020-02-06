@@ -1,6 +1,6 @@
 <template>
   <h2
-    v-bind:id="identifier !== null ? identifier : false"
+    v-bind:id="identifier.identifier !== null ? identifier.identifier : false"
     class="mt-8 pl-3"
   >
     <slot></slot>
@@ -12,9 +12,11 @@ export default {
   name: 'BasePageGroupDivider',
   props: {
     identifier: {
-      type: String,
+      type: Object,
       required: false,
-      default: null,
+      default() {
+        return {};
+      },
     },
   },
 };

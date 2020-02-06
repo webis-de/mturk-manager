@@ -1,6 +1,6 @@
 <template>
   <div>
-    <base-page v-bind:sections="sections">
+    <base-page>
       <!--      <base-page-section-->
       <!--        identifier="finances"-->
       <!--      >-->
@@ -23,7 +23,10 @@
       <!--      </base-page-section>-->
 
       <base-page-section
-        identifier="finances"
+        v-bind:identifier="{
+          identifier: 'finances',
+          label: 'Finances'
+        }"
       >
         <v-row dense>
           <v-col class="shrink">
@@ -49,7 +52,10 @@
 
       <base-page-section
         type="table"
-        identifier="batches"
+        v-bind:identifier="{
+          identifier: 'batches',
+          label: 'Batches'
+        }"
       >
         <list-batches
           name-state-pagination="paginationFinances"
@@ -67,7 +73,10 @@
 
       <base-page-section
         type="table"
-        identifier="hits"
+        v-bind:identifier="{
+          identifier: 'hits',
+          label: 'HITs'
+        }"
       >
         <list-hits
           name-state-pagination="paginationFinances"
@@ -85,7 +94,10 @@
 
       <base-page-section
         type="table"
-        identifier="assignments"
+        v-bind:identifier="{
+          identifier: 'assignments',
+          label: 'Assignments'
+        }"
       >
         <list-assignments
           name-state-pagination="paginationFinances"
@@ -268,12 +280,6 @@ export default {
     return {
       indexTab: 0,
       expenses: {},
-      sections: {
-        finances: 'Finances',
-        batches: 'Batches',
-        hits: 'HITs',
-        assignments: 'Assignments',
-      },
     };
   },
   computed: {

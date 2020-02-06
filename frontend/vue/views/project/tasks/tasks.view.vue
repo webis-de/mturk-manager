@@ -4,10 +4,13 @@
     <template
       v-if="$route.params.id === undefined"
     >
-      <base-page v-bind:sections="sections">
+      <base-page>
         <base-page-section
           type="table"
-          identifier="batches"
+          v-bind:identifier="{
+            identifier: 'batches',
+            label: 'Batches'
+          }"
         >
           <list-batches>
             <template v-slot:actions>
@@ -18,14 +21,20 @@
 
         <base-page-section
           type="table"
-          identifier="hits"
+          v-bind:identifier="{
+            identifier: 'hits',
+            label: 'HITs'
+          }"
         >
           <list-hits />
         </base-page-section>
 
         <base-page-section
           type="table"
-          identifier="assignments"
+          v-bind:identifier="{
+            identifier: 'assignments',
+            label: 'Assignments'
+          }"
         >
           <list-assignments>
             <template v-slot:actions>
@@ -59,15 +68,6 @@ export default {
     ListHits,
     ListBatches,
     ComponentDownloadBatch,
-  },
-  data() {
-    return {
-      sections: {
-        batches: 'Batches',
-        hits: 'HITs',
-        assignments: 'Assignments',
-      },
-    };
   },
 };
 </script>

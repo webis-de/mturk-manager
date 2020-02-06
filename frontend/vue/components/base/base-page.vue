@@ -52,32 +52,26 @@
 <script>
 export default {
   name: 'BasePage',
-  props: {
-    sections: {
-      type: Object,
-      required: true,
-    },
-  },
   computed: {
     anchors() {
       const sectionsOrdered = this.$slots.default.map((node) => {
+        if (node.componentOptions.tag !== 'base-page-section'
+          && node.componentOptions.tag !== 'base-page-group-divider') return null;
+
         if (node.componentOptions.propsData.identifier !== undefined) {
           return node.componentOptions.propsData.identifier;
         }
         return null;
-      }).filter(section => section !== null);
+      }).filter(section => section !== null && section.identifier !== undefined && section.label !== undefined);
 
       return sectionsOrdered.map(identifier => ({
-        label: this.sections[identifier],
-        anchor: identifier,
+        label: identifier.label,
+        anchor: identifier.identifier,
       }));
     },
     breadcrumbs() {
       return [];
     },
-  },
-  created() {
-    console.warn('this.$slots.default', this.$slots.default);
   },
   methods: {
     scrollTo(hash) {

@@ -1,6 +1,11 @@
 <template>
-  <base-page v-bind:sections="sections">
-    <base-page-group-divider identifier="general">
+  <base-page>
+    <base-page-group-divider
+      v-bind:identifier="{
+        identifier: 'general',
+        label: 'General'
+      }"
+    >
       General
     </base-page-group-divider>
 
@@ -38,7 +43,12 @@
       </v-row>
     </base-page-section>
 
-    <base-page-group-divider identifier="templates">
+    <base-page-group-divider
+      v-bind:identifier="{
+        identifier: 'templates',
+        label: 'Templates'
+      }"
+    >
       Templates
     </base-page-group-divider>
 
@@ -55,7 +65,12 @@
       <table-templates-global />
     </base-page-section>
 
-    <base-page-group-divider identifier="messages">
+    <base-page-group-divider
+      v-bind:identifier="{
+        identifier: 'messages',
+        label: 'Messages'
+      }"
+    >
       Messages
     </base-page-group-divider>
 
@@ -63,7 +78,12 @@
       <table-messages-reject />
     </base-page-section>
 
-    <base-page-group-divider identifier="global">
+    <base-page-group-divider
+      v-bind:identifier="{
+        identifier: 'global',
+        label: 'Global'
+      }"
+    >
       Global
     </base-page-group-divider>
     <base-page-section>
@@ -142,12 +162,6 @@ export default {
   data() {
     return {
       isActiveModeLight: this.$store.state.module_app.isActiveModeLight,
-      sections: {
-        general: 'General',
-        templates: 'Templates',
-        messages: 'Messages',
-        global: 'Global',
-      },
     };
   },
   computed: {

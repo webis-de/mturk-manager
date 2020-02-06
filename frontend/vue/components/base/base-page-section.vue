@@ -1,6 +1,6 @@
 <template>
   <v-row
-    v-bind:id="identifier !== null ? identifier : false"
+    v-bind:id="identifier.identifier !== undefined ? identifier.identifier : false"
     dense
   >
     <v-col v-if="type === 'table'">
@@ -29,9 +29,11 @@ export default {
       default: 'default',
     },
     identifier: {
-      type: String,
+      type: Object,
       required: false,
-      default: null,
+      default() {
+        return {};
+      },
     },
   },
 };
