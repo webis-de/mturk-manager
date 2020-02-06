@@ -28,19 +28,19 @@
         <v-row dense>
           <v-col class="shrink">
             <display-expenses
-              v-bind:expenses="expensesBatches"
+              v-bind:expenses="expenses"
               type-item="batches"
             />
           </v-col>
           <v-col class="shrink">
             <display-expenses
-              v-bind:expenses="expensesHITs"
+              v-bind:expenses="expenses"
               type-item="hits"
             />
           </v-col>
           <v-col>
             <display-expenses
-              v-bind:expenses="expensesAssignments"
+              v-bind:expenses="expenses"
               type-item="assignments"
             />
           </v-col>
@@ -238,7 +238,7 @@ import {
   mapState, mapMutations, mapActions,
 } from 'vuex';
 
-import ComponentShowBalance from '../../../components/finances/component-show-balance';
+// import ComponentShowBalance from '../../../components/finances/component-show-balance';
 import DisplayExpenses from '../../../components/finances/display-expenses';
 import ListBatches from '../../../components/batches/list/list-batches';
 import { updateSandbox } from '../../../mixins/update-sandbox.mixin';
@@ -256,7 +256,7 @@ export default {
     ListAssignments,
     ListHits,
     ListBatches,
-    ComponentShowBalance,
+    // ComponentShowBalance,
     // ComponentListBatches,
     DisplayExpenses,
   },
