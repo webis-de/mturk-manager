@@ -3,7 +3,7 @@
     <v-flex>
       <v-card>
         <v-card-title>
-          Costs ($)
+          {{title}} Costs ($)
         </v-card-title>
 
         <v-card-text>
@@ -48,6 +48,15 @@ export default {
     },
   },
   computed: {
+    title() {
+      if (this.typeItem === 'batches') {
+        return 'Batch';
+      } else if (this.typeItem === 'hits') {
+        return 'HIT';
+      } else if (this.typeItem === 'assignments') {
+        return 'Assignment';
+      }
+    },
     calculations() {
       const result = [
         {
