@@ -31,16 +31,6 @@
 
     <base-table-cell
       v-slot="{ item }"
-      name="count_hits"
-      class="text-right"
-      v-bind:item="batch"
-      v-bind:columns-selected="objectColumnsSelected"
-    >
-      {{ item.count_hits }}
-    </base-table-cell>
-
-    <base-table-cell
-      v-slot="{ item }"
       name="datetime_creation"
       class="text-right"
       v-bind:item="batch"
@@ -49,6 +39,16 @@
       <base-display-datetime
         v-bind:datetime="item.datetime_creation"
       />
+    </base-table-cell>
+
+    <base-table-cell
+      v-slot="{ item }"
+      name="count_hits"
+      class="text-right"
+      v-bind:item="batch"
+      v-bind:columns-selected="objectColumnsSelected"
+    >
+      {{ item.count_hits }}
     </base-table-cell>
 
     <base-table-cell

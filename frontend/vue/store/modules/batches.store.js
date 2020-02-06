@@ -2,7 +2,7 @@ import Vue from 'vue';
 import _ from 'lodash';
 import localforage from 'localforage';
 import Batch from '../../classes/batch';
-import {classesHeaders, setPagination} from '../../helpers';
+import { classesHeaders, setPagination } from '../../helpers';
 import baseModule from './base.module';
 
 export const moduleBatches = _.merge({}, baseModule, {
@@ -50,13 +50,6 @@ export const moduleBatches = _.merge({}, baseModule, {
         class: classesHeaders,
       },
       {
-        text: 'HITs',
-        value: 'count_hits',
-        align: 'end',
-        class: classesHeaders,
-        width: '1px',
-      },
-      {
         text: 'Creation',
         value: 'datetime_creation',
         align: 'end',
@@ -64,7 +57,14 @@ export const moduleBatches = _.merge({}, baseModule, {
         width: '1px',
       },
       {
-        text: 'Assignments',
+        text: 'HITs',
+        value: 'count_hits',
+        align: 'end',
+        class: classesHeaders,
+        width: '1px',
+      },
+      {
+        text: 'Asgmnts/HIT',
         value: 'settings_batch__count_assignments',
         align: 'end',
         class: classesHeaders,
@@ -78,21 +78,21 @@ export const moduleBatches = _.merge({}, baseModule, {
         width: '1px',
       },
       {
-        text: 'Total Assignments',
+        text: 'Assignments',
         value: 'count_assignments_total',
         align: 'end',
         class: classesHeaders,
         width: '1px',
       },
       {
-        text: 'Approved assignments',
+        text: 'Approved',
         value: 'count_assignments_approved',
         align: 'end',
         class: classesHeaders,
         width: '1px',
       },
       {
-        text: 'Rejected assignments',
+        text: 'Rejected',
         value: 'count_assignments_rejected',
         align: 'end',
         class: classesHeaders,
