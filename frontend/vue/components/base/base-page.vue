@@ -60,7 +60,12 @@ export default {
   },
   computed: {
     anchors() {
-      const sectionsOrdered = this.$slots.default.map(node => node.componentOptions.propsData.identifier);
+      const sectionsOrdered = this.$slots.default.map((node) => {
+        if (node.componentOptions.propsData.identifier !== undefined) {
+          return node.componentOptions.propsData.identifier;
+        }
+        return null;
+      }).filter(section => section !== null);
 
       return sectionsOrdered.map(identifier => ({
         label: this.sections[identifier],

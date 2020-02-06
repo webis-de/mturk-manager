@@ -1,13 +1,20 @@
 <template>
   <v-row
-    v-bind:id="identifier"
+    v-bind:id="identifier !== null ? identifier : false"
     dense
   >
     <v-col v-if="type === 'table'">
       <slot></slot>
     </v-col>
     <v-col v-else>
-      <slot></slot>
+      <v-card>
+        <v-container
+          fluid
+          class="py-0 px-2"
+        >
+          <slot></slot>
+        </v-container>
+      </v-card>
     </v-col>
   </v-row>
 </template>
@@ -18,11 +25,13 @@ export default {
   props: {
     type: {
       type: String,
-      required: true,
+      required: false,
+      default: 'default',
     },
     identifier: {
       type: String,
-      required: true,
+      required: false,
+      default: null,
     },
   },
 };
