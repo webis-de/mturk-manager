@@ -127,7 +127,7 @@
     <base-table-cell
       v-slot="{ item }"
       name="progress"
-      class="text-center"
+      class="text-center pr-4"
       v-bind:item="batch"
       v-bind:columns-selected="objectColumnsSelected"
     >

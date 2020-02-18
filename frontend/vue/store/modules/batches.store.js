@@ -117,7 +117,7 @@ export const moduleBatches = _.merge({}, baseModule, {
         value: 'progress',
         align: 'end',
         sortable: false,
-        class: classesHeaders,
+        class: classesHeaders.concat(['pr-4']),
         width: '1px',
       },
       // {

@@ -112,6 +112,7 @@
       <v-row
         dense
         align="center"
+        class="pr-4"
       >
         <v-col
           class="py-0 pl-5 title"
@@ -152,7 +153,7 @@
             </template>
           </base-table-filters>
         </v-col>
-        <v-col class="shrink pr-2">
+        <v-col class="shrink">
           <component-settings-table
             v-if="nameLocalStorageColumnsSelected !== undefined"
             v-bind:colspan="arrayHeaders.length + 1"

@@ -1,8 +1,5 @@
 <template>
   <div>
-    <h2 class="headline">
-      Limit Block
-    </h2>
     <v-row
       align="center"
       no-gutters
@@ -13,22 +10,26 @@
         <v-text-field
           type="number"
           v-bind:value="project_current.count_assignments_max_per_worker"
-          v-on:input="
-            count_assignments_max_per_worker = $event;
-            $v.count_assignments_max_per_worker.$touch();
-          "
           label="Number of Maximal Assignments Per Worker"
           min="1"
           clearable
           v-bind:error-messages="
             validation_errors.count_assignments_max_per_worker
           "
+          v-on:input="
+            count_assignments_max_per_worker = $event;
+            $v.count_assignments_max_per_worker.$touch();
+          "
         />
       </v-col>
       <v-col class="pl-3 shrink">
-        <v-btn v-bind:disabled="$v.$invalid" color="primary" v-on:click="save"
-          >Update</v-btn
+        <v-btn
+          v-bind:disabled="$v.$invalid"
+          color="primary"
+          v-on:click="save"
         >
+          Update
+        </v-btn>
       </v-col>
     </v-row>
 
@@ -38,9 +39,9 @@
       bottom
       color="success"
     >
-      <v-spacer></v-spacer>
+      <v-spacer />
       Updated!
-      <v-spacer></v-spacer>
+      <v-spacer />
     </v-snackbar>
     <!-- append-icon="clear" -->
     <!-- v-on:input="$emit('update:count_assignments_max_per_worker', try_number($event)); v.settings_batch.count_assignments_max_per_worker.$touch()" -->
@@ -57,7 +58,7 @@ import validations from '../../../mixins/validations.mixin';
 import { Service_Projects } from '../../../services/service_projects';
 
 export default {
-  name: 'component-block-limit',
+  name: 'ComponentBlockLimit',
   mixins: [validations],
   data() {
     return {

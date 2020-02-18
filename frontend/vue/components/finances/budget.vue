@@ -1,8 +1,5 @@
 <template>
   <div>
-    <h2 class="headline">
-      Budget
-    </h2>
     <v-row
       no-gutters
       align="center"
@@ -56,9 +53,9 @@
       bottom
       color="success"
     >
-      <v-spacer></v-spacer>
+      <v-spacer />
       Updated!
-      <v-spacer></v-spacer>
+      <v-spacer />
     </v-snackbar>
     <!-- append-icon="clear" -->
     <!-- v-on:input="$emit('update:amount_budget_project', try_number($event)); v.settings_batch.amount_budget_project.$touch()" -->
@@ -67,19 +64,17 @@
 </template>
 
 <script>
-import {mapActions, mapGetters} from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import { minValue, required, helpers as helpersValidation } from 'vuelidate/lib/validators';
-import validations from '../../mixins/validations.mixin';
-import {Service_Projects} from '../../services/service_projects';
-import helpers from '../../mixins/helpers.mixin';
 import or from 'vuelidate/src/validators/or';
+import validations from '../../mixins/validations.mixin';
+import { Service_Projects } from '../../services/service_projects';
+import helpers from '../../mixins/helpers.mixin';
 // const mustBeCool = (value) => !helpersValidation.req(value) || value > 1;
 
 const validBudget = helpersValidation.withParams(
   { type: 'validBudget' },
-  (value) => {
-    return !helpersValidation.req(value) || value > 0;
-  },
+  value => !helpersValidation.req(value) || value > 0,
 );
 
 export default {

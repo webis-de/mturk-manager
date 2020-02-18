@@ -9,23 +9,27 @@
       General
     </base-page-group-divider>
 
-    <base-page-section>
-      <v-row dense>
-        <v-col xs>
-          <budget />
-        </v-col>
-        <v-col xs>
-          <component-block-limit />
-        </v-col>
-      </v-row>
-    </base-page-section>
+    <base-page-group>
+      <base-page-section v-bind:title="'Budget'">
+        <v-row dense>
+          <v-col xs>
+            <budget />
+          </v-col>
+        </v-row>
+      </base-page-section>
+      <base-page-section v-bind:title="'Limit Block'">
+        <v-row dense>
+          <v-col xs>
+            <component-block-limit />
+          </v-col>
+        </v-row>
+      </base-page-section>
+    </base-page-group>
+
     <base-page-section type="table">
-      <v-row dense>
-        <v-col xs>
-          <table-settings-batch />
-        </v-col>
-      </v-row>
+      <table-settings-batch />
     </base-page-section>
+
     <base-page-section>
       <v-row dense>
         <v-col class="shrink">
@@ -139,10 +143,12 @@ import { Service_App } from '../../../services/service.app';
 import BasePage from '../../../components/base/base-page';
 import BasePageSection from '../../../components/base/base-page-section';
 import BasePageGroupDivider from '../../../components/base/base-page-group-divider';
+import BasePageGroup from '../../../components/base/base-page-group';
 
 export default {
   name: 'AppSettingsProject',
   components: {
+    BasePageGroup,
     BasePageGroupDivider,
     BasePageSection,
     BasePage,

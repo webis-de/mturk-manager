@@ -3,14 +3,15 @@
     v-bind:id="identifier.identifier !== undefined ? identifier.identifier : false"
     dense
   >
-    <v-col
+    <base-wrap-node
       v-for="basePageSection in $slots.default"
-      class="py-0"
-    >
-      <base-wrap-node
-        v-bind:value="basePageSection"
-      />
-    </v-col>
+      v-bind:value="basePageSection"
+      v-bind:options="{
+        attrs: {
+          class: 'col py-0',
+        }
+      }"
+    />
   </v-row>
 </template>
 

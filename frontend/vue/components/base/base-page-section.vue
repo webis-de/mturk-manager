@@ -2,12 +2,16 @@
   <v-row
     v-bind:id="identifier.identifier !== undefined ? identifier.identifier : false"
     dense
+    v-bind:class="classes"
   >
     <v-col v-if="type === 'table'">
       <slot></slot>
     </v-col>
     <v-col v-else>
-      <v-card>
+      <v-card class="fill-height">
+        <v-card-title class="py-0">
+          {{ title }}
+        </v-card-title>
         <v-container
           fluid
           class="py-0 px-2"
@@ -22,6 +26,7 @@
 <script>
 export default {
   name: 'BasePageSection',
+
   props: {
     type: {
       type: String,
@@ -34,6 +39,18 @@ export default {
       default() {
         return {};
       },
+    },
+    title: {
+      type: String,
+      required: false,
+      default: '',
+    },
+  },
+  computed: {
+    classes() {
+      return {
+        'fill-height': this.$parent._name === '<BaseWrapNode>',
+      };
     },
   },
 };

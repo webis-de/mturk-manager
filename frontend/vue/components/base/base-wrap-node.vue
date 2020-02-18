@@ -6,8 +6,7 @@ export default {
     tag: { type: String, default: 'div' },
     options: {
       type: Object,
-      default: () => {
-      },
+      default: () => {},
     },
   },
   render(h) {
