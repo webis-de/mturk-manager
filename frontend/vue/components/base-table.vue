@@ -114,7 +114,7 @@
         align="center"
       >
         <v-col
-          class="py-0 pl-5 headline"
+          class="py-0 pl-5 title"
         >
           {{ title }}
         </v-col>

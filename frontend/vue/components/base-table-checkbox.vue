@@ -2,7 +2,7 @@
   <div>
     <div
       v-ripple
-      style="position:absolute; z-index:999; width: 26px; height: 24px; cursor: pointer"
+      style="position:absolute; z-index:999; width: 24px; height: 24px; cursor: pointer"
       v-on:click="click"
     >
     </div>
