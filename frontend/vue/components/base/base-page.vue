@@ -56,7 +56,8 @@ export default {
     anchors() {
       const sectionsOrdered = this.$slots.default.map((node) => {
         if (node.componentOptions.tag !== 'base-page-section'
-          && node.componentOptions.tag !== 'base-page-group-divider') return null;
+          && node.componentOptions.tag !== 'base-page-group-divider'
+          && node.componentOptions.tag !== 'base-page-group') return null;
 
         if (node.componentOptions.propsData.identifier !== undefined) {
           return node.componentOptions.propsData.identifier;

@@ -22,33 +22,43 @@
       <!--        </v-row>-->
       <!--      </base-page-section>-->
 
-      <base-page-section
+      <base-page-group
         v-bind:identifier="{
           identifier: 'finances',
           label: 'Finances'
         }"
       >
-        <v-row dense>
-          <v-col class="shrink">
-            <display-expenses
-              v-bind:expenses="expenses"
-              type-item="batches"
-            />
-          </v-col>
-          <v-col class="shrink">
-            <display-expenses
-              v-bind:expenses="expenses"
-              type-item="hits"
-            />
-          </v-col>
-          <v-col>
-            <display-expenses
-              v-bind:expenses="expenses"
-              type-item="assignments"
-            />
-          </v-col>
-        </v-row>
-      </base-page-section>
+        <base-page-section>
+          <v-row dense>
+            <v-col class="shrink">
+              <display-expenses
+                v-bind:expenses="expenses"
+                type-item="batches"
+              />
+            </v-col>
+          </v-row>
+        </base-page-section>
+        <base-page-section>
+          <v-row dense>
+            <v-col class="shrink">
+              <display-expenses
+                v-bind:expenses="expenses"
+                type-item="hits"
+              />
+            </v-col>
+          </v-row>
+        </base-page-section>
+        <base-page-section>
+          <v-row dense>
+            <v-col>
+              <display-expenses
+                v-bind:expenses="expenses"
+                type-item="assignments"
+              />
+            </v-col>
+          </v-row>
+        </base-page-section>
+      </base-page-group>
 
       <base-page-section
         type="table"
@@ -259,10 +269,12 @@ import ListAssignments from '../../../components/assignments/list/list-assignmen
 import { ServiceFinances } from '../../../services/finances.service';
 import BasePageSection from '../../../components/base/base-page-section';
 import BasePage from '../../../components/base/base-page';
+import BasePageGroup from '../../../components/base/base-page-group';
 
 export default {
   name: 'AppFinances',
   components: {
+    BasePageGroup,
     BasePage,
     BasePageSection,
     ListAssignments,

@@ -1,7 +1,7 @@
 <template>
   <v-layout>
     <v-flex>
-      <v-card>
+      <v-card flat>
         <v-card-title>
           {{ title }} Costs ($)
         </v-card-title>
