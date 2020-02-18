@@ -5,11 +5,8 @@
     v-bind:class="classes"
   >
     <td>
-      <v-checkbox
-        v-model="is_selected"
-        class="pa-0 ma-0"
-        primary
-        hide-details
+      <base-table-checkbox
+        v-model="isSelected"
       />
     </td>
 
@@ -173,10 +170,12 @@ import BaseDisplayAmount from '../../base-display-amount';
 import BaseProgressBar from '../../base-progress-bar';
 import BaseDisplayDatetime from '../../common/base-display-datetime';
 import BaseTableCell from '../../base-table-cell';
+import BaseTableCheckbox from '../../base-table-checkbox';
 
 export default {
   name: 'ComponentItemBatch',
   components: {
+    BaseTableCheckbox,
     BaseTableCell,
     BaseDisplayDatetime,
     BaseProgressBar,
@@ -187,6 +186,10 @@ export default {
       required: true,
     },
     objectColumnsSelected: {
+      type: Object,
+      required: true,
+    },
+    itemsSelected: {
       type: Object,
       required: true,
     },
@@ -233,15 +236,19 @@ export default {
         },
       ];
     },
-    is_selected: {
+    isSelected: {
       get() {
-        return _.has(this.object_batches_selected, this.batch.id);
+        return this.itemsSelected !== false && (this.itemsSelected === true || this.itemsSelected[this.batch.id] !== undefined);
       },
-      set(is_selected) {
-        this.set_batches_selected({
-          array_items: [this.batch],
-          add: is_selected,
+      set(isSelected) {
+        this.$emit('changed-selection', {
+          isSelected,
+          item: this.batch,
         });
+        // this.set_batches_selected({
+        //   array_items: [this.batch],
+        //   add: isSelected,
+        // });
       },
     },
     // batch() {

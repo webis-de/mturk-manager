@@ -25,14 +25,18 @@
     v-bind:set-state="setState"
     v-bind:name-state-filters="nameStateFilters"
     v-bind:name-local-storage-filters="nameLocalStorageFilters"
+
+    v-on:changed-selection="changedSelection"
   >
-    <template v-slot:default="{ item, objectColumnsSelected, isCondensed, classes }">
+    <template v-slot:default="{ item, objectColumnsSelected, isCondensed, classes, changedSelection }">
       <component-item-batch
         v-bind:item="item"
         v-bind:object-columns-selected="objectColumnsSelected"
         v-bind:show_links="showLinks"
         v-bind:is-condensed="isCondensed"
         v-bind:classes="classes"
+        v-bind:items-selected="itemsSelected"
+        v-on:changed-selection="changedSelection"
       />
     </template>
 
@@ -57,6 +61,7 @@ import { Service_Batches as ServiceBatches } from '../../../services/service_bat
 import BaseTable from '../../base-table';
 import ComponentItemBatch from './component_item_batch';
 import FiltersTableBatches from './filters-table-batches';
+import { changedSelection } from '../../../helpers';
 
 export default {
   name: 'ListBatches',
@@ -131,6 +136,7 @@ export default {
   data() {
     return {
       loadPage: ServiceBatches.load_page,
+      itemsSelected: {},
     };
   },
   computed: {
@@ -157,6 +163,14 @@ export default {
     }),
   },
   methods: {
+    changedSelection({ isSelected, item }) {
+      changedSelection({
+        isSelected,
+        item,
+        context: this,
+        itemsPage: this.arrayItems,
+      });
+    },
     ...mapActions('moduleBatches', {
       function_reset_array_columns_general: 'reset_array_columns_general',
       setState: 'setState',

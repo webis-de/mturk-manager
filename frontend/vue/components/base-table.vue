@@ -25,11 +25,8 @@
     <template
       v-slot:header.data-table-select
     >
-      <v-checkbox
-        class="pa-0 ma-0"
-        primary
-        hide-details
-        v-on:change="toggle_all"
+      <base-table-checkbox
+        v-model="isSelectedAll"
       />
     </template>
     <!--        <template-->
@@ -104,6 +101,7 @@
         v-bind:is-condensed="isCondensed"
         v-bind:refresh="refresh"
         v-bind:classes="['roboto-mono']"
+        v-bind:changed-selection="changedSelection"
       ></slot>
     </template>
 
@@ -178,6 +176,7 @@ import intersect from 'vuetify/lib/directives/intersect';
 import { updateSandbox } from '../mixins/update-sandbox.mixin';
 import ComponentSettingsTable from './common/component-settings-table';
 import BaseTableFilters from './base-table-filters';
+import BaseTableCheckbox from './base-table-checkbox';
 
 /**
  * TODO: lazy loading if visible
@@ -188,7 +187,7 @@ export default {
   directives: {
     intersect,
   },
-  components: { BaseTableFilters, ComponentSettingsTable },
+  components: { BaseTableCheckbox, BaseTableFilters, ComponentSettingsTable },
   mixins: [updateSandbox],
   props: {
     title: {
@@ -312,6 +311,8 @@ export default {
       page: 1,
 
       columns: this.$store.state[this.nameVuexModule][this.nameStateColumns],
+
+      isSelectedAll: false,
     };
   },
   computed: {
@@ -371,6 +372,13 @@ export default {
       });
 
       return isPageSelected;
+    },
+  },
+  watch: {
+    isSelectedAll() {
+      this.$emit('changed-selection', {
+        isSelected: this.isSelectedAll,
+      });
     },
   },
   beforeDestroy() {
@@ -460,11 +468,14 @@ export default {
         },
       );
     },
-    toggle_all() {
-      this.functionSetItemsSelected({
-        add: !this.is_page_selected,
-        array_items: this.arrayItems,
-      });
+    // toggleSelectionAll() {
+    //   this.functionSetItemsSelected({
+    //     add: !this.is_page_selected,
+    //     array_items: this.arrayItems,
+    //   });
+    // },
+    changedSelection(data) {
+      this.$emit('changed-selection', data);
     },
   },
 };
