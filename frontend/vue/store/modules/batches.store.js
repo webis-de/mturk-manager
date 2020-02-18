@@ -71,7 +71,7 @@ export const moduleBatches = _.merge({}, baseModule, {
         width: '1px',
       },
       {
-        text: 'Reward',
+        text: 'Reward ($)',
         value: 'settings_batch__reward',
         align: 'end',
         class: classesHeaders,
@@ -99,14 +99,14 @@ export const moduleBatches = _.merge({}, baseModule, {
         width: '1px',
       },
       {
-        text: 'Max costs',
+        text: 'Max costs ($)',
         value: 'costs_max',
         align: 'end',
         class: classesHeaders,
         width: '1px',
       },
       {
-        text: 'Costs So Far',
+        text: 'Costs So Far ($)',
         value: 'costs_so_far',
         align: 'end',
         class: classesHeaders,
