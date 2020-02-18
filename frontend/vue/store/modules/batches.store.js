@@ -71,13 +71,6 @@ export const moduleBatches = _.merge({}, baseModule, {
         width: '1px',
       },
       {
-        text: 'Reward ($)',
-        value: 'settings_batch__reward',
-        align: 'end',
-        class: classesHeaders,
-        width: '1px',
-      },
-      {
         text: 'Assignments',
         value: 'count_assignments_total',
         align: 'end',
@@ -94,6 +87,13 @@ export const moduleBatches = _.merge({}, baseModule, {
       {
         text: 'Rejected',
         value: 'count_assignments_rejected',
+        align: 'end',
+        class: classesHeaders,
+        width: '1px',
+      },
+      {
+        text: 'Reward ($)',
+        value: 'settings_batch__reward',
         align: 'end',
         class: classesHeaders,
         width: '1px',

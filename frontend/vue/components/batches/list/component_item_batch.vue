@@ -60,18 +60,6 @@
 
     <base-table-cell
       v-slot="{ item }"
-      name="settings_batch__reward"
-      class="text-right"
-      v-bind:item="batch"
-      v-bind:columns-selected="objectColumnsSelected"
-    >
-      <base-display-amount
-        v-bind:amount="item.settings_batch.reward"
-      />
-    </base-table-cell>
-
-    <base-table-cell
-      v-slot="{ item }"
       name="count_assignments_total"
       class="text-right"
       v-bind:item="batch"
@@ -98,6 +86,18 @@
       v-bind:columns-selected="objectColumnsSelected"
     >
       {{ item.countAssignmentsRejected }}
+    </base-table-cell>
+
+    <base-table-cell
+      v-slot="{ item }"
+      name="settings_batch__reward"
+      class="text-right"
+      v-bind:item="batch"
+      v-bind:columns-selected="objectColumnsSelected"
+    >
+      <base-display-amount
+        v-bind:amount="item.settings_batch.reward"
+      />
     </base-table-cell>
 
     <base-table-cell
