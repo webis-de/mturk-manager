@@ -1,29 +1,37 @@
 <template>
   <table class="calculation">
     <tbody>
-      <tr
+      <template
         v-for="(calculation, index) in calculations"
-        v-bind:key="index"
-        v-bind:class="{ 'font-weight-bold': calculation.bold === true }"
       >
-        <td class="text-right px-1">
-          <span v-if="calculation.operation === '-'">-</span>
-          <base-display-amount
-            v-bind:amount="calculation.number"
-            currency=""
-          >
-            <slot></slot>
-          </base-display-amount>
-        </td>
-        <td class="pl-3">
-          {{ calculation.description }}
-        </td>
-        <td>
-          <base-help v-if="calculation.detail">
-            {{ calculation.detail }}
-          </base-help>
-        </td>
-      </tr>
+        <tr
+          v-if="calculation === null"
+          v-bind:key="index"
+        ></tr>
+        <tr
+          v-else
+          v-bind:key="index"
+          v-bind:class="{ 'font-weight-bold': calculation.bold === true }"
+        >
+          <td class="text-right px-1">
+            <span v-if="calculation.operation === '-'">-</span>
+            <base-display-amount
+              v-bind:amount="calculation.number"
+              currency=""
+            >
+              <slot></slot>
+            </base-display-amount>
+          </td>
+          <td class="pl-3">
+            {{ calculation.description }}
+          </td>
+          <td>
+            <base-help v-if="calculation.detail">
+              {{ calculation.detail }}
+            </base-help>
+          </td>
+        </tr>
+      </template>
       <tr
         v-bind:class="{ 'font-weight-bold': result.bold === true }"
       >

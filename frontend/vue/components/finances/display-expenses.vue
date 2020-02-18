@@ -3,7 +3,7 @@
     <v-flex>
       <v-card>
         <v-card-title>
-          {{title}} Costs ($)
+          {{ title }} Costs ($)
         </v-card-title>
 
         <v-card-text>
@@ -51,11 +51,12 @@ export default {
     title() {
       if (this.typeItem === 'batches') {
         return 'Batch';
-      } else if (this.typeItem === 'hits') {
+      } if (this.typeItem === 'hits') {
         return 'HIT';
-      } else if (this.typeItem === 'assignments') {
+      } if (this.typeItem === 'assignments') {
         return 'Assignment';
       }
+      return '';
     },
     calculations() {
       const result = [
@@ -71,6 +72,12 @@ export default {
           description: 'Rejected',
           detail: 'The costs you would have paid approving the rejected assignments',
         },
+        {
+          operation: '+',
+          number: this.expenses.sum_costs_submitted,
+          description: 'Submitted',
+          detail: 'The costs you would pay if all currently submitted assignments would be approved',
+        },
       ];
 
       if (this.typeItem !== 'assignments') {
@@ -80,22 +87,15 @@ export default {
           description: 'Expired',
           detail: 'The costs you would have paid if all expired assignments would\'ve been approved',
         });
-      }
-
-      result.push({
-        operation: '+',
-        number: this.expenses.sum_costs_submitted,
-        description: 'Submitted',
-        detail: 'The costs you would pay if all currently submitted assignments would be approved',
-      });
-
-      if (this.typeItem !== 'assignments') {
         result.push({
           operation: '+',
           number: this.expenses.sum_costs_pending,
           description: 'Open',
           detail: 'The costs you would pay if all open assignments would be processed by workers and approved by you',
         });
+      } else {
+        result.push(null);
+        result.push(null);
       }
 
       return result;
