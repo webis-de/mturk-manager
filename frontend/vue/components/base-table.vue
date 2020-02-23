@@ -125,10 +125,11 @@
             v-bind:refresh="refresh"
           ></slot>
         </v-col>
-        <v-col class="shrink">
+        <v-col
+          v-if="filters !== undefined"
+          class="shrink"
+        >
           <base-table-filters
-            v-if="filters !== undefined"
-
             v-bind:filters="filters"
             v-bind:filters-default="filtersDefault"
             v-bind:name-state-filters="nameStateFilters"
@@ -153,9 +154,12 @@
             </template>
           </base-table-filters>
         </v-col>
-        <v-col class="shrink">
+        <v-col
+          v-if="nameLocalStorageColumnsSelected !== undefined"
+          class="shrink"
+        >
           <component-settings-table
-            v-if="nameLocalStorageColumnsSelected !== undefined"
+
             v-bind:colspan="arrayHeaders.length + 1"
             v-bind:columns="columns"
             v-bind:object-columns-selected="columnsSelected"
