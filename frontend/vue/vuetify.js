@@ -6,14 +6,14 @@ export const vuetify = new Vuetify({
   theme: {
     themes: {
       light: {
-        primary: colors.deepPurple.darken2,
-        secondary: colors.grey,
-        accent: colors.grey,
+        // primary: colors.deepPurple.darken2,
+        // secondary: colors.grey,
+        // accent: colors.grey,
       },
       dark: {
-        primary: colors.blue.darken1,
-        secondary: colors.grey.darken4,
-        // accent: colors.grey.darken4,
+        // primary: colors.blue.darken1,
+      //   secondary: colors.grey.darken4,
+      //   // accent: colors.grey.darken4,
       },
     },
     dark: true,
