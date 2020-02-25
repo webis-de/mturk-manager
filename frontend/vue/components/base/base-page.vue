@@ -18,26 +18,28 @@
       <!--      </v-row>-->
       <v-row dense>
         <v-col class="pt-0">
-          <v-list
-            dense
-            flat
-          >
-            <v-list-item-group>
-              <v-list-item
-                v-for="anchor of anchors"
-                v-bind:key="anchor.anchor"
-                style="min-height: 24px"
-                v-on:click.native="scrollTo(anchor.anchor)"
-              >
-                <v-list-item-icon class="ma-0">
-                  <v-icon>mdi-chevron-down</v-icon>
-                </v-list-item-icon>
-                <v-list-item-content class="py-0">
-                  {{ anchor.label }}
-                </v-list-item-content>
-              </v-list-item>
-            </v-list-item-group>
-          </v-list>
+          <v-card>
+            <v-list
+              dense
+              flat
+            >
+              <v-list-item-group>
+                <v-list-item
+                  v-for="anchor of anchors"
+                  v-bind:key="anchor.anchor"
+                  style="min-height: 24px"
+                  v-on:click.native="scrollTo(anchor.anchor)"
+                >
+                  <v-list-item-icon class="ma-0">
+                    <v-icon>mdi-chevron-down</v-icon>
+                  </v-list-item-icon>
+                  <v-list-item-content class="py-0">
+                    {{ anchor.label }}
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list-item-group>
+            </v-list>
+          </v-card>
         </v-col>
       </v-row>
       <v-row no-gutters>
