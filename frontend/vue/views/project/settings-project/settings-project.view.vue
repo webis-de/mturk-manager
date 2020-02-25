@@ -96,19 +96,22 @@
     >
       Global
     </base-page-group-divider>
-    <base-page-section>
-      <v-row dense>
-        <v-col>
-          <h2 class="headline">
-            Light Mode
-          </h2>
-          <v-switch
-            v-model="isActiveModeLight"
-            color="primary"
-          />
-        </v-col>
-      </v-row>
-    </base-page-section>
+    <base-page-group>
+      <base-page-section
+        v-bind:title="'Light Mode'"
+        shrink
+      >
+        <v-row dense>
+          <v-col>
+            <v-switch
+              v-model="isActiveModeLight"
+              color="primary"
+              hide-details
+            />
+          </v-col>
+        </v-row>
+      </base-page-section>
+    </base-page-group>
 
     <v-dialog max-width="1500">
       <template v-slot:activator="{ on }">

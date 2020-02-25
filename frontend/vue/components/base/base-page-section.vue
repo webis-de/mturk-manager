@@ -5,11 +5,13 @@
     v-bind:class="classes"
   >
     <v-col v-if="type === 'table'">
-      <slot></slot>
+      <v-card>
+        <slot></slot>
+      </v-card>
     </v-col>
     <v-col v-else>
-      <v-card class="fill-height">
-        <v-card-title class="py-0">
+      <v-card class="fill-height pb-1">
+        <v-card-title class="py-0 text-no-wrap">
           {{ title }}
         </v-card-title>
         <v-container
