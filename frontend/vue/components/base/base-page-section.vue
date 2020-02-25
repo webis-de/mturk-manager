@@ -14,7 +14,7 @@
         </v-card-title>
         <v-container
           fluid
-          class="py-0 px-2"
+          class="py-0 px-4"
         >
           <slot></slot>
         </v-container>

@@ -1,7 +1,7 @@
 <template>
   <h2
     v-bind:id="identifier.identifier !== null ? identifier.identifier : false"
-    class="mt-8 display-1"
+    class="mt-8 display-1 ml-0"
   >
     <slot></slot>
   </h2>
