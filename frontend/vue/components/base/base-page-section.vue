@@ -45,6 +45,11 @@ export default {
       required: false,
       default: '',
     },
+    shrink: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   },
   computed: {
     classes() {

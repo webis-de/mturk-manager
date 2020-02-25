@@ -6,11 +6,7 @@
     <base-wrap-node
       v-for="basePageSection in $slots.default"
       v-bind:value="basePageSection"
-      v-bind:options="{
-        attrs: {
-          class: 'col py-0',
-        }
-      }"
+      v-bind:options="options(basePageSection)"
     />
   </v-row>
 </template>
@@ -28,6 +24,21 @@ export default {
       default() {
         return {};
       },
+    },
+  },
+  methods: {
+    options(node) {
+      let classes = 'col py-0';
+
+      if (node.componentOptions.propsData.shrink !== undefined) {
+        classes += ' shrink';
+      }
+
+      return {
+        attrs: {
+          class: classes,
+        },
+      };
     },
   },
 };

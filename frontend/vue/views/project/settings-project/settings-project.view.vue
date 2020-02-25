@@ -30,22 +30,28 @@
       <table-settings-batch />
     </base-page-section>
 
-    <base-page-section>
-      <v-row dense>
-        <v-col class="shrink">
-          <h2 class="headline">
-            Sandbox
-          </h2>
-          <component-clear-sandbox />
-        </v-col>
-        <v-col>
-          <h2 class="headline">
-            Import from MTurk
-          </h2>
-          <import-batch />
-        </v-col>
-      </v-row>
-    </base-page-section>
+    <base-page-group>
+      <base-page-section
+        v-bind:title="'Sandbox'"
+        shrink
+      >
+        <v-row dense>
+          <v-col>
+            <component-clear-sandbox />
+          </v-col>
+        </v-row>
+      </base-page-section>
+      <base-page-section
+        v-bind:title="'Limit Block'"
+        shrink
+      >
+        <v-row dense>
+          <v-col>
+            <import-batch />
+          </v-col>
+        </v-row>
+      </base-page-section>
+    </base-page-group>
 
     <base-page-group-divider
       v-bind:identifier="{
