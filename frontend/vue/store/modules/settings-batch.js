@@ -1,8 +1,7 @@
 import _ from 'lodash';
 import Vue from 'vue';
 import Settings_Batch from '../../classes/settings_batch';
-import {initPagination, setPagination} from '../../helpers';
-import localforage from "localforage";
+import { classesHeaders, initPagination, setPagination } from '../../helpers';
 import baseModule from './base.module';
 
 export const moduleSettingsBatch = _.merge({}, baseModule, {
@@ -27,27 +26,35 @@ export const moduleSettingsBatch = _.merge({}, baseModule, {
       {
         text: 'Name',
         value: 'name',
-        classes: ['text-left', 'pl-3'],
       },
       {
         text: 'Title',
         value: 'title',
-        classes: ['text-left'],
+        width: '1px',
+        align: 'end',
+        class: classesHeaders,
       },
       {
         text: 'Reward',
         value: 'reward',
-        classes: ['text-right'],
+        width: '1px',
+        align: 'end',
+        class: classesHeaders,
       },
       {
         text: 'Block Workers',
         value: 'block_workers',
+        width: '1px',
+        align: 'end',
+        class: classesHeaders,
       },
       {
-        text: 'Actions',
+        text: '',
         value: 'actions',
         sortable: false,
-        width: '10%',
+        align: 'end',
+        class: classesHeaders,
+        width: '1px',
       },
     ],
     objectColumnsSelectedInitialGeneral: {

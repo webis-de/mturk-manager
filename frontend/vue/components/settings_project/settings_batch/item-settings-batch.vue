@@ -16,28 +16,28 @@
 
     <td
       v-bind:style="stylesCell"
-      class="text-xs-left"
+      class="text-end px-1 text-no-wrap"
     >
       {{ settingsBatch.title }}
     </td>
 
     <td
       v-bind:style="stylesCell"
-      class="text-xs-right"
+      class="text-end px-1 text-no-wrap"
     >
       <base-display-amount v-bind:amount="settingsBatch.reward" />
     </td>
 
     <td
       v-bind:style="stylesCell"
-      class="text-xs-center"
+      class="text-end px-1 text-no-wrap"
     >
       {{ settingsBatch.block_workers }}
     </td>
 
     <td
       v-bind:style="stylesCell"
-      class="text-xs-center"
+      class="text-end px-1 text-no-wrap"
     >
       <component-edit-settings-batch
         v-bind:key="`edit-settings-batch-${settingsBatch.id}`"
@@ -60,7 +60,7 @@ import BaseDisplayAmount from '../../base-display-amount';
 
 export default {
   name: 'ItemSettingsBatch',
-  components: {BaseDisplayAmount, ComponentDeleteSettingsBatch, ComponentEditSettingsBatch },
+  components: { BaseDisplayAmount, ComponentDeleteSettingsBatch, ComponentEditSettingsBatch },
   props: {
     item: {
       type: Object,

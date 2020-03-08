@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import Vue from 'vue';
 import baseModule from './base.module';
+import { classesHeaders } from '../../helpers';
 
 export const moduleMessages = _.merge({}, baseModule, {
   namespaced: true,
@@ -53,12 +54,17 @@ export const moduleMessages = _.merge({}, baseModule, {
       {
         text: 'Usages',
         value: 'count_usage',
-        classes: ['text-right'],
+        width: '1px',
+        align: 'end',
+        class: classesHeaders,
       },
       {
         text: '',
         value: 'actions',
-        classes: ['text-right'],
+        sortable: false,
+        align: 'end',
+        class: classesHeaders,
+        width: '1px',
       },
     ],
 

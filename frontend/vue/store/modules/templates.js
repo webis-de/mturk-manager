@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import Vue from 'vue';
-import {initPagination, setPagination} from '../../helpers';
+import { classesHeaders, initPagination, setPagination } from '../../helpers';
 import Template_Worker from '../../classes/template_worker';
 import Template_Assignment from '../../classes/template_assignment';
 import Template_HIT from '../../classes/template_hit';
@@ -60,31 +60,46 @@ export const moduleTemplates = _.merge({}, baseModule, {
       {
         text: 'Height',
         value: 'height_frame',
-        classes: ['text-xs-right'],
+        width: '1px',
+        align: 'end',
+        class: classesHeaders,
       },
       {
         text: '#Variables',
         value: 'count_parameters',
         sortable: false,
-        classes: ['text-xs-right'],
+        width: '1px',
+        align: 'end',
+        class: classesHeaders,
       },
       {
         text: 'Assignment Template',
         value: 'template_assignment',
+        width: '1px',
+        align: 'end',
+        class: classesHeaders,
       },
       {
         text: 'Assignment HIT',
         value: 'template_hit',
+        width: '1px',
+        align: 'end',
+        class: classesHeaders,
       },
       {
         text: 'Assignment Global',
         value: 'template_global',
+        width: '1px',
+        align: 'end',
+        class: classesHeaders,
       },
       {
-        text: 'Actions',
+        text: '',
         value: 'actions',
         sortable: false,
-        width: '10%',
+        align: 'end',
+        class: classesHeaders,
+        width: '1px',
       },
     ],
 
@@ -105,14 +120,24 @@ export const moduleTemplates = _.merge({}, baseModule, {
         classes: ['text-xs-left', 'pl-3'],
       },
       {
-        text: 'Actions',
+        text: 'Type',
+        value: 'type',
+        width: '1px',
+        align: 'end',
+        class: classesHeaders,
+      },
+      {
+        text: '',
         value: 'actions',
         sortable: false,
-        width: '10%',
+        align: 'end',
+        class: classesHeaders,
+        width: '1px',
       },
     ],
     objectColumnsSelectedInitial: {
       name: true,
+      type: true,
       actions: true,
     },
   },

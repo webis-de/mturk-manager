@@ -11,17 +11,19 @@
     </td>
     <td
       v-bind:style="stylesCell"
-      class="text-xs-right"
-    >{{ templateWorker.height_frame }} px</td>
+      class="text-end px-1 text-no-wrap"
+    >
+      {{ templateWorker.height_frame }} px
+    </td>
     <td
       v-bind:style="stylesCell"
-      class="right"
+      class="text-end px-1 text-no-wrap"
     >
       {{ Object.keys(templateWorker.dict_parameters).length }}
     </td>
     <td
       v-bind:style="stylesCell"
-      class="text-xs-center"
+      class="text-end px-1 text-no-wrap"
     >
       <span v-if="templateWorker.template_assignment === null">
         None
@@ -32,7 +34,7 @@
     </td>
     <td
       v-bind:style="stylesCell"
-      class="text-xs-center"
+      class="text-end px-1 text-no-wrap"
     >
       <span v-if="templateWorker.template_hit === null">
         None
@@ -43,7 +45,7 @@
     </td>
     <td
       v-bind:style="stylesCell"
-      class="text-xs-center"
+      class="text-end px-1 text-no-wrap"
     >
       <span v-if="templateWorker.template_global === null">
         None
@@ -54,7 +56,7 @@
     </td>
     <td
       v-bind:style="stylesCell"
-      class="text-xs-center"
+      class="text-end px-1 text-no-wrap"
     >
       <component-edit-template-worker
         v-bind:key="`component-edit-template-worker-${templateWorker.id}`"
@@ -74,9 +76,10 @@
 <script>
 import ComponentEditTemplateWorker from './component_edit_template_worker';
 import ComponentDeleteTemplateWorker from './component_delete_template_worker';
+
 export default {
   name: 'ItemTemplatesWorker',
-  components: {ComponentDeleteTemplateWorker, ComponentEditTemplateWorker},
+  components: { ComponentDeleteTemplateWorker, ComponentEditTemplateWorker },
   props: {
     item: {
       type: Object,

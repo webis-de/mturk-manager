@@ -1,7 +1,7 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <div>
     <base-table
-      title="Assignment templates"
+      title="Requester templates"
 
       name-vuex-module="moduleTemplates"
       name-state-pagination="paginationAssignment"
@@ -30,7 +30,7 @@
       <template v-slot:actions>
         <component-add-template-assignment
           v-on:created="snackbarCreated = true"
-        ></component-add-template-assignment>
+        />
       </template>
     </base-table>
 
@@ -40,9 +40,9 @@
       color="info"
       bottom
     >
-      <v-spacer></v-spacer>
+      <v-spacer />
       Deleted!
-      <v-spacer></v-spacer>
+      <v-spacer />
     </v-snackbar>
 
     <v-snackbar
@@ -51,9 +51,9 @@
       bottom
       color="info"
     >
-      <v-spacer></v-spacer>
+      <v-spacer />
       Saved!
-      <v-spacer></v-spacer>
+      <v-spacer />
     </v-snackbar>
 
     <v-snackbar
@@ -62,23 +62,23 @@
       bottom
       color="info"
     >
-      <v-spacer></v-spacer>
+      <v-spacer />
       Updated!
-      <v-spacer></v-spacer>
+      <v-spacer />
     </v-snackbar>
   </div>
 </template>
 
 <script>
-import {Service_Templates} from '../../../services/service_templates';
-import {mapMutations, mapState} from 'vuex';
+import { mapMutations, mapState } from 'vuex';
+import { Service_Templates } from '../../../services/service_templates';
 import ItemTemplatesAssignment from './item-templates-assignment';
 import ComponentAddTemplateAssignment from './component_add_template_assignment';
 import BaseTable from '../../base-table';
 
 export default {
   name: 'TableTemplatesAssignment',
-  components: {BaseTable, ComponentAddTemplateAssignment, ItemTemplatesAssignment},
+  components: { BaseTable, ComponentAddTemplateAssignment, ItemTemplatesAssignment },
   data() {
     return {
       loadPage: Service_Templates.loadPageAssignment,
@@ -88,11 +88,27 @@ export default {
       snackbarCreated: false,
     };
   },
+  created() {
+    Service_Templates.loadPageHIT({
+      page: 1,
+      sortBy: ['name'],
+      sortDesc: [false],
+    });
+    Service_Templates.loadPageGlobal({
+      page: 1,
+      sortBy: ['name'],
+      sortDesc: [false],
+    });
+  },
   computed: {
     arrayItems() {
-      const { arrayItemsAssignment } = this.$store.state.moduleTemplates;
+      const { arrayItemsAssignment, arrayItemsHIT, arrayItemsGlobal } = this.$store.state.moduleTemplates;
 
-      return arrayItemsAssignment === null ? [] : arrayItemsAssignment;
+      if (arrayItemsAssignment === null || arrayItemsHIT === null || arrayItemsGlobal === null) {
+        return [];
+      }
+
+      return arrayItemsAssignment.concat(arrayItemsHIT).concat(arrayItemsGlobal);
     },
     ...mapState('moduleTemplates', {
       arrayColumns: 'arrayColumns',

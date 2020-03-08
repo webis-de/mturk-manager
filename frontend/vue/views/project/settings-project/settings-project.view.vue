@@ -68,12 +68,12 @@
     <base-page-section type="table">
       <table-templates-assignment />
     </base-page-section>
-    <base-page-section type="table">
-      <table-templates-hit />
-    </base-page-section>
-    <base-page-section type="table">
-      <table-templates-global />
-    </base-page-section>
+    <!--    <base-page-section type="table">-->
+    <!--      <table-templates-hit />-->
+    <!--    </base-page-section>-->
+    <!--    <base-page-section type="table">-->
+    <!--      <table-templates-global />-->
+    <!--    </base-page-section>-->
 
     <base-page-group-divider
       v-bind:identifier="{
