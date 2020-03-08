@@ -2,9 +2,9 @@
   <v-layout>
     <v-flex>
       <v-card flat>
-        <v-card-title>
-          {{ title }} Costs ($)
-        </v-card-title>
+        <!--        <v-card-title>-->
+        <!--          {{ title }} Costs ($)-->
+        <!--        </v-card-title>-->
 
         <v-card-text>
           <base-calculation

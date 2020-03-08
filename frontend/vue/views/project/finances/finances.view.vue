@@ -28,7 +28,10 @@
           label: 'Finances'
         }"
       >
-        <base-page-section>
+        <base-page-section
+          shrink
+          title="Batch costs"
+        >
           <v-row dense>
             <v-col class="shrink">
               <display-expenses
@@ -38,7 +41,10 @@
             </v-col>
           </v-row>
         </base-page-section>
-        <base-page-section>
+        <base-page-section
+          shrink
+          title="HIT costs"
+        >
           <v-row dense>
             <v-col class="shrink">
               <display-expenses
@@ -48,7 +54,10 @@
             </v-col>
           </v-row>
         </base-page-section>
-        <base-page-section>
+        <base-page-section
+          shrink
+          title="Assignment costs"
+        >
           <v-row dense>
             <v-col>
               <display-expenses
