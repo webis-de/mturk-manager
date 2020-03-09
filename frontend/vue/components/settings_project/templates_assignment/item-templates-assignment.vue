@@ -63,7 +63,7 @@ export default {
       else if (this.item instanceof Template_Global) type = 'Global';
       return type;
     },
-    templateAssignment() { console.warn('this.item', this.item); return this.item; },
+    templateAssignment() { return this.item; },
     stylesCell() {
       if (this.isCondensed) {
         return {

@@ -4,6 +4,7 @@ import { Service_Projects } from './service_projects';
 import queue from '../queue';
 import { compareVersions } from '../helpers';
 import { vuetify } from '../vuetify';
+import { Service_Templates } from './service_templates';
 
 class ClassServiceApp {
   async init(force = false) {
@@ -22,6 +23,9 @@ class ClassServiceApp {
     if (response.success) {
       await Service_Projects.load_projects();
       await Service_Projects.load_project_data();
+      await Service_Templates.getAll({
+        typeTemplate: 'workerAll',
+      });
     }
 
     return response;
@@ -115,7 +119,7 @@ class ClassServiceApp {
       },
     });
 
-    if(response.success === true) {
+    if (response.success === true) {
       await store.dispatch('module_app/setReleaseBody', {
         idTag,
         body: response.data.body,
