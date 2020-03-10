@@ -44,6 +44,8 @@
         </base-page-section>
       </base-page>
     </template>
+
+    <create-batch />
   </div>
 </template>
 
@@ -53,16 +55,16 @@ import ListBatches from '../../../components/batches/list/list-batches';
 import ListHits from '../../../components/hits/list/list-hits';
 import ListAssignments from '../../../components/assignments/list/list-assignments';
 import ComponentAnnotate from '../../../components/assignments/annotate/component_annotate';
-// import CreateBatch from '../../../components/batches/create/component_create_batch';
 import BasePage from '../../../components/base/base-page';
 import BasePageSection from '../../../components/base/base-page-section';
+import CreateBatch from '../../../components/batches/create/component_create_batch';
 
 export default {
   name: 'Tasks',
   components: {
+    CreateBatch,
     BasePageSection,
     BasePage,
-    // CreateBatch,
     ComponentAnnotate,
     ListAssignments,
     ListHits,

@@ -27,7 +27,7 @@ export default {
   },
   computed: {
     amount_formatted_() {
-      return this.amount_formatted(this.amount, null, this.currency);
+      return this.amount_formatted(Math.round(this.amount), null, this.currency);
     },
   },
 };

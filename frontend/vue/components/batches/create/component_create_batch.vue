@@ -10,7 +10,7 @@
           v-show="!is_creating_batch"
           color="primary"
           fab
-          left
+          right
           bottom
           fixed
           large
@@ -31,13 +31,12 @@
           icon
           v-on:click="is_creating_batch = false"
         >
-          <v-icon>close</v-icon>
+          <v-icon>mdi-close</v-icon>
         </v-btn>
       </v-card-title>
       <v-card-text>
         <v-container class="mx-0">
           <v-layout
-            row
             wrap
           >
             <v-flex xs6>

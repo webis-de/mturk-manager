@@ -4,7 +4,9 @@
     wrap
   >
     <v-flex>
-      <h1 class="headline">Overview</h1>
+      <h1 class="headline">
+        Overview
+      </h1>
       <v-layout
         class="my-3"
       >
@@ -13,7 +15,9 @@
         </v-flex>
         <v-flex>
           <template v-if="isValidCSV">
-            <v-icon color="success">check</v-icon>
+            <v-icon color="success">
+              mdi-check
+            </v-icon>
           </template>
           <template v-else>
             None
@@ -31,8 +35,13 @@
           <template v-if="isValidCSV">
             {{ get_variables.length }}
 
-            <v-tooltip top>
-              <v-icon slot="activator">info</v-icon>
+            <v-tooltip
+              v-slot:activator="{ on }"
+              top
+            >
+              <v-icon v-on="on">
+                mdi-info
+              </v-icon>
               <span>{{ get_variables.join(", ") }}</span>
             </v-tooltip>
           </template>
@@ -103,19 +112,19 @@ import { mapState, mapActions, mapGetters } from 'vuex';
 import humanizeDuration from 'humanize-duration';
 import BaseDisplayAmount from '../../base-display-amount.vue';
 import OverviewCosts from './overview-costs';
-import {Service_Batches} from '../../../services/service_batches';
+import { Service_Batches } from '../../../services/service_batches';
 
 // import ComponentStepUploadCSV from './component_step_upload_csv.vue';
 // import ComponentShowMoneySpent from './component-show-money-spent.vue';
 // import ComponentShowBatches from './component-show-batches.vue';
 export default {
-  name: 'component-overview',
-  props: {
-    is_invalid_settings_batch: {
-      required: true,
-      type: Boolean,
-    },
-  },
+  name: 'ComponentOverview',
+  // props: {
+  //   isInvalidSettingsBatch: {
+  //     required: true,
+  //     type: Boolean,
+  //   },
+  // },
   data() {
     return {
       current_time_ms: Date.now(),

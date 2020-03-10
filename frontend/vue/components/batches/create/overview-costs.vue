@@ -48,11 +48,21 @@ export default {
     costsTotalWithoutFee() {
       if (this.$store.state.moduleBatches.objectSettingsBatch === null) return 0;
 
-      const reward = parseFloat(this.$store.state.moduleBatches.objectSettingsBatch.reward);
+      let reward = parseFloat(this.$store.state.moduleBatches.objectSettingsBatch.reward);
+      if (Number.isNaN(reward)) {
+        reward = 0;
+      }
+
+      let countAssignments = this.$store.state.moduleBatches.objectSettingsBatch.count_assignments;
+
+      if (countAssignments === undefined) {
+        countAssignments = 0;
+      }
+
       if (this.csv !== undefined) {
         return (
           reward
-          * this.$store.state.moduleBatches.objectSettingsBatch.count_assignments
+          * countAssignments
           * this.csv.data.length
         );
       }

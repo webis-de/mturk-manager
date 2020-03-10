@@ -2,20 +2,14 @@
   <v-layout>
     <v-flex>
       <v-layout>
-        <v-flex shrink>
-          <upload-btn
+        <v-flex>
+          <v-file-input
             ref="upload-button"
-            class="pl-0"
-            title="Upload CSV"
+            label="Upload CSV"
             v-bind:loading="isParsingCSV"
-            v-on:file-update="fileChanged"
-          >
-            <template v-slot:icon-left>
-              <v-icon left>
-                cloud_upload
-              </v-icon>
-            </template>
-          </upload-btn>
+            clearable
+            v-on:change="fileChanged"
+          />
         </v-flex>
       </v-layout>
 
@@ -44,14 +38,10 @@
 </template>
 
 <script>
-import UploadButton from 'vuetify-upload-button';
 import Papa from 'papaparse';
 
 export default {
   name: 'ComponentUploadCsv',
-  components: {
-    'upload-btn': UploadButton,
-  },
   props: {},
   data() {
     return {
@@ -60,7 +50,8 @@ export default {
   },
   methods: {
     fileChanged(file) {
-      if (file == null) {
+      console.warn('file', file);
+      if (file === null || file === undefined) {
         this.reset(false);
         return;
       }
@@ -86,7 +77,7 @@ export default {
       });
 
       if (clearInput === true) {
-        this.$refs['upload-button'].clear();
+        // this.$refs['upload-button'].clear();
       }
     },
   },
