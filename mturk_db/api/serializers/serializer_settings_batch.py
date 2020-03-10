@@ -15,7 +15,7 @@ class Serializer_Settings_Batch(serializers.ModelSerializer):
         try:
             expand = context.get('request').query_params.get('expand')
 
-            if '__template_worker__' in expand:
+            if expand is not None and '__template_worker__' in expand:
                 self.fields['template'] = Serializer_Template_Worker(source='template_worker', context=context)
         except AttributeError:
             pass
@@ -25,13 +25,11 @@ class Serializer_Settings_Batch(serializers.ModelSerializer):
 
         keep_fields(self, context.get('fields'))
 
-
     #     # print(self.fields)
     #     if foo == 3:
     #     # else:
-        # self.fields['template'] = serializers.PrimaryKeyRelatedField(read_only=True)
-        # self.fields['template'] = serializers.IntegerField(source='template_worker')
-
+    # self.fields['template'] = serializers.PrimaryKeyRelatedField(read_only=True)
+    # self.fields['template'] = serializers.IntegerField(source='template_worker')
 
     keywords = Serializer_Keyword(many=True)
     qualification_locale = serializers.JSONField()
@@ -65,7 +63,6 @@ class Serializer_Settings_Batch(serializers.ModelSerializer):
                 'source': 'template_worker',
             },
         }
-
 
     def to_representation(self, instance):
         data = super(Serializer_Settings_Batch, self).to_representation(instance)
