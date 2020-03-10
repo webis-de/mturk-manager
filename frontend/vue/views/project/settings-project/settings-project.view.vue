@@ -107,7 +107,40 @@
               v-model="isActiveModeLight"
               color="primary"
               hide-details
+              class="mt-0"
             />
+          </v-col>
+        </v-row>
+      </base-page-section>
+      <base-page-section
+        v-bind:title="'Database'"
+        shrink
+      >
+        <v-row dense>
+          <v-col>
+            <v-dialog
+              width="500"
+            >
+              <template v-slot:activator="{ on }">
+                <v-btn
+                  color="primary"
+                  v-on="on"
+                >
+                  Update Credentials
+                </v-btn>
+              </template>
+
+              <v-card>
+                <v-card-title>
+                  Update Credentials
+                </v-card-title>
+                <v-card-text>
+                  <the-update-credentials
+                    class="text-center"
+                  />
+                </v-card-text>
+              </v-card>
+            </v-dialog>
           </v-col>
         </v-row>
       </base-page-section>
@@ -153,10 +186,12 @@ import BasePage from '../../../components/base/base-page';
 import BasePageSection from '../../../components/base/base-page-section';
 import BasePageGroupDivider from '../../../components/base/base-page-group-divider';
 import BasePageGroup from '../../../components/base/base-page-group';
+import TheUpdateCredentials from '../../../components/the-update-credentials';
 
 export default {
   name: 'AppSettingsProject',
   components: {
+    TheUpdateCredentials,
     BasePageGroup,
     BasePageGroupDivider,
     BasePageSection,
