@@ -52,6 +52,25 @@
       <v-spacer />
 
       <v-toolbar-items>
+        <v-col class="shrink text-no-wrap">
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on }">
+              <v-switch
+                hide-details
+                v-bind:label="use_sandbox ? 'Toggle Sandbox' : 'Toggle Sandbox'"
+                v-bind:input-value="use_sandbox"
+                v-on:click.native="toggle_use_sandbox"
+                v-on="on"
+              />
+            </template>
+            <span>
+              You are currently <b v-if="!use_sandbox">
+                not
+              </b> using the
+              Sandbox
+            </span>
+          </v-tooltip>
+        </v-col>
         <v-btn
           text
           v-bind:to="{name:'tasks'}"
