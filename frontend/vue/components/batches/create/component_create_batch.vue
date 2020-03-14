@@ -5,20 +5,22 @@
   >
     <!-- persistent -->
     <template v-slot:activator="{ on }">
-      <v-fab-transition>
-        <v-btn
-          v-show="!is_creating_batch"
-          color="primary"
-          fab
-          right
-          bottom
-          fixed
-          large
-          v-on="on"
-        >
-          <v-icon>mdi-plus</v-icon>
-        </v-btn>
-      </v-fab-transition>
+      <slot v-bind:on="on">
+        <v-fab-transition>
+          <v-btn
+            v-show="!is_creating_batch"
+            color="primary"
+            fab
+            right
+            bottom
+            fixed
+            large
+            v-on="on"
+          >
+            <v-icon>mdi-plus</v-icon>
+          </v-btn>
+        </v-fab-transition>
+      </slot>
     </template>
 
     <v-card>

@@ -52,6 +52,23 @@
       <v-spacer />
 
       <v-toolbar-items>
+        <create-batch>
+          <template v-slot:default="{ on }">
+            <v-btn
+              text
+              v-bind:color="$vuetify.theme.isDark === true && use_sandbox === false ? 'primary' : 'primary darken-3'"
+              v-on="on"
+            >
+              <v-icon>mdi-plus</v-icon>
+              Create Batch
+            </v-btn>
+          </template>
+        </create-batch>
+
+        <v-col class="px-2">
+          <v-divider vertical />
+        </v-col>
+
         <v-col class="shrink text-no-wrap">
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
@@ -59,6 +76,7 @@
                 hide-details
                 v-bind:label="use_sandbox ? 'Toggle Sandbox' : 'Toggle Sandbox'"
                 v-bind:input-value="use_sandbox"
+                color="primary darken-3"
                 v-on:click.native="toggle_use_sandbox"
                 v-on="on"
               />
@@ -71,6 +89,11 @@
             </span>
           </v-tooltip>
         </v-col>
+
+        <v-col class="px-2">
+          <v-divider vertical />
+        </v-col>
+
         <v-btn
           text
           v-bind:to="{name:'tasks'}"
@@ -173,10 +196,12 @@ import ComponentToolbarQualifications from '../../components/qualifications/comp
 import TheTasksBar from '../../components/the-tasks-bar';
 import TheSettingsApp from '../../components/the-settings-app';
 import TheBreadcrumb from '../../components/the-breadcrumb';
+import CreateBatch from '../../components/batches/create/component_create_batch';
 
 export default {
   name: 'AppProject',
   components: {
+    CreateBatch,
     TheBreadcrumb,
     TheSettingsApp,
     TheTasksBar,

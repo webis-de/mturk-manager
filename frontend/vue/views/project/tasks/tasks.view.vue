@@ -45,7 +45,7 @@
       </base-page>
     </template>
 
-    <create-batch />
+<!--    <create-batch />-->
   </div>
 </template>
 
