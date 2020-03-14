@@ -1,7 +1,6 @@
 <template>
   <tr
-    class="text-no-wrap"
-    v-bind:class="classes"
+    class="text-no-wrap roboto-mono table-row"
   >
     <td>
       <base-table-checkbox
@@ -28,11 +27,6 @@ export default {
       type: Object,
       required: true,
     },
-  },
-  data() {
-    return {
-      classes: ['roboto-mono'],
-    };
   },
   computed: {
     isSelected: {

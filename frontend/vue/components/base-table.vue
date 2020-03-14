@@ -101,7 +101,6 @@
         v-bind:objectColumnsSelected="columnsSelected"
         v-bind:is-condensed="isCondensed"
         v-bind:refresh="refresh"
-        v-bind:classes="['roboto-mono']"
         v-bind:changed-selection="changedSelection"
         v-bind:items-selected="itemsSelected"
       ></slot>

@@ -25,13 +25,17 @@
     v-bind:set-state="setState"
     v-bind:name-state-filters="nameStateFilters"
     v-bind:name-local-storage-filters="nameLocalStorageFilters"
+
+    v-on:changed-selection="changedSelection"
   >
-    <template v-slot:default="{ item, objectColumnsSelected, isCondensed }">
+    <template v-slot:default="{ item, objectColumnsSelected, isCondensed, changedSelection, itemsSelected }">
       <component-item-hit
         v-bind:item="item"
         v-bind:object-columns-selected="objectColumnsSelected"
         v-bind:show_links="showLinks"
         v-bind:is-condensed="isCondensed"
+        v-bind:items-selected="itemsSelected"
+        v-on:changed-selection="changedSelection"
       />
     </template>
 
@@ -156,6 +160,11 @@ export default {
     }),
   },
   methods: {
+    changedSelection(itemsSelected) {
+      // this.$store.dispatch('moduleBatches/setItemsSelected', {
+      //   items: itemsSelected,
+      // });
+    },
     ...mapActions('moduleHITs', {
       function_reset_array_columns: 'reset_array_columns_general',
       setState: 'setState',

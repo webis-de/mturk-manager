@@ -42,6 +42,10 @@
             }
         }
     }
+
+    .table-row td:last-of-type {
+        padding-right: 16px !important;
+    }
 }
 
 .breadcrumbs {

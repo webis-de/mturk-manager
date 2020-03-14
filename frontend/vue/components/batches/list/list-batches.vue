@@ -28,13 +28,12 @@
 
     v-on:changed-selection="changedSelection"
   >
-    <template v-slot:default="{ item, objectColumnsSelected, isCondensed, classes, changedSelection, itemsSelected }">
+    <template v-slot:default="{ item, objectColumnsSelected, isCondensed, changedSelection, itemsSelected }">
       <component-item-batch
         v-bind:item="item"
         v-bind:object-columns-selected="objectColumnsSelected"
         v-bind:show_links="showLinks"
         v-bind:is-condensed="isCondensed"
-        v-bind:classes="classes"
         v-bind:items-selected="itemsSelected"
         v-on:changed-selection="changedSelection"
       />

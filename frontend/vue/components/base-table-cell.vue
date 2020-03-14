@@ -1,5 +1,6 @@
 <template>
   <td
+    v-if="show"
     v-bind:class="classesCell"
     v-on:click="click"
   >

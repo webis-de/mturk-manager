@@ -1,18 +1,10 @@
 <template>
-  <!-- <div>wda</div> -->
-  <tr
+  <base-table-item
     v-bind:key="assignment.id"
-    class="text-no-wrap roboto-mono"
+    v-bind:item="item"
+    v-bind:items-selected="itemsSelected"
+    v-on:changed-selection="$emit('changed-selection', $event)"
   >
-    <td>
-      <v-checkbox
-        v-model="is_selected"
-        class="pa-0 ma-0"
-        primary
-        hide-details
-      />
-    </td>
-
     <base-table-cell
       v-slot="{ item }"
       name="id_assignment"
@@ -91,7 +83,7 @@
     >
       <component-status-assignment
         v-bind:assignment="item"
-      ></component-status-assignment>
+      />
     </base-table-cell>
 
     <base-table-cell
@@ -130,14 +122,7 @@
         <v-icon>mdi-magnify</v-icon>
       </v-btn>
     </base-table-cell>
-
-    <!-- <td class="text-xs-center">
-            {{ assignment.hits.length }}
-        </td>
-        <td class="text-xs-center">
-            {{ props.item.count_assignments }}
-        </td> -->
-  </tr>
+  </base-table-item>
 </template>
 <script>
 import {
@@ -149,10 +134,12 @@ import BaseDisplayDatetime from '../../common/base-display-datetime';
 import BaseDisplayDuration from '../../common/base-display-duration';
 import BaseTableCell from '../../base-table-cell';
 import EditAssignment from '../edit-assignment';
+import BaseTableItem from '../../base-table-item';
 
 export default {
   name: 'ComponentItemAssignment',
   components: {
+    BaseTableItem,
     EditAssignment,
     BaseTableCell,
     BaseDisplayDuration,
@@ -164,10 +151,14 @@ export default {
       type: Object,
       required: true,
     },
-    show_links: {
+    showLinks: {
       required: false,
       type: Boolean,
       default: true,
+    },
+    itemsSelected: {
+      type: Object,
+      required: true,
     },
     objectColumnsSelected: {
       type: Object,

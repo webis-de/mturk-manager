@@ -1,17 +1,10 @@
 <template>
-  <tr
+  <base-table-item
     v-bind:key="hit.id"
-    class="text-no-wrap roboto-mono"
+    v-bind:item="item"
+    v-bind:items-selected="itemsSelected"
+    v-on:changed-selection="$emit('changed-selection', $event)"
   >
-    <td>
-      <v-checkbox
-        v-model="is_selected"
-        class="pa-0 ma-0"
-        primary
-        hide-details
-      />
-    </td>
-
     <base-table-cell
       v-slot="{ item }"
       name="id_hit"
@@ -68,31 +61,32 @@
         v-bind:datasets="datasets"
       />
     </base-table-cell>
+  </base-table-item>
 
-<!--    <base-table-cell-->
-<!--      v-slot="{ item }"-->
-<!--      name="actions"-->
-<!--      class="text-center"-->
-<!--      v-bind:item="hit"-->
-<!--      v-bind:columns-selected="objectColumnsSelected"-->
-<!--    >-->
-<!--      <v-btn-->
-<!--        slot="activator"-->
-<!--        class="my-0"-->
-<!--        icon-->
-<!--        small-->
-<!--        v-bind:to="{-->
-<!--          name: 'hit',-->
-<!--          params: {-->
-<!--            slug_project: $route.params.slug_project,-->
-<!--            id: hit.id-->
-<!--          }-->
-<!--        }"-->
-<!--      >-->
-<!--        <v-icon>mdi-information</v-icon>-->
-<!--      </v-btn>-->
-<!--    </base-table-cell>-->
-  </tr>
+
+  <!--    <base-table-cell-->
+  <!--      v-slot="{ item }"-->
+  <!--      name="actions"-->
+  <!--      class="text-center"-->
+  <!--      v-bind:item="hit"-->
+  <!--      v-bind:columns-selected="objectColumnsSelected"-->
+  <!--    >-->
+  <!--      <v-btn-->
+  <!--        slot="activator"-->
+  <!--        class="my-0"-->
+  <!--        icon-->
+  <!--        small-->
+  <!--        v-bind:to="{-->
+  <!--          name: 'hit',-->
+  <!--          params: {-->
+  <!--            slug_project: $route.params.slug_project,-->
+  <!--            id: hit.id-->
+  <!--          }-->
+  <!--        }"-->
+  <!--      >-->
+  <!--        <v-icon>mdi-information</v-icon>-->
+  <!--      </v-btn>-->
+  <!--    </base-table-cell>-->
 </template>
 <script>
 import {
@@ -102,10 +96,12 @@ import _ from 'lodash';
 import BaseProgressBar from '../../base-progress-bar';
 import BaseDisplayDatetime from '../../common/base-display-datetime';
 import BaseTableCell from '../../base-table-cell';
+import BaseTableItem from '../../base-table-item';
 
 export default {
   name: 'ComponentItemHit',
   components: {
+    BaseTableItem,
     BaseTableCell,
     BaseDisplayDatetime,
     BaseProgressBar,
@@ -115,10 +111,14 @@ export default {
       type: Object,
       required: true,
     },
-    show_links: {
+    showLinks: {
       required: false,
       type: Boolean,
       default: true,
+    },
+    itemsSelected: {
+      type: Object,
+      required: true,
     },
     objectColumnsSelected: {
       type: Object,

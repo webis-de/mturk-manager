@@ -6,7 +6,6 @@
     v-on:changed-selection="$emit('changed-selection', $event)"
   >
     <base-table-cell
-    v-bind:key="batch.id + 'checklbox'"
       v-slot="{ item }"
       name="name"
       class="text-left text-capitalize"
@@ -123,7 +122,7 @@
     <base-table-cell
       v-slot="{ item }"
       name="progress"
-      class="text-center pr-4"
+      class="text-center"
       v-bind:item="batch"
       v-bind:columns-selected="objectColumnsSelected"
     >
