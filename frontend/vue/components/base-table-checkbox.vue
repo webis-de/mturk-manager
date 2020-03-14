@@ -2,7 +2,7 @@
   <v-checkbox
     v-bind:input-value="value"
     v-bind:indeterminate="indeterminate"
-    class="pa-0 ma-0"
+    class="pa-0 ma-0 data-table-checkbox"
     color="white"
     hide-details
     v-on:change="click"

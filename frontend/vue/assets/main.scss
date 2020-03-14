@@ -43,8 +43,12 @@
         }
     }
 
-    .table-row td:last-of-type {
+    .v-data-table-header tr th:last-of-type, .table-row td:last-of-type {
         padding-right: 16px !important;
+    }
+
+    .data-table-checkbox .v-input--selection-controls__input {
+        margin-right: 0;
     }
 }
 
