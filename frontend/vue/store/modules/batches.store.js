@@ -168,8 +168,6 @@ export const moduleBatches = _.merge({}, baseModule, {
       return state.array_columns_selected_finances;
     },
     get_array_columns_selected_initial_finances: state => state.array_columns_selected_initial_finances,
-
-    get_object_batches_selected: state => state.object_batches_selected,
     list_hits_for_csv: (state) => {
       const list_hits = [];
       _.forIn(state.object_batches, (batch, id_batch) => {

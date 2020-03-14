@@ -255,9 +255,6 @@ export default {
     //   },
     // },
     ...mapGetters(['get_show_progress_indicator']),
-    ...mapGetters('moduleBatches', {
-      object_batches_selected: 'get_object_batches_selected',
-    }),
   },
   watch: {
     item() {
