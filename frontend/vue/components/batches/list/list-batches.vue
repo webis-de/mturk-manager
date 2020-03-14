@@ -28,7 +28,7 @@
 
     v-on:changed-selection="changedSelection"
   >
-    <template v-slot:default="{ item, objectColumnsSelected, isCondensed, classes, changedSelection }">
+    <template v-slot:default="{ item, objectColumnsSelected, isCondensed, classes, changedSelection, itemsSelected }">
       <component-item-batch
         v-bind:item="item"
         v-bind:object-columns-selected="objectColumnsSelected"
@@ -55,13 +55,12 @@
 
 <script>
 import {
-  mapActions, mapGetters, mapMutations, mapState,
+  mapActions, mapMutations, mapState,
 } from 'vuex';
 import { Service_Batches as ServiceBatches } from '../../../services/service_batches';
 import BaseTable from '../../base-table';
 import ComponentItemBatch from './component_item_batch';
 import FiltersTableBatches from './filters-table-batches';
-import { changedSelection } from '../../../helpers';
 
 export default {
   name: 'ListBatches',
@@ -136,7 +135,6 @@ export default {
   data() {
     return {
       loadPage: ServiceBatches.load_page,
-      itemsSelected: {},
     };
   },
   computed: {
@@ -163,13 +161,8 @@ export default {
     }),
   },
   methods: {
-    changedSelection({ isSelected, item }) {
-      changedSelection({
-        isSelected,
-        item,
-        context: this,
-        itemsPage: this.arrayItems,
-      });
+    changedSelection(itemsSelected) {
+      console.log('itemsSelected', Object.keys(itemsSelected));
     },
     ...mapActions('moduleBatches', {
       function_reset_array_columns_general: 'reset_array_columns_general',

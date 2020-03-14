@@ -1,16 +1,12 @@
 <template>
-  <tr
+  <base-table-item
     v-bind:key="batch.id"
-    class="text-no-wrap"
-    v-bind:class="classes"
+    v-bind:item="item"
+    v-bind:items-selected="itemsSelected"
+    v-on:changed-selection="$emit('changed-selection', $event)"
   >
-    <td>
-      <base-table-checkbox
-        v-model="isSelected"
-      />
-    </td>
-
     <base-table-cell
+    v-bind:key="batch.id + 'checklbox'"
       v-slot="{ item }"
       name="name"
       class="text-left text-capitalize"
@@ -159,7 +155,20 @@
     <!--        <v-icon>mdi-information</v-icon>-->
     <!--      </v-btn>-->
     <!--    </base-table-cell>-->
-  </tr>
+  </base-table-item>
+<!--  <tr-->
+
+<!--    class="text-no-wrap"-->
+<!--    v-bind:class="classes"-->
+<!--  >-->
+<!--    <td>-->
+<!--      <base-table-checkbox-->
+<!--        v-model="isSelected"-->
+<!--      />-->
+<!--    </td>-->
+
+
+<!--  </tr>-->
 </template>
 <script>
 import {
@@ -171,10 +180,12 @@ import BaseProgressBar from '../../base-progress-bar';
 import BaseDisplayDatetime from '../../common/base-display-datetime';
 import BaseTableCell from '../../base-table-cell';
 import BaseTableCheckbox from '../../base-table-checkbox';
+import BaseTableItem from '../../base-table-item';
 
 export default {
   name: 'ComponentItemBatch',
   components: {
+    BaseTableItem,
     BaseTableCheckbox,
     BaseTableCell,
     BaseDisplayDatetime,
@@ -235,21 +246,6 @@ export default {
           data: [this.batch.countAssignmentsPending],
         },
       ];
-    },
-    isSelected: {
-      get() {
-        return this.itemsSelected !== false && (this.itemsSelected === true || this.itemsSelected[this.batch.id] !== undefined);
-      },
-      set(isSelected) {
-        this.$emit('changed-selection', {
-          isSelected,
-          item: this.batch,
-        });
-        // this.set_batches_selected({
-        //   array_items: [this.batch],
-        //   add: isSelected,
-        // });
-      },
     },
     // batch() {
     //   return this.props.item;

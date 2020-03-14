@@ -102,6 +102,7 @@
         v-bind:refresh="refresh"
         v-bind:classes="['roboto-mono']"
         v-bind:changed-selection="changedSelection"
+        v-bind:items-selected="itemsSelected"
       ></slot>
     </template>
 
@@ -182,6 +183,7 @@ import { updateSandbox } from '../mixins/update-sandbox.mixin';
 import ComponentSettingsTable from './common/component-settings-table';
 import BaseTableFilters from './base-table-filters';
 import BaseTableCheckbox from './base-table-checkbox';
+import { changedSelection } from '../helpers';
 
 /**
  * TODO: lazy loading if visible
@@ -318,6 +320,7 @@ export default {
       columns: this.$store.state[this.nameVuexModule][this.nameStateColumns],
 
       isSelectedAll: false,
+      itemsSelected: {},
     };
   },
   computed: {
@@ -381,7 +384,7 @@ export default {
   },
   watch: {
     isSelectedAll() {
-      this.$emit('changed-selection', {
+      this.changedSelection({
         isSelected: this.isSelectedAll,
       });
     },
@@ -473,14 +476,14 @@ export default {
         },
       );
     },
-    // toggleSelectionAll() {
-    //   this.functionSetItemsSelected({
-    //     add: !this.is_page_selected,
-    //     array_items: this.arrayItems,
-    //   });
-    // },
-    changedSelection(data) {
-      this.$emit('changed-selection', data);
+    changedSelection({ isSelected, item }) {
+      changedSelection({
+        isSelected,
+        item,
+        context: this,
+        itemsPage: this.arrayItems,
+      });
+      this.$emit('changed-selection', this.itemsSelected);
     },
   },
 };
