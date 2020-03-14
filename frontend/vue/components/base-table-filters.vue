@@ -1,7 +1,6 @@
 <template>
   <v-bottom-sheet
     v-model="showFilters"
-    hide-overlay
     inset
   >
     <template v-slot:activator="{ on }">
@@ -25,9 +24,7 @@
       </v-btn>
     </template>
 
-    <v-card
-      color="secondary lighten-2"
-    >
+    <v-card>
       <v-card-title
         class="pa-2"
       >

@@ -42,7 +42,7 @@
         </v-row>
       </base-page-section>
       <base-page-section
-        v-bind:title="'Limit Block'"
+        v-bind:title="'Import'"
         shrink
       >
         <v-row dense>

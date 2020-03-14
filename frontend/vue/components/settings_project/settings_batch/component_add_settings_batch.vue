@@ -25,7 +25,7 @@
             icon
             v-on:click="dialog = false"
           >
-            <v-icon>close</v-icon>
+            <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-card-title>
         <v-card-text>

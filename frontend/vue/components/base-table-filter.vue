@@ -3,7 +3,8 @@
     v-bind="breakpoints"
   >
     <v-card
-        v-bind:color="filtersActive.hasOwnProperty(nameFilter) ? 'secondary lighten-2' : 'secondary lighten-3'"
+      v-bind:color="$vuetify.theme.isDark === true ? 'secondary' : undefined"
+      v-bind:elevation="filtersActive.hasOwnProperty(nameFilter) ? 4 : 2"
     >
       <v-card-title
         class="px-2 py-1"
@@ -17,7 +18,7 @@
                 'warning--text': filtersActive.hasOwnProperty(nameFilter)
               }"
             >
-                {{ title }}
+              {{ title }}
             </span>
           </v-flex>
           <v-flex
@@ -43,7 +44,6 @@
       </v-card-text>
     </v-card>
   </v-flex>
-
 </template>
 
 <script>
@@ -78,8 +78,8 @@ export default {
     },
     isExcluded() {
       return this.filters.hasOwnProperty(this.nameExcluded) ? this.filters[this.nameExcluded] : false;
-    }
-  }
+    },
+  },
 };
 </script>
 
