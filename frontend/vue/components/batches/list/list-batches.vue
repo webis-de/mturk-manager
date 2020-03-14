@@ -162,7 +162,9 @@ export default {
   },
   methods: {
     changedSelection(itemsSelected) {
-      console.log('itemsSelected', Object.keys(itemsSelected));
+      this.$store.dispatch('moduleBatches/setItemsSelected', {
+        items: itemsSelected,
+      });
     },
     ...mapActions('moduleBatches', {
       function_reset_array_columns_general: 'reset_array_columns_general',

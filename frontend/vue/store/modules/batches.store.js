@@ -186,6 +186,9 @@ export const moduleBatches = _.merge({}, baseModule, {
     get_is_syncing_mturk: state => state.is_syncing_mturk,
   },
   mutations: {
+    setItemsSelected(state, { items }) {
+      state.object_batches_selected = items;
+    },
     set_array_columns_general(state, array_columns) {
       localforage.setItem('array_columns_batches_general', array_columns);
       state.array_columns_selected_general = array_columns;
@@ -325,6 +328,12 @@ export const moduleBatches = _.merge({}, baseModule, {
           objectStateDefault: state.objectFiltersDefaultGeneral,
         }),
       ]);
+    },
+    setItemsSelected({ commit }, data) {
+      commit(
+        'setItemsSelected',
+        data,
+      );
     },
     reset_array_columns_general({ state, commit }) {
       commit(
