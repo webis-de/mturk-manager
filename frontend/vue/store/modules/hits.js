@@ -136,6 +136,9 @@ export const moduleHITs = _.merge({}, baseModule, {
     },
   },
   mutations: {
+    setItemsSelected(state, { items }) {
+      state.object_hits_selected = items;
+    },
     setPaginationGeneral(state, { pagination, setPageTo1 }) {
       setPagination({
         pagination,
@@ -264,6 +267,12 @@ export const moduleHITs = _.merge({}, baseModule, {
           objectStateDefault: state.objectFiltersDefaultGeneral,
         }),
       ]);
+    },
+    setItemsSelected({ commit }, data) {
+      commit(
+        'setItemsSelected',
+        data,
+      );
     },
     reset_array_columns_general({ state, commit }) {
       commit(

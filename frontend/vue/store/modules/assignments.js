@@ -176,6 +176,9 @@ export const moduleAssignments = _.merge({}, baseModule, {
     set_ids_worker: state => state.set_ids_worker,
   },
   mutations: {
+    setItemsSelected(state, { items }) {
+      state.object_assignments_selected = items;
+    },
     updateItem(state, { item }) {
       const nameState = 'array_assignments_sandbox';
 
@@ -290,6 +293,12 @@ export const moduleAssignments = _.merge({}, baseModule, {
           objectStateDefault: state.objectFiltersDefaultGeneral,
         }),
       ]);
+    },
+    setItemsSelected({ commit }, data) {
+      commit(
+        'setItemsSelected',
+        data,
+      );
     },
     reset_array_columns_general({ state, commit }) {
       commit(

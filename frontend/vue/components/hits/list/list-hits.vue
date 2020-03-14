@@ -161,9 +161,9 @@ export default {
   },
   methods: {
     changedSelection(itemsSelected) {
-      // this.$store.dispatch('moduleBatches/setItemsSelected', {
-      //   items: itemsSelected,
-      // });
+      this.$store.dispatch('moduleHITs/setItemsSelected', {
+        items: itemsSelected,
+      });
     },
     ...mapActions('moduleHITs', {
       function_reset_array_columns: 'reset_array_columns_general',

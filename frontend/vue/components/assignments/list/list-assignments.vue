@@ -158,9 +158,9 @@ export default {
   },
   methods: {
     changedSelection(itemsSelected) {
-      // this.$store.dispatch('moduleBatches/setItemsSelected', {
-      //   items: itemsSelected,
-      // });
+      this.$store.dispatch('moduleAssignments/setItemsSelected', {
+        items: itemsSelected,
+      });
     },
     ...mapActions('moduleAssignments', {
       function_reset_array_columns: 'reset_array_columns_general',
