@@ -110,20 +110,3 @@ export function getHeight() {
 }
 
 export const classesHeaders = ['px-1', 'text-no-wrap'];
-
-export function changedSelection({
-  isSelected, item, context, itemsPage,
-}) {
-  let arrayItems = [item];
-  if (item === undefined) {
-    arrayItems = itemsPage;
-  }
-
-  for (let i = 0; i < arrayItems.length; i += 1) {
-    if (isSelected === true) {
-      context.$set(context.itemsSelected, arrayItems[i].id, true);
-    } else {
-      context.$delete(context.itemsSelected, arrayItems[i].id);
-    }
-  }
-}

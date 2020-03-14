@@ -27,6 +27,7 @@
     >
       <base-table-checkbox
         v-model="isSelectedAll"
+        v-bind:indeterminate="isIndeterminate"
       />
     </template>
     <!--        <template-->
@@ -183,7 +184,6 @@ import { updateSandbox } from '../mixins/update-sandbox.mixin';
 import ComponentSettingsTable from './common/component-settings-table';
 import BaseTableFilters from './base-table-filters';
 import BaseTableCheckbox from './base-table-checkbox';
-import { changedSelection } from '../helpers';
 
 /**
  * TODO: lazy loading if visible
@@ -319,11 +319,15 @@ export default {
 
       columns: this.$store.state[this.nameVuexModule][this.nameStateColumns],
 
-      isSelectedAll: false,
       itemsSelected: {},
+      isWholePageSelected: false,
+      isAtLeastOneItemOfPageSelected: false,
     };
   },
   computed: {
+    isIndeterminate() {
+      return this.isWholePageSelected === false && this.isAtLeastOneItemOfPageSelected === true;
+    },
     objectStyles() {
       return {
         'min-height': `${this.heightTable}px`,
@@ -381,12 +385,29 @@ export default {
 
       return isPageSelected;
     },
+    isSelectedAll: {
+      get() {
+        return this.isWholePageSelected;
+      },
+      set(isSelected) {
+        this.changedSelection({
+          isSelected,
+        });
+      },
+    },
   },
   watch: {
-    isSelectedAll() {
-      this.changedSelection({
-        isSelected: this.isSelectedAll,
-      });
+    itemsSelected: {
+      handler() {
+        this.recalculateIsWholePageSelected();
+        this.recalculateIsAtLeastOneItemOfPageSelected();
+      },
+    },
+    arrayItems: {
+      handler() {
+        this.recalculateIsWholePageSelected();
+        this.recalculateIsAtLeastOneItemOfPageSelected();
+      },
     },
   },
   beforeDestroy() {
@@ -401,6 +422,30 @@ export default {
     });
   },
   methods: {
+    recalculateIsWholePageSelected() {
+      let isWholePageSelected = true;
+
+      for (let i = 0; i < this.arrayItems.length; i += 1) {
+        if (this.itemsSelected[this.arrayItems[i].id] === undefined) {
+          isWholePageSelected = false;
+          break;
+        }
+      }
+
+      this.isWholePageSelected = isWholePageSelected;
+    },
+    recalculateIsAtLeastOneItemOfPageSelected() {
+      let isAtLeastOneItemOfPageSelected = false;
+
+      for (let i = 0; i < this.arrayItems.length; i += 1) {
+        if (this.itemsSelected[this.arrayItems[i].id] !== undefined) {
+          isAtLeastOneItemOfPageSelected = true;
+          break;
+        }
+      }
+
+      this.isAtLeastOneItemOfPageSelected = isAtLeastOneItemOfPageSelected;
+    },
     onIntersect(entries, observer, isIntersecting) {
       if (isIntersecting === true) {
         this.load_page(this.filters);
@@ -477,12 +522,18 @@ export default {
       );
     },
     changedSelection({ isSelected, item }) {
-      changedSelection({
-        isSelected,
-        item,
-        context: this,
-        itemsPage: this.arrayItems,
-      });
+      let arrayItems = [item];
+      if (item === undefined) {
+        arrayItems = this.arrayItems;
+      }
+
+      for (let i = 0; i < arrayItems.length; i += 1) {
+        if (isSelected === true) {
+          this.$set(this.itemsSelected, arrayItems[i].id, true);
+        } else {
+          this.$delete(this.itemsSelected, arrayItems[i].id);
+        }
+      }
       this.$emit('changed-selection', this.itemsSelected);
     },
   },

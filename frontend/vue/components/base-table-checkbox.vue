@@ -1,6 +1,7 @@
 <template>
   <v-checkbox
     v-bind:input-value="value"
+    v-bind:indeterminate="indeterminate"
     class="pa-0 ma-0"
     primary
     hide-details
@@ -15,6 +16,11 @@ export default {
     value: {
       type: Boolean,
       required: true,
+    },
+    indeterminate: {
+      type: Boolean,
+      required: false,
+      default: false,
     },
   },
   methods: {
