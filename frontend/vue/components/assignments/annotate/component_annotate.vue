@@ -38,7 +38,7 @@ export default {
     },
     url() {
       let url = `/view/${this.project_current.slug}?list_ids=[`;
-      url += _.join(_.map(this.object_assignments_selected), ',');
+      url += _.join(Object.keys(this.object_assignments_selected), ',');
       // url += _.join(_.map(this.object_assignments_selected, (assignment) => assignment.id), ',');
       return `${url}]`;
     },
