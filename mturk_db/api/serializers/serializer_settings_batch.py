@@ -66,7 +66,7 @@ class Serializer_Settings_Batch(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         data = super(Serializer_Settings_Batch, self).to_representation(instance)
-        print(data)
+        # print(data)
         import json
         try:
             data['qualification_locale'] = json.loads(data['qualification_locale'])
