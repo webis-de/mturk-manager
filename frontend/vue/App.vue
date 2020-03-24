@@ -48,9 +48,12 @@ export default {
   watch: {
     async slug_project_current() {
       await Service_Projects.load_project_data();
-      await Service_Templates.getAll({
-        typeTemplate: 'workerAll',
-      });
+
+      if (this.slug_project_current !== undefined) {
+        await Service_Templates.getAll({
+          typeTemplate: 'workerAll',
+        });
+      }
     },
   },
   methods: {
