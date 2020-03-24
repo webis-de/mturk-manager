@@ -422,6 +422,8 @@ export default {
   },
   methods: {
     recalculateIsWholePageSelected() {
+      if (this.arrayItems.length === 0) return false;
+
       let isWholePageSelected = true;
 
       for (let i = 0; i < this.arrayItems.length; i += 1) {
