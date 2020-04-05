@@ -1,13 +1,10 @@
 <template>
-  <tr class="roboto-mono">
-    <td>
-      <v-checkbox
-        class="pa-0 ma-0"
-        primary
-        hide-details
-      />
-    </td>
-
+  <base-table-item
+    v-bind:key="worker.id"
+    v-bind:item="item"
+    v-bind:items-selected="itemsSelected"
+    v-on:changed-selection="$emit('changed-selection', $event)"
+  >
     <base-table-cell
       v-slot="{ item }"
       name="id_worker"
@@ -28,7 +25,7 @@
       <component-limit-assignments
         v-bind:key="`component_limit_assignments_${item.id_worker}`"
         v-bind:worker="item"
-      ></component-limit-assignments>
+      />
     </base-table-cell>
 
     <base-table-cell
@@ -41,7 +38,7 @@
       <component-block-soft-worker
         v-bind:key="`component_block_soft_worker_${item.id_worker}`"
         v-bind:worker="item"
-      ></component-block-soft-worker>
+      />
     </base-table-cell>
 
     <base-table-cell
@@ -54,7 +51,7 @@
       <component-block-global-worker
         v-bind:key="`component_block_global_worker_${item.id_worker}`"
         v-bind:worker="item"
-      ></component-block-global-worker>
+      />
     </base-table-cell>
 
     <base-table-cell
@@ -67,9 +64,9 @@
       <component-block-hard-worker
         v-bind:key="`component_block_hard_worker_${item.id_worker}`"
         v-bind:worker="item"
-      ></component-block-hard-worker>
+      />
     </base-table-cell>
-  </tr>
+  </base-table-item>
 </template>
 <script>
 import { mapGetters } from 'vuex';
@@ -81,12 +78,17 @@ import ComponentBlockHardWorker from './component_block_hard_worker.vue';
 import ComponentLimitAssignments from './component_limit_assignments.vue';
 import Worker from '../../../classes/workers';
 import BaseTableCell from '../../base-table-cell';
+import BaseTableItem from '../../base-table-item';
 
 export default {
-  name: 'component-item-worker',
+  name: 'ComponentItemWorker',
   props: {
     item: {
       type: Worker,
+      required: true,
+    },
+    itemsSelected: {
+      type: Object,
       required: true,
     },
     objectColumnsSelected: {
@@ -145,6 +147,7 @@ export default {
   },
   methods: {},
   components: {
+    BaseTableItem,
     BaseTableCell,
     ComponentBlockSoftWorker,
     ComponentBlockGlobalWorker,

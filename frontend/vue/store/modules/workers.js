@@ -2,7 +2,7 @@ import Vue from 'vue';
 import _ from 'lodash';
 import localforage from 'localforage';
 import Worker from '../../classes/workers.js';
-import {initFilters, initPagination, setPagination} from '../../helpers';
+import { initFilters, initPagination, setPagination } from '../../helpers';
 import baseModule from './base.module';
 
 export const moduleWorkers = _.merge({}, baseModule, {
@@ -37,24 +37,28 @@ export const moduleWorkers = _.merge({}, baseModule, {
         value: 'counter_assignments',
         align: 'center',
         width: '1px',
+        sortable: false,
         class: ['text-no-wrap'],
       },
       {
         text: 'Project Block',
         value: 'block_soft',
         width: '1px',
+        sortable: false,
         class: ['text-no-wrap'],
       },
       {
         text: 'Soft MTurk Block',
         value: 'block_soft_hard',
         width: '1px',
+        sortable: false,
         class: ['text-no-wrap'],
       },
       {
         text: 'Hard MTurk Block',
         value: 'block_hard',
         width: '1px',
+        sortable: false,
         class: ['text-no-wrap'],
       },
     ],
@@ -117,6 +121,9 @@ export const moduleWorkers = _.merge({}, baseModule, {
     },
   },
   mutations: {
+    setItemsSelected(state, { items }) {
+      state.object_workers_selected = items;
+    },
     // setPaginationGeneral(state, { pagination, setPageTo1 }) {
     //   setPagination({
     //     pagination,
@@ -342,6 +349,12 @@ export const moduleWorkers = _.merge({}, baseModule, {
           objectStateDefault: state.objectFiltersDefaultGeneral,
         }),
       ]);
+    },
+    setItemsSelected({ commit }, data) {
+      commit(
+        'setItemsSelected',
+        data,
+      );
     },
     reset_array_columns_general({ state, commit }) {
       commit(

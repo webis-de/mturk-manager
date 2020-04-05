@@ -25,13 +25,17 @@
     v-bind:set-state="setState"
     name-state-filters="objectFiltersGeneral"
     name-local-storage-filters="filtersWorkersGeneral"
+
+    v-on:changed-selection="changedSelection"
   >
-    <template v-slot:default="{ item, objectColumnsSelected, isCondensed }">
+    <template v-slot:default="{ item, objectColumnsSelected, isCondensed, changedSelection, itemsSelected }">
       <component-item-worker
         v-bind:item="item"
         v-bind:object-columns-selected="objectColumnsSelected"
         v-bind:show_links="showLinks"
         v-bind:is-condensed="isCondensed"
+        v-bind:items-selected="itemsSelected"
+        v-on:changed-selection="changedSelection"
       />
     </template>
 
@@ -39,7 +43,7 @@
       <filters-table-workers
         v-bind:filters="filters"
         v-bind:filters-active="filtersActive"
-      ></filters-table-workers>
+      />
     </template>
 
     <template v-slot:actions>
@@ -48,14 +52,14 @@
   </base-table>
 </template>
 <script>
-  import {
-    mapActions, mapGetters, mapMutations, mapState,
-  } from 'vuex';
+import {
+  mapActions, mapGetters, mapMutations, mapState,
+} from 'vuex';
 // import { Policy } from '../../store/modules/policies.js';
 import ComponentItemWorker from './component_item_worker';
 import { Service_Workers as ServiceWorkers } from '../../../services/service_worker';
 import BaseTable from '../../base-table';
-  import FiltersTableWorkers from './filters-table-workers';
+import FiltersTableWorkers from './filters-table-workers';
 // import ComponentShowMoneySpent from './component-show-money-spent.vue';
 // import ComponentShowBatches from './component-show-batches.vue';
 export default {
@@ -239,6 +243,11 @@ export default {
     }),
   },
   methods: {
+    changedSelection(itemsSelected) {
+      this.$store.dispatch('moduleWorkers/setItemsSelected', {
+        items: itemsSelected,
+      });
+    },
     load_page() {
       this.loading = true;
       ServiceWorkers.loadPage(this.pagination, {
