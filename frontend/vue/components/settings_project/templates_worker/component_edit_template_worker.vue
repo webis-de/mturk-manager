@@ -1,68 +1,81 @@
 <template>
-  <v-dialog v-model="dialog" max-width="80%">
+  <v-dialog
+    v-model="dialog"
+    max-width="80%"
+    fullscreen
+  >
     <template v-slot:activator="{ on }">
-    <v-btn
-      v-on="on"
-      class="my-0"
-      icon
-      x-small
-    >
-      <v-icon color="warning">mdi-pencil</v-icon>
-    </v-btn>
+      <v-btn
+        class="my-0"
+        icon
+        x-small
+        v-on="on"
+      >
+        <v-icon color="warning">
+          mdi-pencil
+        </v-icon>
+      </v-btn>
     </template>
 
     <v-card>
       <v-card-title>
         <span class="headline">Edit Worker Template</span>
-        <v-spacer></v-spacer>
-        <v-btn icon v-on:click="dialog = false">
+        <v-spacer />
+        <v-btn
+          icon
+          v-on:click="dialog = false"
+        >
           <v-icon>mdi-close</v-icon>
         </v-btn>
       </v-card-title>
       <v-card-text>
-        <v-form ref="form" lazy-validation>
+        <v-form
+          ref="form"
+          lazy-validation
+        >
           <v-text-field
             required
             label="Name"
             v-bind:value="template_worker.name"
+            v-bind:error-messages="validation_errors.template_worker.name"
             v-on:input="
               template_worker.name = $event;
               $v.template_worker.name.$touch();
             "
-            v-bind:error-messages="validation_errors.template_worker.name"
-          ></v-text-field>
+          />
           <v-text-field
             type="number"
             required
             v-bind:value="template_worker.height_frame"
-            v-on:input="
-              template_worker.height_frame = try_number($event);
-              $v.template_worker.height_frame.$touch();
-            "
             label="Height"
             v-bind:error-messages="
               validation_errors.template_worker.height_frame
             "
-          ></v-text-field>
-
-          <v-textarea
-            required
-            rows="20"
-            v-bind:value="template_worker.template"
             v-on:input="
-              template_worker.template = $event;
-              $v.template_worker.template.$touch();
+              template_worker.height_frame = try_number($event);
+              $v.template_worker.height_frame.$touch();
             "
-            label="Template"
-            v-bind:error-messages="validation_errors.template_worker.template"
-          ></v-textarea>
+          />
+
+          <base-editor
+            v-model="template_worker.template"
+            v-bind:label="'Template'"
+          />
+
+          <!--          <v-textarea-->
+          <!--            required-->
+          <!--            rows="20"-->
+          <!--            v-bind:value="template_worker.template"-->
+          <!--            label="Template"-->
+          <!--            v-bind:error-messages="validation_errors.template_worker.template"-->
+          <!--            v-on:input="-->
+          <!--              template_worker.template = $event;-->
+          <!--              $v.template_worker.template.$touch();-->
+          <!--            "-->
+          <!--          />-->
 
           <v-select
             v-bind:value="template_worker.template_assignment"
-            v-on:input="
-              template_worker.template_assignment = $event;
-              $v.template_worker.template_assignment.$touch();
-            "
             v-bind:items="arrayTemplatesAssignment"
             label="Assignment Template"
             item-text="name"
@@ -71,14 +84,14 @@
               validation_errors.template_worker.template_assignment
             "
             clearable
-          ></v-select>
+            v-on:input="
+              template_worker.template_assignment = $event;
+              $v.template_worker.template_assignment.$touch();
+            "
+          />
 
           <v-select
             v-bind:value="template_worker.template_hit"
-            v-on:input="
-              template_worker.template_hit = $event;
-              $v.template_worker.template_hit.$touch();
-            "
             v-bind:items="arrayTemplatesHIT"
             label="HIT Template"
             item-text="name"
@@ -87,14 +100,14 @@
               validation_errors.template_worker.template_hit
             "
             clearable
-          ></v-select>
+            v-on:input="
+              template_worker.template_hit = $event;
+              $v.template_worker.template_hit.$touch();
+            "
+          />
 
           <v-select
             v-bind:value="template_worker.template_global"
-            v-on:input="
-              template_worker.template_global = $event;
-              $v.template_worker.template_global.$touch();
-            "
             v-bind:items="arrayTemplatesGlobal"
             label="Global Template"
             item-text="name"
@@ -103,16 +116,21 @@
               validation_errors.template_worker.template_global
             "
             clearable
-          ></v-select>
+            v-on:input="
+              template_worker.template_global = $event;
+              $v.template_worker.template_global.$touch();
+            "
+          />
         </v-form>
 
         <v-btn
           class="ml-0"
           color="primary"
-          v-on:click="update()"
           v-bind:disabled="$v.$invalid"
-          >Update</v-btn
+          v-on:click="update()"
         >
+          Update
+        </v-btn>
       </v-card-text>
     </v-card>
   </v-dialog>
@@ -142,16 +160,17 @@ import helpers from '../../../mixins/helpers.mixin';
 import validations from '../../../mixins/validations.mixin';
 import Template_Worker from '../../../classes/template_worker';
 import { Service_Templates } from '../../../services/service_templates';
+import BaseEditor from '../../../modules/app/components/base-editor';
 
 export default {
-  name: 'component-edit-template-worker',
+  name: 'ComponentEditTemplateWorker',
   mixins: [helpers, validations],
   props: {
-    template_worker_current: {},
+    templateWorkerCurrent: {},
   },
   data() {
     return {
-      template_worker: new Template_Worker(this.template_worker_current),
+      template_worker: new Template_Worker(this.templateWorkerCurrent),
       dialog: false,
     };
   },
@@ -160,7 +179,7 @@ export default {
       if (this.$refs.form.validate()) {
         Service_Templates.edit({
           typeTemplate: 'worker',
-          templateCurrent: this.template_worker_current,
+          templateCurrent: this.templateWorkerCurrent,
           templateNew: this.template_worker,
           project: this.project_current,
         }).then(() => {
@@ -176,7 +195,7 @@ export default {
     },
     reset() {
       (this.template_worker = new Template_Worker(
-        this.template_worker_current,
+        this.templateWorkerCurrent,
       )),
       this.$v.$reset();
       this.$v.$touch();
@@ -262,6 +281,6 @@ export default {
       typeTemplate: 'globalAll',
     });
   },
-  components: {},
+  components: { BaseEditor },
 };
 </script>

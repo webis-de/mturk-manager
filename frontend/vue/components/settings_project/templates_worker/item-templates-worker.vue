@@ -60,7 +60,7 @@
     >
       <component-edit-template-worker
         v-bind:key="`component-edit-template-worker-${templateWorker.id}`"
-        v-bind:template_worker_current="templateWorker"
+        v-bind:template-worker-current="templateWorker"
         v-on:edited="$emit('edited')"
       />
       <component-delete-template-worker
