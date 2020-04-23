@@ -1,17 +1,27 @@
 <template>
   <div>
-    <v-dialog v-model="dialog">
+    <v-dialog
+      v-model="dialog"
+      fullscreen
+    >
       <template v-slot:activator="{ on }">
-      <v-btn v-on="on" color="primary" small
-        ><v-icon>mdi-plus</v-icon> Add Template</v-btn
-      >
+        <v-btn
+          color="primary"
+          small
+          v-on="on"
+        >
+          <v-icon>mdi-plus</v-icon> Add Template
+        </v-btn>
       </template>
 
       <v-card>
         <v-card-title>
           <span class="headline">Add Worker Template</span>
-          <v-spacer></v-spacer>
-          <v-btn icon v-on:click="dialog = false">
+          <v-spacer />
+          <v-btn
+            icon
+            v-on:click="dialog = false"
+          >
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-card-title>
@@ -21,44 +31,39 @@
               required
               label="Name"
               v-bind:value="template_worker.name"
+              v-bind:error-messages="validation_errors.template_worker.name"
               v-on:input="
                 template_worker.name = $event;
                 $v.template_worker.name.$touch();
               "
-              v-bind:error-messages="validation_errors.template_worker.name"
-            ></v-text-field>
+            />
             <v-text-field
               type="number"
               required
               v-bind:value="template_worker.height_frame"
-              v-on:input="
-                template_worker.height_frame = try_number($event);
-                $v.template_worker.height_frame.$touch();
-              "
               label="Height"
               v-bind:error-messages="
                 validation_errors.template_worker.height_frame
               "
-            ></v-text-field>
+              v-on:input="
+                template_worker.height_frame = try_number($event);
+                $v.template_worker.height_frame.$touch();
+              "
+            />
 
-            <v-textarea
-              required
-              rows="20"
+            <base-editor
               v-bind:value="template_worker.template"
+              v-bind:label="'Template'"
               v-on:input="
                 template_worker.template = $event;
                 $v.template_worker.template.$touch();
               "
-              label="Template"
-              v-bind:error-messages="validation_errors.template_worker.template"
-            ></v-textarea>
+            />
+            <v-textarea />
+            <!--              v-bind:error-messages="validation_errors.template_worker.template"-->
 
             <v-select
               v-bind:value="template_worker.template_assignment"
-              v-on:input="
-                template_worker.template_assignment = $event;
-                $v.template_worker.template_assignment.$touch();
-              "
               v-bind:items="arrayTemplatesAssignment"
               label="Assignment Template"
               item-text="name"
@@ -66,14 +71,14 @@
               v-bind:error-messages="
                 validation_errors.template_worker.template_assignment
               "
-            ></v-select>
+              v-on:input="
+                template_worker.template_assignment = $event;
+                $v.template_worker.template_assignment.$touch();
+              "
+            />
 
             <v-select
               v-bind:value="template_worker.template_hit"
-              v-on:input="
-                template_worker.template_hit = $event;
-                $v.template_worker.template_hit.$touch();
-              "
               v-bind:items="arrayTemplatesHIT"
               label="HIT Template"
               item-text="name"
@@ -81,14 +86,14 @@
               v-bind:error-messages="
                 validation_errors.template_worker.template_hit
               "
-            ></v-select>
+              v-on:input="
+                template_worker.template_hit = $event;
+                $v.template_worker.template_hit.$touch();
+              "
+            />
 
             <v-select
               v-bind:value="template_worker.template_global"
-              v-on:input="
-                template_worker.template_global = $event;
-                $v.template_worker.template_global.$touch();
-              "
               v-bind:items="arrayTemplatesGlobal"
               label="Global Template"
               item-text="name"
@@ -96,7 +101,11 @@
               v-bind:error-messages="
                 validation_errors.template_worker.template_global
               "
-            ></v-select>
+              v-on:input="
+                template_worker.template_global = $event;
+                $v.template_worker.template_global.$touch();
+              "
+            />
             <!-- <v-text-field
 			            required
 			  			v-bind:value="template"
@@ -112,10 +121,11 @@
           <v-btn
             class="ml-0"
             color="primary"
-            v-on:click="create()"
             v-bind:disabled="$v.$invalid"
-            >Create</v-btn
+            v-on:click="create()"
           >
+            Create
+          </v-btn>
         </v-card-text>
       </v-card>
     </v-dialog>
@@ -134,9 +144,11 @@ import validations from '../../../mixins/validations.mixin';
 import helpers from '../../../mixins/helpers.mixin';
 import Template_Worker from '../../../classes/template_worker';
 import { Service_Templates } from '../../../services/service_templates';
+import BaseEditor from '../../../modules/app/components/base-editor';
 
 export default {
   name: 'ComponentAddTemplateWorker',
+  components: { BaseEditor },
   mixins: [helpers, validations],
   data() {
     return {
