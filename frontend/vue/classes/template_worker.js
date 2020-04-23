@@ -5,7 +5,7 @@ export default class Template_Worker {
     this.id = data.id;
     this.name = data.name;
     this.height_frame = data.height_frame != undefined ? data.height_frame : 800;
-    this.template = data.template;
+    this.template = data.template !== undefined ? data.template : '';
     this.template_assignment = _.cloneDeep(data.template_assignment);
     this.template_hit = _.cloneDeep(data.template_hit);
     this.template_global = _.cloneDeep(data.template_global);
