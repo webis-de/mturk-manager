@@ -8,6 +8,33 @@
         <v-spacer />
         <template v-if="showPreview === true">
           <v-col class="shrink">
+            <v-dialog
+              v-model="dialogFile"
+              max-width="500"
+            >
+              <template v-slot:activator="{ on }">
+                <v-btn
+                  x-small
+                  icon
+                  v-on="on"
+                >
+                  <v-icon>mdi-cloud-upload</v-icon>
+                </v-btn>
+              </template>
+              <v-card>
+                <v-card-title>Upload CSV</v-card-title>
+                <v-card-text>
+                  <v-file-input
+                    label="CSV"
+                    accept=".csv"
+                    v-bind:loading="isParsingCSV"
+                    v-on:change="uploadedFile"
+                  />
+                </v-card-text>
+              </v-card>
+            </v-dialog>
+          </v-col>
+          <v-col class="shrink">
             <v-btn
               x-small
               icon
@@ -62,6 +89,7 @@
 </template>
 
 <script>
+import Papa from 'papaparse';
 import { codemirror } from 'vue-codemirror';
 import 'codemirror/mode/htmlembedded/htmlembedded';
 import 'codemirror/lib/codemirror.css';
@@ -92,9 +120,13 @@ export default {
         // lineNumbers: true,
         viewportMargin: Infinity,
       },
-      showPreview: true,
+      showPreview: false,
       isIframeLoaded: false,
       isLayoutHorizontal: true,
+
+      csvParsed: null,
+      isParsingCSV: false,
+      dialogFile: false,
     };
   },
   computed: {
@@ -116,8 +148,43 @@ export default {
     },
   },
   methods: {
+    escapeRegExp(string) {
+      // from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions
+      return string.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
+    },
     processTemplate() {
-      return this.value.replace(/\${(\w+)}/g, 'PLACEHOLDER');
+      if (this.csvParsed === null) {
+        return this.value.replace(/\${(\w+)}/g, 'PLACEHOLDER');
+      }
+
+      let result = this.value;
+      for (const key in this.csvParsed) {
+        const re = new RegExp(this.escapeRegExp(`\${${key}}`), 'g');
+        result = result.replace(re, this.csvParsed[key]);
+      }
+
+      return result;
+    },
+    uploadedFile(file) {
+      if (file === undefined) {
+        this.isParsingCSV = false;
+        this.csvParsed = null;
+        return;
+      }
+
+      this.isParsingCSV = true;
+      Papa.parse(file, {
+        header: true,
+        skipEmptyLines: true,
+        preview: 1,
+        complete: (results) => {
+          this.isParsingCSV = false;
+          if (results.data.length > 0) {
+            this.csvParsed = results.data[0];
+          }
+          this.dialogFile = false;
+        },
+      });
     },
   },
 };
@@ -125,11 +192,11 @@ export default {
 
 <style>
 .CodeMirror {
-  height: 70vh !important;
+  height: 80vh !important;
 }
 .iframe-container {
   overflow: hidden;
-  padding-top: 70vh;
+  padding-top: 80vh;
   position: relative;
 }
 
