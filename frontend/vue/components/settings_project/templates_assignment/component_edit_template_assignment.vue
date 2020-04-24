@@ -1,49 +1,70 @@
 <template>
-  <v-dialog v-model="dialog" max-width="80%" persistent>
+  <v-dialog
+    v-model="dialog"
+    max-width="80%"
+    persistent
+    fullscreen
+  >
     <template v-slot:activator="{ on }">
-    <v-btn
-      v-on="on"
-      class="my-0"
-      icon
-      x-small
-    >
-      <v-icon color="warning">mdi-pencil</v-icon>
-    </v-btn>
+      <v-btn
+        class="my-0"
+        icon
+        x-small
+        v-on="on"
+      >
+        <v-icon color="warning">
+          mdi-pencil
+        </v-icon>
+      </v-btn>
     </template>
 
     <v-card>
       <v-card-title>
         <span class="headline">Edit Assignment Template</span>
-        <v-spacer></v-spacer>
-        <v-btn icon v-on:click="dialog = false">
+        <v-spacer />
+        <v-btn
+          icon
+          v-on:click="dialog = false"
+        >
           <v-icon>mdi-close</v-icon>
         </v-btn>
       </v-card-title>
       <v-card-text>
-        <v-form ref="form" lazy-validation>
+        <v-form
+          ref="form"
+          lazy-validation
+        >
           <v-text-field
             required
             label="Name"
             v-bind:value="template_assignment.name"
+            v-bind:error-messages="validation_errors.template_assignment.name"
             v-on:input="
               template_assignment.name = $event;
               $v.template_assignment.name.$touch();
             "
-            v-bind:error-messages="validation_errors.template_assignment.name"
-          ></v-text-field>
-          <v-textarea
-            required
-            rows="20"
+          />
+          <base-editor
             v-bind:value="template_assignment.template"
+            label="Template"
             v-on:input="
               template_assignment.template = $event;
               $v.template_assignment.template.$touch();
             "
-            label="Template"
-            v-bind:error-messages="
-              validation_errors.template_assignment.template
-            "
-          ></v-textarea>
+          />
+          <!--          <v-textarea-->
+          <!--            required-->
+          <!--            rows="20"-->
+          <!--            v-bind:value="template_assignment.template"-->
+          <!--            v-on:input="-->
+          <!--              template_assignment.template = $event;-->
+          <!--              $v.template_assignment.template.$touch();-->
+          <!--            "-->
+          <!--            label="Template"-->
+          <!--            v-bind:error-messages="-->
+          <!--              validation_errors.template_assignment.template-->
+          <!--            "-->
+          <!--          ></v-textarea>-->
         </v-form>
       </v-card-text>
 
@@ -52,31 +73,34 @@
           text
           class="ml-0"
           color="înfo"
+          v-bind:disabled="$v.$invalid"
           v-on:click="
             dialog = false;
             reset();
           "
-          v-bind:disabled="$v.$invalid"
-          >Cancel</v-btn
         >
-        <v-spacer></v-spacer>
+          Cancel
+        </v-btn>
+        <v-spacer />
         <v-btn
           text
           class="ml-0"
           color="primary"
-          v-on:click="update()"
           v-bind:disabled="$v.$invalid"
-          >Save</v-btn
+          v-on:click="update()"
         >
+          Save
+        </v-btn>
 
         <v-btn
           text
           class="ml-0"
           color="success"
-          v-on:click="update(true)"
           v-bind:disabled="$v.$invalid"
-          >Save and Close</v-btn
+          v-on:click="update(true)"
         >
+          Save and Close
+        </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -106,12 +130,13 @@ import helpers from '../../../mixins/helpers.mixin';
 import validations from '../../../mixins/validations.mixin';
 import Template_Assignment from '../../../classes/template_assignment';
 import { Service_Templates } from '../../../services/service_templates';
+import BaseEditor from '../../../modules/app/components/base-editor';
 
 export default {
   name: 'ComponentEditTemplateAssignment',
   mixins: [helpers, validations],
   props: {
-    template_assignment_current: {},
+    templateAssignmentCurrent: {},
   },
   data() {
     return {
@@ -180,6 +205,6 @@ export default {
   created() {
     this.$v.$touch();
   },
-  components: {},
+  components: { BaseEditor },
 };
 </script>
