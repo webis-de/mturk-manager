@@ -4,7 +4,7 @@ export default class Template_Assignment {
   constructor(data = undefined) {
     this.id = data != undefined ? data.id : undefined;
     this.name = data != undefined ? data.name : undefined;
-    this.template = data != undefined ? data.template : undefined;
+    this.template = data != undefined ? data.template : '';
   }
 
   update(data) {
