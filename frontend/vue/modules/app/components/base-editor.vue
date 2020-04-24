@@ -76,6 +76,7 @@
 
           <div class="iframe-container">
             <iframe
+              style="background-color: white"
               v-bind:srcdoc="valueProcessed"
               v-on:load="isIframeLoaded = true"
             >
@@ -154,13 +155,13 @@ export default {
     },
     processTemplate() {
       if (this.csvParsed === null) {
-        return this.value.replace(/\${(\w+)}/g, 'PLACEHOLDER');
+        return this.value;
       }
 
       let result = this.value;
-      for (const key in this.csvParsed) {
+      for (const [key, value] of Object.entries(this.csvParsed)) {
         const re = new RegExp(this.escapeRegExp(`\${${key}}`), 'g');
-        result = result.replace(re, this.csvParsed[key]);
+        result = result.replace(re, value);
       }
 
       return result;
