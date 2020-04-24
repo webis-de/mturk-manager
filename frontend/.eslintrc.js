@@ -14,31 +14,41 @@ module.exports = {
     'vue/v-on-style': ['error', 'longform'],
     // import fix
     'import/extensions': ['error', 'always', {
-      'js': 'never',
-      'vue': 'never'
+      js: 'never',
+      vue: 'never',
     }],
     // vuex fix
     'no-param-reassign': [
       'error',
       {
-        'props': true,
-        'ignorePropertyModificationsFor': [
+        props: true,
+        ignorePropertyModificationsFor: [
+          'acc', // for reduce accumulators
+          'accumulator', // for reduce accumulators
+          'e', // for e.returnvalue
+          'ctx', // for Koa routing
+          'req', // for Express requests
+          'request', // for Express requests
+          'res', // for Express responses
+          'response', // for Express responses
+          '$scope', // for Angular 1 scopes
+          'staticContext', // for ReactRouter context
           'state',
-        ]
-      }
+        ],
+      },
     ],
     'linebreak-style': 0,
     'vue/no-v-html': false,
     'vue/html-self-closing': [
       'error', {
-      'html': {
-        'normal': 'never'
-      }
-      }
+        html: {
+          normal: 'never',
+        },
+      },
     ],
     'max-len': [
       'error', {
-        'code': 120,
+        code: 120,
       },
     ],
     'import/prefer-default-export': false,
