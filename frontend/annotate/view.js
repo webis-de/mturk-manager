@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { STATUS_EXTERNAL, STATUS_INTERNAL } from '../vue/classes/enums';
+import { STATUS_EXTERNAL, STATUS_INTERNAL } from '../src/classes/enums';
 
 export default class View {
   constructor(loader, controller) {

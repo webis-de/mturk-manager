@@ -2,9 +2,9 @@
   "name": "mturk",
   "version": "1.0.0",
   "scripts": {
-    "serve": "env-cmd -f ../.env vue-cli-service serve vue/index.js",
-    "build": "env-cmd -f ../.env vue-cli-service build vue/index.js",
-    "lint": "vue-cli-service lint vue --no-fix",
+    "serve": "env-cmd -f ../.env vue-cli-service serve src/index.js",
+    "build": "env-cmd -f ../.env vue-cli-service build src/index.js",
+    "lint": "vue-cli-service lint src --no-fix",
     "parcel": "./node_modules/.bin/parcel watch --public-url /static/mturk_manager/js/dist ./mturk_manager/static/mturk_manager/js/vue/index.js -d ./mturk_manager/static/mturk_manager/js/dist",
     "parcel_annotate": "./node_modules/.bin/parcel watch --no-hmr ./annotate/index_annotate.js -d ./dist",
     "parcel_annotate_build": "./node_modules/.bin/parcel build ./annotate/index_annotate.js -d ./dist",
