@@ -1,5 +1,5 @@
 import { parse } from 'date-fns';
-import SettingsBatch from './settings_batch';
+import { SettingsBatch } from './settings_batch';
 
 export default class Batch {
   constructor(data = { settings_batch: new SettingsBatch() }) {

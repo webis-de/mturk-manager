@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import Vue from 'vue';
-import SettingsBatch from '../../classes/settings_batch';
+import { SettingsBatch } from '../../classes/settings_batch';
 import { classesHeaders } from '../../helpers';
 import baseModule from './base.module';
 

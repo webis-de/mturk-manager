@@ -1,6 +1,6 @@
 import { ServiceEndpoint } from './endpoint.service';
 import { store } from '../store/vuex';
-import SettingsBatch from '../classes/settings_batch';
+import { SettingsBatch } from '../classes/settings_batch';
 import { BaseLoadPageService } from './baseLoadPage.service';
 
 class ClassSettingsBatch extends BaseLoadPageService {

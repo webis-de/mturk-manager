@@ -2,8 +2,8 @@ import Vue from 'vue';
 import _ from 'lodash';
 import { parse } from 'date-fns';
 import Project from '../../classes/project';
-import SettingsBatch from '../../classes/settings_batch';
-import Template_Worker from '../../classes/template_worker';
+import { SettingsBatch } from '../../classes/settings_batch';
+import { TemplateWorker } from '../../classes/template_worker';
 import Template_Assignment from '../../classes/template_assignment';
 import Template_HIT from '../../classes/template_hit';
 import Template_Global from '../../classes/template_global';
@@ -98,7 +98,7 @@ export const moduleProjects = _.merge({}, baseModule, {
       project.templates_worker = {};
 
       _.forEach(data, (data_templates_worker) => {
-        const object_template_worker = new Template_Worker(
+        const object_template_worker = new TemplateWorker(
           data_templates_worker,
         );
         Vue.set(
@@ -240,7 +240,7 @@ export const moduleProjects = _.merge({}, baseModule, {
     //   // Vue.set(project.templates_global, template_global.id, template_global);
     // },
     add_template_worker(state, { data, project }) {
-      const object_template_worker = new Template_Worker(data);
+      const object_template_worker = new TemplateWorker(data);
       Vue.set(
         project.templates_worker,
         object_template_worker.id,

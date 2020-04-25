@@ -152,15 +152,15 @@
 </template>
 <script>
 import {
-  mapState, mapMutations, mapActions, mapGetters,
+  mapState, mapActions, mapGetters,
 } from 'vuex';
 import _ from 'lodash';
-import { required, minValue, maxValue } from 'vuelidate/lib/validators';
+import { required, minValue } from 'vuelidate/lib/validators';
 import helpers from '../../../mixins/helpers.mixin';
 import validations from '../../../mixins/validations.mixin';
-import TemplateWorker from '../../../classes/template_worker';
 import { ServiceTemplates } from '../../../services/templates.service';
 import BaseEditor from '../../../modules/app/components/base-editor';
+import { TemplateWorker } from '../../../classes/template_worker';
 
 export default {
   name: 'ComponentEditTemplateWorker',
@@ -170,7 +170,7 @@ export default {
   },
   data() {
     return {
-      template_worker: new Template_Worker(this.templateWorkerCurrent),
+      template_worker: new TemplateWorker(this.templateWorkerCurrent),
       dialog: false,
     };
   },
@@ -194,7 +194,7 @@ export default {
       // console.log(this.project_current);
     },
     reset() {
-      (this.template_worker = new Template_Worker(
+      (this.template_worker = new TemplateWorker(
         this.templateWorkerCurrent,
       )),
       this.$v.$reset();

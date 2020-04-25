@@ -352,7 +352,7 @@ export default {
         };
       },
     },
-    validationErrors: {
+    validation_errors: {
       required: false,
       default() {
         return {
@@ -363,17 +363,17 @@ export default {
     title: {},
     description: {},
     reward: {},
-    countAssignments: {},
-    countAssignmentsMaxPerWorker: {},
+    count_assignments: {},
+    count_assignments_max_per_worker: {},
     lifetime: {},
     duration: {},
     template: {},
-    blockWorkers: {},
+    block_workers: {},
     keywords: {},
-    hasContentAdult: {},
-    qualificationAssignmentsApproved: {},
-    qualificationHitsApproved: {},
-    qualificationLocale: {},
+    has_content_adult: {},
+    qualification_assignments_approved: {},
+    qualification_hits_approved: {},
+    qualification_locale: {},
   },
   data() {
     return {

@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import Vue from 'vue';
 import { classesHeaders, initPagination, setPagination } from '../../helpers';
-import Template_Worker from '../../classes/template_worker';
+import { TemplateWorker } from '../../classes/template_worker';
 import Template_Assignment from '../../classes/template_assignment';
 import Template_HIT from '../../classes/template_hit';
 import Template_Global from '../../classes/template_global';
@@ -150,7 +150,7 @@ export const moduleTemplates = _.merge({}, baseModule, {
       switch (typeTemplate) {
         case 'worker':
           nameState = 'arrayItemsWorker';
-          classTemplate = Template_Worker;
+          classTemplate = TemplateWorker;
           break;
         case 'assignment':
           nameState = 'arrayItemsAssignment';
@@ -166,7 +166,7 @@ export const moduleTemplates = _.merge({}, baseModule, {
           break;
         case 'workerAll':
           nameState = 'arrayItemsWorkerAll';
-          classTemplate = Template_Worker;
+          classTemplate = TemplateWorker;
           break;
         case 'assignmentAll':
           nameState = 'arrayItemsAssignmentAll';
@@ -237,7 +237,7 @@ export const moduleTemplates = _.merge({}, baseModule, {
 
       Vue.set(
         state[nameState],
-        _.findIndex(state[nameState], template => template.id === templateNew.id),
+        _.findIndex(state[nameState], (template) => template.id === templateNew.id),
         templateNew,
       );
     },
@@ -306,7 +306,7 @@ export const moduleTemplates = _.merge({}, baseModule, {
 
       Vue.delete(
         state[nameState],
-        _.findIndex(state[nameState], item => data.id === item.id),
+        _.findIndex(state[nameState], (item) => data.id === item.id),
       );
     },
     setUrls(state, config) {

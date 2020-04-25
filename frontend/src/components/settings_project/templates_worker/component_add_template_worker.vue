@@ -133,16 +133,15 @@
 </template>
 
 <script>
-// import ComponentFormSettingsBatch from './component_form_settings_batch';
 import {
-  mapState, mapMutations, mapActions, mapGetters,
+  mapState, mapGetters,
 } from 'vuex';
 import _ from 'lodash';
 
 import { required, minValue } from 'vuelidate/lib/validators';
 import validations from '../../../mixins/validations.mixin';
 import helpers from '../../../mixins/helpers.mixin';
-import TemplateWorker from '../../../classes/template_worker';
+import { TemplateWorker } from '../../../classes/template_worker';
 import { ServiceTemplates } from '../../../services/templates.service';
 import BaseEditor from '../../../modules/app/components/base-editor';
 
@@ -152,7 +151,7 @@ export default {
   mixins: [helpers, validations],
   data() {
     return {
-      template_worker: new Template_Worker(),
+      template_worker: new TemplateWorker(),
       dialog: false,
     };
   },
@@ -233,7 +232,7 @@ export default {
   },
   methods: {
     reset() {
-      this.template_worker = new Template_Worker();
+      this.template_worker = new TemplateWorker();
       this.$v.$reset();
     },
     create() {

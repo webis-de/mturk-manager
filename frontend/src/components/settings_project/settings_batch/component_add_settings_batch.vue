@@ -62,14 +62,13 @@
 </template>
 <script>
 import {
-  mapState, mapMutations, mapActions, mapGetters,
+  mapState,
 } from 'vuex';
 import _ from 'lodash';
 import ComponentFormSettingsBatch from './component_form_settings_batch';
 import { settingsBatch } from '../../../mixins/settings-batch.mixin';
 import validations from '../../../mixins/validations.mixin';
 import { ServiceSettingsBatch } from '../../../services/settings-batch.service';
-import { ServiceTemplates } from '../../../services/templates.service';
 
 export default {
   name: 'ComponentAddSettingsBatch',

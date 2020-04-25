@@ -18,7 +18,6 @@
 <script>
 import { mapState, mapGetters } from 'vuex';
 import { required } from 'vuelidate/lib/validators';
-import SettingsBatch from '../../../classes/settings_batch';
 import { ServiceBatches } from '../../../services/batches.service';
 import { ServiceProjects } from '../../../services/projects.service';
 
