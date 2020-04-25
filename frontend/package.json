@@ -8,9 +8,10 @@
     "parcel": "./node_modules/.bin/parcel watch --public-url /static/mturk_manager/js/dist ./mturk_manager/static/mturk_manager/js/vue/index.js -d ./mturk_manager/static/mturk_manager/js/dist",
     "parcel_annotate": "./node_modules/.bin/parcel watch --no-hmr ./annotate/index_annotate.js -d ./dist",
     "parcel_annotate_build": "./node_modules/.bin/parcel build ./annotate/index_annotate.js -d ./dist",
-    "parcel_sandbox_hit_build": "./node_modules/.bin/parcel build ./sandbox-hit/sandbox-hit.js -d ./dist",
-    "parcel_build": "./node_modules/.bin/parcel build --public-url /static/mturk_manager/js/dist ./mturk_manager/static/mturk_manager/js/vue/index.js -d ./mturk_manager/static/mturk_manager/js/dist"
+    "parcel_build": "./node_modules/.bin/parcel build --public-url /static/mturk_manager/js/dist ./mturk_manager/static/mturk_manager/js/vue/index.js -d ./mturk_manager/static/mturk_manager/js/dist",
+    "parcel_sandbox_hit_build": "./node_modules/.bin/parcel build ./sandbox-hit/sandbox-hit.js -d ./dist"
   },
+  "main": "index.js",
   "dependencies": {
     "@mdi/font": "^5.1.45",
     "@vue/component-compiler": "^3.6.0",
@@ -20,6 +21,7 @@
     "classes": "^0.3.0",
     "codemirror": "^5.52.2",
     "components": "^0.1.0",
+    "core-js": "^3.6.4",
     "date-fns": "^1.30.1",
     "dinero.js": "^1.5.0",
     "env-cmd": "^9.0.3",
@@ -54,15 +56,16 @@
     "@babel/plugin-transform-runtime": "^7.1.0",
     "@babel/polyfill": "^7.0.0",
     "@babel/preset-env": "^7.2.0",
-    "@vue/cli-plugin-babel": "^3.3.0",
-    "@vue/cli-plugin-eslint": "^3.8.0",
-    "@vue/cli-service": "^3.8.0",
+    "@vue/cli-plugin-babel": "^4.3.1",
+    "@vue/cli-plugin-eslint": "^4.3.1",
+    "@vue/cli-service": "^4.3.1",
     "@vue/component-compiler-utils": "^1.2.1",
-    "@vue/eslint-config-airbnb": "^4.0.0",
-    "babel-eslint": "^10.0.1",
+    "@vue/eslint-config-airbnb": "^5.0.2",
+    "babel-eslint": "^10.1.0",
     "css-loader": "^2.1.0",
-    "eslint": "^5.16.0",
-    "eslint-plugin-vue": "^5.2.2",
+    "eslint": "^6.7.2",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-vue": "^6.2.2",
     "husky": "^4.0.10",
     "lint-staged": "^9.5.0",
     "parcel-bundler": "^1.12.3",
@@ -70,7 +73,7 @@
     "style-loader": "^0.23.1",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
-    "vue-cli-plugin-webpack-bundle-analyzer": "^1.3.0",
+    "vue-cli-plugin-webpack-bundle-analyzer": "^2.0.0",
     "vue-template-compiler": "^2.6.8"
   },
   "alias": {
@@ -81,12 +84,11 @@
       "pre-commit": "lint-staged"
     }
   },
+  "license": "MIT",
   "lint-staged": {
     "*.{js,vue}": [
       "eslint --fix",
       "git add"
     ]
-  },
-  "license": "MIT",
-  "main": "index.js"
+  }
 }

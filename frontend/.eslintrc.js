@@ -38,7 +38,6 @@ module.exports = {
       },
     ],
     'linebreak-style': 0,
-    'vue/no-v-html': false,
     'vue/html-self-closing': [
       'error', {
         html: {
@@ -51,7 +50,7 @@ module.exports = {
         code: 120,
       },
     ],
-    'import/prefer-default-export': false,
+    'import/prefer-default-export': 'off',
   },
 
   parserOptions: {
