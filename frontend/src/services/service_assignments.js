@@ -1,5 +1,5 @@
 import { store } from '../store/vuex';
-import { ServiceEndpoint } from './service_endpoint';
+import { ServiceEndpoint } from './endpoint.service';
 import { getChanges } from '../helpers';
 import Assignment from '../classes/assignment';
 import { BaseLoadPageService } from './baseLoadPage.service';
@@ -63,7 +63,7 @@ class Class_Service_Assignments extends BaseLoadPageService {
 
     const project = store.getters['moduleProjects/get_project_current'];
 
-    const response = await ServiceEndpoint.make_request({
+    const response = await ServiceEndpoint.makeRequest({
       method: 'put',
       url: {
         path: store.getters.get_url(

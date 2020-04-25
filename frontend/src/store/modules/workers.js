@@ -366,12 +366,12 @@ export const moduleWorkers = _.merge({}, baseModule, {
     // 	const use_sandbox = rootState.module_app.use_sandbox;
 
     //           if(getters.get_object_workers(use_sandbox) == null || force) {
-    // 		await axios.get(rootGetters.get_url_api(state.url_api_workers, use_sandbox))
+    // 		await axios.get(rootGetters.getUrlApi(state.url_api_workers, use_sandbox))
     // 	    .then(response => {
     //               	commit('set_workers', {'data_workers': response.data, use_sandbox});
     // 	    })
 
-    // 		await axios.get(rootGetters.get_url_api(state.url_api_global_db, use_sandbox))
+    // 		await axios.get(rootGetters.getUrlApi(state.url_api_global_db, use_sandbox))
     // 	    .then(response => {
     //               	commit('set_data_global_db', {'data': response.data, use_sandbox});
     // 	    })
@@ -380,9 +380,9 @@ export const moduleWorkers = _.merge({}, baseModule, {
     // async update_status_block({commit, state, getters, rootState, rootGetters}, {worker, status_block_new, status_block_old}) {
     // 	const use_sandbox = rootState.module_app.use_sandbox;
 
-    //           const response = await dispatch('make_request', {
+    //           const response = await dispatch('makeRequest', {
     //               method: 'patch',
-    //               url: rootGetters.get_url_api({
+    //               url: rootGetters.getUrlApi({
     //                   url: state.url_api_workers,
     //                   use_sandbox,
     //               }),
@@ -396,7 +396,7 @@ export const moduleWorkers = _.merge({}, baseModule, {
     // 	}));
 
     // 	await axios.put(
-    // 		rootGetters.get_url_api(state.url_api_workers, use_sandbox, worker.name),
+    // 		rootGetters.getUrlApi(state.url_api_workers, use_sandbox, worker.name),
     // 		form_data,
     // 		{
     // 			headers: {"X-CSRFToken": rootState.token_csrf}

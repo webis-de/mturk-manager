@@ -1,11 +1,11 @@
 import { store } from '../store/vuex';
-import { ServiceEndpoint } from './service_endpoint';
+import { ServiceEndpoint } from './endpoint.service';
 
 class ClassServiceFinances {
   async load({ filters, typeItem }) {
     const { use_sandbox } = store.state.module_app;
 
-    const response = await ServiceEndpoint.make_request({
+    const response = await ServiceEndpoint.makeRequest({
       url: {
         path: store.getters.get_url(
           'url_api_projects_finances',
@@ -42,7 +42,7 @@ class ClassServiceFinances {
   async load_balance() {
     const { use_sandbox } = store.state.module_app;
 
-    const response = await ServiceEndpoint.make_request({
+    const response = await ServiceEndpoint.makeRequest({
       url: {
         path: store.getters.get_url(
           'url_api_projects_balance',

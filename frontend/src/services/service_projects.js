@@ -1,7 +1,7 @@
 import { compareDesc, parse } from 'date-fns';
 import Project from '../classes/project';
 import { store } from '../store/vuex';
-import { ServiceEndpoint } from './service_endpoint';
+import { ServiceEndpoint } from './endpoint.service';
 import { ServiceSettingsBatch } from './service_settings_batch';
 import { ServiceTemplates } from './service_templates';
 // import {router} from "./service_router.js";
@@ -13,7 +13,7 @@ class ClassServiceProjects {
   }
 
   async load_projects() {
-    const response = await ServiceEndpoint.make_request({
+    const response = await ServiceEndpoint.makeRequest({
       method: 'get',
       url: {
         path: store.getters.get_url('url_api_projects', 'moduleProjects'),
@@ -38,7 +38,7 @@ class ClassServiceProjects {
 
   async create_project(name) {
     const { use_sandbox } = store.state.module_app;
-    const response = await ServiceEndpoint.make_request({
+    const response = await ServiceEndpoint.makeRequest({
       method: 'post',
       url: {
         path: store.getters.get_url('url_api_projects', 'moduleProjects'),
@@ -56,7 +56,7 @@ class ClassServiceProjects {
   }
 
   async validate_name(name) {
-    return await ServiceEndpoint.make_request({
+    return await ServiceEndpoint.makeRequest({
       method: 'get',
       url: {
         path: store.getters.get_url(
@@ -101,7 +101,7 @@ class ClassServiceProjects {
   }
 
   async clear_sandbox() {
-    await ServiceEndpoint.make_request({
+    await ServiceEndpoint.makeRequest({
       method: 'delete',
       url: {
         path: store.getters.get_url(
@@ -118,7 +118,7 @@ class ClassServiceProjects {
   async delete({ router }) {
     const project = store.getters['moduleProjects/get_project_current'];
 
-    const response = await ServiceEndpoint.make_request({
+    const response = await ServiceEndpoint.makeRequest({
       method: 'delete',
       url: {
         path: store.getters.get_url('url_api_projects', 'moduleProjects'),
@@ -138,7 +138,7 @@ class ClassServiceProjects {
   async setMessageRejectDefault({ message }) {
     const project = store.getters['moduleProjects/get_project_current'];
 
-    const response = await ServiceEndpoint.make_request({
+    const response = await ServiceEndpoint.makeRequest({
       method: 'put',
       url: {
         path: store.getters.get_url('url_api_projects', 'moduleProjects'),
@@ -165,7 +165,7 @@ class ClassServiceProjects {
     project,
     count_assignments_max_per_worker,
   }) {
-    const response = await ServiceEndpoint.make_request({
+    const response = await ServiceEndpoint.makeRequest({
       method: 'put',
       url: {
         path: store.getters.get_url('url_api_projects', 'moduleProjects'),
@@ -188,7 +188,7 @@ class ClassServiceProjects {
     project,
     amountBudgetProject,
   }) {
-    const response = await ServiceEndpoint.make_request({
+    const response = await ServiceEndpoint.makeRequest({
       method: 'put',
       url: {
         path: store.getters.get_url('url_api_projects', 'moduleProjects'),
@@ -213,7 +213,7 @@ class ClassServiceProjects {
     const slug_project_current = project.slug;
     if (slug_project_current == null) return;
 
-    const response = await ServiceEndpoint.make_request({
+    const response = await ServiceEndpoint.makeRequest({
       method: 'put',
       url: {
         path: store.getters.get_url('url_api_ping', 'moduleProjects'),
@@ -228,7 +228,7 @@ class ClassServiceProjects {
   }
 
   async load_data(project) {
-    const response = await ServiceEndpoint.make_request({
+    const response = await ServiceEndpoint.makeRequest({
       method: 'get',
       url: {
         path: store.getters.get_url('url_api_projects', 'moduleProjects'),
@@ -293,7 +293,7 @@ class ClassServiceProjects {
   }
 
   async pollTasks() {
-    const response = await ServiceEndpoint.make_request({
+    const response = await ServiceEndpoint.makeRequest({
       method: 'get',
       url: {
         path: store.getters.get_url('urlApiTasks', 'moduleProjects'),
@@ -341,7 +341,7 @@ class ClassServiceProjects {
 
   async deleteTask({ task }) {
     if (task.status === 3) {
-      await ServiceEndpoint.make_request({
+      await ServiceEndpoint.makeRequest({
         method: 'delete',
         url: {
           path: store.getters.get_url('urlApiTasks', 'moduleProjects'),

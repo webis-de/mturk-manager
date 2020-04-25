@@ -1,5 +1,5 @@
 import { store } from '../store/vuex';
-import { ServiceEndpoint } from './service_endpoint';
+import { ServiceEndpoint } from './endpoint.service';
 import { BaseLoadPageService } from './baseLoadPage.service';
 import HIT from '../classes/hit';
 
@@ -28,7 +28,7 @@ class Class_Service_HITs extends BaseLoadPageService {
   }
 
   async loadHIT(idHit) {
-    const response = await ServiceEndpoint.make_request({
+    const response = await ServiceEndpoint.makeRequest({
       method: 'get',
       url: {
         path: store.getters.get_url(

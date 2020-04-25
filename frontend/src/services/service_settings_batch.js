@@ -1,4 +1,4 @@
-import { ServiceEndpoint } from './service_endpoint';
+import { ServiceEndpoint } from './endpoint.service';
 import { store } from '../store/vuex';
 import SettingsBatch from '../classes/settings_batch';
 import { BaseLoadPageService } from './baseLoadPage.service';
@@ -29,7 +29,7 @@ class Class_Settings_Batch extends BaseLoadPageService {
   async getAll() {
     const project = store.getters['moduleProjects/get_project_current'];
 
-    const response = await ServiceEndpoint.make_request({
+    const response = await ServiceEndpoint.makeRequest({
       method: 'get',
       url: {
         path: store.getters.get_url(
@@ -52,7 +52,7 @@ class Class_Settings_Batch extends BaseLoadPageService {
   async get(idSettingsBatch) {
     const project = store.getters['moduleProjects/get_project_current'];
 
-    const response = await ServiceEndpoint.make_request({
+    const response = await ServiceEndpoint.makeRequest({
       method: 'get',
       url: {
         path: store.getters.get_url(
@@ -68,7 +68,7 @@ class Class_Settings_Batch extends BaseLoadPageService {
   }
 
   async create({ settings_batch, project }) {
-    const response = await ServiceEndpoint.make_request({
+    const response = await ServiceEndpoint.makeRequest({
       method: 'post',
       url: {
         path: store.getters.get_url(
@@ -90,7 +90,7 @@ class Class_Settings_Batch extends BaseLoadPageService {
 
     if (Object.keys(data_changed).length === 0) return;
 
-    const response = await ServiceEndpoint.make_request({
+    const response = await ServiceEndpoint.makeRequest({
       method: 'put',
       url: {
         path: store.getters.get_url(
@@ -109,7 +109,7 @@ class Class_Settings_Batch extends BaseLoadPageService {
   }
 
   async delete({ settings_batch, project, callback }) {
-    const response = await ServiceEndpoint.make_request({
+    const response = await ServiceEndpoint.makeRequest({
       method: 'delete',
       url: {
         path: store.getters.get_url(

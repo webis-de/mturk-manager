@@ -1,4 +1,4 @@
-import { ServiceEndpoint } from './service_endpoint';
+import { ServiceEndpoint } from './endpoint.service';
 import { store } from '../store/vuex';
 import Batch from '../classes/batch';
 import { BaseLoadPageService } from './baseLoadPage.service';
@@ -10,7 +10,7 @@ class Class_Service_Batches extends BaseLoadPageService {
   // 	const use_sandbox = store.state.module_app.use_sandbox;
   //
   // 	if(store.getters['moduleBatches/get_object_batches'](use_sandbox) == null || force) {
-  //         const response = await ServiceEndpoint.make_request({
+  //         const response = await ServiceEndpoint.makeRequest({
   //             method: 'get',
   //             url: {
   //                 url: store.getters["get_url"]('url_api_projects_batches', 'moduleBatches'),
@@ -38,7 +38,7 @@ class Class_Service_Batches extends BaseLoadPageService {
     const { use_sandbox } = store.state.module_app;
     const project = store.getters['moduleProjects/get_project_current'];
 
-    const response = await ServiceEndpoint.make_request({
+    const response = await ServiceEndpoint.makeRequest({
       method: 'post',
       url: {
         path: store.getters.get_url(
@@ -68,7 +68,7 @@ class Class_Service_Batches extends BaseLoadPageService {
     const project = store.getters['moduleProjects/get_project_current'];
 
     store.commit('moduleBatches/set_is_syncing_mturk', true);
-    const response = await ServiceEndpoint.make_request({
+    const response = await ServiceEndpoint.makeRequest({
       method: 'patch',
       url: {
         path: store.getters.get_url(
@@ -123,7 +123,7 @@ class Class_Service_Batches extends BaseLoadPageService {
   }
 
   async get_batch(id_batch) {
-    const response = await ServiceEndpoint.make_request({
+    const response = await ServiceEndpoint.makeRequest({
       method: 'get',
       url: {
         path: store.getters.get_url(
@@ -142,7 +142,7 @@ class Class_Service_Batches extends BaseLoadPageService {
   }
 
   async download(data) {
-    const response = await ServiceEndpoint.make_request({
+    const response = await ServiceEndpoint.makeRequest({
       method: 'post',
       url: {
         path: store.getters.get_url(
@@ -166,7 +166,7 @@ class Class_Service_Batches extends BaseLoadPageService {
   }
 
   async get_download_info(params) {
-    const response = await ServiceEndpoint.make_request({
+    const response = await ServiceEndpoint.makeRequest({
       method: 'get',
       url: {
         path: store.getters.get_url(
@@ -191,7 +191,7 @@ class Class_Service_Batches extends BaseLoadPageService {
   async importBatches({
     nameBatch, nameSettingsBatch, templateWorker, parsedCSVs,
   }) {
-    const response = await ServiceEndpoint.make_request({
+    const response = await ServiceEndpoint.makeRequest({
       method: 'post',
       url: {
         path: store.getters.get_url(
@@ -210,7 +210,7 @@ class Class_Service_Batches extends BaseLoadPageService {
   }
 
   async findSettingsBatch(assignments) {
-    const response = await ServiceEndpoint.make_request({
+    const response = await ServiceEndpoint.makeRequest({
       method: 'get',
       url: {
         path: store.getters.get_url(

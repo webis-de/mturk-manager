@@ -24,18 +24,18 @@ class ClassServiceEndpoint {
     });
   }
 
-  async make_request({
+  async makeRequest({
     url, method, data, params, options,
   }) {
     const config = {
       method,
-      url: this.get_url_api(url),
+      url: this.getUrlApi(url),
       data: JSON.stringify(data),
       params,
       ...options,
     };
 
-    const object_response = {
+    const objectResponse = {
       success: undefined,
       response: undefined,
       exception: undefined,
@@ -43,29 +43,29 @@ class ClassServiceEndpoint {
     };
 
     try {
-      object_response.response = await this.axios.request(config);
+      objectResponse.response = await this.axios.request(config);
 
-      object_response.success = true;
-      object_response.data = object_response.response.data;
+      objectResponse.success = true;
+      objectResponse.data = objectResponse.response.data;
     } catch (exception) {
-      object_response.exception = exception;
-      object_response.success = false;
+      objectResponse.exception = exception;
+      objectResponse.success = false;
     }
 
-    if (object_response.success === false) {
+    if (objectResponse.success === false) {
       // only send to connection_error if its an request to the api
-      if (object_response.exception.message === 'Network Error' && url.host === undefined) {
+      if (objectResponse.exception.message === 'Network Error' && url.host === undefined) {
         queue.notify('router', { name: 'connection_error' });
       } else {
-        console.warn('Error', object_response.exception);
+        console.warn('Error', objectResponse.exception);
         // queue.notify('router', { name: 'connection_error' });
       }
     }
 
-    return object_response;
+    return objectResponse;
   }
 
-  get_url_api({
+  getUrlApi({
     host,
     path = '',
     use_sandbox,

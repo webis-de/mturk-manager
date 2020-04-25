@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import Vue from 'vue';
 import { store } from '../store/vuex';
-import { ServiceEndpoint } from './service_endpoint';
+import { ServiceEndpoint } from './endpoint.service';
 import { Service_Batches } from './service_batches';
 import { BaseLoadPageService } from './baseLoadPage.service';
 import Worker from '../classes/workers';
@@ -12,7 +12,7 @@ class Class_Service_Workers extends BaseLoadPageService {
       return;
     }
 
-    const response = await ServiceEndpoint.make_request({
+    const response = await ServiceEndpoint.makeRequest({
       method: 'patch',
       url: {
         path: store.getters.get_url('url_api_workers', 'moduleWorkers'),
@@ -43,7 +43,7 @@ class Class_Service_Workers extends BaseLoadPageService {
       use_sandbox,
     });
 
-    const blocks_hard = await ServiceEndpoint.make_request({
+    const blocks_hard = await ServiceEndpoint.makeRequest({
       method: 'patch',
       url: {
         path: store.getters.get_url(
@@ -67,7 +67,7 @@ class Class_Service_Workers extends BaseLoadPageService {
     const { use_sandbox } = store.state.module_app;
     const project = store.getters['moduleProjects/get_project_current'];
 
-    const response = await ServiceEndpoint.make_request({
+    const response = await ServiceEndpoint.makeRequest({
       method: 'put',
       url: {
         path: store.getters.get_url('url_api_workers', 'moduleWorkers'),
@@ -91,7 +91,7 @@ class Class_Service_Workers extends BaseLoadPageService {
     const { use_sandbox } = store.state.module_app;
     const project = store.getters['moduleProjects/get_project_current'];
 
-    const response = await ServiceEndpoint.make_request({
+    const response = await ServiceEndpoint.makeRequest({
       method: 'put',
       url: {
         path: store.getters.get_url('url_api_workers', 'moduleWorkers'),
@@ -115,7 +115,7 @@ class Class_Service_Workers extends BaseLoadPageService {
     const { use_sandbox } = store.state.module_app;
     const project = store.getters['moduleProjects/get_project_current'];
 
-    const response = await ServiceEndpoint.make_request({
+    const response = await ServiceEndpoint.makeRequest({
       method: 'put',
       url: {
         path: store.getters.get_url('url_api_workers', 'moduleWorkers'),
@@ -139,7 +139,7 @@ class Class_Service_Workers extends BaseLoadPageService {
     const { use_sandbox } = store.state.module_app;
     const project = store.getters['moduleProjects/get_project_current'];
 
-    const response = await ServiceEndpoint.make_request({
+    const response = await ServiceEndpoint.makeRequest({
       method: 'put',
       url: {
         path: store.getters.get_url('url_api_workers', 'moduleWorkers'),
@@ -180,7 +180,7 @@ class Class_Service_Workers extends BaseLoadPageService {
         });
 
         // fetch worker blocks asynchronously
-        ServiceEndpoint.make_request({
+        ServiceEndpoint.makeRequest({
           method: 'patch',
           url: {
             path: store.getters.get_url(
