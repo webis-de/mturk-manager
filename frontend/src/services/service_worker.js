@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import Vue from 'vue';
 import { store } from '../store/vuex';
-import { Service_Endpoint } from './service_endpoint';
+import { ServiceEndpoint } from './service_endpoint';
 import { Service_Batches } from './service_batches';
 import { BaseLoadPageService } from './baseLoadPage.service';
 import Worker from '../classes/workers';
@@ -12,7 +12,7 @@ class Class_Service_Workers extends BaseLoadPageService {
       return;
     }
 
-    const response = await Service_Endpoint.make_request({
+    const response = await ServiceEndpoint.make_request({
       method: 'patch',
       url: {
         path: store.getters.get_url('url_api_workers', 'moduleWorkers'),
@@ -43,7 +43,7 @@ class Class_Service_Workers extends BaseLoadPageService {
       use_sandbox,
     });
 
-    const blocks_hard = await Service_Endpoint.make_request({
+    const blocks_hard = await ServiceEndpoint.make_request({
       method: 'patch',
       url: {
         path: store.getters.get_url(
@@ -64,10 +64,10 @@ class Class_Service_Workers extends BaseLoadPageService {
   }
 
   async update_status_block_soft({ worker, is_blocked }) {
-    const use_sandbox = store.state.module_app.use_sandbox;
+    const { use_sandbox } = store.state.module_app;
     const project = store.getters['moduleProjects/get_project_current'];
 
-    const response = await Service_Endpoint.make_request({
+    const response = await ServiceEndpoint.make_request({
       method: 'put',
       url: {
         path: store.getters.get_url('url_api_workers', 'moduleWorkers'),
@@ -88,10 +88,10 @@ class Class_Service_Workers extends BaseLoadPageService {
   }
 
   async update_status_block_hard({ worker, is_blocked }) {
-    const use_sandbox = store.state.module_app.use_sandbox;
+    const { use_sandbox } = store.state.module_app;
     const project = store.getters['moduleProjects/get_project_current'];
 
-    const response = await Service_Endpoint.make_request({
+    const response = await ServiceEndpoint.make_request({
       method: 'put',
       url: {
         path: store.getters.get_url('url_api_workers', 'moduleWorkers'),
@@ -112,10 +112,10 @@ class Class_Service_Workers extends BaseLoadPageService {
   }
 
   async update_status_block_global({ worker, is_blocked }) {
-    const use_sandbox = store.state.module_app.use_sandbox;
+    const { use_sandbox } = store.state.module_app;
     const project = store.getters['moduleProjects/get_project_current'];
 
-    const response = await Service_Endpoint.make_request({
+    const response = await ServiceEndpoint.make_request({
       method: 'put',
       url: {
         path: store.getters.get_url('url_api_workers', 'moduleWorkers'),
@@ -136,10 +136,10 @@ class Class_Service_Workers extends BaseLoadPageService {
   }
 
   async update_count_assignments_limit({ worker, value }) {
-    const use_sandbox = store.state.module_app.use_sandbox;
+    const { use_sandbox } = store.state.module_app;
     const project = store.getters['moduleProjects/get_project_current'];
 
-    const response = await Service_Endpoint.make_request({
+    const response = await ServiceEndpoint.make_request({
       method: 'put',
       url: {
         path: store.getters.get_url('url_api_workers', 'moduleWorkers'),
@@ -175,12 +175,12 @@ class Class_Service_Workers extends BaseLoadPageService {
       },
       callback(response) {
         store.commit('moduleWorkers/setState', {
-          objectState: response.data.data.map(worker => new Worker(worker)),
+          objectState: response.data.data.map((worker) => new Worker(worker)),
           nameState: useSandbox === true ? 'arrayWorkersSandbox' : 'arrayWorkers',
         });
 
         // fetch worker blocks asynchronously
-        Service_Endpoint.make_request({
+        ServiceEndpoint.make_request({
           method: 'patch',
           url: {
             path: store.getters.get_url(

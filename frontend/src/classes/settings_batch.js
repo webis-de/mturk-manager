@@ -1,8 +1,8 @@
 import _ from 'lodash';
-import Template_Worker from './template_worker';
+import { TemplateWorker } from './template_worker';
 
-export default class SettingsBatch {
-  constructor(data = { template: new Template_Worker() }) {
+export class SettingsBatch {
+  constructor(data = { template: new TemplateWorker() }) {
     this.id = data.id;
     this.name = data.name;
 
@@ -25,15 +25,17 @@ export default class SettingsBatch {
       : [];
   }
 
-  get_changes(settings_batch) {
+  getChanges(settingsBatch) {
     const object = {};
-    for (const key in this) {
-      if (settings_batch[key] != undefined) {
-        if (this[key] != settings_batch[key]) {
+    const keys = Object.keys(this);
+    for (let i = 0; i < keys.length; i += 1) {
+      const key = keys[i];
+      if (settingsBatch[key] !== undefined) {
+        if (this[key] !== settingsBatch[key]) {
           // if(key == 'keywords')
           // {
           // 	const keywords_processed = [];
-          // 	for(let keyword of settings_batch[key])
+          // 	for(let keyword of settingsBatch[key])
           // 	{
           // 		if(typeof(keyword) == 'string')
           // 		{
@@ -44,32 +46,32 @@ export default class SettingsBatch {
           // 	}
           // 	object[key] = keywords_processed;
           // } else if(key == 'qualification_assignments_approved' || key == 'qualification_hits_approved') {
-          // 	settings_batch[key].trim() == '' ? object[key] = null : object[key] = settings_batch[key];
+          // 	settingsBatch[key].trim() == '' ? object[key] = null : object[key] = settingsBatch[key];
           // } else if(key == 'qualification_locale') {
-          // 	object[key] = JSON.stringify(settings_batch[key]);
+          // 	object[key] = JSON.stringify(settingsBatch[key]);
           // } else {
-          // if(typeof(settings_batch[key]) == 'object')
+          // if(typeof(settingsBatch[key]) == 'object')
           // {
           // } else {
           // 	if(key == 'assignments_max')
           // 	{
-          // 		object['count_assignments'] = settings_batch[key];
+          // 		object['count_assignments'] = settingsBatch[key];
           // 	} else if(key == 'template') {
-          // 		object['fk_template_main'] = settings_batch[key];
+          // 		object['fk_template_main'] = settingsBatch[key];
           // 	} else {
-          // 		object[key] = settings_batch[key];
+          // 		object[key] = settingsBatch[key];
           // 	}
           // }
           // }
-          if (typeof settings_batch[key] === 'object') {
+          if (typeof settingsBatch[key] === 'object') {
             if (
-              _.differenceBy(settings_batch[key], this[key], (value) => value.text.toLowerCase()).length > 0
-              || _.differenceBy(this[key], settings_batch[key], (value) => value.text.toLowerCase()).length > 0
+              _.differenceBy(settingsBatch[key], this[key], (value) => value.text.toLowerCase()).length > 0
+              || _.differenceBy(this[key], settingsBatch[key], (value) => value.text.toLowerCase()).length > 0
             ) {
-              object[key] = settings_batch[key];
+              object[key] = settingsBatch[key];
             }
           } else {
-            object[key] = settings_batch[key];
+            object[key] = settingsBatch[key];
           }
         }
       }

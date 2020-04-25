@@ -1,5 +1,5 @@
 import { store } from '../store/vuex';
-import { Service_Endpoint } from './service_endpoint';
+import { ServiceEndpoint } from './service_endpoint';
 import { getChanges } from '../helpers';
 import Assignment from '../classes/assignment';
 import { BaseLoadPageService } from './baseLoadPage.service';
@@ -49,7 +49,7 @@ class Class_Service_Assignments extends BaseLoadPageService {
       },
       callback(response) {
         store.commit('moduleAssignments/setState', {
-          objectState: response.data.data.map(hit => new Assignment(hit)),
+          objectState: response.data.data.map((hit) => new Assignment(hit)),
           nameState: useSandbox === true ? 'arrayAssignmentsSandbox' : 'arrayAssignments',
         });
       },
@@ -63,7 +63,7 @@ class Class_Service_Assignments extends BaseLoadPageService {
 
     const project = store.getters['moduleProjects/get_project_current'];
 
-    const response = await Service_Endpoint.make_request({
+    const response = await ServiceEndpoint.make_request({
       method: 'put',
       url: {
         path: store.getters.get_url(

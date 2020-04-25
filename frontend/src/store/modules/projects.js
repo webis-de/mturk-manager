@@ -197,7 +197,7 @@ export const moduleProjects = _.merge({}, baseModule, {
       });
     },
     // update_template_worker(state, { data, project }) {
-    //   const template_worker = new Template_Worker(data);
+    //   const template_worker = new TemplateWorker(data);
     //   Vue.set(project.templates_worker, template_worker.id, template_worker);
     //
     //   if (template_worker.template_assignment != undefined) {

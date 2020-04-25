@@ -1,4 +1,4 @@
-import { Service_Endpoint } from './service_endpoint';
+import { ServiceEndpoint } from './service_endpoint';
 import { store } from '../store/vuex';
 import SettingsBatch from '../classes/settings_batch';
 import { BaseLoadPageService } from './baseLoadPage.service';
@@ -29,7 +29,7 @@ class Class_Settings_Batch extends BaseLoadPageService {
   async getAll() {
     const project = store.getters['moduleProjects/get_project_current'];
 
-    const response = await Service_Endpoint.make_request({
+    const response = await ServiceEndpoint.make_request({
       method: 'get',
       url: {
         path: store.getters.get_url(
@@ -52,7 +52,7 @@ class Class_Settings_Batch extends BaseLoadPageService {
   async get(idSettingsBatch) {
     const project = store.getters['moduleProjects/get_project_current'];
 
-    const response = await Service_Endpoint.make_request({
+    const response = await ServiceEndpoint.make_request({
       method: 'get',
       url: {
         path: store.getters.get_url(
@@ -68,7 +68,7 @@ class Class_Settings_Batch extends BaseLoadPageService {
   }
 
   async create({ settings_batch, project }) {
-    const response = await Service_Endpoint.make_request({
+    const response = await ServiceEndpoint.make_request({
       method: 'post',
       url: {
         path: store.getters.get_url(
@@ -86,11 +86,11 @@ class Class_Settings_Batch extends BaseLoadPageService {
   }
 
   async edit({ settings_batch_current, settings_batch_new, project }) {
-    const data_changed = settings_batch_current.get_changes(settings_batch_new);
+    const data_changed = settings_batch_current.getChanges(settings_batch_new);
 
     if (Object.keys(data_changed).length === 0) return;
 
-    const response = await Service_Endpoint.make_request({
+    const response = await ServiceEndpoint.make_request({
       method: 'put',
       url: {
         path: store.getters.get_url(
@@ -109,7 +109,7 @@ class Class_Settings_Batch extends BaseLoadPageService {
   }
 
   async delete({ settings_batch, project, callback }) {
-    const response = await Service_Endpoint.make_request({
+    const response = await ServiceEndpoint.make_request({
       method: 'delete',
       url: {
         path: store.getters.get_url(

@@ -5,7 +5,7 @@ import { required, minValue, maxValue } from 'vuelidate/lib/validators';
 import _ from 'lodash';
 import SettingsBatch from '../classes/settings_batch';
 import { DESCRIPTIONS } from '../classes/enums';
-import { Service_Keywords } from '../services/Service_Keywords';
+import { ServiceKeywords } from '../services/ServiceKeywords';
 
 const foo = (object_settings_batch, settingsBatchCurrent) => (value) => {
   if (_.get(settingsBatchCurrent, 'name', undefined) == value) return true;
@@ -41,7 +41,7 @@ export const settingsBatch = {
   },
   created() {
     this.update_fields();
-    Service_Keywords.load();
+    ServiceKeywords.load();
   },
   computed: {
     ...mapGetters('moduleProjects', {

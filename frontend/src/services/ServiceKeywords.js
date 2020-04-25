@@ -1,10 +1,10 @@
-import { Service_Endpoint } from './service_endpoint';
+import { ServiceEndpoint } from './service_endpoint';
 import { store } from '../store/vuex';
 
-class Class_Service_Keywords {
+class ClassServiceKeywords {
   async load() {
     if (store.getters['moduleKeywords/get_object_keywords'] == null) {
-      const response = await Service_Endpoint.make_request({
+      const response = await ServiceEndpoint.make_request({
         method: 'get',
         url: {
           path: store.getters.get_url('url_api_keywords', 'moduleKeywords'),
@@ -16,4 +16,4 @@ class Class_Service_Keywords {
   }
 }
 
-export const Service_Keywords = new Class_Service_Keywords();
+export const ServiceKeywords = new ClassServiceKeywords();

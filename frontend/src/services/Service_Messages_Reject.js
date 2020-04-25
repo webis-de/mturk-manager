@@ -1,4 +1,4 @@
-import { Service_Endpoint } from './service_endpoint';
+import { ServiceEndpoint } from './service_endpoint';
 import { store } from '../store/vuex';
 import { BaseLoadPageService } from './baseLoadPage.service';
 
@@ -43,7 +43,7 @@ class Class_Service_Messages_Reject extends BaseLoadPageService {
   }
 
   async loadAll({ search }) {
-    const response = await Service_Endpoint.make_request({
+    const response = await ServiceEndpoint.make_request({
       method: 'get',
       url: {
         path: store.getters.get_url(
@@ -63,7 +63,7 @@ class Class_Service_Messages_Reject extends BaseLoadPageService {
   }
 
   async save({ message }) {
-    const response = await Service_Endpoint.make_request({
+    const response = await ServiceEndpoint.make_request({
       method: 'post',
       url: {
         path: store.getters.get_url(
@@ -79,7 +79,7 @@ class Class_Service_Messages_Reject extends BaseLoadPageService {
   }
 
   async setDefault({ idMessage }) {
-    const response = await Service_Endpoint.make_request({
+    const response = await ServiceEndpoint.make_request({
       method: 'put',
       url: {
         path: store.getters.get_url(
@@ -95,7 +95,7 @@ class Class_Service_Messages_Reject extends BaseLoadPageService {
   }
 
   async delete({ idMessage }) {
-    const response = await Service_Endpoint.make_request({
+    const response = await ServiceEndpoint.make_request({
       method: 'delete',
       url: {
         path: store.getters.get_url(

@@ -142,7 +142,7 @@ import _ from 'lodash';
 import { required, minValue } from 'vuelidate/lib/validators';
 import validations from '../../../mixins/validations.mixin';
 import helpers from '../../../mixins/helpers.mixin';
-import Template_Worker from '../../../classes/template_worker';
+import TemplateWorker from '../../../classes/template_worker';
 import { ServiceTemplates } from '../../../services/service_templates';
 import BaseEditor from '../../../modules/app/components/base-editor';
 

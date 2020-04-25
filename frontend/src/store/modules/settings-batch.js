@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import Vue from 'vue';
 import SettingsBatch from '../../classes/settings_batch';
-import { classesHeaders, initPagination, setPagination } from '../../helpers';
+import { classesHeaders } from '../../helpers';
 import baseModule from './base.module';
 
 export const moduleSettingsBatch = _.merge({}, baseModule, {

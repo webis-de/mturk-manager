@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-export default class Template_Worker {
+export class TemplateWorker {
   constructor(data = {}) {
     this.id = data.id;
     this.name = data.name;
@@ -16,7 +16,7 @@ export default class Template_Worker {
     this.count_parameters = Object.keys(this.dict_parameters).length;
   }
 
-  get_changes(template_worker) {
+  getChanges(template_worker) {
     const object = {};
     for (const key in this) {
       // if(template_worker[key] != undefined)
@@ -24,8 +24,8 @@ export default class Template_Worker {
         if (this[key] != template_worker[key]) {
           if (typeof template_worker[key] === 'object') {
             if (
-              _.differenceBy(template_worker[key], this[key], value => value.text.toLowerCase()).length > 0
-              || _.differenceBy(this[key], template_worker[key], value => value.text.toLowerCase()).length > 0
+              _.differenceBy(template_worker[key], this[key], (value) => value.text.toLowerCase()).length > 0
+              || _.differenceBy(this[key], template_worker[key], (value) => value.text.toLowerCase()).length > 0
               || this[key] === null
               || template_worker[key] === null
             ) {

@@ -1,5 +1,5 @@
 import { store } from '../store/vuex';
-import { Service_Endpoint } from './service_endpoint';
+import { ServiceEndpoint } from './service_endpoint';
 import { ServiceProjects } from './service_projects';
 import queue from '../queue';
 import { compareVersions } from '../helpers';
@@ -16,7 +16,7 @@ class ClassServiceApp {
       };
     }
 
-    Service_Endpoint.init(force);
+    ServiceEndpoint.init(force);
 
     const response = await ClassServiceApp.loadConfig();
 
@@ -34,7 +34,7 @@ class ClassServiceApp {
   }
 
   static async loadConfig() {
-    const response = await Service_Endpoint.make_request({
+    const response = await ServiceEndpoint.make_request({
       url: {
         path: 'config',
       },
@@ -60,7 +60,7 @@ class ClassServiceApp {
   }
 
   async loadChangelog() {
-    const response = await Service_Endpoint.make_request({
+    const response = await ServiceEndpoint.make_request({
       url: {
         host: 'https://api.github.com',
         path: 'repos/webis-de/mturk-manager/releases',
@@ -107,7 +107,7 @@ class ClassServiceApp {
   }
 
   async loadRelease(idTag) {
-    const response = await Service_Endpoint.make_request({
+    const response = await ServiceEndpoint.make_request({
       url: {
         host: 'https://api.github.com',
         path: 'repos/webis-de/mturk-manager/releases',

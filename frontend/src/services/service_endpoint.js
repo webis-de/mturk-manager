@@ -2,7 +2,7 @@ import axios from 'axios';
 import { store } from '../store/vuex';
 import queue from '../queue';
 
-class Class_Service_Endpoint {
+class ClassServiceEndpoint {
   constructor() {
     this.is_initialized = false;
     this.axios = undefined;
@@ -76,7 +76,7 @@ class Class_Service_Endpoint {
     // let url = new URL(path, store.state.module_app.url_api);
 
     let url;
-    if(host !== undefined) {
+    if (host !== undefined) {
       url = `${host}/${path}`;
     } else {
       url = `${store.state.module_app.url_api}/${path}`;
@@ -102,5 +102,5 @@ class Class_Service_Endpoint {
   }
 }
 
-export const Service_Endpoint = new Class_Service_Endpoint();
-// export default new Service_Endpoint();
+export const ServiceEndpoint = new ClassServiceEndpoint();
+// export default new ServiceEndpoint();

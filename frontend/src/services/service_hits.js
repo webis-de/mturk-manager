@@ -1,5 +1,5 @@
 import { store } from '../store/vuex';
-import { Service_Endpoint } from './service_endpoint';
+import { ServiceEndpoint } from './service_endpoint';
 import { BaseLoadPageService } from './baseLoadPage.service';
 import HIT from '../classes/hit';
 
@@ -20,7 +20,7 @@ class Class_Service_HITs extends BaseLoadPageService {
       },
       callback(response) {
         store.commit('moduleHITs/setState', {
-          objectState: response.data.data.map(hit => new HIT(hit)),
+          objectState: response.data.data.map((hit) => new HIT(hit)),
           nameState: useSandbox === true ? 'arrayHITsSandbox' : 'arrayHITs',
         });
       },
@@ -28,7 +28,7 @@ class Class_Service_HITs extends BaseLoadPageService {
   }
 
   async loadHIT(idHit) {
-    const response = await Service_Endpoint.make_request({
+    const response = await ServiceEndpoint.make_request({
       method: 'get',
       url: {
         path: store.getters.get_url(
