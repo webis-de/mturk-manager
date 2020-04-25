@@ -410,7 +410,7 @@ export default {
 
       return _.orderBy(
         this.arrayTemplatesWorkerAll,
-        template => template.name,
+        (template) => template.name,
       );
     },
     list_keywords() {
@@ -430,7 +430,7 @@ export default {
     }),
   },
   created() {
-    // Service_Templates.getAll({
+    // ServiceTemplates.getAll({
     //   typeTemplate: 'workerAll',
     // });
   },

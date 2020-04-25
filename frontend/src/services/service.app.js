@@ -1,10 +1,10 @@
 import { store } from '../store/vuex';
 import { Service_Endpoint } from './service_endpoint';
-import { Service_Projects } from './service_projects';
+import { ServiceProjects } from './service_projects';
 import queue from '../queue';
 import { compareVersions } from '../helpers';
 import { vuetify } from '../vuetify';
-import { Service_Templates } from './service_templates';
+import { ServiceTemplates } from './service_templates';
 
 class ClassServiceApp {
   async init(force = false) {
@@ -21,10 +21,10 @@ class ClassServiceApp {
     const response = await ClassServiceApp.loadConfig();
 
     if (response.success) {
-      await Service_Projects.load_projects();
-      await Service_Projects.load_project_data();
+      await ServiceProjects.load_projects();
+      await ServiceProjects.load_project_data();
       if (store.state.moduleProjects.slug_project_current !== undefined) {
-        await Service_Templates.getAll({
+        await ServiceTemplates.getAll({
           typeTemplate: 'workerAll',
         });
       }
@@ -77,7 +77,7 @@ class ClassServiceApp {
       const { changelog } = store.state.module_app;
       let changelogNew = response.data;
 
-      changelogNew = changelogNew.filter(release => release.prerelease === false);
+      changelogNew = changelogNew.filter((release) => release.prerelease === false);
 
       // get the latest version stored in the browser
       let versionStoredLatest;
@@ -87,10 +87,10 @@ class ClassServiceApp {
 
       // get only new releases from the response
       if (versionStoredLatest !== undefined) {
-        changelogNew = changelogNew.filter(release => compareVersions(release.tag_name, versionStoredLatest) === 1);
+        changelogNew = changelogNew.filter((release) => compareVersions(release.tag_name, versionStoredLatest) === 1);
       }
 
-      changelogNew = changelogNew.map(release => ({
+      changelogNew = changelogNew.map((release) => ({
         id: release.id,
         name: release.name,
         tag: release.tag_name,

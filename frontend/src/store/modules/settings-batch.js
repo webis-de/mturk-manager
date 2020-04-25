@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import Vue from 'vue';
-import Settings_Batch from '../../classes/settings_batch';
+import SettingsBatch from '../../classes/settings_batch';
 import { classesHeaders, initPagination, setPagination } from '../../helpers';
 import baseModule from './base.module';
 
@@ -72,21 +72,21 @@ export const moduleSettingsBatch = _.merge({}, baseModule, {
       state.arrayItems = [];
 
       _.forEach(data, (dataSettingsBatch) => {
-        const hit = new Settings_Batch(dataSettingsBatch);
+        const hit = new SettingsBatch(dataSettingsBatch);
         Vue.set(state.arrayItems, state.arrayItems.length, hit);
       });
     },
     update(state, { data }) {
-      const settingsBatchNew = new Settings_Batch(data);
+      const settingsBatchNew = new SettingsBatch(data);
 
       Vue.set(
         state.arrayItems,
-        _.findIndex(state.arrayItems, settingsBatch => settingsBatch.id === settingsBatchNew.id),
+        _.findIndex(state.arrayItems, (settingsBatch) => settingsBatch.id === settingsBatchNew.id),
         settingsBatchNew,
       );
     },
     add(state, { data }) {
-      const settingsBatchNew = new Settings_Batch(data);
+      const settingsBatchNew = new SettingsBatch(data);
 
       Vue.set(
         state.arrayItems,
@@ -97,7 +97,7 @@ export const moduleSettingsBatch = _.merge({}, baseModule, {
     delete(state, { settingsBatch }) {
       Vue.delete(
         state.arrayItems,
-        _.findIndex(state.arrayItems, item => settingsBatch.id === item.id),
+        _.findIndex(state.arrayItems, (item) => settingsBatch.id === item.id),
       );
     },
     setUrls(state, config) {

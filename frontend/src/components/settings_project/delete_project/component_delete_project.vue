@@ -1,8 +1,16 @@
 <template>
   <div>
-    <h2 class="headline">Administration</h2>
-    <v-dialog v-model="dialog" max-width="500">
-      <v-btn slot="activator" color="error">
+    <h2 class="headline">
+      Administration
+    </h2>
+    <v-dialog
+      v-model="dialog"
+      max-width="500"
+    >
+      <v-btn
+        slot="activator"
+        color="error"
+      >
         <v-icon>delete_forever</v-icon>
         Delete Project
       </v-btn>
@@ -20,8 +28,14 @@
         </v-card-text>
 
         <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn text color="error" v-on:click="confirm">Delete</v-btn>
+          <v-spacer />
+          <v-btn
+            text
+            color="error"
+            v-on:click="confirm"
+          >
+            Delete
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -32,10 +46,10 @@
 import {
   mapState, mapMutations, mapActions, mapGetters,
 } from 'vuex';
-import { Service_Projects } from '../../../services/service_projects';
+import { ServiceProjects } from '../../../services/service_projects';
 
 export default {
-  name: 'component-delete-project',
+  name: 'ComponentDeleteProject',
   data() {
     return {
       dialog: false,
@@ -43,7 +57,7 @@ export default {
   },
   methods: {
     async confirm() {
-      Service_Projects.delete({ router: this.$router });
+      ServiceProjects.delete({ router: this.$router });
     },
     ...mapActions('moduleProjects', {
       delete_project: 'delete_project',

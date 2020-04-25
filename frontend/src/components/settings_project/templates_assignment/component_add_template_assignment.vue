@@ -2,16 +2,23 @@
   <div>
     <v-dialog v-model="dialog">
       <template v-slot:activator="{ on }">
-      <v-btn v-on="on" color="primary" small
-        ><v-icon>mdi-plus</v-icon> Add Template</v-btn
-      >
+        <v-btn
+          color="primary"
+          small
+          v-on="on"
+        >
+          <v-icon>mdi-plus</v-icon> Add Template
+        </v-btn>
       </template>
 
       <v-card>
         <v-card-title>
           <span class="headline">Add Assignment Template</span>
-          <v-spacer></v-spacer>
-          <v-btn icon v-on:click="dialog = false">
+          <v-spacer />
+          <v-btn
+            icon
+            v-on:click="dialog = false"
+          >
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-card-title>
@@ -21,23 +28,23 @@
               required
               label="Name"
               v-bind:value="name"
+              v-bind:error-messages="validation_errors.name"
               v-on:input="
                 name = $event;
                 $v.name.$touch();
               "
-              v-bind:error-messages="validation_errors.name"
-            ></v-text-field>
+            />
             <v-textarea
               required
               rows="20"
               v-bind:value="template"
+              label="Template"
+              v-bind:error-messages="validation_errors.template"
               v-on:input="
                 template = $event;
                 $v.template.$touch();
               "
-              label="Template"
-              v-bind:error-messages="validation_errors.template"
-            ></v-textarea>
+            />
 
             <!-- <component-form-settings-batch
 			        	v-bind.sync="settings_batch"
@@ -46,10 +53,11 @@
           <v-btn
             class="ml-0"
             color="primary"
-            v-on:click="create()"
             v-bind:disabled="$v.$invalid"
-            >Create</v-btn
+            v-on:click="create()"
           >
+            Create
+          </v-btn>
         </v-card-text>
       </v-card>
     </v-dialog>
@@ -65,7 +73,7 @@ import _ from 'lodash';
 
 import { required, minValue } from 'vuelidate/lib/validators';
 import validations from '../../../mixins/validations.mixin';
-import { Service_Templates } from '../../../services/service_templates';
+import { ServiceTemplates } from '../../../services/service_templates';
 
 export default {
   name: 'ComponentAddTemplateAssignment',
@@ -89,7 +97,7 @@ export default {
     },
     template: {
       required,
-      contains_form_injection: value => value != undefined && value.indexOf(' data-inject_input_forms') >= 0,
+      contains_form_injection: (value) => value != undefined && value.indexOf(' data-inject_input_forms') >= 0,
     },
   },
   methods: {
@@ -100,7 +108,7 @@ export default {
     },
     create() {
       if (this.$refs.form.validate()) {
-        Service_Templates.create({
+        ServiceTemplates.create({
           typeTemplate: 'assignment',
           template: {
             name: this.name,
@@ -108,7 +116,7 @@ export default {
           },
           project: this.project_current,
         }).then((template) => {
-          Service_Templates.cleanup({
+          ServiceTemplates.cleanup({
             typeTemplate: 'assignmentAll',
             component: this,
             nameEvent: 'created',

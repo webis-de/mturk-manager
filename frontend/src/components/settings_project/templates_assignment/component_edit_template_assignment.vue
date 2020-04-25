@@ -129,7 +129,7 @@ import { required, minValue, maxValue } from 'vuelidate/lib/validators';
 import helpers from '../../../mixins/helpers.mixin';
 import validations from '../../../mixins/validations.mixin';
 import Template_Assignment from '../../../classes/template_assignment';
-import { Service_Templates } from '../../../services/service_templates';
+import { ServiceTemplates } from '../../../services/service_templates';
 import BaseEditor from '../../../modules/app/components/base-editor';
 
 export default {
@@ -149,13 +149,13 @@ export default {
   methods: {
     update(close) {
       if (this.$refs.form.validate()) {
-        Service_Templates.edit({
+        ServiceTemplates.edit({
           typeTemplate: 'assignment',
           templateCurrent: this.template_assignment_current,
           templateNew: this.template_assignment,
           project: this.project_current,
         }).then(() => {
-          Service_Templates.cleanup({
+          ServiceTemplates.cleanup({
             typeTemplate: 'assignmentAll',
             component: this,
             nameEvent: 'edited',
@@ -179,7 +179,7 @@ export default {
     list_templates_assignment() {
       return _.orderBy(
         this.project_current.templates_assignment,
-        template => template.name,
+        (template) => template.name,
       );
     },
     ...mapGetters('moduleProjects', {
@@ -198,7 +198,7 @@ export default {
       },
       template: {
         required,
-        contains_form_injection: value => value != undefined && value.indexOf(' data-inject_input_forms') >= 0,
+        contains_form_injection: (value) => value != undefined && value.indexOf(' data-inject_input_forms') >= 0,
       },
     },
   },

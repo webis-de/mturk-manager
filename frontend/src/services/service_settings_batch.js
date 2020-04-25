@@ -1,6 +1,6 @@
 import { Service_Endpoint } from './service_endpoint';
 import { store } from '../store/vuex';
-import Settings_Batch from '../classes/settings_batch';
+import SettingsBatch from '../classes/settings_batch';
 import { BaseLoadPageService } from './baseLoadPage.service';
 
 class Class_Settings_Batch extends BaseLoadPageService {
@@ -19,7 +19,7 @@ class Class_Settings_Batch extends BaseLoadPageService {
       },
       callback(response) {
         store.commit('moduleSettingsBatch/setState', {
-          objectState: response.data.data.map(settingsBatch => new Settings_Batch(settingsBatch)),
+          objectState: response.data.data.map((settingsBatch) => new SettingsBatch(settingsBatch)),
           nameState: 'arrayItems',
         });
       },
@@ -64,7 +64,7 @@ class Class_Settings_Batch extends BaseLoadPageService {
       },
     });
 
-    return new Settings_Batch(response.data);
+    return new SettingsBatch(response.data);
   }
 
   async create({ settings_batch, project }) {

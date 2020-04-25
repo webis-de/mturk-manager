@@ -1,8 +1,8 @@
 import { parse } from 'date-fns';
-import Settings_Batch from './settings_batch';
+import SettingsBatch from './settings_batch';
 
 export default class Batch {
-  constructor(data = { settings_batch: new Settings_Batch() }) {
+  constructor(data = { settings_batch: new SettingsBatch() }) {
     this.id = data.id;
     this.name = data.name;
     this.id_project = data.id_project;

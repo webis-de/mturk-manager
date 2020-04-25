@@ -55,7 +55,7 @@ import {
 } from 'vuex';
 import { required, minValue, maxValue } from 'vuelidate/lib/validators';
 import validations from '../../../mixins/validations.mixin';
-import { Service_Projects } from '../../../services/service_projects';
+import { ServiceProjects } from '../../../services/service_projects';
 
 export default {
   name: 'ComponentBlockLimit',
@@ -68,7 +68,7 @@ export default {
   },
   methods: {
     save() {
-      Service_Projects.set_count_assignments_max_per_worker({
+      ServiceProjects.set_count_assignments_max_per_worker({
         project: this.project_current,
         count_assignments_max_per_worker: this.count_assignments_max_per_worker,
       }).then(() => {

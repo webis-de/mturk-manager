@@ -1,6 +1,8 @@
 <template>
   <div>
-    <h2 class="headline">Default Reject Message</h2>
+    <h2 class="headline">
+      Default Reject Message
+    </h2>
     <v-layout row>
       <v-flex>
         <!-- v-model="$v.count_assignments_max_per_worker.$model" -->
@@ -28,9 +30,13 @@
         </v-combobox>
       </v-flex>
       <v-flex shrink>
-        <v-btn v-bind:disabled="$v.$invalid" color="primary" v-on:click="save"
-          >Update</v-btn
+        <v-btn
+          v-bind:disabled="$v.$invalid"
+          color="primary"
+          v-on:click="save"
         >
+          Update
+        </v-btn>
       </v-flex>
     </v-layout>
 
@@ -40,9 +46,9 @@
       bottom
       color="success"
     >
-      <v-spacer></v-spacer>
+      <v-spacer />
       Updated!
-      <v-spacer></v-spacer>
+      <v-spacer />
     </v-snackbar>
     <!-- append-icon="clear" -->
     <!-- v-on:input="$emit('update:count_assignments_max_per_worker', try_number($event)); v.settings_batch.count_assignments_max_per_worker.$touch()" -->
@@ -56,7 +62,7 @@ import {
 } from 'vuex';
 import { required, minValue, maxValue } from 'vuelidate/lib/validators';
 import validations from '../../mixins/validations.mixin';
-import { Service_Projects } from '../../services/service_projects';
+import { ServiceProjects } from '../../services/service_projects';
 import { ServiceMessages } from '../../services/Service_Messages_Reject';
 
 export default {
@@ -71,7 +77,7 @@ export default {
   },
   methods: {
     save() {
-      Service_Projects.set_message_reject_default({
+      ServiceProjects.set_message_reject_default({
         project: this.project_current,
         message_reject: this.search,
       }).then(() => {

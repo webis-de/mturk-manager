@@ -159,7 +159,7 @@ import { required, minValue, maxValue } from 'vuelidate/lib/validators';
 import helpers from '../../../mixins/helpers.mixin';
 import validations from '../../../mixins/validations.mixin';
 import Template_Worker from '../../../classes/template_worker';
-import { Service_Templates } from '../../../services/service_templates';
+import { ServiceTemplates } from '../../../services/service_templates';
 import BaseEditor from '../../../modules/app/components/base-editor';
 
 export default {
@@ -177,13 +177,13 @@ export default {
   methods: {
     update() {
       if (this.$refs.form.validate()) {
-        Service_Templates.edit({
+        ServiceTemplates.edit({
           typeTemplate: 'worker',
           templateCurrent: this.templateWorkerCurrent,
           templateNew: this.template_worker,
           project: this.project_current,
         }).then(() => {
-          Service_Templates.cleanup({
+          ServiceTemplates.cleanup({
             typeTemplate: 'workerAll',
             component: this,
             nameEvent: 'edited',
@@ -212,7 +212,7 @@ export default {
 
       return _.orderBy(
         this.arrayTemplatesAssignmentAll,
-        template => template.name,
+        (template) => template.name,
       );
     },
     arrayTemplatesHIT() {
@@ -222,7 +222,7 @@ export default {
 
       return _.orderBy(
         this.arrayTemplatesHITAll,
-        template => template.name,
+        (template) => template.name,
       );
     },
     arrayTemplatesGlobal() {
@@ -232,7 +232,7 @@ export default {
 
       return _.orderBy(
         this.arrayTemplatesGlobalAll,
-        template => template.name,
+        (template) => template.name,
       );
     },
     ...mapGetters('moduleProjects', {
@@ -269,15 +269,15 @@ export default {
   created() {
     this.$v.$touch();
 
-    Service_Templates.getAll({
+    ServiceTemplates.getAll({
       typeTemplate: 'assignmentAll',
     });
 
-    Service_Templates.getAll({
+    ServiceTemplates.getAll({
       typeTemplate: 'hitAll',
     });
 
-    Service_Templates.getAll({
+    ServiceTemplates.getAll({
       typeTemplate: 'globalAll',
     });
   },

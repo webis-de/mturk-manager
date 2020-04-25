@@ -5,9 +5,9 @@
   >
     <template v-slot:activator="{ on }">
       <v-btn
-        v-on="on"
         color="primary"
         class="ml-0"
+        v-on="on"
       >
         <v-icon left>
           mdi-cloud-upload
@@ -143,7 +143,7 @@ import UploadButton from 'vuetify-upload-button';
 import Papa from 'papaparse';
 import { required, requiredIf } from 'vuelidate/lib/validators';
 import { Service_Batches } from '../../services/service_batches';
-import { Service_Templates } from '../../services/service_templates';
+import { ServiceTemplates } from '../../services/service_templates';
 import { ServiceSettingsBatch } from '../../services/service_settings_batch';
 
 export default {
@@ -170,7 +170,7 @@ export default {
       const info = [
         { label: 'Title', value: this.parsedCSV.data[0].Title },
         { label: 'Description', value: this.parsedCSV.data[0].Description },
-        { label: 'HITs', value: Object.keys(this.parsedCSV.data.map(line => line.HITId).reduce((objectIds, idHIT) => ({ ...objectIds, [idHIT]: true }), {})).length },
+        { label: 'HITs', value: Object.keys(this.parsedCSV.data.map((line) => line.HITId).reduce((objectIds, idHIT) => ({ ...objectIds, [idHIT]: true }), {})).length },
         { label: 'Assignments', value: this.parsedCSV.data.length },
       ];
 
@@ -192,7 +192,7 @@ export default {
     },
   },
   created() {
-    // Service_Templates.loadPageWorker({
+    // ServiceTemplates.loadPageWorker({
     //
     // }, {
     //   fields: ['id', 'name'],
@@ -244,7 +244,7 @@ export default {
       required,
     },
     nameSettingsBatch: {
-      required: requiredIf(component => component.countSettingsBatch === 0),
+      required: requiredIf((component) => component.countSettingsBatch === 0),
     },
     parsedCSV: {
       required,

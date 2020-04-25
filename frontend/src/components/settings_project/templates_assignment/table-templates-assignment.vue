@@ -71,7 +71,7 @@
 
 <script>
 import { mapMutations, mapState } from 'vuex';
-import { Service_Templates } from '../../../services/service_templates';
+import { ServiceTemplates } from '../../../services/service_templates';
 import ItemTemplatesAssignment from './item-templates-assignment';
 import ComponentAddTemplateAssignment from './component_add_template_assignment';
 import BaseTable from '../../base-table';
@@ -81,7 +81,7 @@ export default {
   components: { BaseTable, ComponentAddTemplateAssignment, ItemTemplatesAssignment },
   data() {
     return {
-      loadPage: Service_Templates.loadPageAssignment,
+      loadPage: ServiceTemplates.loadPageAssignment,
 
       snackbarDeleted: false,
       snackbarEdited: false,
@@ -89,12 +89,12 @@ export default {
     };
   },
   created() {
-    Service_Templates.loadPageHIT({
+    ServiceTemplates.loadPageHIT({
       page: 1,
       sortBy: ['name'],
       sortDesc: [false],
     });
-    Service_Templates.loadPageGlobal({
+    ServiceTemplates.loadPageGlobal({
       page: 1,
       sortBy: ['name'],
       sortDesc: [false],

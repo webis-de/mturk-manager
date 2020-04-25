@@ -1,5 +1,6 @@
 import VueRouter from 'vue-router';
-import { Service_Projects } from './services/service_projects';
+import goTo from 'vuetify/es5/services/goto';
+import { ServiceProjects } from './services/service_projects';
 // import ViewDashboard from './views/dashboard/dashboard.view';
 // import ViewAddCredentials from './views/add-credentials/add-credentials.view';
 // import ViewConnectionError from './views/connection-error/connection-error.view';
@@ -18,7 +19,6 @@ import About from './components/about/about';
 import { store } from './store/vuex';
 import { Service_App } from './services/service.app';
 import queue from './queue';
-import goTo from 'vuetify/es5/services/goto';
 
 const ViewDashboard = () => import(/* webpackChunkName: "dashboard" */ './views/dashboard/dashboard.view');
 const ViewAddCredentials = () => import(/* webpackChunkName: "credentials" */ './views/add-credentials/add-credentials.view');
@@ -88,7 +88,7 @@ const routes = [
         path: ':slug_project',
         name: 'project',
         component: ViewProject,
-        redirect: to => ({
+        redirect: (to) => ({
           name: 'tasks',
           params: {
             slug_project: to.params.slug_project,
@@ -213,7 +213,7 @@ const routes = [
               name: 'Project Settings',
             },
             component: { template: '<router-view></router-view>' },
-            redirect: to => ({
+            redirect: (to) => ({
               name: 'projectSettingsGeneral',
               params: {
                 slug_project: to.params.slug_project,
@@ -306,10 +306,10 @@ queue.listen('router', (payload) => {
 
 router.beforeEach((to, from, next) => {
   if (to.matched[0].name !== 'projects') {
-    Service_Projects.ping();
+    ServiceProjects.ping();
   }
 
-  Service_Projects.set_slug_current(to.params.slug_project);
+  ServiceProjects.set_slug_current(to.params.slug_project);
   next();
 });
 

@@ -21,7 +21,7 @@
 
 <script>
 
-import { Service_Projects } from '../../services/service_projects';
+import { ServiceProjects } from '../../services/service_projects';
 
 export default {
   name: 'MessageMakeDefault',
@@ -55,7 +55,7 @@ export default {
 
       this.loading = true;
 
-      await Service_Projects.setMessageRejectDefault({
+      await ServiceProjects.setMessageRejectDefault({
         message: this.isDefault ? null : this.item,
       });
 

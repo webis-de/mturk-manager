@@ -2,7 +2,7 @@ import { store } from '../store/vuex';
 import { Service_Endpoint } from './service_endpoint';
 import { BaseLoadPageService } from './baseLoadPage.service';
 
-class Class_Service_Templates extends BaseLoadPageService {
+class ClassServiceTemplates extends BaseLoadPageService {
   constructor() {
     super();
     this.isLoadingWorkerAll = false;
@@ -12,19 +12,19 @@ class Class_Service_Templates extends BaseLoadPageService {
   }
 
   async loadPageWorker(pagination, filters, nameState) {
-    return Class_Service_Templates.loadPage(pagination, filters, 'worker', nameState);
+    return ClassServiceTemplates.loadPage(pagination, filters, 'worker', nameState);
   }
 
   async loadPageAssignment(pagination, filters) {
-    return Class_Service_Templates.loadPage(pagination, filters, 'assignment');
+    return ClassServiceTemplates.loadPage(pagination, filters, 'assignment');
   }
 
   async loadPageHIT(pagination, filters) {
-    return Class_Service_Templates.loadPage(pagination, filters, 'hit');
+    return ClassServiceTemplates.loadPage(pagination, filters, 'hit');
   }
 
   async loadPageGlobal(pagination, filters) {
-    return Class_Service_Templates.loadPage(pagination, filters, 'global');
+    return ClassServiceTemplates.loadPage(pagination, filters, 'global');
   }
 
   static async loadPage(pagination, filters, typeTemplate, nameState) {
@@ -204,7 +204,7 @@ class Class_Service_Templates extends BaseLoadPageService {
       data: template,
     });
 
-    store.commit(`moduleTemplates/add`, {
+    store.commit('moduleTemplates/add', {
       data: response.data,
       typeTemplate,
     });
@@ -300,7 +300,9 @@ class Class_Service_Templates extends BaseLoadPageService {
     return template;
   }
 
-  cleanup({ typeTemplate, nameEvent, component, template, closeDialog = true }) {
+  cleanup({
+    typeTemplate, nameEvent, component, template, closeDialog = true,
+  }) {
     component.$emit(nameEvent);
 
     if (closeDialog === true) {
@@ -314,12 +316,12 @@ class Class_Service_Templates extends BaseLoadPageService {
         typeTemplate,
         add: true,
       });
-    } else if(nameEvent === 'edited') {
+    } else if (nameEvent === 'edited') {
       store.commit('moduleTemplates/update', {
         data: template,
         typeTemplate,
       });
-    } else if(nameEvent === 'deleted') {
+    } else if (nameEvent === 'deleted') {
       store.commit('moduleTemplates/delete', {
         data: template,
         typeTemplate,
@@ -328,4 +330,4 @@ class Class_Service_Templates extends BaseLoadPageService {
   }
 }
 
-export const Service_Templates = new Class_Service_Templates();
+export const ServiceTemplates = new ClassServiceTemplates();

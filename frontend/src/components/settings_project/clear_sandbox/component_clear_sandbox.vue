@@ -1,12 +1,18 @@
 <template>
   <div>
-    <v-dialog v-model="dialog" max-width="500">
+    <v-dialog
+      v-model="dialog"
+      max-width="500"
+    >
       <template v-slot:activator="{ on }">
         <v-btn
           class="ml-0"
+          color="warning"
           v-on="on"
-          color="warning">
-          <v-icon left>mdi-delete</v-icon>
+        >
+          <v-icon left>
+            mdi-delete
+          </v-icon>
           Clear Sandbox
         </v-btn>
       </template>
@@ -24,8 +30,14 @@
         </v-card-text>
 
         <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn text color="warning" v-on:click="clear">Clear</v-btn>
+          <v-spacer />
+          <v-btn
+            text
+            color="warning"
+            v-on:click="clear"
+          >
+            Clear
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -36,10 +48,10 @@
 import {
   mapState, mapMutations, mapActions, mapGetters,
 } from 'vuex';
-import { Service_Projects } from '../../../services/service_projects';
+import { ServiceProjects } from '../../../services/service_projects';
 
 export default {
-  name: 'component-clear-sandbox',
+  name: 'ComponentClearSandbox',
   data() {
     return {
       dialog: false,
@@ -47,7 +59,7 @@ export default {
   },
   methods: {
     async clear() {
-      await Service_Projects.clear_sandbox();
+      await ServiceProjects.clear_sandbox();
       this.dialog = false;
     },
     ...mapActions('moduleProjects', {

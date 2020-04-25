@@ -1,12 +1,12 @@
+import { compareDesc, parse } from 'date-fns';
 import Project from '../classes/project';
 import { store } from '../store/vuex';
 import { Service_Endpoint } from './service_endpoint';
 import { ServiceSettingsBatch } from './service_settings_batch';
-import { Service_Templates } from './service_templates';
-import {compareDesc, parse} from 'date-fns';
+import { ServiceTemplates } from './service_templates';
 // import {router} from "./service_router.js";
 
-class Class_Service_Projects {
+class ClassServiceProjects {
   constructor() {
     this.id_interval = undefined;
     this.idTimeoutPollStatus = null;
@@ -37,7 +37,7 @@ class Class_Service_Projects {
   }
 
   async create_project(name) {
-    const use_sandbox = store.state.module_app.use_sandbox;
+    const { use_sandbox } = store.state.module_app;
     const response = await Service_Endpoint.make_request({
       method: 'post',
       url: {
@@ -89,7 +89,7 @@ class Class_Service_Projects {
     if (project.slug !== undefined) {
       this.load_data(project);
       // ServiceSettingsBatch.load();
-      // Service_Templates.load_all();
+      // ServiceTemplates.load_all();
 
       this.startPollTasks();
 
@@ -304,14 +304,14 @@ class Class_Service_Projects {
     const arrayTasksServer = response.data.data;
     const arrayTasks = [...response.data.data];
     console.log('arrayTasksServer', arrayTasksServer);
-    const setTasksOld = new Set(store.state.moduleProjects.arrayTasks.map(task => task.task));
-    const setTasksNew = new Set(arrayTasks.map(task => task.task));
+    const setTasksOld = new Set(store.state.moduleProjects.arrayTasks.map((task) => task.task));
+    const setTasksNew = new Set(arrayTasks.map((task) => task.task));
 
-    const setFinishedTasks = new Set([...setTasksOld].filter(idTask => !setTasksNew.has(idTask)));
+    const setFinishedTasks = new Set([...setTasksOld].filter((idTask) => !setTasksNew.has(idTask)));
 
     if (setFinishedTasks.size > 0) {
       for (const idTask of setFinishedTasks) {
-        const taskFinished = store.state.moduleProjects.arrayTasks.find(task => task.task === idTask);
+        const taskFinished = store.state.moduleProjects.arrayTasks.find((task) => task.task === idTask);
         taskFinished.status = 2;
         arrayTasks.push(taskFinished);
       }
@@ -321,9 +321,7 @@ class Class_Service_Projects {
       // console.warn('task', task);
     }
 
-    arrayTasks.sort((a, b) => {
-      return compareDesc(parse(a.datetime_created), parse(b.datetime_created));
-    });
+    arrayTasks.sort((a, b) => compareDesc(parse(a.datetime_created), parse(b.datetime_created)));
 
     store.commit('moduleProjects/setState', {
       objectState: arrayTasks,
@@ -331,7 +329,7 @@ class Class_Service_Projects {
     });
 
 
-    if (arrayTasksServer.filter(task => task.status !== 3).length === 0) {
+    if (arrayTasksServer.filter((task) => task.status !== 3).length === 0) {
       clearTimeout(this.idTimeoutPollStatus);
       this.idTimeoutPollStatus = null;
     } else {
@@ -354,10 +352,10 @@ class Class_Service_Projects {
     }
 
     store.commit('moduleProjects/setState', {
-      objectState: store.state.moduleProjects.arrayTasks.filter(taskCurrent => taskCurrent.id !== task.id),
+      objectState: store.state.moduleProjects.arrayTasks.filter((taskCurrent) => taskCurrent.id !== task.id),
       nameState: 'arrayTasks',
     });
   }
 }
 
-export const Service_Projects = new Class_Service_Projects();
+export const ServiceProjects = new ClassServiceProjects();

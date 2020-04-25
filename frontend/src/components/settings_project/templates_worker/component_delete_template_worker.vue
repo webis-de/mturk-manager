@@ -5,18 +5,18 @@
       v-bind:disabled="disabled === false"
     >
       <template v-slot:activator="{ on }">
-      <v-btn
-        v-on="on"
-        class="my-0"
-        icon
-        x-small
-        v-bind:disabled="disabled"
-        v-on:click.stop="dialog = true"
-      >
-        <v-icon color="error">
-          mdi-delete
-        </v-icon>
-      </v-btn>
+        <v-btn
+          class="my-0"
+          icon
+          x-small
+          v-bind:disabled="disabled"
+          v-on="on"
+          v-on:click.stop="dialog = true"
+        >
+          <v-icon color="error">
+            mdi-delete
+          </v-icon>
+        </v-btn>
       </template>
 
       You are not allowed to delete this template because it has at least one batch using this template.
@@ -35,7 +35,7 @@
         </v-card-text>
 
         <v-card-actions>
-          <v-spacer></v-spacer>
+          <v-spacer />
           <v-btn
             text
             color="error"
@@ -53,7 +53,7 @@
 import {
   mapState, mapMutations, mapActions, mapGetters,
 } from 'vuex';
-import { Service_Templates } from '../../../services/service_templates';
+import { ServiceTemplates } from '../../../services/service_templates';
 
 export default {
   name: 'ComponentDeleteTemplateWorker',
@@ -75,12 +75,12 @@ export default {
   },
   methods: {
     remove() {
-      Service_Templates.delete({
+      ServiceTemplates.delete({
         typeTemplate: 'worker',
         project: this.project_current,
         template: this.templateWorker,
         callback: () => {
-          Service_Templates.cleanup({
+          ServiceTemplates.cleanup({
             typeTemplate: 'workerAll',
             component: this,
             nameEvent: 'deleted',

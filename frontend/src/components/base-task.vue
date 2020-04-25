@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { Service_Projects } from '../services/service_projects';
+import { ServiceProjects } from '../services/service_projects';
 
 const descriptions = {
   create_batch: {
@@ -111,7 +111,7 @@ export default {
   },
   methods: {
     deleteTask() {
-      Service_Projects.deleteTask({
+      ServiceProjects.deleteTask({
         task: this.task,
       });
     },

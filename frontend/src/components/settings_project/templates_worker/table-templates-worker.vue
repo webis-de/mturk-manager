@@ -30,7 +30,7 @@
       <template v-slot:actions>
         <component-add-template-worker
           v-on:created="snackbarCreated = true"
-        ></component-add-template-worker>
+        />
       </template>
     </base-table>
 
@@ -40,9 +40,9 @@
       color="info"
       bottom
     >
-      <v-spacer></v-spacer>
+      <v-spacer />
       Deleted!
-      <v-spacer></v-spacer>
+      <v-spacer />
     </v-snackbar>
 
     <v-snackbar
@@ -51,9 +51,9 @@
       bottom
       color="info"
     >
-      <v-spacer></v-spacer>
+      <v-spacer />
       Saved!
-      <v-spacer></v-spacer>
+      <v-spacer />
     </v-snackbar>
 
     <v-snackbar
@@ -62,17 +62,17 @@
       bottom
       color="info"
     >
-      <v-spacer></v-spacer>
+      <v-spacer />
       Updated!
-      <v-spacer></v-spacer>
+      <v-spacer />
     </v-snackbar>
   </div>
 </template>
 
 <script>
+import { mapGetters, mapMutations, mapState } from 'vuex';
 import BaseTable from '../../base-table';
-import {mapGetters, mapMutations, mapState} from 'vuex';
-import { Service_Templates } from '../../../services/service_templates';
+import { ServiceTemplates } from '../../../services/service_templates';
 import ItemTemplatesWorker from './item-templates-worker';
 import ComponentAddTemplateWorker from './component_add_template_worker';
 
@@ -85,7 +85,7 @@ export default {
   },
   data() {
     return {
-      loadPage: Service_Templates.loadPageWorker,
+      loadPage: ServiceTemplates.loadPageWorker,
 
       snackbarDeleted: false,
       snackbarEdited: false,

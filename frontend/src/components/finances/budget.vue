@@ -68,13 +68,13 @@ import { mapActions, mapGetters } from 'vuex';
 import { minValue, required, helpers as helpersValidation } from 'vuelidate/lib/validators';
 import or from 'vuelidate/src/validators/or';
 import validations from '../../mixins/validations.mixin';
-import { Service_Projects } from '../../services/service_projects';
+import { ServiceProjects } from '../../services/service_projects';
 import helpers from '../../mixins/helpers.mixin';
 // const mustBeCool = (value) => !helpersValidation.req(value) || value > 1;
 
 const validBudget = helpersValidation.withParams(
   { type: 'validBudget' },
-  value => !helpersValidation.req(value) || value > 0,
+  (value) => !helpersValidation.req(value) || value > 0,
 );
 
 export default {
@@ -105,7 +105,7 @@ export default {
   // },
   methods: {
     save() {
-      Service_Projects.setAmountBudgetProject({
+      ServiceProjects.setAmountBudgetProject({
         project: this.project_current,
         amountBudgetProject: this.amountBudgetProject,
       }).then(() => {

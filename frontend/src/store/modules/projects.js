@@ -2,7 +2,7 @@ import Vue from 'vue';
 import _ from 'lodash';
 import { parse } from 'date-fns';
 import Project from '../../classes/project';
-import Settings_Batch from '../../classes/settings_batch';
+import SettingsBatch from '../../classes/settings_batch';
 import Template_Worker from '../../classes/template_worker';
 import Template_Assignment from '../../classes/template_assignment';
 import Template_HIT from '../../classes/template_hit';
@@ -53,7 +53,7 @@ export const moduleProjects = _.merge({}, baseModule, {
     //  		console.log(rootState.name_project)
     // return state.object_projects;
     //  	},
-    get_object_projects: state => state.object_projects,
+    get_object_projects: (state) => state.object_projects,
     get_slug_project_current(state) {
       return state.slug_project_current;
     },
@@ -86,7 +86,7 @@ export const moduleProjects = _.merge({}, baseModule, {
       project.settings_batch = {};
 
       _.forEach(data, (data_settings_batch) => {
-        const object_settings_batch = new Settings_Batch(data_settings_batch);
+        const object_settings_batch = new SettingsBatch(data_settings_batch);
         Vue.set(
           project.settings_batch,
           object_settings_batch.id,

@@ -1,13 +1,19 @@
 <template>
-  <v-dialog v-model="dialog" max-width="500">
+  <v-dialog
+    v-model="dialog"
+    max-width="500"
+  >
     <template v-slot:activator="{ on }">
-    <v-btn
-      v-on="on"
-      class="my-0"
-      icon x-small
-    >
-      <v-icon color="error">mdi-delete</v-icon>
-    </v-btn>
+      <v-btn
+        class="my-0"
+        icon
+        x-small
+        v-on="on"
+      >
+        <v-icon color="error">
+          mdi-delete
+        </v-icon>
+      </v-btn>
     </template>
 
     <v-card>
@@ -25,8 +31,14 @@
       </v-card-text>
 
       <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn text color="error" v-on:click="remove()">Delete</v-btn>
+        <v-spacer />
+        <v-btn
+          text
+          color="error"
+          v-on:click="remove()"
+        >
+          Delete
+        </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -36,7 +48,7 @@
 import {
   mapState, mapMutations, mapActions, mapGetters,
 } from 'vuex';
-import { Service_Templates } from '../../../services/service_templates';
+import { ServiceTemplates } from '../../../services/service_templates';
 
 export default {
   name: 'ComponentDeleteTemplateGlobal',
@@ -50,12 +62,12 @@ export default {
   },
   methods: {
     remove() {
-      Service_Templates.delete({
+      ServiceTemplates.delete({
         typeTemplate: 'global',
         project: this.project_current,
         template: this.template_global,
         callback: () => {
-          Service_Templates.cleanup({
+          ServiceTemplates.cleanup({
             typeTemplate: 'globalAll',
             component: this,
             nameEvent: 'deleted',

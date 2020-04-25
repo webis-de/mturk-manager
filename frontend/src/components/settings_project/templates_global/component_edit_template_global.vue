@@ -1,47 +1,59 @@
 <template>
-  <v-dialog v-model="dialog" max-width="80%" persistent>
+  <v-dialog
+    v-model="dialog"
+    max-width="80%"
+    persistent
+  >
     <template v-slot:activator="{ on }">
-    <v-btn
-      v-on="on"
-      class="my-0"
-      icon
-      x-small
-    >
-      <v-icon color="warning">mdi-pencil</v-icon>
-    </v-btn>
+      <v-btn
+        class="my-0"
+        icon
+        x-small
+        v-on="on"
+      >
+        <v-icon color="warning">
+          mdi-pencil
+        </v-icon>
+      </v-btn>
     </template>
 
     <v-card>
       <v-card-title>
         <span class="headline">Edit Global Template</span>
-        <v-spacer></v-spacer>
-        <v-btn icon v-on:click="dialog = false">
+        <v-spacer />
+        <v-btn
+          icon
+          v-on:click="dialog = false"
+        >
           <v-icon>mdi-close</v-icon>
         </v-btn>
       </v-card-title>
       <v-card-text>
-        <v-form ref="form" lazy-validation>
+        <v-form
+          ref="form"
+          lazy-validation
+        >
           <v-text-field
             required
             label="Name"
             v-bind:value="template_global.name"
+            v-bind:error-messages="validation_errors.template_global.name"
             v-on:input="
               template_global.name = $event;
               $v.template_global.name.$touch();
             "
-            v-bind:error-messages="validation_errors.template_global.name"
-          ></v-text-field>
+          />
           <v-textarea
             required
             rows="20"
             v-bind:value="template_global.template"
+            label="Template"
+            v-bind:error-messages="validation_errors.template_global.template"
             v-on:input="
               template_global.template = $event;
               $v.template_global.template.$touch();
             "
-            label="Template"
-            v-bind:error-messages="validation_errors.template_global.template"
-          ></v-textarea>
+          />
         </v-form>
       </v-card-text>
 
@@ -50,31 +62,34 @@
           text
           class="ml-0"
           color="înfo"
+          v-bind:disabled="$v.$invalid"
           v-on:click="
             dialog = false;
             reset();
           "
-          v-bind:disabled="$v.$invalid"
-          >Cancel</v-btn
         >
-        <v-spacer></v-spacer>
+          Cancel
+        </v-btn>
+        <v-spacer />
         <v-btn
           text
           class="ml-0"
           color="primary"
-          v-on:click="update()"
           v-bind:disabled="$v.$invalid"
-          >Save</v-btn
+          v-on:click="update()"
         >
+          Save
+        </v-btn>
 
         <v-btn
           text
           class="ml-0"
           color="success"
-          v-on:click="update(true)"
           v-bind:disabled="$v.$invalid"
-          >Save and Close</v-btn
+          v-on:click="update(true)"
         >
+          Save and Close
+        </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -103,7 +118,7 @@ import { required, minValue, maxValue } from 'vuelidate/lib/validators';
 import helpers from '../../../mixins/helpers.mixin';
 import validations from '../../../mixins/validations.mixin';
 import Template_Global from '../../../classes/template_global';
-import { Service_Templates } from '../../../services/service_templates';
+import { ServiceTemplates } from '../../../services/service_templates';
 
 export default {
   name: 'ComponentEditTemplateGlobal',
@@ -120,13 +135,13 @@ export default {
   methods: {
     update(close) {
       if (this.$refs.form.validate()) {
-        Service_Templates.edit({
+        ServiceTemplates.edit({
           typeTemplate: 'global',
           templateCurrent: this.template_global_current,
           templateNew: this.template_global,
           project: this.project_current,
         }).then(() => {
-          Service_Templates.cleanup({
+          ServiceTemplates.cleanup({
             typeTemplate: 'globalAll',
             component: this,
             nameEvent: 'edited',
@@ -152,7 +167,7 @@ export default {
     list_templates_global() {
       return _.orderBy(
         this.project_current.templates_global,
-        template => template.name,
+        (template) => template.name,
       );
     },
     ...mapGetters('moduleProjects', {

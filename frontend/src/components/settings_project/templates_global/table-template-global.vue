@@ -30,7 +30,7 @@
       <template v-slot:actions>
         <component-add-template-global
           v-on:created="snackbarCreated = true"
-        ></component-add-template-global>
+        />
       </template>
     </base-table>
 
@@ -40,9 +40,9 @@
       color="info"
       bottom
     >
-      <v-spacer></v-spacer>
+      <v-spacer />
       Deleted!
-      <v-spacer></v-spacer>
+      <v-spacer />
     </v-snackbar>
 
     <v-snackbar
@@ -51,9 +51,9 @@
       bottom
       color="info"
     >
-      <v-spacer></v-spacer>
+      <v-spacer />
       Saved!
-      <v-spacer></v-spacer>
+      <v-spacer />
     </v-snackbar>
 
     <v-snackbar
@@ -62,16 +62,16 @@
       bottom
       color="info"
     >
-      <v-spacer></v-spacer>
+      <v-spacer />
       Updated!
-      <v-spacer></v-spacer>
+      <v-spacer />
     </v-snackbar>
   </div>
 </template>
 
 <script>
-import {Service_Templates} from '../../../services/service_templates';
-import {mapMutations, mapState} from 'vuex';
+import { mapMutations, mapState } from 'vuex';
+import { ServiceTemplates } from '../../../services/service_templates';
 import BaseTable from '../../base-table';
 import ItemTemplatesGlobal from './item-templates-global';
 import ComponentAddTemplateGlobal from './component_add_template_global';
@@ -85,7 +85,7 @@ export default {
   },
   data() {
     return {
-      loadPage: Service_Templates.loadPageGlobal,
+      loadPage: ServiceTemplates.loadPageGlobal,
 
       snackbarDeleted: false,
       snackbarEdited: false,

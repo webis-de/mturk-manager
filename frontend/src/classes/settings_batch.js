@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import Template_Worker from './template_worker';
 
-export default class Settings_Batch {
+export default class SettingsBatch {
   constructor(data = { template: new Template_Worker() }) {
     this.id = data.id;
     this.name = data.name;
@@ -63,8 +63,8 @@ export default class Settings_Batch {
           // }
           if (typeof settings_batch[key] === 'object') {
             if (
-              _.differenceBy(settings_batch[key], this[key], value => value.text.toLowerCase()).length > 0
-              || _.differenceBy(this[key], settings_batch[key], value => value.text.toLowerCase()).length > 0
+              _.differenceBy(settings_batch[key], this[key], (value) => value.text.toLowerCase()).length > 0
+              || _.differenceBy(this[key], settings_batch[key], (value) => value.text.toLowerCase()).length > 0
             ) {
               object[key] = settings_batch[key];
             }

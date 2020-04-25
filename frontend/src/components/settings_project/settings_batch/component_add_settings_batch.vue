@@ -69,7 +69,7 @@ import ComponentFormSettingsBatch from './component_form_settings_batch';
 import { settingsBatch } from '../../../mixins/settings-batch.mixin';
 import validations from '../../../mixins/validations.mixin';
 import { ServiceSettingsBatch } from '../../../services/service_settings_batch';
-import { Service_Templates } from '../../../services/service_templates';
+import { ServiceTemplates } from '../../../services/service_templates';
 
 export default {
   name: 'ComponentAddSettingsBatch',

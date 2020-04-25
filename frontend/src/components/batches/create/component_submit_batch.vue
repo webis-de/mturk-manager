@@ -8,22 +8,23 @@
         large
         color="success"
         v-on:click="submit"
-        >Submit Batch</v-btn
       >
+        Submit Batch
+      </v-btn>
     </v-flex>
   </v-layout>
 </template>
 
 <script>
 import { mapState, mapGetters } from 'vuex';
-import Settings_Batch from '../../../classes/settings_batch';
+import { required } from 'vuelidate/lib/validators';
+import SettingsBatch from '../../../classes/settings_batch';
 import { Service_Batches } from '../../../services/service_batches';
-import {Service_Projects} from '../../../services/service_projects';
-import { required } from 'vuelidate/lib/validators'
+import { ServiceProjects } from '../../../services/service_projects';
 
 
 export default {
-  name: 'component-submit-batch',
+  name: 'ComponentSubmitBatch',
   props: {
     is_invalid_settings_batch: {
       required: true,
@@ -79,7 +80,7 @@ export default {
       this.is_uploading_batch = false;
       this.$emit('update:is_creating_batch', false);
 
-      Service_Projects.startPollTasks();
+      ServiceProjects.startPollTasks();
 
       // Service_Batches.load_page({
       //   page: 1,

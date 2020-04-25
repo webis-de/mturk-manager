@@ -3,7 +3,7 @@ import {
 } from 'vuex';
 import { required, minValue, maxValue } from 'vuelidate/lib/validators';
 import _ from 'lodash';
-import Settings_Batch from '../classes/settings_batch';
+import SettingsBatch from '../classes/settings_batch';
 import { DESCRIPTIONS } from '../classes/enums';
 import { Service_Keywords } from '../services/Service_Keywords';
 
@@ -11,14 +11,14 @@ const foo = (object_settings_batch, settingsBatchCurrent) => (value) => {
   if (_.get(settingsBatchCurrent, 'name', undefined) == value) return true;
 
   return (
-    _.find(object_settings_batch, settings_batch => settings_batch.name == value) == undefined
+    _.find(object_settings_batch, (settings_batch) => settings_batch.name == value) == undefined
   );
 };
 
 export const settingsBatch = {
   data() {
     return {
-      settings_batch: new Settings_Batch(),
+      settings_batch: new SettingsBatch(),
       DESCRIPTIONS,
     };
   },
@@ -35,7 +35,7 @@ export const settingsBatch = {
       if (this.settingsBatchCurrent !== undefined) {
         this.settings_batch = _.cloneDeep(this.settingsBatchCurrent);
       } else {
-        this.settings_batch = new Settings_Batch();
+        this.settings_batch = new SettingsBatch();
       }
     },
   },
