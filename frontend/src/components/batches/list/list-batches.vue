@@ -56,7 +56,7 @@
 import {
   mapActions, mapMutations, mapState,
 } from 'vuex';
-import { Service_Batches as ServiceBatches } from '../../../services/service_batches';
+import { ServiceBatches as ServiceBatches } from '../../../services/batches.service';
 import BaseTable from '../../base-table';
 import ComponentItemBatch from './component_item_batch';
 import FiltersTableBatches from './filters-table-batches';

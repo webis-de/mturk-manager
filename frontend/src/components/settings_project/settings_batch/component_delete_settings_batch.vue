@@ -48,7 +48,7 @@
 import {
   mapActions, mapGetters,
 } from 'vuex';
-import { ServiceSettingsBatch } from '../../../services/service_settings_batch';
+import { ServiceSettingsBatch } from '../../../services/settings-batch.service';
 
 export default {
   name: 'ComponentDeleteSettingsBatch',
@@ -69,7 +69,7 @@ export default {
     remove() {
       ServiceSettingsBatch.delete({
         project: this.project_current,
-        settings_batch: this.settingsBatchCurrent,
+        settingsBatch: this.settingsBatchCurrent,
         callback: () => {
           this.$emit('deleted');
           this.dialog = false;

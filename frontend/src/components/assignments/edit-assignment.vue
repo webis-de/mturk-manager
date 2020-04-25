@@ -44,7 +44,7 @@
 <script>
 import UpdateStatus from './update-status';
 import Assignment from '../../classes/assignment';
-import { Service_Assignments } from '../../services/service_assignments';
+import { ServiceAssignments } from '../../services/assignments.service';
 
 export default {
   name: 'EditAssignment',
@@ -75,7 +75,7 @@ export default {
     },
     async save() {
       if (!_.isEqual(this.assignment, this.assignmentNew)) {
-        await Service_Assignments.edit({
+        await ServiceAssignments.edit({
           assignmentNew: this.assignmentNew,
           assignmentCurrent: this.assignment,
         });

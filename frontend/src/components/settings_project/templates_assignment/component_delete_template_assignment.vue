@@ -48,7 +48,7 @@
 import {
   mapState, mapMutations, mapActions, mapGetters,
 } from 'vuex';
-import { ServiceTemplates } from '../../../services/service_templates';
+import { ServiceTemplates } from '../../../services/templates.service';
 
 export default {
   name: 'ComponentDeleteTemplateAssignment',

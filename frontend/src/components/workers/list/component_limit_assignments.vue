@@ -79,7 +79,7 @@
 
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex';
-import { Service_Workers } from '../../../services/service_worker';
+import { ServiceWorkers } from '../../../services/workers.service';
 
 export default {
   name: 'component-limit-assignments',
@@ -133,7 +133,7 @@ export default {
     set(value) {
       this.set_show_progress_indicator(true);
 
-      Service_Workers.update_count_assignments_limit({
+      ServiceWorkers.updateCountAssignmentsLimit({
         worker: this.worker,
         value,
       }).then(() => {

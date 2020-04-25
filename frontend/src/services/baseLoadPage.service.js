@@ -1,5 +1,4 @@
 import { ServiceEndpoint } from './endpoint.service';
-import { store } from '../store/vuex';
 
 export class BaseLoadPageService {
   static async loadPageInternal({

@@ -35,7 +35,7 @@
 
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex';
-import { Service_Batches } from '../../services/service_batches';
+import { ServiceBatches } from '../../services/batches.service';
 
 export default {
   name: 'ComponentToolbarBatches',
@@ -56,7 +56,7 @@ export default {
   },
   methods: {
     sync_mturk() {
-      Service_Batches.sync_mturk();
+      ServiceBatches.syncMturk();
     },
     ...mapActions(['set_show_progress_indicator']),
     ...mapActions('moduleBatches', {

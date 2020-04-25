@@ -84,7 +84,7 @@ import {
 } from 'vuex';
 import _ from 'lodash';
 import ListAssignments from '../../assignments/list/list-assignments';
-import { Service_HITs } from '../../../services/service_hits';
+import { ServiceHITs } from '../../../services/hits.service';
 import ComponentFormSettingsBatch from '../../settings_project/settings_batch/component_form_settings_batch';
 import SandboxTemplate from './sandbox-hit';
 import HIT from '../../../classes/hit';
@@ -135,7 +135,7 @@ export default {
     }),
   },
   created() {
-    Service_HITs.loadHIT(this.idHit).then((hit) => {
+    ServiceHITs.loadHIT(this.idHit).then((hit) => {
       this.hitIntern = hit;
       this.$store.commit('module_app/setState', {
         nameState: 'nameItem',

@@ -48,7 +48,7 @@
 import {
   mapState, mapMutations, mapActions, mapGetters,
 } from 'vuex';
-import { ServiceProjects } from '../../../services/service_projects';
+import { ServiceProjects } from '../../../services/projects.service';
 
 export default {
   name: 'ComponentClearSandbox',
@@ -59,7 +59,7 @@ export default {
   },
   methods: {
     async clear() {
-      await ServiceProjects.clear_sandbox();
+      await ServiceProjects.clearSandbox();
       this.dialog = false;
     },
     ...mapActions('moduleProjects', {

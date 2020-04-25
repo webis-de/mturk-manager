@@ -73,7 +73,7 @@ import _ from 'lodash';
 
 import { required, minValue } from 'vuelidate/lib/validators';
 import validations from '../../../mixins/validations.mixin';
-import { ServiceTemplates } from '../../../services/service_templates';
+import { ServiceTemplates } from '../../../services/templates.service';
 
 export default {
   name: 'ComponentAddTemplateGlobal',

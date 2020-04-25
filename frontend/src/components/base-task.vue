@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { ServiceProjects } from '../services/service_projects';
+import { ServiceProjects } from '../services/projects.service';
 
 const descriptions = {
   create_batch: {

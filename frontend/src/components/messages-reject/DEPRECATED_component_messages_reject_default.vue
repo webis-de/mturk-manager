@@ -62,8 +62,8 @@ import {
 } from 'vuex';
 import { required, minValue, maxValue } from 'vuelidate/lib/validators';
 import validations from '../../mixins/validations.mixin';
-import { ServiceProjects } from '../../services/service_projects';
-import { ServiceMessages } from '../../services/Service_Messages_Reject';
+import { ServiceProjects } from '../../services/projects.service';
+import { ServiceMessages } from '../../services/messages-reject.service';
 
 export default {
   name: 'ComponentMessagesRejectDefault',

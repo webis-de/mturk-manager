@@ -72,7 +72,7 @@
 <script>
 import { mapGetters, mapMutations, mapState } from 'vuex';
 import BaseTable from '../../base-table';
-import { ServiceTemplates } from '../../../services/service_templates';
+import { ServiceTemplates } from '../../../services/templates.service';
 import ItemTemplatesWorker from './item-templates-worker';
 import ComponentAddTemplateWorker from './component_add_template_worker';
 

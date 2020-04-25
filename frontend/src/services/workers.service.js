@@ -1,69 +1,68 @@
 import _ from 'lodash';
-import Vue from 'vue';
 import { store } from '../store/vuex';
 import { ServiceEndpoint } from './endpoint.service';
-import { Service_Batches } from './service_batches';
+import { ServiceBatches } from './batches.service';
 import { BaseLoadPageService } from './baseLoadPage.service';
 import Worker from '../classes/workers';
 
-class Class_Service_Workers extends BaseLoadPageService {
-  async load_workers({ list_ids, use_sandbox, append }) {
-    if (_.size(list_ids) === 0) {
-      return;
-    }
+class ClassServiceWorkers extends BaseLoadPageService {
+  // async load_workers({ list_ids, use_sandbox, append }) {
+  //   if (_.size(list_ids) === 0) {
+  //     return;
+  //   }
+  //
+  //   const response = await ServiceEndpoint.makeRequest({
+  //     method: 'patch',
+  //     url: {
+  //       path: store.getters.get_url('url_api_workers', 'moduleWorkers'),
+  //       use_sandbox,
+  //       project: store.getters['moduleProjects/get_project_current'],
+  //     },
+  //     data: Array.from(list_ids),
+  //   });
+  //
+  //   const data_workers = response.data;
+  //
+  //   if (append === true) {
+  //     store.commit('moduleWorkers/append_workers', {
+  //       data_workers,
+  //       use_sandbox,
+  //     });
+  //   } else {
+  //     store.commit('moduleWorkers/set_workers', {
+  //       data_workers,
+  //       use_sandbox,
+  //     });
+  //   }
+  //
+  //   ServiceBatches.add_workers({
+  //     object_workers: store.getters['moduleWorkers/get_object_workers'](
+  //       use_sandbox,
+  //     ),
+  //     use_sandbox,
+  //   });
+  //
+  //   const blocks_hard = await ServiceEndpoint.makeRequest({
+  //     method: 'patch',
+  //     url: {
+  //       path: store.getters.get_url(
+  //         'url_api_workers_get_blocks_hard',
+  //         'moduleWorkers',
+  //       ),
+  //       use_sandbox,
+  //       project: store.getters['moduleProjects/get_project_current'],
+  //     },
+  //     data: Array.from(list_ids),
+  //   });
+  //
+  //   const array_blocks_hard = blocks_hard.data;
+  //   store.commit('moduleWorkers/set_blocks_hard', {
+  //     array_blocks_hard,
+  //     use_sandbox,
+  //   });
+  // }
 
-    const response = await ServiceEndpoint.makeRequest({
-      method: 'patch',
-      url: {
-        path: store.getters.get_url('url_api_workers', 'moduleWorkers'),
-        use_sandbox,
-        project: store.getters['moduleProjects/get_project_current'],
-      },
-      data: Array.from(list_ids),
-    });
-
-    const data_workers = response.data;
-
-    if (append === true) {
-      store.commit('moduleWorkers/append_workers', {
-        data_workers,
-        use_sandbox,
-      });
-    } else {
-      store.commit('moduleWorkers/set_workers', {
-        data_workers,
-        use_sandbox,
-      });
-    }
-
-    Service_Batches.add_workers({
-      object_workers: store.getters['moduleWorkers/get_object_workers'](
-        use_sandbox,
-      ),
-      use_sandbox,
-    });
-
-    const blocks_hard = await ServiceEndpoint.makeRequest({
-      method: 'patch',
-      url: {
-        path: store.getters.get_url(
-          'url_api_workers_get_blocks_hard',
-          'moduleWorkers',
-        ),
-        use_sandbox,
-        project: store.getters['moduleProjects/get_project_current'],
-      },
-      data: Array.from(list_ids),
-    });
-
-    const array_blocks_hard = blocks_hard.data;
-    store.commit('moduleWorkers/set_blocks_hard', {
-      array_blocks_hard,
-      use_sandbox,
-    });
-  }
-
-  async update_status_block_soft({ worker, is_blocked }) {
+  async updateStatusBlockSoft({ worker, isBlocked }) {
     const { use_sandbox } = store.state.module_app;
     const project = store.getters['moduleProjects/get_project_current'];
 
@@ -76,7 +75,7 @@ class Class_Service_Workers extends BaseLoadPageService {
         project,
       },
       data: {
-        is_blocked_soft: is_blocked,
+        is_blocked_soft: isBlocked,
       },
     });
 
@@ -87,7 +86,7 @@ class Class_Service_Workers extends BaseLoadPageService {
     });
   }
 
-  async update_status_block_hard({ worker, is_blocked }) {
+  async updateStatusBlockHard({ worker, isBlocked }) {
     const { use_sandbox } = store.state.module_app;
     const project = store.getters['moduleProjects/get_project_current'];
 
@@ -100,7 +99,7 @@ class Class_Service_Workers extends BaseLoadPageService {
         project,
       },
       data: {
-        is_blocked_hard: is_blocked,
+        is_blocked_hard: isBlocked,
       },
     });
 
@@ -111,7 +110,7 @@ class Class_Service_Workers extends BaseLoadPageService {
     });
   }
 
-  async update_status_block_global({ worker, is_blocked }) {
+  async updateStatusBlockGlobal({ worker, isBlocked }) {
     const { use_sandbox } = store.state.module_app;
     const project = store.getters['moduleProjects/get_project_current'];
 
@@ -124,7 +123,7 @@ class Class_Service_Workers extends BaseLoadPageService {
         project,
       },
       data: {
-        is_blocked_global: is_blocked,
+        is_blocked_global: isBlocked,
       },
     });
 
@@ -135,7 +134,7 @@ class Class_Service_Workers extends BaseLoadPageService {
     });
   }
 
-  async update_count_assignments_limit({ worker, value }) {
+  async updateCountAssignmentsLimit({ worker, value }) {
     const { use_sandbox } = store.state.module_app;
     const project = store.getters['moduleProjects/get_project_current'];
 
@@ -162,7 +161,7 @@ class Class_Service_Workers extends BaseLoadPageService {
   async loadPage(pagination, filters) {
     const useSandbox = store.state.module_app.use_sandbox;
 
-    return Class_Service_Workers.loadPageInternal({
+    return ClassServiceWorkers.loadPageInternal({
       pagination,
       filters,
       url: {
@@ -201,4 +200,4 @@ class Class_Service_Workers extends BaseLoadPageService {
   }
 }
 
-export const Service_Workers = new Class_Service_Workers();
+export const ServiceWorkers = new ClassServiceWorkers();

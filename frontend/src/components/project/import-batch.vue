@@ -142,9 +142,9 @@
 import UploadButton from 'vuetify-upload-button';
 import Papa from 'papaparse';
 import { required, requiredIf } from 'vuelidate/lib/validators';
-import { Service_Batches } from '../../services/service_batches';
-import { ServiceTemplates } from '../../services/service_templates';
-import { ServiceSettingsBatch } from '../../services/service_settings_batch';
+import { ServiceBatches } from '../../services/batches.service';
+import { ServiceTemplates } from '../../services/templates.service';
+import { ServiceSettingsBatch } from '../../services/settings-batch.service';
 
 export default {
   name: 'ImportBatch',
@@ -202,7 +202,7 @@ export default {
   methods: {
     importBatches() {
       this.loading = true;
-      Service_Batches.importBatches({
+      ServiceBatches.importBatches({
         nameBatch: this.nameBatch,
         nameSettingsBatch: this.nameSettingsBatch,
         templateWorker: this.templateWorker,
@@ -223,7 +223,7 @@ export default {
         skipEmptyLines: true,
         complete: async (data) => {
           if (data.data.length > 0) {
-            this.countSettingsBatch = (await Service_Batches.findSettingsBatch(data.data)).items_total;
+            this.countSettingsBatch = (await ServiceBatches.findSettingsBatch(data.data)).items_total;
 
             this.parsedCSV = data;
             this.isParsingCSV = false;

@@ -87,7 +87,7 @@ import { required, minValue, maxValue } from 'vuelidate/lib/validators';
 import ComponentFormSettingsBatch from './component_form_settings_batch';
 import { settingsBatch } from '../../../mixins/settings-batch.mixin';
 import validations from '../../../mixins/validations.mixin';
-import { ServiceSettingsBatch } from '../../../services/service_settings_batch';
+import { ServiceSettingsBatch } from '../../../services/settings-batch.service';
 
 export default {
   name: 'ComponentEditSettingsBatch',
@@ -117,8 +117,8 @@ export default {
     update() {
       if (this.$refs.form.validate()) {
         ServiceSettingsBatch.edit({
-          settings_batch_current: this.settingsBatchCurrent,
-          settings_batch_new: this.settings_batch,
+          settingsBatchCurrent: this.settingsBatchCurrent,
+          settingsBatchNew: this.settings_batch,
           project: this.project_current,
         });
 

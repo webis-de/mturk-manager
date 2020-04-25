@@ -3,40 +3,39 @@ import { ServiceEndpoint } from './endpoint.service';
 import { getChanges } from '../helpers';
 import Assignment from '../classes/assignment';
 import { BaseLoadPageService } from './baseLoadPage.service';
-import HIT from '../classes/hit';
 
-class Class_Service_Assignments extends BaseLoadPageService {
-  async set_assignments({ object_hits, data_batches, use_sandbox }) {
-    store.commit('moduleAssignments/set_assignments', {
-      data_batches,
-      object_hits,
-      use_sandbox,
-    });
+class ClassServiceAssignments extends BaseLoadPageService {
+  // async set_assignments({ object_hits, data_batches, use_sandbox }) {
+  //   store.commit('moduleAssignments/set_assignments', {
+  //     data_batches,
+  //     object_hits,
+  //     use_sandbox,
+  //   });
 
-    // await Service_Workers.load_workers({
-    //     list_ids: store.getters['moduleAssignments/set_ids_worker'],
-    //     use_sandbox,
-    // });
-  }
+  // await ServiceWorkers.load_workers({
+  //     list_ids: store.getters['moduleAssignments/set_ids_worker'],
+  //     use_sandbox,
+  // });
+  // }
 
-  async append_assignments({ data_batches, object_hits, use_sandbox }) {
-    store.commit('moduleAssignments/set_assignments', {
-      data_batches,
-      object_hits,
-      use_sandbox,
-    });
+  // async append_assignments({ data_batches, object_hits, use_sandbox }) {
+  //   store.commit('moduleAssignments/set_assignments', {
+  //     data_batches,
+  //     object_hits,
+  //     use_sandbox,
+  //   });
 
-    // await Service_Workers.load_workers({
-    //     list_ids: store.getters['moduleAssignments/set_ids_worker'],
-    //     use_sandbox,
-    //     append: true,
-    // });
-  }
+  // await ServiceWorkers.load_workers({
+  //     list_ids: store.getters['moduleAssignments/set_ids_worker'],
+  //     use_sandbox,
+  //     append: true,
+  // });
+  // }
 
   async load_page(pagination, filters) {
     const useSandbox = store.state.module_app.use_sandbox;
 
-    return Class_Service_Assignments.loadPageInternal({
+    return ClassServiceAssignments.loadPageInternal({
       pagination,
       filters,
       url: {
@@ -86,4 +85,4 @@ class Class_Service_Assignments extends BaseLoadPageService {
   }
 }
 
-export const Service_Assignments = new Class_Service_Assignments();
+export const ServiceAssignments = new ClassServiceAssignments();

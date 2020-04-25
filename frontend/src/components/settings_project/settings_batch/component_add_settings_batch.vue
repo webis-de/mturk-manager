@@ -68,8 +68,8 @@ import _ from 'lodash';
 import ComponentFormSettingsBatch from './component_form_settings_batch';
 import { settingsBatch } from '../../../mixins/settings-batch.mixin';
 import validations from '../../../mixins/validations.mixin';
-import { ServiceSettingsBatch } from '../../../services/service_settings_batch';
-import { ServiceTemplates } from '../../../services/service_templates';
+import { ServiceSettingsBatch } from '../../../services/settings-batch.service';
+import { ServiceTemplates } from '../../../services/templates.service';
 
 export default {
   name: 'ComponentAddSettingsBatch',
@@ -100,7 +100,7 @@ export default {
     create() {
       if (this.$refs.form.validate()) {
         ServiceSettingsBatch.create({
-          settings_batch: this.settings_batch,
+          settingsBatch: this.settings_batch,
           project: this.project_current,
         }).then(() => {
           this.dialog = false;

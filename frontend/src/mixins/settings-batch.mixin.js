@@ -5,7 +5,7 @@ import { required, minValue, maxValue } from 'vuelidate/lib/validators';
 import _ from 'lodash';
 import SettingsBatch from '../classes/settings_batch';
 import { DESCRIPTIONS } from '../classes/enums';
-import { ServiceKeywords } from '../services/ServiceKeywords';
+import { ServiceKeywords } from '../services/keywords.service';
 
 const foo = (object_settings_batch, settingsBatchCurrent) => (value) => {
   if (_.get(settingsBatchCurrent, 'name', undefined) == value) return true;

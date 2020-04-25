@@ -54,7 +54,7 @@
 
 <script>
 import {mapActions, mapGetters, mapMutations, mapState} from 'vuex';
-import { Service_HITs as ServiceHits } from '../../../services/service_hits';
+import { ServiceHITs as ServiceHits } from '../../../services/hits.service';
 import BaseTable from '../../base-table';
 import ComponentItemHit from './component_item_hit';
 import FiltersTableHits from './filters-table-hits';

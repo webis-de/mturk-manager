@@ -69,7 +69,7 @@ import {
 import _ from 'lodash';
 import Papa from 'papaparse';
 import { STATUS_EXTERNAL, STATUS_INTERNAL } from '../../classes/enums';
-import { Service_Batches } from '../../services/service_batches';
+import { ServiceBatches } from '../../services/batches.service';
 
 export default {
   name: 'ComponentDownloadBatch',
@@ -104,7 +104,7 @@ export default {
       }
 
       this.isDownloadingCsv = true;
-      Service_Batches.get_download_info({
+      ServiceBatches.getDownloadInfo({
         batches: Object.keys(this.batchesSelected),
       }).then((response) => {
         this.isValidSelection = response.data.is_valid;
@@ -175,7 +175,7 @@ export default {
         headersSelected.push(value.split('__')[1]);
       });
 
-      Service_Batches.download({
+      ServiceBatches.download({
         batches: Object.keys(this.batchesSelected),
         values: headersSelected,
       }).then(() => {

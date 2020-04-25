@@ -1,6 +1,6 @@
 import VueRouter from 'vue-router';
 import goTo from 'vuetify/es5/services/goto';
-import { ServiceProjects } from './services/service_projects';
+import { ServiceProjects } from './services/projects.service';
 // import ViewDashboard from './views/dashboard/dashboard.view';
 // import ViewAddCredentials from './views/add-credentials/add-credentials.view';
 // import ViewConnectionError from './views/connection-error/connection-error.view';
@@ -17,7 +17,7 @@ import { ServiceProjects } from './services/service_projects';
 import About from './components/about/about';
 // import AppSettingsProject from './views/project/settings-project/settings-project.view';
 import { store } from './store/vuex';
-import { Service_App } from './services/service.app';
+import { AppService } from './services/app.service';
 import queue from './queue';
 
 const ViewDashboard = () => import(/* webpackChunkName: "dashboard" */ './views/dashboard/dashboard.view');
@@ -309,7 +309,7 @@ router.beforeEach((to, from, next) => {
     ServiceProjects.ping();
   }
 
-  ServiceProjects.set_slug_current(to.params.slug_project);
+  ServiceProjects.setSlugCurrent(to.params.slug_project);
   next();
 });
 
@@ -332,7 +332,7 @@ router.beforeEach(async (to, from, next) => {
     store.getters['module_app/has_credentials'] === false
     && to.name !== 'add_credentials'
   ) {
-    const response = await Service_App.init();
+    const response = await AppService.init();
     if (response.reason === 'load_credentials') {
       next({ name: 'add_credentials' });
       return;

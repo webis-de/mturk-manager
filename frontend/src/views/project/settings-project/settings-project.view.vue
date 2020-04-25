@@ -181,7 +181,7 @@ import TableMessagesReject from '../../../components/messages-reject/table-messa
 import ImportBatch from '../../../components/project/import-batch';
 import About from '../../../components/about/about';
 import ChangelogNotification from '../../../components/about/changelog-notification';
-import { Service_App } from '../../../services/service.app';
+import { AppService } from '../../../services/app.service';
 import BasePage from '../../../components/base/base-page';
 import BasePageSection from '../../../components/base/base-page-section';
 import BasePageGroupDivider from '../../../components/base/base-page-group-divider';
@@ -238,7 +238,7 @@ export default {
   },
   watch: {
     isActiveModeLight() {
-      Service_App.setLightMode(this.isActiveModeLight);
+      AppService.setLightMode(this.isActiveModeLight);
     },
   },
   methods: {

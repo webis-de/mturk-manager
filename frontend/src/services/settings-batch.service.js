@@ -3,11 +3,11 @@ import { store } from '../store/vuex';
 import SettingsBatch from '../classes/settings_batch';
 import { BaseLoadPageService } from './baseLoadPage.service';
 
-class Class_Settings_Batch extends BaseLoadPageService {
+class ClassSettingsBatch extends BaseLoadPageService {
   async loadPage(pagination, filters) {
     const project = store.getters['moduleProjects/get_project_current'];
 
-    return Class_Settings_Batch.loadPageInternal({
+    return ClassSettingsBatch.loadPageInternal({
       pagination,
       filters,
       url: {
@@ -67,7 +67,7 @@ class Class_Settings_Batch extends BaseLoadPageService {
     return new SettingsBatch(response.data);
   }
 
-  async create({ settings_batch, project }) {
+  async create({ settingsBatch, project }) {
     const response = await ServiceEndpoint.makeRequest({
       method: 'post',
       url: {
@@ -77,7 +77,7 @@ class Class_Settings_Batch extends BaseLoadPageService {
         ),
         project,
       },
-      data: settings_batch,
+      data: settingsBatch,
     });
 
     store.commit('moduleSettingsBatch/add', {
@@ -85,10 +85,10 @@ class Class_Settings_Batch extends BaseLoadPageService {
     });
   }
 
-  async edit({ settings_batch_current, settings_batch_new, project }) {
-    const data_changed = settings_batch_current.getChanges(settings_batch_new);
+  async edit({ settingsBatchCurrent, settingsBatchNew, project }) {
+    const dataChanged = settingsBatchCurrent.getChanges(settingsBatchNew);
 
-    if (Object.keys(data_changed).length === 0) return;
+    if (Object.keys(dataChanged).length === 0) return;
 
     const response = await ServiceEndpoint.makeRequest({
       method: 'put',
@@ -97,10 +97,10 @@ class Class_Settings_Batch extends BaseLoadPageService {
           'urlApiProjectsSettingsBatch',
           'moduleSettingsBatch',
         ),
-        value: settings_batch_current.id,
+        value: settingsBatchCurrent.id,
         project,
       },
-      data: data_changed,
+      data: dataChanged,
     });
 
     store.commit('moduleSettingsBatch/update', {
@@ -108,8 +108,8 @@ class Class_Settings_Batch extends BaseLoadPageService {
     });
   }
 
-  async delete({ settings_batch, project, callback }) {
-    const response = await ServiceEndpoint.makeRequest({
+  async delete({ settingsBatch, project, callback }) {
+    await ServiceEndpoint.makeRequest({
       method: 'delete',
       url: {
         path: store.getters.get_url(
@@ -117,15 +117,15 @@ class Class_Settings_Batch extends BaseLoadPageService {
           'moduleSettingsBatch',
         ),
         project,
-        value: settings_batch.id,
+        value: settingsBatch.id,
       },
     });
 
     callback();
     store.commit('moduleSettingsBatch/delete', {
-      settingsBatch: settings_batch,
+      settingsBatch,
     });
   }
 }
 
-export const ServiceSettingsBatch = new Class_Settings_Batch();
+export const ServiceSettingsBatch = new ClassSettingsBatch();

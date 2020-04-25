@@ -36,7 +36,7 @@
 <script>
 import { mapState } from 'vuex';
 import BaseTable from '../base-table';
-import { ServiceMessages } from '../../services/Service_Messages_Reject';
+import { ServiceMessages } from '../../services/messages-reject.service';
 import ItemMessagesReject from './item-messages-reject';
 import ItemAddMessage from './item-add-message';
 

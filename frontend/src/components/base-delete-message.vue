@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { ServiceMessages } from '../services/Service_Messages_Reject';
+import { ServiceMessages } from '../services/messages-reject.service';
 
 export default {
   name: 'BaseDeleteMessage',

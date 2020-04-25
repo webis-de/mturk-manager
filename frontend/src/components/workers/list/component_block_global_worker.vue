@@ -52,7 +52,7 @@
 </template>
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex';
-import { Service_Workers } from '../../../services/service_worker';
+import { ServiceWorkers } from '../../../services/workers.service';
 // import { STATUS_BLOCK } from '../../classes/enums.js';
 export default {
   name: 'component-block-soft-hard-worker',
@@ -108,9 +108,9 @@ export default {
       this.set_show_progress_indicator(true);
       this.is_updating = true;
 
-      Service_Workers.update_status_block_global({
+      ServiceWorkers.updateStatusBlockGlobal({
         worker: this.worker,
-        is_blocked: !this.worker.is_blocked_global,
+        isBlocked: !this.worker.is_blocked_global,
       }).then(() => {
         this.is_updating = false;
         this.show_snackbar = true;

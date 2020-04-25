@@ -57,7 +57,7 @@ import {
 } from 'vuex';
 // import { Policy } from '../../store/modules/policies.js';
 import ComponentItemWorker from './component_item_worker';
-import { Service_Workers as ServiceWorkers } from '../../../services/service_worker';
+import { ServiceWorkers as ServiceWorkers } from '../../../services/workers.service';
 import BaseTable from '../../base-table';
 import FiltersTableWorkers from './filters-table-workers';
 // import ComponentShowMoneySpent from './component-show-money-spent.vue';

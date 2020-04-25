@@ -2,9 +2,6 @@ import { compareDesc, parse } from 'date-fns';
 import Project from '../classes/project';
 import { store } from '../store/vuex';
 import { ServiceEndpoint } from './endpoint.service';
-import { ServiceSettingsBatch } from './service_settings_batch';
-import { ServiceTemplates } from './service_templates';
-// import {router} from "./service_router.js";
 
 class ClassServiceProjects {
   constructor() {
@@ -12,7 +9,7 @@ class ClassServiceProjects {
     this.idTimeoutPollStatus = null;
   }
 
-  async load_projects() {
+  async loadProjects() {
     const response = await ServiceEndpoint.makeRequest({
       method: 'get',
       url: {
@@ -36,7 +33,7 @@ class ClassServiceProjects {
     return false;
   }
 
-  async create_project(name) {
+  async createProject(name) {
     const { use_sandbox } = store.state.module_app;
     const response = await ServiceEndpoint.makeRequest({
       method: 'post',
@@ -55,8 +52,8 @@ class ClassServiceProjects {
     return project;
   }
 
-  async validate_name(name) {
-    return await ServiceEndpoint.makeRequest({
+  async validateName(name) {
+    await ServiceEndpoint.makeRequest({
       method: 'get',
       url: {
         path: store.getters.get_url(
@@ -68,11 +65,11 @@ class ClassServiceProjects {
     });
   }
 
-  set_slug_current(slug_project_new) {
-    store.commit('moduleProjects/set_slug_project_current', slug_project_new);
+  setSlugCurrent(slugProjectNew) {
+    store.commit('moduleProjects/set_slug_project_current', slugProjectNew);
   }
 
-  load_project_data() {
+  loadProjectData() {
     const project = store.getters['moduleProjects/get_project_current'];
 
     // reset database
@@ -87,7 +84,7 @@ class ClassServiceProjects {
 
     // load initial values for project
     if (project.slug !== undefined) {
-      this.load_data(project);
+      this.loadData(project);
       // ServiceSettingsBatch.load();
       // ServiceTemplates.load_all();
 
@@ -100,7 +97,7 @@ class ClassServiceProjects {
     }
   }
 
-  async clear_sandbox() {
+  async clearSandbox() {
     await ServiceEndpoint.makeRequest({
       method: 'delete',
       url: {
@@ -118,7 +115,7 @@ class ClassServiceProjects {
   async delete({ router }) {
     const project = store.getters['moduleProjects/get_project_current'];
 
-    const response = await ServiceEndpoint.makeRequest({
+    await ServiceEndpoint.makeRequest({
       method: 'delete',
       url: {
         path: store.getters.get_url('url_api_projects', 'moduleProjects'),
@@ -161,9 +158,9 @@ class ClassServiceProjects {
     // });
   }
 
-  async set_count_assignments_max_per_worker({
+  async setCountAssignmentsMaxPerWorker({
     project,
-    count_assignments_max_per_worker,
+    countAssignmentsMaxPerWorker,
   }) {
     const response = await ServiceEndpoint.makeRequest({
       method: 'put',
@@ -173,7 +170,7 @@ class ClassServiceProjects {
         value: project.slug,
       },
       data: {
-        count_assignments_max_per_worker,
+        count_assignments_max_per_worker: countAssignmentsMaxPerWorker,
       },
     });
 
@@ -210,8 +207,8 @@ class ClassServiceProjects {
   async ping() {
     const project = store.getters['moduleProjects/get_project_current'];
 
-    const slug_project_current = project.slug;
-    if (slug_project_current == null) return;
+    const slugProjectCurrent = project.slug;
+    if (slugProjectCurrent == null) return;
 
     const response = await ServiceEndpoint.makeRequest({
       method: 'put',
@@ -227,7 +224,7 @@ class ClassServiceProjects {
     });
   }
 
-  async load_data(project) {
+  async loadData(project) {
     const response = await ServiceEndpoint.makeRequest({
       method: 'get',
       url: {
@@ -281,8 +278,8 @@ class ClassServiceProjects {
 
     // console.log('response', response.data);
     // store.commit('moduleProjects/set_ping', {
-    // 	project,
-    // 	data: response.data,
+    //  project,
+    //  data: response.data,
     // });
   }
 
@@ -307,18 +304,12 @@ class ClassServiceProjects {
     const setTasksOld = new Set(store.state.moduleProjects.arrayTasks.map((task) => task.task));
     const setTasksNew = new Set(arrayTasks.map((task) => task.task));
 
-    const setFinishedTasks = new Set([...setTasksOld].filter((idTask) => !setTasksNew.has(idTask)));
+    const setFinishedTasks = new Set([...setTasksOld].filter((idTask) => !setTasksNew.has(idTask))).values();
 
-    if (setFinishedTasks.size > 0) {
-      for (const idTask of setFinishedTasks) {
-        const taskFinished = store.state.moduleProjects.arrayTasks.find((task) => task.task === idTask);
-        taskFinished.status = 2;
-        arrayTasks.push(taskFinished);
-      }
-    }
-
-    for (const task of store.state.moduleProjects.arrayTasks) {
-      // console.warn('task', task);
+    for (let i = 0; i < setFinishedTasks.length; i += 1) {
+      const taskFinished = store.state.moduleProjects.arrayTasks.find((task) => task.task === setFinishedTasks[i]);
+      taskFinished.status = 2;
+      arrayTasks.push(taskFinished);
     }
 
     arrayTasks.sort((a, b) => compareDesc(parse(a.datetime_created), parse(b.datetime_created)));

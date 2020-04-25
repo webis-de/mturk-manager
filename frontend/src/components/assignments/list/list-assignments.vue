@@ -53,7 +53,7 @@
 </template>
 <script>
   import { mapActions, mapGetters, mapMutations, mapState } from 'vuex';
-import { Service_Assignments as ServiceAssignments } from '../../../services/service_assignments';
+import { ServiceAssignments as ServiceAssignments } from '../../../services/assignments.service';
 import BaseTable from '../../base-table';
 import ComponentItemAssignment from './component_item_assignment';
 import FiltersTableAssignments from './filters-table-assignments';

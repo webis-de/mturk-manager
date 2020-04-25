@@ -73,7 +73,7 @@
 </template>
 
 <script>
-import { Service_App } from '../services/service.app';
+import { AppService } from '../services/app.service';
 import TheUpdateCredentials from './the-update-credentials';
 import About from './about/about';
 import ChangelogNotification from './about/changelog-notification';
@@ -89,7 +89,7 @@ export default {
   },
   watch: {
     isActiveModeLight() {
-      Service_App.setLightMode(this.isActiveModeLight);
+      AppService.setLightMode(this.isActiveModeLight);
     },
   },
   methods: {

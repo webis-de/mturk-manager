@@ -39,7 +39,7 @@ class ClassServiceFinances {
     // });
   }
 
-  async load_balance() {
+  async loadBalance() {
     const { use_sandbox } = store.state.module_app;
 
     const response = await ServiceEndpoint.makeRequest({

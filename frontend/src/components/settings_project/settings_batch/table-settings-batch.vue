@@ -76,7 +76,7 @@
 import { mapGetters, mapMutations, mapState } from 'vuex';
 import ComponentAddSettingsBatch from './component_add_settings_batch';
 import BaseTable from '../../base-table';
-import { ServiceSettingsBatch } from '../../../services/service_settings_batch';
+import { ServiceSettingsBatch } from '../../../services/settings-batch.service';
 import ItemSettingsBatch from './item-settings-batch';
 
 export default {

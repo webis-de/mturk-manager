@@ -71,7 +71,7 @@
 
 <script>
 import { mapMutations, mapState } from 'vuex';
-import { ServiceTemplates } from '../../../services/service_templates';
+import { ServiceTemplates } from '../../../services/templates.service';
 import BaseTable from '../../base-table';
 import ComponentAddTemplateHit from './component_add_template_hit';
 import ItemTemplatesHit from './item-templates-hit';

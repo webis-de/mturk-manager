@@ -69,7 +69,7 @@
 import {
   mapState, mapMutations, mapActions, mapGetters,
 } from 'vuex';
-import { Service_Batches } from '../../../services/service_batches';
+import { ServiceBatches } from '../../../services/batches.service';
 import ListHits from '../../hits/list/list-hits';
 import ComponentFormSettingsBatch from '../../settings_project/settings_batch/component_form_settings_batch';
 
@@ -153,7 +153,7 @@ export default {
     }),
   },
   created() {
-    Service_Batches.get_batch(this.idBatch).then((batch) => {
+    ServiceBatches.getBatch(this.idBatch).then((batch) => {
       this.batch_intern = batch;
       this.$store.commit('module_app/setState', {
         nameState: 'nameItem',

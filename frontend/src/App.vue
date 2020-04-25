@@ -27,9 +27,9 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import { ServiceProjects } from './services/service_projects';
+import { ServiceProjects } from './services/projects.service';
 import TheUpdateNotification from './components/the-update-notification';
-import { ServiceTemplates } from './services/service_templates';
+import { ServiceTemplates } from './services/templates.service';
 
 export default {
   name: 'App',
@@ -47,7 +47,7 @@ export default {
   },
   watch: {
     async slug_project_current() {
-      await ServiceProjects.load_project_data();
+      await ServiceProjects.loadProjectData();
 
       if (this.slug_project_current !== undefined) {
         await ServiceTemplates.getAll({

@@ -27,7 +27,7 @@
 <script>
 import required from 'vuelidate/src/validators/required';
 import validations from '../mixins/validations.mixin';
-import { Service_App } from '../services/service.app';
+import { AppService } from '../services/app.service';
 
 export default {
   name: 'TheUpdateCredentials',
@@ -44,7 +44,7 @@ export default {
     async save() {
       this.loading = true;
 
-      await Service_App.updateCredentials({
+      await AppService.updateCredentials({
         url: this.url,
         token: this.token,
         router: this.$router,

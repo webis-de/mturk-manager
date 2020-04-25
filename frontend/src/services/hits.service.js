@@ -3,11 +3,11 @@ import { ServiceEndpoint } from './endpoint.service';
 import { BaseLoadPageService } from './baseLoadPage.service';
 import HIT from '../classes/hit';
 
-class Class_Service_HITs extends BaseLoadPageService {
+class ClassServiceHITs extends BaseLoadPageService {
   async load_page(pagination, filters) {
     const useSandbox = store.state.module_app.use_sandbox;
 
-    return Class_Service_HITs.loadPageInternal({
+    return ClassServiceHITs.loadPageInternal({
       pagination,
       filters,
       url: {
@@ -53,7 +53,7 @@ class Class_Service_HITs extends BaseLoadPageService {
   //         use_sandbox
   //     });
   //
-  //     await Service_Assignments.set_assignments({
+  //     await ServiceAssignments.set_assignments({
   //         object_hits: store.getters['moduleHITs/get_object_hits'](use_sandbox),
   //         data_batches,
   //         use_sandbox
@@ -62,7 +62,7 @@ class Class_Service_HITs extends BaseLoadPageService {
   //
   // async append_hits({data_batches, use_sandbox})
   // {
-  //      await Service_Assignments.append_assignments({
+  //      await ServiceAssignments.append_assignments({
   //         data_batches,
   //         object_hits: store.getters['moduleHITs/get_object_hits'](use_sandbox),
   //         use_sandbox,
@@ -70,4 +70,4 @@ class Class_Service_HITs extends BaseLoadPageService {
   // }
 }
 
-export const Service_HITs = new Class_Service_HITs();
+export const ServiceHITs = new ClassServiceHITs();

@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { Service_App } from '../../services/service.app';
+import { AppService } from '../../services/app.service';
 import ChangelogRelease from './changelog-release';
 import { compareVersions } from '../../helpers';
 
@@ -66,7 +66,7 @@ export default {
       // check if changelog is empty or not up to date
       if (this.changelog.length === 0
         || compareVersions(this.changelog[0].tag, this.$store.state.module_app.version) === -1) {
-        await Service_App.loadChangelog();
+        await AppService.loadChangelog();
       }
 
       if (this.changelog.length > 0) {
@@ -82,13 +82,13 @@ export default {
       }
     },
     async reset() {
-      await Service_App.resetChangelog();
+      await AppService.resetChangelog();
       await this.init();
       this.panelsOpened = [0];
     },
     async checkLoad(release) {
       if (release.body === null) {
-        await Service_App.loadRelease(release.id);
+        await AppService.loadRelease(release.id);
       }
     },
   },

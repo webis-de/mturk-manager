@@ -364,7 +364,7 @@ export default {
     },
   },
   created() {
-    ServiceFinances.load_balance();
+    ServiceFinances.loadBalance();
     this.loadExpenses();
   },
   methods: {
@@ -381,7 +381,7 @@ export default {
       });
     },
     sandboxUpdated() {
-      ServiceFinances.load_balance();
+      ServiceFinances.loadBalance();
       this.loadExpenses();
     },
     ...mapActions('moduleBatches', {

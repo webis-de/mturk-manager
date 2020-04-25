@@ -27,7 +27,7 @@ import _ from 'lodash';
 import { settingsBatch } from '../../../mixins/settings-batch.mixin';
 import validations from '../../../mixins/validations.mixin';
 import ComponentFormSettingsBatch from '../../settings_project/settings_batch/component_form_settings_batch';
-import { ServiceSettingsBatch } from '../../../services/service_settings_batch';
+import { ServiceSettingsBatch } from '../../../services/settings-batch.service';
 
 export default {
   name: 'ComponentSettingsBatch',

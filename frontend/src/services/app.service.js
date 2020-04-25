@@ -1,10 +1,10 @@
 import { store } from '../store/vuex';
 import { ServiceEndpoint } from './endpoint.service';
-import { ServiceProjects } from './service_projects';
+import { ServiceProjects } from './projects.service';
 import queue from '../queue';
 import { compareVersions } from '../helpers';
 import { vuetify } from '../vuetify';
-import { ServiceTemplates } from './service_templates';
+import { ServiceTemplates } from './templates.service';
 
 class ClassServiceApp {
   async init(force = false) {
@@ -21,8 +21,8 @@ class ClassServiceApp {
     const response = await ClassServiceApp.loadConfig();
 
     if (response.success) {
-      await ServiceProjects.load_projects();
-      await ServiceProjects.load_project_data();
+      await ServiceProjects.loadProjects();
+      await ServiceProjects.loadProjectData();
       if (store.state.moduleProjects.slug_project_current !== undefined) {
         await ServiceTemplates.getAll({
           typeTemplate: 'workerAll',
@@ -130,18 +130,18 @@ class ClassServiceApp {
   }
 
   async updateCredentials({ url, token }) {
-    url = url.trim();
+    let urlProcessed = url.trim();
 
-    if (!url.startsWith('http')) {
-      url = `http://${url}`;
+    if (!urlProcessed.startsWith('http')) {
+      urlProcessed = `http://${urlProcessed}`;
     }
 
-    if (url.endsWith('/')) {
-      url = url.slice(0, -1);
+    if (urlProcessed.endsWith('/')) {
+      urlProcessed = urlProcessed.slice(0, -1);
     }
 
     await store.dispatch('module_app/setState', {
-      objectState: url,
+      objectState: urlProcessed,
       nameState: 'url_api',
       nameLocalStorage: 'url_api',
     });
@@ -171,4 +171,4 @@ class ClassServiceApp {
   }
 }
 
-export const Service_App = new ClassServiceApp();
+export const AppService = new ClassServiceApp();

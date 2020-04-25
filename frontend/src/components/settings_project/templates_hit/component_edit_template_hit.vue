@@ -118,7 +118,7 @@ import { required, minValue, maxValue } from 'vuelidate/lib/validators';
 import helpers from '../../../mixins/helpers.mixin';
 import validations from '../../../mixins/validations.mixin';
 import Template_HIT from '../../../classes/template_hit';
-import { ServiceTemplates } from '../../../services/service_templates';
+import { ServiceTemplates } from '../../../services/templates.service';
 
 export default {
   name: 'ComponentEditTemplateHit',

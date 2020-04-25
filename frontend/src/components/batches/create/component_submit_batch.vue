@@ -19,8 +19,8 @@
 import { mapState, mapGetters } from 'vuex';
 import { required } from 'vuelidate/lib/validators';
 import SettingsBatch from '../../../classes/settings_batch';
-import { Service_Batches } from '../../../services/service_batches';
-import { ServiceProjects } from '../../../services/service_projects';
+import { ServiceBatches } from '../../../services/batches.service';
+import { ServiceProjects } from '../../../services/projects.service';
 
 
 export default {
@@ -57,7 +57,7 @@ export default {
       return isInBudget;
     },
     is_valid() {
-      return Service_Batches.isValidCSV()
+      return ServiceBatches.isValidCSV()
         && !this.is_invalid_settings_batch
         && this.isInBudget
         && required(this.name_batch);
@@ -71,7 +71,7 @@ export default {
     async submit() {
       this.is_uploading_batch = true;
 
-      await Service_Batches.create({
+      await ServiceBatches.create({
         name: this.name_batch,
         settings_batch: this.$store.state.moduleBatches.objectSettingsBatch,
         data_csv: this.$store.state.moduleBatches.objectCSVParsed.data,
@@ -82,7 +82,7 @@ export default {
 
       ServiceProjects.startPollTasks();
 
-      // Service_Batches.load_page({
+      // ServiceBatches.load_page({
       //   page: 1,
       //   rowsPerPage: 25,
       //   sortBy: 'datetime_creation',

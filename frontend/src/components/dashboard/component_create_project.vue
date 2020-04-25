@@ -48,7 +48,7 @@ import { mapActions } from 'vuex';
 import _ from 'lodash';
 
 import { required } from 'vuelidate/lib/validators';
-import { ServiceProjects } from '../../services/service_projects';
+import { ServiceProjects } from '../../services/projects.service';
 
 export default {
   name: 'ComponentCreateProject',
@@ -88,7 +88,7 @@ export default {
   methods: {
     save() {
       this.is_creating = true;
-      ServiceProjects.create_project(this.name).then((project) => {
+      ServiceProjects.createProject(this.name).then((project) => {
         this.name = '';
         this.$v.$reset();
         this.is_creating = false;
@@ -117,7 +117,7 @@ export default {
           return true;
         }
 
-        const response = await ServiceProjects.validate_name(name);
+        const response = await ServiceProjects.validateName(name);
         if (response.data === true) {
           this.disabled = false;
         }

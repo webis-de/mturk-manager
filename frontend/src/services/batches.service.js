@@ -1,15 +1,16 @@
+import _ from 'lodash';
 import { ServiceEndpoint } from './endpoint.service';
 import { store } from '../store/vuex';
 import Batch from '../classes/batch';
 import { BaseLoadPageService } from './baseLoadPage.service';
 import { convertRewardFromMturkToModel } from '../helpers';
 
-class Class_Service_Batches extends BaseLoadPageService {
+class ClassServiceBatches extends BaseLoadPageService {
   // async load_batches(force=false)
   // {
-  // 	const use_sandbox = store.state.module_app.use_sandbox;
+  //  const use_sandbox = store.state.module_app.use_sandbox;
   //
-  // 	if(store.getters['moduleBatches/get_object_batches'](use_sandbox) == null || force) {
+  //  if(store.getters['moduleBatches/get_object_batches'](use_sandbox) == null || force) {
   //         const response = await ServiceEndpoint.makeRequest({
   //             method: 'get',
   //             url: {
@@ -26,7 +27,7 @@ class Class_Service_Batches extends BaseLoadPageService {
   //             use_sandbox
   //         });
   //
-  //         await Service_HITs.set_hits({
+  //         await ServiceHITs.set_hits({
   //             object_batches: store.getters['moduleBatches/get_object_batches'](use_sandbox),
   //             data_batches,
   //             use_sandbox
@@ -38,7 +39,7 @@ class Class_Service_Batches extends BaseLoadPageService {
     const { use_sandbox } = store.state.module_app;
     const project = store.getters['moduleProjects/get_project_current'];
 
-    const response = await ServiceEndpoint.makeRequest({
+    await ServiceEndpoint.makeRequest({
       method: 'post',
       url: {
         path: store.getters.get_url(
@@ -63,12 +64,12 @@ class Class_Service_Batches extends BaseLoadPageService {
     // });
   }
 
-  async sync_mturk() {
+  async syncMturk() {
     const { use_sandbox } = store.state.module_app;
     const project = store.getters['moduleProjects/get_project_current'];
 
     store.commit('moduleBatches/set_is_syncing_mturk', true);
-    const response = await ServiceEndpoint.makeRequest({
+    await ServiceEndpoint.makeRequest({
       method: 'patch',
       url: {
         path: store.getters.get_url(
@@ -80,9 +81,7 @@ class Class_Service_Batches extends BaseLoadPageService {
       },
     });
 
-    const data_batches = response.data;
-
-    // await Service_HITs.append_hits({
+    // await ServiceHITs.append_hits({
     //     data_batches,
     //     use_sandbox
     //
@@ -102,7 +101,7 @@ class Class_Service_Batches extends BaseLoadPageService {
   async load_page(pagination, filters) {
     const useSandbox = store.state.module_app.use_sandbox;
 
-    return Class_Service_Batches.loadPageInternal({
+    return ClassServiceBatches.loadPageInternal({
       pagination,
       filters,
       url: {
@@ -122,7 +121,7 @@ class Class_Service_Batches extends BaseLoadPageService {
     });
   }
 
-  async get_batch(id_batch) {
+  async getBatch(idBatch) {
     const response = await ServiceEndpoint.makeRequest({
       method: 'get',
       url: {
@@ -131,7 +130,7 @@ class Class_Service_Batches extends BaseLoadPageService {
           'moduleBatches',
         ),
         project: store.getters['moduleProjects/get_project_current'],
-        value: id_batch,
+        value: idBatch,
       },
       params: {
         expand: '__settings_batch__template_worker__',
@@ -165,7 +164,7 @@ class Class_Service_Batches extends BaseLoadPageService {
     document.body.removeChild(a);
   }
 
-  async get_download_info(params) {
+  async getDownloadInfo(params) {
     const response = await ServiceEndpoint.makeRequest({
       method: 'get',
       url: {
@@ -191,7 +190,7 @@ class Class_Service_Batches extends BaseLoadPageService {
   async importBatches({
     nameBatch, nameSettingsBatch, templateWorker, parsedCSVs,
   }) {
-    const response = await ServiceEndpoint.makeRequest({
+    await ServiceEndpoint.makeRequest({
       method: 'post',
       url: {
         path: store.getters.get_url(
@@ -226,7 +225,8 @@ class Class_Service_Batches extends BaseLoadPageService {
         model__description: assignments[0].Description,
         model__reward: convertRewardFromMturkToModel(assignments[0].Reward),
         model__duration: assignments[0].AssignmentDurationInSeconds,
-        model__count_assignments: Object.values(_.countBy(assignments.map((assignment) => assignment.HITId))).sort((a, b) => a - b).reverse()[0],
+        model__count_assignments: Object.values(_.countBy(assignments.map((assignment) => assignment.HITId)))
+          .sort((a, b) => a - b).reverse()[0],
       },
     });
 
@@ -234,4 +234,4 @@ class Class_Service_Batches extends BaseLoadPageService {
   }
 }
 
-export const Service_Batches = new Class_Service_Batches();
+export const ServiceBatches = new ClassServiceBatches();

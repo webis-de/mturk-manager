@@ -112,7 +112,7 @@ import { mapState, mapActions, mapGetters } from 'vuex';
 import humanizeDuration from 'humanize-duration';
 import BaseDisplayAmount from '../../base-display-amount.vue';
 import OverviewCosts from './overview-costs';
-import { Service_Batches } from '../../../services/service_batches';
+import { ServiceBatches } from '../../../services/batches.service';
 
 // import ComponentStepUploadCSV from './component_step_upload_csv.vue';
 // import ComponentShowMoneySpent from './component-show-money-spent.vue';
@@ -132,7 +132,7 @@ export default {
   },
   computed: {
     isValidCSV() {
-      return Service_Batches.isValidCSV();
+      return ServiceBatches.isValidCSV();
     },
     lifetime_formatted() {
       if (this.$store.state.moduleBatches.objectSettingsBatch === null) return null;

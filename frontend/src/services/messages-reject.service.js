@@ -2,9 +2,9 @@ import { ServiceEndpoint } from './endpoint.service';
 import { store } from '../store/vuex';
 import { BaseLoadPageService } from './baseLoadPage.service';
 
-class Class_Service_Messages_Reject extends BaseLoadPageService {
+class ClassServiceMessagesReject extends BaseLoadPageService {
   async loadPageReject(pagination, filters) {
-    return Class_Service_Messages_Reject.loadPageInternal({
+    return ClassServiceMessagesReject.loadPageInternal({
       pagination,
       filters,
       url: {
@@ -24,7 +24,7 @@ class Class_Service_Messages_Reject extends BaseLoadPageService {
   }
 
   async loadPageRejectAll(pagination, filters) {
-    return Class_Service_Messages_Reject.loadPageInternal({
+    return ClassServiceMessagesReject.loadPageInternal({
       pagination,
       filters,
       url: {
@@ -111,4 +111,4 @@ class Class_Service_Messages_Reject extends BaseLoadPageService {
   }
 }
 
-export const ServiceMessages = new Class_Service_Messages_Reject();
+export const ServiceMessages = new ClassServiceMessagesReject();
