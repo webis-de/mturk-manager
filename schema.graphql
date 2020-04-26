@@ -1,0 +1,43 @@
+# This file was generated based on ".graphqlconfig". Do not edit manually.
+
+schema {
+    query: Query
+}
+
+type Query {
+    templatesAssignment: [TypeTemplateAssignment]
+    templatesGlobal: [TypeTemplateGlobal]
+    templatesHit: [TypeTemplateHIT]
+}
+
+type TypeTemplateAssignment {
+    datetimeCreation: DateTime!
+    id: ID!
+    isActive: Boolean!
+    name: String!
+    template: String!
+}
+
+type TypeTemplateGlobal {
+    datetimeCreation: DateTime!
+    id: ID!
+    isActive: Boolean!
+    name: String!
+    template: String!
+}
+
+type TypeTemplateHIT {
+    datetimeCreation: DateTime!
+    id: ID!
+    isActive: Boolean!
+    name: String!
+    template: String!
+}
+
+
+"""
+The `DateTime` scalar type represents a DateTime
+value as specified by
+[iso8601](https://en.wikipedia.org/wiki/ISO_8601).
+"""
+scalar DateTime

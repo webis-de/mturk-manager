@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'django_celery_results',
     'django_celery_beat',
+    'graphene_django',
 ]
 
 MIDDLEWARE = [
@@ -196,3 +197,7 @@ MTURK_KEY_SECRET = os.environ.get('MTURK_SECRET_KEY')
 
 TOKEN_INSTANCE = os.environ.get('INSTANCE_TOKEN')
 TOKEN_WORKER = os.environ.get('WORKER_TOKEN')
+
+GRAPHENE = {
+    'SCHEMA': 'mturk_db.schema.schema'
+}
