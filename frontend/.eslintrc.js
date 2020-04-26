@@ -56,11 +56,12 @@ module.exports = {
   },
 
   parserOptions: {
-    parser: 'babel-eslint',
+    parser: '@typescript-eslint/parser',
   },
 
   extends: [
     'plugin:vue/recommended',
     '@vue/airbnb',
+    '@vue/typescript/recommended',
   ],
 };
