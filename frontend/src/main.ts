@@ -8,7 +8,6 @@ import axios from 'axios';
 import VueAxios from 'vue-axios';
 import Vuex from 'vuex';
 import VueCookies from 'vue-cookies';
-import UploadButton from 'vuetify-upload-button';
 import { store } from './store/vuex';
 import App from './App';
 
@@ -21,7 +20,6 @@ Vue.config.performance = process.env.NODE_ENV === 'development';
 
 Vue.use(Vuetify, { directives: { Ripple } });
 Vue.use(VueRouter);
-Vue.use(UploadButton);
 Vue.use(Vuelidate);
 Vue.use(VueAxios, axios);
 Vue.use(Vuex);

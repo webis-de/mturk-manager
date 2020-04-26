@@ -38,18 +38,11 @@
               <v-row>
                 <v-col shrink>
                   <!--              {{ statistics }}-->
-                  <upload-button
+                  <v-file-input
                     ref="upload-button"
-                    class="px-0"
-                    title="Select CSV"
-                    v-on:file-update="fileChanged"
-                  >
-                    <template v-slot:icon-left>
-                      <v-icon left>
-                        mdi-attachment
-                      </v-icon>
-                    </template>
-                  </upload-button>
+                    label="Select CSV"
+                    v-on:change="fileChanged"
+                  />
                 </v-col>
                 <!--                <v-flex>-->
                 <!--                  <v-btn-->
@@ -139,7 +132,6 @@
 </template>
 
 <script>
-import UploadButton from 'vuetify-upload-button';
 import Papa from 'papaparse';
 import { required, requiredIf } from 'vuelidate/lib/validators';
 import { ServiceBatches } from '../../services/batches.service';
@@ -148,9 +140,6 @@ import { ServiceSettingsBatch } from '../../services/settings-batch.service';
 
 export default {
   name: 'ImportBatch',
-  components: {
-    UploadButton,
-  },
   data() {
     return {
       dialog: false,
@@ -213,7 +202,7 @@ export default {
       });
     },
     fileChanged(file) {
-      if (file == null) {
+      if (file === undefined) {
         return;
       }
 
