@@ -16,6 +16,7 @@ module.exports = {
     'import/extensions': ['error', 'always', {
       js: 'never',
       vue: 'never',
+      ts: 'never',
     }],
     // vuex fix
     'no-param-reassign': [
@@ -53,6 +54,14 @@ module.exports = {
     ],
     'import/prefer-default-export': 'off',
     'class-methods-use-this': 'off',
+    'graphql/template-strings': [
+      'error',
+      {
+        env: 'literal',
+        projectName: 'app',
+        schemaJsonFilepath: 'node_modules/.temp/graphql/schema.json',
+      },
+    ],
   },
 
   parserOptions: {
@@ -63,5 +72,9 @@ module.exports = {
     'plugin:vue/recommended',
     '@vue/airbnb',
     '@vue/typescript/recommended',
+  ],
+
+  plugins: [
+    'graphql',
   ],
 };

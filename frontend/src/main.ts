@@ -15,6 +15,7 @@ import { router } from './router';
 import { vuetify } from './vuetify';
 
 import './assets/main.scss';
+import { apolloProvider } from './vue-apollo';
 
 Vue.config.performance = process.env.NODE_ENV === 'development';
 
@@ -30,5 +31,6 @@ export default new Vue({
   store,
   vuetify,
   el: '#app',
+  apolloProvider,
   render: h => h(App),
 });

@@ -5,6 +5,10 @@
     "serve": "env-cmd -f ../.env vue-cli-service serve",
     "build": "env-cmd -f ../.env vue-cli-service build",
     "lint": "vue-cli-service lint src --no-fix",
+    "apollo": "vue-cli-service apollo:dev --generate-schema",
+    "apollo:schema:generate": "vue-cli-service apollo:schema:generate",
+    "apollo:schema:publish": "vue-cli-service apollo:schema:publish",
+    "apollo:start": "vue-cli-service apollo:start",
     "parcel": "./node_modules/.bin/parcel watch --public-url /static/mturk_manager/js/dist ./mturk_manager/static/mturk_manager/js/vue/index.js -d ./mturk_manager/static/mturk_manager/js/dist",
     "parcel_annotate": "./node_modules/.bin/parcel watch --no-hmr ./annotate/index_annotate.js -d ./dist",
     "parcel_annotate_build": "./node_modules/.bin/parcel build ./annotate/index_annotate.js -d ./dist",
@@ -26,6 +30,7 @@
     "date-fns": "^1.30.1",
     "dinero.js": "^1.5.0",
     "env-cmd": "^9.0.3",
+    "graphql-type-json": "^0.2.1",
     "humanize-duration": "^3.15.1",
     "loadash": "^1.0.0",
     "localforage": "^1.7.3",
@@ -39,6 +44,7 @@
     "utils": "^0.3.1",
     "v-runtime-template": "^1.5.1",
     "vue": "^2.6.8",
+    "vue-apollo": "^3.0.0-beta.11",
     "vue-axios": "^2.1.4",
     "vue-chartjs": "^3.4.2",
     "vue-codemirror": "^4.0.6",
@@ -50,7 +56,8 @@
     "vuetify": "^2.2.11",
     "vuetify-loader": "^1.4.3",
     "vuetify-upload-button": "^2.0.2",
-    "vuex": "^3.1.0"
+    "vuex": "^3.1.0",
+    "graphql-tag": "^2.9.0"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-0",
@@ -69,6 +76,7 @@
     "babel-eslint": "^10.1.0",
     "css-loader": "^2.1.0",
     "eslint": "^6.7.2",
+    "eslint-plugin-graphql": "^2.1.1",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-vue": "^6.2.2",
     "husky": "^4.0.10",
@@ -79,6 +87,7 @@
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
     "typescript": "~3.8.3",
+    "vue-cli-plugin-apollo": "^0.21.3",
     "vue-cli-plugin-webpack-bundle-analyzer": "^2.0.0",
     "vue-template-compiler": "^2.6.8"
   },
