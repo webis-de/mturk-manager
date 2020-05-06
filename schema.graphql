@@ -5,9 +5,9 @@ schema {
 }
 
 type Query {
-    templatesAssignment: [TypeTemplateAssignment]
-    templatesGlobal: [TypeTemplateGlobal]
-    templatesHit: [TypeTemplateHIT]
+    templatesAssignment(project: ID): [TypeTemplateAssignment]
+    templatesGlobal(project: ID): [TypeTemplateGlobal]
+    templatesHit(project: ID): [TypeTemplateHIT]
 }
 
 type TypeTemplateAssignment {
