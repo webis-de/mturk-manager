@@ -1,13 +1,20 @@
 import graphene
 
-from api.models import Template_Assignment, Template_HIT, Template_Global
-from api.modules.templates.types import TypeTemplateAssignment, TypeTemplateHIT, TypeTemplateGlobal
+from api.models import Template_Assignment, Template_HIT, Template_Global, Template_Worker
+from api.modules.templates.types import TypeTemplateAssignment, TypeTemplateHIT, TypeTemplateGlobal, TypeTemplateWorker
 
 
 class QueryTemplateAssignment(object):
+    templates_worker = graphene.List(TypeTemplateWorker, project=graphene.ID())
     templates_assignment = graphene.List(TypeTemplateAssignment, project=graphene.ID())
     templates_hit = graphene.List(TypeTemplateHIT, project=graphene.ID())
     templates_global = graphene.List(TypeTemplateGlobal, project=graphene.ID())
+
+    def resolve_templates_worker(self, info, project, **kwargs):
+        return Template_Worker.objects.filter(
+            project=project,
+            template_original=None,
+        )
 
     def resolve_templates_assignment(self, info, project, **kwargs):
         return Template_Assignment.objects.filter(

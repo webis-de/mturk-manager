@@ -1,11 +1,11 @@
 import _ from 'lodash';
 import Vue from 'vue';
-import { classesHeaders, initPagination, setPagination } from '../../helpers';
-import { TemplateWorker } from '../../classes/template_worker';
-import Template_Assignment from '../../classes/template_assignment';
-import Template_HIT from '../../classes/template_hit';
-import Template_Global from '../../classes/template_global';
-import baseModule from './base.module';
+import { TemplateWorker } from '@/classes/template_worker';
+import Template_Assignment from '@/classes/template_assignment';
+import Template_HIT from '@/classes/template_hit';
+import Template_Global from '@/classes/template_global';
+import baseModule from '@/store/modules/base.module';
+import { classesHeaders } from '../../helpers';
 
 export const moduleTemplates = _.merge({}, baseModule, {
   namespaced: true,
@@ -144,6 +144,19 @@ export const moduleTemplates = _.merge({}, baseModule, {
   getters: {
   },
   mutations: {
+    setTemplatesWorker(state, { templates }) {
+      state.arrayItemsWorker = templates;
+    },
+    setTemplatesAssignment(state, { templates }) {
+      state.arrayItemsAssignment = templates;
+    },
+    setTemplatesHIT(state, { templates }) {
+      state.arrayItemsHIT = templates;
+    },
+    setTemplatesGlobal(state, { templates }) {
+      state.arrayItemsGlobal = templates;
+    },
+
     setItems(state, { data, typeTemplate, add = false }) {
       let nameState;
       let classTemplate;
@@ -199,7 +212,7 @@ export const moduleTemplates = _.merge({}, baseModule, {
       switch (typeTemplate) {
         case 'worker':
           nameState = 'arrayItemsWorker';
-          classTemplate = Template_Worker;
+          classTemplate = TemplateWorker;
           break;
         case 'assignment':
           nameState = 'arrayItemsAssignment';
@@ -215,7 +228,7 @@ export const moduleTemplates = _.merge({}, baseModule, {
           break;
         case 'workerAll':
           nameState = 'arrayItemsWorkerAll';
-          classTemplate = Template_Worker;
+          classTemplate = TemplateWorker;
           break;
         case 'assignmentAll':
           nameState = 'arrayItemsAssignmentAll';
@@ -247,7 +260,7 @@ export const moduleTemplates = _.merge({}, baseModule, {
       switch (typeTemplate) {
         case 'worker':
           nameState = 'arrayItemsWorker';
-          classTemplate = Template_Worker;
+          classTemplate = TemplateWorker;
           break;
         case 'assignment':
           nameState = 'arrayItemsAssignment';
@@ -344,6 +357,26 @@ export const moduleTemplates = _.merge({}, baseModule, {
           nameState: 'paginationGlobal',
         }),
       ]);
+    },
+    setTemplatesWorker({ commit}, { templates }) {
+      commit('setTemplatesWorker', {
+        templates,
+      });
+    },
+    setTemplatesAssignment({ commit}, { templates }) {
+      commit('setTemplatesAssignment', {
+        templates,
+      });
+    },
+    setTemplatesHIT({ commit}, { templates }) {
+      commit('setTemplatesHIT', {
+        templates,
+      });
+    },
+    setTemplatesGlobal({ commit}, { templates }) {
+      commit('setTemplatesGlobal', {
+        templates,
+      });
     },
   },
 });

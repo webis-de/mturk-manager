@@ -2,6 +2,9 @@ import gql from 'graphql-tag';
 import { fragmentsTemplate } from '@/modules/template/template.fragment';
 
 export const queryTemplates = gql`query templates($project: ID!){
+    templatesWorker(project: $project) {
+        ...templateWorker
+    }
     templatesAssignment(project: $project) {
         ...templateAssignment
     }
@@ -12,6 +15,7 @@ export const queryTemplates = gql`query templates($project: ID!){
         ...templateGlobal
     }
 }
+${fragmentsTemplate.templateWorker}
 ${fragmentsTemplate.templateAssignment}
 ${fragmentsTemplate.templateHIT}
 ${fragmentsTemplate.templateGlobal}

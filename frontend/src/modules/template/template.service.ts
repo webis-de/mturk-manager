@@ -12,7 +12,19 @@ class ClassServiceTemplates {
       // fetchPolicy: 'no-cache',
     });
 
-    console.log('templates', response);
+    store.dispatch('moduleTemplates/setTemplatesWorker', {
+      templates: response.data.templatesWorker,
+    });
+    store.dispatch('moduleTemplates/setTemplatesAssignment', {
+      templates: response.data.templatesAssignment,
+    });
+    store.dispatch('moduleTemplates/setTemplatesHIT', {
+      templates: response.data.templatesHit,
+    });
+    store.dispatch('moduleTemplates/setTemplatesGlobal', {
+      templates: response.data.templatesGlobal,
+    });
+    console.log('templates', response.data);
   }
 }
 

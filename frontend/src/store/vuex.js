@@ -17,7 +17,7 @@ import { moduleMessages } from './modules/messages.store';
 import { module_app } from './modules/app';
 import { module_finances } from './modules/finances';
 import { moduleSettingsBatch } from './modules/settings-batch';
-import {moduleTemplates} from './modules/templates';
+import { moduleTemplates } from '../modules/template/template.store';
 
 Vue.use(Vuex);
 Vue.use(VueCookies);
@@ -70,7 +70,7 @@ export const store = new Vuex.Store({
     //
     //     return url;
     // },
-    get_url: state => (url, module) => state[module][url],
+    get_url: (state) => (url, module) => state[module][url],
   },
   mutations: {
     set_token_csrf(state, token_csrf) {

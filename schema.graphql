@@ -8,6 +8,7 @@ type Query {
     templatesAssignment(project: ID): [TypeTemplateAssignment]
     templatesGlobal(project: ID): [TypeTemplateGlobal]
     templatesHit(project: ID): [TypeTemplateHIT]
+    templatesWorker(project: ID): [TypeTemplateWorker]
 }
 
 type TypeTemplateAssignment {
@@ -16,6 +17,7 @@ type TypeTemplateAssignment {
     isActive: Boolean!
     name: String!
     template: String!
+    templatesUsed: [TypeTemplateWorker!]!
 }
 
 type TypeTemplateGlobal {
@@ -24,6 +26,7 @@ type TypeTemplateGlobal {
     isActive: Boolean!
     name: String!
     template: String!
+    templatesUsed: [TypeTemplateWorker!]!
 }
 
 type TypeTemplateHIT {
@@ -32,6 +35,22 @@ type TypeTemplateHIT {
     isActive: Boolean!
     name: String!
     template: String!
+    templatesUsed: [TypeTemplateWorker!]!
+}
+
+type TypeTemplateWorker {
+    datetimeCreation: DateTime!
+    heightFrame: Int!
+    id: ID!
+    isActive: Boolean!
+    jsonDictParameters: String!
+    name: String!
+    template: String!
+    templateAssignment: TypeTemplateAssignment
+    templateGlobal: TypeTemplateGlobal
+    templateHit: TypeTemplateHIT
+    templateOriginal: TypeTemplateWorker
+    templates: [TypeTemplateWorker!]!
 }
 
 

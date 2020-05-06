@@ -1,6 +1,12 @@
 from graphene_django import DjangoObjectType
 
-from api.models import Template_Assignment, Template_HIT, Template_Global
+from api.models import Template_Assignment, Template_HIT, Template_Global, Template_Worker
+
+
+class TypeTemplateWorker(DjangoObjectType):
+    class Meta:
+        model = Template_Worker
+        fields = '__all__'
 
 
 class TypeTemplateAssignment(DjangoObjectType):
