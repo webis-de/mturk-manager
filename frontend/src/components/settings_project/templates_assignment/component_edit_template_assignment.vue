@@ -136,7 +136,7 @@ export default {
   name: 'ComponentEditTemplateAssignment',
   mixins: [helpers, validations],
   props: {
-    templateAssignmentCurrent: {},
+    template_assignment_current: {},
   },
   data() {
     return {
