@@ -13,45 +13,45 @@
       v-bind:style="stylesCell"
       class="text-end px-1 text-no-wrap"
     >
-      {{ templateWorker.height_frame }} px
+      {{ templateWorker.heightFrame }} px
     </td>
     <td
       v-bind:style="stylesCell"
       class="text-end px-1 text-no-wrap"
     >
-      {{ Object.keys(templateWorker.dict_parameters).length }}
+      {{ Object.keys(templateWorker.dictParameters).length }}
     </td>
     <td
       v-bind:style="stylesCell"
       class="text-end px-1 text-no-wrap"
     >
-      <span v-if="templateWorker.template_assignment === null">
+      <span v-if="templateWorker.templateAssignment === null">
         None
       </span>
       <span v-else>
-        {{ templateWorker.template_assignment.name }}
+        {{ templateWorker.templateAssignment.name }}
       </span>
     </td>
     <td
       v-bind:style="stylesCell"
       class="text-end px-1 text-no-wrap"
     >
-      <span v-if="templateWorker.template_hit === null">
+      <span v-if="templateWorker.templateHIT === null">
         None
       </span>
       <span v-else>
-        {{ templateWorker.template_hit.name }}
+        {{ templateWorker.templateHIT.name }}
       </span>
     </td>
     <td
       v-bind:style="stylesCell"
       class="text-end px-1 text-no-wrap"
     >
-      <span v-if="templateWorker.template_global === null">
+      <span v-if="templateWorker.templateGlobal === null">
         None
       </span>
       <span v-else>
-        {{ templateWorker.template_global.name }}
+        {{ templateWorker.templateGlobal.name }}
       </span>
     </td>
     <td
@@ -76,22 +76,20 @@
 <script>
 import ComponentEditTemplateWorker from './component_edit_template_worker';
 import ComponentDeleteTemplateWorker from './component_delete_template_worker';
+import { TemplateWorker } from '../../../modules/template/templateWorker.model';
 
 export default {
   name: 'ItemTemplatesWorker',
   components: { ComponentDeleteTemplateWorker, ComponentEditTemplateWorker },
   props: {
     item: {
-      type: Object,
+      type: TemplateWorker,
       required: true,
     },
     isCondensed: {
       required: true,
       type: Boolean,
     },
-  },
-  data() {
-    return {};
   },
   computed: {
     templateWorker() { return this.item; },

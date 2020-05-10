@@ -7,8 +7,7 @@
       name-state-pagination="paginationWorker"
       name-local-storage-pagination="pagination_templates_worker"
 
-      v-bind:function-load-page="loadPage"
-      v-bind:array-items="arrayItems"
+      v-bind:array-items="$store.getters['moduleTemplates/templatesWorker']"
 
       name-state-columns="arrayColumnsWorker"
       name-state-columns-selected="objectColumnsSelectedInitialGeneral"
@@ -70,9 +69,8 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations, mapState } from 'vuex';
+import { mapMutations, mapState } from 'vuex';
 import BaseTable from '../../base-table';
-import { ServiceTemplates } from '../../../services/templates.service';
 import ItemTemplatesWorker from './item-templates-worker';
 import ComponentAddTemplateWorker from './component_add_template_worker';
 
@@ -85,19 +83,12 @@ export default {
   },
   data() {
     return {
-      loadPage: ServiceTemplates.loadPageWorker,
-
       snackbarDeleted: false,
       snackbarEdited: false,
       snackbarCreated: false,
     };
   },
   computed: {
-    arrayItems() {
-      const { arrayItemsWorker } = this.$store.state.moduleTemplates;
-
-      return arrayItemsWorker === null ? [] : arrayItemsWorker;
-    },
     ...mapState('moduleTemplates', {
       paginationComputed: 'paginationWorker',
     }),

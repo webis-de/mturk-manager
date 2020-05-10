@@ -23,11 +23,6 @@ class ClassServiceApp {
     if (response.success) {
       await ServiceProjects.loadProjects();
       await ServiceProjects.loadProjectData();
-      if (store.state.moduleProjects.slug_project_current !== undefined) {
-        await ServiceTemplates.getAll({
-          typeTemplate: 'workerAll',
-        });
-      }
     }
 
     return response;

@@ -1,11 +1,23 @@
 import _ from 'lodash';
 import Vue from 'vue';
-import { TemplateWorker } from '@/classes/template_worker';
+import { TemplateWorker as Template_Worker } from '@/classes/template_worker';
 import Template_Assignment from '@/classes/template_assignment';
 import Template_HIT from '@/classes/template_hit';
 import Template_Global from '@/classes/template_global';
 import baseModule from '@/store/modules/base.module';
+import { TemplateAssignment } from '@/modules/template/templateAssignment.model';
+import { TemplateHIT } from '@/modules/template/templateHIT.model';
+import { TemplateGlobal } from '@/modules/template/templateGlobal.model';
+import { TemplateWorker } from '@/modules/template/templateWorker.model';
 import { classesHeaders } from '../../helpers';
+import {TemplateBase} from "@/modules/template/templateBase.model";
+
+interface StoreTemplateState {
+  templatesWorker: { [key: string]: TemplateWorker};
+  templatesAssignment: { [key: string]: TemplateAssignment};
+  templatesHIT: { [key: string]: TemplateHIT};
+  templatesGlobal: { [key: string]: TemplateGlobal};
+}
 
 export const moduleTemplates = _.merge({}, baseModule, {
   namespaced: true,
@@ -20,15 +32,15 @@ export const moduleTemplates = _.merge({}, baseModule, {
     urlApiProjectsTemplatesHITAll: undefined,
     urlApiProjectsTemplatesGlobalAll: undefined,
 
-    arrayItemsWorker: null,
-    arrayItemsAssignment: null,
-    arrayItemsHIT: null,
-    arrayItemsGlobal: null,
+    templatesWorker: null,
+    templatesAssignment: null,
+    templatesHIT: null,
+    templatesGlobal: null,
 
-    arrayItemsWorkerAll: null,
-    arrayItemsAssignmentAll: null,
-    arrayItemsHITAll: null,
-    arrayItemsGlobalAll: null,
+    // arrayItemsWorkerAll: null,
+    // arrayItemsAssignmentAll: null,
+    // arrayItemsHITAll: null,
+    // arrayItemsGlobalAll: null,
 
     paginationWorker: {
       rowsPerPage: 5,
@@ -142,19 +154,27 @@ export const moduleTemplates = _.merge({}, baseModule, {
     },
   },
   getters: {
+    templatesWorker(state: StoreTemplateState): TemplateWorker[] {
+      return Object.values(state.templatesWorker);
+    },
+    templatesRequester(state: StoreTemplateState): TemplateBase[] {
+      return Object.values(state.templatesAssignment)
+        .concat(Object.values(state.templatesHIT))
+        .concat(Object.values(state.templatesGlobal));
+    },
   },
   mutations: {
-    setTemplatesWorker(state, { templates }) {
-      state.arrayItemsWorker = templates;
+    setTemplatesWorker(state: StoreTemplateState, { templates }: {templates: { [key: string]: TemplateWorker}}) {
+      state.templatesWorker = templates;
     },
-    setTemplatesAssignment(state, { templates }) {
-      state.arrayItemsAssignment = templates;
+    setTemplatesAssignment(state: StoreTemplateState, { templates }: {templates: { [key: string]: TemplateAssignment}}) {
+      state.templatesAssignment = templates;
     },
-    setTemplatesHIT(state, { templates }) {
-      state.arrayItemsHIT = templates;
+    setTemplatesHIT(state: StoreTemplateState, { templates }: {templates: { [key: string]: TemplateHIT}}) {
+      state.templatesHIT = templates;
     },
-    setTemplatesGlobal(state, { templates }) {
-      state.arrayItemsGlobal = templates;
+    setTemplatesGlobal(state: StoreTemplateState, { templates }: {templates: { [key: string]: TemplateGlobal}}) {
+      state.templatesGlobal = templates;
     },
 
     setItems(state, { data, typeTemplate, add = false }) {
@@ -163,7 +183,7 @@ export const moduleTemplates = _.merge({}, baseModule, {
       switch (typeTemplate) {
         case 'worker':
           nameState = 'arrayItemsWorker';
-          classTemplate = TemplateWorker;
+          classTemplate = Template_Worker;
           break;
         case 'assignment':
           nameState = 'arrayItemsAssignment';
@@ -179,7 +199,7 @@ export const moduleTemplates = _.merge({}, baseModule, {
           break;
         case 'workerAll':
           nameState = 'arrayItemsWorkerAll';
-          classTemplate = TemplateWorker;
+          classTemplate = Template_Worker;
           break;
         case 'assignmentAll':
           nameState = 'arrayItemsAssignmentAll';
@@ -212,7 +232,7 @@ export const moduleTemplates = _.merge({}, baseModule, {
       switch (typeTemplate) {
         case 'worker':
           nameState = 'arrayItemsWorker';
-          classTemplate = TemplateWorker;
+          classTemplate = Template_Worker;
           break;
         case 'assignment':
           nameState = 'arrayItemsAssignment';
@@ -228,7 +248,7 @@ export const moduleTemplates = _.merge({}, baseModule, {
           break;
         case 'workerAll':
           nameState = 'arrayItemsWorkerAll';
-          classTemplate = TemplateWorker;
+          classTemplate = Template_Worker;
           break;
         case 'assignmentAll':
           nameState = 'arrayItemsAssignmentAll';
@@ -260,7 +280,7 @@ export const moduleTemplates = _.merge({}, baseModule, {
       switch (typeTemplate) {
         case 'worker':
           nameState = 'arrayItemsWorker';
-          classTemplate = TemplateWorker;
+          classTemplate = Template_Worker;
           break;
         case 'assignment':
           nameState = 'arrayItemsAssignment';
@@ -358,22 +378,22 @@ export const moduleTemplates = _.merge({}, baseModule, {
         }),
       ]);
     },
-    setTemplatesWorker({ commit}, { templates }) {
+    setTemplatesWorker({ commit }, { templates }) {
       commit('setTemplatesWorker', {
         templates,
       });
     },
-    setTemplatesAssignment({ commit}, { templates }) {
+    setTemplatesAssignment({ commit }, { templates }) {
       commit('setTemplatesAssignment', {
         templates,
       });
     },
-    setTemplatesHIT({ commit}, { templates }) {
+    setTemplatesHIT({ commit }, { templates }) {
       commit('setTemplatesHIT', {
         templates,
       });
     },
-    setTemplatesGlobal({ commit}, { templates }) {
+    setTemplatesGlobal({ commit }, { templates }) {
       commit('setTemplatesGlobal', {
         templates,
       });

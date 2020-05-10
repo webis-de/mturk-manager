@@ -29,7 +29,6 @@
 import { mapActions, mapGetters } from 'vuex';
 import { ServiceProjects } from './services/projects.service';
 import TheUpdateNotification from './components/the-update-notification';
-import { ServiceTemplates as ServiceTemplatesDeprecated } from './services/templates.service';
 
 export default {
   name: 'App',
@@ -48,12 +47,6 @@ export default {
   watch: {
     async slug_project_current() {
       await ServiceProjects.loadProjectData();
-
-      if (this.slug_project_current !== undefined) {
-        await ServiceTemplatesDeprecated.getAll({
-          typeTemplate: 'workerAll',
-        });
-      }
     },
   },
   methods: {
