@@ -15,10 +15,11 @@
       v-bind:show-select="false"
     >
       <template
-        v-slot:default="{ item, isCondensed }"
+        v-slot:default="{ item, objectColumnsSelected, isCondensed }"
       >
         <item-templates-worker
           v-bind:item="item"
+          v-bind:object-columns-selected="objectColumnsSelected"
           v-bind:is-condensed="isCondensed"
 
           v-on:edited="snackbarEdited = true"

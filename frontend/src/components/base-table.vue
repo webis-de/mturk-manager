@@ -3,7 +3,7 @@
     v-intersect.once="onIntersect"
     v-bind:show-select="showSelect"
     v-bind:headers="arrayHeaders"
-    v-bind:items="arrayItems"
+    v-bind:items="arrayItemsReal"
     v-bind:server-items-length="itemsTotal"
     v-bind:loading="loading"
     item-key="id"
@@ -242,12 +242,13 @@ export default {
 
 
     arrayItems: {
-      type: Array,
+      type: Array | null,
       required: true,
     },
     functionLoadPage: {
       type: Function,
-      required: true,
+      required: false,
+      default: null,
     },
 
     functionSetItemsSelected: {
@@ -313,7 +314,7 @@ export default {
       // },
       loading: false,
       search: '',
-      itemsTotal: null,
+      itemsTotal: -1,
       page: 1,
 
       columns: this.$store.state[this.nameVuexModule][this.nameStateColumns],
@@ -324,6 +325,12 @@ export default {
     };
   },
   computed: {
+    arrayItemsReal() {
+      return this.arrayItems === null ? [] : this.arrayItems;
+    },
+    itemsTotalReal() {
+      return this.functionLoadPage === null ? this.arrayItemsReal.length : this.itemsTotal;
+    },
     isIndeterminate() {
       return this.isWholePageSelected === false && this.isAtLeastOneItemOfPageSelected === true;
     },
@@ -335,7 +342,7 @@ export default {
     heightTable() {
       let { itemsPerPage } = this.pagination;
 
-      if (this.itemsTotal !== null && this.itemsTotal < itemsPerPage) {
+      if (this.itemsTotalReal !== null && this.itemsTotal < itemsPerPage) {
         itemsPerPage = this.itemsTotal;
       }
 
@@ -367,23 +374,23 @@ export default {
     arrayHeaders() {
       return _.filter(this.columns, column => Object.prototype.hasOwnProperty.call(this.columnsSelected, column.value));
     },
-    is_page_selected() {
-      let isPageSelected = true;
-
-      if (_.size(this.arrayItems) === 0) {
-        return false;
-      }
-
-      _.forEach(this.arrayItems, (item) => {
-        if (!_.has(this.$store.state[this.nameVuexModule][this.nameStateItemsSelected], item.id)) {
-          isPageSelected = false;
-          return false;
-        }
-        return true;
-      });
-
-      return isPageSelected;
-    },
+    // is_page_selected() {
+    //   let isPageSelected = true;
+    //
+    //   if (_.size(this.arrayItems) === 0) {
+    //     return false;
+    //   }
+    //
+    //   _.forEach(this.arrayItems, (item) => {
+    //     if (!_.has(this.$store.state[this.nameVuexModule][this.nameStateItemsSelected], item.id)) {
+    //       isPageSelected = false;
+    //       return false;
+    //     }
+    //     return true;
+    //   });
+    //
+    //   return isPageSelected;
+    // },
     isSelectedAll: {
       get() {
         return this.isWholePageSelected;
@@ -448,7 +455,7 @@ export default {
       this.isAtLeastOneItemOfPageSelected = isAtLeastOneItemOfPageSelected;
     },
     onIntersect(entries, observer, isIntersecting) {
-      if (isIntersecting === true) {
+      if (isIntersecting === true && this.functionLoadPage !== null) {
         this.load_page(this.filters);
       }
     },
@@ -467,14 +474,18 @@ export default {
 
         this.page = options.page;
 
-        this.$nextTick(() => {
-          this.load_page(this.filters);
-        });
+        if (this.functionLoadPage !== null) {
+          this.$nextTick(() => {
+            this.load_page(this.filters);
+          });
+        }
       }
     },
     refresh() {
       this.pagination.page = 1;
-      this.load_page(this.filters);
+      if (this.functionLoadPage !== null) {
+        this.load_page(this.filters);
+      }
     },
     // Reset pagination/load page if the sandbox status was changed
     sandboxUpdated() {
@@ -509,9 +520,11 @@ export default {
       });
       // }
 
-      this.$nextTick(() => {
-        this.load_page(this.filters);
-      });
+      if (this.functionLoadPage !== null) {
+        this.$nextTick(() => {
+          this.load_page(this.filters);
+        });
+      }
     },
     load_page(filters) {
       this.loading = true;

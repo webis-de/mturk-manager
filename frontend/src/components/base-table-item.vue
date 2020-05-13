@@ -2,7 +2,7 @@
   <tr
     class="text-no-wrap roboto-mono table-row"
   >
-    <td>
+    <td v-if="itemsSelected !== null">
       <base-table-checkbox
         v-model="isSelected"
       />
@@ -25,7 +25,8 @@ export default {
     },
     itemsSelected: {
       type: Object,
-      required: true,
+      required: false,
+      default: null,
     },
   },
   computed: {

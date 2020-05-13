@@ -1,28 +1,37 @@
 <template>
-  <tr>
-    <td
-      v-bind:style="{
-        ...stylesCell,
-        'paddingLeft': '16px',
-      }"
-      class="text-xs-left"
+  <base-table-item
+    v-bind:key="templateAssignment.id"
+    v-bind:item="item"
+  >
+    <base-table-cell
+      v-slot="{ item }"
+      name="name"
+      class="text-left text-capitalize"
+      v-bind:item="templateAssignment"
+      v-bind:columns-selected="objectColumnsSelected"
     >
-      {{ templateAssignment.name }}
-    </td>
-    <td
-      v-bind:style="{
-        ...stylesCell,
-      }"
-      class="text-end px-1"
+      {{ item.name }}
+    </base-table-cell>
+
+    <base-table-cell
+      v-slot="{ item }"
+      name="name"
+      class="text-left text-capitalize"
+      v-bind:item="templateAssignment"
+      v-bind:columns-selected="objectColumnsSelected"
     >
       {{ type }}
-    </td>
-    <td
-      v-bind:style="stylesCell"
-      class="text-xs-center text-no-wrap"
+    </base-table-cell>
+
+    <base-table-cell
+      v-slot="{ item }"
+      name="name"
+      class="text-left text-capitalize"
+      v-bind:item="templateAssignment"
+      v-bind:columns-selected="objectColumnsSelected"
     >
       <component-edit-template-assignment
-        v-bind:key="`component-edit-template-assignment-${templateAssignment.id}`"
+        v-bind:key="`component-edit-template-assignment-${item.id}`"
         v-bind:template_assignment_current="templateAssignment"
         v-on:edited="$emit('edited')"
       />
@@ -30,24 +39,28 @@
         v-bind:key="
           `component-delete-template-assignment-${templateAssignment.id}`
         "
-        v-bind:template_assignment="templateAssignment"
-        v-on:deleted="$emit('deleted')"
-      />
-    </td>
-  </tr>
+        v-bind:template_assignment="templateAssignment"></component-delete-template-assignment>
+    </base-table-cell>
+  </base-table-item>
 </template>
 
 <script>
 import ComponentEditTemplateAssignment from './component_edit_template_assignment';
 import ComponentDeleteTemplateAssignment from './component_delete_template_assignment';
-import Template_HIT from '../../../classes/template_hit';
-import Template_Global from '../../../classes/template_global';
+import BaseTableItem from '../../base-table-item';
+import BaseTableCell from '../../base-table-cell';
+import { TemplateHIT } from '../../../modules/template/templateHIT.model';
+import { TemplateGlobal } from '../../../modules/template/templateGlobal.model';
 
 export default {
   name: 'ItemTemplatesAssignment',
-  components: { ComponentDeleteTemplateAssignment, ComponentEditTemplateAssignment },
+  components: { BaseTableCell, BaseTableItem, ComponentDeleteTemplateAssignment, ComponentEditTemplateAssignment },
   props: {
     item: {
+      type: Object,
+      required: true,
+    },
+    objectColumnsSelected: {
       type: Object,
       required: true,
     },
@@ -59,8 +72,8 @@ export default {
   computed: {
     type() {
       let type = 'Assignment';
-      if (this.item instanceof Template_HIT) type = 'HIT';
-      else if (this.item instanceof Template_Global) type = 'Global';
+      if (this.item instanceof TemplateHIT) type = 'HIT';
+      else if (this.item instanceof TemplateGlobal) type = 'Global';
       return type;
     },
     templateAssignment() { return this.item; },

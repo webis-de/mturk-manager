@@ -8,18 +8,18 @@
       name-local-storage-pagination="pagination_templates_assignment"
 
       v-bind:function-load-page="loadPage"
-      v-bind:array-items="arrayItems"
-
+      v-bind:array-items="$store.getters['moduleTemplates/templatesRequester']"
       name-state-columns="arrayColumns"
       name-state-columns-selected="objectColumnsSelectedInitial"
 
       v-bind:show-select="false"
     >
       <template
-        v-slot:default="{ item, isCondensed }"
+        v-slot:default="{ item, objectColumnsSelected, isCondensed }"
       >
         <item-templates-assignment
           v-bind:item="item"
+          v-bind:object-columns-selected="objectColumnsSelected"
           v-bind:is-condensed="isCondensed"
 
           v-on:edited="snackbarEdited = true"

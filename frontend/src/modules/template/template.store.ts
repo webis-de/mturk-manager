@@ -71,14 +71,14 @@ export const moduleTemplates = _.merge({}, baseModule, {
       },
       {
         text: 'Height',
-        value: 'height_frame',
+        value: 'heightFrame',
         width: '1px',
         align: 'end',
         class: classesHeaders,
       },
       {
         text: '#Variables',
-        value: 'count_parameters',
+        value: 'countParameters',
         sortable: false,
         width: '1px',
         align: 'end',
@@ -86,21 +86,21 @@ export const moduleTemplates = _.merge({}, baseModule, {
       },
       {
         text: 'Assignment Template',
-        value: 'template_assignment',
+        value: 'templateAssignment',
         width: '1px',
         align: 'end',
         class: classesHeaders,
       },
       {
         text: 'Assignment HIT',
-        value: 'template_hit',
+        value: 'templateHIT',
         width: '1px',
         align: 'end',
         class: classesHeaders,
       },
       {
         text: 'Assignment Global',
-        value: 'template_global',
+        value: 'templateGlobal',
         width: '1px',
         align: 'end',
         class: classesHeaders,
@@ -117,11 +117,11 @@ export const moduleTemplates = _.merge({}, baseModule, {
 
     objectColumnsSelectedInitialGeneral: {
       name: true,
-      height_frame: true,
-      count_parameters: true,
-      template_assignment: true,
-      template_hit: true,
-      template_global: true,
+      heightFrame: true,
+      countParameters: true,
+      templateAssignment: true,
+      templateHIT: true,
+      templateGlobal: true,
       actions: true,
     },
 
@@ -154,10 +154,14 @@ export const moduleTemplates = _.merge({}, baseModule, {
     },
   },
   getters: {
-    templatesWorker(state: StoreTemplateState): TemplateWorker[] {
+    templatesWorker(state: StoreTemplateState): TemplateWorker[] | null {
+      if (state.templatesWorker === null) return null;
+
       return Object.values(state.templatesWorker);
     },
-    templatesRequester(state: StoreTemplateState): TemplateBase[] {
+    templatesRequester(state: StoreTemplateState): TemplateBase[] | null {
+      if (state.templatesWorker === null) return null;
+
       return Object.values(state.templatesAssignment)
         .concat(Object.values(state.templatesHIT))
         .concat(Object.values(state.templatesGlobal));
