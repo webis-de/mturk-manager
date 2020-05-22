@@ -98,25 +98,25 @@ export default class View {
 
   inject_templates() {
     this.wrapper_hits.html('');
-    // console.log('OBJECT_BATCHES', this.loader.object_batches);
-    // console.log('OBJECT_HITS', this.loader.object_hits);
-    // console.log('OBJECT_ASSIGNMENTS', this.loader.object_assignments);
-    const object_assignments_grouped_by_batch = _.groupBy(
+    console.log('OBJECT_BATCHES', this.loader.object_batches);
+    console.log('OBJECT_HITS', this.loader.object_hits);
+    console.log('OBJECT_ASSIGNMENTS', this.loader.object_assignments);
+    const objectAssignmentsGroupedByBatch = _.groupBy(
       this.loader.object_assignments,
       'hit.batch.id',
     );
     _.forEach(
-      object_assignments_grouped_by_batch,
-      (list_assignments, id_batch) => {
+      objectAssignmentsGroupedByBatch,
+      (assignments, id_batch) => {
         const batch = this.loader.object_batches[id_batch];
 
-        const template_global = _.get(
+        const templateGlobal = _.get(
           batch,
           'settings_batch.template.template_global.template',
           undefined,
         );
-        if (template_global !== undefined) {
-          this.wrapper_hits.append(template_global);
+        if (templateGlobal !== undefined) {
+          this.wrapper_hits.append(templateGlobal);
         }
 
         const template_hit = _.get(
@@ -131,30 +131,24 @@ export default class View {
           undefined,
         );
 
-        const template_assignment_parsed = $.parseHTML(template_assignment);
-        let is_table = false;
-        _.forEach(template_assignment_parsed, (element) => {
-          if ($(element).is('tr')) {
-            is_table = true;
-            return false;
-          }
-        });
+        const templateAssignmentParsed: JQuery.Node[] = $.parseHTML(template_assignment);
+        const isTable = templateAssignmentParsed.some((element) => $(element).is('tr'));
 
-        let object_groups;
+        let objectGroups;
         switch (this.group_by) {
           case 'hits':
-            object_groups = _.groupBy(list_assignments, 'hit.id');
+            objectGroups = _.groupBy(assignments, 'hit.id');
             break;
           case 'workers':
-            object_groups = _.groupBy(list_assignments, 'worker.id');
+            objectGroups = _.groupBy(assignments, 'worker.id');
             break;
           default:
-            object_groups = _.groupBy(list_assignments, 'id');
+            objectGroups = _.groupBy(assignments, 'id');
         }
 
-        _.forEach(object_groups, (group, id_group) => {
-          const object_grouped_by_hits = _.groupBy(group, 'hit.id');
-          _.forEach(object_grouped_by_hits, (grouped_by_hits, id_hit) => {
+        _.forEach(objectGroups, (group, id_group) => {
+          const objectGroupedByHITs = _.groupBy(group, 'hit.id');
+          _.forEach(objectGroupedByHITs, (grouped_by_hits, id_hit) => {
             const id = `${id_batch}_${id_group}_${id_hit}`;
             // save hit object
             const hit = this.loader.object_hits[id_hit];
@@ -201,14 +195,13 @@ export default class View {
 
               const script_define_variables = $(`
 							<script>
-								var assignment_wrapper = $(\'${is_table ? 'tr' : 'span'}[data-id_assignment="${
+								var assignment_wrapper = $(\'${isTable ? 'tr' : 'span'}[data-id_assignment="${
   assignment.id
 }"]\'); 
 								var assignment = assignment_wrapper.data("assignment")
 							</script>
-						`)[0];
-
-              if (is_table === true) {
+						`).prop('outerHTML');
+              if (isTable === true) {
                 wrapper_assignment = $(template_assignment);
                 const index_row = _.findIndex(wrapper_assignment, e => e.tagName === 'TR');
 

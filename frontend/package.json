@@ -10,14 +10,16 @@
     "apollo:schema:publish": "vue-cli-service apollo:schema:publish",
     "apollo:start": "vue-cli-service apollo:start",
     "parcel": "./node_modules/.bin/parcel watch --public-url /static/mturk_manager/js/dist ./mturk_manager/static/mturk_manager/js/vue/index.js -d ./mturk_manager/static/mturk_manager/js/dist",
-    "parcel_annotate": "./node_modules/.bin/parcel watch --no-hmr ./annotate/index_annotate.js -d ./dist",
-    "parcel_annotate_build": "./node_modules/.bin/parcel build ./annotate/index_annotate.js -d ./dist",
+    "parcel_annotate": "./node_modules/.bin/parcel watch --no-hmr ./annotate/index_annotate.ts -d ./dist",
+    "parcel_annotate_build": "./node_modules/.bin/parcel build ./annotate/view.html -d ./dist",
+    "parcel_annotate_build1": "./node_modules/.bin/parcel build ./annotate/index_annotate.ts -d ./dist",
     "parcel_build": "./node_modules/.bin/parcel build --public-url /static/mturk_manager/js/dist ./mturk_manager/static/mturk_manager/js/vue/index.js -d ./mturk_manager/static/mturk_manager/js/dist",
     "parcel_sandbox_hit_build": "./node_modules/.bin/parcel build ./sandbox-hit/sandbox-hit.js -d ./dist"
   },
   "main": "index.js",
   "dependencies": {
     "@mdi/font": "^5.2.45",
+    "@types/jquery": "^3.3.38",
     "@types/vuelidate": "^0.7.13",
     "@vue/component-compiler": "^3.6.0",
     "axios": "^0.19.2",
