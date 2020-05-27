@@ -11,8 +11,8 @@
     "apollo:start": "vue-cli-service apollo:start",
     "parcel": "./node_modules/.bin/parcel watch --public-url /static/mturk_manager/js/dist ./mturk_manager/static/mturk_manager/js/vue/index.js -d ./mturk_manager/static/mturk_manager/js/dist",
     "parcel_annotate": "./node_modules/.bin/parcel watch --no-hmr ./annotate/index_annotate.ts -d ./dist",
-    "parcel_annotate_build": "./node_modules/.bin/parcel build ./annotate/view.html -d ./dist",
-    "parcel_annotate_build1": "./node_modules/.bin/parcel build ./annotate/index_annotate.ts -d ./dist",
+    "parcel_annotate_build1": "./node_modules/.bin/parcel build ./annotate/view.html -d ./dist",
+    "parcel_annotate_build": "./node_modules/.bin/parcel build ./annotate/index_annotate.ts -d ./dist",
     "parcel_build": "./node_modules/.bin/parcel build --public-url /static/mturk_manager/js/dist ./mturk_manager/static/mturk_manager/js/vue/index.js -d ./mturk_manager/static/mturk_manager/js/dist",
     "parcel_sandbox_hit_build": "./node_modules/.bin/parcel build ./sandbox-hit/sandbox-hit.js -d ./dist"
   },

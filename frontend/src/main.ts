@@ -9,7 +9,7 @@ import VueAxios from 'vue-axios';
 import Vuex from 'vuex';
 import VueCookies from 'vue-cookies';
 import { store } from './store/vuex';
-import App from './App';
+import App from '@/App';
 
 import { router } from './router';
 import { vuetify } from './vuetify';

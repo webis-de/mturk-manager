@@ -51,15 +51,14 @@
               "
             />
 
-            <base-editor
+            <template-worker-sandbox
               v-bind:value="template_worker.template"
-              v-bind:label="'Template'"
+              label="Template"
               v-on:input="
                 template_worker.template = $event;
                 $v.template_worker.template.$touch();
               "
             />
-            <v-textarea />
             <!--              v-bind:error-messages="validation_errors.template_worker.template"-->
 
             <v-select
@@ -144,10 +143,11 @@ import helpers from '../../../mixins/helpers.mixin';
 import { TemplateWorker } from '../../../classes/template_worker';
 import { ServiceTemplates } from '../../../services/templates.service';
 import BaseEditor from '../../../modules/app/components/base-editor';
+import TemplateWorkerSandbox from '../../../modules/template/components/template-worker-sandbox';
 
 export default {
   name: 'ComponentAddTemplateWorker',
-  components: { BaseEditor },
+  components: { TemplateWorkerSandbox, BaseEditor },
   mixins: [helpers, validations],
   data() {
     return {

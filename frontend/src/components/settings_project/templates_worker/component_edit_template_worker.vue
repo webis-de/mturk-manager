@@ -57,9 +57,9 @@
             "
           />
 
-          <base-editor
+          <template-worker-sandbox
             v-model="template_worker.template"
-            v-bind:label="'Template'"
+            label="Template"
           />
 
           <!--          <v-textarea-->
@@ -161,6 +161,7 @@ import validations from '../../../mixins/validations.mixin';
 import { ServiceTemplates } from '../../../services/templates.service';
 import BaseEditor from '../../../modules/app/components/base-editor';
 import { TemplateWorker } from '../../../classes/template_worker';
+import TemplateWorkerSandbox from '../../../modules/template/components/template-worker-sandbox';
 
 export default {
   name: 'ComponentEditTemplateWorker',
@@ -281,6 +282,6 @@ export default {
       typeTemplate: 'globalAll',
     });
   },
-  components: { BaseEditor },
+  components: { TemplateWorkerSandbox, BaseEditor },
 };
 </script>

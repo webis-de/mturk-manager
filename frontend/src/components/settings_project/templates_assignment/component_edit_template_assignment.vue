@@ -44,8 +44,9 @@
               $v.template_assignment.name.$touch();
             "
           />
-          <base-editor
-            v-bind:value="template_assignment.template"
+
+          <template-assignment-sandbox
+            v-model="template_assignment.template"
             label="Template"
             v-on:input="
               template_assignment.template = $event;
@@ -131,6 +132,7 @@ import validations from '../../../mixins/validations.mixin';
 import Template_Assignment from '../../../classes/template_assignment';
 import { ServiceTemplates } from '../../../services/templates.service';
 import BaseEditor from '../../../modules/app/components/base-editor';
+import TemplateAssignmentSandbox from '../../../modules/template/components/template-assignment-sandbox';
 
 export default {
   name: 'ComponentEditTemplateAssignment',
@@ -205,6 +207,6 @@ export default {
   created() {
     this.$v.$touch();
   },
-  components: { BaseEditor },
+  components: { TemplateAssignmentSandbox, BaseEditor },
 };
 </script>

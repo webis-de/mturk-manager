@@ -27,11 +27,18 @@ export default class Loader {
     this.array_messages_reject = [];
 
     this.object_assignments_selected = {};
+
+    this.globalPassedData = null;
+    try {
+      this.globalPassedData = globalPassedData;
+    } catch(e) {}
+
     console.log(this.context);
   }
 
   async sync_data() {
     this.controller.stepActive = null;
+
     await this.load_project();
     await this.load_assignments();
     await this.load_hits();
@@ -82,20 +89,26 @@ export default class Loader {
   }
 
   async load_assignments() {
-    let url = this.context.url_api_assignments;
-    url += `?list_ids=${new URL(location.href).searchParams.get('list_ids')}`;
+    let assignments: [];
+    if (this.globalPassedData === null) {
+      let url = this.context.url_api_assignments;
 
-    const result = await $.ajax({
-      url,
-      method: 'GET',
-      contentType: 'application/json',
-      headers: {
-        Authorization: `Token ${this.token_instance}`,
-        'Content-Type': 'application/json',
-      },
-    });
+      url += `?list_ids=${new URL(location.href).searchParams.get('list_ids')}`;
 
-    _.forEach(result, (assignment) => {
+      assignments = await $.ajax({
+        url,
+        method: 'GET',
+        contentType: 'application/json',
+        headers: {
+          Authorization: `Token ${this.token_instance}`,
+          'Content-Type': 'application/json',
+        },
+      });
+    } else {
+      assignments = this.globalPassedData.assignments;
+    }
+
+    _.forEach(assignments, (assignment) => {
       this.object_workers[assignment.worker.id] = assignment.worker;
       // this.set_ids_worker.add(assignment.worker);
       assignment.answer = normalize_answer(assignment.answer);
@@ -106,25 +119,30 @@ export default class Loader {
   }
 
   async load_hits() {
-    const set_ids_hit = new Set();
-    _.forEach(this.object_assignments, (assignment) => {
-      set_ids_hit.add(assignment.hit);
-    });
+    let hits: [];
+    if (this.globalPassedData === null) {
+      const set_ids_hit = new Set();
+      _.forEach(this.object_assignments, (assignment) => {
+        set_ids_hit.add(assignment.hit);
+      });
 
-    let url = this.context.url_api_hits;
-    url += `?list_ids=[${_.toArray(set_ids_hit).join(',')}]`;
+      let url = this.context.url_api_hits;
+      url += `?list_ids=[${_.toArray(set_ids_hit).join(',')}]`;
 
-    const result = await $.ajax({
-      url,
-      method: 'GET',
-      contentType: 'application/json',
-      headers: {
-        Authorization: `Token ${this.token_instance}`,
-        'Content-Type': 'application/json',
-      },
-    });
+      hits = await $.ajax({
+        url,
+        method: 'GET',
+        contentType: 'application/json',
+        headers: {
+          Authorization: `Token ${this.token_instance}`,
+          'Content-Type': 'application/json',
+        },
+      });
+    } else {
+      hits = this.globalPassedData.hits;
+    }
 
-    _.forEach(result, (hit) => {
+    _.forEach(hits, (hit) => {
       hit.parameters = JSON.parse(hit.parameters);
       this.object_hits[hit.id] = hit;
     });
@@ -144,25 +162,30 @@ export default class Loader {
   }
 
   async load_batches() {
-    const set_ids_batch = new Set();
-    _.forEach(this.object_hits, (hit) => {
-      set_ids_batch.add(hit.batch);
-    });
+    let batches: [];
+    if (this.globalPassedData === null) {
+      const set_ids_batch = new Set();
+      _.forEach(this.object_hits, (hit) => {
+        set_ids_batch.add(hit.batch);
+      });
 
-    let url = this.context.url_api_batches;
-    url += `?list_ids=[${_.toArray(set_ids_batch).join(',')}]`;
+      let url = this.context.url_api_batches;
+      url += `?list_ids=[${_.toArray(set_ids_batch).join(',')}]`;
 
-    const result = await $.ajax({
-      url,
-      method: 'GET',
-      contentType: 'application/json',
-      headers: {
-        Authorization: `Token ${this.token_instance}`,
-        'Content-Type': 'application/json',
-      },
-    });
+      batches = await $.ajax({
+        url,
+        method: 'GET',
+        contentType: 'application/json',
+        headers: {
+          Authorization: `Token ${this.token_instance}`,
+          'Content-Type': 'application/json',
+        },
+      });
+    } else {
+      batches = this.globalPassedData.batches;
+    }
 
-    _.forEach(result, (batch) => {
+    _.forEach(batches, (batch) => {
       this.object_batches[batch.id] = batch;
     });
 
@@ -204,7 +227,11 @@ export default class Loader {
   // }
 
   async init() {
-    this.slug_project = location.pathname.substring(6);
+    if (this.globalPassedData === null) {
+      this.slug_project = location.pathname.substring(6);
+    } else {
+      this.slug_project = this.globalPassedData.slugProject;
+    }
 
     this.url_api = await localforage.getItem('url_api');
     this.token_instance = await localforage.getItem('token_instance');
