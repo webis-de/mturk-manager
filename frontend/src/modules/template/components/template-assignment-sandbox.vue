@@ -10,6 +10,7 @@
 </template>
 
 <script lang="typescript">
+import _ from 'lodash';
 import BaseEditor from '../../app/components/base-editor';
 
 export default {
@@ -28,6 +29,7 @@ export default {
   },
   data() {
     return {
+      valueDebounced: '',
       indexAnnotate: null,
     };
   },
@@ -36,11 +38,16 @@ export default {
       return this.sourcePreview;
     },
     templateAssignmentEscaped() {
-      return this.escapeHtml(this.value);
+      return this.escapeHtml(this.valueDebounced);
     },
     sourcePreview() {
       return this.processTemplate(this.templateAssignmentEscaped);
     },
+  },
+  watch: {
+    value: _.debounce(function () {
+      this.valueDebounced = this.value;
+    }, 500),
   },
   async created() {
     const data = await fetch(`${process.env.BASE_URL}index_annotate.js`);
@@ -63,7 +70,7 @@ export default {
     //   return doc.documentElement.textContent;
     // },
     processTemplate(templateAssignment) {
-      const text = this.indexAnnotate === null ? '' :this.indexAnnotate;
+      const text = this.indexAnnotate === null ? '' : this.indexAnnotate;
       // console.warn('data', text);
       console.warn('this.$store.state.moduleProjects.slug_project_current', this.$store.state.moduleProjects.slug_project_current);
 
