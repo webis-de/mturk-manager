@@ -10,7 +10,7 @@
           <slot></slot>
           <v-col class="shrink">
             <v-btn
-              x-small
+              small
               icon
               v-on:click="isLayoutHorizontal = !isLayoutHorizontal"
             >
@@ -20,7 +20,7 @@
         </template>
         <v-col class="shrink">
           <v-btn
-            x-small
+            small
             color="secondary"
             v-on:click="showPreview = !showPreview"
           >

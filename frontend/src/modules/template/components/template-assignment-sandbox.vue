@@ -5,7 +5,38 @@
     v-bind:label="label"
     v-on:input="$emit('input', $event)"
   >
-    <v-col class="shrink" />
+    <v-col>
+      <v-row no-gutters>
+        <v-col class="px-1">
+          <v-select
+            v-model="templateHIT"
+            label="HIT Template"
+            dense
+            hide-details
+            class="mt-0"
+            v-bind:items="templatesHIT"
+            item-value="id"
+            item-text="name"
+            clearable
+            return-object
+          />
+        </v-col>
+        <v-col class="px-1">
+          <v-select
+            v-model="templateGlobal"
+            label="Global Template"
+            dense
+            hide-details
+            class="mt-0"
+            v-bind:items="templatesGlobal"
+            item-value="id"
+            item-text="name"
+            clearable
+            return-object
+          />
+        </v-col>
+      </v-row>
+    </v-col>
   </base-editor>
 </template>
 
@@ -29,8 +60,10 @@ export default {
   },
   data() {
     return {
-      valueDebounced: '',
+      valueDebounced: this.value,
       indexAnnotate: null,
+      templateHIT: undefined,
+      templateGlobal: undefined,
     };
   },
   computed: {
@@ -40,8 +73,24 @@ export default {
     templateAssignmentEscaped() {
       return this.escapeHtml(this.valueDebounced);
     },
+    templateHITEscaped() {
+      if (this.templateHIT === undefined) return null;
+
+      return `'${this.escapeHtml(this.templateHIT.template)}'`;
+    },
+    templateGlobalEscaped() {
+      if (this.templateGlobal === undefined) return null;
+
+      return `'${this.escapeHtml(this.templateGlobal.template)}'`;
+    },
     sourcePreview() {
-      return this.processTemplate(this.templateAssignmentEscaped);
+      return this.processTemplate(this.templateAssignmentEscaped, this.templateHITEscaped, this.templateGlobalEscaped);
+    },
+    templatesHIT() {
+      return Object.values(this.$store.state.moduleTemplates.templatesHIT);
+    },
+    templatesGlobal() {
+      return Object.values(this.$store.state.moduleTemplates.templatesGlobal);
     },
   },
   watch: {
@@ -69,7 +118,7 @@ export default {
     //   console.warn('doc.documentElement.textContent', doc.documentElement.outerHTML);
     //   return doc.documentElement.textContent;
     // },
-    processTemplate(templateAssignment) {
+    processTemplate(templateAssignment, templateHIT, templateGlobal) {
       const text = this.indexAnnotate === null ? '' : this.indexAnnotate;
       // console.warn('data', text);
       console.warn('this.$store.state.moduleProjects.slug_project_current', this.$store.state.moduleProjects.slug_project_current);
@@ -110,11 +159,49 @@ export default {
                     id_worker: 'WORKER0',
                     is_blocked_global: false,
                   }
+                },{
+                  id: 1,
+                  hit: 1,
+                  id_assignment: 'ASSIGNMENT1',
+                  status_external: null,
+                  status_internal: null,
+                  datetime_accept: '2019-04-15T16:10:37Z',
+                  datetime_creation: '2019-04-15T16:10:37Z',
+                  datetime_submit: '2019-04-15T16:10:37Z',
+                  duration: '00:00:21',
+                  answer: {
+                    QuestionFormAnswers: {
+                      Answer: [
+                        {
+                          FreeText: 'Answer 0',
+                          QuestionIdentifier: 'variable1',
+                        }
+                      ]
+                    }
+                  },
+                  worker: {
+                    id: 0,
+                    id_worker: 'WORKER0',
+                    is_blocked_global: false,
+                  }
                 },],
                 hits: [{
                   id: 0,
                   batch: 0,
                   id_hit: 'HIT0',
+                  datetime_creation: '2019-04-15T16:10:37Z',
+                  datetime_expiration: '2019-04-15T16:10:37Z',
+                  count_assignments_approved: 0,
+                  count_assignments_dead: 0,
+                  count_assignments_pending: 0,
+                  count_assignments_rejected: 0,
+                  count_assignments_submitted: 1,
+                  count_assignments_total: 1,
+                  parameters: '{}',
+                },{
+                  id: 1,
+                  batch: 0,
+                  id_hit: 'HIT1',
                   datetime_creation: '2019-04-15T16:10:37Z',
                   datetime_expiration: '2019-04-15T16:10:37Z',
                   count_assignments_approved: 0,
@@ -170,12 +257,12 @@ export default {
                         template_hit: {
                           id: 6,
                           name: "Argument Quality HIT Template",
-                          template: null
+                          template: ${templateHIT}
                         },
                         template_global: {
                           id: 7,
                           name: "Argument Quality Global Template",
-                          template: null
+                          template: ${templateGlobal}
                         },
                       },
                       count_assignments_max_per_worker: null
