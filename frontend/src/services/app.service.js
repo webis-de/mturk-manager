@@ -164,6 +164,14 @@ class ClassServiceApp {
 
     vuetify.framework.theme.dark = !isActiveModeLight;
   }
+
+  async setAutosave(isActiveAutosave) {
+    await store.dispatch('module_app/setState', {
+      objectState: isActiveAutosave,
+      nameState: 'isActiveAutosave',
+      nameLocalStorage: 'isActiveAutosave',
+    });
+  }
 }
 
 export const AppService = new ClassServiceApp();

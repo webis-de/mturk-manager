@@ -16,15 +16,13 @@
           v-bind:error-messages="
             validation_errors.count_assignments_max_per_worker
           "
-          v-on:input="
-            count_assignments_max_per_worker = $event;
-            $v.count_assignments_max_per_worker.$touch();
-          "
+          v-on:input="processInput($event)"
         />
       </v-col>
       <v-col class="pl-3 shrink">
         <v-btn
-          v-bind:disabled="$v.$invalid"
+          v-bind:disabled="$v.$invalid || isActiveAutosave"
+          v-bind:loading="isLoading"
           color="primary"
           v-on:click="save"
         >
@@ -54,6 +52,7 @@ import {
   mapState, mapMutations, mapActions, mapGetters,
 } from 'vuex';
 import { required, minValue, maxValue } from 'vuelidate/lib/validators';
+import _ from 'lodash';
 import validations from '../../../mixins/validations.mixin';
 import { ServiceProjects } from '../../../services/projects.service';
 
@@ -64,15 +63,29 @@ export default {
     return {
       count_assignments_max_per_worker: null,
       snackbar_updated: false,
+      isLoading: false,
     };
   },
   methods: {
+    processInput(value) {
+      this.count_assignments_max_per_worker = value !== null && value.trim() === '' ? null : value;
+      this.$v.count_assignments_max_per_worker.$touch();
+
+      if (this.$v.$invalid === false && this.isActiveAutosave === true) {
+        this.saveDebounced();
+      }
+    },
+    saveDebounced: _.debounce(function () {
+      this.save();
+    }, 500),
     save() {
+      this.isLoading = true;
       ServiceProjects.setCountAssignmentsMaxPerWorker({
         project: this.project_current,
         countAssignmentsMaxPerWorker: this.count_assignments_max_per_worker,
       }).then(() => {
         this.snackbar_updated = true;
+        this.isLoading = false;
       });
     },
     ...mapActions('moduleProjects', {
@@ -81,6 +94,9 @@ export default {
     }),
   },
   computed: {
+    isActiveAutosave() {
+      return this.$store.state.module_app.isActiveAutosave;
+    },
     changed() {},
     ...mapGetters('moduleProjects', {
       project_current: 'get_project_current',

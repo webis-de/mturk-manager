@@ -21,10 +21,7 @@
                 validation_errors.amountBudgetProject
               "
               v-bind:value="amountBudgetProject"
-              v-on:input="
-                amountBudgetProject = tryInteger($event);
-                $v.amountBudgetProject.$touch();
-              "
+              v-on:input="processInput($event)"
             />
           </v-col>
           <v-col class="shrink">
@@ -38,7 +35,8 @@
       </v-col>
       <v-col class="pl-3 shrink">
         <v-btn
-          v-bind:disabled="$v.$invalid"
+          v-bind:disabled="$v.$invalid || isActiveAutosave"
+          v-bind:loading="isLoading"
           color="primary"
           v-on:click="save"
         >
@@ -67,6 +65,7 @@
 import { mapActions, mapGetters } from 'vuex';
 import { minValue, required, helpers as helpersValidation } from 'vuelidate/lib/validators';
 import or from 'vuelidate/src/validators/or';
+import _ from 'lodash';
 import validations from '../../mixins/validations.mixin';
 import { ServiceProjects } from '../../services/projects.service';
 import helpers from '../../mixins/helpers.mixin';
@@ -84,9 +83,13 @@ export default {
     return {
       // amountBudgetProject: null,
       snackbar_updated: false,
+      isLoading: false,
     };
   },
   computed: {
+    isActiveAutosave() {
+      return this.$store.state.module_app.isActiveAutosave;
+    },
     changed() {},
     amountBudgetProject: {
       get() {
@@ -104,12 +107,25 @@ export default {
   //   this.amountBudgetProject = this.project_current.amount_budget_max;
   // },
   methods: {
+    processInput(value) {
+      this.$v.amountBudgetProject.$touch();
+      this.amountBudgetProject = this.tryInteger(value !== null && value.trim() === '' ? null : value);
+
+      if (this.$v.$invalid === false && this.isActiveAutosave === true) {
+        this.saveDebounced();
+      }
+    },
+    saveDebounced: _.debounce(function () {
+      this.save();
+    }, 500),
     save() {
+      this.isLoading = true;
       ServiceProjects.setAmountBudgetProject({
         project: this.project_current,
         amountBudgetProject: this.amountBudgetProject,
       }).then(() => {
         this.snackbar_updated = true;
+        this.isLoading = false;
       });
     },
     ...mapActions('moduleProjects', {

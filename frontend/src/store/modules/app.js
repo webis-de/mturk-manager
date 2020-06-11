@@ -14,6 +14,7 @@ export const module_app = _.merge({}, baseModule, {
     changelog: [],
     versionSeen: null,
     isActiveModeLight: false,
+    isActiveAutosave: true,
     nameItem: null,
   },
   getters: {
@@ -35,8 +36,8 @@ export const module_app = _.merge({}, baseModule, {
       state.version_api = version_api;
     },
     setReleaseBody(state, { idTag, body }) {
-      const release = state.changelog.find(release => release.id === idTag);
-      if(release !== undefined) {
+      const release = state.changelog.find((release) => release.id === idTag);
+      if (release !== undefined) {
         Vue.set(release, 'body', body);
       }
     },
@@ -99,6 +100,12 @@ export const module_app = _.merge({}, baseModule, {
         dispatch('loadState', {
           nameLocalStorage: 'isActiveModeLight',
           nameState: 'isActiveModeLight',
+          objectStateDefault: false,
+        }),
+
+        dispatch('loadState', {
+          nameLocalStorage: 'isActiveAutosave',
+          nameState: 'isActiveAutosave',
           objectStateDefault: false,
         }),
       ]);

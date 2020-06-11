@@ -113,6 +113,21 @@
         </v-row>
       </base-page-section>
       <base-page-section
+        v-bind:title="'Autosave'"
+        shrink
+      >
+        <v-row dense>
+          <v-col>
+            <v-switch
+              v-model="isActiveAutosave"
+              color="primary"
+              hide-details
+              class="mt-0"
+            />
+          </v-col>
+        </v-row>
+      </base-page-section>
+      <base-page-section
         v-bind:title="'Database'"
         shrink
       >
@@ -212,6 +227,7 @@ export default {
   data() {
     return {
       isActiveModeLight: this.$store.state.module_app.isActiveModeLight,
+      isActiveAutosave: this.$store.state.module_app.isActiveAutosave,
     };
   },
   computed: {
@@ -239,6 +255,9 @@ export default {
   watch: {
     isActiveModeLight() {
       AppService.setLightMode(this.isActiveModeLight);
+    },
+    isActiveAutosave() {
+      AppService.setAutosave(this.isActiveAutosave);
     },
   },
   methods: {
