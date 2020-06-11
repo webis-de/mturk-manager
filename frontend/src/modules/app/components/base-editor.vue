@@ -114,7 +114,7 @@ export default {
     showPreview() {
       this.isIframeLoaded = false;
     },
-    value() {
+    sourcePreview() {
       this.isIframeLoaded = false;
     },
   },
