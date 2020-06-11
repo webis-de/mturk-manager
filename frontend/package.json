@@ -22,6 +22,7 @@
     "@types/jquery": "^3.3.38",
     "@types/vuelidate": "^0.7.13",
     "@vue/component-compiler": "^3.6.0",
+    "@vue/composition-api": "^0.6.2",
     "axios": "^0.19.2",
     "chart.js": "^2.9.3",
     "circular-dependency-plugin": "^5.2.0",

@@ -8,6 +8,7 @@ import axios from 'axios';
 import VueAxios from 'vue-axios';
 import Vuex from 'vuex';
 import VueCookies from 'vue-cookies';
+import VueCompositionApi from '@vue/composition-api';
 import { store } from './store/vuex';
 import App from '@/App';
 
@@ -25,6 +26,7 @@ Vue.use(Vuelidate);
 Vue.use(VueAxios, axios);
 Vue.use(Vuex);
 Vue.use(VueCookies);
+Vue.use(VueCompositionApi);
 
 export default new Vue({
   router,
