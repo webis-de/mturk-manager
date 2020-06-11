@@ -235,19 +235,20 @@ export const moduleTemplates = _.merge({}, baseModule, {
       let classTemplate;
       switch (typeTemplate) {
         case 'worker':
-          nameState = 'arrayItemsWorker';
+          nameState = 'templatesWorker';
           classTemplate = Template_Worker;
           break;
         case 'assignment':
-          nameState = 'arrayItemsAssignment';
+          nameState = 'templatesAssignment';
+          // nameState = 'arrayItemsAssignment';
           classTemplate = Template_Assignment;
           break;
         case 'hit':
-          nameState = 'arrayItemsHIT';
+          nameState = 'templatesHIT';
           classTemplate = Template_HIT;
           break;
         case 'global':
-          nameState = 'arrayItemsGlobal';
+          nameState = 'templatesGlobal';
           classTemplate = Template_Global;
           break;
         case 'workerAll':
@@ -269,14 +270,16 @@ export const moduleTemplates = _.merge({}, baseModule, {
         default:
           break;
       }
-
       const templateNew = new classTemplate(data);
-
-      Vue.set(
-        state[nameState],
-        _.findIndex(state[nameState], (template) => template.id === templateNew.id),
-        templateNew,
-      );
+      console.warn('state[nameState]', state[nameState]);
+      console.warn('templateNew.id', templateNew.id);
+      console.warn('templateNew', templateNew);
+      // Vue.set(
+      //   state[nameState],
+      //   templateNew.id,
+      //   templateNew,
+      // );
+      console.warn('123', 123);
     },
     add(state, { data, typeTemplate }) {
       let nameState;

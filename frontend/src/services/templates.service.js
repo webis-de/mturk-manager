@@ -232,11 +232,10 @@ class ClassServiceTemplates extends BaseLoadPageService {
       default:
         break;
     }
+    console.warn('templateCurrent', templateCurrent, templateNew);
+    // const dataChanged = templateCurrent.getChanges(templateNew);
 
-
-    const dataChanged = templateCurrent.getChanges(templateNew);
-
-    if (Object.keys(dataChanged).length === 0) return;
+    // if (Object.keys(dataChanged).length === 0) return;
 
     const response = await ServiceEndpoint.makeRequest({
       method: 'put',
@@ -248,7 +247,8 @@ class ClassServiceTemplates extends BaseLoadPageService {
         project,
         value: templateCurrent.id,
       },
-      data: dataChanged,
+      data: templateNew,
+      // data: dataChanged,
     });
 
     store.commit('moduleTemplates/update', {

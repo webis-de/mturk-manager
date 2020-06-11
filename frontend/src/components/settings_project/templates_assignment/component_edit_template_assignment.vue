@@ -48,10 +48,7 @@
           <template-assignment-sandbox
             v-model="template_assignment.template"
             label="Template"
-            v-on:input="
-              template_assignment.template = $event;
-              $v.template_assignment.template.$touch();
-            "
+            v-on:input="processInput($event)"
           />
           <!--          <v-textarea-->
           <!--            required-->
@@ -149,6 +146,17 @@ export default {
     };
   },
   methods: {
+    processInput(value) {
+      this.template_assignment.template = value;
+      this.$v.template_assignment.template.$touch();
+
+      if (this.$v.$invalid === false && this.isActiveAutosave === true) {
+        this.saveDebounced();
+      }
+    },
+    saveDebounced: _.debounce(function () {
+      this.update();
+    }, 500),
     update(close) {
       if (this.$refs.form.validate()) {
         ServiceTemplates.edit({
@@ -158,7 +166,7 @@ export default {
           project: this.project_current,
         }).then(() => {
           ServiceTemplates.cleanup({
-            typeTemplate: 'assignmentAll',
+            typeTemplate: 'assignment',
             component: this,
             nameEvent: 'edited',
             template: this.template_assignment,
@@ -178,6 +186,9 @@ export default {
     }),
   },
   computed: {
+    isActiveAutosave() {
+      return this.$store.state.module_app.isActiveAutosave;
+    },
     list_templates_assignment() {
       return _.orderBy(
         this.project_current.templates_assignment,

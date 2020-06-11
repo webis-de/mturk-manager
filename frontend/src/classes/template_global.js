@@ -13,7 +13,7 @@ export default class Template_Global {
     });
   }
 
-  get_changes(template_global) {
+  getChanges(template_global) {
     const object = {};
     for (const key in this) {
       // if(template_global[key] != undefined)
@@ -21,8 +21,8 @@ export default class Template_Global {
         if (this[key] != template_global[key]) {
           if (typeof template_global[key] === 'object') {
             if (
-              _.differenceBy(template_global[key], this[key], value => value.text.toLowerCase()).length > 0
-              || _.differenceBy(this[key], template_global[key], value => value.text.toLowerCase()).length > 0
+              _.differenceBy(template_global[key], this[key], (value) => value.text.toLowerCase()).length > 0
+              || _.differenceBy(this[key], template_global[key], (value) => value.text.toLowerCase()).length > 0
             ) {
               object[key] = template_global[key];
             }

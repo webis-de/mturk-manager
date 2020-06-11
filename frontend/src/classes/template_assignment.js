@@ -13,7 +13,7 @@ export default class Template_Assignment {
     });
   }
 
-  get_changes(template_assignment) {
+  getChanges(template_assignment) {
     const object = {};
     for (const key in this) {
       // if(template_assignment[key] != undefined)
@@ -21,8 +21,8 @@ export default class Template_Assignment {
         if (this[key] != template_assignment[key]) {
           if (typeof template_assignment[key] === 'object') {
             if (
-              _.differenceBy(template_assignment[key], this[key], value => value.text.toLowerCase()).length > 0
-              || _.differenceBy(this[key], template_assignment[key], value => value.text.toLowerCase()).length > 0
+              _.differenceBy(template_assignment[key], this[key], (value) => value.text.toLowerCase()).length > 0
+              || _.differenceBy(this[key], template_assignment[key], (value) => value.text.toLowerCase()).length > 0
             ) {
               object[key] = template_assignment[key];
             }

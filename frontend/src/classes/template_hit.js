@@ -13,7 +13,7 @@ export default class Template_HIT {
     });
   }
 
-  get_changes(template_hit) {
+  getChanges(template_hit) {
     const object = {};
     for (const key in this) {
       // if(template_hit[key] != undefined)
@@ -21,8 +21,8 @@ export default class Template_HIT {
         if (this[key] != template_hit[key]) {
           if (typeof template_hit[key] === 'object') {
             if (
-              _.differenceBy(template_hit[key], this[key], value => value.text.toLowerCase()).length > 0
-              || _.differenceBy(this[key], template_hit[key], value => value.text.toLowerCase()).length > 0
+              _.differenceBy(template_hit[key], this[key], (value) => value.text.toLowerCase()).length > 0
+              || _.differenceBy(this[key], template_hit[key], (value) => value.text.toLowerCase()).length > 0
             ) {
               object[key] = template_hit[key];
             }
