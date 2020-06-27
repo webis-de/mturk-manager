@@ -140,10 +140,10 @@ import _ from 'lodash';
 import { required, minValue } from 'vuelidate/lib/validators';
 import validations from '../../../mixins/validations.mixin';
 import helpers from '../../../mixins/helpers.mixin';
-import { TemplateWorker } from '../../../classes/template_worker';
 import { ServiceTemplates } from '../../../services/templates.service';
 import BaseEditor from '../../../modules/app/components/base-editor';
 import TemplateWorkerSandbox from '../../../modules/template/components/template-worker-sandbox';
+import { TemplateWorker } from '../../../modules/template/templateWorker.model';
 
 export default {
   name: 'ComponentAddTemplateWorker',

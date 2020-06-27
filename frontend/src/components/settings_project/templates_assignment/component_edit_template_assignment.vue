@@ -126,10 +126,10 @@ import _ from 'lodash';
 import { required, minValue, maxValue } from 'vuelidate/lib/validators';
 import helpers from '../../../mixins/helpers.mixin';
 import validations from '../../../mixins/validations.mixin';
-import Template_Assignment from '../../../classes/template_assignment';
 import { ServiceTemplates } from '../../../services/templates.service';
 import BaseEditor from '../../../modules/app/components/base-editor';
 import TemplateAssignmentSandbox from '../../../modules/template/components/template-assignment-sandbox';
+import { TemplateAssignment } from '../../../modules/template/templateAssignment.model';
 
 export default {
   name: 'ComponentEditTemplateAssignment',
@@ -139,7 +139,7 @@ export default {
   },
   data() {
     return {
-      template_assignment: new Template_Assignment(
+      template_assignment: new TemplateAssignment(
         this.template_assignment_current,
       ),
       dialog: false,

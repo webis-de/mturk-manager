@@ -75,7 +75,6 @@ export const module_app = _.merge({}, baseModule, {
       commit('moduleWorkers/set_urls', config.paths, { root: true });
       commit('module_finances/set_urls', config.paths, { root: true });
       commit('moduleSettingsBatch/setUrls', config.paths, { root: true });
-      commit('moduleTemplates/setUrls', config.paths, { root: true });
 
       await Promise.all([
         dispatch('moduleBatches/init', null, { root: true }),

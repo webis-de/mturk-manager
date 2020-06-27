@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { TemplateWorker } from './template_worker';
+import { TemplateWorker } from '@/modules/template/templateWorker.model';
 
 export class SettingsBatch {
   constructor(data = { template: new TemplateWorker() }) {

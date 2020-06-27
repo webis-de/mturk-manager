@@ -3,10 +3,6 @@ import _ from 'lodash';
 import { parse } from 'date-fns';
 import Project from '../../classes/project';
 import { SettingsBatch } from '../../classes/settings_batch';
-import { TemplateWorker } from '../../classes/template_worker';
-import Template_Assignment from '../../classes/template_assignment';
-import Template_HIT from '../../classes/template_hit';
-import Template_Global from '../../classes/template_global';
 import baseModule from './base.module';
 
 export const moduleProjects = _.merge({}, baseModule, {

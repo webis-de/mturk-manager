@@ -117,7 +117,6 @@ import _ from 'lodash';
 import { required, minValue, maxValue } from 'vuelidate/lib/validators';
 import helpers from '../../../mixins/helpers.mixin';
 import validations from '../../../mixins/validations.mixin';
-import Template_Global from '../../../classes/template_global';
 import { ServiceTemplates } from '../../../services/templates.service';
 
 export default {

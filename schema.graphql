@@ -2,6 +2,30 @@
 
 schema {
     query: Query
+    mutation: Mutation
+}
+
+type Mutation {
+    createTemplateAssignment(template: InputTemplateAssignment!): MutationCreateTemplateAssignment
+    createTemplateGlobal(template: InputTemplateGlobal!): MutationCreateTemplateGlobal
+    createTemplateHit(template: InputTemplateHIT!): MutationCreateTemplateHIT
+    createTemplateWorker(template: InputTemplateWorker!): MutationCreateTemplateWorker
+}
+
+type MutationCreateTemplateAssignment {
+    template: TypeTemplateAssignment
+}
+
+type MutationCreateTemplateGlobal {
+    template: TypeTemplateGlobal
+}
+
+type MutationCreateTemplateHIT {
+    template: TypeTemplateHIT
+}
+
+type MutationCreateTemplateWorker {
+    template: TypeTemplateWorker
 }
 
 type Query {
@@ -51,6 +75,48 @@ type TypeTemplateWorker {
     templateHit: TypeTemplateHIT
     templateOriginal: TypeTemplateWorker
     templates: [TypeTemplateWorker!]!
+}
+
+input InputTemplateAssignment {
+    datetimeCreation: DateTime
+    id: Int
+    isActive: Boolean!
+    name: String!
+    project: Int!
+    template: String!
+}
+
+input InputTemplateGlobal {
+    datetimeCreation: DateTime
+    id: Int
+    isActive: Boolean!
+    name: String!
+    project: Int!
+    template: String!
+}
+
+input InputTemplateHIT {
+    datetimeCreation: DateTime
+    id: Int
+    isActive: Boolean!
+    name: String!
+    project: Int!
+    template: String!
+}
+
+input InputTemplateWorker {
+    datetimeCreation: DateTime
+    heightFrame: Int!
+    id: Int
+    isActive: Boolean!
+    jsonDictParameters: String!
+    name: String!
+    project: Int!
+    template: String!
+    templateAssignment: Int
+    templateGlobal: Int
+    templateHit: Int
+    templateOriginal: Int
 }
 
 

@@ -1,0 +1,113 @@
+import json
+import graphene
+
+from api.models import Template_Worker, Template_Assignment, Template_Global, Template_HIT
+from api.modules.templates.helpers import count_parameters_in_template
+from api.modules.templates.types import TypeTemplateAssignment, TypeTemplateWorker, TypeTemplateGlobal, TypeTemplateHIT
+
+
+class InputTemplateBase(object):
+    id = graphene.Int()
+    name = graphene.String(required=True)
+    project = graphene.Int(required=True)
+    template = graphene.String(required=True)
+    is_active = graphene.Boolean(required=True)
+    datetime_creation = graphene.DateTime()
+
+
+class InputTemplateWorker(InputTemplateBase, graphene.InputObjectType):
+    height_frame = graphene.Int(required=True)
+    template_assignment = graphene.Int()
+    template_hit = graphene.Int()
+    template_global = graphene.Int()
+    json_dict_parameters = graphene.String(required=True)
+    template_original = graphene.Int()
+
+
+class InputTemplateAssignment(InputTemplateBase, graphene.InputObjectType):
+    pass
+
+
+class InputTemplateHIT(InputTemplateBase, graphene.InputObjectType):
+    pass
+
+
+class InputTemplateGlobal(InputTemplateBase, graphene.InputObjectType):
+    pass
+
+
+class MutationCreateTemplateWorker(graphene.Mutation):
+    class Arguments:
+        template = InputTemplateWorker(required=True)
+
+    template = graphene.Field(TypeTemplateWorker)
+
+    def mutate(self, info, template):
+        template = Template_Worker.objects.create(
+            name=template['name'],
+            project=template['database_object_project'],
+            template=template['template'],
+            is_active=template.get('is_active'),
+            height_frame=template['height_frame'],
+            template_assignment=template.get('template_assignment'),
+            template_hit=template.get('template_hit'),
+            template_global=template.get('template_global'),
+            json_dict_parameters=json.dumps(count_parameters_in_template(template['template'])),
+        )
+
+        return MutationCreateTemplateWorker(template=template)
+
+
+class MutationCreateTemplateAssignment(graphene.Mutation):
+    class Arguments:
+        template = InputTemplateAssignment(required=True)
+
+    template = graphene.Field(TypeTemplateAssignment)
+
+    def mutate(self, info, template):
+        template = Template_Assignment.objects.create(
+            name=template['name'],
+            project=template['database_object_project'],
+            template=template['template'],
+        )
+
+        return MutationCreateTemplateAssignment(template=template)
+
+
+class MutationCreateTemplateHIT(graphene.Mutation):
+    class Arguments:
+        template = InputTemplateHIT(required=True)
+
+    template = graphene.Field(TypeTemplateHIT)
+
+    def mutate(self, info, template):
+        template = Template_HIT.objects.create(
+            name=template['name'],
+            project=template['database_object_project'],
+            template=template['template'],
+        )
+
+        return MutationCreateTemplateHIT(template=template)
+
+
+class MutationCreateTemplateGlobal(graphene.Mutation):
+    class Arguments:
+        template = InputTemplateGlobal(required=True)
+
+    template = graphene.Field(TypeTemplateGlobal)
+
+    def mutate(self, info, template):
+        template = Template_Global.objects.create(
+            name=template['name'],
+            project=template['database_object_project'],
+            template=template['template'],
+        )
+
+        return MutationCreateTemplateGlobal(template=template)
+
+
+class MutationTemplate(graphene.ObjectType):
+    create_template_worker = MutationCreateTemplateWorker.Field()
+    create_template_assignment = MutationCreateTemplateAssignment.Field()
+    create_template_hit = MutationCreateTemplateHIT.Field()
+    create_template_global = MutationCreateTemplateGlobal.Field()

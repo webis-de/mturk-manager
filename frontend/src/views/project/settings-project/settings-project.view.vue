@@ -63,10 +63,11 @@
     </base-page-group-divider>
 
     <base-page-section type="table">
-      <table-templates-worker />
+      <!--      <table-templates-worker />-->
     </base-page-section>
     <base-page-section type="table">
-      <table-templates-assignment />
+      <table-templates-requester />
+      <!--      <table-templates-assignment />-->
     </base-page-section>
     <!--    <base-page-section type="table">-->
     <!--      <table-templates-hit />-->
@@ -202,10 +203,12 @@ import BasePageSection from '../../../components/base/base-page-section';
 import BasePageGroupDivider from '../../../components/base/base-page-group-divider';
 import BasePageGroup from '../../../components/base/base-page-group';
 import TheUpdateCredentials from '../../../components/the-update-credentials';
+import TableTemplatesRequester from '../../../modules/template/components/table/table-templates-requester';
 
 export default {
   name: 'AppSettingsProject',
   components: {
+    TableTemplatesRequester,
     TheUpdateCredentials,
     BasePageGroup,
     BasePageGroupDivider,
