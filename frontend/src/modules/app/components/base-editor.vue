@@ -41,12 +41,12 @@
           v-bind="sizes"
           style="position: relative"
         >
-          <v-overlay
-            v-if="isIframeLoaded === false"
-            absolute
-          >
-            <v-progress-circular indeterminate />
-          </v-overlay>
+<!--          <v-overlay-->
+<!--            v-if="isIframeLoaded === false"-->
+<!--            absolute-->
+<!--          >-->
+<!--            <v-progress-circular indeterminate />-->
+<!--          </v-overlay>-->
 
           <div class="iframe-container">
             <iframe
