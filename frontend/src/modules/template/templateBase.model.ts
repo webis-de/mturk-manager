@@ -1,5 +1,3 @@
-import _ from 'lodash';
-
 export class TemplateBase {
   id?: string;
 
@@ -11,24 +9,41 @@ export class TemplateBase {
 
   datetimeCreation?: Date;
 
+  // Todo create Project Class
+  project: { id: string | number };
+
   constructor({
     id,
+    project,
     name = '',
     template = '',
     isActive = true,
     datetimeCreation,
   }: {
     id?: string;
-    name?: string;
-    template?: string;
-    isActive?: boolean;
+    project: {};
+    name: string;
+    template: string;
+    isActive: boolean;
     datetimeCreation?: Date;
-  } = {}) {
+  }) {
     this.id = id;
+    this.project = project;
     this.name = name;
     this.template = template;
     this.isActive = isActive;
     this.datetimeCreation = datetimeCreation;
+  }
+
+  extractBody() {
+    return {
+      id: this.id,
+      project: this.project.id,
+      name: this.name,
+      template: this.template,
+      isActive: this.isActive,
+      datetimeCreation: this.datetimeCreation,
+    };
   }
 
   // getChanges(template) {

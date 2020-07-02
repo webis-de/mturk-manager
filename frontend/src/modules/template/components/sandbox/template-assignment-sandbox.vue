@@ -42,7 +42,7 @@
 
 <script lang="typescript">
 import _ from 'lodash';
-import BaseEditor from '../../app/components/base-editor';
+import BaseEditor from '../../../app/components/base-editor.vue';
 
 export default {
   name: 'TemplateAssignmentSandbox',

@@ -37,7 +37,7 @@
 
 <script>
 import Papa from 'papaparse';
-import BaseEditor from '../../app/components/base-editor';
+import BaseEditor from '../../../app/components/base-editor';
 
 export default {
   name: 'TemplateWorkerSandbox',

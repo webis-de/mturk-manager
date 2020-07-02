@@ -10,10 +10,17 @@
 
     name-state-columns="arrayColumns"
     name-state-columns-selected="objectColumnsSelectedInitial"
+
+    v-bind:show-select="false"
   >
     <template
       v-slot:default="{ item, objectColumnsSelected, isCondensed }"
     >
+      <table-templates-requester-item
+        v-bind:template="item"
+        v-bind:object-columns-selected="objectColumnsSelected"
+        v-bind:is-condensed="isCondensed"
+      />
       <!--      <item-templates-assignment-->
       <!--        v-bind:item="item"-->
       <!--        v-bind:object-columns-selected="objectColumnsSelected"-->

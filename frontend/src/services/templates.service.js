@@ -213,8 +213,9 @@ class ClassServiceTemplates extends BaseLoadPageService {
   }
 
   async edit({
-    typeTemplate, templateCurrent, templateNew, project,
+    typeTemplate, templateCurrent, templateNew, project = store.moduleProjects.getters.getProjectCurrent,
   }) {
+
     let urlTemplate;
     switch (typeTemplate) {
       case 'worker':

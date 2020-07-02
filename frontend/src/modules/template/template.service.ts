@@ -1,4 +1,10 @@
-import { queryTemplates } from '@/modules/template/template.graphql';
+import {
+  queryDeleteTemplateAssignment,
+  queryDeleteTemplateGlobal, queryDeleteTemplateHIT, queryDeleteTemplateWorker,
+  queryTemplates,
+  queryUpdateTemplateAssignment, queryUpdateTemplateGlobal, queryUpdateTemplateHIT,
+  queryUpdateTemplateWorker,
+} from '@/modules/template/template.graphql';
 import { apolloClient } from '@/vue-apollo';
 import { store } from '@/store/vuex';
 import { TemplateWorker } from '@/modules/template/templateWorker.model';

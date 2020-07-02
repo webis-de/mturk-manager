@@ -191,6 +191,7 @@ export const moduleTemplates = _.merge({}, baseModule, {
       if (template.id !== undefined) Vue.set(state.templatesWorker, template.id, template);
     },
     updateTemplateAssignment(state: StoreTemplateState, { template }: { template: TemplateAssignment }) {
+      console.warn(template, 'template');
       if (template.id !== undefined) Vue.set(state.templatesAssignment, template.id, template);
     },
     updateTemplateHIT(state: StoreTemplateState, { template }: { template: TemplateHIT }) {

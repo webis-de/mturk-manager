@@ -128,7 +128,7 @@ import helpers from '../../../mixins/helpers.mixin';
 import validations from '../../../mixins/validations.mixin';
 import { ServiceTemplates } from '../../../services/templates.service';
 import BaseEditor from '../../../modules/app/components/base-editor';
-import TemplateAssignmentSandbox from '../../../modules/template/components/template-assignment-sandbox';
+import TemplateAssignmentSandbox from '../../../modules/template/components/sandbox/template-assignment-sandbox';
 import { TemplateAssignment } from '../../../modules/template/templateAssignment.model';
 
 export default {

@@ -46,4 +46,20 @@ export class TemplateWorker extends TemplateBase {
     this.templateGlobal = templateGlobal;
     this.templateOriginal = templateOriginal;
   }
+
+  get type() {
+    return 'worker';
+  }
+
+  extractBody() {
+    return {
+      ...super.extractBody(),
+      heightFrame: this.heightFrame,
+      jsonDictParameters: JSON.stringify(this.dictParameters),
+      templateAssignment: this.templateAssignment === null ? null : this.templateAssignment.id,
+      templateHIT: this.templateHIT === null ? null : this.templateHIT.id,
+      templateGlobal: this.templateGlobal === null ? null : this.templateGlobal.id,
+      templateOriginal: this.templateOriginal === null ? null : this.templateOriginal.id,
+    };
+  }
 }

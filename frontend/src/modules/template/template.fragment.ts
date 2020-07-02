@@ -3,6 +3,9 @@ import gql from 'graphql-tag';
 export const fragmentsTemplate = {
   templateWorker: gql`fragment templateWorker on TypeTemplateWorker {
     id
+    project {
+      id
+    }
     name
     template
     isActive
@@ -24,6 +27,9 @@ export const fragmentsTemplate = {
   }`,
   templateAssignment: gql`fragment templateAssignment on TypeTemplateAssignment {
     id
+    project {
+      id
+    }
     name
     template
     isActive
@@ -31,6 +37,9 @@ export const fragmentsTemplate = {
   }`,
   templateHIT: gql`fragment templateHIT on TypeTemplateHIT {
     id
+    project {
+      id
+    }
     name
     template
     isActive
@@ -38,6 +47,9 @@ export const fragmentsTemplate = {
   }`,
   templateGlobal: gql`fragment templateGlobal on TypeTemplateGlobal {
     id
+    project {
+      id
+    }
     name
     template
     isActive
