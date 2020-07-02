@@ -20,3 +20,65 @@ ${fragmentsTemplate.templateAssignment}
 ${fragmentsTemplate.templateHIT}
 ${fragmentsTemplate.templateGlobal}
 `;
+/**
+ * Update
+ */
+export const queryUpdateTemplateWorker = gql`mutation updateTemplateWorker($template: InputTemplateWorker!) {
+    updateTemplateWorker(template: $template) {
+        template {
+            ...templateWorker
+        }
+    }
+}
+${fragmentsTemplate.templateWorker}
+`;
+export const queryUpdateTemplateAssignment = gql`mutation updateTemplateAssignment($template: InputTemplateAssignment!) {
+    updateTemplateAssignment(template: $template) {
+        template {
+            ...templateAssignment
+        }
+    }
+}
+${fragmentsTemplate.templateAssignment}
+`;
+export const queryUpdateTemplateHIT = gql`mutation updateTemplateHIT($template: InputTemplateHIT!) {
+    updateTemplateHit(template: $template) {
+        template {
+            ...templateHIT
+        }
+    }
+}
+${fragmentsTemplate.templateHIT}
+`;
+export const queryUpdateTemplateGlobal = gql`mutation updateTemplateGlobal($template: InputTemplateGlobal!) {
+    updateTemplateGlobal(template: $template) {
+        template {
+            ...templateGlobal
+        }
+    }
+}
+${fragmentsTemplate.templateGlobal}
+`;
+/**
+ * Delete
+ */
+export const queryDeleteTemplateWorker = gql`mutation deleteTemplateWorker($id: ID!) {
+    deleteTemplateWorker(idTemplate: $id) {
+        idTemplate
+    }
+}`;
+export const queryDeleteTemplateAssignment = gql`mutation deleteTemplateAssignment($id: ID!) {
+    deleteTemplateAssignment(idTemplate: $id) {
+        idTemplate
+    }
+}`;
+export const queryDeleteTemplateHIT = gql`mutation deleteTemplateHIT($id: ID!) {
+    deleteTemplateHit(idTemplate: $id) {
+        idTemplate
+    }
+}`;
+export const queryDeleteTemplateGlobal = gql`mutation deleteTemplateGlobal($id: ID!) {
+    deleteTemplateGlobal(idTemplate: $id) {
+        idTemplate
+    }
+}`;

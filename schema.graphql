@@ -10,6 +10,14 @@ type Mutation {
     createTemplateGlobal(template: InputTemplateGlobal!): MutationCreateTemplateGlobal
     createTemplateHit(template: InputTemplateHIT!): MutationCreateTemplateHIT
     createTemplateWorker(template: InputTemplateWorker!): MutationCreateTemplateWorker
+    deleteTemplateAssignment(idTemplate: ID!): MutationDeleteTemplateAssignment
+    deleteTemplateGlobal(idTemplate: ID!): MutationDeleteTemplateGlobal
+    deleteTemplateHit(idTemplate: ID!): MutationDeleteTemplateHIT
+    deleteTemplateWorker(idTemplate: ID!): MutationDeleteTemplateWorker
+    updateTemplateAssignment(template: InputTemplateAssignment!): MutationUpdateTemplateAssignment
+    updateTemplateGlobal(template: InputTemplateGlobal!): MutationUpdateTemplateGlobal
+    updateTemplateHit(template: InputTemplateHIT!): MutationUpdateTemplateHIT
+    updateTemplateWorker(template: InputTemplateWorker!): MutationUpdateTemplateWorker
 }
 
 type MutationCreateTemplateAssignment {
@@ -28,6 +36,38 @@ type MutationCreateTemplateWorker {
     template: TypeTemplateWorker
 }
 
+type MutationDeleteTemplateAssignment {
+    idTemplate: ID
+}
+
+type MutationDeleteTemplateGlobal {
+    idTemplate: ID
+}
+
+type MutationDeleteTemplateHIT {
+    idTemplate: ID
+}
+
+type MutationDeleteTemplateWorker {
+    idTemplate: ID
+}
+
+type MutationUpdateTemplateAssignment {
+    template: TypeTemplateAssignment
+}
+
+type MutationUpdateTemplateGlobal {
+    template: TypeTemplateGlobal
+}
+
+type MutationUpdateTemplateHIT {
+    template: TypeTemplateHIT
+}
+
+type MutationUpdateTemplateWorker {
+    template: TypeTemplateWorker
+}
+
 type Query {
     templatesAssignment(project: ID): [TypeTemplateAssignment]
     templatesGlobal(project: ID): [TypeTemplateGlobal]
@@ -35,11 +75,27 @@ type Query {
     templatesWorker(project: ID): [TypeTemplateWorker]
 }
 
+type TypeProject {
+    amountBudgetMax: Int
+    apiTemplateAssignmentRelated: [TypeTemplateAssignment!]!
+    apiTemplateGlobalRelated: [TypeTemplateGlobal!]!
+    apiTemplateHitRelated: [TypeTemplateHIT!]!
+    apiTemplateWorkerRelated: [TypeTemplateWorker!]!
+    countAssignmentsMaxPerWorker: Int
+    datetimeCreation: DateTime!
+    datetimeVisited: DateTime!
+    id: ID!
+    name: String!
+    slug: String!
+    version: Int!
+}
+
 type TypeTemplateAssignment {
     datetimeCreation: DateTime!
     id: ID!
     isActive: Boolean!
     name: String!
+    project: TypeProject!
     template: String!
     templatesUsed: [TypeTemplateWorker!]!
 }
@@ -49,6 +105,7 @@ type TypeTemplateGlobal {
     id: ID!
     isActive: Boolean!
     name: String!
+    project: TypeProject!
     template: String!
     templatesUsed: [TypeTemplateWorker!]!
 }
@@ -58,6 +115,7 @@ type TypeTemplateHIT {
     id: ID!
     isActive: Boolean!
     name: String!
+    project: TypeProject!
     template: String!
     templatesUsed: [TypeTemplateWorker!]!
 }
@@ -69,6 +127,7 @@ type TypeTemplateWorker {
     isActive: Boolean!
     jsonDictParameters: String!
     name: String!
+    project: TypeProject!
     template: String!
     templateAssignment: TypeTemplateAssignment
     templateGlobal: TypeTemplateGlobal

@@ -123,11 +123,11 @@ export default {
 
 <style>
 .CodeMirror {
-  height: 80vh !important;
+  height: 60vh !important;
 }
 .iframe-container {
   overflow: hidden;
-  padding-top: 80vh;
+  padding-top: 60vh;
   position: relative;
 }
 

@@ -36,6 +36,8 @@ class ClassServiceTemplates {
       return new TemplateWorker(item);
     });
 
+    console.warn(templatesWorker, 'templatesWorker');
+
     return Promise.all([
       store.dispatch('moduleTemplates/setTemplatesWorker', {
         templates: templatesWorker.reduce((obj, template) => {
@@ -62,6 +64,88 @@ class ClassServiceTemplates {
       obj[template.id as string] = template;
       return obj;
     }, {} as {[key: string]: TemplateBase});
+  }
+
+  async update({
+    templateCurrent, templateNew,
+  }) {
+    let nameCommit;
+    let nameMutation;
+    let query;
+    let cls: TemplateBase;
+
+    if (templateCurrent instanceof TemplateAssignment) {
+      nameCommit = 'updateTemplateAssignment';
+      nameMutation = 'updateTemplateAssignment';
+      query = queryUpdateTemplateAssignment;
+      cls = TemplateAssignment;
+    }
+    if (templateCurrent instanceof TemplateHIT) {
+      nameCommit = 'updateTemplateHIT';
+      nameMutation = 'updateTemplateHit';
+      query = queryUpdateTemplateHIT;
+      cls = TemplateHIT;
+    }
+    if (templateCurrent instanceof TemplateGlobal) {
+      nameCommit = 'updateTemplateGlobal';
+      nameMutation = 'updateTemplateGlobal';
+      query = queryUpdateTemplateGlobal;
+      cls = TemplateGlobal;
+    }
+    if (templateCurrent instanceof TemplateWorker) {
+      nameCommit = 'updateTemplateWorker';
+      nameMutation = 'updateTemplateWorker';
+      query = queryUpdateTemplateWorker;
+      cls = TemplateWorker;
+    }
+
+    const response = await apolloClient.query({
+      query,
+      variables: {
+        template: templateNew.extractBody(),
+      },
+      fetchPolicy: 'no-cache',
+    });
+
+    store.commit(`moduleTemplates/${nameCommit}`, {
+      template: new cls(response.data[nameMutation].template),
+    });
+  }
+
+  async delete({
+    template,
+  }: { template: TemplateBase }) {
+    let nameCommit;
+    let query;
+
+    if (template instanceof TemplateAssignment) {
+      nameCommit = 'deleteTemplateAssignment';
+      query = queryDeleteTemplateAssignment;
+    }
+    if (template instanceof TemplateHIT) {
+      nameCommit = 'deleteTemplateHIT';
+      query = queryDeleteTemplateHIT;
+    }
+    if (template instanceof TemplateGlobal) {
+      nameCommit = 'deleteTemplateGlobal';
+      query = queryDeleteTemplateGlobal;
+    }
+    if (template instanceof TemplateWorker) {
+      nameCommit = 'deleteTemplateWorker';
+      query = queryDeleteTemplateWorker;
+    }
+
+    await apolloClient.query({
+      query,
+      variables: {
+        id: template.id,
+      },
+      fetchPolicy: 'no-cache',
+    });
+
+    store.commit(`moduleTemplates/${nameCommit}`, {
+      template,
+    });
   }
 }
 

@@ -36,6 +36,11 @@ class InputTemplateGlobal(InputTemplateBase, graphene.InputObjectType):
     pass
 
 
+'''
+Create
+'''
+
+
 class MutationCreateTemplateWorker(graphene.Mutation):
     class Arguments:
         template = InputTemplateWorker(required=True)
@@ -104,6 +109,11 @@ class MutationCreateTemplateGlobal(graphene.Mutation):
         )
 
         return MutationCreateTemplateGlobal(template=template)
+
+
+'''
+Update
+'''
 
 
 class MutationUpdateTemplateWorker(graphene.Mutation):

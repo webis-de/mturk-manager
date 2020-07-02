@@ -31,20 +31,20 @@
       <!--      />-->
     </template>
 
-    <!--    <template v-slot:actions>-->
-    <!--      <component-add-template-assignment-->
-    <!--        v-on:created="snackbarCreated = true"-->
-    <!--      />-->
-    <!--    </template>-->
+    <template v-slot:actions>
+      <create-template-requester />
+    </template>
   </base-table>
 </template>
 
 <script>
 import BaseTable from '../../../../components/base-table';
+import TableTemplatesRequesterItem from './table-templates-requester-item';
+import CreateTemplateRequester from '../create/create-template-requester';
 
 export default {
   name: 'TableTemplatesRequester',
-  components: { BaseTable },
+  components: { CreateTemplateRequester, TableTemplatesRequesterItem, BaseTable },
 };
 </script>
 
