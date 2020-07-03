@@ -17,13 +17,17 @@
     </template>
 
     <v-card>
-      <!-- <v-card-title>
-            <span class="headline">Add Profile</span>
-            <v-spacer></v-spacer>
-            <v-btn icon v-on:click="dialog = false">
-                <v-icon>close</v-icon>
-            </v-btn>
-        </v-card-title> -->
+      <v-card-title>
+        <span class="headline">Delete template</span>
+        <v-spacer />
+        <v-btn
+          icon
+          v-on:click="dialog = false"
+        >
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+      </v-card-title>
+
       <v-card-text>
         Do you really want to delete the template '{{
           template.name
