@@ -21,14 +21,6 @@
         v-bind:object-columns-selected="objectColumnsSelected"
         v-bind:is-condensed="isCondensed"
       />
-      <!--      <item-templates-assignment-->
-      <!--        v-bind:item="item"-->
-      <!--        v-bind:object-columns-selected="objectColumnsSelected"-->
-      <!--        v-bind:is-condensed="isCondensed"-->
-
-      <!--        v-on:edited="snackbarEdited = true"-->
-      <!--        v-on:deleted="snackbarDeleted = true"-->
-      <!--      />-->
     </template>
 
     <template v-slot:actions>

@@ -1,3 +1,5 @@
+import {ID} from "@/modules/app/types";
+
 export class TemplateBase {
   id?: string;
 
@@ -9,8 +11,7 @@ export class TemplateBase {
 
   datetimeCreation?: Date;
 
-  // Todo create Project Class
-  project: { id: string | number };
+  project: ID;
 
   constructor({
     id,
@@ -21,7 +22,7 @@ export class TemplateBase {
     datetimeCreation,
   }: {
     id?: string;
-    project: {};
+    project: ID;
     name: string;
     template: string;
     isActive: boolean;
@@ -38,12 +39,28 @@ export class TemplateBase {
   extractBody() {
     return {
       id: this.id,
-      project: this.project.id,
+      project: this.project,
       name: this.name,
       template: this.template,
       isActive: this.isActive,
       datetimeCreation: this.datetimeCreation,
     };
+  }
+
+  static prepareFromServerToStore(data: {}[]): {[key: string]: TemplateBase} {
+    const templates: TemplateBase[] = data.map((item: {}) => {
+      return this.parseFromServer(item);
+    });
+
+    return templates.reduce((obj, template) => {
+      obj[template.id as string] = template;
+      return obj;
+    }, {} as { [key: string]: TemplateBase });
+  }
+
+  static parseFromServer(item: {}): TemplateBase {
+      item.project = item.project.id;
+      return new this(item);
   }
 
   // getChanges(template) {

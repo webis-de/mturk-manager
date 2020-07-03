@@ -152,6 +152,21 @@ export const moduleTemplates = _.merge({}, baseModule, {
         .concat(Object.values(state.templatesHIT))
         .concat(Object.values(state.templatesGlobal));
     },
+    templatesAssignmentSorted(state: StoreTemplateState): TemplateAssignment[] | null {
+      if (state.templatesAssignment === null) return null;
+
+      return Object.values(state.templatesAssignment);
+    },
+    templatesHITSorted(state: StoreTemplateState): TemplateHIT[] | null {
+      if (state.templatesHIT === null) return null;
+
+      return Object.values(state.templatesHIT);
+    },
+    templatesGlobalSorted(state: StoreTemplateState): TemplateGlobal[] | null {
+      if (state.templatesGlobal === null) return null;
+
+      return Object.values(state.templatesGlobal);
+    },
   },
   mutations: {
     /**
@@ -170,18 +185,18 @@ export const moduleTemplates = _.merge({}, baseModule, {
       state.templatesGlobal = templates;
     },
     /**
-     * Add
+     * Create
      */
-    addTemplateWorker(state: StoreTemplateState, { template }: {template: TemplateWorker }) {
+    createTemplateWorker(state: StoreTemplateState, { template }: {template: TemplateWorker }) {
       if (template.id !== undefined) Vue.set(state.templatesWorker, template.id, template);
     },
-    addTemplateAssignment(state: StoreTemplateState, { template }: { template: TemplateAssignment }) {
+    createTemplateAssignment(state: StoreTemplateState, { template }: { template: TemplateAssignment }) {
       if (template.id !== undefined) Vue.set(state.templatesAssignment, template.id, template);
     },
-    addTemplateHIT(state: StoreTemplateState, { template }: { template: TemplateHIT }) {
+    createTemplateHIT(state: StoreTemplateState, { template }: { template: TemplateHIT }) {
       if (template.id !== undefined) Vue.set(state.templatesHIT, template.id, template);
     },
-    addTemplateGlobal(state: StoreTemplateState, { template }: { template: TemplateGlobal }) {
+    createTemplateGlobal(state: StoreTemplateState, { template }: { template: TemplateGlobal }) {
       if (template.id !== undefined) Vue.set(state.templatesGlobal, template.id, template);
     },
     /**
@@ -215,6 +230,24 @@ export const moduleTemplates = _.merge({}, baseModule, {
     deleteTemplateGlobal(state: StoreTemplateState, { template }: { template: TemplateGlobal }) {
       if (template.id !== undefined) Vue.delete(state.templatesGlobal, template.id);
     },
+    /**
+     * Updates worker templates after a requester template is deleted
+     */
+    updateWorkerTemplatesAfterDeletionOfRequesterTemplate(state: StoreTemplateState, { template }: { template: TemplateBase }) {
+      let nameField;
+      if (template instanceof TemplateAssignment) nameField = 'templateAssignment';
+      if (template instanceof TemplateHIT) nameField = 'templateHIT';
+      if (template instanceof TemplateGlobal) nameField = 'templateGlobal';
+
+      const idsTemplateWorker = Object.keys(state.templatesWorker);
+
+      for (let i = 0; i < idsTemplateWorker.length; i++) {
+        const templateWorker = state.templatesWorker[idsTemplateWorker[i]];
+        if (templateWorker[nameField] === template.id) {
+          Vue.set(templateWorker, nameField, null);
+        }
+      }
+    },
   },
   actions: {
     async init({ dispatch }) {
@@ -239,26 +272,6 @@ export const moduleTemplates = _.merge({}, baseModule, {
           nameState: 'paginationGlobal',
         }),
       ]);
-    },
-    setTemplatesWorker({ commit }, { templates }) {
-      commit('setTemplatesWorker', {
-        templates,
-      });
-    },
-    setTemplatesAssignment({ commit }, { templates }) {
-      commit('setTemplatesAssignment', {
-        templates,
-      });
-    },
-    setTemplatesHIT({ commit }, { templates }) {
-      commit('setTemplatesHIT', {
-        templates,
-      });
-    },
-    setTemplatesGlobal({ commit }, { templates }) {
-      commit('setTemplatesGlobal', {
-        templates,
-      });
     },
   },
 });

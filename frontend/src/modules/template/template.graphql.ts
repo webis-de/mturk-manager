@@ -21,6 +21,45 @@ ${fragmentsTemplate.templateHIT}
 ${fragmentsTemplate.templateGlobal}
 `;
 /**
+ * Create
+ */
+export const queryCreateTemplateWorker = gql`mutation createTemplateWorker($template: InputTemplateWorker!) {
+    createTemplateWorker(template: $template) {
+        template {
+            ...templateWorker
+        }
+    }
+}
+${fragmentsTemplate.templateWorker}
+`;
+export const queryCreateTemplateAssignment = gql`mutation createTemplateAssignment($template: InputTemplateAssignment!) {
+    createTemplateAssignment(template: $template) {
+        template {
+            ...templateAssignment
+        }
+    }
+}
+${fragmentsTemplate.templateAssignment}
+`;
+export const queryCreateTemplateHIT = gql`mutation createTemplateHIT($template: InputTemplateHIT!) {
+    createTemplateHit(template: $template) {
+        template {
+            ...templateHIT
+        }
+    }
+}
+${fragmentsTemplate.templateHIT}
+`;
+export const queryCreateTemplateGlobal = gql`mutation createTemplateGlobal ($template: InputTemplateGlobal !) {
+    createTemplateGlobal (template: $template) {
+        template {
+            ...templateGlobal 
+        }
+    }
+}
+${fragmentsTemplate.templateGlobal }
+`;
+/**
  * Update
  */
 export const queryUpdateTemplateWorker = gql`mutation updateTemplateWorker($template: InputTemplateWorker!) {

@@ -1,4 +1,5 @@
 import {
+  queryCreateTemplateAssignment, queryCreateTemplateGlobal, queryCreateTemplateHIT, queryCreateTemplateWorker,
   queryDeleteTemplateAssignment,
   queryDeleteTemplateGlobal, queryDeleteTemplateHIT, queryDeleteTemplateWorker,
   queryTemplates,
@@ -23,47 +24,66 @@ class ClassServiceTemplates {
       fetchPolicy: 'no-cache',
     });
 
-    const templatesAssignment = this.processData({ data: response.data.templatesAssignment, Cls: TemplateAssignment });
-    const templatesHIT = this.processData({ data: response.data.templatesHit, Cls: TemplateHIT });
-    const templatesGlobal = this.processData({ data: response.data.templatesGlobal, Cls: TemplateGlobal });
-
-
-    const templatesWorker: TemplateWorker[] = response.data.templatesWorker.map((item: {}) => {
-      item.templateAssignment = item.templateAssignment !== null ? templatesAssignment[item.templateAssignment.id] : null;
-      item.templateHIT = item.templateHit !== null ? templatesHIT[item.templateHit.id] : null;
-      item.templateGlobal = item.templateGlobal !== null ? templatesGlobal[item.templateGlobal.id] : null;
-      // item.templateOriginal = item.templateOriginal !== null ? templatesOriginal[item.templateOriginal.id] : null;
-      return new TemplateWorker(item);
-    });
-
-    console.warn(templatesWorker, 'templatesWorker');
-
     return Promise.all([
-      store.dispatch('moduleTemplates/setTemplatesWorker', {
-        templates: templatesWorker.reduce((obj, template) => {
-          obj[template.id as string] = template;
-          return obj;
-        }, {} as {[key: string]: TemplateWorker}),
+      store.commit('moduleTemplates/setTemplatesWorker', {
+        templates: TemplateWorker.prepareFromServerToStore(response.data.templatesWorker),
       }),
-      store.dispatch('moduleTemplates/setTemplatesAssignment', {
-        templates: templatesAssignment,
+      store.commit('moduleTemplates/setTemplatesAssignment', {
+        templates: TemplateAssignment.prepareFromServerToStore(response.data.templatesAssignment),
       }),
-      store.dispatch('moduleTemplates/setTemplatesHIT', {
-        templates: templatesHIT,
+      store.commit('moduleTemplates/setTemplatesHIT', {
+        templates: TemplateHIT.prepareFromServerToStore(response.data.templatesHit),
       }),
-      store.dispatch('moduleTemplates/setTemplatesGlobal', {
-        templates: templatesGlobal,
+      store.commit('moduleTemplates/setTemplatesGlobal', {
+        templates: TemplateGlobal.prepareFromServerToStore(response.data.templatesGlobal),
       }),
     ]);
   }
 
-  processData({ data, Cls }: { data: {}[]; Cls: new ({}) => TemplateBase }): {[key: string]: TemplateBase} {
-    const templates: TemplateBase[] = data.map((item: {}) => new Cls(item));
+  async create({
+    template,
+  }) {
+    let nameCommit;
+    let nameMutation;
+    let query;
+    let cls: typeof TemplateBase;
 
-    return templates.reduce((obj, template) => {
-      obj[template.id as string] = template;
-      return obj;
-    }, {} as {[key: string]: TemplateBase});
+    if (template instanceof TemplateAssignment) {
+      nameCommit = 'createTemplateAssignment';
+      nameMutation = 'createTemplateAssignment';
+      query = queryCreateTemplateAssignment;
+      cls = TemplateAssignment;
+    }
+    if (template instanceof TemplateHIT) {
+      nameCommit = 'createTemplateHIT';
+      nameMutation = 'createTemplateHit';
+      query = queryCreateTemplateHIT;
+      cls = TemplateHIT;
+    }
+    if (template instanceof TemplateGlobal) {
+      nameCommit = 'createTemplateGlobal';
+      nameMutation = 'createTemplateGlobal';
+      query = queryCreateTemplateGlobal;
+      cls = TemplateGlobal;
+    }
+    if (template instanceof TemplateWorker) {
+      nameCommit = 'createTemplateWorker';
+      nameMutation = 'createTemplateWorker';
+      query = queryCreateTemplateWorker;
+      cls = TemplateWorker;
+    }
+
+    const response = await apolloClient.query({
+      query,
+      variables: {
+        template: template.extractBody(),
+      },
+      fetchPolicy: 'no-cache',
+    });
+
+    store.commit(`moduleTemplates/${nameCommit}`, {
+      template: cls.parseFromServer(response.data[nameMutation].template),
+    });
   }
 
   async update({
@@ -72,7 +92,7 @@ class ClassServiceTemplates {
     let nameCommit;
     let nameMutation;
     let query;
-    let cls: TemplateBase;
+    let cls: typeof TemplateBase;
 
     if (templateCurrent instanceof TemplateAssignment) {
       nameCommit = 'updateTemplateAssignment';
@@ -108,7 +128,7 @@ class ClassServiceTemplates {
     });
 
     store.commit(`moduleTemplates/${nameCommit}`, {
-      template: new cls(response.data[nameMutation].template),
+      template: cls.parseFromServer(response.data[nameMutation].template),
     });
   }
 
@@ -142,6 +162,12 @@ class ClassServiceTemplates {
       },
       fetchPolicy: 'no-cache',
     });
+
+    if (template instanceof TemplateAssignment || template instanceof TemplateHIT || template instanceof TemplateGlobal) {
+      store.commit('moduleTemplates/updateWorkerTemplatesAfterDeletionOfRequesterTemplate', {
+        template,
+      });
+    }
 
     store.commit(`moduleTemplates/${nameCommit}`, {
       template,

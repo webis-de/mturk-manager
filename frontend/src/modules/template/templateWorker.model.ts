@@ -1,20 +1,18 @@
 import { TemplateBase } from '@/modules/template/templateBase.model';
-import { TemplateAssignment } from '@/modules/template/templateAssignment.model';
-import { TemplateGlobal } from '@/modules/template/templateGlobal.model';
-import { TemplateHIT } from '@/modules/template/templateHIT.model';
+import { ID } from '@/modules/app/types';
 
 export class TemplateWorker extends TemplateBase {
   heightFrame: number;
 
   dictParameters: {};
 
-  templateAssignment: TemplateAssignment | null;
+  templateAssignment: ID | null;
 
-  templateHIT: TemplateHIT | null;
+  templateHIT: ID | null;
 
-  templateGlobal: TemplateGlobal | null;
+  templateGlobal: ID | null;
 
-  templateOriginal: TemplateWorker | null;
+  templateOriginal: ID | null;
 
   constructor({
     heightFrame = 800,
@@ -32,10 +30,10 @@ export class TemplateWorker extends TemplateBase {
     datetimeCreation?: Date;
     heightFrame?: number;
     jsonDictParameters?: string;
-    templateAssignment?: TemplateAssignment | null;
-    templateHIT?: TemplateHIT | null;
-    templateGlobal?: TemplateGlobal | null;
-    templateOriginal?: TemplateWorker | null;
+    templateAssignment?: ID | null;
+    templateHIT?: ID | null;
+    templateGlobal?: ID | null;
+    templateOriginal?: ID | null;
   } = {}) {
     super(data);
 
@@ -56,10 +54,19 @@ export class TemplateWorker extends TemplateBase {
       ...super.extractBody(),
       heightFrame: this.heightFrame,
       jsonDictParameters: JSON.stringify(this.dictParameters),
-      templateAssignment: this.templateAssignment === null ? null : this.templateAssignment.id,
-      templateHIT: this.templateHIT === null ? null : this.templateHIT.id,
-      templateGlobal: this.templateGlobal === null ? null : this.templateGlobal.id,
-      templateOriginal: this.templateOriginal === null ? null : this.templateOriginal.id,
+      templateAssignment: this.templateAssignment,
+      templateHit: this.templateHIT,
+      templateGlobal: this.templateGlobal,
+      templateOriginal: this.templateOriginal,
     };
+  }
+
+  static parseFromServer(item: {}): TemplateBase {
+    item.templateAssignment = item.templateAssignment !== null ? item.templateAssignment.id : null;
+    // note the renaming from Hit to HIT
+    item.templateHIT = item.templateHit !== null ? item.templateHit.id : null;
+    item.templateGlobal = item.templateGlobal !== null ? item.templateGlobal.id : null;
+
+    return super.parseFromServer(item);
   }
 }

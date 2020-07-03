@@ -20,7 +20,7 @@
 
     <v-card>
       <v-card-title>
-        <span class="headline">Edit {{ labelTypeTemplate }} Template</span>
+        <span class="headline">Edit worker template</span>
         <v-spacer />
         <v-btn
           icon
@@ -46,17 +46,21 @@
             "
           />
 
-          <template-assignment-sandbox
-            v-if="templateInternal.type === 'assignment'"
-
-            v-model="templateInternal.template"
-            label="Template"
-            v-on:input="processInput($event)"
+          <v-text-field
+            type="number"
+            required
+            v-bind:value="templateInternal.heightFrame"
+            label="Frame Height"
+            v-bind:error-messages="
+              validation_errors.templateInternal.heightFrame
+            "
+            v-on:input="
+              templateInternal.heightFrame = try_number($event);
+              $v.templateInternal.heightFrame.$touch();
+            "
           />
 
           <v-textarea
-            v-else
-
             required
             rows="20"
             v-bind:value="templateInternal.template"
@@ -67,6 +71,57 @@
             v-on:input="
               templateInternal.template = $event;
               $v.templateInternal.template.$touch();
+            "
+          />
+
+          <v-select
+            v-bind:value="templateInternal.templateAssignment"
+            v-bind:items="templatesAssignment"
+            v-bind:loading="templatesAssignment === null"
+            label="Assignment Template"
+            item-text="name"
+            item-value="id"
+            clearable
+            v-bind:error-messages="
+              validation_errors.templateInternal.templateAssignment
+            "
+            v-on:input="
+              templateInternal.templateAssignment = $event;
+              $v.templateInternal.templateAssignment.$touch();
+            "
+          />
+
+          <v-select
+            v-bind:value="templateInternal.templateHIT"
+            v-bind:items="templatesHIT"
+            v-bind:loading="templatesHIT === null"
+            label="HIT Template"
+            item-text="name"
+            item-value="id"
+            clearable
+            v-bind:error-messages="
+              validation_errors.templateInternal.templateHIT
+            "
+            v-on:input="
+              templateInternal.templateHIT = $event;
+              $v.templateInternal.templateHIT.$touch();
+            "
+          />
+
+          <v-select
+            v-bind:value="templateInternal.templateGlobal"
+            v-bind:items="templatesGlobal"
+            v-bind:loading="templatesGlobal === null"
+            label="Global Template"
+            item-text="name"
+            item-value="id"
+            clearable
+            v-bind:error-messages="
+              validation_errors.templateInternal.templateGlobal
+            "
+            v-on:input="
+              templateInternal.templateGlobal = $event;
+              $v.templateInternal.templateGlobal.$touch();
             "
           />
         </v-form>
@@ -110,24 +165,23 @@
 </template>
 
 <script lang="ts">
-import { TemplateBase } from '@/modules/template/templateBase.model';
 import cloneDeep from 'lodash-es/cloneDeep';
-import { mapActions, mapGetters } from 'vuex';
 import { required } from 'vuelidate/lib/validators';
 import helpers from '@/mixins/helpers.mixin';
 import validations from '@/mixins/validations.mixin';
 import TemplateAssignmentSandbox from '@/modules/template/components/sandbox/template-assignment-sandbox.vue';
 import debounce from 'lodash-es/debounce';
 import { ServiceTemplates } from '@/modules/template/template.service';
+import { TemplateWorker } from '@/modules/template/templateWorker.model';
 
 export default {
-  name: 'UpdateTemplateRequester',
+  name: 'UpdateTemplateWorker',
   components: { TemplateAssignmentSandbox },
   mixins: [helpers, validations],
   props: {
     template: {
       required: true,
-      type: TemplateBase,
+      type: TemplateWorker,
     },
   },
   data() {
@@ -137,21 +191,21 @@ export default {
     };
   },
   computed: {
-    labelTypeTemplate() {
-      switch (this.templateInternal.type) {
-        case 'assignment':
-          return 'Assignment';
-        case 'hit':
-          return 'HIT';
-        case 'global':
-          return 'Global';
-        default:
-          return 'Requester';
-      }
+    templatesAssignment() {
+      return this.$store.getters['moduleTemplates/templatesAssignmentSorted'];
+    },
+    templatesHIT() {
+      return this.$store.getters['moduleTemplates/templatesHITSorted'];
+    },
+    templatesGlobal() {
+      return this.$store.getters['moduleTemplates/templatesGlobalSorted'];
     },
     isActiveAutosave() {
       return this.$store.state.module_app.isActiveAutosave;
     },
+  },
+  created() {
+    this.$v.$touch();
   },
   methods: {
     processInput(value) {
@@ -166,6 +220,7 @@ export default {
       this.update();
     }, 500),
     update(close = false) {
+      console.warn(this.templateInternal, 'this.templateInternal');
       if (this.$refs.form.validate()) {
         ServiceTemplates.update({
           templateCurrent: this.template,
@@ -183,15 +238,24 @@ export default {
       }
       // console.log(this.project_current);
     },
+    watch: {
+      'templateInternal.templateAssignment': function (value) {
+        if (value === undefined) this.templateInternal.templateAssignment = null;
+      },
+      'templateInternal.templateHIT': function (value) {
+        if (value === undefined) this.templateInternal.templateHIT = null;
+      },
+      'templateInternal.templateGlobal': function (value) {
+        if (value === undefined) this.templateInternal.templateGlobal = null;
+      },
+      dialog() {
+        this.reset();
+      },
+    },
     reset() {
       this.templateInternal = cloneDeep(this.template);
       this.$v.$reset();
       this.$v.$touch();
-    },
-  },
-  watch: {
-    dialog() {
-      this.reset();
     },
   },
   validations: {
@@ -199,15 +263,18 @@ export default {
       name: {
         required,
       },
+      heightFrame: {
+        required,
+      },
       template: {
         required,
         // TODO constraints depending on template type
         // contains_form_injection: (value) => value != undefined && value.indexOf(' data-inject_input_forms') >= 0,
       },
+      templateAssignment: {},
+      templateHIT: {},
+      templateGlobal: {},
     },
-  },
-  created() {
-    this.$v.$touch();
   },
 };
 </script>
