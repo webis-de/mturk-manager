@@ -4,15 +4,27 @@
       v-model="dialog"
       max-width="80%"
     >
-      <template v-slot:activator="{ on }">
-        <v-btn
-          color="primary"
-          small
-          v-bind:disabled="isDisabled"
-          v-on="on"
-        >
-          <v-icon>mdi-plus</v-icon> Add Profile
-        </v-btn>
+      <template v-slot:activator="{ on: onDialog }">
+
+        <v-tooltip top>
+          <template
+            v-slot:activator="{ on: onTooltip }"
+            v-bind:disabled="!isDisabled"
+          >
+            <div v-on="onTooltip">
+              <v-btn
+                color="primary"
+                small
+                v-bind:disabled="isDisabled"
+                v-on="onDialog"
+              >
+                <v-icon>mdi-plus</v-icon> Add Profile
+              </v-btn>
+            </div>
+          </template>
+
+          You have to create a worker template.
+        </v-tooltip>
       </template>
 
       <v-card>
