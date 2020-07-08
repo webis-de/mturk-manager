@@ -8,7 +8,7 @@
         <v-btn
           color="primary"
           small
-          v-bind:disabled="is_disabled"
+          v-bind:disabled="isDisabled"
           v-on="on"
         >
           <v-icon>mdi-plus</v-icon> Add Profile
@@ -61,10 +61,6 @@
   </div>
 </template>
 <script>
-import {
-  mapState,
-} from 'vuex';
-import _ from 'lodash';
 import ComponentFormSettingsBatch from './component_form_settings_batch';
 import { settingsBatch } from '../../../mixins/settings-batch.mixin';
 import validations from '../../../mixins/validations.mixin';
@@ -83,12 +79,11 @@ export default {
     };
   },
   computed: {
-    is_disabled() {
-      return _.size(_.defaultTo(this.arrayTemplatesWorkerAll, [])) === 0;
+    isDisabled() {
+      const templatesWorker = this.$store.getters['moduleTemplates/templatesWorker'];
+      if (templatesWorker === null) return true;
+      return templatesWorker.length === 0;
     },
-    ...mapState('moduleTemplates', {
-      arrayTemplatesWorkerAll: 'arrayItemsWorkerAll',
-    }),
   },
   watch: {
     dialog() {

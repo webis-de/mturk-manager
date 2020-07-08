@@ -72,7 +72,7 @@
                 <v-col xs6>
                   <v-select
                     v-model="templateWorker"
-                    v-bind:items="$store.state.moduleTemplates.arrayItemsWorkerAll"
+                    v-bind:items="templatesWorker"
                     label="Worker Template"
                     item-text="name"
                     item-value="id"
@@ -153,6 +153,14 @@ export default {
     };
   },
   computed: {
+    templatesWorker() {
+      const templatesWorker = this.$store.getters['moduleTemplates/templatesWorker'];
+      if (templatesWorker === null) {
+        return [];
+      }
+
+      return templatesWorker.slice().sort((a, b) => a.name.localeCompare(b.name));
+    },
     info() {
       if (this.parsedCSV === null) return null;
 

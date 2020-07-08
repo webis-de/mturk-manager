@@ -204,6 +204,20 @@ export default {
       return this.$store.state.module_app.isActiveAutosave;
     },
   },
+  watch: {
+    'templateInternal.templateAssignment': function (value) {
+      if (value === undefined) this.templateInternal.templateAssignment = null;
+    },
+    'templateInternal.templateHIT': function (value) {
+      if (value === undefined) this.templateInternal.templateHIT = null;
+    },
+    'templateInternal.templateGlobal': function (value) {
+      if (value === undefined) this.templateInternal.templateGlobal = null;
+    },
+    dialog() {
+      this.reset();
+    },
+  },
   created() {
     this.$v.$touch();
   },
@@ -237,20 +251,6 @@ export default {
         });
       }
       // console.log(this.project_current);
-    },
-    watch: {
-      'templateInternal.templateAssignment': function (value) {
-        if (value === undefined) this.templateInternal.templateAssignment = null;
-      },
-      'templateInternal.templateHIT': function (value) {
-        if (value === undefined) this.templateInternal.templateHIT = null;
-      },
-      'templateInternal.templateGlobal': function (value) {
-        if (value === undefined) this.templateInternal.templateGlobal = null;
-      },
-      dialog() {
-        this.reset();
-      },
     },
     reset() {
       this.templateInternal = cloneDeep(this.template);

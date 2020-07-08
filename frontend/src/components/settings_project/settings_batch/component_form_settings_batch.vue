@@ -404,14 +404,12 @@ export default {
   },
   computed: {
     arrayTemplatesWorker() {
-      if (this.arrayTemplatesWorkerAll === null) {
+      const templatesWorker = this.$store.getters['moduleTemplates/templatesWorker'];
+      if (templatesWorker === null) {
         return [];
       }
 
-      return _.orderBy(
-        this.arrayTemplatesWorkerAll,
-        (template) => template.name,
-      );
+      return templatesWorker.slice().sort((a, b) => a.name.localeCompare(b.name));
     },
     list_keywords() {
       if (this.object_keywords == null) {
@@ -419,14 +417,8 @@ export default {
       }
       return Object.values(this.object_keywords);
     },
-    ...mapGetters('moduleProjects', {
-      project_current: 'get_project_current',
-    }),
     ...mapGetters('moduleKeywords', {
       object_keywords: 'get_object_keywords',
-    }),
-    ...mapState('moduleTemplates', {
-      arrayTemplatesWorkerAll: 'arrayItemsWorkerAll',
     }),
   },
   created() {
