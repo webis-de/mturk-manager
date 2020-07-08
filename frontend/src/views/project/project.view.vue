@@ -60,10 +60,14 @@
               v-on="on"
             >
               <v-icon>mdi-plus</v-icon>
-              Create Batch
+              <template v-if="$vuetify.breakpoint.lgAndUp">
+                Create Batch
+              </template>
             </v-btn>
           </template>
         </create-batch>
+
+        <sync-with-mturk />
 
         <v-col class="px-2">
           <v-divider vertical />
@@ -74,7 +78,7 @@
             <template v-slot:activator="{ on }">
               <v-switch
                 hide-details
-                v-bind:label="use_sandbox ? 'Toggle Sandbox' : 'Toggle Sandbox'"
+                v-bind:label="use_sandbox ? 'Sandbox' : 'Sandbox'"
                 v-bind:input-value="use_sandbox"
                 color="primary darken-3"
                 v-on:click.native="toggle_use_sandbox"
@@ -191,16 +195,17 @@
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex';
 import TheNavigationDrawer from '../../components/the-navigation-drawer';
-import ComponentToolbarBatches from '../../components/batches/component_toolbar_batches';
 import ComponentToolbarQualifications from '../../components/qualifications/component-toolbar-qualifications';
 import TheTasksBar from '../../components/the-tasks-bar';
 import TheSettingsApp from '../../components/the-settings-app';
 import TheBreadcrumb from '../../components/the-breadcrumb';
 import CreateBatch from '../../components/batches/create/component_create_batch';
+import SyncWithMturk from '../../components/batches/component_toolbar_batches';
 
 export default {
   name: 'AppProject',
   components: {
+    SyncWithMturk,
     CreateBatch,
     TheBreadcrumb,
     TheSettingsApp,
@@ -219,25 +224,6 @@ export default {
         return { 'background-color': '#dd6e00' };
       }
       return {};
-    },
-    currentTabComponent() {
-      switch (this.$route.name) {
-        case 'finances':
-        case 'tasksBatches':
-        case 'batch':
-        case 'tasksHITs':
-        case 'hit':
-        case 'tasksAssignments':
-        case 'assignment':
-        case 'workers':
-          return ComponentToolbarBatches;
-        case 'qualifications':
-          return ComponentToolbarQualifications;
-        default:
-          return null;
-        // case 'workers':
-        //     return ComponentToolbarWorkers;
-      }
     },
     name_route_current() {
       // return this.$router.currentRoute;
