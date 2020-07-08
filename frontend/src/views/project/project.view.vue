@@ -34,7 +34,12 @@
               v-bind:to="{ name: 'dashboard' }"
               exact
             >
-              MTurk Manager
+              <template v-if="$vuetify.breakpoint.lgAndUp">
+                MTurk Manager
+              </template>
+              <template v-else>
+                <v-icon>mdi-home</v-icon>
+              </template>
             </v-btn>
           </v-col>
 

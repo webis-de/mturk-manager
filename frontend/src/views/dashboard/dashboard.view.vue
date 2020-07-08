@@ -47,9 +47,12 @@
               </v-col>
             </v-row>
 
-<!--            <v-divider class="my-3" />-->
+            <!--            <v-divider class="my-3" />-->
 
-            <v-row no-gutters class="mt-6">
+            <v-row
+              no-gutters
+              class="mt-6"
+            >
               <v-col>
                 <open-project />
               </v-col>

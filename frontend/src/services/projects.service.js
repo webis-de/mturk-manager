@@ -53,8 +53,8 @@ class ClassServiceProjects {
     return project;
   }
 
-  async validateName(name) {
-    await ServiceEndpoint.makeRequest({
+  validateName(name) {
+    return ServiceEndpoint.makeRequest({
       method: 'get',
       url: {
         path: store.getters.get_url(
