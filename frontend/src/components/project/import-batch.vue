@@ -184,7 +184,7 @@ export default {
         this.nameSettingsBatch = null;
         this.loading = false;
       } else {
-        this.$refs['upload-button'].clear();
+        // this.$refs['upload-button'].clear();
       }
     },
   },
