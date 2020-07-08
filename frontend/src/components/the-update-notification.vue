@@ -2,7 +2,7 @@
   <v-snackbar
     top
     v-bind:value="hasUpdate === true"
-    v-bind:timeout="0"
+    v-bind:timeout="-1"
     color="error"
   >
     <v-spacer />

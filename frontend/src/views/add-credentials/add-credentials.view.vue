@@ -20,7 +20,7 @@
 
     <v-snackbar
       v-bind:value="false"
-      v-bind:timeout="0"
+      v-bind:timeout="-1"
       color="error"
       top
     >

@@ -187,11 +187,11 @@
       <!--        </v-menu>-->
       <!--      </v-row>-->
     </v-app-bar>
-    <v-content>
+    <v-main>
       <v-container fluid>
         <router-view />
       </v-container>
-    </v-content>
+    </v-main>
 
     <the-tasks-bar />
   </div>

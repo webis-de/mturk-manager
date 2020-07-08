@@ -37,7 +37,7 @@
         </v-col>
       </v-row>
     </v-app-bar>
-    <v-content>
+    <v-main>
       <v-container fluid>
         <v-row no-gutters>
           <v-col>
@@ -60,7 +60,7 @@
           </v-col>
         </v-row>
       </v-container>
-    </v-content>
+    </v-main>
   </div>
 </template>
 
