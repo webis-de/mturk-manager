@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { TemplateWorker } from '@/modules/template/templateWorker.model';
 
 export class SettingsBatch {
-  constructor(data = { template: new TemplateWorker() }) {
+  constructor(data = {}) {
     this.id = data.id;
     this.name = data.name;
 
@@ -14,7 +14,7 @@ export class SettingsBatch {
     this.count_assignments_max_per_worker = data.count_assignments_max_per_worker;
     this.lifetime = data.lifetime;
     this.duration = data.duration;
-    this.block_workers = data.block_workers;
+    this.block_workers = data.block_workers !== undefined ? data.block_workers : false;
     this.template = data.template;
 
     this.has_content_adult = data.has_content_adult !== undefined ? data.has_content_adult : false;

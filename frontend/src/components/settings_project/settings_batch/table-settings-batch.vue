@@ -1,75 +1,38 @@
 <template>
-  <div>
-    <base-table
-      title="Batch profiles"
+  <base-table
+    title="Batch profiles"
 
-      name-vuex-module="moduleSettingsBatch"
-      name-state-pagination="paginationGeneral"
-      name-local-storage-pagination="pagination_settings_batch_general"
+    name-vuex-module="moduleSettingsBatch"
+    name-state-pagination="paginationGeneral"
+    name-local-storage-pagination="pagination_settings_batch_general"
 
-      v-bind:function-load-page="loadPage"
-      v-bind:array-items="arrayItems"
+    v-bind:function-load-page="loadPage"
+    v-bind:array-items="arrayItems"
 
-      name-state-columns="arrayColumns"
-      name-state-columns-selected="objectColumnsSelectedInitialGeneral"
+    name-state-columns="arrayColumns"
+    name-state-columns-selected="objectColumnsSelectedInitialGeneral"
 
-      v-bind:show-select="false"
+    v-bind:show-select="false"
+  >
+    <template
+      v-slot:default="{ item, isCondensed, classes }"
     >
-      <template
-        v-slot:default="{ item, isCondensed, classes }"
-      >
-        <item-settings-batch
-          v-bind:item="item"
-          v-bind:is-condensed="isCondensed"
-          v-bind:classes="classes"
+      <item-settings-batch
+        v-bind:item="item"
+        v-bind:is-condensed="isCondensed"
+        v-bind:classes="classes"
 
-          v-on:edited="snackbarEdited = true"
-          v-on:deleted="snackbarDeleted = true"
-        />
-      </template>
+        v-on:edited="snackbarEdited = true"
+        v-on:deleted="snackbarDeleted = true"
+      />
+    </template>
 
-      <template v-slot:actions>
-        <component-add-settings-batch
-          v-on:created="snackbarCreated = true"
-        />
-      </template>
-    </base-table>
-
-
-    <!--<v+-->
-
-    <v-snackbar
-      v-model="snackbarDeleted"
-      v-bind:timeout="1500"
-      bottom
-    >
-      <v-spacer />
-      Deleted!
-      <v-spacer />
-    </v-snackbar>
-
-    <v-snackbar
-      v-model="snackbarCreated"
-      v-bind:timeout="1500"
-      bottom
-      color="success"
-    >
-      <v-spacer />
-      Saved!
-      <v-spacer />
-    </v-snackbar>
-
-    <v-snackbar
-      v-model="snackbarEdited"
-      v-bind:timeout="1500"
-      bottom
-      color="success"
-    >
-      <v-spacer />
-      Updated!
-      <v-spacer />
-    </v-snackbar>
-  </div>
+    <template v-slot:actions="{ refresh }">
+      <component-add-settings-batch
+        v-on:created="refresh()"
+      />
+    </template>
+  </base-table>
 </template>
 
 <script>
