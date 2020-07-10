@@ -15,6 +15,10 @@ export class SettingsBatch {
     this.lifetime = data.lifetime;
     this.duration = data.duration;
     this.block_workers = data.block_workers !== undefined ? data.block_workers : false;
+
+    if (data.template !== undefined && data.template.id !== undefined) {
+      data.template.id = data.template.id.toString();
+    }
     this.template = data.template;
 
     this.has_content_adult = data.has_content_adult !== undefined ? data.has_content_adult : false;
