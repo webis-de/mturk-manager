@@ -150,9 +150,9 @@ export default {
       this.template_assignment.template = value;
       this.$v.template_assignment.template.$touch();
 
-      if (this.$v.$invalid === false && this.isActiveAutosave === true) {
-        this.saveDebounced();
-      }
+      // if (this.$v.$invalid === false && this.isActiveAutosave === true) {
+      //   this.saveDebounced();
+      // }
     },
     saveDebounced: _.debounce(function () {
       this.update();
