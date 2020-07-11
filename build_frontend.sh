@@ -13,4 +13,4 @@ cp sandbox-hit/sandbox-hit.html dist/
 
 cd ..
 
-docker-compose -f frontend/docker-compose.yml up --build
+./start_frontend.sh

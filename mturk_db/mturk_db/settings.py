@@ -18,8 +18,6 @@ env = environ.Env(
     DEBUG=(bool, False),
     RABBITMQ_DEFAULT_USER=(str, 'guest'),
     RABBITMQ_DEFAULT_PASS=(str, 'guest'),
-    # TODO: remove before deployment
-    # DATABASE_URL=(str, 'postgres://user:password@localhost:5432/database'),
     DATABASE_URL=(str, 'postgres://{user}:{password}@db:5432/{database}'.format(
         user=os.environ.get('POSTGRES_USER', 'user'),
         password=os.environ.get('POSTGRES_PASSWORD', 'password'),

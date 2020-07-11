@@ -2,11 +2,11 @@ version: '3.7'
 
 services:
   backend:
-    build: .
+    build: ./mturk_db
     container_name: mturk-manager-backend-${VERSION_MTURK_MANAGER}
     image: mturk-manager-backend:${VERSION_MTURK_MANAGER}
     env_file:
-      - ../.env
+      - .env
     depends_on:
       - db
       - rabbitmq
@@ -17,7 +17,7 @@ services:
     image: postgres:10
     container_name: mturk-manager-database-${VERSION_MTURK_MANAGER}
     env_file:
-      - ../.env
+      - .env
     volumes:
       - type: bind
         source: ${PATH_DATABASE_DATA}
@@ -32,13 +32,13 @@ services:
       - 5672:5672
 
   celery:
-    build: .
+    build: ./mturk_db
     container_name: mturk-manager-worker-${VERSION_MTURK_MANAGER}
     image: mturk-manager-backend:${VERSION_MTURK_MANAGER}
     command: /venv/bin/celery -A mturk_db worker -l info --concurrency=1
     environment:
       - C_FORCE_ROOT=true
     env_file:
-      - ../.env
+      - .env
     depends_on:
       - rabbitmq
