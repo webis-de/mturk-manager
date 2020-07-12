@@ -1,4 +1,4 @@
-import {ID} from "@/modules/app/types";
+import { ID } from '@/modules/app/types';
 
 export class TemplateBase {
   id?: string;
@@ -48,9 +48,7 @@ export class TemplateBase {
   }
 
   static prepareFromServerToStore(data: {}[]): {[key: string]: TemplateBase} {
-    const templates: TemplateBase[] = data.map((item: {}) => {
-      return this.parseFromServer(item);
-    });
+    const templates: TemplateBase[] = data.map((item: {}) => this.parseFromServer(item));
 
     return templates.reduce((obj, template) => {
       obj[template.id as string] = template;
@@ -59,8 +57,8 @@ export class TemplateBase {
   }
 
   static parseFromServer(item: {}): TemplateBase {
-      item.project = item.project.id;
-      return new this(item);
+    item.project = item.project.id;
+    return new this(item);
   }
 
   // getChanges(template) {
