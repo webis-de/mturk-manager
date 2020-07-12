@@ -25,7 +25,7 @@ type MutationCreateTemplateAssignment {
 }
 
 type MutationCreateTemplateGlobal {
-    template: TypeTemplateGlobal
+    templateNew: TypeTemplateGlobal
 }
 
 type MutationCreateTemplateHIT {
@@ -69,10 +69,17 @@ type MutationUpdateTemplateWorker {
 }
 
 type Query {
+    settingsBatch(project: ID): [TypeSettingsBatch]
     templatesAssignment(project: ID): [TypeTemplateAssignment]
     templatesGlobal(project: ID): [TypeTemplateGlobal]
     templatesHit(project: ID): [TypeTemplateHIT]
     templatesWorker(project: ID): [TypeTemplateWorker]
+}
+
+type TypeKeyword {
+    id: ID!
+    projects: [TypeSettingsBatch!]!
+    text: String!
 }
 
 type TypeProject {
@@ -86,8 +93,31 @@ type TypeProject {
     datetimeVisited: DateTime!
     id: ID!
     name: String!
+    settingsBatch: [TypeSettingsBatch!]!
+    settingsBatchDefault: TypeSettingsBatch
     slug: String!
     version: Int!
+}
+
+type TypeSettingsBatch {
+    blockWorkers: Boolean!
+    countAssignments: Int!
+    countAssignmentsMaxPerWorker: Int
+    description: String
+    duration: Int!
+    hasContentAdult: Boolean!
+    id: ID!
+    keywords: [TypeKeyword!]!
+    lifetime: Int!
+    name: String!
+    project: TypeProject!
+    projectDefault: TypeProject
+    qualificationAssignmentsApproved: Int
+    qualificationHitsApproved: Int
+    qualificationLocale: String
+    reward: Int!
+    templateWorker: TypeTemplateWorker
+    title: String
 }
 
 type TypeTemplateAssignment {
@@ -128,6 +158,7 @@ type TypeTemplateWorker {
     jsonDictParameters: String!
     name: String!
     project: TypeProject!
+    settingsBatch: [TypeSettingsBatch!]!
     template: String!
     templateAssignment: TypeTemplateAssignment
     templateGlobal: TypeTemplateGlobal

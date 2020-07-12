@@ -4,7 +4,7 @@ from api.models import Template_Assignment, Template_HIT, Template_Global, Templ
 from api.modules.templates.types import TypeTemplateAssignment, TypeTemplateHIT, TypeTemplateGlobal, TypeTemplateWorker
 
 
-class QueryTemplateAssignment(object):
+class QueryTemplate(object):
     templates_worker = graphene.List(TypeTemplateWorker, project=graphene.ID())
     templates_assignment = graphene.List(TypeTemplateAssignment, project=graphene.ID())
     templates_hit = graphene.List(TypeTemplateHIT, project=graphene.ID())

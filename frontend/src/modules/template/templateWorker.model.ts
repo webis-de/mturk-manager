@@ -6,21 +6,21 @@ export class TemplateWorker extends TemplateBase {
 
   dictParameters: {};
 
-  templateAssignment: ID | null;
+  templateAssignment?: ID;
 
-  templateHIT: ID | null;
+  templateHIT?: ID;
 
-  templateGlobal: ID | null;
+  templateGlobal?: ID;
 
-  templateOriginal: ID | null;
+  templateOriginal?: ID;
 
   constructor({
     heightFrame = 800,
     jsonDictParameters = '{}',
-    templateAssignment = null,
-    templateHIT = null,
-    templateGlobal = null,
-    templateOriginal = null,
+    templateAssignment,
+    templateHIT,
+    templateGlobal,
+    templateOriginal,
     ...data
   }: {
     id?: string;
@@ -30,10 +30,10 @@ export class TemplateWorker extends TemplateBase {
     datetimeCreation?: Date;
     heightFrame?: number;
     jsonDictParameters?: string;
-    templateAssignment?: ID | null;
-    templateHIT?: ID | null;
-    templateGlobal?: ID | null;
-    templateOriginal?: ID | null;
+    templateAssignment?: ID;
+    templateHIT?: ID;
+    templateGlobal?: ID;
+    templateOriginal?: ID;
   } = {}) {
     super(data);
 
