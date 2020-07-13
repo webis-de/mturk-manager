@@ -74,28 +74,28 @@
             dense
             required
             type="number"
-            v-bind:value="count_assignments"
+            v-bind:value="countAssignments"
             label="Number of Assignments"
             min="1"
-            v-bind:error-messages="validation_errors.settings_batch.count_assignments"
+            v-bind:error-messages="validation_errors.settings_batch.countAssignments"
             v-bind:readonly="readonly"
             v-bind:disabled="disabled"
             v-on:input="
-              $emit('update:count_assignments', try_number($event));
-              v.settings_batch.count_assignments.$touch();
+              $emit('update:countAssignments', try_number($event));
+              v.settings_batch.countAssignments.$touch();
             "
           />
 
           <!-- <v-text-field
                   required
                   type="number"
-                  v-bind:value="count_assignments_max_per_worker"
-                  v-on:input="$emit('update:count_assignments_max_per_worker', try_number($event)); v.settings_batch.count_assignments_max_per_worker.$touch()"
+                  v-bind:value="countAssignmentsMaxPerWorker"
+                  v-on:input="$emit('update:countAssignmentsMaxPerWorker', try_number($event)); v.settings_batch.countAssignmentsMaxPerWorker.$touch()"
                   label="Number of Maximal Assignments Per Worker"
                   min="-1"
                   append-icon="clear"
-                  v-on:click:append="$emit('update:count_assignments_max_per_worker', undefined); v.settings_batch.count_assignments_max_per_worker.$touch()"
-                  v-bind:error-messages="validation_errors.settings_batch.count_assignments_max_per_worker"
+                  v-on:click:append="$emit('update:countAssignmentsMaxPerWorker', undefined); v.settings_batch.countAssignmentsMaxPerWorker.$touch()"
+                  v-bind:error-messages="validation_errors.settings_batch.countAssignmentsMaxPerWorker"
               ></v-text-field> -->
         </v-flex>
         <v-flex v-bind="flexSize">
@@ -140,17 +140,17 @@
         >
           <v-select
             dense
-            v-bind:value="template"
+            v-bind:value="templateWorker"
             v-bind:items="arrayTemplatesWorker"
             label="Worker Template"
             item-text="name"
             item-value="id"
-            v-bind:error-messages="validation_errors.settings_batch.template"
+            v-bind:error-messages="validation_errors.settings_batch.templateWorker"
             v-bind:readonly="readonly"
             v-bind:disabled="disabled"
             v-on:input="
-              $emit('update:template', $event);
-              v.settings_batch.template.$touch();
+              $emit('update:templateWorker', $event);
+              v.settings_batch.templateWorker.$touch();
             "
           />
         </v-flex>
@@ -158,16 +158,16 @@
           <v-switch
             v-bind:label="
               `Limit Block and Project Block for Workers (${
-                block_workers ? 'enabled' : 'disabled'
+                blockWorkers ? 'enabled' : 'disabled'
               })`
             "
-            v-bind:input-value="block_workers"
-            v-bind:error-messages="validation_errors.settings_batch.block_workers"
+            v-bind:input-value="blockWorkers"
+            v-bind:error-messages="validation_errors.settings_batch.blockWorkers"
             v-bind:readonly="readonly"
             v-bind:disabled="disabled"
             v-on:change="
-              $emit('update:block_workers', $event);
-              v.settings_batch.block_workers.$touch();
+              $emit('update:blockWorkers', $event);
+              v.settings_batch.blockWorkers.$touch();
             "
           />
         </v-flex>
@@ -222,13 +222,13 @@
         <v-flex v-bind="flexSize">
           <v-switch
             v-bind:label="`Contains Adult Content`"
-            v-bind:input-value="has_content_adult"
-            v-bind:error-messages="validation_errors.settings_batch.has_content_adult"
+            v-bind:input-value="hasContentAdult"
+            v-bind:error-messages="validation_errors.settings_batch.hasContentAdult"
             v-bind:readonly="readonly"
             v-bind:disabled="disabled"
             v-on:change="
-              $emit('update:has_content_adult', $event);
-              v.settings_batch.has_content_adult.$touch();
+              $emit('update:hasContentAdult', $event);
+              v.settings_batch.hasContentAdult.$touch();
             "
           />
         </v-flex>
@@ -237,20 +237,20 @@
             dense
             required
             type="number"
-            v-bind:value="qualification_assignments_approved"
+            v-bind:value="qualificationAssignmentsApproved"
             step="1"
             max="100"
             min="0"
             label="Approved Assignments"
             append-icon="%"
             v-bind:error-messages="
-              validation_errors.settings_batch.qualification_assignments_approved
+              validation_errors.settings_batch.qualificationAssignmentsApproved
             "
             v-bind:readonly="readonly"
             v-bind:disabled="disabled"
             v-on:input="
-              $emit('update:qualification_assignments_approved', try_number($event));
-              v.settings_batch.qualification_assignments_approved.$touch();
+              $emit('update:qualificationAssignmentsApproved', try_number($event));
+              v.settings_batch.qualificationAssignmentsApproved.$touch();
             "
           />
         </v-flex>
@@ -259,25 +259,25 @@
             dense
             required
             type="number"
-            v-bind:value="qualification_hits_approved"
+            v-bind:value="qualificationHitsApproved"
             step="1"
             min="0"
             label="Approved HITs"
             v-bind:error-messages="
-              validation_errors.settings_batch.qualification_hits_approved
+              validation_errors.settings_batch.qualificationHitsApproved
             "
             v-bind:readonly="readonly"
             v-bind:disabled="disabled"
             v-on:input="
-              $emit('update:qualification_hits_approved', try_number($event));
-              v.settings_batch.qualification_hits_approved.$touch();
+              $emit('update:qualificationHitsApproved', try_number($event));
+              v.settings_batch.qualificationHitsApproved.$touch();
             "
           />
         </v-flex>
         <v-flex v-bind="flexSize">
           <v-combobox
             dense
-            v-bind:value="qualification_locale"
+            v-bind:value="qualificationLocale"
             label="Locale (Separated with TAB)"
             hide-selected
             small-chips
@@ -286,13 +286,13 @@
             counter
             append-icon
             v-bind:error-messages="
-              validation_errors.settings_batch.qualification_locale
+              validation_errors.settings_batch.qualificationLocale
             "
             v-bind:readonly="readonly"
             v-bind:disabled="disabled"
             v-on:input="
-              $emit('update:qualification_locale', $event);
-              v.settings_batch.qualification_locale.$touch();
+              $emit('update:qualificationLocale', $event);
+              v.settings_batch.qualificationLocale.$touch();
             "
             v-on:change="handle_change_combobox($event)"
           >
@@ -304,7 +304,7 @@
                 v-bind:input-value="data.selected"
                 close
                 small
-                v-on:input="remove_qualification_locale(data.item)"
+                v-on:input="remove_qualificationLocale(data.item)"
               >
                 <strong>{{
                   data.item.text != undefined ? data.item.text : data.item
@@ -363,17 +363,17 @@ export default {
     title: {},
     description: {},
     reward: {},
-    count_assignments: {},
-    count_assignments_max_per_worker: {},
+    countAssignments: {},
+    countAssignmentsMaxPerWorker: {},
     lifetime: {},
     duration: {},
-    template: {},
-    block_workers: {},
+    templateWorker: {},
+    blockWorkers: {},
     keywords: {},
-    has_content_adult: {},
-    qualification_assignments_approved: {},
-    qualification_hits_approved: {},
-    qualification_locale: {},
+    hasContentAdult: {},
+    qualificationAssignmentsApproved: {},
+    qualificationHitsApproved: {},
+    qualificationLocale: {},
   },
   data() {
     return {
@@ -390,12 +390,12 @@ export default {
     format_duration(label, duration) {
       return `${label} (${humanizeDuration(duration * 1000)})`;
     },
-    remove_qualification_locale(item) {
-      this.qualification_locale.splice(
-        this.qualification_locale.indexOf(item),
+    remove_qualificationLocale(item) {
+      this.qualificationLocale.splice(
+        this.qualificationLocale.indexOf(item),
         1,
       );
-      // this.qualification_locale = [...this.qualification_locale]
+      // this.qualificationLocale = [...this.qualificationLocale]
     },
     remove(item) {
       this.keywords.splice(this.keywords.indexOf(item), 1);

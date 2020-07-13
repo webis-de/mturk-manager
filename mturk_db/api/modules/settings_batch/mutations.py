@@ -7,13 +7,26 @@ from api.modules.templates.helpers import count_parameters_in_template
 from api.modules.templates.types import TypeTemplateAssignment, TypeTemplateWorker, TypeTemplateGlobal, TypeTemplateHIT
 
 
-class InputSettingsBatch(object):
-    id = graphene.Int()
-    name = graphene.String(required=True)
+class InputSettingsBatch(graphene.InputObjectType):
+    id = graphene.ID()
     project = graphene.Int(required=True)
-    template = graphene.String(required=True)
-    is_active = graphene.Boolean(required=True)
+    name = graphene.String(required=True)
+    title = graphene.String()
+    description = graphene.String()
+    template_worker = graphene.ID()
     datetime_creation = graphene.DateTime()
+    reward = graphene.Int()
+    duration = graphene.Int()
+    lifetime = graphene.Int()
+    count_assignments = graphene.Int()
+    count_assignments_max_per_worker = graphene.Int()
+    block_workers = graphene.Boolean()
+    has_content_adult = graphene.Boolean()
+    qualification_assignments_approved = graphene.Int()
+    qualification_hits_approved = graphene.Int()
+    qualification_locale = graphene.String()
+    # TODO
+    # keywords = graphene.List()
 
 
 '''
@@ -28,21 +41,11 @@ class MutationCreateSettingsBatch(graphene.Mutation):
     settings_batch = graphene.Field(TypeSettingsBatch)
 
     def mutate(self, info, settings_batch):
-        project = Project.objects.get(id=template['project'])
-        templateAssignment = Template_Assignment.objects.get(id=template['template_assignment']) if template['template_assignment'] is not None else None
-        templateHIT = Template_HIT.objects.get(id=template['template_hit']) if template['template_hit'] is not None else None
-        templateGlobal = Template_Global.objects.get(id=template['template_global']) if template['template_global'] is not None else None
+        settings_batch['project'] = Project.objects.get(id=settings_batch['project'])
+        settings_batch['template_worker'] = Template_Worker.objects.get(id=settings_batch['template_worker'])
 
-        settings_batch_new = Template_Worker.objects.create(
-            name=template['name'],
-            project=project,
-            template=template['template'],
-            is_active=template.get('is_active'),
-            height_frame=template['height_frame'],
-            template_assignment=templateAssignment,
-            template_hit=templateHIT,
-            template_global=templateGlobal,
-            json_dict_parameters=json.dumps(count_parameters_in_template(template['template'])),
+        settings_batch_new = Settings_Batch.objects.create(
+            **settings_batch
         )
 
         return MutationCreateSettingsBatch(settings_batch=settings_batch_new)

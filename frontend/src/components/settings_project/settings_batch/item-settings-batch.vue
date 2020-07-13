@@ -32,7 +32,7 @@
       v-bind:style="stylesCell"
       class="text-end px-1 text-no-wrap"
     >
-      {{ settingsBatch.block_workers }}
+      {{ settingsBatch.blockWorkers }}
     </td>
 
     <td

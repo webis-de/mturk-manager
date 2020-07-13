@@ -11,15 +11,15 @@ ${fragmentsSettingsBatch.settingsBatch}
 /**
  * Create
  */
-// export const queryCreateSettingsBatch = gql`mutation createSettingsBatch(settingsBatch: InputSettingsBatch!) {
-//     createSettingsBatch(idSettingsBatch: settingsBatch) {
-//         template {
-//             ...settingsBatch
-//         }
-//     }
-// }
-// ${fragmentsSettingsBatch.settingsBatch}
-// `;
+export const queryCreateSettingsBatch = gql`mutation createSettingsBatch($settingsBatch: InputSettingsBatch!) {
+    createSettingsBatch(settingsBatch: $settingsBatch) {
+        settingsBatch {
+            ...settingsBatch
+        }
+    }
+}
+${fragmentsSettingsBatch.settingsBatch}
+`;
 // /**
 //  * Update
 //  */

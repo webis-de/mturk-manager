@@ -176,11 +176,11 @@
   </base-page>
 </template>
 
-<script>
+<script lang="ts">
+import TableSettingsBatch from '@/modules/settingsBatch/components/table/table-settings-batch';
 import ComponentBlockLimit from '../../../components/settings_project/block_limit/component_block_limit';
 import ComponentClearSandbox from '../../../components/settings_project/clear_sandbox/component_clear_sandbox';
 import Budget from '../../../components/finances/budget';
-import TableSettingsBatch from '../../../components/settings_project/settings_batch/table-settings-batch';
 import TableMessagesReject from '../../../components/messages-reject/table-messages-reject';
 import ImportBatch from '../../../components/project/import-batch';
 import About from '../../../components/about/about';
@@ -192,7 +192,7 @@ import BasePageGroupDivider from '../../../components/base/base-page-group-divid
 import BasePageGroup from '../../../components/base/base-page-group';
 import TheUpdateCredentials from '../../../components/the-update-credentials';
 import TableTemplatesRequester from '../../../modules/template/components/table/table-templates-requester';
-import TableTemplatesWorker from "../../../modules/template/components/table/table-templates-worker";
+import TableTemplatesWorker from '../../../modules/template/components/table/table-templates-worker';
 
 export default {
   name: 'AppSettingsProject',

@@ -242,7 +242,7 @@ export default {
                      qualification_assignments_approved: 95,
                      qualification_hits_approved: 20,
                      qualification_locale: [],
-                     block_workers: true,
+                     blockWorkers: true,
                      template: {
                         id: 45,
                         name: "Argument Quality Worker Template Dialectical",

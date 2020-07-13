@@ -42,7 +42,7 @@ class ClassServiceTemplates {
 
   async create({
     template,
-  }) {
+  }: { template: TemplateBase }) {
     let nameCommit;
     let nameMutation;
     let query;

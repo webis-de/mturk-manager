@@ -13,8 +13,8 @@ import { TemplateAssignment } from '@/modules/template/templateAssignment.model'
 import { TemplateHIT } from '@/modules/template/templateHIT.model';
 import { TemplateGlobal } from '@/modules/template/templateGlobal.model';
 import { TemplateBase } from '@/modules/template/templateBase.model';
-import {querySettingsBatch} from "@/modules/settingsBatch/settingsBatch.graphql";
-import {SettingsBatch} from "@/modules/settingsBatch/settingsBatch.model";
+import {queryCreateSettingsBatch, querySettingsBatch} from '@/modules/settingsBatch/settingsBatch.graphql';
+import { SettingsBatch } from '@/modules/settingsBatch/settingsBatch.model';
 
 class ClassServiceSettingsBatch {
   async loadSettingsBatch() {
@@ -29,53 +29,23 @@ class ClassServiceSettingsBatch {
     console.warn(SettingsBatch.prepareFromServerToStore(response.data.settingsBatch), 'SettingsBatch.prepareFromServerToStore(response.data.settingsBatch)');
 
     store.commit('moduleSettingsBatch/setSettingsBatch', {
-      templates: SettingsBatch.prepareFromServerToStore(response.data.settingsBatch),
+      settingsBatches: SettingsBatch.prepareFromServerToStore(response.data.settingsBatch),
     });
   }
 
   async create({
-    template,
+    settingsBatch,
   }) {
-    let nameCommit;
-    let nameMutation;
-    let query;
-    let cls: typeof TemplateBase;
-
-    if (template instanceof TemplateAssignment) {
-      nameCommit = 'createTemplateAssignment';
-      nameMutation = 'createTemplateAssignment';
-      query = queryCreateTemplateAssignment;
-      cls = TemplateAssignment;
-    }
-    if (template instanceof TemplateHIT) {
-      nameCommit = 'createTemplateHIT';
-      nameMutation = 'createTemplateHit';
-      query = queryCreateTemplateHIT;
-      cls = TemplateHIT;
-    }
-    if (template instanceof TemplateGlobal) {
-      nameCommit = 'createTemplateGlobal';
-      nameMutation = 'createTemplateGlobal';
-      query = queryCreateTemplateGlobal;
-      cls = TemplateGlobal;
-    }
-    if (template instanceof TemplateWorker) {
-      nameCommit = 'createTemplateWorker';
-      nameMutation = 'createTemplateWorker';
-      query = queryCreateTemplateWorker;
-      cls = TemplateWorker;
-    }
-
     const response = await apolloClient.query({
-      query,
+      query: queryCreateSettingsBatch,
       variables: {
-        template: template.extractBody(),
+        settingsBatch: settingsBatch.extractBody(),
       },
       fetchPolicy: 'no-cache',
     });
 
-    store.commit(`moduleTemplates/${nameCommit}`, {
-      template: cls.parseFromServer(response.data[nameMutation].template),
+    store.commit('moduleSettingsBatch/createSettingsBatch', {
+      settingsBatch: SettingsBatch.parseFromServer(response.data.createSettingsBatch.settingsBatch),
     });
   }
 

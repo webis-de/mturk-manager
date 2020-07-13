@@ -51,7 +51,7 @@ export class SettingsBatch {
     lifetime,
     countAssignments,
     countAssignmentsMaxPerWorker,
-    blockWorkers,
+    blockWorkers = false,
     hasContentAdult,
     datetimeCreation,
     templateWorker,
@@ -80,7 +80,7 @@ export class SettingsBatch {
     qualificationAssignmentsApproved?: number;
     qualificationHitsApproved?: number;
     qualificationLocale?: string;
-  }) {
+  } = {}) {
     this.id = id;
     this.name = name;
     this.title = title;
@@ -107,9 +107,22 @@ export class SettingsBatch {
       id: this.id,
       project: this.project,
       name: this.name,
-      template: this.template,
-      isActive: this.isActive,
+      templateWorker: this.templateWorker,
       datetimeCreation: this.datetimeCreation,
+      title: this.title,
+      description: this.description,
+      reward: this.reward,
+      keywords: this.keywords,
+      duration: this.duration,
+      lifetime: this.lifetime,
+      countAssignments: this.countAssignments,
+      countAssignmentsMaxPerWorker: this.countAssignmentsMaxPerWorker,
+      blockWorkers: this.blockWorkers,
+      hasContentAdult: this.hasContentAdult,
+      projectDefault: this.projectDefault,
+      qualificationAssignmentsApproved: this.qualificationAssignmentsApproved,
+      qualificationHitsApproved: this.qualificationHitsApproved,
+      qualificationLocale: this.qualificationLocale,
     };
   }
 

@@ -43,7 +43,7 @@ export const moduleSettingsBatch = _.merge({}, baseModule, {
       },
       {
         text: 'Block Workers',
-        value: 'block_workers',
+        value: 'blockWorkers',
         width: '1px',
         align: 'end',
         class: classesHeaders,
@@ -61,7 +61,7 @@ export const moduleSettingsBatch = _.merge({}, baseModule, {
       name: true,
       title: true,
       reward: true,
-      block_workers: true,
+      blockWorkers: true,
       actions: true,
     },
   },

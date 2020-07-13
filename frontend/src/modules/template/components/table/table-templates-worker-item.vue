@@ -75,7 +75,7 @@
 
     <base-table-cell
       v-slot="{ item }"
-      name="name"
+      name="actions"
       class="text-left text-capitalize"
       v-bind:item="template"
       v-bind:columns-selected="objectColumnsSelected"

@@ -3,12 +3,12 @@ import {
 } from 'vuex';
 import { required, minValue, maxValue } from 'vuelidate/lib/validators';
 import _ from 'lodash';
-import { SettingsBatch } from '../classes/settings_batch';
+import { SettingsBatch } from '@/modules/settingsBatch/settingsBatch.model';
 import { DESCRIPTIONS } from '../classes/enums';
 import { ServiceKeywords } from '../services/keywords.service';
 
-const foo = (object_settings_batch, settingsBatchCurrent) => (value) => {
-  if (_.get(settingsBatchCurrent, 'name', undefined) == value) return true;
+const foo = (object_settings_batch, settingsBatch) => (value) => {
+  if (_.get(settingsBatch, 'name', undefined) == value) return true;
 
   return (
     _.find(object_settings_batch, (settings_batch) => settings_batch.name == value) == undefined
@@ -32,8 +32,8 @@ export const settingsBatch = {
   },
   methods: {
     update_fields() {
-      if (this.settingsBatchCurrent !== undefined) {
-        this.settings_batch = _.cloneDeep(this.settingsBatchCurrent);
+      if (this.settingsBatch !== undefined) {
+        this.settings_batch = _.cloneDeep(this.settingsBatch);
       } else {
         this.settings_batch = new SettingsBatch();
       }
@@ -55,7 +55,7 @@ export const settingsBatch = {
           required,
           is_unique: foo(
             this.project_current.settings_batch,
-            this.settingsBatchCurrent,
+            this.settingsBatch,
           ),
         },
         title: {
@@ -68,11 +68,11 @@ export const settingsBatch = {
           required,
           minValue: minValue(0),
         },
-        count_assignments: {
+        countAssignments: {
           required,
           minValue: minValue(0),
         },
-        count_assignments_max_per_worker: {
+        countAssignmentsMaxPerWorker: {
           minValue: minValue(0),
         },
         lifetime: {
@@ -84,22 +84,22 @@ export const settingsBatch = {
           minValue: minValue(30),
           maxValue: maxValue(31536000),
         },
-        template: {
+        templateWorker: {
           required,
         },
-        block_workers: {
+        blockWorkers: {
           required,
         },
         keywords: {},
-        has_content_adult: {},
-        qualification_assignments_approved: {
+        hasContentAdult: {},
+        qualificationAssignmentsApproved: {
           minValue: minValue(0),
           maxValue: maxValue(100),
         },
-        qualification_hits_approved: {
+        qualificationHitsitsApproved: {
           minValue: minValue(0),
         },
-        qualification_locale: {},
+        qualificationLocale: {},
       },
     };
 

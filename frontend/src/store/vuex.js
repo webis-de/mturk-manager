@@ -6,6 +6,7 @@ import localforage from 'localforage';
 
 import VueCookies from 'vue-cookies';
 
+import { moduleSettingsBatch } from '@/modules/settingsBatch/settingsBatch.store';
 import { moduleProjects } from './modules/projects.js';
 import { moduleQualifications } from './modules/qualifications.js';
 import { moduleWorkers } from './modules/workers.js';
@@ -16,7 +17,6 @@ import { moduleKeywords } from './modules/keywords.js';
 import { moduleMessages } from './modules/messages.store';
 import { module_app } from './modules/app';
 import { module_finances } from './modules/finances';
-import { moduleSettingsBatch } from './modules/settings-batch';
 import { moduleTemplates } from '../modules/template/template.store';
 
 Vue.use(Vuex);
@@ -35,8 +35,8 @@ export const store = new Vuex.Store({
     moduleAssignments,
     moduleKeywords,
     moduleMessages,
-    moduleSettingsBatch,
     moduleTemplates,
+    moduleSettingsBatch,
   },
   state: {
     token_csrf: undefined,
