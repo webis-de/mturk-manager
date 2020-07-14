@@ -85,7 +85,7 @@ import {
 import ComponentFormSettingsBatch from '@/components/settings_project/settings_batch/component_form_settings_batch';
 import { settingsBatch } from '@/mixins/settings-batch.mixin';
 import validations from '@/mixins/validations.mixin';
-import { ServiceSettingsBatch } from '@/services/settings-batch.service';
+import { ServiceSettingsBatch } from '@/modules/settingsBatch/settingsBatch.service';
 
 export default {
   name: 'UpdateSettingsBatch',
@@ -114,10 +114,9 @@ export default {
   methods: {
     update() {
       if (this.$refs.form.validate()) {
-        ServiceSettingsBatch.edit({
-          settingsBatchCurrent: this.settingsBatch,
-          settingsBatchNew: this.settings_batch,
-          project: this.project_current,
+        this.settings_batch.project = this.$store.getters['moduleProjects/get_project_current'].id;
+        ServiceSettingsBatch.update({
+          settingsBatch: this.settings_batch,
         });
 
         this.dialog = false;

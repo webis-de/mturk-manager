@@ -1,10 +1,16 @@
 import json
 import graphene
 
-from api.models import Template_Worker, Template_Assignment, Template_Global, Template_HIT, Project, Settings_Batch
+from api.models import Template_Worker, Template_Assignment, Template_Global, Template_HIT, Project, Settings_Batch, \
+    Keyword
 from api.modules.settings_batch.types import TypeSettingsBatch
 from api.modules.templates.helpers import count_parameters_in_template
 from api.modules.templates.types import TypeTemplateAssignment, TypeTemplateWorker, TypeTemplateGlobal, TypeTemplateHIT
+
+
+class InputKeyword(graphene.InputObjectType):
+    id = graphene.ID()
+    text = graphene.String()
 
 
 class InputSettingsBatch(graphene.InputObjectType):
@@ -25,8 +31,7 @@ class InputSettingsBatch(graphene.InputObjectType):
     qualification_assignments_approved = graphene.Int()
     qualification_hits_approved = graphene.Int()
     qualification_locale = graphene.String()
-    # TODO
-    # keywords = graphene.List()
+    keywords = graphene.List(InputKeyword)
 
 
 '''
@@ -44,9 +49,29 @@ class MutationCreateSettingsBatch(graphene.Mutation):
         settings_batch['project'] = Project.objects.get(id=settings_batch['project'])
         settings_batch['template_worker'] = Template_Worker.objects.get(id=settings_batch['template_worker'])
 
+        update_keywords = 'keywords' in settings_batch
+
+        keywords = []
+        if update_keywords:
+            keywords = settings_batch['keywords']
+            del settings_batch['keywords']
+
         settings_batch_new = Settings_Batch.objects.create(
             **settings_batch
         )
+
+        if update_keywords:
+            list_keywords = []
+            for keyword in keywords:
+                try:
+                    id_keyword = keyword['id']
+                except KeyError:
+                    keyword = Keyword.objects.get_or_create(text=keyword['text'])[0]
+                    list_keywords.append(keyword)
+                else:
+                    list_keywords.append(id_keyword)
+
+            settings_batch_new.keywords.add(*list_keywords)
 
         return MutationCreateSettingsBatch(settings_batch=settings_batch_new)
 
@@ -60,21 +85,46 @@ class MutationUpdateSettingsBatch(graphene.Mutation):
     class Arguments:
         settings_batch = InputSettingsBatch(required=True)
 
-    template = graphene.Field(TypeTemplateWorker)
+    settings_batch = graphene.Field(TypeSettingsBatch)
 
     def mutate(self, info, settings_batch):
-        template = Template_Worker.objects.get(id=settings_batch['template']) if settings_batch['template'] is not None else None
-
         settings_batch_updated = Settings_Batch.objects.filter(
             id=settings_batch.id,
         )
 
+        settings_batch['project'] = Project.objects.get(id=settings_batch['project'])
+        settings_batch['template_worker'] = Template_Worker.objects.get(id=settings_batch['template_worker'])
+
+        update_keywords = 'keywords' in settings_batch
+
+        keywords = []
+        if update_keywords:
+            keywords = settings_batch['keywords']
+            del settings_batch['keywords']
+
         settings_batch_updated.update(
-            name=settings_batch['name'],
-            template=template,
+            **settings_batch
         )
 
-        return MutationUpdateSettingsBatch(template=settings_batch_updated.first())
+        if update_keywords:
+            instance = settings_batch_updated.first()
+
+            instance.keywords.clear()
+            list_keywords = []
+            for keyword in keywords:
+                try:
+                    id_keyword = keyword['id']
+                except KeyError:
+                    keyword = Keyword.objects.get_or_create(text=keyword['text'])[0]
+                    list_keywords.append(keyword)
+                else:
+                    list_keywords.append(id_keyword)
+
+            instance.keywords.add(*list_keywords)
+
+            instance.save()
+
+        return MutationUpdateSettingsBatch(settings_batch=settings_batch_updated.first())
 
 '''
 Delete

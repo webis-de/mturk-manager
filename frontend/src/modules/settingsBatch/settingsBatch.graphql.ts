@@ -20,23 +20,23 @@ export const queryCreateSettingsBatch = gql`mutation createSettingsBatch($settin
 }
 ${fragmentsSettingsBatch.settingsBatch}
 `;
-// /**
-//  * Update
-//  */
-// export const queryUpdateSettingsBatch = gql`mutation updateSettingsBatch(settingsBatch: InputSettingsBatch!) {
-//     updateSettingsBatch(idSettingsBatch: settingsBatch) {
-//         template {
-//             ...settingsBatch
-//         }
-//     }
-// }
-// ${fragmentsSettingsBatch.settingsBatch}
-// `;
-// /**
-//  * Delete
-//  */
-// export const queryDeleteSettingsBatch = gql`mutation deleteSettingsBatch($id: ID!) {
-//     deleteSettingsBatch(idSettingsBatch: $id) {
-//         idTemplate
-//     }
-// }`;
+/**
+ * Update
+ */
+export const queryUpdateSettingsBatch = gql`mutation updateSettingsBatch($settingsBatch: InputSettingsBatch!) {
+    updateSettingsBatch(settingsBatch: $settingsBatch) {
+         settingsBatch {
+            ...settingsBatch
+        }
+    }
+}
+${fragmentsSettingsBatch.settingsBatch}
+`;
+/**
+ * Delete
+ */
+export const queryDeleteSettingsBatch = gql`mutation deleteSettingsBatch($id: ID!) {
+    deleteSettingsBatch(idSettingsBatch: $id) {
+        idSettingsBatch
+    }
+}`;

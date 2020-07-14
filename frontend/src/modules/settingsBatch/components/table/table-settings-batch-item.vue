@@ -50,6 +50,7 @@
       v-bind:columns-selected="objectColumnsSelected"
     >
       <update-settings-batch v-bind:settings-batch="settingsBatch" />
+      <delete-settings-batch v-bind:settings-batch="settingsBatch" />
       <!--      <component-edit-settings-batch-->
       <!--        v-bind:key="`edit-settings-batch-${settingsBatch.id}`"-->
       <!--        v-bind:settings-batch-current="settingsBatch"-->
@@ -70,11 +71,16 @@ import BaseTableItem from '@/components/base-table-item.vue';
 import BaseTableCell from '@/components/base-table-cell.vue';
 import { SettingsBatch } from '@/modules/settingsBatch/settingsBatch.model';
 import UpdateSettingsBatch from '@/modules/settingsBatch/components/update/update-settings-batch.vue';
+import DeleteSettingsBatch from '@/modules/settingsBatch/components/delete/delete-settings-batch.vue';
 
 export default {
   name: 'TableSettingsBatchItem',
   components: {
-    UpdateSettingsBatch, BaseTableCell, BaseTableItem, BaseDisplayAmount,
+    DeleteSettingsBatch,
+    UpdateSettingsBatch,
+    BaseTableCell,
+    BaseTableItem,
+    BaseDisplayAmount,
   },
   props: {
     settingsBatch: {

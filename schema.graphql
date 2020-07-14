@@ -64,7 +64,7 @@ type MutationDeleteTemplateWorker {
 }
 
 type MutationUpdateSettingsBatch {
-    template: TypeTemplateWorker
+    settingsBatch: TypeSettingsBatch
 }
 
 type MutationUpdateTemplateAssignment {
@@ -182,13 +182,30 @@ type TypeTemplateWorker {
     templates: [TypeTemplateWorker!]!
 }
 
+input InputKeyword {
+    id: ID
+    text: String
+}
+
 input InputSettingsBatch {
+    blockWorkers: Boolean
+    countAssignments: Int
+    countAssignmentsMaxPerWorker: Int
     datetimeCreation: DateTime
-    id: Int
-    isActive: Boolean!
+    description: String
+    duration: Int
+    hasContentAdult: Boolean
+    id: ID
+    keywords: [InputKeyword]
+    lifetime: Int
     name: String!
     project: Int!
-    template: String!
+    qualificationAssignmentsApproved: Int
+    qualificationHitsApproved: Int
+    qualificationLocale: String
+    reward: Int
+    templateWorker: ID
+    title: String
 }
 
 input InputTemplateAssignment {

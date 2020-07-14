@@ -140,7 +140,7 @@
         >
           <v-select
             dense
-            v-bind:value="templateWorker"
+            v-bind:value="templateWorkerExpanded"
             v-bind:items="arrayTemplatesWorker"
             label="Worker Template"
             item-text="name"
@@ -403,6 +403,10 @@ export default {
     },
   },
   computed: {
+    templateWorkerExpanded() {
+      if (this.templateWorker === null) return null;
+      return this.$store.state.moduleTemplates.templatesWorker[this.templateWorker];
+    },
     arrayTemplatesWorker() {
       const templatesWorker = this.$store.getters['moduleTemplates/templatesWorker'];
       if (templatesWorker === null) {

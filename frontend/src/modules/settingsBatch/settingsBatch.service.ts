@@ -13,7 +13,11 @@ import { TemplateAssignment } from '@/modules/template/templateAssignment.model'
 import { TemplateHIT } from '@/modules/template/templateHIT.model';
 import { TemplateGlobal } from '@/modules/template/templateGlobal.model';
 import { TemplateBase } from '@/modules/template/templateBase.model';
-import {queryCreateSettingsBatch, querySettingsBatch} from '@/modules/settingsBatch/settingsBatch.graphql';
+import {
+  queryCreateSettingsBatch,
+  queryDeleteSettingsBatch,
+  querySettingsBatch, queryUpdateSettingsBatch,
+} from '@/modules/settingsBatch/settingsBatch.graphql';
 import { SettingsBatch } from '@/modules/settingsBatch/settingsBatch.model';
 
 class ClassServiceSettingsBatch {
@@ -25,8 +29,6 @@ class ClassServiceSettingsBatch {
       },
       fetchPolicy: 'no-cache',
     });
-    console.warn(response, 'response');
-    console.warn(SettingsBatch.prepareFromServerToStore(response.data.settingsBatch), 'SettingsBatch.prepareFromServerToStore(response.data.settingsBatch)');
 
     store.commit('moduleSettingsBatch/setSettingsBatch', {
       settingsBatches: SettingsBatch.prepareFromServerToStore(response.data.settingsBatch),
@@ -35,7 +37,7 @@ class ClassServiceSettingsBatch {
 
   async create({
     settingsBatch,
-  }) {
+  }: { settingsBatch: SettingsBatch }) {
     const response = await apolloClient.query({
       query: queryCreateSettingsBatch,
       variables: {
@@ -50,90 +52,35 @@ class ClassServiceSettingsBatch {
   }
 
   async update({
-    templateCurrent, templateNew,
-  }) {
-    let nameCommit;
-    let nameMutation;
-    let query;
-    let cls: typeof TemplateBase;
-
-    if (templateCurrent instanceof TemplateAssignment) {
-      nameCommit = 'updateTemplateAssignment';
-      nameMutation = 'updateTemplateAssignment';
-      query = queryUpdateTemplateAssignment;
-      cls = TemplateAssignment;
-    }
-    if (templateCurrent instanceof TemplateHIT) {
-      nameCommit = 'updateTemplateHIT';
-      nameMutation = 'updateTemplateHit';
-      query = queryUpdateTemplateHIT;
-      cls = TemplateHIT;
-    }
-    if (templateCurrent instanceof TemplateGlobal) {
-      nameCommit = 'updateTemplateGlobal';
-      nameMutation = 'updateTemplateGlobal';
-      query = queryUpdateTemplateGlobal;
-      cls = TemplateGlobal;
-    }
-    if (templateCurrent instanceof TemplateWorker) {
-      nameCommit = 'updateTemplateWorker';
-      nameMutation = 'updateTemplateWorker';
-      query = queryUpdateTemplateWorker;
-      cls = TemplateWorker;
-    }
-
+    settingsBatch,
+  }: { settingsBatch: SettingsBatch }) {
+    console.log(settingsBatch, 'settingsBatch');
     const response = await apolloClient.query({
-      query,
+      query: queryUpdateSettingsBatch,
       variables: {
-        template: templateNew.extractBody(),
+        settingsBatch: settingsBatch.extractBody(),
       },
       fetchPolicy: 'no-cache',
     });
 
-    store.commit(`moduleTemplates/${nameCommit}`, {
-      template: cls.parseFromServer(response.data[nameMutation].template),
+    store.commit('moduleSettingsBatch/updateSettingsBatch', {
+      settingsBatch: SettingsBatch.parseFromServer(response.data.updateSettingsBatch.settingsBatch),
     });
   }
 
   async delete({
-    template,
-  }: { template: TemplateBase }) {
-    let nameCommit;
-    let query;
-
-    if (template instanceof TemplateAssignment) {
-      nameCommit = 'deleteTemplateAssignment';
-      query = queryDeleteTemplateAssignment;
-    }
-    if (template instanceof TemplateHIT) {
-      nameCommit = 'deleteTemplateHIT';
-      query = queryDeleteTemplateHIT;
-    }
-    if (template instanceof TemplateGlobal) {
-      nameCommit = 'deleteTemplateGlobal';
-      query = queryDeleteTemplateGlobal;
-    }
-    if (template instanceof TemplateWorker) {
-      nameCommit = 'deleteTemplateWorker';
-      query = queryDeleteTemplateWorker;
-    }
-
+    settingsBatch,
+  }: { settingsBatch: SettingsBatch }) {
     await apolloClient.query({
-      query,
+      query: queryDeleteSettingsBatch,
       variables: {
-        id: template.id,
+        id: settingsBatch.id,
       },
       fetchPolicy: 'no-cache',
     });
 
-    if (template instanceof TemplateAssignment || template instanceof TemplateHIT || template instanceof TemplateGlobal) {
-      store.commit('moduleTemplates/updateWorkerTemplatesAfterDeletionOfRequesterTemplate', {
-        template,
-      });
-    }
-
-    store.commit(`moduleTemplates/${nameCommit}`, {
-      template,
+    store.commit('moduleSettingsBatch/deleteSettingsBatch', {
+      settingsBatch,
     });
   }
 }

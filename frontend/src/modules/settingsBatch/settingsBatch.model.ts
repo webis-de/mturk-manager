@@ -1,4 +1,5 @@
 import { ID } from '@/modules/app/types';
+import cloneDeep from 'lodash-es/cloneDeep';
 
 export class SettingsBatch {
   id?: string;
@@ -11,7 +12,7 @@ export class SettingsBatch {
 
   reward: number;
 
-  // TODO change to keywords
+  // TODO change type to keywords
   keywords: string[];
 
   duration: number;
@@ -46,7 +47,7 @@ export class SettingsBatch {
     title,
     description,
     reward,
-    keywords,
+    keywords = [],
     duration,
     lifetime,
     countAssignments,
@@ -127,7 +128,7 @@ export class SettingsBatch {
   }
 
   static prepareFromServerToStore(data: {}[]): {[key: string]: SettingsBatch} {
-    const settingsBatches: SettingsBatch[] = data.map((item: {}) => this.parseFromServer(item));
+    const settingsBatches: SettingsBatch[] = cloneDeep(data).map((item: {}) => this.parseFromServer(item));
 
     return settingsBatches.reduce((obj, settingsBatch) => {
       obj[settingsBatch.id as string] = settingsBatch;
@@ -137,6 +138,13 @@ export class SettingsBatch {
 
   static parseFromServer(item: {}): SettingsBatch {
     item.project = item.project.id;
+
+    if (item.templateWorker !== null) {
+      item.templateWorker = item.templateWorker.id;
+    }
+
+    item.keywords = item.keywords.map(keyword => ({id: keyword.id, text: keyword.text}));
+
     return new this(item);
   }
 
