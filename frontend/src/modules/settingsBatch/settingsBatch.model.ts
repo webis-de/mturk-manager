@@ -123,7 +123,7 @@ export class SettingsBatch {
       projectDefault: this.projectDefault,
       qualificationAssignmentsApproved: this.qualificationAssignmentsApproved,
       qualificationHitsApproved: this.qualificationHitsApproved,
-      qualificationLocale: this.qualificationLocale,
+      qualificationLocale: JSON.stringify(this.qualificationLocale),
     };
   }
 
@@ -143,8 +143,10 @@ export class SettingsBatch {
       item.templateWorker = item.templateWorker.id;
     }
 
-    item.keywords = item.keywords.map(keyword => ({id: keyword.id, text: keyword.text}));
+    item.keywords = item.keywords.map((keyword) => ({ id: keyword.id, text: keyword.text }));
 
+    item.qualificationLocale = item.qualificationLocale === null ? [] : JSON.parse(item.qualificationLocale);
+    console.warn(item.qualificationLocale, 'item.qualificationLocale');
     return new this(item);
   }
 
