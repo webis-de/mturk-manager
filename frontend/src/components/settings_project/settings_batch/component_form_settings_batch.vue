@@ -200,7 +200,7 @@
                 v-bind:input-value="data.selected"
                 close
                 small
-                v-on:input="remove(data.item)"
+                v-on:click:close="remove(data.item)"
               >
                 <strong>{{
                   data.item.text != undefined ? data.item.text : data.item
@@ -304,7 +304,7 @@
                 v-bind:input-value="data.selected"
                 close
                 small
-                v-on:input="remove_qualificationLocale(data.item)"
+                v-on:click:close="remove_qualificationLocale(data.item)"
               >
                 <strong>{{
                   data.item.text != undefined ? data.item.text : data.item
