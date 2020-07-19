@@ -116,7 +116,7 @@
         class="pr-4"
       >
         <v-col
-          class="py-0 pl-5 title"
+          class="py-0 pl-4 title"
         >
           {{ title }}
         </v-col>
@@ -372,7 +372,7 @@ export default {
       return this.$scopedSlots.actions !== undefined || this.nameLocalStorageColumnsSelected !== undefined;
     },
     arrayHeaders() {
-      return _.filter(this.columns, column => Object.prototype.hasOwnProperty.call(this.columnsSelected, column.value));
+      return _.filter(this.columns, (column) => Object.prototype.hasOwnProperty.call(this.columnsSelected, column.value));
     },
     // is_page_selected() {
     //   let isPageSelected = true;

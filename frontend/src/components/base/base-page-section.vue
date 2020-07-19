@@ -11,12 +11,12 @@
     </v-col>
     <v-col v-else>
       <v-card class="fill-height pb-1">
-        <v-card-title class="py-0 text-no-wrap">
+        <v-card-title class="py-0 pl-3 text-no-wrap">
           {{ title }}
         </v-card-title>
         <v-container
           fluid
-          class="py-0 px-4"
+          class="py-0 px-3"
         >
           <slot></slot>
         </v-container>

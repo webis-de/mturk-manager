@@ -2,7 +2,10 @@
   <tr
     class="text-no-wrap roboto-mono table-row"
   >
-    <td v-if="itemsSelected !== null">
+    <td
+      v-if="itemsSelected !== null"
+      class="px-3"
+    >
       <base-table-checkbox
         v-model="isSelected"
       />

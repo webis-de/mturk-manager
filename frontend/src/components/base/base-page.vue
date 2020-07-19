@@ -28,6 +28,7 @@
                   v-for="anchor of anchors"
                   v-bind:key="anchor.anchor"
                   style="min-height: 24px"
+                  class="px-3"
                   v-on:click.native="scrollTo(anchor.anchor)"
                 >
                   <v-list-item-icon class="ma-0">
@@ -65,9 +66,9 @@ export default {
           return node.componentOptions.propsData.identifier;
         }
         return null;
-      }).filter(section => section !== null && section.identifier !== undefined && section.label !== undefined);
+      }).filter((section) => section !== null && section.identifier !== undefined && section.label !== undefined);
 
-      return sectionsOrdered.map(identifier => ({
+      return sectionsOrdered.map((identifier) => ({
         label: identifier.label,
         anchor: identifier.identifier,
       }));

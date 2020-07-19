@@ -6,7 +6,7 @@
     <base-table-cell
       v-slot="{ item }"
       name="name"
-      class="text-left text-capitalize"
+      class="text-left text-capitalize first-column"
       v-bind:item="settingsBatch"
       v-bind:columns-selected="objectColumnsSelected"
     >
