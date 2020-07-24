@@ -7,14 +7,14 @@
     class="ml-7"
     v-on:click="$emit('click')"
   >
-    <template v-if="$vuetify.breakpoint.smAndDown === true">
-      <v-icon>
-        fas fa-save
-      </v-icon>
-    </template>
-    <template v-else>
-      {{ label }}
-    </template>
+    <!--    <template v-if="$vuetify.breakpoint.smAndDown === true">-->
+    <!--      <v-icon>-->
+    <!--        fas fa-save-->
+    <!--      </v-icon>-->
+    <!--    </template>-->
+    <!--    <template v-else>-->
+    {{ label }}
+    <!--    </template>-->
   </v-btn>
 </template>
 

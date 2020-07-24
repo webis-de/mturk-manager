@@ -1,7 +1,7 @@
 <template>
   <v-dialog
     v-model="dialog"
-    v-bind:fullscreen="small === false"
+    v-bind:fullscreen="fullscreen"
     v-bind:max-width="maxWidth"
   >
     <template v-slot:activator="{ on }">
@@ -21,6 +21,8 @@
 
     <v-card>
       <form
+        v-bind:style="stylesForm"
+        class="d-flex flex-column"
         v-on:submit.prevent="$emit('submit', { close: cancel })"
       >
         <v-card-title>
@@ -33,11 +35,9 @@
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-card-title>
-
-        <v-card-text>
+        <v-card-text class="flex-grow-1">
           <slot name="content"></slot>
         </v-card-text>
-
         <v-card-actions>
           <v-spacer />
           <slot name="actions">
@@ -57,7 +57,6 @@
         </v-card-actions>
       </form>
     </v-card>
-    </form>
   </v-dialog>
 </template>
 
@@ -101,6 +100,18 @@ export default {
     };
   },
   computed: {
+    stylesForm() {
+      if (this.fullscreen === false) return {};
+
+      return {
+        position: 'absolute',
+        height: '100%',
+        width: '100%',
+      };
+    },
+    fullscreen() {
+      return this.small === false;
+    },
     maxWidth() {
       return this.small === true && this.$vuetify.breakpoint.lgAndUp ? '50%' : undefined;
     },

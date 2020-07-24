@@ -4,12 +4,12 @@
     v-bind:icon="$vuetify.breakpoint.smAndDown === true"
     v-on:click="$emit('click')"
   >
-    <template v-if="$vuetify.breakpoint.smAndDown === true">
-      <v-icon>fas fa-times</v-icon>
-    </template>
-    <template v-else>
-      {{ label }}
-    </template>
+    <!--    <template v-if="$vuetify.breakpoint.smAndDown === true">-->
+    <!--      <v-icon>fas fa-times</v-icon>-->
+    <!--    </template>-->
+    <!--    <template v-else>-->
+    {{ label }}
+    <!--    </template>-->
   </v-btn>
 </template>
 
