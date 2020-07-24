@@ -94,7 +94,7 @@ type MutationUpdateTemplateWorker {
 }
 
 type Query {
-    messagesReject(project: ID): [TypeMessageReject]
+    messagesReject(limit: Int, project: ID): [TypeMessageReject]
     searchMessagesReject(limit: Int, message: String!): [TypeMessageReject]
     settingsBatch(project: ID): [TypeSettingsBatch]
     templatesAssignment(project: ID): [TypeTemplateAssignment]

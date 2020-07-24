@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 
-export const queryMessagesReject = gql`query messagesReject($project: ID!) {
-    messagesReject(project: $project) {
+export const queryMessagesReject = gql`query messagesReject($project: ID, $limit: Int) {
+    messagesReject(project: $project, limit: $limit) {
         id
         message
     }

@@ -8,22 +8,34 @@ import {
   queryMessagesReject,
   queryMessagesRejectSearch,
 } from '@/modules/message/message.graphql';
+import { ID } from '@/modules/app/types';
 
 class ClassServiceMessages {
-  async loadMessages() {
+  async loadMessages({
+    limit,
+    project = store.getters['moduleProjects/get_project_current'].id,
+    saveToStore = true,
+  }: {
+    limit?: number;
+    project?: ID | null;
+    saveToStore?: boolean;
+  } = {}) {
     const response = await apolloClient.query({
       query: queryMessagesReject,
       variables: {
-        project: store.getters['moduleProjects/get_project_current'].id,
+        project,
+        limit,
       },
       fetchPolicy: 'no-cache',
     });
 
-    return Promise.all([
+    if (saveToStore === true) {
       store.commit('moduleMessages/setMessagesReject', {
         messages: MessageReject.prepareFromServerToStore(response.data.messagesReject),
-      }),
-    ]);
+      });
+    } else {
+      return response.data.messagesReject;
+    }
   }
 
   async search({ message, cls }: { message: string; cls: typeof MessageBase}) {

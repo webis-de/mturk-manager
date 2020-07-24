@@ -10,10 +10,9 @@
         v-model="message"
         v-bind:items="items"
         v-bind:loading="isLoading"
-        v-bind:search-input.sync="search"
+        v-bind:search-input.sync="messageSearch"
 
         label="Message"
-        autofocus
         dense
         item-text="message"
         item-value="message_lowercase"
@@ -29,6 +28,11 @@ import { ServiceMessages } from '@/modules/message/message.service';
 import { required } from 'vuelidate/lib/validators';
 import { store } from '@/store/vuex';
 import BaseDialog from '@/modules/app/components/base-dialog';
+import debounce from 'lodash-es/debounce';
+
+const searchDebounced = debounce(function (value) {
+  this.search(value);
+}, 500);
 
 export default {
   name: 'CreateMessage',
@@ -38,17 +42,21 @@ export default {
       message: '',
       items: [],
       isLoading: true,
-      search: '',
+      messageSearch: '',
     };
   },
   watch: {
-    async search(value) {
+    async messageSearch(value) {
       this.isLoading = true;
-      // TODO show most used messages initially (if value === null)
-      if (value !== null && value !== this.model) {
-        this.items = await ServiceMessages.search({
-          message: value,
-          cls: MessageReject,
+      if (value !== null && value.trim() !== '') {
+        this.searchDebounced(value);
+      } else {
+        searchDebounced.cancel();
+
+        this.items = await ServiceMessages.loadMessages({
+          project: null,
+          limit: 4,
+          saveToStore: false,
         });
       }
 
@@ -56,6 +64,13 @@ export default {
     },
   },
   methods: {
+    searchDebounced,
+    async search(value) {
+      this.items = await ServiceMessages.search({
+        message: value,
+        cls: MessageReject,
+      });
+    },
     async save({ close }) {
       if (this.$v.$invalid === false) {
         let message;
