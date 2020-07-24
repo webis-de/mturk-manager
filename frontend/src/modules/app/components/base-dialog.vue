@@ -20,7 +20,9 @@
     </template>
 
     <v-card>
-      <form v-on:submit.prevent="$emit('submit', { close: cancel })">
+      <form
+        v-on:submit.prevent="$emit('submit', { close: cancel })"
+      >
         <v-card-title>
           <span class="headline">{{ title }}</span>
           <v-spacer />
@@ -31,6 +33,7 @@
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-card-title>
+
         <v-card-text>
           <slot name="content"></slot>
         </v-card-text>
@@ -42,15 +45,6 @@
               <base-button-cancel
                 v-on:click="cancel"
               />
-              <!--              <v-btn-->
-              <!--                text-->
-              <!--                class="ml-0"-->
-              <!--                color="înfo"-->
-              <!--                v-on:click="-->
-              <!--                "-->
-              <!--              >-->
-              <!--                Cancel-->
-              <!--              </v-btn>-->
             </slot>
             <slot name="actions-submit">
               <base-button-submit
@@ -58,16 +52,6 @@
                 v-bind:color="colorButtonSubmit"
                 v-bind:label="labelButtonSubmit"
               />
-              <!--              <v-btn-->
-              <!--                text-->
-              <!--                class="ml-0"-->
-              <!--                type=""-->
-              <!--                color="primary"-->
-              <!--                v-bind:disabled="$v.$invalid"-->
-              <!--                v-on:click="create()"-->
-              <!--              >-->
-              <!--                Save-->
-              <!--              </v-btn>-->
             </slot>
           </slot>
         </v-card-actions>
