@@ -44,7 +44,7 @@ export default {
         return false;
       }
 
-      return projectCurrent.message_reject_default.id === this.item.id;
+      return projectCurrent.message_reject_default.id === parseInt(this.item.id, 10);
     },
   },
   methods: {

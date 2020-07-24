@@ -11,7 +11,6 @@ class Serializer_Message_Reject(serializers.ModelSerializer):
         fields = (
             'id', 
             'message', 
-            'message_lowercase',
             'count_usage',
         )
         extra_kwargs = {
@@ -21,10 +20,6 @@ class Serializer_Message_Reject(serializers.ModelSerializer):
             },
             'message': {
                 'required': False,
-            },
-            'message_lowercase': {
-                'required': False,
-                'validators': []
             },
         }
 

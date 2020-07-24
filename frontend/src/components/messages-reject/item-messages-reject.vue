@@ -1,7 +1,7 @@
 <template>
-  <tr
+  <base-table-item
     v-bind:key="this.item.id"
-    class="text-no-wrap"
+    v-bind:item="this.item"
   >
     <base-table-cell
       v-slot="{ item }"
@@ -37,25 +37,27 @@
         v-bind:item="item"
       />
 
-      <base-delete-message
-        v-bind:item="item"
-
-        v-on:delete="$emit('delete')"
+      <delete-message-reject
+        v-bind:message="item"
       />
     </base-table-cell>
-  </tr>
+  </base-table-item>
 </template>
 
 <script>
+import BaseTableItem from '@/components/base-table-item';
+import DeleteMessageReject from '@/modules/message/components/delete/delete-message-reject';
 import BaseTableCell from '../base-table-cell';
-import BaseDeleteMessage from '../base-delete-message';
 import MessageMakeDefault from './message-make-default';
 
 export default {
   name: 'ItemMessagesReject',
-  components: { MessageMakeDefault, BaseDeleteMessage, BaseTableCell },
+  components: {
+    DeleteMessageReject, BaseTableItem, MessageMakeDefault, BaseTableCell,
+  },
   props: {
     item: {
+      type: Object,
       required: true,
     },
     objectColumnsSelected: {

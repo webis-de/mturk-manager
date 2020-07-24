@@ -35,6 +35,20 @@ export class MessageBase {
     };
   }
 
+  static prepareFromServerToStore(data: {}[]): {[key: string]: MessageBase} {
+    const messages: MessageBase[] = data.map((item: {}) => this.parseFromServer(item));
+
+    return messages.reduce((obj, message) => {
+      obj[message.id as string] = message;
+      return obj;
+    }, {} as { [key: string]: MessageBase });
+  }
+
+  static parseFromServer(item: {}): MessageBase {
+    // item.project = item.project.id;
+    return new this(item);
+  }
+
   // static prepareFromServerToStore(data: {}[]): {[key: string]: TemplateBase} {
   //   const templates: TemplateBase[] = data.map((item: {}) => this.parseFromServer(item));
   //

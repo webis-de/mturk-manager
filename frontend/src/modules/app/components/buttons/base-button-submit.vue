@@ -1,7 +1,8 @@
 <template>
   <v-btn
+    text
     type="submit"
-    color="primary"
+    v-bind:color="color"
     v-bind:disabled="disabled"
     class="ml-7"
     v-on:click="$emit('click')"
@@ -32,6 +33,11 @@ export default {
       required: false,
       type: Boolean,
       default: false,
+    },
+    color: {
+      required: false,
+      type: String,
+      default: 'primary',
     },
   },
 };

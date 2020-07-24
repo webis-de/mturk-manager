@@ -1,16 +1,16 @@
-<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
+<template>
+  <!--    v-bind:is-condensed="true"-->
   <base-table
     title="Reject Messages"
 
-    name-vuex-module="moduleMessages"
-    v-bind:name-state-pagination="nameStatePagination"
-    v-bind:name-local-storage-pagination="nameLocalStoragePagination"
+    v-bind:array-items="$store.getters['moduleMessages/messagesReject']"
 
-    v-bind:array-items="arrayItems"
+    name-vuex-module="moduleMessages"
+    name-state-pagination="paginationMessagesReject"
+    name-local-storage-pagination="pagination_messages_reject"
 
     name-state-columns="arrayColumns"
-    v-bind:name-state-columns-selected="nameStateColumnsSelected"
-    v-bind:is-condensed="true"
+    name-state-columns-selected="objectColumnsSelectedInitialGeneral"
 
     v-bind:show-select="false"
   >
@@ -26,54 +26,23 @@
 
     <template v-slot:actions="{ refresh }">
       <create-message />
-      <!--      <item-add-message-->
-      <!--        v-on:create="refresh()"-->
-      <!--      />-->
     </template>
   </base-table>
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import CreateMessage from '@/modules/message/components/create-message';
+import CreateMessage from '@/modules/message/components/create/create-message';
 import BaseTable from '../base-table';
-import { ServiceMessages } from '../../services/messages-reject.service';
 import ItemMessagesReject from './item-messages-reject';
 import ItemAddMessage from './item-add-message';
 
 export default {
   name: 'TableMessagesReject',
   components: {
-    CreateMessage, ItemAddMessage, ItemMessagesReject, BaseTable,
-  },
-  props: {
-    loadPage: {
-      required: false,
-      type: Function,
-      default: ServiceMessages.loadPageReject,
-    },
-    nameStatePagination: {
-      required: false,
-      type: String,
-      default: 'paginationMessagesReject',
-    },
-    nameLocalStoragePagination: {
-      required: false,
-      type: String,
-      default: 'pagination_messages_reject',
-    },
-    nameStateColumnsSelected: {
-      required: false,
-      type: String,
-      default: 'objectColumnsSelectedInitialGeneral',
-    },
-  },
-  computed: {
-    arrayItems() {
-      const { arrayItemsReject } = this.$store.state.moduleMessages;
-
-      return arrayItemsReject === null ? [] : arrayItemsReject;
-    },
+    CreateMessage,
+    ItemAddMessage,
+    ItemMessagesReject,
+    BaseTable,
   },
 };
 </script>

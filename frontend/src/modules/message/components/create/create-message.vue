@@ -24,11 +24,11 @@
 </template>
 
 <script>
-import { MessageReject } from '@/modules/message/MessageReject.model';
+import { MessageReject } from '@/modules/message/messageReject.model';
 import { ServiceMessages } from '@/modules/message/message.service';
 import { required } from 'vuelidate/lib/validators';
 import { store } from '@/store/vuex';
-import BaseDialog from '../../app/components/base-dialog';
+import BaseDialog from '@/modules/app/components/base-dialog';
 
 export default {
   name: 'CreateMessage',

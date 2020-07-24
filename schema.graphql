@@ -12,6 +12,7 @@ type Mutation {
     createTemplateGlobal(template: InputTemplateGlobal!): MutationCreateTemplateGlobal
     createTemplateHit(template: InputTemplateHIT!): MutationCreateTemplateHIT
     createTemplateWorker(template: InputTemplateWorker!): MutationCreateTemplateWorker
+    deleteMessageReject(idMessage: ID!): MutationDeleteMessageReject
     deleteSettingsBatch(idSettingsBatch: ID!): MutationDeleteSettingsBatch
     deleteTemplateAssignment(idTemplate: ID!): MutationDeleteTemplateAssignment
     deleteTemplateGlobal(idTemplate: ID!): MutationDeleteTemplateGlobal
@@ -46,6 +47,10 @@ type MutationCreateTemplateHIT {
 
 type MutationCreateTemplateWorker {
     template: TypeTemplateWorker
+}
+
+type MutationDeleteMessageReject {
+    idMessage: ID
 }
 
 type MutationDeleteSettingsBatch {
@@ -89,6 +94,7 @@ type MutationUpdateTemplateWorker {
 }
 
 type Query {
+    messagesReject(project: ID): [TypeMessageReject]
     searchMessagesReject(limit: Int, message: String!): [TypeMessageReject]
     settingsBatch(project: ID): [TypeSettingsBatch]
     templatesAssignment(project: ID): [TypeTemplateAssignment]

@@ -1,6 +1,7 @@
 import { compareDesc, parse } from 'date-fns';
 import { ServiceTemplates } from '@/modules/template/template.service';
 import { ServiceSettingsBatch } from '@/modules/settingsBatch/settingsBatch.service';
+import { ServiceMessages } from '@/modules/message/message.service';
 import Project from '../classes/project';
 import { store } from '../store/vuex';
 import { ServiceEndpoint } from './endpoint.service';
@@ -228,6 +229,7 @@ class ClassServiceProjects {
 
   async loadData(project) {
     ServiceTemplates.loadTemplates();
+    ServiceMessages.loadMessages();
     ServiceSettingsBatch.loadSettingsBatch();
 
     const response = await ServiceEndpoint.makeRequest({

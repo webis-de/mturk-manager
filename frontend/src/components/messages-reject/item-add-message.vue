@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import { MessageReject } from '@/modules/message/MessageReject.model';
+import { MessageReject } from '@/modules/message/messageReject.model';
 import { ServiceMessages } from '@/services/messages-reject.service';
 
 export default {

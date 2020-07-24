@@ -1,16 +1,22 @@
 <template>
   <v-dialog
     v-model="dialog"
-    fullscreen
+    v-bind:fullscreen="small === false"
+    v-bind:max-width="maxWidth"
   >
     <template v-slot:activator="{ on }">
-      <v-btn
-        color="primary"
-        small
-        v-on="on"
+      <slot
+        name="activator"
+        v-bind="{ on }"
       >
-        <v-icon>mdi-plus</v-icon> Add Template
-      </v-btn>
+        <v-btn
+          color="primary"
+          small
+          v-on="on"
+        >
+          <v-icon>mdi-plus</v-icon> Add Template
+        </v-btn>
+      </slot>
     </template>
 
     <v-card>
@@ -47,7 +53,11 @@
               <!--              </v-btn>-->
             </slot>
             <slot name="actions-submit">
-              <base-button-submit v-bind:disabled="disabled" />
+              <base-button-submit
+                v-bind:disabled="disabled"
+                v-bind:color="colorButtonSubmit"
+                v-bind:label="labelButtonSubmit"
+              />
               <!--              <v-btn-->
               <!--                text-->
               <!--                class="ml-0"-->
@@ -85,11 +95,31 @@ export default {
       type: Boolean,
       default: false,
     },
+    small: {
+      required: false,
+      type: Boolean,
+      default: false,
+    },
+    colorButtonSubmit: {
+      required: false,
+      type: String,
+      default: undefined,
+    },
+    labelButtonSubmit: {
+      required: false,
+      type: String,
+      default: undefined,
+    },
   },
   data() {
     return {
       dialog: false,
     };
+  },
+  computed: {
+    maxWidth() {
+      return this.small === true && this.$vuetify.breakpoint.lgAndUp ? '50%' : undefined;
+    },
   },
   methods: {
     cancel() {
