@@ -6,7 +6,6 @@
     v-bind:name-state-pagination="nameStatePagination"
     v-bind:name-local-storage-pagination="nameLocalStoragePagination"
 
-    v-bind:function-load-page="loadPage"
     v-bind:array-items="arrayItems"
 
     name-state-columns="arrayColumns"
@@ -26,15 +25,17 @@
     </template>
 
     <template v-slot:actions="{ refresh }">
-      <item-add-message
-        v-on:create="refresh()"
-      />
+      <create-message />
+      <!--      <item-add-message-->
+      <!--        v-on:create="refresh()"-->
+      <!--      />-->
     </template>
   </base-table>
 </template>
 
 <script>
 import { mapState } from 'vuex';
+import CreateMessage from '@/modules/message/components/create-message';
 import BaseTable from '../base-table';
 import { ServiceMessages } from '../../services/messages-reject.service';
 import ItemMessagesReject from './item-messages-reject';
@@ -42,7 +43,9 @@ import ItemAddMessage from './item-add-message';
 
 export default {
   name: 'TableMessagesReject',
-  components: { ItemAddMessage, ItemMessagesReject, BaseTable },
+  components: {
+    CreateMessage, ItemAddMessage, ItemMessagesReject, BaseTable,
+  },
   props: {
     loadPage: {
       required: false,

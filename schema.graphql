@@ -6,6 +6,7 @@ schema {
 }
 
 type Mutation {
+    createMessageReject(message: InputMessageReject!): MutationCreateMessageReject
     createSettingsBatch(settingsBatch: InputSettingsBatch!): MutationCreateSettingsBatch
     createTemplateAssignment(template: InputTemplateAssignment!): MutationCreateTemplateAssignment
     createTemplateGlobal(template: InputTemplateGlobal!): MutationCreateTemplateGlobal
@@ -23,6 +24,10 @@ type Mutation {
     updateTemplateWorker(template: InputTemplateWorker!): MutationUpdateTemplateWorker
 }
 
+type MutationCreateMessageReject {
+    message: TypeMessageReject
+}
+
 type MutationCreateSettingsBatch {
     settingsBatch: TypeSettingsBatch
 }
@@ -32,7 +37,7 @@ type MutationCreateTemplateAssignment {
 }
 
 type MutationCreateTemplateGlobal {
-    templateNew: TypeTemplateGlobal
+    template: TypeTemplateGlobal
 }
 
 type MutationCreateTemplateHIT {
@@ -84,6 +89,7 @@ type MutationUpdateTemplateWorker {
 }
 
 type Query {
+    searchMessagesReject(limit: Int, message: String!): [TypeMessageReject]
     settingsBatch(project: ID): [TypeSettingsBatch]
     templatesAssignment(project: ID): [TypeTemplateAssignment]
     templatesGlobal(project: ID): [TypeTemplateGlobal]
@@ -97,6 +103,25 @@ type TypeKeyword {
     text: String!
 }
 
+type TypeMessageApprove {
+    id: ID!
+    message: String!
+    projects: [TypeProject!]!
+}
+
+type TypeMessageReason {
+    id: ID!
+    message: String!
+    projects: [TypeProject!]!
+}
+
+type TypeMessageReject {
+    id: ID!
+    message: String!
+    project: [TypeProject!]!
+    projects: [TypeProject!]!
+}
+
 type TypeProject {
     amountBudgetMax: Int
     apiTemplateAssignmentRelated: [TypeTemplateAssignment!]!
@@ -107,6 +132,10 @@ type TypeProject {
     datetimeCreation: DateTime!
     datetimeVisited: DateTime!
     id: ID!
+    messageRejectDefault: TypeMessageReject
+    messagesApprove: [TypeMessageApprove!]!
+    messagesReason: [TypeMessageReason!]!
+    messagesReject: [TypeMessageReject!]!
     name: String!
     settingsBatch: [TypeSettingsBatch!]!
     settingsBatchDefault: TypeSettingsBatch
@@ -185,6 +214,13 @@ type TypeTemplateWorker {
 input InputKeyword {
     id: ID
     text: String
+}
+
+input InputMessageReject {
+    id: ID
+    message: String!
+    project: ID
+    projects: [ID]!
 }
 
 input InputSettingsBatch {
