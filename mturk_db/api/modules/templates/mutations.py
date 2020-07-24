@@ -108,7 +108,7 @@ class MutationCreateTemplateGlobal(graphene.Mutation):
     class Arguments:
         template = InputTemplateGlobal(required=True)
 
-    template_new = graphene.Field(TypeTemplateGlobal)
+    template = graphene.Field(TypeTemplateGlobal)
 
     def mutate(self, info, template):
         project = Project.objects.get(id=template['project'])
