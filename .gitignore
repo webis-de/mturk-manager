@@ -5,6 +5,7 @@ mturk_settings.ini
 .directory
 
 .env
+ear.py
 
 venv
 misc
