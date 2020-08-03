@@ -12,7 +12,7 @@ export $(cat .env)
 ###############################################################
 # Build and push backend
 ###############################################################
-docker-compose -f mturk_db/docker-compose.yml build backend
+docker-compose -f docker-compose.yml build backend
 
 echo ${DOCKER_PASSWORD} | docker login --username ${DOCKER_USERNAME} --password-stdin
 
