@@ -3,6 +3,8 @@ const CircularDependencyPlugin = require('circular-dependency-plugin');
 const VuetifyLoaderPlugin = require('vuetify-loader/lib/plugin');
 
 module.exports = {
+  lintOnSave: false,
+  // lintOnSave: process.env.NODE_ENV !== 'production' ? 'error' : false,
   runtimeCompiler: true,
   // publicPath: '/static/mturk_manager/js/dist',
   // outputDir: 'mturk_manager/static/mturk_manager/js/dist',

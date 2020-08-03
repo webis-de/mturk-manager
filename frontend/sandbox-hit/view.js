@@ -1,4 +1,4 @@
-import {getHeight, getWidth} from '../vue/helpers';
+import {getHeight, getWidth} from '../src/helpers';
 
 export default class View {
   constructor(loader, controller) {

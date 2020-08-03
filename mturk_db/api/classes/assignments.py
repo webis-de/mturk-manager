@@ -58,6 +58,25 @@ class Manager_Assignments(Interface_Manager_Items):
         return queryset, list_fields
 
     @staticmethod
+    def sort_by(queryset: QuerySet, request: Request) -> QuerySet:
+        sort_by = request.query_params.get('sort_by')
+
+        if sort_by is not None:
+            descending = request.query_params.get('descending', 'false') == 'true'
+
+            if sort_by == 'status':
+                queryset = queryset.order_by(
+                    ('-' if descending else '') + 'status_external',
+                    ('-' if descending else '') + 'status_internal',
+                )
+            else:
+                queryset = queryset.order_by(
+                    ('-' if descending else '') + sort_by
+                )
+
+        return queryset
+
+    @staticmethod
     def get(id_item: int) -> Assignment:
         queryset = Assignment.objects.filter(
             id=id_item

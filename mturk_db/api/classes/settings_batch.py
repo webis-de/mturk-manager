@@ -105,7 +105,7 @@ class Manager_Settings_Batch(Interface_Manager_Items):
             else:
                 list_keywords.append(id_keyword)
 
-        print(list_keywords)
+        # print(list_keywords)
         settings_batch.keywords.add(*list_keywords)
 
         return settings_batch
@@ -128,7 +128,7 @@ class Manager_Settings_Batch(Interface_Manager_Items):
                 instance.keywords.add(*list_keywords)
             elif key == 'qualification_locale':
                 setattr(instance, key, json.dumps(value))
-                
+
             else:
                 setattr(instance, key, value)
 

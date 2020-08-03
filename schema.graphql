@@ -1,0 +1,301 @@
+# This file was generated based on ".graphqlconfig". Do not edit manually.
+
+schema {
+    query: Query
+    mutation: Mutation
+}
+
+type Mutation {
+    createMessageReject(message: InputMessageReject!): MutationCreateMessageReject
+    createSettingsBatch(settingsBatch: InputSettingsBatch!): MutationCreateSettingsBatch
+    createTemplateAssignment(template: InputTemplateAssignment!): MutationCreateTemplateAssignment
+    createTemplateGlobal(template: InputTemplateGlobal!): MutationCreateTemplateGlobal
+    createTemplateHit(template: InputTemplateHIT!): MutationCreateTemplateHIT
+    createTemplateWorker(template: InputTemplateWorker!): MutationCreateTemplateWorker
+    deleteMessageReject(idMessage: ID!): MutationDeleteMessageReject
+    deleteSettingsBatch(idSettingsBatch: ID!): MutationDeleteSettingsBatch
+    deleteTemplateAssignment(idTemplate: ID!): MutationDeleteTemplateAssignment
+    deleteTemplateGlobal(idTemplate: ID!): MutationDeleteTemplateGlobal
+    deleteTemplateHit(idTemplate: ID!): MutationDeleteTemplateHIT
+    deleteTemplateWorker(idTemplate: ID!): MutationDeleteTemplateWorker
+    updateSettingsBatch(settingsBatch: InputSettingsBatch!): MutationUpdateSettingsBatch
+    updateTemplateAssignment(template: InputTemplateAssignment!): MutationUpdateTemplateAssignment
+    updateTemplateGlobal(template: InputTemplateGlobal!): MutationUpdateTemplateGlobal
+    updateTemplateHit(template: InputTemplateHIT!): MutationUpdateTemplateHIT
+    updateTemplateWorker(template: InputTemplateWorker!): MutationUpdateTemplateWorker
+}
+
+type MutationCreateMessageReject {
+    message: TypeMessageReject
+}
+
+type MutationCreateSettingsBatch {
+    settingsBatch: TypeSettingsBatch
+}
+
+type MutationCreateTemplateAssignment {
+    template: TypeTemplateAssignment
+}
+
+type MutationCreateTemplateGlobal {
+    template: TypeTemplateGlobal
+}
+
+type MutationCreateTemplateHIT {
+    template: TypeTemplateHIT
+}
+
+type MutationCreateTemplateWorker {
+    template: TypeTemplateWorker
+}
+
+type MutationDeleteMessageReject {
+    idMessage: ID
+}
+
+type MutationDeleteSettingsBatch {
+    idSettingsBatch: ID
+}
+
+type MutationDeleteTemplateAssignment {
+    idTemplate: ID
+}
+
+type MutationDeleteTemplateGlobal {
+    idTemplate: ID
+}
+
+type MutationDeleteTemplateHIT {
+    idTemplate: ID
+}
+
+type MutationDeleteTemplateWorker {
+    idTemplate: ID
+}
+
+type MutationUpdateSettingsBatch {
+    settingsBatch: TypeSettingsBatch
+}
+
+type MutationUpdateTemplateAssignment {
+    template: TypeTemplateAssignment
+}
+
+type MutationUpdateTemplateGlobal {
+    template: TypeTemplateGlobal
+}
+
+type MutationUpdateTemplateHIT {
+    template: TypeTemplateHIT
+}
+
+type MutationUpdateTemplateWorker {
+    template: TypeTemplateWorker
+}
+
+type Query {
+    messagesReject(limit: Int, project: ID): [TypeMessageReject]
+    searchMessagesReject(limit: Int, message: String!): [TypeMessageReject]
+    settingsBatch(project: ID): [TypeSettingsBatch]
+    templatesAssignment(project: ID): [TypeTemplateAssignment]
+    templatesGlobal(project: ID): [TypeTemplateGlobal]
+    templatesHit(project: ID): [TypeTemplateHIT]
+    templatesWorker(project: ID): [TypeTemplateWorker]
+}
+
+type TypeKeyword {
+    id: ID!
+    projects: [TypeSettingsBatch!]!
+    text: String!
+}
+
+type TypeMessageApprove {
+    id: ID!
+    message: String!
+    projects: [TypeProject!]!
+}
+
+type TypeMessageReason {
+    id: ID!
+    message: String!
+    projects: [TypeProject!]!
+}
+
+type TypeMessageReject {
+    id: ID!
+    message: String!
+    project: [TypeProject!]!
+    projects: [TypeProject!]!
+}
+
+type TypeProject {
+    amountBudgetMax: Int
+    apiTemplateAssignmentRelated: [TypeTemplateAssignment!]!
+    apiTemplateGlobalRelated: [TypeTemplateGlobal!]!
+    apiTemplateHitRelated: [TypeTemplateHIT!]!
+    apiTemplateWorkerRelated: [TypeTemplateWorker!]!
+    countAssignmentsMaxPerWorker: Int
+    datetimeCreation: DateTime!
+    datetimeVisited: DateTime!
+    id: ID!
+    messageRejectDefault: TypeMessageReject
+    messagesApprove: [TypeMessageApprove!]!
+    messagesReason: [TypeMessageReason!]!
+    messagesReject: [TypeMessageReject!]!
+    name: String!
+    settingsBatch: [TypeSettingsBatch!]!
+    settingsBatchDefault: TypeSettingsBatch
+    slug: String!
+    version: Int!
+}
+
+type TypeSettingsBatch {
+    blockWorkers: Boolean!
+    countAssignments: Int!
+    countAssignmentsMaxPerWorker: Int
+    description: String
+    duration: Int!
+    hasContentAdult: Boolean!
+    id: ID!
+    keywords: [TypeKeyword!]!
+    lifetime: Int!
+    name: String!
+    project: TypeProject!
+    projectDefault: TypeProject
+    qualificationAssignmentsApproved: Int
+    qualificationHitsApproved: Int
+    qualificationLocale: String
+    reward: Int!
+    templateWorker: TypeTemplateWorker
+    title: String
+}
+
+type TypeTemplateAssignment {
+    datetimeCreation: DateTime!
+    id: ID!
+    isActive: Boolean!
+    name: String!
+    project: TypeProject!
+    template: String!
+    templatesUsed: [TypeTemplateWorker!]!
+}
+
+type TypeTemplateGlobal {
+    datetimeCreation: DateTime!
+    id: ID!
+    isActive: Boolean!
+    name: String!
+    project: TypeProject!
+    template: String!
+    templatesUsed: [TypeTemplateWorker!]!
+}
+
+type TypeTemplateHIT {
+    datetimeCreation: DateTime!
+    id: ID!
+    isActive: Boolean!
+    name: String!
+    project: TypeProject!
+    template: String!
+    templatesUsed: [TypeTemplateWorker!]!
+}
+
+type TypeTemplateWorker {
+    datetimeCreation: DateTime!
+    heightFrame: Int!
+    id: ID!
+    isActive: Boolean!
+    jsonDictParameters: String!
+    name: String!
+    project: TypeProject!
+    settingsBatch: [TypeSettingsBatch!]!
+    template: String!
+    templateAssignment: TypeTemplateAssignment
+    templateGlobal: TypeTemplateGlobal
+    templateHit: TypeTemplateHIT
+    templateOriginal: TypeTemplateWorker
+    templates: [TypeTemplateWorker!]!
+}
+
+input InputKeyword {
+    id: ID
+    text: String
+}
+
+input InputMessageReject {
+    id: ID
+    message: String!
+    project: ID
+    projects: [ID]!
+}
+
+input InputSettingsBatch {
+    blockWorkers: Boolean
+    countAssignments: Int
+    countAssignmentsMaxPerWorker: Int
+    datetimeCreation: DateTime
+    description: String
+    duration: Int
+    hasContentAdult: Boolean
+    id: ID
+    keywords: [InputKeyword]
+    lifetime: Int
+    name: String!
+    project: Int!
+    qualificationAssignmentsApproved: Int
+    qualificationHitsApproved: Int
+    qualificationLocale: String
+    reward: Int
+    templateWorker: ID
+    title: String
+}
+
+input InputTemplateAssignment {
+    datetimeCreation: DateTime
+    id: Int
+    isActive: Boolean!
+    name: String!
+    project: Int!
+    template: String!
+}
+
+input InputTemplateGlobal {
+    datetimeCreation: DateTime
+    id: Int
+    isActive: Boolean!
+    name: String!
+    project: Int!
+    template: String!
+}
+
+input InputTemplateHIT {
+    datetimeCreation: DateTime
+    id: Int
+    isActive: Boolean!
+    name: String!
+    project: Int!
+    template: String!
+}
+
+input InputTemplateWorker {
+    datetimeCreation: DateTime
+    heightFrame: Int!
+    id: Int
+    isActive: Boolean!
+    jsonDictParameters: String!
+    name: String!
+    project: Int!
+    template: String!
+    templateAssignment: Int
+    templateGlobal: Int
+    templateHit: Int
+    templateOriginal: Int
+}
+
+
+"""
+The `DateTime` scalar type represents a DateTime
+value as specified by
+[iso8601](https://en.wikipedia.org/wiki/ISO_8601).
+"""
+scalar DateTime

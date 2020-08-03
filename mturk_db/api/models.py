@@ -139,7 +139,6 @@ class Assignment(models.Model):
 
 class Message(models.Model):
     message = models.CharField(max_length=1024)
-    message_lowercase = models.CharField(max_length=1024, unique=True)
 
     class Meta:
         abstract = True

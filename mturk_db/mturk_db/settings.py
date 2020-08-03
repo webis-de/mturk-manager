@@ -18,11 +18,11 @@ env = environ.Env(
     DEBUG=(bool, False),
     RABBITMQ_DEFAULT_USER=(str, 'guest'),
     RABBITMQ_DEFAULT_PASS=(str, 'guest'),
-    # TODO: remove before deployment
-    # DATABASE_URL=(str, 'postgres://user:password@localhost:5432/database'),
-    DATABASE_URL=(str, 'postgres://{user}:{password}@db:5432/{database}'.format(
+    DATABASE_URL=(str, 'postgres://{user}:{password}@{host}:{port}/{database}'.format(
         user=os.environ.get('POSTGRES_USER', 'user'),
         password=os.environ.get('POSTGRES_PASSWORD', 'password'),
+        host=os.environ.get('POSTGRES_HOST', 'db'),
+        port=os.environ.get('POSTGRES_PORT', '5432'),
         database=os.environ.get('POSTGRES_DB', 'database'),
     )),
     # DATABASE_URL=(str, 'sqlite:///db.sqlite3'),
@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'django_celery_results',
     'django_celery_beat',
+    'graphene_django',
 ]
 
 MIDDLEWARE = [
@@ -196,3 +197,7 @@ MTURK_KEY_SECRET = os.environ.get('MTURK_SECRET_KEY')
 
 TOKEN_INSTANCE = os.environ.get('INSTANCE_TOKEN')
 TOKEN_WORKER = os.environ.get('WORKER_TOKEN')
+
+GRAPHENE = {
+    'SCHEMA': 'mturk_db.schema.schema'
+}
