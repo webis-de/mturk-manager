@@ -25,10 +25,10 @@
           >
             <template v-slot:activator="{ on }">
               <v-btn
-                icon
+                text
                 v-on="on"
               >
-                <v-icon>mdi-settings</v-icon>
+                Settings
               </v-btn>
             </template>
 
