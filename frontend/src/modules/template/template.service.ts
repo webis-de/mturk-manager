@@ -6,17 +6,17 @@ import {
   queryUpdateTemplateAssignment, queryUpdateTemplateGlobal, queryUpdateTemplateHIT,
   queryUpdateTemplateWorker,
 } from '@/modules/template/template.graphql';
-import { apolloClient } from '@/vue-apollo';
 import { store } from '@/store/vuex';
 import { TemplateWorker } from '@/modules/template/templateWorker.model';
 import { TemplateAssignment } from '@/modules/template/templateAssignment.model';
 import { TemplateHIT } from '@/modules/template/templateHIT.model';
 import { TemplateGlobal } from '@/modules/template/templateGlobal.model';
 import { TemplateBase } from '@/modules/template/templateBase.model';
+import { ServiceEndpoint } from '@/services/endpoint.service';
 
 class ClassServiceTemplates {
   async loadTemplates() {
-    const response = await apolloClient.query({
+    const response = await ServiceEndpoint.apolloClient.query({
       query: queryTemplates,
       variables: {
         project: store.getters['moduleProjects/get_project_current'].id,
@@ -73,7 +73,7 @@ class ClassServiceTemplates {
       cls = TemplateWorker;
     }
 
-    const response = await apolloClient.query({
+    const response = await ServiceEndpoint.apolloClient.query({
       query,
       variables: {
         template: template.extractBody(),
@@ -119,7 +119,7 @@ class ClassServiceTemplates {
       cls = TemplateWorker;
     }
 
-    const response = await apolloClient.query({
+    const response = await ServiceEndpoint.apolloClient.query({
       query,
       variables: {
         template: templateNew.extractBody(),
@@ -155,7 +155,7 @@ class ClassServiceTemplates {
       query = queryDeleteTemplateWorker;
     }
 
-    await apolloClient.query({
+    await ServiceEndpoint.apolloClient.query({
       query,
       variables: {
         id: template.id,

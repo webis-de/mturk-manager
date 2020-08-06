@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { createApolloClient } from 'vue-cli-plugin-apollo/graphql-client';
+import { defaultOptionsApollo } from '@/vue-apollo';
 import { store } from '../store/vuex';
 import queue from '../queue';
 
@@ -6,6 +8,8 @@ class ClassServiceEndpoint {
   constructor() {
     this.is_initialized = false;
     this.axios = undefined;
+
+    this.apolloClient = null;
   }
 
   init(force = false) {
@@ -22,6 +26,8 @@ class ClassServiceEndpoint {
         'Content-Type': 'application/json',
       },
     });
+
+    this.refreshApolloClient();
   }
 
   async makeRequest({
@@ -99,6 +105,15 @@ class ClassServiceEndpoint {
     }
     // url = url.replace('PLACEHOLDER_SLUG_PROJECT',  getters['moduleProjects/get_project_current'].slug);
     return url;
+  }
+
+  refreshApolloClient() {
+    const { apolloClient } = createApolloClient({
+      ...defaultOptionsApollo,
+      ...{ httpEndpoint: `${store.state.module_app.url_api}/graphql` },
+    });
+
+    this.apolloClient = apolloClient;
   }
 }
 

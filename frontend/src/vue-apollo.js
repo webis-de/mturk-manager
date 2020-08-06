@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueApollo from 'vue-apollo';
 import { createApolloClient, restartWebsockets } from 'vue-cli-plugin-apollo/graphql-client';
+import { store } from '@/store/vuex';
 
 // Install the vue plugin
 Vue.use(VueApollo);
@@ -12,7 +13,7 @@ const AUTH_TOKEN = 'apollo-token';
 const httpEndpoint = process.env.VUE_APP_GRAPHQL_HTTP || 'http://localhost:8004/graphql';
 
 // Config
-const defaultOptions = {
+export const defaultOptionsApollo = {
   // You can use `https` for secure connection (recommended in production)
   httpEndpoint,
   // You can use `wss` for secure connection (recommended in production)
@@ -51,8 +52,8 @@ const defaultOptions = {
 };
 
 // Create apollo client
-export const { apolloClient, wsClient } = createApolloClient({
-  ...defaultOptions,
+const { apolloClient, wsClient } = createApolloClient({
+  ...defaultOptionsApollo,
   // ...options,
 });
 apolloClient.wsClient = wsClient;

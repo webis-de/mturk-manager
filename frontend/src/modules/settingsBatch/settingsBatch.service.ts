@@ -1,28 +1,15 @@
-import {
-  queryCreateTemplateAssignment, queryCreateTemplateGlobal, queryCreateTemplateHIT, queryCreateTemplateWorker,
-  queryDeleteTemplateAssignment,
-  queryDeleteTemplateGlobal, queryDeleteTemplateHIT, queryDeleteTemplateWorker,
-  queryTemplates,
-  queryUpdateTemplateAssignment, queryUpdateTemplateGlobal, queryUpdateTemplateHIT,
-  queryUpdateTemplateWorker,
-} from '@/modules/template/template.graphql';
-import { apolloClient } from '@/vue-apollo';
 import { store } from '@/store/vuex';
-import { TemplateWorker } from '@/modules/template/templateWorker.model';
-import { TemplateAssignment } from '@/modules/template/templateAssignment.model';
-import { TemplateHIT } from '@/modules/template/templateHIT.model';
-import { TemplateGlobal } from '@/modules/template/templateGlobal.model';
-import { TemplateBase } from '@/modules/template/templateBase.model';
 import {
   queryCreateSettingsBatch,
   queryDeleteSettingsBatch,
   querySettingsBatch, queryUpdateSettingsBatch,
 } from '@/modules/settingsBatch/settingsBatch.graphql';
 import { SettingsBatch } from '@/modules/settingsBatch/settingsBatch.model';
+import { ServiceEndpoint } from '@/services/endpoint.service';
 
 class ClassServiceSettingsBatch {
   async loadSettingsBatch() {
-    const response = await apolloClient.query({
+    const response = await ServiceEndpoint.apolloClient.query({
       query: querySettingsBatch,
       variables: {
         project: store.getters['moduleProjects/get_project_current'].id,
@@ -38,7 +25,7 @@ class ClassServiceSettingsBatch {
   async create({
     settingsBatch,
   }: { settingsBatch: SettingsBatch }) {
-    const response = await apolloClient.query({
+    const response = await ServiceEndpoint.apolloClient.query({
       query: queryCreateSettingsBatch,
       variables: {
         settingsBatch: settingsBatch.extractBody(),
@@ -55,7 +42,7 @@ class ClassServiceSettingsBatch {
     settingsBatch,
   }: { settingsBatch: SettingsBatch }) {
     console.log(settingsBatch, 'settingsBatch');
-    const response = await apolloClient.query({
+    const response = await ServiceEndpoint.apolloClient.query({
       query: queryUpdateSettingsBatch,
       variables: {
         settingsBatch: settingsBatch.extractBody(),
@@ -71,7 +58,7 @@ class ClassServiceSettingsBatch {
   async delete({
     settingsBatch,
   }: { settingsBatch: SettingsBatch }) {
-    await apolloClient.query({
+    await ServiceEndpoint.apolloClient.query({
       query: queryDeleteSettingsBatch,
       variables: {
         id: settingsBatch.id,

@@ -1,4 +1,3 @@
-import { apolloClient } from '@/vue-apollo';
 import { store } from '@/store/vuex';
 import { TemplateBase } from '@/modules/template/templateBase.model';
 import { MessageBase } from '@/modules/message/messageBase.model';
@@ -9,6 +8,7 @@ import {
   queryMessagesRejectSearch,
 } from '@/modules/message/message.graphql';
 import { ID } from '@/modules/app/types';
+import { ServiceEndpoint } from '@/services/endpoint.service';
 
 class ClassServiceMessages {
   async loadMessages({
@@ -20,7 +20,7 @@ class ClassServiceMessages {
     project?: ID | null;
     saveToStore?: boolean;
   } = {}) {
-    const response = await apolloClient.query({
+    const response = await ServiceEndpoint.apolloClient.query({
       query: queryMessagesReject,
       variables: {
         project,
@@ -48,7 +48,7 @@ class ClassServiceMessages {
       default:
         query = queryMessagesRejectSearch;
     }
-    const response = await apolloClient.query({
+    const response = await ServiceEndpoint.apolloClient.query({
       query,
       variables: {
         message,
@@ -89,7 +89,7 @@ class ClassServiceMessages {
       cls = MessageReject;
     }
 
-    const response = await apolloClient.query({
+    const response = await ServiceEndpoint.apolloClient.query({
       query,
       variables: {
         message: message.extractBody(),
@@ -113,7 +113,7 @@ class ClassServiceMessages {
       query = mutationDeleteMessageReject;
     }
 
-    await apolloClient.query({
+    await ServiceEndpoint.apolloClient.query({
       query,
       variables: {
         id: message.id,

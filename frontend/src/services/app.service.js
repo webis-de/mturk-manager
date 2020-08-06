@@ -4,7 +4,6 @@ import { ServiceProjects } from './projects.service';
 import queue from '../queue';
 import { compareVersions } from '../helpers';
 import { vuetify } from '../vuetify';
-import { ServiceTemplates } from './templates.service';
 
 class ClassServiceApp {
   async init(force = false) {
@@ -150,6 +149,7 @@ class ClassServiceApp {
     const response = await this.init(true);
 
     if (response.success === true) {
+      // TODO: check, seems not to work
       // send the user to the dashboard if no error occured
       queue.notify('router', { name: 'dashboard' });
     }
