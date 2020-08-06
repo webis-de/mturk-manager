@@ -31,6 +31,7 @@
       <v-row dense>
         <v-col v-bind="sizes">
           <codemirror
+            ref="codemirror"
             v-bind:value="value"
             v-bind:options="options"
             v-on:input="$emit('input', $event)"
@@ -41,12 +42,12 @@
           v-bind="sizes"
           style="position: relative"
         >
-<!--          <v-overlay-->
-<!--            v-if="isIframeLoaded === false"-->
-<!--            absolute-->
-<!--          >-->
-<!--            <v-progress-circular indeterminate />-->
-<!--          </v-overlay>-->
+          <!--          <v-overlay-->
+          <!--            v-if="isIframeLoaded === false"-->
+          <!--            absolute-->
+          <!--          >-->
+          <!--            <v-progress-circular indeterminate />-->
+          <!--          </v-overlay>-->
 
           <div class="iframe-container">
             <iframe
@@ -109,6 +110,9 @@ export default {
         cols: this.showPreview === true && this.isLayoutHorizontal === true ? 6 : 12,
       };
     },
+    codemirror() {
+      return this.$refs.codemirror.codemirror;
+    },
   },
   watch: {
     showPreview() {
@@ -117,6 +121,11 @@ export default {
     sourcePreview() {
       this.isIframeLoaded = false;
     },
+  },
+  mounted() {
+    setTimeout(() => {
+      this.codemirror.refresh();
+    }, 300);
   },
 };
 </script>
