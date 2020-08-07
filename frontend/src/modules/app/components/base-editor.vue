@@ -93,18 +93,20 @@ export default {
   },
   data() {
     return {
-      options: {
-        mode: 'text/html',
-        theme: 'monokai',
-        // lineNumbers: true,
-        viewportMargin: Infinity,
-      },
       showPreview: false,
       isIframeLoaded: false,
       isLayoutHorizontal: true,
     };
   },
   computed: {
+    options() {
+      return {
+        mode: 'text/html',
+        theme: this.$store.state.module_app.isActiveModeLight ? 'default' : 'monokai',
+        // lineNumbers: true,
+        viewportMargin: Infinity,
+      };
+    },
     sizes() {
       return {
         cols: this.showPreview === true && this.isLayoutHorizontal === true ? 6 : 12,
