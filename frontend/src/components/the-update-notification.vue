@@ -5,12 +5,16 @@
     v-bind:timeout="-1"
     color="error"
   >
-    <v-spacer />
-    Update Available!
-    <base-help>
-      Update your frontend by using the image <code>kritten/mturk-manager-frontend:{{ version_api }}</code>
-    </base-help>
-    <v-spacer />
+    <v-row no-gutters>
+      <v-col align-self="center">
+        Update Available!
+      </v-col>
+      <v-col class="text-right">
+        <base-help>
+          Update your frontend by using the image <code>kritten/mturk-manager-frontend:{{ version_api }}</code>
+        </base-help>
+      </v-col>
+    </v-row>
   </v-snackbar>
 </template>
 
