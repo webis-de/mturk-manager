@@ -84,6 +84,13 @@ class Manager_Workers(Interface_Manager_Items):
             name_field='id_worker'
         )
 
+        queryset = Manager_Workers.filter_list(
+            queryset=queryset,
+            request=request,
+            name_filter='batchesSelected',
+            name_field='assignments__hit__batch__name'
+        )
+
         states_block = set(request.query_params.getlist('statesBlock[]'))
         combine_with_and = json.loads(request.query_params.get('combineWithAnd', 'false'))
         # if len(states_block) > 0:
@@ -110,6 +117,7 @@ class Manager_Workers(Interface_Manager_Items):
         )
 
         return queryset.annotate(
+            number_of_assignments=Coalesce(Count('assignments'), 0),
             count_worker_blocks=Coalesce(
                 Count(
                     'worker_blocks_project',

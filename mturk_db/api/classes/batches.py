@@ -76,6 +76,13 @@ class Manager_Batches(Interface_Manager_Items):
             name_field='name'
         )
 
+        queryset = Manager_Batches.filter_list(
+            queryset=queryset,
+            request=request,
+            name_filter='workersSelected',
+            name_field='hits__assignments__worker__id_worker'
+        )
+
         return queryset
 
     @staticmethod
@@ -85,6 +92,7 @@ class Manager_Batches(Interface_Manager_Items):
         return queryset.annotate(
             costs_max=F('count_assignments_total') * F('settings_batch__reward'),
             costs_so_far=F('count_assignments_approved') * F('settings_batch__reward'),
+            count_workers=Count('hits__assignments__worker', distinct=True),
         )
 
     @staticmethod

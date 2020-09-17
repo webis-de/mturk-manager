@@ -42,6 +42,8 @@ class Serializer_Batch(serializers.ModelSerializer):
     costs_max = serializers.IntegerField(required=False)
     costs_so_far = serializers.IntegerField(required=False)
 
+    count_workers = serializers.IntegerField(required=False)
+
     class Meta:
         model = Batch
         fields = (
@@ -66,6 +68,8 @@ class Serializer_Batch(serializers.ModelSerializer):
 
             'costs_max',
             'costs_so_far',
+
+            'count_workers',
         )
         extra_kwargs = {
             # 'template': {

@@ -33,6 +33,13 @@ export const moduleWorkers = _.merge({}, baseModule, {
         class: ['text-center'],
       },
       {
+        text: 'Assignments',
+        value: 'number_of_assignments',
+        align: 'center',
+        width: '1px',
+        class: ['text-no-wrap'],
+      },
+      {
         text: 'Assignment Limit',
         value: 'counter_assignments',
         align: 'center',
@@ -65,6 +72,7 @@ export const moduleWorkers = _.merge({}, baseModule, {
     objectColumnsSelectedGeneral: null,
     objectColumnsSelectedInitialGeneral: {
       id_worker: true,
+      number_of_assignments: true,
       counter_assignments: true,
       block_soft: true,
       block_soft_hard: true,
@@ -73,12 +81,13 @@ export const moduleWorkers = _.merge({}, baseModule, {
     objectFiltersGeneral: null,
     objectFiltersDefaultGeneral: {
       workersSelected: [],
+      batchesSelected: [],
       statesBlock: [],
     },
   },
   getters: {
-    get_object_workers_selected: state => state.object_workers_selected,
-    get_array_columns_general: state => state.array_columns_general,
+    get_object_workers_selected: (state) => state.object_workers_selected,
+    get_array_columns_general: (state) => state.array_columns_general,
     get_array_columns_selected_general: (state) => {
       if (state.array_columns_selected_general === null) {
         return state.array_columns_selected_initial_general;

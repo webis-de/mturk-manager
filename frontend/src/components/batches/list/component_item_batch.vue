@@ -65,6 +65,16 @@
 
     <base-table-cell
       v-slot="{ item }"
+      name="count_workers"
+      class="text-right"
+      v-bind:item="batch"
+      v-bind:columns-selected="objectColumnsSelected"
+    >
+      {{ item.count_workers }}
+    </base-table-cell>
+
+    <base-table-cell
+      v-slot="{ item }"
       name="count_assignments_approved"
       class="text-right"
       v-bind:item="batch"

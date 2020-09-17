@@ -22,6 +22,8 @@ export default class Batch {
     this.costs_max = data.costs_max;
     this.costs_so_far = data.costs_so_far;
 
+    this.count_workers = data.count_workers;
+
     // TODO: find nicer approach
     this.countAssignmentsDead = this.countAssignmentsTotal
                               - this.countAssignmentsApproved

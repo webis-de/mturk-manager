@@ -78,6 +78,13 @@ export const moduleBatches = _.merge({}, baseModule, {
         width: '1px',
       },
       {
+        text: 'Workers',
+        value: 'count_workers',
+        align: 'end',
+        class: classesHeaders,
+        width: '1px',
+      },
+      {
         text: 'Approved',
         value: 'count_assignments_approved',
         align: 'end',
@@ -133,6 +140,7 @@ export const moduleBatches = _.merge({}, baseModule, {
       datetime_creation: true,
       settings_batch__count_assignments: true,
       count_assignments_total: true,
+      count_workers: true,
       progress: true,
       actions: true,
     },
@@ -155,6 +163,7 @@ export const moduleBatches = _.merge({}, baseModule, {
 
     objectFiltersDefaultGeneral: {
       batchesSelected: [],
+      workersSelected: [],
     },
   },
   getters: {

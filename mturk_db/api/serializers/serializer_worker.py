@@ -36,6 +36,7 @@ class Serializer_Worker(serializers.ModelSerializer):
     is_blocked_hard = serializers.BooleanField(required=False)
     is_blocked_soft = serializers.BooleanField(required=False)
     count_assignments_limit = serializers.IntegerField(required=False)
+    number_of_assignments = serializers.IntegerField(required=False)
 
     class Meta:
         model = Worker
@@ -46,6 +47,7 @@ class Serializer_Worker(serializers.ModelSerializer):
             'is_blocked_soft',
             'is_blocked_global',
             'count_assignments_limit',
+            'number_of_assignments',
             # 'project',
             # 'hit',
             # 'worker',

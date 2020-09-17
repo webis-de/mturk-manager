@@ -33,6 +33,7 @@ class Interface_Manager_Items(object):
 
         if sort_by is not None:
             descending = request.query_params.get('descending', 'false') == 'true'
+            print(('-' if descending else '') + sort_by)
             queryset = queryset.order_by(
                 ('-' if descending else '') + sort_by
             )

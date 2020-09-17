@@ -18,6 +18,25 @@
         dense
       />
     </base-table-filter>
+
+    <base-table-filter
+      title="Worker ID"
+      v-bind:filters-active="filtersActive"
+      v-bind:filters="filters"
+      v-bind:breakpoints="{'sm12': true, 'md6': true}"
+      name-filter="workersSelected"
+    >
+      <v-combobox
+        v-model="filters.workersSelected"
+        label="Filter workers by their ID"
+        multiple
+        chips
+        deletable-chips
+        clearable
+        hide-details
+        dense
+      />
+    </base-table-filter>
   </v-layout>
 </template>
 

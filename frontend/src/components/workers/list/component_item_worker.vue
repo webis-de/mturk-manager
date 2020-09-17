@@ -17,6 +17,16 @@
 
     <base-table-cell
       v-slot="{ item }"
+      name="number_of_assignments"
+      class="text-center"
+      v-bind:item="worker"
+      v-bind:columns-selected="objectColumnsSelected"
+    >
+      {{ item.number_of_assignments }}
+    </base-table-cell>
+
+    <base-table-cell
+      v-slot="{ item }"
       name="counter_assignments"
       class="text-center"
       v-bind:item="worker"
@@ -72,6 +82,7 @@
 import { mapGetters } from 'vuex';
 
 // import ComponentBlockSoftWorker from './component_block_worker.vue';
+import _ from 'lodash';
 import ComponentBlockSoftWorker from './component_block_soft_worker.vue';
 import ComponentBlockGlobalWorker from './component_block_global_worker.vue';
 import ComponentBlockHardWorker from './component_block_hard_worker.vue';
@@ -144,6 +155,14 @@ export default {
     //     }
     // },
     ...mapGetters(['get_show_progress_indicator']),
+  },
+  watch: {
+    item() {
+      // TODO: some other technique to prevent unnecessary updates?
+      if (_.isEqual(this.worker, this.item)) return;
+
+      this.worker = this.item;
+    },
   },
   methods: {},
   components: {
