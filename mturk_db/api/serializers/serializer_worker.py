@@ -38,6 +38,13 @@ class Serializer_Worker(serializers.ModelSerializer):
     count_assignments_limit = serializers.IntegerField(required=False)
     number_of_assignments = serializers.IntegerField(required=False)
 
+    number_of_approved_assignments = serializers.IntegerField(required=False)
+    number_of_rejected_assignments = serializers.IntegerField(required=False)
+    ratio_approved_assignments = serializers.FloatField(required=False)
+    number_of_approved_assignments_of_project = serializers.IntegerField(required=False)
+    number_of_rejected_assignments_of_project = serializers.IntegerField(required=False)
+    ratio_approved_assignments_of_project = serializers.FloatField(required=False)
+
     class Meta:
         model = Worker
         fields = (
@@ -48,6 +55,13 @@ class Serializer_Worker(serializers.ModelSerializer):
             'is_blocked_global',
             'count_assignments_limit',
             'number_of_assignments',
+
+            'number_of_approved_assignments',
+            'number_of_rejected_assignments',
+            'ratio_approved_assignments',
+            'number_of_approved_assignments_of_project',
+            'number_of_rejected_assignments_of_project',
+            'ratio_approved_assignments_of_project',
             # 'project',
             # 'hit',
             # 'worker',

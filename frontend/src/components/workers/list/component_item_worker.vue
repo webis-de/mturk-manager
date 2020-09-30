@@ -27,6 +27,66 @@
 
     <base-table-cell
       v-slot="{ item }"
+      name="number_of_approved_assignments_of_project"
+      class="text-center"
+      v-bind:item="worker"
+      v-bind:columns-selected="objectColumnsSelected"
+    >
+      {{ item.number_of_approved_assignments_of_project }}
+    </base-table-cell>
+
+    <base-table-cell
+      v-slot="{ item }"
+      name="number_of_rejected_assignments_of_project"
+      class="text-center"
+      v-bind:item="worker"
+      v-bind:columns-selected="objectColumnsSelected"
+    >
+      {{ item.number_of_rejected_assignments_of_project }}
+    </base-table-cell>
+
+    <base-table-cell
+      v-slot="{ item }"
+      name="ratio_approved_assignments_of_project"
+      class="text-center"
+      v-bind:item="worker"
+      v-bind:columns-selected="objectColumnsSelected"
+    >
+      <span v-bind:style="{color: ratioApprovedColorOfProject}">{{ item.ratio_approved_assignments_of_project.toFixed(2) }}</span>
+    </base-table-cell>
+
+    <base-table-cell
+      v-slot="{ item }"
+      name="number_of_approved_assignments"
+      class="text-center"
+      v-bind:item="worker"
+      v-bind:columns-selected="objectColumnsSelected"
+    >
+      {{ item.number_of_approved_assignments }}
+    </base-table-cell>
+
+    <base-table-cell
+      v-slot="{ item }"
+      name="number_of_rejected_assignments"
+      class="text-center"
+      v-bind:item="worker"
+      v-bind:columns-selected="objectColumnsSelected"
+    >
+      {{ item.number_of_rejected_assignments }}
+    </base-table-cell>
+
+    <base-table-cell
+      v-slot="{ item }"
+      name="ratio_approved_assignments"
+      class="text-center"
+      v-bind:item="worker"
+      v-bind:columns-selected="objectColumnsSelected"
+    >
+      <span v-bind:style="{color: ratioApprovedColor}">{{ item.ratio_approved_assignments.toFixed(2) }}</span>
+    </base-table-cell>
+
+    <base-table-cell
+      v-slot="{ item }"
       name="counter_assignments"
       class="text-center"
       v-bind:item="worker"
@@ -119,6 +179,12 @@ export default {
   //     },
   // },
   computed: {
+    ratioApprovedColorOfProject() {
+      return `hsl(${this.interpolate(0, 120, this.worker.ratio_approved_assignments_of_project, 1)}, 100%, 50%)`;
+    },
+    ratioApprovedColor() {
+      return `hsl(${this.interpolate(0, 120, this.worker.ratio_approved_assignments, 1)}, 100%, 50%)`;
+    },
     // worker() {
     //   return this.props.item;
     // },
@@ -164,7 +230,11 @@ export default {
       this.worker = this.item;
     },
   },
-  methods: {},
+  methods: {
+    interpolate(startValue, endValue, stepNumber, lastStepNumber) {
+      return (endValue - startValue) * stepNumber / lastStepNumber + startValue;
+    },
+  },
   components: {
     BaseTableItem,
     BaseTableCell,

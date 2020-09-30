@@ -1,5 +1,3 @@
-import { STATUS_BLOCK } from './enums.js';
-
 export default class Worker {
   constructor(data) {
     this.id = data.id;
@@ -13,7 +11,12 @@ export default class Worker {
     this.is_blocked_global = data.is_blocked_global;
     this.is_blocked_hard = null;
 
-    this.ratio_approved = null;
+    this.number_of_approved_assignments_of_project = data.number_of_approved_assignments_of_project;
+    this.number_of_rejected_assignments_of_project = data.number_of_rejected_assignments_of_project;
+    this.ratio_approved_assignments_of_project = data.ratio_approved_assignments_of_project;
+    this.number_of_approved_assignments = data.number_of_approved_assignments;
+    this.number_of_rejected_assignments = data.number_of_rejected_assignments;
+    this.ratio_approved_assignments = data.ratio_approved_assignments;
     // this.is_blocked = data.is_blocked;
     // this.m_status = data.QualificationTypeStatus;
   }
