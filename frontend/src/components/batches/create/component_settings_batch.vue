@@ -4,7 +4,7 @@
       <!-- {{valid}} -->
       <v-select
         v-model="idSettingsBatchCurrent"
-        v-bind:items="list_settings_batch"
+        v-bind:items="$store.getters['moduleSettingsBatch/settingsBatchSortedByName']"
         label="Batch Profile"
         item-text="name"
         item-value="id"
@@ -23,7 +23,6 @@
 </template>
 
 <script>
-import _ from 'lodash';
 import { settingsBatch } from '../../../mixins/settings-batch.mixin';
 import validations from '../../../mixins/validations.mixin';
 import ComponentFormSettingsBatch from '../../settings_project/settings_batch/component_form_settings_batch';
@@ -40,7 +39,6 @@ export default {
       idSettingsBatchCurrent: undefined,
       settingsBatchCurrent: undefined,
       name_not_required: true,
-      list_settings_batch: [],
     };
   },
   watch: {
@@ -86,13 +84,6 @@ export default {
     this.$store.commit('moduleBatches/setState', {
       objectState: this.settings_batch,
       nameState: 'objectSettingsBatch',
-    });
-
-    ServiceSettingsBatch.getAll().then((listSettingsBatch) => {
-      this.list_settings_batch = _.orderBy(
-        listSettingsBatch,
-        settings => settings.name,
-      );
     });
   },
   methods: {
