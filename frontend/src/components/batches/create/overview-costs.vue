@@ -10,6 +10,7 @@
 </template>
 
 <script>
+import { SettingsBatch } from '@/modules/settingsBatch/settingsBatch.model';
 import BaseCalculation from '../../base-calculation';
 import helpers from '../../../mixins/helpers.mixin';
 
@@ -18,8 +19,15 @@ export default {
   components: { BaseCalculation },
   mixins: [helpers],
   props: {
+    settingsBatch: {
+      required: true,
+      type: SettingsBatch,
+    },
   },
   computed: {
+    countAssignments() {
+      return this.settingsBatch.count_assignments === undefined ? this.settingsBatch.countAssignments : this.settingsBatch.count_assignments;
+    },
     result() {
       return {
         number: this.costsTotalWithFee,
@@ -28,11 +36,12 @@ export default {
       };
     },
     calculations() {
+      console.warn(this.settingsBatch, 'this.settingsBatch');
       return [
         {
           number: this.costsTotalWithoutFee,
-          description: `${this.amount_formatted(this.$store.state.moduleBatches.objectSettingsBatch.reward)}
-          * ${this.$store.state.moduleBatches.objectSettingsBatch.count_assignments} Assignments
+          description: `${this.amount_formatted(this.settingsBatch.reward)}
+          * ${this.countAssignments} Assignments
           * ${this.csv.data.length} HITs`,
         },
         {
@@ -46,14 +55,14 @@ export default {
       return this.$store.state.moduleBatches.objectCSVParsed;
     },
     costsTotalWithoutFee() {
-      if (this.$store.state.moduleBatches.objectSettingsBatch === null) return 0;
+      if (this.settingsBatch === null) return 0;
 
-      let reward = parseFloat(this.$store.state.moduleBatches.objectSettingsBatch.reward);
+      let reward = parseFloat(this.settingsBatch.reward);
       if (Number.isNaN(reward)) {
         reward = 0;
       }
 
-      let countAssignments = this.$store.state.moduleBatches.objectSettingsBatch.count_assignments;
+      let { countAssignments } = this;
 
       if (countAssignments === undefined) {
         countAssignments = 0;
@@ -67,12 +76,12 @@ export default {
         );
       }
 
-      return reward * this.$store.state.moduleBatches.objectSettingsBatch.count_assignments;
+      return reward * this.countAssignments;
     },
     costsTotalWithFee() {
       let costsWithFee;
 
-      if (this.$store.state.moduleBatches.objectSettingsBatch.count_assignments < 10) {
+      if (this.countAssignments < 10) {
         costsWithFee = this.costsTotalWithoutFee * 1.2;
       } else {
         costsWithFee = this.costsTotalWithoutFee * 1.4;

@@ -5,6 +5,7 @@
         <v-flex>
           <v-file-input
             ref="upload-button"
+            v-model="file"
             label="Upload CSV"
             v-bind:loading="isParsingCSV"
             clearable
@@ -46,6 +47,7 @@ export default {
   data() {
     return {
       isParsingCSV: false,
+      file: undefined,
     };
   },
   methods: {
@@ -77,7 +79,7 @@ export default {
       });
 
       if (clearInput === true) {
-        // this.$refs['upload-button'].clear();
+        this.file = undefined;
       }
     },
   },

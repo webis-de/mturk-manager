@@ -92,7 +92,7 @@
         <v-flex>
           <overview-costs
             v-if="is_valid"
-
+            v-bind:settings-batch="settingsBatch"
             style="margin-left: -13px"
 
             v-on:updated_costs_with_fee="$emit('updated_costs_with_fee', $event)"
@@ -110,6 +110,7 @@
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex';
 import humanizeDuration from 'humanize-duration';
+import { SettingsBatch } from '@/modules/settingsBatch/settingsBatch.model';
 import BaseDisplayAmount from '../../base-display-amount.vue';
 import OverviewCosts from './overview-costs';
 import { ServiceBatches } from '../../../services/batches.service';
@@ -119,12 +120,12 @@ import { ServiceBatches } from '../../../services/batches.service';
 // import ComponentShowBatches from './component-show-batches.vue';
 export default {
   name: 'ComponentOverview',
-  // props: {
-  //   isInvalidSettingsBatch: {
-  //     required: true,
-  //     type: Boolean,
-  //   },
-  // },
+  props: {
+    settingsBatch: {
+      required: true,
+      type: SettingsBatch,
+    },
+  },
   data() {
     return {
       current_time_ms: Date.now(),
@@ -135,14 +136,14 @@ export default {
       return ServiceBatches.isValidCSV();
     },
     lifetime_formatted() {
-      if (this.$store.state.moduleBatches.objectSettingsBatch === null) return null;
+      if (this.settingsBatch === null) return null;
 
-      return humanizeDuration(this.$store.state.moduleBatches.objectSettingsBatch.lifetime * 1000);
+      return humanizeDuration(this.settingsBatch.lifetime * 1000);
     },
     format_lifetime_absolute() {
-      if (this.$store.state.moduleBatches.objectSettingsBatch === null) return null;
+      if (this.settingsBatch === undefined) return null;
 
-      const lifetime_absolute = this.current_time_ms + this.$store.state.moduleBatches.objectSettingsBatch.lifetime * 1000.0;
+      const lifetime_absolute = this.current_time_ms + this.settingsBatch.lifetime * 1000.0;
       return new Date(lifetime_absolute).toLocaleString();
     },
     count_hits() {

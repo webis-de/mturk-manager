@@ -33,14 +33,14 @@ import validations from '../../../mixins/validations.mixin';
 import ComponentFormSettingsBatch from '../../settings_project/settings_batch/component_form_settings_batch';
 
 export default defineComponent({
-  name: 'ComponentSettingsBatch',
+  name: 'SettingsBatchNew',
   components: {
     ComponentFormSettingsBatch,
   },
   props: {
-    settingsBatch: {
+    name: {
       required: true,
-      type: SettingsBatch,
+      type: String,
     },
   },
   setup(props) {

@@ -4,6 +4,7 @@ import VueRouter from 'vue-router';
 import Vuetify from 'vuetify/lib';
 import { Ripple } from 'vuetify/lib/directives';
 import Vuelidate from 'vuelidate';
+import { VuelidatePlugin } from '@vuelidate/core'
 import axios from 'axios';
 import VueAxios from 'vue-axios';
 import Vuex from 'vuex';
@@ -27,6 +28,7 @@ Vue.use(VueAxios, axios);
 Vue.use(Vuex);
 Vue.use(VueCookies);
 Vue.use(VueCompositionApi);
+Vue.use(VuelidatePlugin)
 
 export default new Vue({
   router,
