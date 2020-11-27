@@ -1,27 +1,27 @@
 <template>
-  <v-list-tile>
-    <v-list-tile-content>
-      <v-list-tile-title v-text="getDescriptionTask" />
-      <v-list-tile-sub-title>
+  <v-list-item>
+    <v-list-item-content>
+      <v-list-item-title v-text="getDescriptionTask" />
+      <v-list-item-subtitle>
         <v-progress-linear
           class="my-0"
           v-bind:color="progressColor"
           v-bind:indeterminate="isPending && !isFailed"
           v-bind:value="progress"
         />
-      </v-list-tile-sub-title>
-    </v-list-tile-content>
+      </v-list-item-subtitle>
+    </v-list-item-content>
 
-    <v-list-tile-action>
+    <v-list-item-action>
       <v-btn
         v-if="isFinished || isFailed"
         icon
         v-on:click="deleteTask()"
       >
-        <v-icon>clear</v-icon>
+        <v-icon>mdi-close</v-icon>
       </v-btn>
-    </v-list-tile-action>
-  </v-list-tile>
+    </v-list-item-action>
+  </v-list-item>
 </template>
 
 <script>
