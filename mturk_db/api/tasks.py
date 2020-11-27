@@ -1,8 +1,10 @@
-from celery import shared_task
-from api.models import Settings_Batch, Batch, HIT, Template_Worker
-import uuid
 import json
+import traceback
+
 from botocore.exceptions import ClientError
+from celery import shared_task
+
+from api.models import HIT
 
 
 @shared_task(bind=True, name='tasks.create_batch')
@@ -18,15 +20,9 @@ def create_batch(self, data, database_object_project=None, use_sandbox=True):
         if dictionary_settings_batch['block_workers']:
             dictionary_settings_batch['template_worker'].template = Manager_Batches.preprocess_template_request(database_object_project, dictionary_settings_batch['template_worker'].template)
 
-        # generate batch name if not given
-        try:
-            name_batch = data['name'].upper()
-        except KeyError:
-            name_batch = uuid.uuid4().hex.upper()
-
         # create batch
         database_object_batch = Manager_Batches.create_batch(
-            name_batch=name_batch,
+            name_batch=data['name'],
             database_object_project=database_object_project,
             use_sandbox=use_sandbox,
         )
@@ -62,7 +58,7 @@ def create_batch(self, data, database_object_project=None, use_sandbox=True):
                 )
                 pass
             except ClientError as e:
-                print(e)
+                print(traceback.format_exc())
                 # messages.error(request, '''
                 #     An error occured
                 #     <a href="#alert_1" data-toggle="collapse" class="alert-link">details</a>
@@ -100,4 +96,4 @@ def create_batch(self, data, database_object_project=None, use_sandbox=True):
 
     except Exception as e:
         ManagerTasks.failed(self.request.id)
-        print('{}'.format(e))
+        print(traceback.format_exc())

@@ -173,6 +173,14 @@ class Manager_Batches(Interface_Manager_Items):
 
     @staticmethod
     def create(data, database_object_project=None, use_sandbox=True):
+        # generate batch name if not given
+        try:
+            name_batch = data['name'].upper()
+        except KeyError:
+            name_batch = uuid.uuid4().hex.upper()
+
+        data['name'] = name_batch
+
         id = create_batch.delay(data=data, database_object_project=database_object_project, use_sandbox=use_sandbox)
 
         ManagerTasks.create(

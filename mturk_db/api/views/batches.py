@@ -76,7 +76,6 @@ class ProjectBatches(APIView):
     @add_database_object_project
     def post(self, request, slug_project, database_object_project, use_sandbox, format=None):
         serializer = Serializer_Batch(data=request.data)
-        print(serializer)
         if serializer.is_valid():
             serializer.save(database_object_project=database_object_project, use_sandbox=use_sandbox)
             return Response(serializer.data, status=status.HTTP_201_CREATED)

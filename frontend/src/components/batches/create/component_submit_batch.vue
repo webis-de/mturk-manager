@@ -80,8 +80,8 @@ export default {
       this.settingsBatch.block_workers = this.settingsBatch.blockWorkers;
       this.settingsBatch.count_assignments = this.settingsBatch.countAssignments;
       this.settingsBatch.count_assignments_map_per_worker = this.settingsBatch.countAssignmentsMaxPerWorker;
-      this.settingsBatch.has_content_adult = this.settingsBatch.has_content_adult;
-      this.settingsBatch.template_worker = this.settingsBatch.templateWorker;
+      this.settingsBatch.has_content_adult = this.settingsBatch.hasContentAdult;
+      this.settingsBatch.template = this.settingsBatch.templateWorker;
 
       await ServiceBatches.create({
         name: this.name_batch,

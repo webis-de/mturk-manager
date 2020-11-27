@@ -18,6 +18,7 @@ env = environ.Env(
     DEBUG=(bool, False),
     RABBITMQ_DEFAULT_USER=(str, 'guest'),
     RABBITMQ_DEFAULT_PASS=(str, 'guest'),
+    RABBITMQ_DEFAULT_HOST=(str, 'rabbitmq'),
     DATABASE_URL=(str, 'postgres://{user}:{password}@{host}:{port}/{database}'.format(
         user=os.environ.get('POSTGRES_USER', 'user'),
         password=os.environ.get('POSTGRES_PASSWORD', 'password'),
@@ -168,17 +169,15 @@ REST_FRAMEWORK = {
 
 VERSION_PROJECT = 15
 
-try:
-    URL_BACKEND = os.environ.get('URL_BACKEND')
-except AttributeError:
-    URL_BACKEND = 'http://localhost:8004'
+URL_BACKEND = os.environ.get('URL_BACKEND', 'http://localhost:8004')
 
 VERSION = os.environ.get('VERSION_MTURK_MANAGER')
 PLACEHOLDER_SLUG_PROJECT = 'PLACEHOLDER_SLUG_PROJECT'
 
-CELERY_BROKER_URL = 'amqp://{BROKER_USER}:{BROKER_PASSWORD}@rabbitmq:{BROKER_PORT}'.format(
+CELERY_BROKER_URL = 'amqp://{BROKER_USER}:{BROKER_PASSWORD}@{BROKER_HOST}:{BROKER_PORT}'.format(
     BROKER_USER=env('RABBITMQ_DEFAULT_USER'),
     BROKER_PASSWORD=env('RABBITMQ_DEFAULT_PASS'),
+    BROKER_HOST=env('RABBITMQ_DEFAULT_HOST'),
     BROKER_PORT=5672
 )
 CELERY_RESULT_BACKEND = 'django-db'
