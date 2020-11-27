@@ -9,9 +9,6 @@ module.exports = {
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-    // own vue style fix
-    'vue/v-bind-style': ['error', 'longform'],
-    'vue/v-on-style': ['error', 'longform'],
     // import fix
     'import/extensions': ['error', 'always', {
       js: 'never',
@@ -39,13 +36,6 @@ module.exports = {
       },
     ],
     'linebreak-style': 0,
-    'vue/html-self-closing': [
-      'error', {
-        html: {
-          normal: 'never',
-        },
-      },
-    ],
     'max-len': [
       'error', {
         code: 120,
@@ -62,6 +52,19 @@ module.exports = {
     //     schemaJsonFilepath: 'node_modules/.temp/graphql/schema.json',
     //   },
     // ],
+    /**
+     * Vue-specific styles
+     */
+    'vue/v-bind-style': ['error', 'longform'],
+    'vue/v-on-style': ['error', 'longform'],
+    'vue/v-slot-style': ['error', 'longform'],
+    'vue/html-self-closing': [
+      'error', {
+        html: {
+          normal: 'never',
+        },
+      },
+    ],
   },
 
   parserOptions: {
