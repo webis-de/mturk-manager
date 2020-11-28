@@ -27,7 +27,7 @@ import { MessageReject } from '@/modules/message/messageReject.model';
 import { ServiceMessages } from '@/modules/message/message.service';
 import { required } from 'vuelidate/lib/validators';
 import { store } from '@/store/vuex';
-import BaseDialog from '@/modules/app/components/base-dialog';
+import BaseDialog from '@/modules/app/base/base-dialog';
 import debounce from 'lodash-es/debounce';
 
 const searchDebounced = debounce(function (value) {

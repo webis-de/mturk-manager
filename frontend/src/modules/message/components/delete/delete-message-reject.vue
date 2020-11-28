@@ -29,7 +29,7 @@
 
 <script lang="ts">
 import { MessageBase } from '@/modules/message/messageBase.model';
-import BaseDialog from '@/modules/app/components/base-dialog.vue';
+import BaseDialog from '@/modules/app/base/base-dialog.vue';
 import { ServiceMessages } from '@/modules/message/message.service';
 
 export default {
