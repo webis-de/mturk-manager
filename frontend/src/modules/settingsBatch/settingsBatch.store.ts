@@ -1,13 +1,9 @@
 import _ from 'lodash';
 import Vue from 'vue';
 import baseModule from '@/store/modules/base.module';
-import { TemplateAssignment } from '@/modules/template/templateAssignment.model';
-import { TemplateHIT } from '@/modules/template/templateHIT.model';
-import { TemplateGlobal } from '@/modules/template/templateGlobal.model';
-import { TemplateWorker } from '@/modules/template/templateWorker.model';
 import { classesHeaders } from '@/helpers';
-import { TemplateBase } from '@/modules/template/templateBase.model';
-import { SettingsBatch } from '@/modules/settingsBatch/settingsBatch.model';
+import type { SettingsBatch } from '@/modules/settingsBatch/settingsBatch.model';
+import { ActionContext } from 'vuex';
 
 interface StoreSettingsBatchState {
   settingsBatch: { [key: string]: SettingsBatch};
@@ -79,7 +75,10 @@ export const moduleSettingsBatch = _.merge({}, baseModule, {
     /**
      * Set
      */
-    setSettingsBatch(state: StoreSettingsBatchState, { settingsBatches }: {settingsBatches: { [key: string]: SettingsBatch}}) {
+    setSettingsBatch(
+      state: StoreSettingsBatchState,
+      { settingsBatches }: {settingsBatches: Record<string, SettingsBatch>},
+    ) {
       state.settingsBatch = settingsBatches;
     },
     /**
@@ -102,7 +101,7 @@ export const moduleSettingsBatch = _.merge({}, baseModule, {
     },
   },
   actions: {
-    async init({ dispatch }) {
+    async init({ dispatch }: ActionContext<unknown, unknown>) {
       await Promise.all([
         /**
          * init pagination

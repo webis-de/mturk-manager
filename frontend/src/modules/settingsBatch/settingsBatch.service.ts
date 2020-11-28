@@ -18,7 +18,7 @@ class ClassServiceSettingsBatch {
     });
 
     store.commit('moduleSettingsBatch/setSettingsBatch', {
-      settingsBatches: SettingsBatch.prepareFromServerToStore(response.data.settingsBatch),
+      settingsBatches: await SettingsBatch.convertFromServerToStore<SettingsBatch>(response.data.settingsBatch),
     });
   }
 
@@ -28,13 +28,13 @@ class ClassServiceSettingsBatch {
     const response = await ServiceEndpoint.apolloClient.query({
       query: queryCreateSettingsBatch,
       variables: {
-        settingsBatch: settingsBatch.extractBody(),
+        settingsBatch: settingsBatch.prepareForServer(),
       },
       fetchPolicy: 'no-cache',
     });
 
     store.commit('moduleSettingsBatch/createSettingsBatch', {
-      settingsBatch: SettingsBatch.parseFromServer(response.data.createSettingsBatch.settingsBatch),
+      settingsBatch: await SettingsBatch.parseFromServer(response.data.createSettingsBatch.settingsBatch),
     });
   }
 
@@ -45,13 +45,13 @@ class ClassServiceSettingsBatch {
     const response = await ServiceEndpoint.apolloClient.query({
       query: queryUpdateSettingsBatch,
       variables: {
-        settingsBatch: settingsBatch.extractBody(),
+        settingsBatch: settingsBatch.prepareForServer(),
       },
       fetchPolicy: 'no-cache',
     });
 
     store.commit('moduleSettingsBatch/updateSettingsBatch', {
-      settingsBatch: SettingsBatch.parseFromServer(response.data.updateSettingsBatch.settingsBatch),
+      settingsBatch: await SettingsBatch.parseFromServer(response.data.updateSettingsBatch.settingsBatch),
     });
   }
 

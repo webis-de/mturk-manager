@@ -1,14 +1,16 @@
-import { ID } from '@/modules/app/types';
-import cloneDeep from 'lodash-es/cloneDeep';
+import { ID, Optional } from '@/modules/app/types';
+import { Entity } from '@/modules/app/entity/entity.model';
+import { SettingsBatchInterface } from '@/modules/settingsBatch/settingsBatch.types';
+import { setDefaultIfNullOrUndefined } from '@/modules/app/helpers';
+import { store } from '@/store/vuex';
+import Project from '@/classes/project';
 
-export class SettingsBatch {
-  id?: string;
-
+export class SettingsBatch extends Entity implements SettingsBatchInterface {
   name: string;
 
-  title?: string;
+  title: string | null;
 
-  description?: string;
+  description: string | null;
 
   reward: number;
 
@@ -21,133 +23,80 @@ export class SettingsBatch {
 
   countAssignments: number;
 
-  countAssignmentsMaxPerWorker?: number;
+  countAssignmentsMaxPerWorker: number | null;
 
   blockWorkers: boolean;
 
   hasContentAdult: boolean;
 
-  datetimeCreation?: Date;
+  templateWorker: ID | null;
 
-  templateWorker?: ID;
+  project: Project;
 
-  project: ID;
+  qualificationAssignmentsApproved: number | null;
 
-  projectDefault: ID;
+  qualificationHitsApproved: number | null;
 
-  qualificationAssignmentsApproved?: number;
+  qualificationLocale: string | null;
 
-  qualificationHitsApproved?: number;
+  constructor(data: Optional<SettingsBatchInterface, 'project'> = { project: store.getters['moduleProjects/get_project_current'].id }) {
+    super(data);
 
-  qualificationLocale?: string;
-
-  constructor({
-    id,
-    name,
-    title,
-    description,
-    reward,
-    keywords = [],
-    duration,
-    lifetime,
-    countAssignments,
-    countAssignmentsMaxPerWorker,
-    blockWorkers = false,
-    hasContentAdult,
-    datetimeCreation,
-    templateWorker,
-    project,
-    projectDefault,
-    qualificationAssignmentsApproved,
-    qualificationHitsApproved,
-    qualificationLocale,
-  }: {
-    id?: string;
-    name: string;
-    title?: string;
-    description?: string;
-    reward: number;
-    keywords: string[];
-    duration: number;
-    lifetime: number;
-    countAssignments: number;
-    countAssignmentsMaxPerWorker?: number;
-    blockWorkers: boolean;
-    hasContentAdult: boolean;
-    datetimeCreation?: Date;
-    templateWorker?: ID;
-    project: ID;
-    projectDefault: ID;
-    qualificationAssignmentsApproved?: number;
-    qualificationHitsApproved?: number;
-    qualificationLocale?: string;
-  } = {}) {
-    this.id = id;
-    this.name = name;
-    this.title = title;
-    this.description = description;
-    this.reward = reward;
-    this.keywords = keywords;
-    this.duration = duration;
-    this.lifetime = lifetime;
-    this.countAssignments = countAssignments;
-    this.countAssignmentsMaxPerWorker = countAssignmentsMaxPerWorker;
-    this.blockWorkers = blockWorkers;
-    this.hasContentAdult = hasContentAdult;
-    this.datetimeCreation = datetimeCreation;
-    this.templateWorker = templateWorker;
-    this.project = project;
-    this.projectDefault = projectDefault;
-    this.qualificationAssignmentsApproved = qualificationAssignmentsApproved;
-    this.qualificationHitsApproved = qualificationHitsApproved;
-    this.qualificationLocale = qualificationLocale;
+    this.name = setDefaultIfNullOrUndefined(data.name, '');
+    this.title = setDefaultIfNullOrUndefined(data.title, null);
+    this.description = setDefaultIfNullOrUndefined(data.description, null);
+    this.reward = setDefaultIfNullOrUndefined(data.reward, 0);
+    this.keywords = setDefaultIfNullOrUndefined(data.keywords, []);
+    this.duration = setDefaultIfNullOrUndefined(data.duration, 0);
+    this.lifetime = setDefaultIfNullOrUndefined(data.lifetime, 0);
+    // TODO minimum 1?
+    this.countAssignments = setDefaultIfNullOrUndefined(data.countAssignments, 0);
+    this.countAssignmentsMaxPerWorker = setDefaultIfNullOrUndefined(data.countAssignmentsMaxPerWorker, null);
+    this.blockWorkers = setDefaultIfNullOrUndefined(data.blockWorkers, false);
+    this.hasContentAdult = setDefaultIfNullOrUndefined(data.hasContentAdult, false);
+    this.templateWorker = setDefaultIfNullOrUndefined(data.templateWorker, null);
+    this.project = data.project;
+    this.qualificationAssignmentsApproved = setDefaultIfNullOrUndefined(data.qualificationAssignmentsApproved, null);
+    this.qualificationHitsApproved = setDefaultIfNullOrUndefined(data.qualificationHitsApproved, null);
+    this.qualificationLocale = setDefaultIfNullOrUndefined(data.qualificationLocale, null);
   }
 
-  extractBody() {
-    return {
-      id: this.id,
-      project: this.project,
-      name: this.name,
-      templateWorker: this.templateWorker,
-      datetimeCreation: this.datetimeCreation,
-      title: this.title,
-      description: this.description,
-      reward: this.reward,
-      keywords: this.keywords,
-      duration: this.duration,
-      lifetime: this.lifetime,
-      countAssignments: this.countAssignments,
-      countAssignmentsMaxPerWorker: this.countAssignmentsMaxPerWorker,
-      blockWorkers: this.blockWorkers,
-      hasContentAdult: this.hasContentAdult,
-      projectDefault: this.projectDefault,
-      qualificationAssignmentsApproved: this.qualificationAssignmentsApproved,
-      qualificationHitsApproved: this.qualificationHitsApproved,
-      qualificationLocale: JSON.stringify(this.qualificationLocale),
-    };
+  prepareForServer(): Record<string, unknown> {
+    const data = super.prepareForServer();
+
+    data.project = this.project;
+    data.name = this.name;
+    data.templateWorker = this.templateWorker;
+    data.title = this.title;
+    data.description = this.description;
+    data.reward = this.reward;
+    data.keywords = this.keywords;
+    data.duration = this.duration;
+    data.lifetime = this.lifetime;
+    data.countAssignments = this.countAssignments;
+    data.countAssignmentsMaxPerWorker = this.countAssignmentsMaxPerWorker;
+    data.blockWorkers = this.blockWorkers;
+    data.hasContentAdult = this.hasContentAdult;
+    data.qualificationAssignmentsApproved = this.qualificationAssignmentsApproved;
+    data.qualificationHitsApproved = this.qualificationHitsApproved;
+    data.qualificationLocale = JSON.stringify(this.qualificationLocale);
+
+    return data;
   }
 
-  static prepareFromServerToStore(data: {}[]): {[key: string]: SettingsBatch} {
-    const settingsBatches: SettingsBatch[] = cloneDeep(data).map((item: {}) => this.parseFromServer(item));
+  static async parseFromServer(data: SettingsBatchInterface): Promise<SettingsBatch> {
+    // entity.project = entity.project.id;
+    //
+    // if (entity.templateWorker !== null) {
+    //   entity.templateWorker = item.templateWorker.id;
+    // }
+    //
+    // entity.keywords = entity.keywords.map((keyword) => ({ id: keyword.id, text: keyword.text }));
+    //
+    // entity.qualificationLocale = entity.qualificationLocale === null ? [] : JSON.parse(item.qualificationLocale);
+    // console.warn(entity.qualificationLocale, 'entity.qualificationLocale');
 
-    return settingsBatches.reduce((obj, settingsBatch) => {
-      obj[settingsBatch.id as string] = settingsBatch;
-      return obj;
-    }, {} as { [key: string]: SettingsBatch });
-  }
-
-  static parseFromServer(item: {}): SettingsBatch {
-    item.project = item.project.id;
-
-    if (item.templateWorker !== null) {
-      item.templateWorker = item.templateWorker.id;
-    }
-
-    item.keywords = item.keywords.map((keyword) => ({ id: keyword.id, text: keyword.text }));
-
-    item.qualificationLocale = item.qualificationLocale === null ? [] : JSON.parse(item.qualificationLocale);
-    console.warn(item.qualificationLocale, 'item.qualificationLocale');
-    return new this(item);
+    return (await super.parseFromServer(data)) as SettingsBatch;
   }
 
   // getChanges(template) {
