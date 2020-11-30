@@ -83,7 +83,7 @@
 
 <script lang="ts">
 import validations from '@/mixins/validations.mixin';
-import ComponentFormSettingsBatch from '@/components/settings_project/settings_batch/component_form_settings_batch.vue';
+import ComponentFormSettingsBatch from '@/components/settings_project/settings_batch/component_form_settings_batch';
 import { settingsBatch } from '@/mixins/settings-batch.mixin';
 import { ServiceSettingsBatch } from '@/modules/settingsBatch/settingsBatch.service';
 
@@ -91,20 +91,18 @@ export default {
   name: 'CreateSettingsBatch',
   components: { ComponentFormSettingsBatch },
   mixins: [validations, settingsBatch],
-  data() {
+  data(): void {
     return {
       dialog: false,
     };
   },
   methods: {
-    reset() {
+    reset(): void {
       this.update_fields();
       this.$v.$reset();
     },
-    create() {
+    create(): void {
       if (this.$refs.form.validate()) {
-        this.settings_batch.project = this.$store.getters['moduleProjects/get_project_current'].id;
-
         ServiceSettingsBatch.create({
           settingsBatch: this.settings_batch,
         }).then(() => {

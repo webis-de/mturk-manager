@@ -62,21 +62,6 @@
       </v-card-text>
     </v-card>
   </v-dialog>
-
-  <!-- <v-snackbar
-	    v-model="show_snackbar"
-	    v-bind:timeout="1500"
-	    bottom
-	    color="success"
-	>
-	    Saved!
-	    <v-btn
-	        text
-	        v-on:click="show_snackbar = false"
-	    >
-	        Close
-	    </v-btn>
-	</v-snackbar> -->
 </template>
 <script lang="ts">
 import {
@@ -86,6 +71,7 @@ import ComponentFormSettingsBatch from '@/components/settings_project/settings_b
 import { settingsBatch } from '@/mixins/settings-batch.mixin';
 import validations from '@/mixins/validations.mixin';
 import { ServiceSettingsBatch } from '@/modules/settingsBatch/settingsBatch.service';
+import { SettingsBatch } from '@/modules/settingsBatch/settingsBatch.model';
 
 export default {
   name: 'UpdateSettingsBatch',
@@ -94,9 +80,12 @@ export default {
   },
   mixins: [validations, settingsBatch],
   props: {
-    settingsBatch: {},
+    settingsBatch: {
+      required: true,
+      type: SettingsBatch,
+    },
   },
-  data() {
+  data(): Record<string, unknown> {
     return {
       dialog: false,
       disable_unique_name: true,
@@ -104,17 +93,17 @@ export default {
     };
   },
   watch: {
-    dialog() {
+    dialog(): void {
       this.reset();
     },
   },
-  created() {
+  created(): void {
     this.$v.$touch();
   },
   methods: {
-    update() {
+    update(): void {
       if (this.$refs.form.validate()) {
-        this.settings_batch.project = this.$store.getters['moduleProjects/get_project_current'].id;
+        // this.settings_batch.project = this.$store.getters['moduleProjects/get_project_current'].id;
         ServiceSettingsBatch.update({
           settingsBatch: this.settings_batch,
         });
@@ -124,7 +113,7 @@ export default {
         this.reset();
       }
     },
-    reset() {
+    reset(): void {
       this.update_fields();
       this.$v.$reset();
       this.$v.$touch();

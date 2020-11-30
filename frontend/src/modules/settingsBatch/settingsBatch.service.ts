@@ -41,7 +41,6 @@ class ClassServiceSettingsBatch {
   async update({
     settingsBatch,
   }: { settingsBatch: SettingsBatch }) {
-    console.log(settingsBatch, 'settingsBatch');
     const response = await ServiceEndpoint.apolloClient.query({
       query: queryUpdateSettingsBatch,
       variables: {

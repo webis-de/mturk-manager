@@ -140,6 +140,7 @@
         >
           <v-select
             dense
+            return-object
             v-bind:value="templateWorkerExpanded"
             v-bind:items="arrayTemplatesWorker"
             label="Worker Template"
@@ -323,7 +324,6 @@ import {
   mapState, mapGetters,
 } from 'vuex';
 import humanizeDuration from 'humanize-duration';
-import _ from 'lodash';
 import helpers from '../../../mixins/helpers.mixin';
 
 export default {
@@ -405,7 +405,7 @@ export default {
   computed: {
     templateWorkerExpanded() {
       if (this.templateWorker === null) return null;
-      return this.$store.state.moduleTemplates.templatesWorker[this.templateWorker];
+      return this.$store.state.moduleTemplates.templatesWorker[this.templateWorker.id];
     },
     arrayTemplatesWorker() {
       const templatesWorker = this.$store.getters['moduleTemplates/templatesWorker'];

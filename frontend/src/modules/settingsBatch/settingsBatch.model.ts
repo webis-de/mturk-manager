@@ -1,9 +1,10 @@
-import { ID, Optional } from '@/modules/app/types';
+import { Optional } from '@/modules/app/types';
 import { Entity } from '@/modules/app/entity/entity.model';
-import { SettingsBatchInterface } from '@/modules/settingsBatch/settingsBatch.types';
+import type { Keyword, SettingsBatchInterface } from '@/modules/settingsBatch/settingsBatch.types';
 import { setDefaultIfNullOrUndefined } from '@/modules/app/helpers';
 import { store } from '@/store/vuex';
 import Project from '@/classes/project';
+import { TemplateWorker } from '@/modules/template/templateWorker.model';
 
 export class SettingsBatch extends Entity implements SettingsBatchInterface {
   name: string;
@@ -14,8 +15,7 @@ export class SettingsBatch extends Entity implements SettingsBatchInterface {
 
   reward: number;
 
-  // TODO change type to keywords
-  keywords: string[];
+  keywords: Keyword[];
 
   duration: number;
 
@@ -29,7 +29,7 @@ export class SettingsBatch extends Entity implements SettingsBatchInterface {
 
   hasContentAdult: boolean;
 
-  templateWorker: ID | null;
+  templateWorker: TemplateWorker | null;
 
   project: Project;
 
@@ -39,7 +39,7 @@ export class SettingsBatch extends Entity implements SettingsBatchInterface {
 
   qualificationLocale: string | null;
 
-  constructor(data: Optional<SettingsBatchInterface, 'project'> = { project: store.getters['moduleProjects/get_project_current'].id }) {
+  constructor(data: Optional<SettingsBatchInterface, 'project'> = { project: store.getters['moduleProjects/getProjectCurrent'] }) {
     super(data);
 
     this.name = setDefaultIfNullOrUndefined(data.name, '');
@@ -64,9 +64,9 @@ export class SettingsBatch extends Entity implements SettingsBatchInterface {
   prepareForServer(): Record<string, unknown> {
     const data = super.prepareForServer();
 
-    data.project = this.project;
+    data.project = this.project === null ? null : this.project.id;
     data.name = this.name;
-    data.templateWorker = this.templateWorker;
+    data.templateWorker = this.templateWorker === null ? null : this.templateWorker.id;
     data.title = this.title;
     data.description = this.description;
     data.reward = this.reward;
@@ -85,18 +85,19 @@ export class SettingsBatch extends Entity implements SettingsBatchInterface {
   }
 
   static async parseFromServer(data: SettingsBatchInterface): Promise<SettingsBatch> {
-    // entity.project = entity.project.id;
-    //
-    // if (entity.templateWorker !== null) {
-    //   entity.templateWorker = item.templateWorker.id;
-    // }
-    //
-    // entity.keywords = entity.keywords.map((keyword) => ({ id: keyword.id, text: keyword.text }));
-    //
-    // entity.qualificationLocale = entity.qualificationLocale === null ? [] : JSON.parse(item.qualificationLocale);
-    // console.warn(entity.qualificationLocale, 'entity.qualificationLocale');
+    const entity = (await super.parseFromServer(data)) as SettingsBatch;
 
-    return (await super.parseFromServer(data)) as SettingsBatch;
+    entity.project = store.getters['moduleProjects/getProjectCurrent'];
+
+    if (entity.templateWorker !== null) {
+      entity.templateWorker = store.state.moduleTemplates.templatesWorker[entity.templateWorker.id];
+    }
+
+    entity.keywords = entity.keywords.map((keyword) => ({ id: keyword.id, text: keyword.text }));
+
+    entity.qualificationLocale = entity.qualificationLocale === null ? [] : JSON.parse(entity.qualificationLocale);
+
+    return entity;
   }
 
   // getChanges(template) {

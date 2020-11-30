@@ -2,8 +2,8 @@ import { compareDesc, parse } from 'date-fns';
 import { ServiceTemplates } from '@/modules/template/template.service';
 import { ServiceSettingsBatch } from '@/modules/settingsBatch/settingsBatch.service';
 import { ServiceMessages } from '@/modules/message/message.service';
+import { store } from '@/store/vuex';
 import Project from '../classes/project';
-import { store } from '../store/vuex';
 import { ServiceEndpoint } from './endpoint.service';
 
 class ClassServiceProjects {
@@ -37,7 +37,6 @@ class ClassServiceProjects {
   }
 
   async createProject(name) {
-    const { use_sandbox } = store.state.module_app;
     const response = await ServiceEndpoint.makeRequest({
       method: 'post',
       url: {
@@ -228,9 +227,11 @@ class ClassServiceProjects {
   }
 
   async loadData(project) {
-    ServiceTemplates.loadTemplates();
+    ServiceTemplates.loadTemplates().then(() => {
+      // has to load after the templates to have the template worker available
+      ServiceSettingsBatch.loadSettingsBatch();
+    });
     ServiceMessages.loadMessages();
-    ServiceSettingsBatch.loadSettingsBatch();
 
     const response = await ServiceEndpoint.makeRequest({
       method: 'get',
@@ -325,7 +326,6 @@ class ClassServiceProjects {
       objectState: arrayTasks,
       nameState: 'arrayTasks',
     });
-
 
     if (arrayTasksServer.filter((task) => task.status !== 3).length === 0) {
       clearTimeout(this.idTimeoutPollStatus);
