@@ -1,14 +1,15 @@
 import json
 
-from api.classes import Interface_Manager_Items
-from api.models import Worker, Worker_Block_Project, Count_Assignments_Worker_Project, Assignment_Worker
-from api.classes.projects import Manager_Projects
-from api.enums import STATUS_BLOCK, STATUS_INTERNAL
-from rest_framework.request import Request
 import botocore
-from django.db.models import F, Q, When, Case, BooleanField, IntegerField, Count, Value, Subquery, OuterRef, QuerySet, \
+from django.db.models import F, Q, When, Case, BooleanField, Count, Value, Subquery, OuterRef, QuerySet, \
     FloatField
 from django.db.models.functions import Coalesce, Cast
+from rest_framework.request import Request
+
+from api.classes import Interface_Manager_Items
+from api.classes.projects import Manager_Projects
+from api.enums import STATUS_EXTERNAL
+from api.models import Worker, Worker_Block_Project, Count_Assignments_Worker_Project, Assignment_Worker
 
 
 # from django.db.models import F, Value, Count, Q, Sum, IntegerField, ExpressionWrapper
@@ -119,7 +120,7 @@ class Manager_Workers(Interface_Manager_Items):
             # project=database_object_project,
         )
 
-        return queryset.annotate(
+        queryset = queryset.annotate(
             number_of_assignments=Coalesce(Count('assignments'), 0),
             number_of_assignments_of_project=Coalesce(Count('assignments', filter=Q(assignments__hit__batch__project=database_object_project)), 0),
 
@@ -133,15 +134,15 @@ class Manager_Workers(Interface_Manager_Items):
             ),
 
             number_of_approved_assignments=Coalesce(
-                Count('assignments', filter=Q(assignments__status_internal=STATUS_INTERNAL.APPROVED)), 0),
+                Count('assignments', filter=Q(assignments__status_external=STATUS_EXTERNAL.APPROVED)), 0),
             number_of_rejected_assignments=Coalesce(
-                Count('assignments', filter=Q(assignments__status_internal=STATUS_INTERNAL.REJECTED)), 0),
+                Count('assignments', filter=Q(assignments__status_external=STATUS_EXTERNAL.REJECTED)), 0),
             number_of_approved_assignments_of_project=Coalesce(Count('assignments', filter=Q(
-                assignments__status_internal=STATUS_INTERNAL.APPROVED,
+                assignments__status_external=STATUS_EXTERNAL.APPROVED,
                 assignments__hit__batch__project=database_object_project
             )), 0),
             number_of_rejected_assignments_of_project=Coalesce(Count('assignments', filter=Q(
-                assignments__status_internal=STATUS_INTERNAL.REJECTED,
+                assignments__status_external=STATUS_EXTERNAL.REJECTED,
                 assignments__hit__batch__project=database_object_project
             )), 0),
         ).annotate(
@@ -162,6 +163,7 @@ class Manager_Workers(Interface_Manager_Items):
             ratio_approved_assignments_of_project=Cast(F('number_of_approved_assignments_of_project'), FloatField()) / Cast(F('number_of_assignments_of_project'), FloatField()),
         )
 
+        return queryset
         # show_workers_blocked_none = json.loads(request.query_params.get('show_workers_blocked_none', 'true'))
         # if show_workers_blocked_none == False:
         #     queryset = queryset.exclude(count_assignments_limit=True)
