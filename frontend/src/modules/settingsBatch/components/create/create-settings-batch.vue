@@ -1,6 +1,6 @@
 <template>
   <v-dialog
-    v-model="dialog"
+    v-model="isDialogOpen"
     fullscreen
   >
     <template v-slot:activator="{ on: onDialog }">
@@ -25,112 +25,81 @@
     </template>
 
     <v-card>
-      <v-card-title>
-        <span class="headline">Add Batch Profile</span>
-        <v-spacer />
-        <v-btn
-          icon
-          v-on:click="dialog = false"
-        >
-          <v-icon>mdi-close</v-icon>
-        </v-btn>
-      </v-card-title>
-      <v-card-text>
-        <v-form ref="form">
-          <v-text-field
-            required
-            label="Name"
-            v-bind:value="settings_batch.name"
-            v-bind:error-messages="validation_errors.settings_batch.name"
-            v-on:input="
-              settings_batch.name = $event;
-              $v.settings_batch.name.$touch();
+      <form v-on:submit.prevent="useCreateSettingsBatch.create">
+        <v-card-title>
+          <span class="headline">Add Batch Profile</span>
+          <v-spacer />
+          <v-btn
+            icon
+            v-on:click="isDialogOpen = false"
+          >
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+        </v-card-title>
+        <v-card-text>
+          <v-form>
+            <base-text-field
+              v-model="useCreateSettingsBatch.settingsBatchNew.name"
+              v-bind:validation="useCreateSettingsBatch.v.name"
+              v-bind:options="{
+                label: 'Name',
+              }"
+            />
+            <form-settings-batch
+              v-bind.sync="useCreateSettingsBatch.settingsBatchNew"
+              v-bind:validation="useCreateSettingsBatch.v"
+            />
+          </v-form>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn
+            text
+            class="ml-0"
+            color="înfo"
+            v-on:click="
+              isDialogOpen = false;
             "
-          />
-          <component-form-settings-batch
-            v-bind.sync="settings_batch"
-            v-bind:v="$v"
-            v-bind:validation_errors="validation_errors"
-          />
-        </v-form>
-      </v-card-text>
-      <v-card-actions>
-        <v-btn
-          text
-          class="ml-0"
-          color="înfo"
-          v-on:click="
-            dialog = false;
-            reset();
-          "
-        >
-          Cancel
-        </v-btn>
-        <v-spacer />
-        <v-btn
-          text
-          class="ml-0"
-          color="primary"
-          v-bind:disabled="$v.$invalid"
-          v-on:click="create()"
-        >
-          Save
-        </v-btn>
-      </v-card-actions>
+          >
+            Cancel
+          </v-btn>
+          <v-spacer />
+          <v-btn
+            text
+            type="submit"
+            class="ml-0"
+            color="primary"
+          >
+            Save
+          </v-btn>
+        </v-card-actions>
+      </form>
     </v-card>
   </v-dialog>
 </template>
 
 <script lang="ts">
-import validations from '@/mixins/validations.mixin';
-import ComponentFormSettingsBatch from '@/components/settings_project/settings_batch/component_form_settings_batch';
-import { settingsBatch } from '@/mixins/settings-batch.mixin';
 import { ServiceSettingsBatch } from '@/modules/settingsBatch/settingsBatch.service';
+import FormSettingsBatch from '@/modules/settingsBatch/form-settings-batch.vue';
+import { defineComponent, ref, watch } from '@vue/composition-api';
+import BaseTextField from '@/modules/app/base/inputs/base-text-field.vue';
 
-export default {
+export default defineComponent({
   name: 'CreateSettingsBatch',
-  components: { ComponentFormSettingsBatch },
-  mixins: [validations, settingsBatch],
-  data(): void {
+  components: { BaseTextField, FormSettingsBatch },
+  setup() {
+    const isDialogOpen = ref(false);
+    const useCreateSettingsBatch = ServiceSettingsBatch.useCreate();
+
+    watch(isDialogOpen, (isOpen) => {
+      if (isOpen) {
+        useCreateSettingsBatch.reset();
+      }
+    });
+
     return {
-      dialog: false,
+      isDialogOpen,
+      useCreateSettingsBatch,
     };
   },
-  methods: {
-    reset(): void {
-      this.update_fields();
-      this.$v.$reset();
-    },
-    create(): void {
-      if (this.$refs.form.validate()) {
-        ServiceSettingsBatch.create({
-          settingsBatch: this.settings_batch,
-        }).then(() => {
-          this.dialog = false;
-          this.$emit('created');
-          this.reset();
-        });
-      }
-    },
-    // async create() {
-    //   if (this.$refs.form.validate()) {
-    //     const template = new TemplateWorker({
-    //       name: this.name,
-    //       template: this.template,
-    //       project: store.getters['moduleProjects/get_project_current'].id,
-    //       heightFrame: this.heightFrame,
-    //       templateAssignment: this.idTemplateAssignment === null ? null : this.idTemplateAssignment,
-    //       templateHIT: this.idTemplateHIT === null ? null : this.idTemplateHIT,
-    //       templateGlobal: this.idTemplateGlobal === null ? null : this.idTemplateGlobal,
-    //     });
-    //
-    //     await ServiceTemplates.create({
-    //       template,
-    //     });
-    //
-    //     this.dialog = false;
-    //   }
-    // },
-  },
-};
+});
 </script>

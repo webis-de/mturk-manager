@@ -6,8 +6,92 @@ import {
 } from '@/modules/settingsBatch/settingsBatch.graphql';
 import { SettingsBatch } from '@/modules/settingsBatch/settingsBatch.model';
 import { ServiceEndpoint } from '@/services/endpoint.service';
+import { ref } from '@vue/composition-api';
+import useVuelidate from '@vuelidate/core';
+import {
+  minValue, required,
+} from '@vuelidate/validators';
 
 class ClassServiceSettingsBatch {
+  useCreate() {
+    const rules = {
+      name: {
+        required,
+        // is_unique: foo(
+        //   this.project_current.settings_batch,
+        //   this.settingsBatch,
+        // ),
+      },
+      title: {
+        required,
+      },
+      description: {
+        required,
+      },
+      reward: {
+        required,
+        minValue: minValue(0),
+      },
+      countAssignments: {
+        required,
+        minValue: minValue(0),
+      },
+      // countAssignmentsMaxPerWorker: {
+      //   minValue: minValue(0),
+      // },
+      // lifetime: {
+      //   required,
+      //   minValue: minValue(0),
+      // },
+      // duration: {
+      //   required,
+      //   minValue: minValue(30),
+      //   maxValue: maxValue(31536000),
+      // },
+      // templateWorker: {
+      //   required,
+      // },
+      // blockWorkers: {
+      //   required,
+      // },
+      // keywords: {},
+      // hasContentAdult: {},
+      // qualificationAssignmentsApproved: {
+      //   minValue: minValue(0),
+      //   maxValue: maxValue(100),
+      // },
+      // qualificationHitsitsApproved: {
+      //   minValue: minValue(0),
+      // },
+      // qualificationLocale: {},
+    };
+    const settingsBatchNew = ref(new SettingsBatch());
+    const v = useVuelidate(rules, settingsBatchNew);
+
+    return {
+      settingsBatchNew,
+      v,
+      reset() {
+        settingsBatchNew.value = new SettingsBatch();
+        v.value.$reset();
+      },
+      async create() {
+        const isValid = await v.value.$validate();
+        console.warn(isValid, 'isValid');
+        console.warn(v, 'v');
+        if (isValid) {
+        // ServiceSettingsBatch.create({
+        //   settingsBatch: this.settings_batch,
+        // }).then(() => {
+        //   this.dialog = false;
+        //   this.$emit('created');
+        //   this.reset();
+        // });
+        }
+      },
+    };
+  }
+
   async loadSettingsBatch() {
     const response = await ServiceEndpoint.apolloClient.query({
       query: querySettingsBatch,

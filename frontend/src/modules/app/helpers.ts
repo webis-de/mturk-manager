@@ -49,3 +49,30 @@ export function setDefaultIfNullOrUndefined<T>(value: T | undefined, defaultValu
   }
   return value;
 }
+
+const FUNCTIONS_TYPE = [
+  { type: 'string', func: (value: unknown) => typeof value === 'string' },
+  { type: 'number', func: (value: unknown) => typeof value === 'number' },
+  { type: 'null', func: (value: unknown) => value === null },
+  { type: 'undefined', func: (value: unknown) => value === undefined },
+];
+
+export function getValidator(
+  types: {string?: boolean, number?: boolean, null?: boolean, undefined?: boolean},
+): (value: unknown) => boolean {
+  const validations = FUNCTIONS_TYPE
+    .reduce((arr, value) => {
+      if (types[value.type as never] === true) {
+        arr.push(value.func);
+      }
+      return arr;
+    }, [] as ((value: unknown) => boolean)[]);
+
+  // return (value) => validations.some((func) => func(value));
+  return (value) => { console.warn(value, typeof value, validations, 'value'); return validations.some((func) => func(value)); };
+}
+
+export function toNumber(value: string): number | string {
+  const n = parseFloat(value);
+  return Number.isNaN(n) ? value : n;
+}
