@@ -19,7 +19,7 @@
       </v-btn>
     </template>
 
-    <template v-slot:content>
+    <template v-slot:default>
       Do you really want to delete the template '{{
         message.message
       }}'?
@@ -31,8 +31,9 @@
 import { MessageBase } from '@/modules/message/messageBase.model';
 import BaseDialog from '@/modules/app/base/base-dialog.vue';
 import { ServiceMessages } from '@/modules/message/message.service';
+import { defineComponent } from '@vue/composition-api';
 
-export default {
+export default defineComponent({
   name: 'DeleteMessageReject',
   components: { BaseDialog },
   props: {
@@ -48,7 +49,7 @@ export default {
       });
     },
   },
-};
+});
 </script>
 
 <style scoped></style>

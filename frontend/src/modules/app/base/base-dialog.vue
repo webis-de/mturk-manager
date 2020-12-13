@@ -14,7 +14,9 @@
           small
           v-on="on"
         >
-          <v-icon>mdi-plus</v-icon> Add Template
+          <slot name="activator-content">
+            <v-icon>{{ activatorIcon }}</v-icon> {{ activatorLabel }}
+          </slot>
         </v-btn>
       </slot>
     </template>
@@ -36,7 +38,7 @@
           </v-btn>
         </v-card-title>
         <v-card-text class="flex-grow-1">
-          <slot name="content"></slot>
+          <slot name="default"></slot>
         </v-card-text>
         <v-card-actions>
           <v-spacer />
@@ -60,14 +62,14 @@
   </v-dialog>
 </template>
 
-<script>
-import BaseButtonCancel from './buttons/base-button-cancel';
-import BaseButtonSave from './buttons/base-button-submit';
-import BaseButtonSubmit from './buttons/base-button-submit';
+<script lang="ts">
+import { defineComponent } from '@vue/composition-api';
+import BaseButtonCancel from './buttons/base-button-cancel.vue';
+import BaseButtonSubmit from './buttons/base-button-submit.vue';
 
-export default {
+export default defineComponent({
   name: 'BaseDialog',
-  components: { BaseButtonSubmit, BaseButtonSave, BaseButtonCancel },
+  components: { BaseButtonSubmit, BaseButtonCancel },
   props: {
     title: {
       required: true,
@@ -93,6 +95,16 @@ export default {
       type: String,
       default: undefined,
     },
+    activatorLabel: {
+      required: false,
+      type: String,
+      default: 'Open',
+    },
+    activatorIcon: {
+      required: false,
+      type: String,
+      default: '',
+    },
   },
   data() {
     return {
@@ -101,7 +113,7 @@ export default {
   },
   computed: {
     stylesForm() {
-      if (this.fullscreen === false) return {};
+      if (!this.fullscreen) return {};
 
       return {
         position: 'absolute',
@@ -110,10 +122,10 @@ export default {
       };
     },
     fullscreen() {
-      return this.small === false;
+      return !this.small;
     },
     maxWidth() {
-      return this.small === true && this.$vuetify.breakpoint.lgAndUp ? '50%' : undefined;
+      return this.small && this.$vuetify.breakpoint.lgAndUp ? '50%' : undefined;
     },
   },
   methods: {
@@ -122,7 +134,7 @@ export default {
       this.$emit('cancel');
     },
   },
-};
+});
 </script>
 
 <style scoped>

@@ -1,110 +1,119 @@
 <template>
   <base-dialog
     title="Add reject message"
-    v-bind:disabled="$v.$invalid"
+    activator-label="Add Message"
+    activator-icon="mdi-plus"
+    v-bind:disabled="vuelidate.$invalid"
     v-on:submit="save"
     v-on:cancel="reset"
   >
-    <template v-slot:content>
-      <v-combobox
-        v-model="message"
-        v-bind:items="items"
-        v-bind:loading="isLoading"
-        v-bind:search-input.sync="messageSearch"
-
-        label="Message"
-        dense
-        item-text="message"
-        item-value="message_lowercase"
-        no-filter
-      />
-    </template>
+    <base-combobox
+      v-model="message"
+      v-bind:validation="vuelidate.message"
+      v-bind:options="{
+        label: 'Message',
+        'item-text': 'message',
+        'item-value':'message_lowercase',
+        items,
+        loading: isLoading,
+      }"
+      v-bind:search-input.sync="messageSearch"
+    />
   </base-dialog>
 </template>
 
-<script>
+<script lang="ts">
 import { MessageReject } from '@/modules/message/messageReject.model';
 import { ServiceMessages } from '@/modules/message/message.service';
-import { required } from 'vuelidate/lib/validators';
 import { store } from '@/store/vuex';
-import BaseDialog from '@/modules/app/base/base-dialog';
+import BaseDialog from '@/modules/app/base/base-dialog.vue';
 import debounce from 'lodash-es/debounce';
+import { defineComponent, ref, watch } from '@vue/composition-api';
+import useVuelidate from '@vuelidate/core';
+import { required } from '@vuelidate/validators';
+import type { BaseDialogParamsSubmit, ID } from '@/modules/app/types';
+import BaseCombobox from '@/modules/app/base/inputs/base-combobox.vue';
 
-const searchDebounced = debounce(function (value) {
-  this.search(value);
-}, 500);
-
-export default {
+export default defineComponent({
   name: 'CreateMessage',
-  components: { BaseDialog },
-  data() {
-    return {
-      message: '',
-      items: [],
-      isLoading: true,
-      messageSearch: '',
-    };
-  },
-  watch: {
-    async messageSearch(value) {
-      this.isLoading = true;
-      if (value !== null && value.trim() !== '') {
-        this.searchDebounced(value);
-      } else {
-        searchDebounced.cancel();
+  components: { BaseCombobox, BaseDialog },
+  setup() {
+    const message = ref<string | { id: ID, message: string }>('');
+    const items = ref([]);
+    const isLoading = ref(true);
+    const messageSearch = ref<string | null>('');
 
-        this.items = await ServiceMessages.loadMessages({
-          project: null,
-          limit: 4,
-          saveToStore: false,
-        });
-      }
+    const vuelidate = useVuelidate({ message: { required } }, { message });
 
-      this.isLoading = false;
-    },
-  },
-  methods: {
-    searchDebounced,
-    async search(value) {
-      this.items = await ServiceMessages.search({
-        message: value,
-        cls: MessageReject,
-      });
-    },
-    async save({ close }) {
-      if (this.$v.$invalid === false) {
-        let message;
+    const save = async ({ close }: BaseDialogParamsSubmit) => {
+      if (vuelidate.value.$invalid === false) {
+        let messageInternal;
         const projects = [store.getters['moduleProjects/get_project_current'].id];
 
-        if (typeof this.message === 'string') {
-          message = new MessageReject({
+        if (typeof message.value === 'string') {
+          messageInternal = new MessageReject({
             projects,
-            message: this.message,
+            message: message.value,
           });
         } else {
-          message = new MessageReject({
+          messageInternal = new MessageReject({
             projects,
-            ...this.message,
+            id: message.value.id,
+            message: message.value.message,
           });
         }
 
         await ServiceMessages.create({
-          message,
+          message: messageInternal,
         });
 
         close();
       }
-    },
-    reset() {
-      this.message = '';
-    },
+    };
+
+    const searchDebounced = debounce(async (value) => {
+      isLoading.value = true;
+      items.value = await ServiceMessages.search({
+        message: value,
+        cls: MessageReject,
+      });
+
+      isLoading.value = false;
+    }, 500);
+
+    const reset = () => {
+      message.value = '';
+    };
+
+    watch(messageSearch, async (value) => {
+      if (value !== null && value.trim() !== '') {
+        await searchDebounced(value);
+      } else {
+        searchDebounced.cancel();
+
+        isLoading.value = true;
+        items.value = await ServiceMessages.loadMessages({
+          project: null,
+          limit: 4,
+          saveToStore: false,
+        });
+
+        isLoading.value = false;
+      }
+    });
+
+    return {
+      message,
+      items,
+      isLoading,
+      messageSearch,
+      searchDebounced,
+      vuelidate,
+      save,
+      reset,
+    };
   },
-  validations: {
-    message: {
-      required,
-    },
-  },
-};
+});
 </script>
 
 <style scoped>
