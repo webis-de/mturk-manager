@@ -34,7 +34,7 @@ class ClassServiceSettingsBatch {
       },
       countAssignments: {
         required,
-        minValue: minValue(0),
+        minValue: minValue(1),
       },
       // countAssignmentsMaxPerWorker: {
       //   minValue: minValue(0),
