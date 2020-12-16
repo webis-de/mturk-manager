@@ -68,12 +68,20 @@ export default defineComponent({
         label: labelInternal.value,
       })),
       input(value: string) {
-        let valuePassed: string | number = value;
+        let valuePassed: string | number | null = value;
         if (props.options.type === 'number') {
           valuePassed = toNumber(valuePassed);
+
+          if (typeof valuePassed !== 'number') {
+            valuePassed = null;
+          }
         }
+
         emit('input', valuePassed);
-        props.validation.$touch();
+
+        if (hasValidationInfo.value) {
+          props.validation.$touch();
+        }
       },
     };
   },
