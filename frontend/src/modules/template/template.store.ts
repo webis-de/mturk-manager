@@ -145,6 +145,11 @@ export const moduleTemplates = _.merge({}, baseModule, {
 
       return Object.values(state.templatesWorker);
     },
+    templatesWorkerSortedByName(state: StoreTemplateState, getters: Record<string, unknown>): TemplateWorker[] | null {
+      if (getters.templatesWorker === null) return null;
+
+      return (getters.templatesWorker as TemplateWorker[]).slice().sort((a, b) => a.name.localeCompare(b.name));
+    },
     templatesRequester(state: StoreTemplateState): TemplateBase[] | null {
       if (state.templatesWorker === null) return null;
 
@@ -175,7 +180,8 @@ export const moduleTemplates = _.merge({}, baseModule, {
     setTemplatesWorker(state: StoreTemplateState, { templates }: {templates: { [key: string]: TemplateWorker}}) {
       state.templatesWorker = templates;
     },
-    setTemplatesAssignment(state: StoreTemplateState, { templates }: {templates: { [key: string]: TemplateAssignment}}) {
+    setTemplatesAssignment(state: StoreTemplateState, { templates }:
+      {templates: { [key: string]: TemplateAssignment}}) {
       state.templatesAssignment = templates;
     },
     setTemplatesHIT(state: StoreTemplateState, { templates }: {templates: { [key: string]: TemplateHIT}}) {
@@ -233,7 +239,8 @@ export const moduleTemplates = _.merge({}, baseModule, {
     /**
      * Updates worker templates after a requester template is deleted
      */
-    updateWorkerTemplatesAfterDeletionOfRequesterTemplate(state: StoreTemplateState, { template }: { template: TemplateBase }) {
+    updateWorkerTemplatesAfterDeletionOfRequesterTemplate(state: StoreTemplateState, { template }:
+      { template: TemplateBase }) {
       let nameField;
       if (template instanceof TemplateAssignment) nameField = 'templateAssignment';
       if (template instanceof TemplateHIT) nameField = 'templateHIT';
@@ -241,7 +248,7 @@ export const moduleTemplates = _.merge({}, baseModule, {
 
       const idsTemplateWorker = Object.keys(state.templatesWorker);
 
-      for (let i = 0; i < idsTemplateWorker.length; i++) {
+      for (let i = 0; i < idsTemplateWorker.length; i += 1) {
         const templateWorker = state.templatesWorker[idsTemplateWorker[i]];
         if (templateWorker[nameField] === template.id) {
           Vue.set(templateWorker, nameField, null);

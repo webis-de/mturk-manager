@@ -9,6 +9,7 @@ import { ServiceEndpoint } from '@/services/endpoint.service';
 import { ref } from '@vue/composition-api';
 import useVuelidate from '@vuelidate/core';
 import {
+  maxValue,
   minValue, required,
 } from '@vuelidate/validators';
 
@@ -39,21 +40,21 @@ class ClassServiceSettingsBatch {
       // countAssignmentsMaxPerWorker: {
       //   minValue: minValue(0),
       // },
-      // lifetime: {
-      //   required,
-      //   minValue: minValue(0),
-      // },
-      // duration: {
-      //   required,
-      //   minValue: minValue(30),
-      //   maxValue: maxValue(31536000),
-      // },
-      // templateWorker: {
-      //   required,
-      // },
-      // blockWorkers: {
-      //   required,
-      // },
+      lifetime: {
+        required,
+        minValue: minValue(0),
+      },
+      duration: {
+        required,
+        minValue: minValue(30),
+        maxValue: maxValue(31536000),
+      },
+      templateWorker: {
+        required,
+      },
+      blockWorkers: {
+        required,
+      },
       // keywords: {},
       // hasContentAdult: {},
       // qualificationAssignmentsApproved: {

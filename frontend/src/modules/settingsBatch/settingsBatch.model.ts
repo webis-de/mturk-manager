@@ -47,7 +47,7 @@ export class SettingsBatch extends Entity implements SettingsBatchInterface {
     this.description = setDefaultIfNullOrUndefined(data.description, null);
     this.reward = setDefaultIfNullOrUndefined(data.reward, 0);
     this.keywords = setDefaultIfNullOrUndefined(data.keywords, []);
-    this.duration = setDefaultIfNullOrUndefined(data.duration, 0);
+    this.duration = setDefaultIfNullOrUndefined(data.duration, 30);
     this.lifetime = setDefaultIfNullOrUndefined(data.lifetime, 0);
     // TODO minimum 1?
     this.countAssignments = setDefaultIfNullOrUndefined(data.countAssignments, 1);

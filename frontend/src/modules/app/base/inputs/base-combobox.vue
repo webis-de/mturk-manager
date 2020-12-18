@@ -1,19 +1,21 @@
 <template>
-  <div>
-    <v-combobox
-      v-bind:value="value"
-      v-bind="optionsMerged"
-      v-bind:error-messages="errorsComputed"
+  <v-row no-gutters>
+    <v-col>
+      <v-combobox
+        v-bind:value="value"
+        v-bind="optionsMerged"
+        v-bind:error-messages="errorsComputed"
 
-      v-bind:search-input="searchInput"
+        v-bind:search-input="searchInput"
 
-      dense
-      no-filter
+        dense
+        no-filter
 
-      v-on:update:search-input="$emit('update:search-input', $event)"
-      v-on:input="input"
-    />
-  </div>
+        v-on:update:search-input="$emit('update:search-input', $event)"
+        v-on:input="input"
+      />
+    </v-col>
+  </v-row>
 </template>
 
 <script lang="ts">

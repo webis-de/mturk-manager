@@ -1,7 +1,6 @@
 <template>
   <div>
-    <!--    {{ validation }}-->
-    <base-text-field
+    <base-text-input
       v-bind:value="title"
       v-bind:validation="validation.title"
       v-bind:options="{
@@ -10,7 +9,7 @@
       v-on:input="$emit('update:title', $event)"
     />
 
-    <base-text-field
+    <base-text-input
       v-bind:value="description"
       v-bind:validation="validation.description"
       v-bind:options="{
@@ -19,26 +18,87 @@
       v-on:input="$emit('update:description', $event)"
     />
 
-    <base-text-field
+    <base-amount-input
       v-bind:value="reward"
       v-bind:validation="validation.reward"
       v-bind:options="{
-        label: 'Reward',
-        type: 'number'
+        label: `Reward`,
       }"
       v-on:input="$emit('update:reward', $event)"
+    />
+
+    <base-number-input
+      v-bind:value="countAssignments"
+      v-bind:validation="validation.countAssignments"
+      v-bind:options="{
+        label: 'Number of assignments per HIT',
+      }"
+      v-on:input="$emit('update:countAssignments', $event)"
+    />
+
+    <base-duration-input
+      v-bind:value="lifetime"
+      v-bind:validation="validation.lifetime"
+      v-bind:options="{
+        label: 'Lifetime',
+      }"
+      v-on:input="$emit('update:lifetime', $event)"
+    />
+
+    <base-duration-input
+      v-bind:value="duration"
+      v-bind:validation="validation.duration"
+      v-bind:options="{
+        label: 'Duration',
+      }"
+      v-on:input="$emit('update:duration', $event)"
+    />
+
+    <base-input-select
+      v-bind:value="templateWorker"
+      v-bind:validation="validation.templateWorker"
+      v-bind:options="{
+        label: 'Worker template',
+        items: templatesWorker,
+        'item-key': 'id',
+        'item-text': 'name',
+        clearable: true,
+      }"
+      v-on:input="$emit('update:templateWorker', $event)"
+    />
+
+    <base-input-boolean
+      v-bind:value="blockWorkers"
+      v-bind:validation="validation.blockWorkers"
+      v-bind:options="{
+        label: 'Block workers',
+      }"
+      v-on:input="$emit('update:blockWorkers', $event)"
     />
   </div>
 </template>
 
 <script>
-import { defineComponent } from '@vue/composition-api';
-import BaseTextField from '@/modules/app/base/inputs/base-text-field.vue';
+import { computed, defineComponent } from '@vue/composition-api';
+import BaseTextInput from '@/modules/app/base/inputs/base-text-input.vue';
 import { getValidator } from '@/modules/app/helpers';
+import BaseNumberInput from '@/modules/app/base/inputs/base-number-input.vue';
+import BaseAmountInput from '@/modules/app/base/inputs/base-amount-input.vue';
+import BaseDurationInput from '@/modules/app/base/inputs/base-duration-input.vue';
+import BaseInputSelect from '@/modules/app/base/inputs/base-input-select.vue';
+import { store } from '@/store/vuex';
+import BaseInputBoolean from '@/modules/app/base/inputs/base-input-boolean.vue';
 
 export default defineComponent({
   name: 'FormSettingsBatch',
-  components: { BaseTextField },
+  components: {
+    BaseInputBoolean,
+    BaseInputSelect,
+    BaseDurationInput,
+    BaseAmountInput,
+    BaseNumberInput,
+    BaseTextInput,
+  },
   props: {
     title: {
       required: true,
@@ -50,13 +110,42 @@ export default defineComponent({
     },
     reward: {
       required: true,
-      validator: getValidator({ number: true, undefined: true }),
+      validator: getValidator({ number: true, null: true }),
+    },
+    countAssignments: {
+      required: true,
+      validator: getValidator({ number: true, null: true }),
+    },
+    lifetime: {
+      required: true,
+      validator: getValidator({ number: true, null: true }),
+    },
+    duration: {
+      required: true,
+      validator: getValidator({ number: true, null: true }),
+    },
+    templateWorker: {
+      required: true,
+      validator: getValidator({ object: true, null: true }),
+    },
+    blockWorkers: {
+      required: true,
+      validator: getValidator({ boolean: true }),
     },
     validation: {
       required: false,
       type: Object,
       default: () => ({}),
     },
+  },
+  setup() {
+    return {
+      templatesWorker: computed(() => {
+        const templatesWorker = store.getters['moduleTemplates/templatesWorkerSortedByName'];
+
+        return templatesWorker === null ? [] : templatesWorker;
+      }),
+    };
   },
 });
 </script>
