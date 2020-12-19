@@ -7,7 +7,7 @@
     v-on:submit="save"
     v-on:cancel="reset"
   >
-    <base-combobox
+    <base-input-combobox
       v-model="message"
       v-bind:validation="vuelidate.message"
       v-bind:options="{
@@ -32,11 +32,11 @@ import { defineComponent, ref, watch } from '@vue/composition-api';
 import useVuelidate from '@vuelidate/core';
 import { required } from '@vuelidate/validators';
 import type { BaseDialogParamsSubmit, ID } from '@/modules/app/types';
-import BaseCombobox from '@/modules/app/base/inputs/base-combobox.vue';
+import BaseInputCombobox from '@/modules/app/base/inputs/base-input-combobox.vue';
 
 export default defineComponent({
   name: 'CreateMessage',
-  components: { BaseCombobox, BaseDialog },
+  components: { BaseInputCombobox, BaseDialog },
   setup() {
     const message = ref<string | { id: ID, message: string }>('');
     const items = ref([]);

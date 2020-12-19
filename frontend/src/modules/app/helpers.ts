@@ -72,7 +72,6 @@ export function getValidator(
       return arr;
     }, [] as ((value: unknown) => boolean)[]);
 
-  // return (value) => validations.some((func) => func(value));
   return (value) => validations.some((func) => func(value));
 }
 
