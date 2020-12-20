@@ -35,7 +35,7 @@
       <v-card-text class="flex-grow-1">
         <form
           v-bind:id="idForm"
-          v-on:submit.prevent="$emit('submit', { close: cancel })"
+          v-on:submit.prevent="submit"
         >
           <slot name="default"></slot>
         </form>
@@ -76,10 +76,10 @@ export default defineComponent({
       required: true,
       type: String,
     },
-    disabled: {
+    validation: {
       required: false,
-      type: Boolean,
-      default: false,
+      type: Object,
+      default: undefined,
     },
     small: {
       required: false,
@@ -114,6 +114,9 @@ export default defineComponent({
     };
   },
   computed: {
+    disabled() {
+      return this.validation !== undefined ? this.validation.$invalid : false;
+    },
     stylesForm() {
       if (!this.fullscreen) return {};
 
@@ -134,6 +137,17 @@ export default defineComponent({
     this.idForm = `base-dialog-form-${useId().generate()}`;
   },
   methods: {
+    async submit() {
+      if (this.validation !== undefined) {
+        const isValid = await this.validation.$validate();
+
+        if (isValid === false) {
+          return;
+        }
+      }
+
+      this.$emit('submit', { close: this.cancel });
+    },
     cancel() {
       this.dialog = false;
       this.$emit('cancel');

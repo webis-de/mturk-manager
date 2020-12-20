@@ -14,7 +14,7 @@ import {
 } from '@vuelidate/validators';
 
 class ClassServiceSettingsBatch {
-  useCreate() {
+  useCreate({ emit }: { emit: (event: string, ...args: unknown[]) => void }) {
     const rules = {
       name: {
         required,
@@ -69,25 +69,26 @@ class ClassServiceSettingsBatch {
     const settingsBatchNew = ref(new SettingsBatch());
     const v = useVuelidate(rules, settingsBatchNew);
 
+    const reset = () => {
+      settingsBatchNew.value = new SettingsBatch();
+      v.value.$reset();
+    };
+
     return {
       settingsBatchNew,
+      reset,
       v,
-      reset() {
-        settingsBatchNew.value = new SettingsBatch();
-        v.value.$reset();
-      },
-      async create() {
+      create: async ({ close }) => {
         const isValid = await v.value.$validate();
-        console.warn(isValid, 'isValid');
-        console.warn(v, 'v');
+
         if (isValid) {
-        // ServiceSettingsBatch.create({
-        //   settingsBatch: this.settings_batch,
-        // }).then(() => {
-        //   this.dialog = false;
-        //   this.$emit('created');
-        //   this.reset();
-        // });
+          this.create({
+            settingsBatch: settingsBatchNew.value,
+          }).then(() => {
+            close();
+            emit('created');
+            reset();
+          });
         }
       },
     };

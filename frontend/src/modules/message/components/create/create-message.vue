@@ -3,7 +3,7 @@
     title="Add reject message"
     activator-label="Add Message"
     activator-icon="mdi-plus"
-    v-bind:disabled="vuelidate.$invalid"
+    v-bind:validation="vuelidate"
     v-on:submit="save"
     v-on:cancel="reset"
   >

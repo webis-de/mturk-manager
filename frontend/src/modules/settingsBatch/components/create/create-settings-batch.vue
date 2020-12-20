@@ -3,11 +3,10 @@
     title="Add batch profile"
     activator-label="Add batch profile"
     activator-icon="mdi-plus"
-    v-bind:disabled="useCreateSettingsBatch.v.$invalid"
+    v-bind:validation="useCreateSettingsBatch.v"
     v-on:submit="useCreateSettingsBatch.create"
     v-on:cancel="useCreateSettingsBatch.reset"
   >
-    {{ useCreateSettingsBatch.settingsBatchNew }}
     <base-text-input
       v-model="useCreateSettingsBatch.settingsBatchNew.name"
       v-bind:validation="useCreateSettingsBatch.v.name"
@@ -109,8 +108,8 @@ import BaseDialog from '@/modules/app/base/base-dialog.vue';
 export default defineComponent({
   name: 'CreateSettingsBatch',
   components: { BaseDialog, BaseTextInput, FormSettingsBatch },
-  setup() {
-    const useCreateSettingsBatch = ServiceSettingsBatch.useCreate();
+  setup(props, { emit }) {
+    const useCreateSettingsBatch = ServiceSettingsBatch.useCreate({ emit });
 
     return {
       useCreateSettingsBatch,
