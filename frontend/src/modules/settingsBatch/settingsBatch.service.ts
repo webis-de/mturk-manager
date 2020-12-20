@@ -6,6 +6,7 @@ import {
 } from '@/modules/settingsBatch/settingsBatch.graphql';
 import { SettingsBatch } from '@/modules/settingsBatch/settingsBatch.model';
 import { ServiceEndpoint } from '@/services/endpoint.service';
+import { maxValue, minValue, required } from '@vuelidate/validators';
 
 class ClassServiceSettingsBatch {
   async loadSettingsBatch() {
@@ -68,6 +69,60 @@ class ClassServiceSettingsBatch {
     store.commit('moduleSettingsBatch/deleteSettingsBatch', {
       settingsBatch,
     });
+  }
+
+  getRules() {
+    return {
+      name: {
+        required,
+      // is_unique: foo(
+      //   this.project_current.settings_batch,
+      //   this.settingsBatch,
+      // ),
+      },
+      title: {
+        required,
+      },
+      description: {
+        required,
+      },
+      reward: {
+        required,
+        minValue: minValue(0),
+      },
+      countAssignments: {
+        required,
+        minValue: minValue(1),
+      },
+      // countAssignmentsMaxPerWorker: {
+      //   minValue: minValue(0),
+      // },
+      lifetime: {
+        required,
+        minValue: minValue(0),
+      },
+      duration: {
+        required,
+        minValue: minValue(30),
+        maxValue: maxValue(31536000),
+      },
+      templateWorker: {
+        required,
+      },
+      blockWorkers: {
+        required,
+      },
+      keywords: { },
+      hasContentAdult: { required },
+      qualificationAssignmentsApproved: {
+        minValue: minValue(0),
+        maxValue: maxValue(100),
+      },
+      qualificationHitsitsApproved: {
+        minValue: minValue(0),
+      },
+      qualificationLocale: {},
+    };
   }
 }
 

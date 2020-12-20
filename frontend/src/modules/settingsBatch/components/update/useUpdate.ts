@@ -2,31 +2,38 @@ import { Ref, ref } from '@vue/composition-api';
 import { SettingsBatch } from '@/modules/settingsBatch/settingsBatch.model';
 import useVuelidate from '@vuelidate/core';
 import { ServiceSettingsBatch } from '@/modules/settingsBatch/settingsBatch.service';
+import { cloneDeep } from 'lodash-es';
 
-export function useCreate({ emit }: { emit: (event: string, ...args: unknown[]) => void }): {
-  settingsBatchNew: Ref<SettingsBatch>,
+export function useUpdate({
+  settingsBatch,
+  emit,
+}: {
+  settingsBatch: SettingsBatch,
+  emit: (event: string, ...args: unknown[]) => void
+}): {
+  settingsBatch: Ref<SettingsBatch>,
   reset: () => void,
   v: unknown,
-  create: ({ close }: {close:() => void}) => Promise<void>,
+  update: ({ close }: {close:() => void}) => Promise<void>,
 } {
-  const settingsBatchNew = ref(new SettingsBatch());
-  const v = useVuelidate(ServiceSettingsBatch.getRules(), settingsBatchNew);
+  const settingsBatchUpdated = ref(cloneDeep(settingsBatch));
+  const v = useVuelidate(ServiceSettingsBatch.getRules(), settingsBatchUpdated);
 
   const reset = () => {
-    settingsBatchNew.value = new SettingsBatch();
+    settingsBatchUpdated.value = cloneDeep(settingsBatch);
     v.value.$reset();
   };
 
   return {
-    settingsBatchNew,
+    settingsBatchUpdated,
     reset,
     v,
     create: async ({ close }) => {
       const isValid = await v.value.$validate();
 
       if (isValid) {
-        ServiceSettingsBatch.create({
-          settingsBatch: settingsBatchNew.value,
+        ServiceSettingsBatch.update({
+          settingsBatch: settingsBatchUpdated.value,
         }).then(() => {
           close();
           emit('created');
