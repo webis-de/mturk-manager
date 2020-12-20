@@ -38,7 +38,7 @@
 import BaseDialog from '@/modules/app/base/base-dialog.vue';
 import BaseTextInput from '@/modules/app/base/inputs/base-text-input.vue';
 import FormSettingsBatch from '@/modules/settingsBatch/form-settings-batch.vue';
-import { defineComponent } from '@vue/composition-api';
+import { computed, defineComponent } from '@vue/composition-api';
 import { useUpdate } from '@/modules/settingsBatch/components/update/useUpdate';
 import { SettingsBatch } from '@/modules/settingsBatch/settingsBatch.model';
 
@@ -52,7 +52,9 @@ export default defineComponent({
     },
   },
   setup(props, { emit }) {
-    const useUpdateSettingsBatch = useUpdate({ settingsBatch: props.settingsBatch, emit });
+    const settingsBatch = computed(() => props.settingsBatch);
+
+    const useUpdateSettingsBatch = useUpdate({ settingsBatch, emit });
 
     return {
       useUpdateSettingsBatch,

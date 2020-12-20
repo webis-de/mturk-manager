@@ -8,7 +8,7 @@ export function useUpdate({
   settingsBatch,
   emit,
 }: {
-  settingsBatch: SettingsBatch,
+  settingsBatch: Ref<SettingsBatch>,
   emit: (event: string, ...args: unknown[]) => void
 }): {
   settingsBatch: Ref<SettingsBatch>,
@@ -16,11 +16,11 @@ export function useUpdate({
   v: unknown,
   update: ({ close }: {close:() => void}) => Promise<void>,
 } {
-  const settingsBatchUpdated = ref(cloneDeep(settingsBatch));
+  const settingsBatchUpdated = ref(cloneDeep(settingsBatch.value));
   const v = useVuelidate(ServiceSettingsBatch.getRules(), settingsBatchUpdated);
 
   const reset = () => {
-    settingsBatchUpdated.value = cloneDeep(settingsBatch);
+    settingsBatchUpdated.value = cloneDeep(settingsBatch.value);
     v.value.$reset();
   };
 
