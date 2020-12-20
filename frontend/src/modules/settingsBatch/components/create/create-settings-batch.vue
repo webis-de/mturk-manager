@@ -99,17 +99,17 @@
 </template>
 
 <script lang="ts">
-import { ServiceSettingsBatch } from '@/modules/settingsBatch/settingsBatch.service';
 import FormSettingsBatch from '@/modules/settingsBatch/form-settings-batch.vue';
 import { defineComponent } from '@vue/composition-api';
 import BaseTextInput from '@/modules/app/base/inputs/base-text-input.vue';
 import BaseDialog from '@/modules/app/base/base-dialog.vue';
+import { useCreate } from '@/modules/settingsBatch/components/create/useCreate';
 
 export default defineComponent({
   name: 'CreateSettingsBatch',
   components: { BaseDialog, BaseTextInput, FormSettingsBatch },
   setup(props, { emit }) {
-    const useCreateSettingsBatch = ServiceSettingsBatch.useCreate({ emit });
+    const useCreateSettingsBatch = useCreate({ emit });
 
     return {
       useCreateSettingsBatch,
