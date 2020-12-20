@@ -16,6 +16,7 @@
         'item-value':'message_lowercase',
         items,
         loading: isLoading,
+        'no-filter':true
       }"
       v-bind:search-input.sync="messageSearch"
     />

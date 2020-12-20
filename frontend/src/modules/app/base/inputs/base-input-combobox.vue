@@ -8,12 +8,25 @@
 
         v-bind:search-input="searchInput"
 
-        dense
-        no-filter
-
         v-on:update:search-input="updateSearchInput"
         v-on:input="baseInput.input"
-      />
+      >
+        <template
+          v-if="options.multiple === true"
+          v-slot:selection="data"
+        >
+          <v-chip
+            v-bind:input-value="data.selected"
+            close
+            small
+            v-on:click:close="removeItem(data.item)"
+          >
+            <strong>
+              {{ data.item.text !== undefined ? data.item.text : data.item }}
+            </strong>&nbsp;
+          </v-chip>
+        </template>
+      </v-combobox>
     </v-col>
   </v-row>
 </template>
@@ -28,7 +41,9 @@ export default defineComponent({
   props: {
     value: {
       required: true,
-      validator: getValidator({ string: true, object: true, null: true }),
+      validator: getValidator({
+        string: true, object: true, array: true, null: true,
+      }),
     },
     validation: {
       required: false,
@@ -59,6 +74,9 @@ export default defineComponent({
     return {
       baseInput,
       optionsMerged: computed(() => ({
+        clearable: true,
+        'hide-selected': true,
+        counter: props.options.multiple === true,
         ...props.options,
         label: baseInput.label.value,
       })),
@@ -70,6 +88,9 @@ export default defineComponent({
         }
 
         emit('update:search-input', valuePassed);
+      },
+      removeItem: (item) => {
+        baseInput.input(props.value.filter((valueItem) => item !== valueItem));
       },
     };
   },

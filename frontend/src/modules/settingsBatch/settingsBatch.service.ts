@@ -55,7 +55,7 @@ class ClassServiceSettingsBatch {
       blockWorkers: {
         required,
       },
-      // keywords: {},
+      keywords: { },
       // hasContentAdult: {},
       // qualificationAssignmentsApproved: {
       //   minValue: minValue(0),

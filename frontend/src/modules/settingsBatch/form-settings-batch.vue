@@ -75,6 +75,17 @@
       }"
       v-on:input="$emit('update:blockWorkers', $event)"
     />
+
+    <base-input-combobox
+      v-bind:value="keywords"
+      v-bind:validation="validation.keywords"
+      v-bind:options="{
+        label: 'Keywords (Separated with TAB)',
+        items: suggestionsKeywords,
+        multiple: true,
+      }"
+      v-on:input="$emit('update:keywords', $event)"
+    />
   </div>
 </template>
 
@@ -88,10 +99,12 @@ import BaseDurationInput from '@/modules/app/base/inputs/base-duration-input.vue
 import BaseInputSelect from '@/modules/app/base/inputs/base-input-select.vue';
 import { store } from '@/store/vuex';
 import BaseInputBoolean from '@/modules/app/base/inputs/base-input-boolean.vue';
+import BaseInputCombobox from '@/modules/app/base/inputs/base-input-combobox.vue';
 
 export default defineComponent({
   name: 'FormSettingsBatch',
   components: {
+    BaseInputCombobox,
     BaseInputBoolean,
     BaseInputSelect,
     BaseDurationInput,
@@ -132,6 +145,12 @@ export default defineComponent({
       required: true,
       validator: getValidator({ boolean: true }),
     },
+    keywords: {
+      required: true,
+      validator: getValidator({
+        object: true, array: true, null: true, undefined: true,
+      }),
+    },
     validation: {
       required: false,
       type: Object,
@@ -144,6 +163,11 @@ export default defineComponent({
         const templatesWorker = store.getters['moduleTemplates/templatesWorkerSortedByName'];
 
         return templatesWorker === null ? [] : templatesWorker;
+      }),
+      suggestionsKeywords: computed(() => {
+        const keywords = store.getters['moduleKeywords/get_object_keywords'];
+
+        return keywords === null ? [] : Object.values(keywords);
       }),
     };
   },
