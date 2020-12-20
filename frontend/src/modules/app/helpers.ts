@@ -59,10 +59,19 @@ const FUNCTIONS_TYPE = [
   { type: 'null', func: (value: unknown) => value === null },
   { type: 'undefined', func: (value: unknown) => value === undefined },
   { type: 'object', func: (value: unknown) => Object.prototype.toString.call(value) === '[object Object]' },
+  { type: 'array', func: (value: unknown) => Array.isArray(value) },
 ];
 
 export function getValidator(
-  types: {string?: boolean, number?: boolean, boolean?: boolean, object?: boolean, null?: boolean, undefined?: boolean},
+  types: {
+    string?: boolean,
+    number?: boolean,
+    boolean?: boolean,
+    object?: boolean,
+    null?: boolean,
+    undefined?: boolean,
+    array?: boolean
+  },
 ): (value: unknown) => boolean {
   const validations = FUNCTIONS_TYPE
     .reduce((arr, value) => {
