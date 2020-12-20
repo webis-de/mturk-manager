@@ -123,7 +123,6 @@
       v-bind:validation="validation.qualificationLocale"
       v-bind:options="{
         label: 'Locale (Separated with TAB)',
-        items: suggestionsKeywords,
         multiple: true,
       }"
       v-on:input="$emit('update:qualificationLocale', $event)"
