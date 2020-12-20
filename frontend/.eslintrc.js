@@ -12,7 +12,6 @@ module.exports = {
     // import fix
     'import/extensions': ['error', 'always', {
       js: 'never',
-      vue: 'never',
       ts: 'never',
     }],
     // vuex fix
@@ -39,6 +38,7 @@ module.exports = {
     'max-len': [
       'error', {
         code: 120,
+        comments: 150,
         ignoreStrings: true,
       },
     ],
@@ -52,6 +52,8 @@ module.exports = {
     //     schemaJsonFilepath: 'node_modules/.temp/graphql/schema.json',
     //   },
     // ],
+    'no-shadow': 'off', // replaced by ts-eslint rule below
+    '@typescript-eslint/no-shadow': 'error',
     /**
      * Vue-specific styles
      */

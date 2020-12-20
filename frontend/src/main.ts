@@ -4,14 +4,14 @@ import VueRouter from 'vue-router';
 import Vuetify from 'vuetify/lib';
 import { Ripple } from 'vuetify/lib/directives';
 import Vuelidate from 'vuelidate';
-import { VuelidatePlugin } from '@vuelidate/core'
+import { VuelidatePlugin } from '@vuelidate/core';
 import axios from 'axios';
 import VueAxios from 'vue-axios';
 import Vuex from 'vuex';
 import VueCookies from 'vue-cookies';
 import VueCompositionApi from '@vue/composition-api';
+import App from '@/App.vue';
 import { store } from './store/vuex';
-import App from '@/App';
 
 import { router } from './router';
 import { vuetify } from './vuetify';
@@ -28,7 +28,7 @@ Vue.use(VueAxios, axios);
 Vue.use(Vuex);
 Vue.use(VueCookies);
 Vue.use(VueCompositionApi);
-Vue.use(VuelidatePlugin)
+Vue.use(VuelidatePlugin);
 
 export default new Vue({
   router,
@@ -36,5 +36,5 @@ export default new Vue({
   vuetify,
   el: '#app',
   apolloProvider,
-  render: h => h(App),
+  render: (h) => h(App),
 });
