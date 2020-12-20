@@ -21,49 +21,50 @@
       </slot>
     </template>
 
-    <v-card>
-      <form
-        v-bind:style="stylesForm"
-        class="d-flex flex-column"
-        v-on:submit.prevent="$emit('submit', { close: cancel })"
-      >
-        <v-card-title>
-          <span class="headline">{{ title }}</span>
-          <v-spacer />
-          <v-btn
-            icon
-            v-on:click="cancel"
-          >
-            <v-icon>mdi-close</v-icon>
-          </v-btn>
-        </v-card-title>
-        <v-card-text class="flex-grow-1">
+    <v-card class="d-flex flex-column">
+      <v-card-title>
+        <span class="headline">{{ title }}</span>
+        <v-spacer />
+        <v-btn
+          icon
+          v-on:click="cancel"
+        >
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+      </v-card-title>
+      <v-card-text class="flex-grow-1">
+        <form
+          v-bind:id="idForm"
+          v-on:submit.prevent="$emit('submit', { close: cancel })"
+        >
           <slot name="default"></slot>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer />
-          <slot name="actions">
-            <slot name="actions-cancel">
-              <base-button-cancel
-                v-on:click="cancel"
-              />
-            </slot>
-            <slot name="actions-submit">
-              <base-button-submit
-                v-bind:disabled="disabled"
-                v-bind:color="colorButtonSubmit"
-                v-bind:label="labelButtonSubmit"
-              />
-            </slot>
+        </form>
+      </v-card-text>
+      <v-card-actions>
+        <v-spacer />
+        <slot name="actions">
+          <slot name="actions-cancel">
+            <base-button-cancel
+              v-on:click="cancel"
+            />
           </slot>
-        </v-card-actions>
-      </form>
+          <slot name="actions-submit">
+            <base-button-submit
+              v-bind:disabled="disabled"
+              v-bind:color="colorButtonSubmit"
+              v-bind:label="labelButtonSubmit"
+              v-bind:id-form="idForm"
+            />
+          </slot>
+        </slot>
+      </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api';
+import { useId } from '@/modules/app/helpers';
 import BaseButtonCancel from './buttons/base-button-cancel.vue';
 import BaseButtonSubmit from './buttons/base-button-submit.vue';
 
@@ -109,6 +110,7 @@ export default defineComponent({
   data() {
     return {
       dialog: false,
+      idForm: undefined,
     };
   },
   computed: {
@@ -127,6 +129,9 @@ export default defineComponent({
     maxWidth() {
       return this.small && this.$vuetify.breakpoint.lgAndUp ? '50%' : undefined;
     },
+  },
+  created() {
+    this.idForm = `base-dialog-form-${useId().generate()}`;
   },
   methods: {
     cancel() {

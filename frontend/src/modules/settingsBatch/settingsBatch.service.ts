@@ -56,15 +56,15 @@ class ClassServiceSettingsBatch {
         required,
       },
       keywords: { },
-      // hasContentAdult: {},
-      // qualificationAssignmentsApproved: {
-      //   minValue: minValue(0),
-      //   maxValue: maxValue(100),
-      // },
-      // qualificationHitsitsApproved: {
-      //   minValue: minValue(0),
-      // },
-      // qualificationLocale: {},
+      hasContentAdult: { required },
+      qualificationAssignmentsApproved: {
+        minValue: minValue(0),
+        maxValue: maxValue(100),
+      },
+      qualificationHitsitsApproved: {
+        minValue: minValue(0),
+      },
+      qualificationLocale: {},
     };
     const settingsBatchNew = ref(new SettingsBatch());
     const v = useVuelidate(rules, settingsBatchNew);

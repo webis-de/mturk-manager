@@ -86,6 +86,48 @@
       }"
       v-on:input="$emit('update:keywords', $event)"
     />
+
+    <base-input-boolean
+      v-bind:value="hasContentAdult"
+      v-bind:validation="validation.hasContentAdult"
+      v-bind:options="{
+        label: 'Contains adult content',
+      }"
+      v-on:input="$emit('update:hasContentAdult', $event)"
+    />
+
+    <base-number-input
+      v-bind:value="qualificationAssignmentsApproved"
+      v-bind:validation="validation.qualificationAssignmentsApproved"
+      v-bind:options="{
+        label: 'Approved assignments',
+        min: 0,
+        max: 100,
+      }"
+      v-on:input="$emit('update:qualificationAssignmentsApproved', $event)"
+    />
+
+    <base-number-input
+      v-bind:value="qualificationHitsApproved"
+      v-bind:validation="validation.qualificationHitsApproved"
+      v-bind:options="{
+        label: 'Approved assignments',
+        min: 0,
+        max: 100,
+      }"
+      v-on:input="$emit('update:qualificationHitsApproved', $event)"
+    />
+
+    <base-input-combobox
+      v-bind:value="qualificationLocale"
+      v-bind:validation="validation.qualificationLocale"
+      v-bind:options="{
+        label: 'Locale (Separated with TAB)',
+        items: suggestionsKeywords,
+        multiple: true,
+      }"
+      v-on:input="$emit('update:qualificationLocale', $event)"
+    />
   </div>
 </template>
 
@@ -146,6 +188,24 @@ export default defineComponent({
       validator: getValidator({ boolean: true }),
     },
     keywords: {
+      required: true,
+      validator: getValidator({
+        object: true, array: true, null: true, undefined: true,
+      }),
+    },
+    hasContentAdult: {
+      required: true,
+      validator: getValidator({ boolean: true }),
+    },
+    qualificationAssignmentsApproved: {
+      required: true,
+      validator: getValidator({ number: true, null: true }),
+    },
+    qualificationHitsApproved: {
+      required: true,
+      validator: getValidator({ number: true, null: true }),
+    },
+    qualificationLocale: {
       required: true,
       validator: getValidator({
         object: true, array: true, null: true, undefined: true,

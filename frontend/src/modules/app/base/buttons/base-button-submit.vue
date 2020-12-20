@@ -4,6 +4,7 @@
     type="submit"
     v-bind:color="color"
     v-bind:disabled="disabled"
+    v-bind:form="idForm"
     class="ml-7"
     v-on:click="$emit('click')"
   >
@@ -25,9 +26,7 @@ export default {
     label: {
       required: false,
       type: String,
-      default() {
-        return 'Submit';
-      },
+      default: 'Submit',
     },
     disabled: {
       required: false,
@@ -38,6 +37,11 @@ export default {
       required: false,
       type: String,
       default: 'primary',
+    },
+    idForm: {
+      required: false,
+      type: String,
+      default: undefined,
     },
   },
 };
