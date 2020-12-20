@@ -100,3 +100,15 @@ export function formatAmount(value: number, messageInvalid = 'invalid', currency
 export function formatDuration(duration: number): string {
   return humanizeDuration(duration * 1000);
 }
+
+let idInternal = 0;
+
+export function useId(): {generate: () => number} {
+  return {
+    generate() {
+      const id = idInternal;
+      idInternal += 1;
+      return id;
+    },
+  };
+}
