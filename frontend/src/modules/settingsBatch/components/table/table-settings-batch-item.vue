@@ -66,7 +66,7 @@
 </template>
 
 <script lang="ts">
-import BaseDisplayAmount from '@/components/base-display-amount';
+import BaseDisplayAmount from '@/components/base-display-amount.vue';
 import BaseTableItem from '@/components/base-table-item.vue';
 import BaseTableCell from '@/components/base-table-cell.vue';
 import { SettingsBatch } from '@/modules/settingsBatch/settingsBatch.model';

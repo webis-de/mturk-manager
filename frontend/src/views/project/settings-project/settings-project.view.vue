@@ -129,7 +129,7 @@
             <v-dialog
               width="500"
             >
-              <template v-slot:activator="{ on }">
+              <template #activator="{ on }">
                 <v-btn
                   color="primary"
                   v-on="on"
@@ -155,7 +155,7 @@
     </base-page-group>
 
     <v-dialog max-width="1500">
-      <template v-slot:activator="{ on }">
+      <template #activator="{ on }">
         <v-btn
           color="primary"
           v-on="on"
@@ -177,22 +177,22 @@
 </template>
 
 <script lang="ts">
-import TableSettingsBatch from '@/modules/settingsBatch/components/table/table-settings-batch';
-import ComponentBlockLimit from '../../../components/settings_project/block_limit/component_block_limit';
-import ComponentClearSandbox from '../../../components/settings_project/clear_sandbox/component_clear_sandbox';
-import Budget from '../../../components/finances/budget';
-import TableMessagesReject from '../../../components/messages-reject/table-messages-reject';
-import ImportBatch from '../../../components/project/import-batch';
-import About from '../../../components/about/about';
-import ChangelogNotification from '../../../components/about/changelog-notification';
+import TableSettingsBatch from '@/modules/settingsBatch/components/table/table-settings-batch.vue';
+import ComponentBlockLimit from '../../../components/settings_project/block_limit/component_block_limit.vue';
+import ComponentClearSandbox from '../../../components/settings_project/clear_sandbox/component_clear_sandbox.vue';
+import Budget from '../../../components/finances/budget.vue';
+import TableMessagesReject from '../../../components/messages-reject/table-messages-reject.vue';
+import ImportBatch from '../../../components/project/import-batch.vue';
+import About from '../../../components/about/about.vue';
+import ChangelogNotification from '../../../components/about/changelog-notification.vue';
 import { AppService } from '../../../services/app.service';
-import BasePage from '../../../components/base/base-page';
-import BasePageSection from '../../../components/base/base-page-section';
-import BasePageGroupDivider from '../../../components/base/base-page-group-divider';
-import BasePageGroup from '../../../components/base/base-page-group';
-import TheUpdateCredentials from '../../../components/the-update-credentials';
-import TableTemplatesRequester from '../../../modules/template/components/table/table-templates-requester';
-import TableTemplatesWorker from '../../../modules/template/components/table/table-templates-worker';
+import BasePage from '../../../components/base/base-page.vue';
+import BasePageSection from '../../../components/base/base-page-section.vue';
+import BasePageGroupDivider from '../../../components/base/base-page-group-divider.vue';
+import BasePageGroup from '../../../components/base/base-page-group.vue';
+import TheUpdateCredentials from '../../../components/the-update-credentials.vue';
+import TableTemplatesRequester from '../../../modules/template/components/table/table-templates-requester.vue';
+import TableTemplatesWorker from '../../../modules/template/components/table/table-templates-worker.vue';
 
 export default {
   name: 'AppSettingsProject',

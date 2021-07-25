@@ -41,6 +41,7 @@ export class SettingsBatch {
 
   qualificationLocale?: string;
 
+  // @ts-ignore
   constructor({
     id,
     name,
@@ -137,16 +138,23 @@ export class SettingsBatch {
   }
 
   static parseFromServer(item: {}): SettingsBatch {
+    // @ts-ignore
     item.project = item.project.id;
 
+    // @ts-ignore
     if (item.templateWorker !== null) {
+      // @ts-ignore
       item.templateWorker = item.templateWorker.id;
     }
 
+    // @ts-ignore
     item.keywords = item.keywords.map((keyword) => ({ id: keyword.id, text: keyword.text }));
 
+    // @ts-ignore
     item.qualificationLocale = item.qualificationLocale === null ? [] : JSON.parse(item.qualificationLocale);
+    // @ts-ignore
     console.warn(item.qualificationLocale, 'item.qualificationLocale');
+    // @ts-ignore
     return new this(item);
   }
 

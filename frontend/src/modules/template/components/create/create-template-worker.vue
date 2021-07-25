@@ -3,7 +3,7 @@
     v-model="dialog"
     fullscreen
   >
-    <template v-slot:activator="{ on }">
+    <template #activator="{ on }">
       <v-btn
         color="primary"
         small
@@ -149,7 +149,7 @@ import validations from '@/mixins/validations.mixin';
 import { ServiceTemplates } from '@/modules/template/template.service';
 import { store } from '@/store/vuex';
 import helpers from '@/mixins/helpers.mixin';
-import {TemplateWorker} from "@/modules/template/templateWorker.model";
+import { TemplateWorker } from '@/modules/template/templateWorker.model';
 
 export default {
   name: 'CreateTemplateWorker',
@@ -211,6 +211,7 @@ export default {
         const template = new TemplateWorker({
           name: this.name,
           template: this.template,
+          // @ts-ignore
           project: store.getters['moduleProjects/get_project_current'].id,
           heightFrame: this.heightFrame,
           templateAssignment: this.idTemplateAssignment === null ? null : this.idTemplateAssignment,

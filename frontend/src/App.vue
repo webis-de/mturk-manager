@@ -28,7 +28,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 import { ServiceProjects } from './services/projects.service';
-import TheUpdateNotification from './components/the-update-notification';
+import TheUpdateNotification from './components/the-update-notification.vue';
 
 export default {
   name: 'App',

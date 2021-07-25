@@ -14,7 +14,7 @@
     v-bind:show-select="false"
   >
     <template
-      v-slot:default="{ item, objectColumnsSelected, isCondensed }"
+      #default="{ item, objectColumnsSelected, isCondensed }"
     >
       <table-templates-worker-item
         v-bind:template="item"
@@ -23,15 +23,15 @@
       />
     </template>
 
-    <template v-slot:actions>
+    <template #actions>
       <create-template-worker />
     </template>
   </base-table>
 </template>
 
 <script lang="ts">
-import BaseTable from '@/components/base-table';
-import TableTemplatesWorkerItem from '@/modules/template/components/table/table-templates-worker-item';
+import BaseTable from '@/components/base-table.vue';
+import TableTemplatesWorkerItem from '@/modules/template/components/table/table-templates-worker-item.vue';
 import CreateTemplateWorker from '@/modules/template/components/create/create-template-worker.vue';
 
 export default {

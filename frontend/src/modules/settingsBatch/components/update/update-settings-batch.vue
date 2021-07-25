@@ -3,7 +3,7 @@
     v-model="dialog"
     max-width="80%"
   >
-    <template v-slot:activator="{ on }">
+    <template #activator="{ on }">
       <v-btn
         class="my-0"
         icon
@@ -82,7 +82,7 @@
 import {
   mapActions,
 } from 'vuex';
-import ComponentFormSettingsBatch from '@/components/settings_project/settings_batch/component_form_settings_batch';
+import ComponentFormSettingsBatch from '@/components/settings_project/settings_batch/component_form_settings_batch.vue';
 import { settingsBatch } from '@/mixins/settings-batch.mixin';
 import validations from '@/mixins/validations.mixin';
 import { ServiceSettingsBatch } from '@/modules/settingsBatch/settingsBatch.service';

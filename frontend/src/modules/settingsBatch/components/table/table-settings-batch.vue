@@ -14,7 +14,7 @@
     v-bind:show-select="false"
   >
     <template
-      v-slot:default="{ item, objectColumnsSelected, isCondensed }"
+      #default="{ item, objectColumnsSelected, isCondensed }"
     >
       <table-settings-batch-item
         v-bind:settings-batch="item"
@@ -23,15 +23,15 @@
       />
     </template>
 
-    <template v-slot:actions>
+    <template #actions>
       <create-settings-batch />
     </template>
   </base-table>
 </template>
 
 <script lang="ts">
-import BaseTable from '@/components/base-table';
-import TableSettingsBatchItem from '@/modules/settingsBatch/components/table/table-settings-batch-item';
+import BaseTable from '@/components/base-table.vue';
+import TableSettingsBatchItem from '@/modules/settingsBatch/components/table/table-settings-batch-item.vue';
 import CreateSettingsBatch from '@/modules/settingsBatch/components/create/create-settings-batch.vue';
 
 export default {

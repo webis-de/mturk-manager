@@ -87,10 +87,10 @@
 </template>
 
 <script lang="ts">
-import BaseTableCell from '@/components/base-table-cell';
+import BaseTableCell from '@/components/base-table-cell.vue';
 import DeleteTemplateWorker from '@/modules/template/components/delete/delete-template-worker.vue';
 import UpdateTemplateWorker from '@/modules/template/components/update/update-template-worker.vue';
-import BaseTableItem from '../../../../components/base-table-item';
+import BaseTableItem from '@/components/base-table-item.vue';
 
 export default {
   name: 'TableTemplatesWorkerItem',

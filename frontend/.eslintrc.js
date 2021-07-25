@@ -15,7 +15,7 @@ module.exports = {
     // import fix
     'import/extensions': ['error', 'always', {
       js: 'never',
-      vue: 'never',
+      vue: 'always',
       ts: 'never',
     }],
     // vuex fix

@@ -1,7 +1,7 @@
 <template>
   <base-table-item
-    v-bind:key="this.item.id"
-    v-bind:item="this.item"
+    v-bind:key="item.id"
+    v-bind:item="item"
   >
     <base-table-cell
       v-slot="{ item }"
@@ -45,10 +45,10 @@
 </template>
 
 <script>
-import BaseTableItem from '@/components/base-table-item';
-import DeleteMessageReject from '@/modules/message/components/delete/delete-message-reject';
-import BaseTableCell from '../base-table-cell';
-import MessageMakeDefault from './message-make-default';
+import BaseTableItem from '@/components/base-table-item.vue';
+import DeleteMessageReject from '@/modules/message/components/delete/delete-message-reject.vue';
+import BaseTableCell from '../base-table-cell.vue';
+import MessageMakeDefault from './message-make-default.vue';
 
 export default {
   name: 'ItemMessagesReject',

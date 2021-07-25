@@ -37,10 +37,10 @@
 </template>
 
 <script lang="ts">
-import BaseTableCell from '@/components/base-table-cell';
+import BaseTableCell from '@/components/base-table-cell.vue';
 import UpdateTemplateRequester from '@/modules/template/components/update/update-template-requester.vue';
 import DeleteTemplateRequester from '@/modules/template/components/delete/delete-template-requester.vue';
-import BaseTableItem from '../../../../components/base-table-item';
+import BaseTableItem from '@/components/base-table-item.vue';
 
 export default {
   name: 'TableTemplatesRequesterItem',

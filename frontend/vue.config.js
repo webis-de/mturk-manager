@@ -32,11 +32,19 @@ module.exports = {
         chunks: 'all',
       },
     },
+    performance: {
+      hints: false,
+    },
   },
   pluginOptions: {
     webpackBundleAnalyzer: {
       openAnalyzer: false,
     },
+  },
+  css: {
+    extract: process.env.NODE_ENV === 'production' ? {
+      ignoreOrder: true,
+    } : false,
   },
   // lintOnSave: 'error',
   // devServer: {

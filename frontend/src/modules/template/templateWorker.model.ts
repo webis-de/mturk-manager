@@ -35,6 +35,7 @@ export class TemplateWorker extends TemplateBase {
     templateGlobal?: ID;
     templateOriginal?: ID;
   } = {}) {
+    // @ts-ignore
     super(data);
 
     this.heightFrame = heightFrame;
@@ -62,9 +63,12 @@ export class TemplateWorker extends TemplateBase {
   }
 
   static parseFromServer(item: {}): TemplateBase {
+    // @ts-ignore
     item.templateAssignment = item.templateAssignment !== null ? item.templateAssignment.id : null;
     // note the renaming from Hit to HIT
+    // @ts-ignore
     item.templateHIT = item.templateHit !== null ? item.templateHit.id : null;
+    // @ts-ignore
     item.templateGlobal = item.templateGlobal !== null ? item.templateGlobal.id : null;
 
     return super.parseFromServer(item);

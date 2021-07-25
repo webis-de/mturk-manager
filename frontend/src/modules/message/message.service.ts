@@ -86,6 +86,7 @@ class ClassServiceMessages {
       nameCommit = 'createMessageReject';
       nameMutation = 'createMessageReject';
       query = mutationCreateMessageReject;
+      // @ts-ignore
       cls = MessageReject;
     }
 

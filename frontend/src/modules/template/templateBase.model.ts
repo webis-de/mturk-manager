@@ -57,7 +57,9 @@ export class TemplateBase {
   }
 
   static parseFromServer(item: {}): TemplateBase {
+    // @ts-ignore
     item.project = item.project.id;
+    // @ts-ignore
     return new this(item);
   }
 

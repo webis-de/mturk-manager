@@ -46,6 +46,7 @@ export class MessageBase {
 
   static parseFromServer(item: {}): MessageBase {
     // item.project = item.project.id;
+    // @ts-ignore
     return new this(item);
   }
 

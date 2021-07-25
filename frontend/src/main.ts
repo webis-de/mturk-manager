@@ -9,8 +9,8 @@ import VueAxios from 'vue-axios';
 import Vuex from 'vuex';
 import VueCookies from 'vue-cookies';
 import VueCompositionApi from '@vue/composition-api';
+import App from '@/App.vue';
 import { store } from './store/vuex';
-import App from '@/App';
 
 import { router } from './router';
 import { vuetify } from './vuetify';
@@ -34,5 +34,5 @@ export default new Vue({
   vuetify,
   el: '#app',
   apolloProvider,
-  render: h => h(App),
+  render: (h) => h(App),
 });
