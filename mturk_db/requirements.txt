@@ -1,7 +1,7 @@
 django==3.0.8
 uwsgi==2.0.19.1
 boto3==1.14.20
-psycopg2
+psycopg2==2.8.6
 django-environ==0.4.5
 xmltodict
 djangorestframework
