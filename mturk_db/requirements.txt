@@ -8,7 +8,7 @@ djangorestframework
 markdown
 django-cors-headers
 celery==4.4.6
-django-celery-results==1.2.1
+django-celery-results==2.4.0
 django-celery-beat==2.0.0
 flower
 graphene-django==2.11.1
